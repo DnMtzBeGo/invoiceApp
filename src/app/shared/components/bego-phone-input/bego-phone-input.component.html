@@ -1,0 +1,60 @@
+<form [formGroup]="phoneInputForm">
+  <mat-form-field 
+    class="order-phone-number-wrapper " 
+    [class]="design"
+    [ngClass]=" phoneInputForm.value.phoneNumber && phoneInputForm.value.phoneNumber.length ? 'input-filled': ''">
+  
+    <span  *ngIf="design != 'inner-shadow' && !hidePhoneIcon">
+      <i class="icon icon-phone"></i>
+    </span>
+    
+    <div class="phone-selector" >
+  
+      <div (click)="openSelector($event)" class="phone-code-container" >
+  
+        <div  class="flag-container">
+          
+          <div
+            class="phone" 
+            ngClass="phone-{{ phoneFlag | lowercase }} {{ design }}">
+          </div>
+        </div>
+  
+        <div [ngClass]="{ 'phonecode-disabled' : disabled}">
+          {{ phoneCode }}
+        </div>
+  
+        <!-- arrow down sign -->
+        <div>
+          &#x25BE;
+        </div>
+      </div>
+  
+      <div class="phone-list-container" *ngIf="isSelectFlag && !disabled">
+  
+        <div *ngFor="let codes of allCodes" (click)="selectFlag($event, codes)" class="flag-option">
+          <div class="flag-container" >
+            <div class="phone" ngClass="phone-{{codes.code | lowercase}}"></div>
+          </div>
+          <div class="flag-data">
+            {{ codes.name }}  {{codes.dial_code}}
+          </div>
+        </div>
+      </div>
+  
+  
+    </div>
+    <mat-label *ngIf="design != 'inner-shadow' " > 
+      {{ 'bego-phone-input.phone' | translate}} 
+    </mat-label>
+    <div class="phone-number-input" >
+      
+      <input 
+        matInput
+        (blur)="blurElement()"
+        formControlName="phoneNumber"
+        [textMask]="{mask: phoneMask, guide: false}"
+        (keyup)="detectInputChanges()">
+    </div>
+  </mat-form-field>
+</form>

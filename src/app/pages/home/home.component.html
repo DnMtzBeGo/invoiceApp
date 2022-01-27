@@ -1,0 +1,33 @@
+<div>
+  <bego-map
+    #begoMap
+    [hide]="showOrderDetails"
+    [typeMap]="typeMap"
+    [headerTransparent]="headerTransparent"
+    (createGoogleImage)="getGoogleImageMap($event)"
+  >
+  </bego-map>
+
+  <div class="new-order-wrapper">
+    <div class="new-order-details">
+      <app-orders
+        [(cardIsOpen)]="showOrderDetails"
+        [draftData]="draftData"
+        [locations]="locations"
+        [imageFromGoogle]="imageFromGoogle"
+      >
+      </app-orders>
+    </div>
+
+    <div class="input-directions" >
+      <app-input-directions
+        [showMapPreview]="showOrderDetails"
+        (showNewOrderCard)="showNewOrderCard()"
+        (updateLocations)="updateLocations($event)"
+        [typeMap]="typeMap"
+        (inputPlace)="placesService.emitter.next($event)"
+      >
+      </app-input-directions>
+    </div>
+  </div>
+</div>

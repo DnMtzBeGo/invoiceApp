@@ -1,0 +1,16 @@
+<ng-container *ngTemplateOutlet="multicolor ? multicolor : default">
+</ng-container>
+
+<ng-template #multicolor>
+  <button  #button type="button" [class]="class" [ngClass]=" disabled ? 'disabled' : '' ">
+    <!-- <i class="icon-btn" *ngIf="iconVisible"></i> -->
+    <span class="text">{{text}}</span>
+  </button>
+</ng-template>
+
+<ng-template #default>
+  <button #button type="button" [class]="class" [ngClass]=" disabled ? 'disabled' : '' ">
+    <!-- <i class="icon-btn" *ngIf="iconVisible"></i> -->
+    <span class="text">{{text}}</span>
+  </button>
+</ng-template>

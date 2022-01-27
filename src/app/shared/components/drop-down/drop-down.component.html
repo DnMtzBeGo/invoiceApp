@@ -1,0 +1,17 @@
+<div class="dropdown-container">
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel [expanded]="panelExpanded">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span class="driver-check-container" *ngIf="showRadioButton" >
+            <i class="icon icon-check" *ngIf="validateData"></i>
+          </span>
+          {{title}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-panel-description>
+        <ng-content></ng-content>
+      </mat-panel-description>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

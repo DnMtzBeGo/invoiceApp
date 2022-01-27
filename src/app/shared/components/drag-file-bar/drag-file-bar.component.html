@@ -1,0 +1,51 @@
+<div
+    #uploadFilesBar
+    class="upload-file-bar"
+		[ngClass]="(!displayFileLoaded || !this.fileInfo ) ? '' : 'hidden' "
+    [ngClass]=" disabled ? 'disabled': '' "
+		>
+
+    <div #elementContent>
+        <ng-content ></ng-content>
+    </div>
+
+    <ng-container *ngIf="!elementContent.hasChildNodes()">
+        {{ 'fiscal-documents.drag-files' | translate }}
+        <span 
+					(click)="clickFileInputElement()"
+					[ngClass]="disabled ? 'disabled' : '' "
+					class="browse-btn ">
+        		{{ 'fiscal-documents.browse' | translate }}
+        </span>
+    </ng-container>
+</div>
+
+<div
+    *ngIf="displayFileLoaded && this.fileInfo"
+    class="file-loaded">
+
+		<div 
+			class="icon icon-close close-btn"
+			(click)="removeFile()">
+		</div>
+		<div>
+			<div class="doc-icon">
+					{{ fileInfo?.extension }}
+			</div>
+		</div>
+		<div class="file-details">
+				<div class="file-name">
+						{{ fileInfo?.text }}
+				</div>
+				<div class="subtitle">
+						{{ formattedDateUpdated }} | {{ fileInfo.formattedSize }}
+				</div>
+		</div>
+</div>
+
+<input
+#fileInput
+hidden
+type="file"
+(change)="selectFile()"
+accept="image/*, .pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/plain, application/pdf">

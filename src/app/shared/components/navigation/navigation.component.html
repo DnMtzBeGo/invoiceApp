@@ -1,0 +1,27 @@
+<section class="navigation" [ngClass]="headerTransparent ? 'transparent':''">
+  <div class="container-navigation">
+    <div id="languages">
+      <div
+        class="language-tag"
+        [ngClass]="{ active: translateService.currentLang === 'en' }"
+        (click)="languageService.changeLanguage('en')"
+      >
+        {{ "header.btn-en" | translate }}
+      </div>
+      <span>·</span>
+      <div
+        class="language-tag"
+        [ngClass]="{ active: translateService.currentLang === 'es' }"
+        (click)="languageService.changeLanguage('es')"
+      >
+        {{ "header.btn-es" | translate }}
+      </div>
+    </div>
+    <div class="avatar" routerLink="/profile">
+      <img [src]="profilePic" (error)="profilePicError()" alt="" />
+    </div>
+    <app-web-menu-button [menuOpened]="menuOpened" (click)="toggleMenu()"></app-web-menu-button>
+  </div>
+</section>
+
+<app-web-menu [menuOpened]="menuOpened" [removeDelay]="removeDelay" (menuEmitter)="emittedValue()"></app-web-menu>

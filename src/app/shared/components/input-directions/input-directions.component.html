@@ -1,0 +1,183 @@
+<section [ngClass]=" parent.showOrderDetails ?  'order-details-open' : '' ">
+
+  <div
+    class="input-directions-component"
+    [ngClass]="[parent.showOrderDetails ? 'show-map' : '', hideMap ? 'hide-map' : '']"
+    >
+    <div>
+      <div class="directions" [ngClass]=" hideMap ? 'hide-line' : ''">
+        <div class="input-container" [ngClass]="hideType === 'dropoff' ? 'hide-input' : ''">
+            <label>{{'location.label_pickup' | translate}}</label>
+            <input
+                #pickup
+                type="search"
+                [(ngModel)]="autocompletePickup.input"
+                (search)="ClearAutocompletePickup()"
+                (focusout)="focusOutInputPickup()"
+                (keyup)="UpdateSearchResultsPickup($event)"
+                [placeholder]="'location.placeholder' | translate"
+            >
+        </div>
+        <div class="input-container" [ngClass]="hideType === 'pickup' ? 'hide-input' : ''">
+            <label>{{'location.label_dropoff' | translate}}</label>
+            <input
+                #dropoff
+                type="search"
+                [(ngModel)]="autocompleteDropoff.input"
+                (search)="ClearAutocompleteDropoff()"
+                (focusout)="focusOutInputDropoff()"
+                (keyup)="UpdateSearchResultsDropoff($event)"
+                [placeholder]="'location.placeholder' | translate"
+            >
+        </div>
+      </div>
+      <!-- <div class="saved-locations">
+        <div class="container-buttons">
+            <bego-button class="btn-black icon icon-home" text="Home"></bego-button>
+            <bego-button class="btn-black icon icon-work" text="Work"></bego-button>
+        </div>
+        <bego-button class="btn-list" text="My Saved Locations"></bego-button>
+    </div> -->
+      <div
+        class="list-address-container"
+        [hidden]="
+          autocompleteItemsDropoff.length == 0 ||
+          autocompleteItemsPickup.length !== 0
+        "
+      >
+        <!-- <div class="item-pin" >
+          <div class='item-location'>
+            <div class='icon icon-pin'></div>
+            <div class="list-map">{{'location.label_pin' | translate}}</div>
+          </div>
+        </div> -->
+        <div
+          *ngFor="let item of autocompleteItemsDropoff"
+          (click)="selectSearchResultDropoff(item)"
+        >
+          <div class="item-location">
+            <div class="list-icon-address">
+              <img
+                [src]="
+                  savedPlaces.has(item.place_id)
+                    ? '/assets/images/maps/marker-fav-on.svg'
+                    : '/assets/images/maps/marker-fav-off.svg'
+                "
+                alt="Location marker icon"
+              />
+            </div>
+            <div class="list-address">
+              <span>{{ item.description | splitGoogleAddress }},</span>
+              {{ item.description | splitGoogleAddressSecond }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="list-address-container"
+        [hidden]="
+          autocompleteItemsPickup.length == 0 ||
+          autocompleteItemsDropoff.length !== 0
+        "
+      >
+        <!-- <div detail='false' class="item-pin" >
+          <div class='item-location'>
+            <div class='list-icon-pin'></div>
+            <div class="list-map">{{'location.label_pin' | translate}}</div>
+          </div>
+        </div> -->
+        <div
+          *ngFor="let item of autocompleteItemsPickup"
+          (click)="selectSearchResultPickup(item)"
+        >
+          <div class="item-location">
+            <div
+              class="list-icon-address"
+              (click)="togglePlace(item.place_id, $event)"
+            >
+              <img
+                [src]="
+                  savedPlaces.has(item.place_id)
+                    ? '/assets/images/maps/marker-fav-on.svg'
+                    : '/assets/images/maps/marker-fav-off.svg'
+                "
+                alt="Location marker icon"
+              />
+            </div>
+            <div class="list-address">
+              <span>{{ item.description | splitGoogleAddress }},</span>
+              {{ item.description | splitGoogleAddressSecond }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-address-container" *ngIf="invalidAddressPickup">
+        <!-- <div detail='false' >
+          <div class='item-location'>
+            <div class='list-icon-pin'></div>
+            <div class="list-map">{{'location.label_pin' | translate}}</div>
+          </div>
+        </div> -->
+        <div (click)="ClearAutocompletePickup()">
+          <div class="item-location">
+            <div class="list-icon-error"></div>
+            <div class="list-address-error">
+              <span>{{ 'location.txt-address-not-found' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        #btnOrder
+        class="list-address-container"
+        *ngIf="invalidAddressDropoff"
+      >
+        <!-- <div detail='false' >
+          <div class='item-location'>
+            <div class='list-icon-pin'></div>
+            <div class="list-map">{{'location.label_pin' | translate}}</div>
+          </div>
+        </div> -->
+        <div (click)="ClearAutocompleteDropoff()">
+          <div class="item-location">
+            <div class="list-icon-error"></div>
+            <div class="list-address-error">
+              <span>{{ 'location.txt-address-not-found' | translate }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    <bego-button 
+      *ngIf="!hideMap"
+      [disabled]="!pickupSelected || !dropoffSelected"
+      (click)="openNewOrderMenu()"
+      class="btn-yellow"
+      [text]="'location.btn-order' | translate">
+    </bego-button>
+    
+    <bego-button
+      *ngIf="hideMap"
+      (click)="cancelChangeLocations()"
+      class="btn-yellow"
+      [text]="'orders.btn-cancel' | translate">
+    </bego-button>
+  
+    </div>
+  
+    <div class="map-preview">
+
+      <bego-button
+        [disabled]="!pickupSelected || !dropoffSelected"
+        (click)="openNewOrderMenu()"
+        class="btn-yellow"
+        [text]="'location.btn-order' | translate"
+      >
+      </bego-button>
+    </div>
+
+    <div class="map-preview">
+      <bego-map [typeMap]="typeMap"> </bego-map>
+    </div>
+  </div>
+</section>

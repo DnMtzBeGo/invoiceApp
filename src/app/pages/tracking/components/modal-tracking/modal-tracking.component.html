@@ -1,0 +1,36 @@
+<div class="modal-tracking-container">
+  <div class="row">
+    <div class="col">
+      <div class="title-distance">DISTANCE</div>
+      <div class="text-distance">{{orderData?.ETA.distance}}</div>
+    </div>
+    <div class="col">
+      <div class="title-distance">Time for {{orderData?.status >= 3 ? 'DROPOFF' : 'PICKUP' }}</div>
+      <div>{{(orderData?.currentTime + orderData?.ETA.ETA) | date:'shortTime'}}</div>
+    </div>
+    <div class="col">
+      <div class="title-distance">
+        <span [ngClass]="statusData.statusList['en'][statusOrder]?.general.class"></span>
+        {{statusData.statusList['en'][statusOrder]?.general.text}}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="icon-col">
+        <div class="icon-container">
+          <i class="icon icon-pickup"></i>
+          <!-- <img src="../../../../assets/images/pickup-arrow.svg" alt=""> -->
+        </div>
+      </div>
+    </div>
+    <div class="address-col">
+      <p class="address-title">
+        {{orderData?.status >= 3 ? 'DROPOFF' : 'PICKUP' }}
+      </p>
+      <p class="address-text">
+        {{orderData?.destination.address}}
+      </p>
+    </div>
+  </div>
+</div>

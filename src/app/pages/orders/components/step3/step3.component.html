@@ -1,0 +1,35 @@
+<div class="steps">
+  <form [formGroup]="step3Form">
+    <div class="steps-container">
+  
+      <div class="address-box">
+        <p class="icons address-check">{{locations.dropoff | splitGoogleAddress}}<span>{{locations.dropoff | splitGoogleAddressSecond}}</span></p>
+        <div class="btn-change icons change-route" (click)="changeLocation('dropoff')">{{ 'orders.btn-change-route-dropoff' | translate }}</div>
+      </div>
+  
+      <h2><span>* </span>{{ 'orders.title-personal-info' | translate }}</h2>
+  
+      <mat-form-field>
+        <i class="icon icon-user"></i>
+        <mat-label>{{ 'orders.placeholder-fullname' | translate }}</mat-label>
+        <input matInput formControlName="fullname">
+      </mat-form-field>
+  
+      <bego-phone-input
+        [phoneFlag]="phoneFlag"
+        [phoneCode]="phoneCode"
+        [phoneNumber]="phoneNumber"
+        (phoneFlagChange)="phoneFlagChangeValue($event)"
+        (phoneCodeChange)="phoneCodeChangeValue($event)"
+        (phoneNumberChange)="phoneNumberChangeValue($event)"
+      >
+      </bego-phone-input>
+  
+      <mat-form-field>
+        <i class="icon icon-email"></i>
+        <mat-label>{{ 'orders.placeholder-mail' | translate }}</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+    </div>
+  </form>
+</div>

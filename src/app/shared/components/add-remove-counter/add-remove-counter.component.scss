@@ -1,0 +1,37 @@
+.add-remove-counter-container {
+  display: flex;
+  width: 118px;
+  position: relative;
+  margin: 30px 20px 0 0;
+
+  .remove-counter,
+  .add-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28.66px;
+    width: 30px;
+    border-radius: 3px;
+    background-color: #10161C;
+    box-shadow: inset 4px 4px 4px 0 #1D2024, inset -4px -4px 4px 0 #10161C;
+  }
+
+  .digit-counter {
+    display: flex;
+    width: 59px;
+    justify-content: center;
+    align-items: center;
+    color: #EDEDED;
+    font-family: 'Avenir-Light';
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 19px;
+    border: 2px solid #10161C;
+  }
+
+  .icon {
+    color: #ffbe00;
+  }
+
+}

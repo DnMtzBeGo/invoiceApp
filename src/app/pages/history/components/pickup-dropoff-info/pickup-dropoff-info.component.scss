@@ -1,0 +1,23 @@
+@import '../../../../../styles.scss';
+
+.pickup-dropoff-info-container {
+  color: white;
+
+  p {
+    margin: 5px 0 10px 0;
+  }
+}
+
+.hazardous-details{
+
+  text-align: start;
+
+  .hazardous-title{
+      @include fluid('font-size',320px,375px,16px,18px);
+  }
+
+  .hazardous-description{
+    @include fluid('font-size',320px,375px,12px,14px);
+  }
+
+}

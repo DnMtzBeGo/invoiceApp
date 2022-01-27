@@ -1,0 +1,44 @@
+@import "../../../../styles.scss";
+
+.input-search {
+
+    &.icon-search {
+        background: linear-gradient(180deg, #080F15 0%, #171D23 100%);
+        border: 3px solid #10161C;
+        box-shadow: inset 3px 3px 8px 3px #111416;
+        border-radius: 30.5px;
+        position: relative;
+        
+        input {
+            padding: 0 0 0 51px;
+            color: $white;
+            line-height: 32px;
+            font-family: 'Avenir', Helvetica, sans-serif;
+            letter-spacing: 0.5px;
+
+            &::placeholder {
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 19px;
+                color: #7C7C7C;
+            }
+        }
+    
+        &::before {
+            content: "\e90e";
+            font-family: '#{$icomoon-font-family}' !important;
+            background: linear-gradient(180deg, #0C1116 0%, #191C1F 100%);
+            box-shadow: inset 0px 11px 6px #040B11;
+            border-radius: 50%;
+            position: absolute;
+            font-size: 15px;
+            line-height: 32px;
+            left: 9px;
+            text-align: center;
+            top: 50%;
+            height: 32px;
+            width: 32px;
+            transform: translate(0, -50%);
+        }
+    }
+}

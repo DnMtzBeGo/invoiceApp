@@ -1,0 +1,40 @@
+<div class="blur" [ngClass]="slide === 1 ? 'active' : ''"></div>
+<div class="pricing">
+  <div class="box">
+    <form [formGroup]="insuranceForm">
+      <h2>{{ 'checkout.insurance-modal.title-insurance' | translate }}</h2>
+      <h3>{{ 'checkout.insurance-modal.txt-insurance' | translate }}</h3>
+      <div class="cargo-value">
+        <input
+        currencyMask
+        [options]="{
+          align: 'center',
+          prefix: '$',
+          thousands: ',',
+          decimal: '.',
+          allowNegative: false
+        }"
+        formControlName='cargoValue'
+        (focusout)="resetInputFormat()"
+        >
+        <!-- <input
+          type="tel"
+          mvndrMatCurrencyFormat
+          [allowNegative]="false"
+          (focus)="resetInput()"
+          (focusout)="resetInputFormat($event)"
+          [value]="cargoValue"
+          [(ngModel)]="cargoValue"
+          (input)='validCargoValue($event)'
+          [disabled]= 'btnQuit > 0'
+          > -->
+      </div>
+      <div *ngIf="cargoValueSet" class="insurance-total"><p>{{ 'checkout.insurance-modal.txt-total' | translate }}<span>${{totalInsurance | number : '1.2-2'}} MXN</span></p></div>
+      <div class="container-button">
+        <button (click)="removeInsurance()" [disabled]="activeBtnCargo">
+          {{txtBtnCargo}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

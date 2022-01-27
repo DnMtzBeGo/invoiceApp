@@ -1,0 +1,21 @@
+<div class="blur" [ngClass]="slide === 0 ? 'active' : ''"></div>
+<div class="pricing">
+  <div class="box">
+    <h2>{{ 'checkout.agent-modal.title-agent' | translate }}</h2>
+    <h3>{{ 'checkout.agent-modal.txt-agent' | translate }}</h3>
+    <h3>{{ 'checkout.agent-modal.txt-agent-prices' | translate }}</h3>
+
+    <mat-radio-group (change)="changeRadioValue($event)">
+      <mat-radio-button value=0>{{ 'checkout.agent-modal.btn-first' | translate }}{{dataCustomsCruce.total}}</mat-radio-button>
+      <mat-radio-button value=1>{{ 'checkout.agent-modal.btn-second' | translate }}{{dataCustomsCruce.cruce}}</mat-radio-button>
+      <mat-radio-button value=2>{{ 'checkout.agent-modal.btn-third' | translate }}</mat-radio-button>
+    </mat-radio-group>
+
+    <div class="container-button">
+      <button (click)="addCart(true)" expand="block">
+        {{ 'checkout.insurance-modal.btn-add' | translate }}
+        <i class="icon icon-next"></i>
+      </button>
+    </div>
+  </div>
+</div>

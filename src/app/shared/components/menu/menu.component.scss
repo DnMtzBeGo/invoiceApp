@@ -1,0 +1,173 @@
+@import "../../../../styles.scss";
+
+.menu {
+
+  &.open {
+    width: $bego-menu-width-open;
+  }
+
+    pointer-events: auto;
+    z-index: 200!important;
+
+    .logo-container {
+        display: flex;
+        // justify-content: center;
+        align-items: center;
+        margin-left: 16px;
+        padding-bottom: 24px;
+
+        .logo {
+            @include fluid("width", $mobile-ms, $desktop-qhd, 40px,60px);
+            @include fluid("height", $mobile-ms, $desktop-qhd, 40px,60px);
+            // height: 65px;
+            // width: 57.20000076293945px;
+            margin-right: 10px;
+        }
+    }
+    
+    background: $background-color;
+    box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+    height: 100%;
+    width: $bego-menu-width;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    padding-top: 45px;
+    transition: 0.5s;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: stretch;
+    white-space: nowrap;
+
+    .menu-options{
+
+      overflow-x: hidden;
+
+      .menu-option{
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        margin: 16px 0px;
+        box-sizing: content-box;
+        border-left: 3px solid transparent;
+  
+        bego-button{
+            margin-left: 21px;
+            margin-right: 16px;
+
+            ::ng-deep button.btn-menu {
+              width: 40px;
+              height: 40px;
+            }
+        }
+  
+        &.selected {
+          border-left: 3px solid #ffbe00;;
+          font-weight: 400;
+  
+          ::ng-deep button.btn-menu{
+  
+            background: $yellow-color;
+            border: 1px solid #EAAE00;
+            box-shadow: inset 4px 4px 4px #FFD354, inset -4px -4px 6px #D59E00;
+            border-radius: 16px;
+            color: #000000;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+                      
+            &::before {
+              font-size: 22px !important;
+            }
+          }
+  
+          color: #ffbe00;
+        }
+  
+        &:hover{
+          &:not(.selected){
+            ::ng-deep button.btn-menu::before{
+              color: #ffbe00;
+            }
+          }
+        }
+  
+      }
+    }
+
+    .logout{
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+    }
+
+    .separator{
+      border-top: 4px dotted white;
+      margin: 35px 20px;
+      letter-spacing: 4px;
+      max-width: 32px;
+      margin-left: 28px;
+    }
+
+    .menu-opener{
+      $width: 25px;
+      position: absolute;
+      top: 0px;
+      z-index: 20;
+
+
+      right: -$width;
+      width: $width;
+
+      img{
+        width: $width;
+        object-fit: contain;
+        position: absolute;
+        left: 0px;
+      }
+
+      .arrow-container{
+        color: white;
+        position: absolute;
+        top: 58px;
+        left: 0px;
+        cursor: pointer;
+        z-index: 20;
+
+
+        .arrow{
+
+          // font-size: 10px;
+          margin-left: 3px;
+
+          &.closed{
+            transform: rotate(180deg);
+          }
+  
+        }
+      }
+
+      .line{
+        min-height: 10px;
+        position: absolute;
+        top: 62px;
+        left: 0px;
+
+        height: 15px;
+        width: 2px;
+        background-color: white;
+        border-radius: 99px;
+
+      }
+    }
+}
+
+
+
+::ng-deep{
+  button.btn-menu::before{
+    font-size: 28px!important;
+    transition: color .2s ;
+  }
+}

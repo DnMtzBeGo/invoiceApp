@@ -1,0 +1,52 @@
+<div class="payment-card">
+  <div class="container">
+    <img 
+    src="../../../../../../../assets/images/checkout/citibanamex-vector-logo.svg" 
+    class="banamex-img" 
+    alt="banamex img">
+
+
+    <div class="section">
+      <div class="title">
+        {{'checkout.total-price' | translate}}
+      </div>
+      <div class="price">
+        {{ orderData?.pricing.total | currency }}
+  
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="title">
+        {{'checkout.txt-company-payment' | translate}}
+      </div>
+      <div class="value">
+        {{'checkout.value-company-payment' | translate}}
+  
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="title">
+        {{'checkout.txt-account-payment' | translate}}
+      </div>
+      <div class="value">
+        {{  'checkout.value-account-payment' | translate }}
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="title">
+        {{'checkout.txt-reference' | translate}}
+      </div>
+      <div class="value">
+        {{ orderData?.order_number }}
+  
+      </div>
+    </div>
+
+
+
+  </div>
+
+</div>

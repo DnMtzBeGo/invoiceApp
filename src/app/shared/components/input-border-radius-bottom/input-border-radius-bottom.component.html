@@ -1,0 +1,4 @@
+<mat-form-field class="input-border-radius-container" appearance="fill">
+  <mat-label>{{title}}</mat-label>
+  <input type="{{inputType}}" matInput [(ngModel)]="inputValue" (ngModelChange)="getValueFromInput($event)" (input)="getInputName($event)" id="{{inputName}}">
+</mat-form-field>

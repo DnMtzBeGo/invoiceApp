@@ -1,0 +1,606 @@
+{
+    "bego-phone-input": {
+        "phone_text":"Teléfono",
+        "introduce-valid-number":"Introduce un número válido",
+        "phone":"Teléfono"
+    }, 
+    "bego-select-component": {
+        "select":"Selecciona",
+        "empty-select":"Elemento está vacío"
+
+    },
+    "faqs": {
+        "general questions": "preguntas generales",
+        "you will find answers": "encontraras tus respuestas",
+        "more questions": "más preguntas",
+        "about the order process": "acerca del proceso"
+    },
+    "contact-support": {
+        "Type a message..": "Escribe un mensaje..",
+        "Send": "Enviar",
+        "Support": "Soporte",
+        "Drag files in here": "Arrastra tus archivos aquí"
+    },
+    "orders": {
+        "back": "Atrás",
+        "next-step":"Siguiente paso",
+        "continue-to-dropoff":"Continuar a Dropoff",
+        "proceed-checkout":"Proceder a checkout",
+        "phone_text":"Teléfono",
+        "cargo-weight": {
+            "title": "Define el peso por caja",
+            "subtitule": "(por regulación máximo 20 tons por caja)",
+            "unit": "Unidad",
+            "btn-save": "Guardar"
+        },
+        "title-pickup": "Recolección",
+        "title-dropoff": "Entrega",
+        "btn-step1": "Continuar",
+        "btn-step2": "Orden de Entrega",
+        "btn-step3": "Continuar",
+        "btn-step4": "Checkout",
+        "title-directions": "Dirección",
+        "btn-change-route-pickup": "Cambiar la ruta",
+        "btn-change-route-dropoff": "Cambiar la ruta",
+        "title-personal-info": "Información Personal",
+        "placeholder-fullname": "Nombre Completo",
+        "placeholder-phone": "Teléfono móvil",
+        "placeholder-mail": "ejemplo@mail.com",
+        "placeholder-reference": "# de referencia",
+        "title-cargo-info": "Información de carga",
+        "placeholder-date": "No hay fecha",
+        "placeholder-time": "No hay horario",
+        "btn-add-weight": "Añadir Peso",
+        "btn-edit-weight": "Editar Peso",
+        "placeholder-start": "Inicio",
+        "placeholder-end": "Fin",
+        "txt-select-units": "Caja Tipo",
+        "txt-select-cargo": "Carga Tipo",
+        "txt-select": "Carga Tipo",
+        "btn-general": "General",
+        "btn-hazardous": "Peligrosa",
+        "choose-category":"Selecciona una categoría...",
+        "placeholder-hazard": "Selecciona código UN",
+        "btn-file": "Buscar archivos",
+        "txt-cargo": "Descripción de la carga",
+        "placeholder-cargo": "Escribe aquí ....",
+        "title-date-time": "Fijar la fecha y hora",
+        "txt-time": "Fijar la hora",
+        "label-from": "De",
+        "label-to": "a",
+        "placeholder-notes": "Notas adicionales",
+        "placeholder-un": "Número UN",
+        "title-valid-route": "Nota",
+        "txt-valid-route": "Esta ruta no se encuentra en nuestra lista de precios, pero puedes crearla y te contactaremos pronto con una cotización.",
+        "txt-save":"Guardar",
+        "btn-cancel": "Cancelar",
+        "btn-done": "Hecho",
+        "hazardous-list": {
+            "class-1": "CLASS 1 - Sustancias u objetos explosivos",
+            "class-2": "CLASS 2 - Gases",
+            "class-3": "CLASS 3 - Líquidos inflamables",
+            "class-4": "CLASS 4 - Sólidos inflamables",
+            "class-5-1": "CLASS 5.1 - Agentes oxidantes",
+            "class-5-2": "CLASS 5.2 - Peróxidos orgánicos",
+            "class-6-1": "CLASS 6.1 - Materias tóxicas",
+            "class-6-2": "CLASS 6.2 - Materias infecciosas",
+            "class-7": "CLASS 7 - Materias radiactivas",
+            "class-8": "CLASS 8 - Materias corrosivas",
+            "class-9": "CLASS 9 - Materias y objetos peligrosos diversos"
+        }
+    },
+    "checkout": {
+        "title-checkout": "Checkout",
+        "txt-reference": "Referencia",
+        "txt-order": "Orden",
+        "txt-pickup": "Recolección",
+        "txt-dropoff": "Entrega",
+        "txt-inovice": "Factura",
+        "title-inovice": "Información de facturación",
+        "placeholder-fullname": "Nombre completo",
+        "placeholder-email": "Email",
+        "placeholder-phonenumber": "Teléfono Móvil",
+        "placeholder-address": "Dirección",
+        "placeholder-company": "Compañía (nombre legal)",
+        "placeholder-rfc": "RFC",
+        "placeholder-cfdi": "Uso de CFDI",
+        "select-cfdi":"Selecciona un CFDI",
+        "edit": "Editar",
+        "unit": "Unidad",
+        "tons": "tons",
+        "units": "Unidades",
+        "txt-items": "Artículos",
+        "full-name": "Nombre",
+        "phone": "Teléfono",
+        "email": "Correo",
+        "reference": "# Referencia",
+        "weight": "Peso de carga",
+        "cargo-type": "Tipo de carga",
+        "hazardous": "Peligrosa",
+        "date": "Fecha",
+        "time": "Hora",
+        "price-details": "Precios",
+        "insurance": "Seguro",
+        "costums": "Aduana",
+        "cruce": "Cruce",
+        "subtotal": "Subtotal",
+        "taxes": "Impuestos",
+        "total-price": "Total",
+        "placeholder-cargo": "Descripción del cargo",
+        "placeholder-notes": "Notas Extra",
+        "btn-continue": "Continuar",
+        "btn-submit": "Crear Orden",
+        "txt-reference-payment": "Referencia",
+        "txt-account-payment": "Clabe Interbancaria",
+        "txt-company-payment": "Razón Social",
+        "value-account-payment": "002180701648306493",
+        "txt-bank":"Banco",
+        "value-company-payment": "BSILIENCE SA DE CV",
+        "title-valid-route": "Nota",
+        "txt-valid-route": "Esta orden será operada por uno de nuestros representantes, te contactaremos cuando esté lista.",
+        "txt-save":"Guardar",
+        "title-invoice": "Información de factura",
+        "to-define":"Por definir",
+        "payment-method":"Método de pago",
+        "transfer":"Transferencia",
+        "alerts": {
+            "order-updated": "Orden actualizada.",
+            "title-cancel-order": "Aviso",
+            "txt-cancel-order": "¿Estás seguro que deseas cancelar la orden?",
+            "title-order-placed": "¡Pedido hecho!",
+            "txt-order-placed": "Tu pedido ha sido creado con éxito, ahora podrás monitorearlo.",
+            "btn-order-placed": "Ver orden",
+            "title-user-verified": "Aviso",
+            "txt-user-verified": "Tus documentos no han sido verificados, tu orden se guardó en borradores. Favor de intentar hasta que recibas una confirmación de validación.",
+            "title-valid-invoice": "Datos incompletos",
+            "txt-valid-invoice": "Favor de completar los campos de tu factura.",
+            "verify-user-title": "Antes de completar la orden debemos verificar tu cuenta",
+            "verify-user-body": "Completa la documentación en la página de perfil", 
+            "error-orderid": "El ID de la Orden no es válido"
+        },
+        "insurance-modal": {
+            "title-insurance": "¿Seguro para tu carga?",
+            "txt-insurance": "Agrega el valor de la carga y agregalo a tu carro de compras",
+            "btn-accept": "Agregar seguro de carga",
+            "btn-deny": "Continuar sin seguro",
+            "title-cargo": "¿Y ahora que lo tienes?",
+            "btn-add": "Agrega",
+            "btn-quit": "Remover",
+            "txt-cargo": "¿Cuál es el valor de tu carga?",
+            "btn-cargo": "Agregar Seguro",
+            "txt-total": "El importe total del seguro es"
+        },
+        "agent-modal": {
+            "title-agent": "¿Quieres Agente y Cruce?",
+            "txt-agent": "¿Cómo te gustaría continuar?",
+            "btn-first": "Agregar todo por $",
+            "btn-second": "Agregar solo cruce $",
+            "btn-third": "Continuar sin ambos",
+            "txt-agent-prices": "(Precios en USD)"
+        },
+        "stepper-btns":{
+            "continue-to-invoice": "Continuar a la factura",
+            "continue-to-payment": "Continuar al pago",
+            "submit": "Crear Orden"
+        },
+        "skip": "Omitir",
+        "next": "Siguiente",
+        "label-total-price": "Total:",
+        "summary": "Resumen",
+        "invoice": "Factura",
+        "payment": "Pago"
+    },
+    "history": {
+        "title": "Historial de viajes",
+        "search": "Buscar por dirección...",
+        "no-comments":"Sin Comentarios",
+        "upcoming_detail_title":"Próximo",
+        "completed_detail_title":"Completado",
+        "past_detail_tile":"Pasado",
+        "btn-report": "Reporta un problema en la orden",
+        "to-define":"Por definir",
+        "tabs": {
+            "upcoming": "Próximas",
+            "completed": "Completadas",
+            "past": "Pasadas"
+        },
+        "btns": {
+            "prev":"ATRÁS",
+            "next":"SIGUIENTE"
+        },
+        "order-status":{
+            "order-created":"Orden Creada",
+            "order-accepted":"Orden Aceptada",
+            "pickup":"Recolección",
+            "dropoff":"Entrega",
+            "started-by":"Empezado Por",
+            "completed": "Completedo",
+            "estimated-pickup-time":"Hora Estimada de Recolección",
+            "estimated-dropoff-time":"Hora Estimada de Entrega",
+            "delivery-started":"Entrega Iniciada",
+            "delivery-completed":"Entrega Completada",
+            "order-completed":"Orden Completada"
+        },
+        "btn_start_driving": "Comenzar",
+        "history_detail": {
+            "reference": "Referencia",
+            "order": "Orden",
+            "pickup_info_tab": "Datos de recolección",
+            "dropoff_info_tab": "Datos de entrega",
+            "pickup": "Recolección",
+            "dropoff": "Entrega ",
+            "btn_track": "Rastrea",
+            "order_info_tab": "Documentación de la orden",
+            "photos": "Fotos",
+            "signature": "Firma",
+            "aditional_details": "Detalles Adicionales",
+            "insurance": "Seguro",
+            "unit": "Unidades",
+            "taxes": "Impuestos",
+            "customs": "Agente Aduanal",
+            "cruce": "Cruce",
+            "extra": "Costos Adicionales",
+            "hazardous_cargo":"Carga Peligrosa",
+            "general_cargo":"Carga General",
+            "truck":"Unidad",
+            "trailer":"Carga",
+            "subtotal":"Subtotal",
+            "total_price": "Precio Total"
+        },
+        "driver_assignment": {
+            "title": "Asignado a",
+            "search": "Buscar...",
+            "btn_confirm": "Confirmar"
+        },
+        "truck_assignment": {
+            "title": "Camión asignado",
+            "search": "Buscar...",
+            "btn_confirm": "Confirmar"
+        },
+        "overview": {
+            "title": "Assignado a",
+            "edit": "Editar",
+            "driver": "Conductor",
+            "vehicle": "Vehículo",
+            "btn_confirm": "Confirmar"
+        },
+        "tracking": {
+            "title": "Ubicación de la carga",
+            "distance": "Distancia",
+            "pickup": "Recolección",
+            "dropoff": "Entrega",
+            "time_pickup": "Hora estimada",
+            "time_dropoff": "Hora estimada",
+            "share_tracking_message1": "Para poder rastrear tu carga dale clic ",
+            "share_tracking_message2": " .",
+            "share_tracking_button": "aquí"
+        },
+        "external_tracking": {
+            "title": "Invitación de Tracking",
+            "txt_driver": "Nombre",
+            "txt_name": "Nombre completo",
+            "btn_send": "Enviar",
+            "toast_message": "Invitaciones enviadas correctamente"
+        },
+        "alerts": {
+            "driver_unavailable": {
+                "title": "Importante",
+                "message": "Estás seleccionando a un operador que está ocupado durante este tiempo. ¿Deseas continuar?"
+            },
+            "order_changed": {
+                "title": "Servicio modificado",
+                "message": "El servicio ha sido modificado"
+            }
+        },
+        "no-orders-yet":{
+            "upcoming":{
+                "title":"Aún no hay órdenes",
+                "body":"Aún no haz realizado ningún pedido. Cuando lo hagas, su estado aparecerá aquí."
+            },
+            "completed":{
+                "title":"No hay órdenes completadas",
+                "body":"Los pedidos completados aparecerán aquí."
+            },
+            "past":{
+                "title":"No hay órdenes pasadas",
+                "body":"Cuando los pedidos lleven cierto tiempo de haber sido completados, aparecerán aquí."
+            },
+            "call-to-action":"Crear Orden"
+        },
+        "status-badges" : {
+            "stand-by":"Pendiente",
+            "in-progress":"En curso",
+            "completed":"Completado"
+        }
+    },
+    "fiscal-documents": {
+        "cards-instructions":"Arrastra un archivo en cada tarjeta o haz clic en ellas para elegir un archivo.",
+        "txt-required-inputs":"Las cartas con un '*' son obligatorias",
+        "select-document":"Selecciona un item",
+        "txt-select-item-required":"Los items con un '*' son obligatorios",
+        "request-verification":"Solicitar verificación",
+        "drag-files":"Arrastra archivo aquí o",
+        "browse":"búscalo",
+        "view-file":"Ver archivo",
+        "remove-file":"Eliminar archivo",
+        "cancel":"Cancelar",
+        "delete-file-question":"Seguro que quieres eliminar el archivo",
+        "file":"",
+        "uploading":"Subiendo",
+        "seconds-left":"seconds left",
+        "txt1-delete-file1":"¿Estás seguro que quiere eliminar el archivo",
+        "txt1-delete-file2":"?",
+
+        "upload-files": {
+            "txt_fiscal_documents": "Documentos Fiscales",
+            "txt_browse": "Buscar archivos",
+            "btn_upload" : "Subir",
+            "txt_select": "Selecciona el documento",
+            "txt_certificate_inc": "Acta Constitutiva",
+            "txt_power": "Poder del Representante Legal",
+            "txt_note_power": "Poder notarial (en caso que nombre no aparezca en el acta)",
+            "txt_id": "Identificación Oficial con Foto",
+            "txt_note_id": "Identificación Oficial del Representante Legal",
+            "txt_address": "Comprobante de Domicilio",
+            "txt_note_address": "Hasta 3 meses de antigüedad",
+            "txt_tax": "Constancia de Situación Fiscal",
+            "txt_note_tax": "Constancia de Situación Fiscal, hasta 3 meses de antigüedad",
+            "txt_compliance": "Opinión de Cumplimiento de Obligaciones Fiscales",
+            "txt_note_compliance": "Opinión de Cumplimiento de Obligaciones Fiscales, hasta 3 meses de antigüedad",
+            "txt_sat_address": "Verificación Domicilio SAT",
+            "txt_note_sat_address": "En caso de no tener otro comprobante, proveer Verificación de Domicilio del SAT",
+            "txt_license": "Licencia de Manejo",
+            "txt_note_license": "Licencia de Manejo de cada Operador, en caso de flotillas grandes, solamente 3",
+            "txt_insurance": "Póliza de Seguro",
+            "txt_note_insurance": "Póliza de Seguro de unidades, en caso de flotillas grandes, solamente 3",
+            "txt_file_removed": "Documento Eliminado",
+            "txt_file_saved": "Documento Guardado",
+            "txt_max": "Máximo 5MB'",
+            "txt_cancel": "Cancelar",
+            "txt_all_files_uploaded":"Todos los archivos ya han sido subidos",
+            "txt_finish":"Finalizar",
+            "documentation":"Documentación"
+        },
+        "required-verification-modal":{
+            "title":"Se solicitó verificación de cuenta",
+            "body":"Tu cuenta estará verificada una vez hayamos checado los documentos subidos"
+        }
+    },
+    "profile": {
+        "account": {
+            "txt_orders": "Órdenes",
+            "txt_personal_details": "Datos Personales",
+            "btn_edit": "EDITAR",
+            "txt_fiscal_consistency": "Documentos Fiscales",
+            "txt_fiscal_documents": "Documentos Fiscales",
+            "txt_files": "documentos",
+            "txt_address": "Dirección",
+            "txt_company": "Compañía",
+            "txt_picture": "Foto de perfil actualizada",
+            "txt_info_address": "¿Dónde vives?",
+            "btn_picture": "Tomar foto",
+            "btn_gallery": "Galería",
+            "btn_cancel": "Cancelar",
+            "account":"Cuenta",
+            "upload-btn":"Subir",
+            "delete-btn":"Eliminar",
+            "take-pic":"Tomar foto",
+            "profile-pic-less-5mb":"La foto de perfil debe de pesar menos de 5mb",
+            "pic-not-uploaded":"La foto de perfil no ha sido actualizada",
+            "txt-delete-profile-pic":"¿Estás seguro que quieres eliminar tu foto de perfil?",
+            "txt-delete-profile-pic-title":"Eliminar foto de perfil",
+            "delete-profile-pic-btn":"Ok",
+            "cancel-deletion-btn":"Cancelar"
+        },
+        "edit": {
+            "txt_edit_profile": "Editar Perfil",
+            "txt_name": "Nombre completo",
+            "txt_phone": "Teléfono Móvil",
+            "txt_email": "Correo Electrónico",
+            "txt_company": "Companía",
+            "btn_save": "Guardar",
+            "txt_saved": "Tus cambios han sido guardados.",
+            "txt_address_not_found":"Dirección no encontrada..."
+        },
+        "upload-files": {
+            "txt_fiscal_documents": "Documentos Fiscales",
+            "txt_browse": "Buscar archivos",
+            "btn_upload" : "Subir",
+            "txt_select": "Selecciona el documento",
+            "txt_certificate_inc": "Acta Constitutiva",
+            "txt_power": "Poder del Representante Legal",
+            "txt_note_power": "Poder notarial (en caso que nombre no aparezca en el acta)",
+            "txt_id": "Identificación Oficial con Foto",
+            "txt_note_id": "Identificación Oficial del Representante Legal",
+            "txt_address": "Comprobante de Domicilio",
+            "txt_note_address": "Hasta 3 meses de antigüedad",
+            "txt_tax": "Constancia de Situación Fiscal",
+            "txt_note_tax": "Constancia de Situación Fiscal, hasta 3 meses de antigüedad",
+            "txt_compliance": "Opinión de Cumplimiento de Obligaciones Fiscales",
+            "txt_note_compliance": "Opinión de Cumplimiento de Obligaciones Fiscales, hasta 3 meses de antigüedad",
+            "txt_file_removed": "Documento Eliminado",
+            "txt_file_saved": "Documento Guardado",
+            "txt_max": "Máximo 5MB'",
+            "txt_cancel": "Cancelar",
+            "txt_all_files_uploaded":"Todos los archivos ya han sido subidos",
+            "txt_finish":"Finalizar"
+        },
+        "verification": {
+            "txt_enter": "Introduce",
+            "txt_code": "código de seguridad",
+            "txt_we_sent": "Por favor introduce el código de seguridad que te hemos enviado",
+            "txt_resend": "Puedes enviar",
+            "txt_after": "un nuevo código en",
+            "btn_resend": "Enviar código nuevo",
+            "txt_verify": "Verificar",
+            "txt_cancel": "Cancelar"
+        }
+    },
+    "header": {
+        "menu": {
+            "title": "Menú",
+            "shippers": "Cargadores",
+            "carriers": "Transportistas",
+            "about": "Nosotros",
+            "contact": "Contáctanos"
+        },
+        "btn-en": "EN",
+        "btn-es": "ES"
+    },
+    "location" : {
+        "label_pickup": "Recolección",
+        "label_dropoff": "Entrega",
+        "label_pin": "Fijar la ubicación en el mapa",
+        "btn-home": "Casa",
+        "btn-work": "Trabajo",
+        "placeholder": "Introduce destino",
+        "txt_invalidDriection": "Por favor se más específico en tu dirección.",
+        "location-not-enabled":"Localización no habilitada",
+        "txt-address-not-found": "No se encontró la dirección",
+        "btn-order": "Crear Orden"
+    },
+    "alerts": {
+        "contact": {
+            "success-email": "Gracias! Le daremos una respuesta en las próximas 48 horas",
+            "fields-required": "Todos los campos son requeridos"
+        }
+    },
+    "links": {
+        "terms": "terminos-condiciones",
+        "privacy": "aviso-privacidad"
+    },
+    "shippers": {
+        "customs-agent": {
+            "title": "Agente Aduanal",
+            "description": "Simplifica tus costos con nuestro agente aduanal de tarifa fija, y protege tu carga con seguro. Todo en el mismo lugar y con una sola factura.",
+            "contact": "Contáctanos"
+        },
+        "description": {
+            "title-first-line": "Un equipo comprometido,",
+            "title-second-line": "enfocado en lo digital.",
+            "description": "Tenemos el apoyo de una gran red de transportistas y operadores especializados en cruce fronterizo, certificados en CTPAT por el CBP, que pueden transportar tus bienes en México e ingresarlos a Estados Unidos. Nuestro equipo evalúa a cada miembro de nuestra red para garantizar que sus vehículos y procesos operan con los más altos estándares de calidad y seguridad para gestionar su carga."
+        },
+        "features": {
+            "title": "Be Everywhere",
+            "first-list": "Estar en todas partes/ en todo lugar/ en cualquier lugar, con nuestro sistema de seguimiento/localización en tiempo real, monitorea tu carga desde su salida hasta el destino final.",
+            "second-list": "Ahorra tiempo y mantén a tu equipo informado, al compartir información de cada servicio con tu red (operaciones, clientes, etc.) en todo momento.",
+            "third-list": "Recibe notificaciones en cada paso a través de nuestra aplicación y vía SMS.",
+            "fourth-list": "Reduce costos e ineficiencias relacionadas con disponibilidad de transporte, y planea tus operaciones de acuerdo a tus necesidades."
+        },
+        "title": "Cargadores",
+        "description-shippers": "Aumenta tus ingresos y reduce los kilómetros sin carga, encontrándola cerca de tu ubicación, sin necesidad de regatear."
+    },
+    "carries": {
+        "drivers-features": {
+            "title-first-line": "Encuentra",
+            "title-second-line": "nueva carga reduciendo los",
+            "title-third-line": "retornos vacíos.",
+            "description": "BeGo te conecta, a ti y a tu flota, con la carga más cercana disponible, sin necesidad de regatear. Nuestra tecnología encuentra la mejor carga para ti, basada en tu futura localización y disponibilidad. No tienes porqué viajar con espacio vacío."
+        },
+        "drivers-roles": {
+            "title": "Gestiona tu flota.",
+            "subtitle-driver": "Conductor",
+            "txt-driver": "Únete a una flota y recibe servicios basados en /de acuerdo a tu ubicación.",
+            "subtitle-driver-manager": "Conductor/Administrador",
+            "txt-driver-manager": "Opera servicios y aumenta la visibilidad de tu flota. Gestiona todos tus servicios en el mismo lugar.",
+            "subtitle-manager": "Administrador",
+            "txt-manager": "Asigna servicios de acuerdo a la ubicación o al flujo de trabajo. Monitorea a los operadores, servicios BOL y recibe pruebas de entregas en el mismo lugar."
+        },
+        "driver-screenshots": {
+            "title-phone-calls": "Sin llamadas",
+            "txt-phone-calls": "Recibe y acepta servicios, las 24 horas del día, sin llamadas telefónicas.",
+            "title-paperwork": "Sin Papeleo",
+            "txt-paperwork": "Monitorea y Recibe toda la información relevante en un solo lugar. Siempre accesible.",
+            "title-quickpay": "BeGo QuickPay",
+            "txt-quickpay": "Crea y comparte evidencias de entregas en tiempo real y obtén acelera pagos.",
+            "txt-mood": "Escoje tu estado de ánimo",
+            "title-assign": "Crea y Asigna",
+            "txt-assign": "Comparte la experiencia y tecnología con tus operadores y clientes existentes. Monitorea todas las operaciones/trabajos/servicios/ viajes/ desde una sola aplicación.",
+            "title-analytics": "Obtén Reportes de tus Estadísticas",
+            "txt-analytics": "Incrementa la visibilidad del desempeño de tu flota y optimiza los costos de operación.",
+            "title-services": "Servicios de BeGo",
+            "txt-services": "Recibe nuevas cargas y asignalas con un solo clic."
+        },
+        "title": "Transportistas",
+        "description": "Aumenta tus ingresos y reduce los kilómetros sin carga, encontrándola cerca de tu ubicación, sin necesidad de negociar el precio."
+    },
+    "about": {
+        "grid": {
+            "title": "Cambia el Status Quo, donde:",
+            "txt-top-first": "Los camiones recorren",
+            "txt-middle-first": "de las millas,",
+            "txt-bottom-first": "vacíos",
+            "txt-top-second": "Los transportistas pagan",
+            "txt-bottom-second": "más debido a ineficiencias",
+            "txt-bottom-third": "promedio para encontrar carga",
+            "txt-top-fourth": "Cubrimos mas de",
+            "txt-bottom-fourth": "rutas",
+            "txt-top-fifth": "Pago",
+            "txt-middle-fifth": "inmediato",
+            "txt-bottom-fifth": "de proveedores"
+        },
+        "investors": {
+            "title-first-line": "Confían",
+            "title-second-line": "en nosotros"
+        },
+        "who-are-we": {
+            "txt-contact": "CONTÁCTANOS",
+            "title": "Un equipo apasionado, vinculado a lo digital",
+            "first-description": "Nuestra visión es utilizar la tecnología para inspirar y mejorar la vida diaria de las personas dedicadas al comercio.",
+            "second-description": "Fundada en Silicon Valley, California. BeGo combina 15 años de experiencia con algoritmos de inteligencia artificial con el propósito de enlazar carga existente con conductores disponibles, de la manera más eficiente en el mercado actual."
+        }
+    },
+    "contact": {
+        "title-first-line": "Nos encantaría ",
+        "title-second-line": "saber más ",
+        "title-third-line": "acerca de ti",
+        "txt-location": "¿CÓMO LLEGAR?",
+        "btn-location": "Click aquí",
+        "label-full-name": "Nombre completo",
+        "label-phone": "Número de teléfono",
+        "label-email": "Correo electrónico",
+        "label-type-user": "Tipo de usuario",
+        "option-owner": "Socio - Conductor",
+        "option-driver": "Driver - Usuario",
+        "option-shipper": "Transportista - Buscando portador FTL",
+        "label-message": "Mensaje",
+        "btn-submit": "ENVIAR"
+    },
+    "footer": {
+        "header-first-line": "Nos Encantaría",
+        "header-second-line": "Saber Más Acerca De Tí",
+        "btn-join": "ÚNETE",
+        "terms": "Términos y Condiciones",
+        "privacy": "Política de Privacidad"
+    },
+    "draft": {
+        "title": "Borradores",
+        "title-delete": "Borrar",
+        "txt-delete": "¿Estás seguro? Esta acción es permanente.",
+        "btn-cancel": "Cancelar",
+        "txt-search": "Buscar",
+        "txt-filter": "Filtro",
+        "label_pickup": "Recolección",
+        "label_dropoff": "Entrega",
+        "btn-order": "Ir a Orden",
+        "no-drafts-title":"No hay borradores aún",
+        "no-drafts-txt":"Aún no has hecho ningún borrador por completo. Cuando lo hagas, su estado aparecerá aquí."
+
+    },
+    "menu":{
+        "home":"Inicio",
+        "drafts":"Borradores",
+        "history":"Historial",
+        "support":"Soporte",
+        "faq":"FAQs",
+        "terms-conditions":"T & C",
+        "log-out":"Salir"
+    },
+    "errors": {
+        "timeout": {
+            "title": "Error código: timeout",
+            "body": "Favor de continuar más tarde",
+            "ok": "ok"
+        }
+    }
+}

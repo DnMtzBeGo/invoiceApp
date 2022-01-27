@@ -1,0 +1,44 @@
+<div class="chat-message" [ngClass]="['chat-message__' + align]">
+  <img
+    [src]="msg?.avatar"
+    width="40"
+    height="40"
+    class="chat-message--avatar"
+    alt="Avatar"
+    [title]="msg?.nickname"
+  />
+
+  <ul>
+    <li
+      *ngFor="let message of msg?.messages; last as isLast"
+      [title]="message?.stampStr"
+    >
+      <a
+        *ngIf="message?.file"
+        [href]="message?.file"
+        download=""
+        target="_blank"
+      >
+        <img
+          *ngIf="(message?.mimetype ?? '').startsWith('image/')"
+          width="110"
+          height="110"
+          [src]="message?.file"
+          loading="lazy"
+          alt="File image"
+        />
+        <span *ngIf="!(message?.mimetype ?? '').startsWith('image/')">
+          <i class="icon icon-document"></i> {{ message?.file_name }}
+        </span>
+      </a>
+      {{ message.message }}
+      <div *ngIf="isLast" class="chat-message--footer">
+        <i
+          class="icon icon-check-seen"
+          [ngClass]="['chat-message__' + msg?.status]"
+        ></i>
+        <span class="chat-message--sublabel">{{ sublabel }}</span>
+      </div>
+    </li>
+  </ul>
+</div>

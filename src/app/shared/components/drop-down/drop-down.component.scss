@@ -1,0 +1,35 @@
+@import "../../../../styles.scss";
+
+.dropdown-container {
+  margin-top: 35px;
+  mat-expansion-panel {
+    background: #0B1117;
+    box-shadow: 0px 4px 4px #040B11, inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+    border-radius: 10px;
+
+    mat-panel-title {
+      color: white;
+    }
+
+    ::ng-deep .mat-expansion-indicator::after {
+      color: white !important;
+    }
+  }
+}
+
+.driver-check-container {
+  box-sizing: border-box;
+  height: 16px;
+  width: 16px;
+  border: 1px solid #979797;
+  border-radius: 50%;
+  margin-right: 10px;
+
+  i {
+    color: #FFBE00;
+  }
+}
+
+mat-panel-description {
+  flex-direction: column;
+}

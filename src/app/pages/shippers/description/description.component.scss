@@ -1,0 +1,71 @@
+@import '../../../../styles.scss';
+
+.who-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 200px;
+
+  .who-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-right: 0px;
+
+    p {
+      color: $lighter-color;
+      font-size: 60px;
+      font-weight: 900;
+      letter-spacing: 0;
+      line-height: 100%;
+      max-width: 80%;
+    }
+  }
+
+  .who-right {
+    flex: 1;
+    padding-top: 15%;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 34px;
+    text-align: justify;
+    padding-left: 0px;
+    font-family: Avenir Next;
+  }
+}
+
+// =============================================================================
+// Media Queries
+// =============================================================================
+
+.who-container {
+  @include desktop {
+    flex-direction: column;
+  }
+
+  .who-left {
+    @include desktop {
+      align-items: center;
+    }
+    p {
+      @include fluid('font-size', $mobile-xs, $desktop-hd, 30px, 60px);
+      @include desktop {
+        text-align: center;
+      }
+    }
+  }
+
+  .who-right {
+    @include fluid('font-size', $mobile-xs, $desktop-hd, 14px, 22px);
+    @include desktop {
+      padding-top: 1%;
+    }
+    @include mobile {
+      @include fluid('padding-left', $mobile-xs, $mobile, 40px, 180px);
+      @include fluid('padding-right', $mobile-xs, $mobile, 40px, 180px);
+    }
+
+    @include fluid('line-height', $mobile-xs, $desktop-hd, 30px, 34px);
+  }
+}

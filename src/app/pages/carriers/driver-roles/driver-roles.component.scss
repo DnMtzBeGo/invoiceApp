@@ -1,0 +1,76 @@
+@import '../../../../styles.scss';
+
+.description-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include fluid('margin-bottom', $mobile-xs, $desktop-fhd, 50px, 200px);
+
+  .description-header {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h1 {
+      font-family: Avenir;
+      font-size: 60px;
+      @include fluid('font-size', $mobile, $desktop-fhd, 34px, 60px);
+      font-weight: 900;
+      letter-spacing: 0;
+      line-height: 90px;
+      margin: 0;
+      margin-bottom: -10px;
+      @include fluid('margin-bottom', $mobile-xs, $desktop-fhd, -30px, -10px);
+      text-align: center;
+    }
+
+    img {
+      object-fit: contain;
+      max-height: 100%;
+      max-width: 80%;
+      margin: auto;
+    }
+  }
+
+  .description-body {
+    display: flex;
+    flex-direction: row;
+
+    @include mobile {
+      flex-direction: column;
+    }
+
+    > div {
+      flex: 1;
+      max-width: 400px;
+      background: #0e1318;
+      padding: 20px;
+      margin: 20px;
+      @include fluid('margin-top', $mobile-xs, $desktop-hd, 6px, 20px);
+      @include fluid('margin-bottom', $mobile-xs, $desktop-hd, 6px, 20px);
+      @include fluid('padding-top', $mobile-xs, $desktop-hd, 16px, 20px);
+      @include fluid('padding-bottom', $mobile-xs, $desktop-hd, 16px, 20px);
+
+      h2 {
+        color: $lighter-color;
+        font-family: Avenir;
+        font-size: 30px;
+        @include fluid('font-size', $mobile-xs, $desktop-hd, 25px, 30px);
+        font-weight: 900;
+        letter-spacing: 0;
+        line-height: 36px;
+        text-align: center;
+      }
+
+      p {
+        font-family: Avenir Next;
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: 24px;
+        text-align: center;
+      }
+    }
+  }
+}

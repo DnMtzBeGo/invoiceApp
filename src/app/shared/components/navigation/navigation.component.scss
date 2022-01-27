@@ -1,0 +1,61 @@
+.navigation {
+  background: transparent;
+  position: relative;
+  right: 0;
+  top: 0px;
+  z-index: 4;
+
+  .container-navigation {
+    padding: 44px 52px 28px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  button {
+    background: url(../../../../assets/images/navigation/menu.svg);
+    width: 40px;
+    height: 29px;
+    outline: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .avatar {
+    img {
+      display: block;
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+
+  #languages {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .language-tag {
+    font-size: 20px;
+    font-family: Avenir Next;
+    font-weight: 300;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &.active {
+      color: #ffbe00;
+    }
+  }
+}
+
+.transparent {
+  position: absolute;
+  width: 100&;
+}

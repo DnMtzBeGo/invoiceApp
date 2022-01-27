@@ -1,0 +1,170 @@
+@import "../../../../../styles.scss";
+
+.cargo-form-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1, h2 {
+    font-weight: 800;
+    font-size: 16px;
+    padding: 0;
+    color: $lighter-color;
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+    line-height: 21.86px;
+  }
+
+  h2 {
+  font-size: 14px;
+  font-weight: normal;
+  color: $light-color;
+  line-height: 19.12px;
+  }
+}
+
+.input-increment {
+  width: 126px;
+  height: 46px;
+  display: flex;
+  background: #E3E3E3;
+  box-shadow: inset 0px 2px 4px rgba(134, 134, 134, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.5);
+  border-radius: 50px;
+  color: #040B11;
+  font-size: 18px;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 30px 0 25px;
+
+  .icon {
+      padding: 14px;
+      cursor: pointer;
+  }
+
+  div {
+      background: #FFF;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      text-align: center;
+      line-height: 42px;
+  }
+}
+
+.cargo-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0 10px 0;
+
+  .mat-form-field  {
+      padding: 0 16px;
+      position: relative;
+      .mat-form-field-wrapper {
+          width: 160px;
+      }
+      .mat-form-field-infix {
+          border-bottom: 1px solid $light-color
+      }
+  }
+  
+  .item-cargo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+  }
+
+  input {
+      text-align: center;
+      font-family: Avenir;
+      font-weight: 900;
+  }
+
+  .mat-form-field-appearance-legacy .mat-form-field-underline {
+      background-color: $light-color;
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-ripple {
+      background-color: $yellow-color;
+  }
+
+  button {
+    background: #10161C;
+    box-shadow: inset 2px 2px 4px #191E23, inset -2px -2px 4px #090D11;
+    border-radius: 8px;
+    height: 35px;
+    width: 35px;
+    color: $yellow-color;
+    font-size: 1.75rem;
+    font-family: Avenir;
+    font-weight: 300;
+    padding: 3px 0;
+    outline: none;
+    border: none;
+    position: relative;
+    cursor: pointer;
+
+    &:disabled {
+        color: $light-color;
+    }
+    .icon {
+      &::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+      }
+    }
+  }
+
+  p {
+      font-size: 14px;
+      font-weight: 500;
+      color: $light-color;
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translate(-50%,0);
+  }
+}
+
+.mat-button {
+  width: 100%;
+  color: #040B11;
+  background: #FFBE00;
+  box-shadow: inset 4px 4px 4px #FFD354, inset -4px -4px 6px #D59E00;
+  border-radius: 0 0 8px 8px;
+}
+
+.mat-dialog-actions {
+  padding-bottom: 0;
+  min-height: 40px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.mat-dialog-content {
+  padding: 0;
+  overflow-x: hidden;
+  max-height: 496px;
+}
+
+.mat-dialog-title {
+  font-family: 'Avenir', Helvetica, sans-serif;
+  padding-top: 24px;
+}
+
+
+::ng-deep.mat-form-field-infix {
+  width: 159px
+}
+
+::ng-deep.mat-form-field-appearance-standard .mat-form-field-underline {
+  background-color: #494C50;
+}
+::ng-deep.mat-form-field-appearance-standard:not(.mat-form-field-disabled) .mat-form-field-flex:hover~.mat-form-field-underline .mat-form-field-ripple {
+  opacity: 0;
+}

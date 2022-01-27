@@ -1,0 +1,13 @@
+<bego-menu id="menu"></bego-menu>
+<section id="container">
+  <bego-navigation></bego-navigation>
+  <router-outlet></router-outlet>
+</section>
+
+<bego-alert
+  *ngIf="alert$ | async as alert"
+  [title]="alert.title"
+  [handlers]="alert.handlers"
+>
+  {{ alert.body }}
+</bego-alert>

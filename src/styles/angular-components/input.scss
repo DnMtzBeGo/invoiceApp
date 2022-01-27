@@ -1,0 +1,44 @@
+::ng-deep .inner-shadow{
+  min-width: 100%;
+
+  .mat-form-field-infix{
+    padding: 0px;
+    border-top: unset;
+  }
+
+  .mat-form-field-wrapper{
+    padding-bottom: 0px;
+  }
+
+  .mat-form-field-label-wrapper{
+    top: 0px;
+    padding-top: 0px;  
+  }
+
+  .mat-form-field-underline {
+    display: none;
+  }
+
+  input, textarea{
+    background: #0B1117;
+    box-shadow: 0px 3px 2px #131A21;
+    border-radius: 8px;
+    color: white;
+    padding: 5px 24px 5px 0px;
+    text-align: right;
+    font-size: 18px;
+    width: 100%;
+    box-sizing: border-box;
+    
+    border: none;
+    overflow: auto;
+    outline: none;
+    resize: none; /*remove the resize handle on the bottom right*/  
+  }
+
+  .mat-input-element:disabled{
+    color: #C1C7D0;
+  }
+
+}
+

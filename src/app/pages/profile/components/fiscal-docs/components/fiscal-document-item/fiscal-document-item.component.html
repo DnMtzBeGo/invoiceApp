@@ -1,0 +1,67 @@
+<div 
+  *ngIf="!fileInfo.uploadFileStatus?.documentIsBeingUploaded && fileInfo.fileIsSelected" 
+  class="list-file">
+    <div>
+      <img 
+        class="doc-icon" 
+        src="../../../../../assets/images/fiscal-documents/doc-icon.svg" 
+        alt="document icon">
+
+        <div>
+          <span *ngIf="!fileInfo.fileIsOptional">*</span>
+          {{ fileInfo.text | translate }}
+        </div>
+    </div>
+    <div class="list-file-actions">
+      <div>
+        {{ fileInfo.formattedSize }}
+      </div>
+      <div class="clickable" (click)="openFile()">
+        <div class="icon icon-eye-open"></div>
+      </div>
+      <div class="clickable" (click)="deleteAlertOpen = true">
+        <div class="icon icon-trash"></div>
+      </div>
+    </div>
+
+</div>
+
+<div *ngIf="fileInfo.uploadFileStatus?.documentIsBeingUploaded == true" class="list-file-updating">
+
+  <div class="body">
+    <div>
+      <div class="title">
+        {{ 'fiscal-documents.uploading' | translate}} - {{ fileInfo.text }}
+      </div>
+      <div class="subtitle">
+        {{ fileInfo.uploadFileStatus?.currentPercentage }}%
+        <span class="separator-bullet"></span> 
+        {{ fileInfo.uploadFileStatus?.missingSecs }} 
+        {{ 'fiscal-documents.seconds-left' | translate }}
+      </div>
+    </div>
+
+    <div 
+      class="cross-icon"
+      (click)="cancelRequest()">
+    </div>
+
+  </div>
+
+  <div class="bar">
+    <div class="proggress" [ngStyle]="{'width' : fileInfo.uploadFileStatus?.currentPercentage + '%'}"></div>
+  </div>
+</div>
+
+
+<bego-alert
+    *ngIf="deleteAlertOpen"
+    title="Remove File"
+    (close)="deleteAlertOpen = false"
+    [handlers]="deleteAlertHandlers">
+        {{ 'fiscal-documents.txt1-delete-file1' | translate }}
+        '{{ fileInfo.text | translate }}' 
+        {{ 'fiscal-documents.txt1-delete-file2' | translate }}
+</bego-alert>
+
+

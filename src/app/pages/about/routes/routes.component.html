@@ -1,0 +1,60 @@
+<div class="routes-container">
+  <div class="routes-list" data-aos="fade-right">
+    <h1>Routes</h1>
+    <p>
+      We cover the main routes between Mexico and Laredo TX, offering FTL (Full
+      Truck Load) of 48 and 53 ft.
+    </p>
+    <ul>
+      <li *ngFor="let route of routes; index as i" (click)="drawRoute(i)">
+        <div
+          class="routes-selector"
+          [ngClass]="{ 'route-rectangle-checked': route.checked }"
+        >
+          <div
+            class="route-checkmark"
+            [ngClass]="{ 'route-circle-checked': route.checked }"
+          ></div>
+        </div>
+        <span>{{ route.name }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="routes-map" data-aos="fade-left">
+    <ng-lottie
+      [options]="mapOptions"
+      (animationCreated)="mapCreated($event)"
+    ></ng-lottie>
+    <ng-lottie
+      *ngIf="this.routes[0].checked"
+      [options]="cdmxOptions"
+      (animationCreated)="mapCreated($event)"
+    ></ng-lottie>
+    <ng-lottie
+      *ngIf="this.routes[1].checked"
+      [options]="guadalajaraOptions"
+      (animationCreated)="mapCreated($event)"
+    ></ng-lottie>
+    <ng-lottie
+      *ngIf="this.routes[2].checked"
+      [options]="monterreyOptions"
+      (animationCreated)="mapCreated($event)"
+    ></ng-lottie>
+    <ng-lottie
+      *ngIf="this.routes[3].checked"
+      [options]="queretaroOptions"
+      (animationCreated)="mapCreated($event)"
+    ></ng-lottie>
+    <ng-lottie
+      *ngIf="this.routes[4].checked"
+      [options]="pueblaOptions"
+      (animationCreated)="mapCreated($event)"
+    ></ng-lottie>
+    <ng-lottie
+      *ngIf="this.routes[5].checked"
+      [options]="tolucaOptions"
+      (animationCreated)="mapCreated($event)"
+    ></ng-lottie>
+  </div>
+</div>

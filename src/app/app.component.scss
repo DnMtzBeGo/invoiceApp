@@ -1,0 +1,31 @@
+@import '../styles.scss';
+
+#container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin-left: $bego-menu-width; 
+    transition: margin-left .5s;
+
+    router-outlet {
+      display: none;
+
+    }
+    
+    > ::ng-deep app-tracking {
+      height: 100px !important;
+    }
+    > ::ng-deep app-contact-support.ng-star-inserted {
+      flex: 1;
+    }
+    
+ }
+
+ app-tracking {
+  height: 100px !important;
+}
+
+
+#container.open {
+   margin-left: $bego-menu-width-open;
+}

@@ -1,0 +1,26 @@
+<div class="stepper">
+
+  <div class="progress-bar">
+    <div class="progress-wrapper">
+      <div class="progress"  [style.min-width] = "progress + '%'" ></div>
+      <div class="gradient"></div>
+    </div>
+  </div>
+
+    <div class="steps">
+      <div 
+        *ngFor="let step of steps; index  as i" 
+        class="step-wrapper "
+        [ngClass]="stepWithPadding ? 'with-padding' : '' ">
+          <div 
+            (click)="selectedSlideChange.emit(i)" 
+            [class]="'step ' +  stepActiveClass(step,i)"
+            [ngClass]=" { 'validated' : step.validated, 'label-is-text' : step.text.length > 1 }"
+            >
+              {{ step.text }}
+          </div>
+      </div>
+
+    </div>
+
+  </div>

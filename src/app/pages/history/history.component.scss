@@ -1,0 +1,10 @@
+.history-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &.no-orders{
+    //makes container be full-width
+    display: block;
+  }
+}

@@ -1,0 +1,62 @@
+<div class="alert-backdrop">
+</div>
+<div class="alert-wrapper">
+    <div class="alert-header">
+        <h2>
+            {{ 'profile.verification.txt_enter' | translate }}
+            {{ 'profile.verification.txt_code' | translate }}
+        </h2>
+    </div>
+    <div class="alert-message">
+      <ng-content></ng-content>
+    </div>
+   
+    <div class="phone-send" (click)="editValueToVerify.emit()">
+      <p >
+        {{ valueToVerify}}
+      </p>
+      <img src="/assets/images/edit.svg" alt="">
+    </div>
+ 
+    <div class="input-verification-code">
+      <input #firstStep type="text" id="firstStep" maxlength="1" step="1" [(ngModel)]="step1" (keyup)="changeInput($event)"> -
+      <input #secondStep type="text" id="secondStep" maxlength="1" step="2" [(ngModel)]="step2" (keyup)="changeInput($event)"> -
+      <input #thirdStep type="text" id="thirdStep" maxlength="1" step="3" [(ngModel)]="step3" (keyup)="changeInput($event)"> -
+      <input #fourthStep type="text" id="fourthStep" maxlength="1" step="4" [(ngModel)]="step4" (keyup)="changeInput($event)">
+    </div>
+
+    <div *ngIf="haveTime" class="resend-code-row">
+      <!-- <img src="../../../../assets/images/reload.svg" alt=""> -->
+      
+      <div class="timer-container">
+        00:{{secondsTimer < 10 ? '0' : ''}}{{secondsTimer}}
+      </div>
+
+      <div class="text-timer-container">
+        <p>
+          {{ 'profile.verification.txt_resend' | translate}}
+          {{ 'profile.verification.txt_after' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="!haveTime" class="resend-active-code-row" (click)="sendCode()">
+      <img src="../../../../assets/images/reload-yellow.svg" alt="">
+      <p>
+        {{ 'profile.verification.txt_resend' | translate}}
+      </p>
+    </div>
+
+    <div class="error-msg">
+      {{ errorMsg }}
+    </div>
+
+    <div class="alert-button-group">
+        <button (click)="submitCode()">
+          {{ 'profile.verification.txt_verify' | translate }}
+        </button>
+        <button (click)="onCancel.emit()">
+          {{ 'profile.verification.txt_cancel' | translate }}
+        </button>
+    </div>
+</div>

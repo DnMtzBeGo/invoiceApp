@@ -1,0 +1,352 @@
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CfdiService } from 'src/app/services/cfdi.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { ProfileInfoService } from '../../services/profile-info.service';
+import { TranslateService } from '@ngx-translate/core';
+import { BegoAlertHandler } from 'src/app/shared/components/bego-alert/BegoAlertHandlerInterface';
+@Component({
+  selector: 'app-personal-info',
+  templateUrl: './personal-info.component.html',
+  styleUrls: ['./personal-info.component.scss']
+})
+export class PersonalInfoComponent implements OnInit {
+
+  CFDIs: any;
+
+  personalInfo: any;
+
+  showPhoneVerificationModal: boolean = false;
+  showEmailVerificationModal: boolean = false;
+  mailErrorMsg: string = '';
+  phoneErrorMsg: string = ''
+  phoneInvalid: boolean = false;
+  originalPhoneValues: any = {};
+
+  showGeneralAlert: boolean = false;
+  alertMsg: string = '';
+  generalAlertHandler: BegoAlertHandler[] = [
+      {
+        text: 'Ok',
+        action: () => {
+          this.showGeneralAlert = false;
+          this.alertMsg = '';
+        },
+        color: '#ffbe00'
+      }
+  ]
+
+  constructor(
+    private formBuilder: FormBuilder,
+    public profileInfoService: ProfileInfoService,
+    public cfdiService: CfdiService,
+    public webService: AuthService,
+    private translateService: TranslateService,
+  ) { 
+    
+    this.getCFDIvalues();
+    this.translateService.onLangChange.subscribe(() => {
+      this.getCFDIvalues();
+    });
+  }
+
+
+  personalInfoForm: FormGroup = this.formBuilder.group({
+    fullname: ['', Validators.required],
+    email: ['', { validators: [Validators.required, this.mailValidator], updateOn: 'blur' }],
+    phoneFlag: ['', Validators.required],
+    phoneCode: ['', Validators.required],
+    phoneNumber: ['', { validators: [Validators.required], updateOn: 'blur' }],
+    companyName: ['', Validators.required],
+    RFC: ['', Validators.required],
+    CFDI: ['', Validators.required],
+    address: ['', Validators.required],
+  });
+
+  ngOnInit(): void {
+
+
+
+   this.profileInfoService.data.subscribe( (data: any) => {
+    this.personalInfo = data;
+    if(Object.keys(data).length){
+      let phoneNumber = data.raw_telephone.split(' ')
+      const dialCode = phoneNumber.shift();
+      phoneNumber = phoneNumber.join(' ');
+  
+      this.personalInfoForm.patchValue({
+        fullname: data?.nickname,
+        email: data?.email,
+        phoneFlag: data.country_code ,
+        phoneCode: dialCode,
+        phoneNumber: phoneNumber,
+        companyName: data?.attributes?.companyName,
+        RFC: data?.attributes?.RFC,
+        CFDI: data?.attributes?.CFDI,
+        address: data?.attributes?.address || '',
+      });
+
+      this.originalPhoneValues = {
+        phoneFlag: data.country_code ,
+        phoneCode: dialCode,
+        phoneNumber: phoneNumber,
+      }
+  
+    }
+    
+  });
+  }
+
+  getCFDIvalues(){
+
+    const lang = localStorage.getItem('lang');
+    if(lang == 'es'){
+      this.cfdiService.getCFDI_es().subscribe( ( result ) => {
+        this.CFDIs = result;
+      })
+    }else{
+      this.cfdiService.getCFDI_en().subscribe( ( result ) => {
+        this.CFDIs = result;
+      })
+    }
+
+  }
+
+  mailValidator(c: AbstractControl)  {
+   
+    const mail = c.value;
+
+    const re: RegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const mailInvalid =  !re.test(String(mail).toLowerCase());
+    if(mailInvalid)
+      return { mailInvalid  };
+    return null;
+
+  }
+
+  /////////////////////////////////
+  ////// mail logic //////////////
+  /////////////////////////////////
+ async updateEmail(){
+
+    const { errors: emailErrors} = this.personalInfoForm.controls.email
+    const mailInvalid = emailErrors && emailErrors.mailInvalid;
+
+
+    const mailToValidate = this.personalInfoForm.value.email;
+    if(this.personalInfo.email !== mailToValidate  && !mailInvalid){
+      const bodyRequest = {
+        telephone_mail: mailToValidate,
+        type: 'update_profile'
+      };
+      (await this.webService.apiRest(JSON.stringify(bodyRequest),'shippers/send_code')).subscribe(
+        (res) => {
+          this.showEmailVerificationModal = true;
+
+        },
+        ( err ) => {
+          const error = err.error.error[localStorage.getItem('lang') || 'en']
+          this.showErrorMsg(error);
+        }
+      )
+
+    }
+  }
+
+   async verifyEmail(validationCode: string){
+
+    const newMail = this.personalInfoForm.value.email;
+    const currentMail = this.personalInfo.email;
+    const bodyRequest = {
+      telephone_mail: newMail,
+      code: validationCode
+    };
+
+    (await this.webService.apiRest(
+      JSON.stringify(bodyRequest),'shippers/validate_code')
+    ).subscribe(
+      async ( res ) => {
+
+        //If code is valid, then update email
+
+        const updateEmailBody = {
+          newTelephoneMail: newMail,
+          telephone_mail: currentMail
+        };
+        (await this.webService.apiRest(JSON.stringify(updateEmailBody),'shippers/change_telephone_mail')).subscribe(
+          (res : any)=>{
+            this.profileInfoService.getProfileInfo();
+            this.showEmailVerificationModal = false;
+            this.mailErrorMsg = '';
+
+          }
+        )
+
+      },
+      ( error ) => {
+        const lang = localStorage.getItem('lang') || 'en';
+        this.mailErrorMsg = error.error.error[lang];
+      }
+    );
+  }
+
+  cancelEmailVerification(){
+    this.personalInfoForm.patchValue({
+      email : this.personalInfo.email
+    });
+    this.mailErrorMsg = '';
+    this.showEmailVerificationModal = false;
+  }
+
+
+  /////////////////////////////////
+  ////// Phone logic //////////////
+  /////////////////////////////////
+  async updatePhone( newPhoneValues: any ){
+
+
+
+    this.personalInfoForm.patchValue(newPhoneValues);
+
+    const { 
+        phoneFlag: currentFlag, 
+        phoneCode: currentCode,
+        phoneNumber: currentNumber 
+    } = this.personalInfoForm.value;
+
+    const { 
+      phoneFlag: originalFlag, 
+      phoneCode: originalCode,
+      phoneNumber: originalNumber 
+  } = this.originalPhoneValues;   
+  
+  if(
+      (currentFlag != originalFlag || currentCode  != originalCode || currentNumber != originalNumber)  
+      && !this.phoneInvalid){
+      const bodyRequest = {
+        telephone_mail: `${currentCode}${currentNumber}`,
+        type: 'update_profile'
+      };
+      (await this.webService.apiRest(JSON.stringify(bodyRequest),'shippers/send_code')).subscribe(
+        (res) => {
+          this.showPhoneVerificationModal = true;
+
+        },
+        ( err ) => {
+          const error = err.error.error[localStorage.getItem('lang') || 'en']
+          this.showErrorMsg(error);
+        }
+      )
+
+    }
+  }
+
+
+  showErrorMsg(msg: string):void{
+    this.alertMsg = msg;
+    this.showGeneralAlert = true;
+    this.profileInfoService.getProfileInfo();
+  }
+
+
+  async verifyPhone(validationCode : string){
+
+    const { phoneCode, phoneFlag, phoneNumber } =  this.personalInfoForm.value ;
+    const currentPhone = `${this.originalPhoneValues.phoneCode}${this.originalPhoneValues.phoneNumber}`;
+    const newPhone = `${phoneCode} ${phoneNumber}`;
+
+    const bodyRequest = {
+      country_code: phoneFlag,
+      telephone_mail: newPhone,
+      code: validationCode
+    };
+
+    (await this.webService.apiRest(
+      JSON.stringify(bodyRequest),'shippers/validate_code')
+    ).subscribe(
+      async ( res ) => {
+
+        //If code is valid, then update phone
+
+        const updateEmailBody = {
+          country_code: phoneFlag,
+          newTelephoneMail: newPhone,
+          telephone_mail: currentPhone
+        };
+        (await this.webService.apiRest(JSON.stringify(updateEmailBody),'shippers/change_telephone_mail')).subscribe(
+          (res : any)=>{
+            this.profileInfoService.getProfileInfo();
+            this.showPhoneVerificationModal = false;
+            this.phoneErrorMsg = '';
+
+          }
+        )
+
+      },
+      ( error ) => {
+        const lang = localStorage.getItem('lang') || 'en';
+        this.phoneErrorMsg = error.error.error[lang];
+      }
+    );
+  }
+
+  cancelPhoneVerification(){
+
+    this.personalInfoForm.patchValue({
+      phoneFlag: this.originalPhoneValues.phoneFlag ,
+      phoneCode: this.originalPhoneValues.phoneCode,
+      phoneNumber: this.originalPhoneValues.phoneNumber,
+    });
+
+    this.phoneErrorMsg = '';
+    this.showPhoneVerificationModal = false;
+  }
+
+
+
+  async updateAttribute( formControlName: string ){
+    const bodyRequest: any  = {};
+    bodyRequest[formControlName]= this.personalInfoForm.value[formControlName];
+    
+    (await this.webService.apiRest(
+      JSON.stringify({attributes: bodyRequest }),
+      'shippers/insert_attributes')
+    ).subscribe(
+      ( res )=>{
+      },
+      ( err ) => {
+
+      }
+    );
+  }
+
+  /**
+   * Indicates db to update nickname in db given the current value 
+   * in the formgroup for fullname
+   */
+  async changeNickname(){
+
+    const newNickname = this.personalInfoForm.value.fullname;
+
+    const requestBody = {
+      nickname: newNickname
+    };
+
+    (await this.webService.apiRest(JSON.stringify(requestBody),'shippers/change_nickname')).subscribe(
+      ( res )=>{
+      },
+      ( err ) => {
+
+      }
+    )
+  }
+
+  updateAddress( newAddress : string){
+    this.personalInfoForm.patchValue({ 
+      address: newAddress
+    });
+    this.updateAttribute('address');
+  }
+
+
+}

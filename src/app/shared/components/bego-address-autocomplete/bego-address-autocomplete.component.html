@@ -1,0 +1,31 @@
+<form action="" [formGroup]="autocompleteForm" class="bego-direction-wrapper" >
+  <mat-form-field class="bego-address-autocomplete" >
+    <mat-label>
+      {{ 'profile.account.txt_address' | translate }}
+    </mat-label>
+    <input 
+      type="text"
+      matInput
+      #input
+      spellcheck="false"
+      value="queso"
+      [formControl]="myControl"
+      (keyup)="searchGoogleDirections($event)"
+      [matAutocomplete]="auto">
+    <mat-autocomplete 
+      #auto="matAutocomplete" 
+      (optionSelected)="selectOption($event)"
+      (closed)="closeAutocomplete()">
+        <mat-option 
+          *ngFor="let prediction of predictions "
+          [value]="prediction.description">
+            {{ prediction.description }}
+        </mat-option>
+
+        <mat-option *ngIf="!predictions" [disabled]="true">
+          {{ 'profile.edit.txt_address_not_found' | translate }}
+        </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+

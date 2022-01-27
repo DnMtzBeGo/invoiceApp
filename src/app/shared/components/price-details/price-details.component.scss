@@ -1,0 +1,65 @@
+.price-details-container {
+  margin-top: 35px;
+  .units-row,
+  .insurance-row,
+  .cruce-row,
+  .customs-row,
+  .subtotal-row,
+  .taxes-row,
+  .total-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .price-title {
+    font-family: 'Avenir';
+    font-style: normal;
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: 0.5px;
+    color: #FFFFFF;
+    margin-bottom: 24px;
+  }
+
+  .total-row {
+    color: #ffbe00;
+  }
+
+  .price-details-row,
+  .price-total-row {
+    padding: 0 56px 0 49px;
+  }
+
+  .price-details-row {
+    padding-bottom: 10px;
+  }
+
+  .price-total-row, .extra-section:not(:empty){
+    padding-top: 27px;
+    padding-bottom: 25px;
+    border-top: 1px solid #1C232A;
+  }
+
+  .extra-section:not(:empty){
+    padding-right: 56px;
+    padding-left: 49px;
+  }
+
+
+  .units-row,
+  .insurance-row,
+  .cruce-row,
+  .customs-row,
+  .subtotal-row,
+  .taxes-row {
+    font-family: 'Avenir-Light';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 108%;
+    color: #FFFFFF;
+    margin-bottom: 15px;
+  }
+}

@@ -1,0 +1,21 @@
+<div class="customs-agent-container">
+  <div class="customs-agent-header">
+    <div class="customs-agent-pic">
+      <img src="/assets/images/shippers/shippers.jpg" />
+      <div class="customs-agent-title" data-aos="fade-up">
+        <h1>{{ 'shippers.title' | translate }}</h1>
+        <p>{{ 'shippers.description-shippers' | translate }}</p>
+      </div>
+    </div>
+  </div>
+  <app-description></app-description>
+  <app-features></app-features>
+  <app-customs-agent></app-customs-agent>
+  <ng-lottie
+    [ngClass]="{ 'fade-in': lottieLoaded }"
+    [options]="mapOptions"
+    (animationCreated)="mapCreated($event)"
+  ></ng-lottie>
+</div>
+
+<app-footer [animationOffset]="120"></app-footer>

@@ -1,0 +1,342 @@
+{"statusList" : {
+  "es": {
+    "-3": {
+      "general": {
+        "text": "Orden Pendiente",
+        "class": "grey-dot-bg"
+      },
+      "pickup": {
+        "text": "Orden Creada",
+        "class": "grey-dot-bg"
+      },
+      "dropoff": {
+        "text": "En espera",
+        "class": "grey-dot-bg"
+      }
+    },
+    "0": {
+      "general": {
+        "text": "Orden Creada",
+        "class": "grey-dot-bg"
+      },
+      "pickup": {
+        "text": "Orden Creada",
+        "shortText":"Creada",
+        "class": "grey-dot-bg"
+      },
+      "dropoff": {
+        "text": "En espera",
+        "shortText": "En espera",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "1": {
+      "general": {
+        "text": "Orden Aceptada",
+        "class": "grey-dot-bg"
+      },
+      "pickup": {
+        "text": "Orden Aceptada",
+        "shortText": "Aceptada",
+        "class": "grey-dot-bg"
+      },
+      "dropoff": {
+        "text": "En espera",
+        "shortText": "En espera",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "2": {
+      "general": {
+        "text": "Recolección Iniciada",
+        "class": "blue-dot-bg"
+      },
+      "pickup": {
+        "text": "Recolección Iniciada",
+        "shortText": "Iniciada",
+        "class": "blue-dot-bg"
+      },
+      "dropoff": {
+        "text": "En espera",
+        "shortText": "En espera",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "2.5": {
+      "general": {
+        "text": "Recolección Iniciada",
+        "class": "blue-dot-bg"
+      },
+      "pickup": {
+        "text": "Recolección Iniciada",
+        "shortText": "Iniciada",
+        "class": "blue-dot-bg"
+      },
+      "dropoff": {
+        "text": "En espera",
+        "shortText": "En espera",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "3": {
+      "general": {
+        "text": "Recolección completada",
+        "class": "yellow-dot-bg"
+      },
+      "pickup": {
+        "text": "Recolección completada",
+        "shortText": "Completada",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "En espera",
+        "shortText": "En espera",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "4": {
+      "general": {
+        "text": "Entrega iniciada",
+        "class": "blue-dot-bg"
+      },
+      "pickup": {
+        "text": "Recolección completada",
+        "shortText": "Completada",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "Entrega iniciada",
+        "shortText": "Iniciada",
+        "class": "blue-dot-bg"
+      }
+    },
+    
+    "4.5": {
+      "general": {
+        "text": "Entrega iniciada",
+        "class": "blue-dot-bg"
+      },
+      "pickup": {
+        "text": "Recolección completada",
+        "shortTtext": "Completada",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "Entrega iniciada",
+        "shortText": "Iniciada",
+        "class": "blue-dot-bg"
+      }
+    },
+    
+    "5": {
+      "general": {
+        "text": "Entrega completada",
+        "class": "yellow-dot-bg"
+      },
+      "pickup": {
+        "text": "Recolección completada",
+        "shortText": "Completada",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "Entrega completada",
+        "shortText": "Completada",
+        "class": "yellow-dot-bg"
+      }
+    },
+    
+    "6": {
+      "general": {
+        "text": "Orden Completada",
+        "class": "yellow-dot-bg"
+      },
+      "pickup": {
+        "text": "Recolección completada",
+        "shortText": "Completada",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "Orden Completada",
+        "shortText": "Completada",
+        "class": "yellow-dot-bg"
+      }
+    },
+    "breakpoint": 3
+  },
+  "en": {
+    
+    "-3": {
+      "general": {
+        "text": "Order Pending",
+        "class": "grey-dot-bg"
+      },
+      "pickup": {
+        "text": "Order pending",
+        "class": "grey-dot-bg"
+      },
+      "dropoff": {
+        "text": "Stand by",
+        "class": "grey-dot-bg"
+      }
+    },
+    "0": {
+      "general": {
+        "text": "Order Created",
+        "class": "grey-dot-bg"
+      },
+      "pickup": {
+        "text": "Order Created",
+        "shortText": "Created",
+        "class": "grey-dot-bg"
+      },
+      "dropoff": {
+        "text": "Stand by",
+        "shortText": "Stand by",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "1": {
+      "general": {
+        "text": "Order Accepted",
+        "class": "grey-dot-bg"
+      },
+      "pickup": {
+        "text": "Order Accepted",
+        "shortText": "Accepted",
+        "class": "grey-dot-bg"
+      },
+      "dropoff": {
+        "text": "Stand by",
+        "shortText": "Stand by",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "2": {
+      "general": {
+        "text": "Pickup Started",
+        "class": "blue-dot-bg"
+      },
+      "pickup": {
+        "text": "Pickup Started",
+        "shortText": "Started",
+        "class": "blue-dot-bg"
+      },
+      "dropoff": {
+        "text": "Stand by",
+        "shortText": "Stand by",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "2.5": {
+      "general": {
+        "text": "Pickup Started",
+        "class": "blue-dot-bg"
+      },
+      "pickup": {
+        "text": "Pickup Started",
+        "shortText": "Started",
+        "class": "blue-dot-bg"
+      },
+      "dropoff": {
+        "text": "Stand by",
+        "shortText": "Stand by",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "3": {
+      "general": {
+        "text": "Pickup Completed",
+        "class": "yellow-dot-bg"
+      },
+      "pickup": {
+        "text": "Pickup Completed",
+        "shortText": "Completed",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "Stand by",
+        "shortText": "Stand by",
+        "class": "grey-dot-bg"
+      }
+    },
+    
+    "4": {
+      "general": {
+        "text": "Delivery Started",
+        "class": "blue-dot-bg"
+      },
+      "pickup": {
+        "text": "Pickup Completed",
+        "shortText": "Completed",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "Delivery Started",
+        "shortText": "Started",
+        "class": "blue-dot-bg"
+      }
+    },
+    
+    "4.5": {
+      "general": {
+        "text": "Delivery Started",
+        "class": "blue-dot-bg"
+      },
+      "pickup": {
+        "text": "Pickup Completed",
+        "shortText": "Completed",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "Delivery Started",
+        "shortText": "Started",
+        "class": "blue-dot-bg"
+      }
+    },
+    
+    "5": {
+      "general": {
+        "text": "Delivery Completed",
+        "class": "yellow-dot-bg"
+      },
+      "pickup": {
+        "text": "Pickup Completed",
+        "shortText": "Completed",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "Delivery Completed",
+        "shortText": "Completed",
+        "class": "yellow-dot-bg"
+      }
+    },
+    
+    "6": {
+      "general": {
+        "text": "Order Completed",
+        "class": "yellow-dot-bg"
+      },
+      "pickup": {
+        "text": "Pickup Completed",
+        "shortText": "Completed",
+        "class": "yellow-dot-bg"
+      },
+      "dropoff": {
+        "text": "Order Completed",
+        "shortText": "Completed",
+        "class": "yellow-dot-bg"
+      }
+    },
+    "breakpoint": 3
+  },
+  "breakpoint": 3
+}}

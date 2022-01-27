@@ -1,0 +1,67 @@
+<div class="footer-container">
+  <div class="footer-top">
+    <div class="footer-message">
+      <h1 data-aos="flip-down" [attr.data-aos-offset]="animationOffset">
+        {{ 'footer.header-first-line' | translate }} <br />{{
+          'footer.header-second-line' | translate
+        }}
+      </h1>
+    </div>
+    <div
+      data-aos="flip-up"
+      [attr.data-aos-offset]="animationOffset"
+      class="contact-button"
+      routerLink="/contact"
+    >
+      <button>{{ 'footer.btn-join' | translate }}</button>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-strip" data-aos="fade">
+      <div>
+        <div class="footer-logo" routerLink="/home">
+          <img src="../assets/images/yellow-logo.svg" />
+          <div class="bego-text-container" routerLink="/home">
+            <div class="bego-text">
+              <div>B</div>
+              <div>E</div>
+              <div>G</div>
+              <div>O</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-networks">
+          <div>
+            <a href="https://www.facebook.com/begoapp/" target="_blank"
+              ><img src="assets/images/navigation/facebook.svg"
+            /></a>
+          </div>
+          <div>
+            <a href="https://www.instagram.com/begomx/?hl=en" target="_blank"
+              ><img src="assets/images/navigation/instagram.svg"
+            /></a>
+          </div>
+          <div>
+            <a
+              href="https://mx.linkedin.com/in/bego-mx-39562519a"
+              target="_blank"
+              ><img src="assets/images/navigation/linkedin.svg"
+            /></a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <a [href]="website_url + ('links.terms' | translate)" target="_blank">{{
+          'footer.terms' | translate
+        }}</a>
+        <a
+          [href]="website_url + ('links.privacy' | translate)"
+          target="_blank"
+          >{{ 'footer.privacy' | translate }}</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

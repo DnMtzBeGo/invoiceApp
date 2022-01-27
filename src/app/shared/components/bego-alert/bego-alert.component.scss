@@ -1,0 +1,91 @@
+:host {
+    min-width: 250px;
+    width: auto;
+    min-height: auto;
+    height: auto;
+    max-height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    position: fixed;
+    top: 0px; bottom: 0px; right: 0px; left: 0px;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    contain: strict;
+    touch-action: none;
+    user-select: none;
+    z-index: 20001;
+  }
+  .alert-backdrop {
+    min-width: 250px;
+    width: auto;
+    min-height: auto;
+    height: auto;
+    max-height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    contain: strict;
+    touch-action: none;
+    user-select: none;
+    background: #000000;
+    opacity: 0.7;
+    z-index: 2;
+  }
+
+  .alert-wrapper {
+    display: flex;
+    flex-direction: column;
+    contain: content;
+    background: #0B1117;
+    box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+    border-radius: 8px;    
+    z-index: 2;
+    min-width: 200px;
+    max-width: 375px;
+    text-transform: none;
+
+    .alert-header {
+        display: flex;
+        justify-content: center;
+        margin: 0 0 20px;
+        h2 {
+            margin: 0;
+        }
+    }
+
+    .body{
+      font-family: 'Avenir';
+      padding: 20px ;
+      text-align: center;
+      font-weight: 100;
+    }
+
+
+
+
+
+  }
+  .alert-button-group {
+    .btn{
+      color: white;
+      font: 'Avenir';
+      border-top: 1px solid #1C232A;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      
+      &:hover{
+       background-color: rgba(0,0,0,0.1);
+      }
+    }
+  }

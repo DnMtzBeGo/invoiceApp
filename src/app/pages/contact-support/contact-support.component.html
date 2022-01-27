@@ -1,0 +1,108 @@
+<div id="chat" (dragover)="dragover($event)" (drop)="drop($event)">
+  <div id="chat--messages">
+    <div id="wrapper" #chatWrapper>
+      <bego-chat-message
+        *ngFor="let msg of messages$ | async"
+        [msg]="msg"
+        [align]="
+          msg?.type === 'shippers' || msg?.type === 'carriers'
+            ? 'right'
+            : 'left'
+        "
+        [sublabel]="moment(msg.stamp).fromNow()"
+      >
+      </bego-chat-message>
+    </div>
+  </div>
+
+  <div id="chat--footer">
+    <mat-form-field appearance="outline" class="bego-textarea-1">
+      <textarea
+        autofocus
+        matInput
+        [(ngModel)]="message"
+        [placeholder]="'contact-support.Type a message..' | translate"
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="3"
+        [disabled]="(sendMessageLoading$ | async) === true"
+        (keydown.enter)="sendMessage($event)"
+        (keydown.control.enter)="addLn()"
+      >
+      </textarea>
+      <!-- <button matPrefix>
+        <i class="icon icon-happiness"></i>
+      </button> -->
+
+      <div
+        *ngIf="attachment"
+        matPrefix
+        matBadge="x"
+        matBadgeOverlap="true"
+        matBadgePosition="before"
+        matBadgeColor="warn"
+        matBadgeSize="small"
+        [matTooltip]="attachment?.name ?? ''"
+        (click)="attachmentDelete($event)"
+      >
+        <img
+          *ngIf="attachmentPreview"
+          class="preview"
+          [src]="attachmentPreview"
+          width="24"
+          height="24"
+          alt="Attachment"
+        />
+        <i *ngIf="!attachmentPreview" class="icon icon-document"></i>
+      </div>
+      <button matSuffix (click)="attachmentInput.click()">
+        <i class="icon icon-attachment"></i>
+      </button>
+    </mat-form-field>
+
+    <input
+      type="file"
+      #attachmentInput
+      hidden
+      accept="image/*, application/pdf, .xls, .xlsx, .doc, .docx, .xml, video/mp4, video/x-m4v, video/*"
+      (input)="selectAttachment($event)"
+    />
+
+    <button
+      mat-raised-button
+      class="bego-btn yellow"
+      (click)="sendMessage($event)"
+      [disabled]="sendMessageLoading$ | async"
+    >
+      {{ 'contact-support.Send' | translate }}
+      <i class="icon icon-paper-plane"></i>
+    </button>
+  </div>
+
+  <div
+    id="chat--droparea"
+    [ngClass]="{ isDragging }"
+    (dragleave)="dragleave($event)"
+  >
+    {{ 'contact-support.Drag files in here' | translate }}
+  </div>
+</div>
+
+<div id="sidebar">
+  <img src="/assets/images/logo.svg" width="89" height="89" alt="Avatar" />
+
+  <p>
+    <span id="title">BeGo</span>
+    <span id="subtitle">{{ 'contact-support.Support' | translate }}</span>
+  </p>
+
+  <div id="links">
+    <a href="mailto:demo@demo.com">
+      <i class="icon icon-email"></i>
+    </a>
+    <a href="tel:+52-55-6478-9090">
+      <i class="icon icon-phone"></i>
+    </a>
+  </div>
+</div>

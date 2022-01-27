@@ -1,0 +1,312 @@
+
+  @mixin phoneCodes($x, $y) {
+    background-position: $x $y;
+  }
+
+.phone {
+
+    .alert-radio-label {
+        padding-left: 50px;
+    }
+
+    .alert-radio-icon.sc-ion-alert-md {
+        left: 90%;
+    }
+    
+    &.phone-ad{@include phoneCodes(-5px,-5px)}
+    &.phone-ae{@include phoneCodes(-47px,-5px)}
+    &.phone-af{@include phoneCodes(-89px,-5px)}
+    &.phone-ag{@include phoneCodes(-131px,-5px)}
+    &.phone-ai{@include phoneCodes(-173px,-5px)}
+    &.phone-al{@include phoneCodes(-215px,-5px)}
+    &.phone-am{@include phoneCodes(-257px,-5px)}
+    &.phone-an{@include phoneCodes(-299px,-5px)}
+    &.phone-ao{@include phoneCodes(-341px,-5px)}
+    &.phone-aq{@include phoneCodes(-383px,-5px)}
+    &.phone-ar{@include phoneCodes(-425px,-5px)}
+    &.phone-as{@include phoneCodes(-467px,-5px)}
+    &.phone-at{@include phoneCodes(-509px,-5px)}
+    &.phone-au{@include phoneCodes(-551px,-5px)}
+    &.phone-aw{@include phoneCodes(-593px,-5px)}
+    &.phone-ax{@include phoneCodes(-5px,-47px)}
+    &.phone-az{@include phoneCodes(-47px,-47px)}
+    &.phone-ba{@include phoneCodes(-89px,-47px)}
+    &.phone-bb{@include phoneCodes(-131px,-47px)}
+    &.phone-bd{@include phoneCodes(-173px,-47px)}
+    &.phone-be{@include phoneCodes(-215px,-47px)}
+    &.phone-bf{@include phoneCodes(-257px,-47px)}
+    &.phone-bg{@include phoneCodes(-299px,-47px)}
+    &.phone-bh{@include phoneCodes(-341px,-47px)}
+    &.phone-bi{@include phoneCodes(-383px,-47px)}
+    &.phone-bj{@include phoneCodes(-425px,-47px)}
+    &.phone-bl{@include phoneCodes(-467px,-47px)}
+    &.phone-bm{@include phoneCodes(-509px,-47px)}
+    &.phone-bn{@include phoneCodes(-551px,-47px)}
+    &.phone-bo{@include phoneCodes(-593px,-47px)}
+    &.phone-bq{@include phoneCodes(-5px,-89px)}
+    &.phone-br{@include phoneCodes(-47px,-89px)}
+    &.phone-bs{@include phoneCodes(-89px,-89px)}
+    &.phone-bt{@include phoneCodes(-131px,-89px)}
+    &.phone-bv{@include phoneCodes(-173px,-89px)}
+    &.phone-bw{@include phoneCodes(-215px,-89px)}
+    &.phone-by{@include phoneCodes(-257px,-89px)}
+    &.phone-bz{@include phoneCodes(-299px,-89px)}
+    &.phone-ca{@include phoneCodes(-341px,-89px)}
+    &.phone-cc{@include phoneCodes(-383px,-89px)}
+    &.phone-cd{@include phoneCodes(-425px,-89px)}
+    &.phone-cf{@include phoneCodes(-467px,-89px)}
+    &.phone-cg{@include phoneCodes(-509px,-89px)}
+    &.phone-ch{@include phoneCodes(-551px,-89px)}
+    &.phone-ci{@include phoneCodes(-593px,-89px)}
+    &.phone-ck{@include phoneCodes(-5px,-131px)}
+    &.phone-cl{@include phoneCodes(-47px,-131px)}
+    &.phone-cm{@include phoneCodes(-89px,-131px)}
+    &.phone-cn{@include phoneCodes(-131px,-131px)}
+    &.phone-co{@include phoneCodes(-173px,-131px)}
+    &.phone-cr{@include phoneCodes(-215px,-131px)}
+    &.phone-cu{@include phoneCodes(-257px,-131px)}
+    &.phone-cv{@include phoneCodes(-299px,-131px)}
+    &.phone-cw{@include phoneCodes(-341px,-131px)}
+    &.phone-cx{@include phoneCodes(-383px,-131px)}
+    &.phone-cy{@include phoneCodes(-425px,-131px)}
+    &.phone-cz{@include phoneCodes(-467px,-131px)}
+    &.phone-de{@include phoneCodes(-509px,-131px)}
+    &.phone-dj{@include phoneCodes(-551px,-131px)}
+    &.phone-dk{@include phoneCodes(-593px,-131px)}
+    &.phone-dm{@include phoneCodes(-5px,-173px)}
+    &.phone-do{@include phoneCodes(-47px,-173px)}
+    &.phone-dz{@include phoneCodes(-89px,-173px)}
+    &.phone-ec{@include phoneCodes(-131px,-173px)}
+    &.phone-ee{@include phoneCodes(-173px,-173px)}
+    &.phone-eg{@include phoneCodes(-215px,-173px)}
+    &.phone-eh{@include phoneCodes(-257px,-173px)}
+    &.phone-er{@include phoneCodes(-299px,-173px)}
+    &.phone-es{@include phoneCodes(-341px,-173px)}
+    &.phone-et{@include phoneCodes(-383px,-173px)}
+    &.phone-fi{@include phoneCodes(-425px,-173px)}
+    &.phone-fj{@include phoneCodes(-467px,-173px)}
+    &.phone-fk{@include phoneCodes(-509px,-173px)}
+    &.phone-fm{@include phoneCodes(-551px,-173px)}
+    &.phone-fo{@include phoneCodes(-593px,-173px)}
+    &.phone-fr{@include phoneCodes(-5px,-215px)}
+    &.phone-ga{@include phoneCodes(-47px,-215px)}
+    &.phone-gb{@include phoneCodes(-89px,-215px)}
+    &.phone-gd{@include phoneCodes(-131px,-215px)}
+    &.phone-ge{@include phoneCodes(-173px,-215px)}
+    &.phone-gf{@include phoneCodes(-215px,-215px)}
+    &.phone-gg{@include phoneCodes(-257px,-215px)}
+    &.phone-gh{@include phoneCodes(-299px,-215px)}
+    &.phone-gi{@include phoneCodes(-341px,-215px)}
+    &.phone-gl{@include phoneCodes(-383px,-215px)}
+    &.phone-gm{@include phoneCodes(-425px,-215px)}
+    &.phone-gn{@include phoneCodes(-467px,-215px)}
+    &.phone-gp{@include phoneCodes(-509px,-215px)}
+    &.phone-gq{@include phoneCodes(-551px,-215px)}
+    &.phone-gr{@include phoneCodes(-593px,-215px)}
+    &.phone-gs{@include phoneCodes(-5px,-257px)}
+    &.phone-gt{@include phoneCodes(-47px,-257px)}
+    &.phone-gu{@include phoneCodes(-89px,-257px)}
+    &.phone-gw{@include phoneCodes(-131px,-257px)}
+    &.phone-gy{@include phoneCodes(-173px,-257px)}
+    &.phone-hk{@include phoneCodes(-215px,-257px)}
+    &.phone-hm{@include phoneCodes(-257px,-257px)}
+    &.phone-hn{@include phoneCodes(-299px,-257px)}
+    &.phone-hr{@include phoneCodes(-341px,-257px)}
+    &.phone-ht{@include phoneCodes(-383px,-257px)}
+    &.phone-hu{@include phoneCodes(-425px,-257px)}
+    &.phone-id{@include phoneCodes(-467px,-257px)}
+    &.phone-ie{@include phoneCodes(-509px,-257px)}
+    &.phone-il{@include phoneCodes(-551px,-257px)}
+    &.phone-im{@include phoneCodes(-593px,-257px)}
+    &.phone-in{@include phoneCodes(-5px,-299px)}
+    &.phone-io{@include phoneCodes(-47px,-299px)}
+    &.phone-iq{@include phoneCodes(-89px,-299px)}
+    &.phone-ir{@include phoneCodes(-131px,-299px)}
+    &.phone-is{@include phoneCodes(-173px,-299px)}
+    &.phone-it{@include phoneCodes(-215px,-299px)}
+    &.phone-je{@include phoneCodes(-257px,-299px)}
+    &.phone-jm{@include phoneCodes(-299px,-299px)}
+    &.phone-jo{@include phoneCodes(-341px,-299px)}
+    &.phone-jp{@include phoneCodes(-383px,-299px)}
+    &.phone-ke{@include phoneCodes(-425px,-299px)}
+    &.phone-kg{@include phoneCodes(-467px,-299px)}
+    &.phone-kh{@include phoneCodes(-509px,-299px)}
+    &.phone-ki{@include phoneCodes(-551px,-299px)}
+    &.phone-km{@include phoneCodes(-593px,-299px)}
+    &.phone-kn{@include phoneCodes(-5px,-341px)}
+    &.phone-kp{@include phoneCodes(-47px,-341px)}
+    &.phone-kr{@include phoneCodes(-89px,-341px)}
+    &.phone-kw{@include phoneCodes(-131px,-341px)}
+    &.phone-ky{@include phoneCodes(-173px,-341px)}
+    &.phone-kz{@include phoneCodes(-215px,-341px)}
+    &.phone-la{@include phoneCodes(-257px,-341px)}
+    &.phone-lb{@include phoneCodes(-299px,-341px)}
+    &.phone-lc{@include phoneCodes(-341px,-341px)}
+    &.phone-li{@include phoneCodes(-383px,-341px)}
+    &.phone-lk{@include phoneCodes(-425px,-341px)}
+    &.phone-lr{@include phoneCodes(-467px,-341px)}
+    &.phone-ls{@include phoneCodes(-509px,-341px)}
+    &.phone-lt{@include phoneCodes(-551px,-341px)}
+    &.phone-lu{@include phoneCodes(-593px,-341px)}
+    &.phone-lv{@include phoneCodes(-5px,-383px)}
+    &.phone-ly{@include phoneCodes(-47px,-383px)}
+    &.phone-ma{@include phoneCodes(-89px,-383px)}
+    &.phone-mc{@include phoneCodes(-131px,-383px)}
+    &.phone-md{@include phoneCodes(-173px,-383px)}
+    &.phone-me{@include phoneCodes(-215px,-383px)}
+    &.phone-mf{@include phoneCodes(-257px,-383px)}
+    &.phone-mg{@include phoneCodes(-299px,-383px)}
+    &.phone-mh{@include phoneCodes(-341px,-383px)}
+    &.phone-mk{@include phoneCodes(-383px,-383px)}
+    &.phone-ml{@include phoneCodes(-425px,-383px)}
+    &.phone-mm{@include phoneCodes(-467px,-383px)}
+    &.phone-mn{@include phoneCodes(-509px,-383px)}
+    &.phone-mo{@include phoneCodes(-551px,-383px)}
+    &.phone-mp{@include phoneCodes(-593px,-383px)}
+    &.phone-mq{@include phoneCodes(-5px,-425px)}
+    &.phone-mr{@include phoneCodes(-47px,-425px)}
+    &.phone-ms{@include phoneCodes(-89px,-425px)}
+    &.phone-mt{@include phoneCodes(-131px,-425px)}
+    &.phone-mu{@include phoneCodes(-173px,-425px)}
+    &.phone-mv{@include phoneCodes(-215px,-425px)}
+    &.phone-mw{@include phoneCodes(-257px,-425px)}
+    &.phone-mx{@include phoneCodes(-299px,-425px)}
+    &.phone-my{@include phoneCodes(-341px,-425px)}
+    &.phone-mz{@include phoneCodes(-383px,-425px)}
+    &.phone-na{@include phoneCodes(-425px,-425px)}
+    &.phone-nc{@include phoneCodes(-467px,-425px)}
+    &.phone-ne{@include phoneCodes(-509px,-425px)}
+    &.phone-nf{@include phoneCodes(-551px,-425px)}
+    &.phone-ng{@include phoneCodes(-593px,-425px)}
+    &.phone-ni{@include phoneCodes(-5px,-467px)}
+    &.phone-nl{@include phoneCodes(-47px,-467px)}
+    &.phone-no{@include phoneCodes(-89px,-467px)}
+    &.phone-np{@include phoneCodes(-131px,-467px)}
+    &.phone-nr{@include phoneCodes(-173px,-467px)}
+    &.phone-nu{@include phoneCodes(-215px,-467px)}
+    &.phone-nz{@include phoneCodes(-257px,-467px)}
+    &.phone-om{@include phoneCodes(-299px,-467px)}
+    &.phone-pa{@include phoneCodes(-341px,-467px)}
+    &.phone-pe{@include phoneCodes(-383px,-467px)}
+    &.phone-pf{@include phoneCodes(-425px,-467px)}
+    &.phone-pg{@include phoneCodes(-467px,-467px)}
+    &.phone-ph{@include phoneCodes(-509px,-467px)}
+    &.phone-pk{@include phoneCodes(-551px,-467px)}
+    &.phone-pl{@include phoneCodes(-593px,-467px)}
+    &.phone-pm{@include phoneCodes(-5px,-509px)}
+    &.phone-pn{@include phoneCodes(-47px,-509px)}
+    &.phone-pr{@include phoneCodes(-89px,-509px)}
+    &.phone-ps{@include phoneCodes(-131px,-509px)}
+    &.phone-pt{@include phoneCodes(-173px,-509px)}
+    &.phone-pw{@include phoneCodes(-215px,-509px)}
+    &.phone-py{@include phoneCodes(-257px,-509px)}
+    &.phone-qa{@include phoneCodes(-299px,-509px)}
+    &.phone-re{@include phoneCodes(-341px,-509px)}
+    &.phone-ro{@include phoneCodes(-383px,-509px)}
+    &.phone-rs{@include phoneCodes(-425px,-509px)}
+    &.phone-ru{@include phoneCodes(-467px,-509px)}
+    &.phone-rw{@include phoneCodes(-509px,-509px)}
+    &.phone-sa{@include phoneCodes(-551px,-509px)}
+    &.phone-sb{@include phoneCodes(-593px,-509px)}
+    &.phone-sc{@include phoneCodes(-5px,-551px)}
+    &.phone-sd{@include phoneCodes(-47px,-551px)}
+    &.phone-se{@include phoneCodes(-89px,-551px)}
+    &.phone-sg{@include phoneCodes(-131px,-551px)}
+    &.phone-sh{@include phoneCodes(-173px,-551px)}
+    &.phone-si{@include phoneCodes(-215px,-551px)}
+    &.phone-sj{@include phoneCodes(-257px,-551px)}
+    &.phone-sk{@include phoneCodes(-299px,-551px)}
+    &.phone-sl{@include phoneCodes(-341px,-551px)}
+    &.phone-sm{@include phoneCodes(-383px,-551px)}
+    &.phone-sn{@include phoneCodes(-425px,-551px)}
+    &.phone-so{@include phoneCodes(-467px,-551px)}
+    &.phone-sr{@include phoneCodes(-509px,-551px)}
+    &.phone-ss{@include phoneCodes(-551px,-551px)}
+    &.phone-st{@include phoneCodes(-593px,-551px)}
+    &.phone-sv{@include phoneCodes(-5px,-593px)}
+    &.phone-sx{@include phoneCodes(-47px,-593px)}
+    &.phone-sy{@include phoneCodes(-89px,-593px)}
+    &.phone-sz{@include phoneCodes(-131px,-593px)}
+    &.phone-tc{@include phoneCodes(-173px,-593px)}
+    &.phone-td{@include phoneCodes(-215px,-593px)}
+    &.phone-tf{@include phoneCodes(-257px,-593px)}
+    &.phone-tg{@include phoneCodes(-299px,-593px)}
+    &.phone-th{@include phoneCodes(-341px,-593px)}
+    &.phone-tj{@include phoneCodes(-383px,-593px)}
+    &.phone-tk{@include phoneCodes(-425px,-593px)}
+    &.phone-tl{@include phoneCodes(-467px,-593px)}
+    &.phone-tm{@include phoneCodes(-509px,-593px)}
+    &.phone-tn{@include phoneCodes(-551px,-593px)}
+    &.phone-to{@include phoneCodes(-593px,-593px)}
+    &.phone-tr{@include phoneCodes(-635px,-5px)}
+    &.phone-tt{@include phoneCodes(-635px,-47px)}
+    &.phone-tv{@include phoneCodes(-635px,-89px)}
+    &.phone-tw{@include phoneCodes(-635px,-131px)}
+    &.phone-tz{@include phoneCodes(-635px,-173px)}
+    &.phone-ua{@include phoneCodes(-635px,-215px)}
+    &.phone-ug{@include phoneCodes(-635px,-257px)}
+    &.phone-um{@include phoneCodes(-635px,-299px)}
+    &.phone-us{@include phoneCodes(-635px,-341px)}
+    &.phone-uy{@include phoneCodes(-635px,-383px)}
+    &.phone-uz{@include phoneCodes(-635px,-425px)}
+    &.phone-va{@include phoneCodes(-635px,-467px)}
+    &.phone-vc{@include phoneCodes(-635px,-509px)}
+    &.phone-ve{@include phoneCodes(-635px,-551px)}
+    &.phone-vg{@include phoneCodes(-635px,-593px)}
+    &.phone-vi{@include phoneCodes(-5px,-635px)}
+    &.phone-vn{@include phoneCodes(-47px,-635px)}
+    &.phone-vu{@include phoneCodes(-89px,-635px)}
+    &.phone-wf{@include phoneCodes(-131px,-635px)}
+    &.phone-ws{@include phoneCodes(-173px,-635px)}
+    &.phone-xk{@include phoneCodes(-215px,-635px)}
+    &.phone-ye{@include phoneCodes(-257px,-635px)}
+    &.phone-yt{@include phoneCodes(-299px,-635px)}
+    &.phone-za{@include phoneCodes(-341px,-635px)}
+    &.phone-zm{@include phoneCodes(-383px,-635px)}
+    &.phone-zw{@include phoneCodes(-425px,-635px)}
+}
+
+.phone-select {
+    position: absolute;
+    padding-left: 45px;
+    display: flex;
+    margin-top: -9px;
+}  
+
+.phone-select::part(text) {
+    order: 2;
+    padding-left: 10px;
+    color: gray;
+    font-weight: 700;
+}
+
+.phone-input {
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+        padding: 1em 0 1em 7.5em !important;
+    }
+}
+
+.phone-input-outline {
+    .mat-input-element {
+        padding-left: 115px;
+        top : 30px;
+    }
+
+    &.mat-form-field-appearance-outline {
+    
+        .mat-form-field-outline-start {
+            width: 10.9531px !important;
+        }
+        .mat-form-field-label {
+            left: 115px;
+            top : 30px;
+        }
+    
+        &.mat-form-field-can-float {
+          &.mat-form-field-should-float .mat-form-field-label,
+          .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
+            left: 0;
+          }
+        }
+    }
+}

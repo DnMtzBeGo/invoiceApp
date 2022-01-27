@@ -1,0 +1,33 @@
+<div class="custom-select"  >  
+  <div 
+    class="select-selected" 
+    [ngClass]="selectIsOpen ? 'select-open' : '' " 
+    (click)="toggleSelect($event)">
+      <div *ngIf="value && value.text">
+        <span *ngIf="!value.fileIsOptional">*</span>
+        {{ value?.text }}
+      </div >
+      <div *ngIf="!value">
+        {{ selectLegend }}
+      </div>
+      <div class="icon icon-down"></div>
+  </div>
+
+  <div class="select-items " [ngClass]="selectIsOpen ? '':'select-hide' ">
+    <span>
+      <div
+        class="select-item"
+        [ngClass]="value == option ? 'same-as-selected' : '' "
+        *ngFor="let option of options"
+        (click)="changeValue(option)">
+        <span *ngIf="!option.fileIsOptional">*</span>
+          {{ option.text }}  
+      </div>
+
+      <div class="select-item disabled" *ngIf="options.length == 0"  >
+          {{ 'bego-select-component.empty-select' | translate }}  
+      </div>
+    </span>
+  </div>
+</div>
+

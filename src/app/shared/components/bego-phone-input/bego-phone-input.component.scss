@@ -1,0 +1,142 @@
+@import './phone-codes.scss';
+
+.phone-container {
+  position: relative;
+  padding: 20px;
+  
+
+  & input {
+    padding-left: 90px;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  & label {
+    position: absolute;
+    padding-left: 90px;
+  }
+
+
+
+  input {
+    background: transparent;
+    color: white;
+    border: none;
+    border-bottom: 1px solid #494c50;
+    width: 100%;
+    padding-bottom: 10px;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+}
+
+
+.phone-list-container {
+  position: absolute;
+  top: -1px;
+  max-width: 300px;
+  height: 150px;
+  overflow: auto;
+  background-color: #091016;
+  box-shadow: inset -2px -2px 4px 0 #040B11, inset 2px 2px 4px 0 #1C232A, 0 13px 9px 0 #000000;
+  z-index: 1;
+  cursor: pointer;
+
+  .flag-option{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    overflow: hidden;
+    padding: 0px 25px;
+
+    .flag-data{
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      flex-grow: 1;
+    }
+
+    &:hover{
+      background-color: #181f25 ;
+    }
+  }
+}
+
+
+
+.order-phone-number-wrapper{
+
+  .phone-selector{
+    position: absolute;
+    top: 0px;
+  }
+
+  $input-margin-left: 105px; 
+  width: 100%;
+
+
+  mat-label{
+      transition: margin-left     0.5s;
+  }
+
+  .icon{
+    top: 5px;
+  }
+
+  .phone-number-input{
+      margin-left: $input-margin-left;
+  }
+
+  &:not(.mat-focused, .input-filled){
+      mat-label {
+          margin-left: $input-margin-left!important;
+      }    
+  }
+
+}
+
+.flag-container{
+  position: relative;
+  min-width: 32px;
+  height: 32px;
+  
+  .phone {
+    margin-right: 20px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('./assets/flags.png');
+    background-repeat: no-repeat;
+    display: block;
+    pointer-events: visible;
+    clip-path: ellipse(14px 11px at center);
+
+    &.inner-shadow{
+      margin-left: 4px;
+    }
+  }
+}
+
+.phone-code-container{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+}
+
+.phonecode-disabled{
+  color: #C1C7D0;
+}

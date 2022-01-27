@@ -1,0 +1,58 @@
+<div class="evidence">
+  <!-- invoice -->
+  <div class="evidence-container invoice" (click)="getInvoice()" *ngIf=" orderStatus >= 6 ">
+
+    <div class="pdf-container" >
+      <div><i class="icon icon-document"></i></div>
+      <div>
+        <div>Invoice.pdf</div>
+        <div>215KB</div>
+      </div>
+      <div><i class="icon icon-download"></i></div>
+    </div>
+
+  </div>
+
+
+  <!-- photos-->
+  <div class="evidence-container">
+
+    <div class="evidence-title">
+      {{'history.history_detail.photos' | translate}}
+    </div>
+    
+    <div class="photos-wrapper">
+      <div class="thumbnail" *ngFor="let photo of orderData?.pictures ">
+        <img [src]="photo" (click)="openPhoto(photo)">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- signature -->
+  <div class="evidence-container">
+
+    <div class="evidence-title">
+      {{'history.history_detail.signature' | translate}}
+    </div>
+    
+    <div class="order-signature">
+      <img
+        [src]="signature"  
+        (error)="signatureError($event)">
+    </div>
+
+  </div>
+
+  <!-- comments -->
+  <div class="comments-section">
+    
+    <div class="evidence-title">
+      {{'history.history_detail.aditional_details' | translate}}
+    </div>
+    <textarea
+      class="comments"
+      placeholder="" 
+      readonly="true">{{ commentsText ? commentsText : 'history.no-comments' | translate }}</textarea>
+  </div>
+</div>

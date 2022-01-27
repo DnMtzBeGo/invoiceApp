@@ -1,0 +1,42 @@
+<section
+    infiniteScroll
+    [infiniteScrollDistance]="0.5"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll()"
+    [scrollWindow]="false">
+    <div class="draft-item-container">
+        <div class="draft-item ripple" *ngFor="let item of draftData, index as i" [@enterAnimation]>
+            <div class="draft-radio">
+                <div class="radio" [ngClass]="{'active': i === selectedDraftIndex}"></div>
+            </div>
+            <div class="draft-info" (click)="selectDraft(item,i)">
+                <div class="drafts-data-header">
+                    <div>{{item.created | dateFormatter: "date"}}</div>
+                    <div>{{item.created | dateFormatter: "time"}}</div>
+                    <div>#{{item.order_number}}</div>
+                </div>
+                <div class="drafts-data-body">
+                    <div class="drafts-addresses">
+                        <label>{{'draft.label_pickup' | translate}}</label>
+                        <div class="addresses">{{item.pickup.address}}</div>
+                    </div>
+                    <div class="drafts-addresses">
+                        <label>{{'draft.label_dropoff' | translate}}</label>
+                        <div class="addresses">{{item.dropoff.address}}</div>
+                    </div>
+                </div>
+                <div class="drafts-data-footer">
+                    <bego-progress-bar [progress]="item.completion_percentage"></bego-progress-bar>
+                    <div class="percentage">{{ item.completion_percentage < 1 ? (item.completion_percentage | percent) : '100%' }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lds-ellipsis" *ngIf="loader" [@enterAnimation]>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div *ngIf="noSearchDraftData" [@enterAnimation]>No results</div>
+</section>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="68px" height="68px" viewBox="0 0 68 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>58B95CFB-2566-467B-825D-73F46F475B28</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFD200" offset="0%"></stop>
+            <stop stop-color="#FFBE00" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="33.4603175" cy="33.4603175" r="8.63492063"></circle>
+        <filter x="-101.3%" y="-72.4%" width="302.7%" height="302.7%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="5" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.917647059   0 0 0 0 0.509803922   0 0 0 0 0.223529412  0 0 0 0.374371722 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="User" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Adress-select-Pin" transform="translate(-181.000000, -344.000000)">
+            <g id="location" transform="translate(181.000000, 344.000000)">
+                <circle id="oval" fill="url(#linearGradient-1)" opacity="0.07" cx="33.4603175" cy="33.4603175" r="15.1111111"></circle>
+                <circle id="oval" fill="url(#linearGradient-1)" opacity="0.06" cx="34" cy="34" r="34"></circle>
+                <g id="oval">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                    <circle stroke="#EDEDED" stroke-width="1" stroke-linejoin="square" fill="url(#linearGradient-1)" fill-rule="evenodd" cx="33.4603175" cy="33.4603175" r="8.13492063"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,24 @@
+<div class="faqs--page">
+  <div class="faqs--wrapper">
+  	<section
+			*ngFor="let faq of faqs$ | async | keyvalue"
+			class="faq--item"
+		>
+			<div>
+				<p class="faq--title">
+					{{ faq.key }}<span>.</span>
+				</p>
+				<span class="faq--label">
+					{{ faq.value.label }}
+				</span>
+			</div>
+
+			<div>
+				<app-drop-down *ngFor="let question of faq.value.questions" [title]="question.question">
+    			{{ question.answer }}
+  			</app-drop-down>
+			</div>
+  	</section>	
+  </div>
+
+</div>

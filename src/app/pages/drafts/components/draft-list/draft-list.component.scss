@@ -1,0 +1,223 @@
+@import "../../../../../styles.scss";
+
+section {
+    overflow: scroll;
+    height: calc(100vh - 106px);
+}
+
+// .draft-item-container {
+//     overflow-x: hidden;
+// }
+
+.draft-item {
+    margin: 0 0 30px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: stretch;
+
+    .draft-radio {
+        background: #0B1117;
+        box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+        border-radius: 8px 0 0 8px;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+
+        .radio {
+            width: 35px;
+            height: 35px;
+            position: relative;
+            background: #10161C;
+            border-radius: 50%;
+
+            &:before {
+                width: 23px;
+                height: 23px;
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                border: 2px solid #1C232A;
+                border-radius: 50%;
+                transition: all .2s ease-in-out;
+            }
+
+            &:after {
+                width: 25px;
+                height: 25px;
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                background: #10161C;
+                box-shadow: inset 0px 4px 4px #000000;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+            }
+
+            &.active {
+                &:before {
+                    background: url('../../../../../assets/images/drafts/radio-active.svg');
+                    z-index: 1;
+                    background-size: cover;
+                    transform: translate(-50%, -50%) scale(1);
+                }
+            }
+        }
+    }
+
+    .draft-arrow {
+        background: #0B1117;
+        box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+        border-radius: 0 8px 8px 0;
+        display: flex;
+        align-items: center;
+        padding: 8px;
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            font-size: 16px;
+            line-height: 30px;
+            text-align: center;
+        }
+    }
+
+    .draft-info {
+        background: #0B1117;
+        box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 10px 20px;
+        border-radius: 0 8px 8px 0;
+
+        .drafts-data-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 18px;
+            letter-spacing: 0.5px;
+            text-transform: capitalize;
+            color: $light-color;
+
+            div {
+                display: flex;
+                align-items: center;
+                
+                &::after {
+                    font-family: $icomoon-font-family;
+                    content: "\e909";
+                    font-size: 4px;
+                    padding: 0 5px;
+                }
+
+                &:last-child {
+                    &::after {
+                        content: '';
+                        padding: 0;
+                    }
+                }
+            }
+        }
+
+        .drafts-data-body {
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 18px;
+            letter-spacing: 0.5px;
+            text-transform: capitalize;
+            color: $light-color;
+            padding: 23px 0 27px 35px;
+            position: relative;
+
+            &:before {
+                content: "";
+                position: absolute;
+                top: calc(50% - 4px);
+                left: 10px;
+                height: 30px;
+                width: 0px;
+                transform: translate(0, -50%);
+                border-left: 1px dashed #ffffff;
+                background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+            }
+
+            .drafts-addresses {
+                position: relative;
+        
+                label {
+                    display: block;
+                    font-size: 12px;
+                    line-height: 14px;
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                    color: $light-color;
+                    cursor: pointer;
+                }
+                
+                .addresses {
+                    color: $white;
+                    font-weight: 500;
+                    font-size: 14px;
+                    letter-spacing: 0.5px;
+                    text-transform: capitalize;
+                    text-overflow: ellipsis;
+                    overflow-x: hidden;
+                    white-space: nowrap;
+                }
+
+                &:before {
+                    position: absolute;
+                    top: 50%;
+                    left: -44px;
+                    transform: translate(50%, -50%);
+                    content: '';
+                    background: #091016;
+                    box-shadow: inset 2px 2px 4px #1C232A, inset -2px -2px 4px #040B11;
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    font-family: '#{$icomoon-font-family}' !important;
+                    text-align: center;
+                    line-height: 22px;
+                }
+        
+                &:first-child {
+                    margin-bottom: 20px;
+                    &:before {
+                        content: $icon-pickup;
+                        font-size: 13px;
+                        color: $yellow-color;
+                        top: 0;
+                        transform: translate(50%, 0);
+                    }
+                }
+        
+                &:last-child {
+                    &:before {
+                        content: $icon-dot;
+                        font-size: 6px;
+                        color: $white;
+                    }
+                }
+            }
+        }
+
+        .drafts-data-footer {
+            .percentage {
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 16px;
+                letter-spacing: 0.5px;
+                text-transform: capitalize;
+                color: $light-color;
+                padding: 4.5px 0 0 0;
+            }
+        }
+    }
+}

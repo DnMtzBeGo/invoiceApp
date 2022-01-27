@@ -1,0 +1,93 @@
+<section class="menu" [ngClass]="{'open': menuIsOpen}">
+
+    <div class="menu-options">
+      <div class="logo-container">
+        <div>
+          <img [src]="logo" class="logo">
+        </div>
+        <bego-button class="icon icon-bego-text" ></bego-button>
+      </div>
+
+      <div 
+        class="menu-option"
+        [ngClass]="{'selected': router.url== '/home' }" 
+        (click)="goTo('home')">
+          <bego-button class="btn-menu icon icon-home icon-only" ></bego-button>
+          {{ 'menu.home' | translate }}
+      </div>
+
+      <div 
+        class="menu-option"
+        [ngClass]="{'selected': router.url== '/calendar' }" 
+        (click)="goTo('calendar')">
+          <bego-button class="btn-menu icon icon-home icon-only" ></bego-button>
+          {{ 'menu.calendar' | translate }}
+      </div>
+      
+      <div 
+          class="menu-option"
+          [ngClass]="{'selected': router.url== '/drafts' }"
+          (click)="goTo('drafts')">
+              <bego-button class="btn-menu icon icon-drafts icon-only" ></bego-button>
+              {{ 'menu.drafts' | translate }}
+      </div>
+      <div 
+        class="menu-option"
+        [ngClass]="{'selected': router.url== '/history' }"
+        (click)="goTo('history')">
+            <bego-button class="btn-menu icon icon-history icon-only" ></bego-button>
+            {{ 'menu.history' | translate }}
+      </div>
+      <!-- <bego-button class="btn-menu icon icon-referals" (click)="goTo('referals')"></bego-button> -->
+      <div 
+        class="menu-option"
+        [ngClass]="{'selected': router.url== '/contact-support' }"
+        (click)="goTo('contact-support')">
+            <bego-button class="btn-menu icon icon-chat icon-only" ></bego-button>
+            {{ 'menu.support' | translate }}
+      </div>
+      <div class="separator"></div>
+      <div 
+        class="menu-option"
+        [ngClass]="{'selected': router.url== '/faq' }"
+        (click)="goTo('faq')">
+            <bego-button class="btn-menu icon icon-faqs icon-only" ></bego-button>
+            {{ 'menu.faq' | translate }}
+      </div>
+      <div 
+        class="menu-option"
+        (click)="terms()">
+            <bego-button class="btn-menu icon icon-terms icon-only" ></bego-button>
+            {{ 'menu.terms-conditions' | translate }}
+      </div>
+
+      <div 
+        class="menu-option logout "
+        (click)="logout()">
+        <div style="overflow: hidden; display: flex; align-items: center; margin-right: 10px;">
+          <bego-button class="btn-menu icon icon-logout icon-only" ></bego-button>
+          {{ 'menu.log-out' | translate }}
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="menu-opener">
+      <img          
+        src="../../../../assets/images/menu/menu-arrow-space.png" 
+        alt="">
+
+        <div class="line"></div>
+
+        <div class="arrow-container">
+          <mat-icon 
+            (click)="toggleMenu()"
+            [ngClass]="{'closed': !menuIsOpen }"
+            class="arrow">
+              keyboard_backspace
+          </mat-icon>
+        </div>
+    </div>
+
+</section>

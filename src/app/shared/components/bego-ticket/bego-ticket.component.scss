@@ -1,0 +1,111 @@
+@use '../../../../styles.scss';
+
+$ticket-wholes-position : 170px;
+
+.ticket{
+
+  $padding-sides: 85px;
+  $hole-img-width: 50px;
+  box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+  background-color: #091016;
+  box-shadow: inset -2px -2px 4px 0 #040B11, inset 2px 2px 4px 0 #1C232A, 0 13px 9px 0 #000000;
+  border-top-left-radius: 8px; 
+  border-top-right-radius: 8px; 
+  padding: 24px $padding-sides;
+  text-align: center;
+
+  .header, .body{
+    min-height: 50px;
+  }
+
+  .header{
+    padding-bottom: 24px;
+  }
+
+  ::ng-deep .body{
+    margin-top: 50px;
+    >div>div{
+      &::before{
+        content: '';
+        margin-left: -$padding-sides;
+        margin-right: -$padding-sides;
+        padding: 10px 0px;
+        border-bottom: 1px solid red;
+      // &:not(:last-child){
+      //   border-bottom: 1px solid red;
+      // }
+      }
+
+    }
+  }
+
+  .ticket-holes{
+
+    position: relative;
+    text-align: left;
+
+    &::before,&::after {
+      content: "";
+      position: absolute;
+      top: -50px;
+      left: -($padding-sides + 9px);
+      width: $hole-img-width;
+      height: 90px;
+      background: url('./assets/curve.png') 0 18% no-repeat;
+      z-index: 2;
+    }
+
+    &::after {
+      left: auto;
+      right: -($padding-sides + 9px);
+      transform: scaleX(-1);
+    }
+
+    .holes{
+      position: relative;
+      width: 100%;
+      text-align: center;
+      &::before, &::after  {
+        content: "";
+        position: absolute;
+        // top: 202px;
+        top: -50px;
+        left: -($padding-sides +9px);
+        width: $hole-img-width;
+        height: 90px;
+        background: #040B11;
+        // transform: translate(-50%, 0);
+        border-radius: 50%;
+        z-index: 1;
+      }
+
+
+
+      &::after{
+        left: auto;
+        right: -($padding-sides +9px);
+        transform: scaleX(-1);
+
+      }
+
+      hr{
+        margin: 0px -30px;
+        height: 2px;
+        background-color: #1C232A;
+        border: none;
+      }
+  
+    }
+
+  }
+
+  ::ng-deep hr {
+    height: 2px;
+    background-color: #1C232A;
+    border: none;
+    margin-left: -$padding-sides;
+    margin-right: -$padding-sides;
+    // margin: 0px -$padding-sides;
+    // padding: 50px 0px;
+  }
+}

@@ -1,0 +1,72 @@
+<div class="order-info-container">
+  <div class="order-info-row-status">
+    <div class="order-data-gral">
+      <div class="order-reference-date">
+        <p class="order-reference">{{'history.history_detail.reference' | translate }} {{orderInfo['reference_number']}}</p>
+        <p class="order-date">{{orderInfo['created'] | date: 'dd/MM/yyyy'}} <i class="icon icon-dot"></i> {{orderInfo['created'] | date: 'shortTime'}}</p>
+      </div>
+      <div class="order-number">{{'history.history_detail.order' | translate }} #{{orderInfo['order_number']}}</div>
+    </div>
+
+    <div class="order-info-status">
+      <div class="status-active">
+        <div class="draft-radio">
+          <div class="radio" [ngClass]="selectedRow == 'pickup' ? 'active' : ''"></div>
+      </div>
+      <span class="dot-line"></span>
+      <div class="draft-radio">
+        <div class="radio" [ngClass]="selectedRow == 'dropoff' ? 'active' : ''"></div>
+      </div>
+      </div>
+
+      <div class="status-address">
+        
+        <div (click)="changePickupDropoff('pickup')" class="pickup-status-address">
+          <div class="pickup-address">
+            <p class="pickup-title"> {{'history.history_detail.pickup'| translate }}</p>
+            <p class="pickup-text-address">{{orderInfo.pickup?.address}}</p>
+          </div>
+          <div class="pickup-status">
+            <div class="pickup-status-text">
+              <i class="icon icon-dot" [ngClass]="statusListData.statusList[language][statusOrder]?.general.class"></i>
+              {{statusListData.statusList[language][statusOrder]?.general.text}}
+            </div>
+          </div>
+        </div>
+
+        <div (click)="changePickupDropoff('dropoff')" class="dropoff-status-address">
+          <div class="dropoff-address">
+            <p class="dropoff-title">{{'history.history_detail.dropoff' | translate }}</p>
+            <p class="dropoff-text-address">{{orderInfo.dropoff?.address}}</p>
+          </div>
+          <div class="dropoff-status">
+            <div class="dropoff-status-text">
+              <i class="icon icon-dot" [ngClass]="statusListData.statusList[language][statusOrder]?.general.class"></i>
+              {{statusListData.statusList[language][statusOrder]?.general.text}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-driver-status-card [title]="selectedRow" [orderData]="orderInfo"></app-driver-status-card>
+
+  <app-drop-down *ngIf="selectedRow === 'pickup'" [title]=" 'history.history_detail.pickup_info_tab' | translate ">
+    <app-pickup-dropoff-info title="pickup" [orderData]="orderInfo"></app-pickup-dropoff-info>
+  </app-drop-down>
+
+  <app-drop-down *ngIf="selectedRow === 'dropoff'" [title]=" 'history.history_detail.dropoff_info_tab' | translate ">
+    <app-pickup-dropoff-info title="dropoff" [orderData]="orderInfo"></app-pickup-dropoff-info>
+  </app-drop-down>
+
+  <app-order-evidence
+    *ngIf=" orderInfo?.status >= 3"
+    [orderData]="orderInfo?.[selectedRow]"
+    [orderId]="orderInfo?._id"
+    [orderStatus]="orderInfo?.status"
+    [commentsText]="selectedRow == 'pickup' ? orderInfo?.cargo?.description : orderInfo?.dropoff?.extra_notes">
+  </app-order-evidence>
+
+  <app-price-details [orderData]="orderInfo"></app-price-details>
+</div>

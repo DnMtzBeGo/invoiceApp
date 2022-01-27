@@ -1,0 +1,31 @@
+<section>
+    <div class="draft-container"  [ngClass]="{'hidden' : showDraftList }">
+        <div class="search-bar" *ngIf="draftData" [@enterAnimation]>
+            <bego-input-search (inputData)="searchDraft($event)"></bego-input-search>
+            <bego-button class="btn-filter icon icon-filter" [text]="'draft.txt-filter' | translate" ></bego-button>
+            <bego-button class="icon icon-trash icon-only" (click)="deleteDraft()"></bego-button>
+        </div>
+        <draft-list
+            [draftData]="draftData"
+            [loader]="loader"
+            (selectedDraftData)="updateDataDraft($event)"
+            (moreDrafts)="loadMoreDrafts($event)"
+            [noDraftData]="showDraftList"
+            (indexDraft)="indexDraft($event)"
+            [noSearchDraftData]="showSearchDraftList"
+            [@enterAnimation]>
+        </draft-list>
+
+    </div>
+
+    <div class="map-container" [@enterAnimation] [ngClass]="{'hidden' : showDraftList }">
+        <bego-map [typeMap]="'draft'"></bego-map>
+        <bego-button class="btn-yellow btn-draft rounded active" *ngIf="!showDraftList" [text]="'draft.btn-order' | translate" (click)="continueOrder()"></bego-button>
+    </div>
+    
+    <div class="no-draft-container" *ngIf="showDraftList" [@enterAnimation]>
+        <img src="../../../assets/images/drafts/no-orders-yet.svg" alt="No Drafts">
+        <h1>{{ 'draft.no-drafts-title' | translate }}</h1>
+        <p>{{ 'draft.no-drafts-txt' | translate }}</p>
+    </div>
+</section>

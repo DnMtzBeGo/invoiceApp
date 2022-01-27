@@ -1,0 +1,41 @@
+export interface Order {
+  reference_number: string;
+  status: number;
+  completion_percentage: number;
+  cargo: {
+    '53_48': string,
+    type: string,
+    required_units: number,
+    description: string,
+    hazardous_type?: string,
+    weigth: Array<number>,
+  },
+  pickup: {
+    lat: number,
+    lng: number,
+    address: string,
+    startDate: number,
+    zip_code: number,
+    contact_info: {
+      name: string,
+      telephone: string,
+      email: string,
+      country_code: string
+    },
+  },
+  dropoff: {
+    startDate: number,
+    endDate: number,
+    extra_notes: string,
+    lat: number,
+    lng: number,
+    zip_code: number,
+    address: string,
+    contact_info: {
+      name: string,
+      telephone: string,
+      email: string,
+      country_code: string
+    },
+  }
+}

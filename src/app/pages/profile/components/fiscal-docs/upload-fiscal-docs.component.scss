@@ -1,0 +1,117 @@
+.files-wrapper{
+    color : white;
+    padding: 0px 1vw;
+    box-sizing: border-box;
+    margin-bottom: 40px;
+
+    .instructions{
+        padding: 20px;
+    }
+
+    .fiscal-items-wrapper{
+        min-height: 30vh;
+    }
+
+    .select-instructions{
+        font-size: 13px;
+        margin-top: 10px;
+    }
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-selector{
+
+    display: flex;
+    justify-content: flex-end;
+
+    .tab{
+
+        background: #040B11;
+        border: 1px solid #161B20;
+        box-sizing: border-box;
+        box-shadow: 0px 1px 4px #040B11, inset -3px -3px 4px #13181E, inset 3px 3px 4px #000000;
+        border-radius: 8px;
+        padding: 10px;
+        box-sizing: border-box;
+        margin: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .icon{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+        }
+
+        &.active{
+            background-color : #FFBE00;
+            box-shadow: none;
+            .icon{
+                color : #040B11;
+            }
+        }
+
+    }
+
+}
+
+.icon{
+
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
+    background-repeat: no-repeat;
+
+}
+
+
+
+.cards-files{
+
+    max-width: 1090px;
+    text-align: center;
+    justify-content: center;
+    margin: 0px auto;
+
+    .grid{
+        display: grid;
+        justify-content: center;
+        grid-template-columns: repeat( auto-fit, 235px );
+        gap: 48px;
+        grid-auto-rows: 215px;
+        text-transform: capitalize;
+    }
+}
+
+.upload-file-bar{
+    border: 1.5px dashed #FFBE00;
+    box-sizing: border-box;
+    box-shadow: inset -4px -4px 10px rgba(20, 28, 39, 0.69), inset 4px 4px 30px rgba(0, 0, 0, 0.64);
+    border-radius: 8px;
+    text-align: center;
+    padding : 32px;
+    font-size: 20px;
+    margin: 42px 0px 32px 0px;
+
+
+    &.dragging-file{
+        background-color: rgba(255,190,0,0.15);
+    }
+}
+
+
+
+.save-btn-wrapper{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 90px;
+    margin-right: 50px;
+}
+

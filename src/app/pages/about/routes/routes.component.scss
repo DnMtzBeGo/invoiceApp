@@ -1,0 +1,103 @@
+@import '../../../../styles.scss';
+
+.routes-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  max-width: 1120px;
+  margin: auto;
+  margin-top: 200px;
+
+  .routes-list {
+    flex: 1;
+    height: 100%;
+    max-width: 350px;
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      font-size: 1.1vw;
+
+      li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 20px 0px;
+        cursor: pointer;
+
+        .routes-selector {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 35px;
+          height: 35px;
+          background: rgba(73, 76, 80, 1);
+          margin-right: 20px;
+          transition: 0.1s background ease-in-out;
+
+          .route-checkmark {
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s transform cubic-bezier(0.175, 0.885, 0.32, 1.5),
+              0.3s background ease-in-out;
+          }
+
+          .route-circle-checked {
+            transform: scale(3);
+            background: $yellow-color;
+          }
+        }
+
+        .route-rectangle-checked {
+          background: rgba(73, 76, 80, 0);
+        }
+
+        span {
+          font-size: 1.1vw;
+        }
+      }
+    }
+
+    h1 {
+      font-size: 3.2vw;
+    }
+
+    p {
+      font-family: Avenir Next;
+      font-size: 1.1vw;
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: 24px;
+      text-align: justify;
+    }
+  }
+
+  .routes-map {
+    position: relative;
+    flex: 0 0 600px;
+    margin-left: 120px;
+    transform: scale(1.3, 1.6);
+
+    ng-lottie {
+      top: 70px;
+      position: absolute;
+    }
+
+    img {
+      margin-left: 100px;
+      max-width: 500px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .routes-container {
+    overflow: hidden;
+  }
+}

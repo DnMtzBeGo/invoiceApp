@@ -1,0 +1,26 @@
+textarea{
+  &.comments{
+    font-family: Avenir;
+    font-weight: 100;
+    font-size: 16px;
+    line-height: 20.5px;
+    letter-spacing: 0;
+    line-height: 16px;
+    text-align: justify;
+    margin-top: 24px;
+    min-height: 70px;
+    resize: vertical;
+    width: 100%;
+    border: 1px solid #494C50;
+    background: #040B11;
+    color: #EDEDED;
+    outline: none;
+    border-radius: 8px;
+    padding: 14px 31px!important;
+    box-sizing: border-box;
+
+    &::placeholder{
+      color: white;
+    }
+  }
+}

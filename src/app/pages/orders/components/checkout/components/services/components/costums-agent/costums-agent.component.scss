@@ -1,0 +1,209 @@
+.pricing {
+
+  // ion-slides {
+  //   padding: 20px 35px;
+  //   margin-bottom: 100px;
+  // }
+
+  .total-price-container {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 16px 0;
+
+    .total-price-box {
+      color: #EDEDED;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 19px;
+      padding: 20px;
+      border-radius: 15px 0 0 15px;
+      background-color: #0D1217;
+      box-shadow: inset -2px -2px 4px 0 #040B11, inset 2px 2px 4px 0 #1C232A, 0 7px 20px 0 #000000;
+
+      span {
+        padding: 0 0 0 16px;
+        color: #FFFFFF;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: 1.63px;
+        line-height: 26px;
+      }
+
+      sup {
+        color: #C1C7D0;
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 20px;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .box {
+    display: flex;
+    width: 335px;
+    flex-direction: column;
+    padding: 35px 20px 0;
+    border-radius: 22px;
+    background-color: #0D1217;
+    box-shadow: inset -2px -2px 4px 0 #040B11, inset 2px 2px 4px 0 #1C232A, 0 7px 20px 0 #000000;
+
+    h2 {
+      color: #FFFFFF;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 26px;
+      margin: 0 0 9px 0;
+      padding: 0 8px;
+      text-align: left;
+    }
+
+    h3 {
+      color: #C1C7D0;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 16px;
+      margin: 0;
+      padding: 0 8px;
+      text-align: left;
+    }
+
+    .insurance-total {
+      min-height: 38px;
+      p {
+        color:#FFFFFF;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 19px;
+        text-align: center;
+        margin: 0;
+        min-height: 38px;
+  
+        span {
+          display: block;
+          color: #FFBE00;
+          font-weight: 900;
+        }
+      }
+    }
+
+    .container-button {
+      display: flex;
+      justify-content: flex-end;
+      margin: 50px 0 0 0;
+
+      button {
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: 700;
+        width: 50%;
+        margin: 0 -20px 0 0;
+        color: #040B11;
+        border-radius: 22px 0 22px 0;
+        background: linear-gradient(180deg, #FFD200 0%, #FFBE00 100%);
+        padding-left: 0;
+        padding-right: 0;
+        min-height: 44px;
+        border: none;
+        cursor: pointer;
+
+        // ion-icon {
+        //   margin: 0 0 0 15px;
+        // }
+      }
+
+      button:disabled, button[disabled] {
+        background: #0C1216 !important;
+        box-shadow: inset -2px -2px 4px 0 #040B11, inset 2px 2px 4px 0 #1C232A;
+        color: #494C50;
+        opacity: 1;
+        pointer-events: none;
+      }
+    }
+
+
+
+
+    // ion-radio-group {
+    //   margin: 40px 0 0;
+
+    //   div {
+    //     margin: 0 0 40px;
+    //     display: flex;
+    //     padding: 0 8px;
+
+    //     &:last-child {
+    //       margin: 0 0 19px;
+    //     }
+
+    //     ion-radio {
+    //       --color: transparent;
+    //       border-radius: 50%;
+    //       border: 2px solid #1C232A;
+    //       background-color: #0B1117;
+    //       box-shadow: inset 0 4px 4px 0 #000000;
+    //       transform: scale(1.1);
+    //       margin: 0 18px 0 0;
+    //     }
+
+    //     ion-label {
+    //       color: #EDEDED;
+    //       font-family: Avenir;
+    //       font-size: 15px;
+    //       font-weight: 700;
+    //       text-align: left;
+    //     }
+    //   }
+    // }
+  }
+
+  .cargo-value {
+    margin: 40px 0 14px;
+    padding: 37px 10px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #10161C 0%, #0B1014 100%);
+    box-shadow: inset 2px 2px 4px 0 rgba(44,51,57,0.29), inset -2px -2px 4px 0 #000000;
+
+    input {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 26px;
+      text-align: center;
+      outline: none;
+      width: 100%;
+      background: transparent;
+      border: none;
+    }
+  }
+
+  .insurance-blocked {
+    pointer-events: none;
+  }
+}
+
+::ng-deep.mat-radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep.mat-radio-button {
+  margin: 16px 0;
+}
+
+.blur {
+  position: absolute;
+  width: 496px;
+  height: calc(100% + 6px);
+  border-radius: 22px;
+  z-index: 1;
+  background: rgba(4, 11, 17, 0);
+  backdrop-filter: blur(0);
+  transition: background 500ms, backdrop-filter 500ms;
+  display: none;
+
+  &.active {
+    background: rgba(4, 11, 17, 0.6);
+    backdrop-filter: blur(3px);
+    display: block;
+  }
+}

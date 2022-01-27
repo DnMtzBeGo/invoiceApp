@@ -1,0 +1,50 @@
+[
+  {
+  "code": "G01",
+  "description": "Adquisición de Mercancías"
+  },
+  {
+  "code": "G02",
+  "description": "Devolución, Descuentos o Bonificaciones"
+  },
+  {
+  "code": "G03",
+  "description": "Gastos en General"
+  },
+  {
+  "code": "I01",
+  "description": "Construcciones"
+  },
+  {
+  "code": "I02",
+  "description": "Mobiliario y equipo de oficina por inversiones"
+  },
+  {
+  "code": "I03",
+  "description": "Equipo de transporte"
+  },
+  {
+  "code": "I04",
+  "description": "Equipo de computo y accesorios"
+  },
+  {
+  "code": "I05",
+  "description": "Dados, troqueles , moldes, matrices y herramental"
+  },
+  {
+  "code": "I06",
+  "description": "Comunicaciones telefónicas"
+  },
+  {
+  "code": "I07",
+  "description": "Comunicaciones Satelitales"
+  },
+  {
+  "code": "I08",
+  "description": "Otra maquinaria y equipo"
+  },
+  {
+  "code": "P01",
+  "description": "Por definir"
+  }
+]

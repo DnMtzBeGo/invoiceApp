@@ -1,0 +1,148 @@
+
+
+<section>
+  <div>
+    <app-stepper
+      [stepWithPadding]="true"
+      [(selectedSlide)]="currentStepIndex"
+      (selectedSlideChange)="calculateProgress()"
+      [progress]="checkoutProgress"
+      [steps]="checkoutSteps">
+    </app-stepper>
+
+    <div>
+      <!-- only show cards if selected tab is 'summary'-->
+      <div class="pickup-dropoff-cards" *ngIf="currentStepIndex == 0">
+        <bego-radio-card
+          (click)=" changeSelectedCard('pickup') "
+          [cardIsSelected]=" selectedCard == 'pickup' ">
+          <div class="pickup-dropoff-content">
+
+            <div>
+              <div class="title">
+                {{ 'checkout.txt-pickup' | translate }}
+              </div>
+              <div class="details">
+                {{ summaryData?.pickup.startDate | date: 'dd/MM/yyyy'}}
+                <span class="separator-dot"></span>
+                {{ summaryData?.pickup.startDate | date:'hh:mm'}}
+                <span class="separator-dot"></span>
+                #{{ summaryData?.order_number }}
+              </div>
+
+              <div class="directions">
+                {{ summaryData?.pickup.address }}
+              </div>
+
+            </div>
+            <div class="map-img">
+              <img 
+                [src]="summaryData?.map.thumbnail_url" 
+                (error)="setDefaultMapImg()">
+            </div>
+
+          </div>
+
+
+            
+        </bego-radio-card>
+
+        <bego-radio-card
+          (click)=" changeSelectedCard('dropoff')  "
+          [cardIsSelected]=" selectedCard == 'dropoff' ">
+          <div class="pickup-dropoff-content">
+
+            <div>
+              <div class="title">
+                {{ 'checkout.txt-dropoff' | translate }}
+              </div>
+              <div class="details">
+                {{ summaryData?.dropoff.startDate | date: 'dd/MM/yyyy'}}
+                <span class="separator-dot"></span>
+                {{ summaryData?.dropoff.startDate | date:'hh:mm'}}
+                <span class="separator-dot"></span>
+                #{{ summaryData?.order_number }}
+              </div>
+
+              <div class="directions">
+                {{ summaryData?.dropoff.address }}
+              </div>
+
+            </div>
+            <div class="map-img">
+              <img 
+                [src]="summaryData?.map.thumbnail_url"
+                (error)="setDefaultMapImg()">
+            </div>
+
+          </div>        
+        </bego-radio-card>
+      </div>
+
+    </div>
+
+    <div class="checkout-body" >
+      <div class="tabs" >
+        <mat-tab-group [(selectedIndex)]="currentStepIndex" class="invisible-tabs" >
+
+          <mat-tab  >
+            <div class="tab-container">
+              <app-summary
+                [orderData]="summaryData"
+                [selectedCard]="selectedCard">
+                
+              </app-summary>
+            </div>
+          </mat-tab>
+
+          <mat-tab >
+            <div class="tab-container">
+              <app-invoice
+                [userData]="invoiceData"
+                (invoiceData)="updateInvoiceData($event)">
+              </app-invoice>
+            </div>
+          </mat-tab>
+
+          <mat-tab >
+            <div class="tab-container">
+              <app-payment
+                [orderData]="summaryData">
+              </app-payment>
+            </div>
+          </mat-tab>
+
+        </mat-tab-group>
+      </div>
+
+      <div>
+        <div class="price-details">
+          <app-price-details
+            [orderData]="summaryData"
+            [customsCruce]="customsCruce"
+            >
+              <div class="payment-details">
+                <div>
+                  {{ 'checkout.payment-method' | translate }}
+                </div>
+                <div class="method">
+                  {{ 'checkout.transfer' | translate }}
+                </div>
+              </div>
+              
+              
+          </app-price-details>
+        </div>
+        
+        <button 
+          mat-raised-button 
+          class="bego-btn yellow full-width thick-btn"
+          (click)="nextStep()">
+          <span class="bold">
+            {{ checkoutSteps[currentStepIndex]?.nextBtnTxt }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

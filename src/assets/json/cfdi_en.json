@@ -1,0 +1,50 @@
+[
+  {
+  "code": "G01",
+  "description": "Acquisition of Goods"
+  },
+  {
+  "code": "G02",
+  "description": "Returns, Discounts or Bonuses"
+  },
+  {
+  "code": "G03",
+  "description": "General Expenses"
+  },
+  {
+  "code": "I01",
+  "description": "Construction Labours"
+  },
+  {
+  "code": "I02",
+  "description": "Office furniture and equipment for investments"
+  },
+  {
+  "code": "I03",
+  "description": "Transport equipment"
+  },
+  {
+  "code": "I04",
+  "description": "Computer equipment and accessories"
+  },
+  {
+  "code": "I05",
+  "description": "Dies, molds, matrices and tools"
+  },
+  {
+  "code": "I06",
+  "description": "Telephone communications"
+  },
+  {
+  "code": "I07",
+  "description": "Satellite Communications"
+  },
+  {
+  "code": "I08",
+  "description": "Other machinery and equipment"
+  },
+  {
+  "code": "P01",
+  "description": "To define"
+  }
+]

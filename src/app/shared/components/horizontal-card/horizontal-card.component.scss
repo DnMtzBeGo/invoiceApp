@@ -1,0 +1,25 @@
+@import '../../../../styles.scss';
+
+.horizontal-card-container {
+  display: flex;
+  width: 50%;
+  height: 270px;
+  left: 153px;
+  top: 246px;
+  background: #0A0F14;
+  box-shadow: 0px 5px 10px #03080C, inset 4px 4px 5px #10161C, inset -4px -4px 4px #070D13;
+  border-radius: 8px;
+}
+
+.first-column,
+.thirth-column {
+  background-color: red;
+  width: 20%;
+  height: 100%;
+}
+
+.second-column {
+  background-color: yellow;
+  width: 60%;
+  height: 100%;
+}

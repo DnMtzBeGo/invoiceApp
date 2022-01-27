@@ -1,0 +1,51 @@
+.draft-radio {
+  // background: #0B1117;
+  // box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+  // border-radius: 8px 0 0 8px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  .radio {
+    width: 35px;
+    height: 35px;
+    position: relative;
+    background: #10161C;
+    border-radius: 50%;
+
+    &:before {
+      width: 23px;
+      height: 23px;
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      border: 2px solid #1C232A;
+      border-radius: 50%;
+      transition: all .2s ease-in-out;
+    }
+
+    &:after {
+      width: 25px;
+      height: 25px;
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background: #10161C;
+      box-shadow: inset 0px 4px 4px #000000;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+
+    &.active {
+        &:before {
+          background: url('../../assets/images/drafts/radio-active.svg');
+          z-index: 1;
+          background-size: cover;
+          transform: translate(-50%, -50%) scale(1);
+        }
+    }
+  }
+}

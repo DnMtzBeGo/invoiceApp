@@ -1,0 +1,33 @@
+<div class="pickup-dropoff-info-container">
+  <p class="address-info">
+    {{address}}
+  </p>
+
+  <p class="date-info">
+    {{dateOrder | date: 'medium'}}
+  </p>
+
+  <p class="extra-notes-info">
+    {{extraNotes}}
+  </p>
+
+  <p class="phone-info">
+    {{phone}}
+  </p>
+
+  <p class="email-info">
+    {{email}}
+  </p>
+
+  <p class="cargo-info" *ngIf="cargoType == 'general' ">
+    {{ 'history.history_detail.general_cargo' | translate }}
+  </p>
+  <div class="cargo-info" *ngIf="cargoType == 'hazardous' ">
+    <div class="hazardous-title">
+      {{ 'history.history_detail.hazardous_cargo' | translate }}
+    </div>
+    <div class="hazardous-description">
+      {{ getHazardousTitle(orderData.cargo.hazardous_type) }}
+    </div>
+  </div>
+</div>

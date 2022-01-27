@@ -1,0 +1,21 @@
+.cross-icon{
+    min-width: 24px;
+    min-height: 24px;
+    background: linear-gradient(180deg, rgba(16, 22, 28, 0.44) 0%, rgba(16, 22, 28, 0) 100%);
+    border: 1px solid #151B22;
+    box-shadow: inset 4px 4px 10px #1A2026, inset -4px -4px 4px #000000;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    
+    &::after{
+        content: '\2715';
+    }
+
+    &:active{
+        opacity: 0.5;
+    }
+}

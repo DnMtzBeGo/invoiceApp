@@ -1,0 +1,25 @@
+<div class="customs-agent-container">
+  <div class="customs-agent-header">
+    <div class="customs-agent-pic">
+      <img src="assets/images/carriers/carriers.jpg" />
+      <div class="customs-agent-title" data-aos="fade-up">
+        <h1>{{ 'carries.title' | translate }}</h1>
+        <p>{{ 'carries.description' | translate }}</p>
+      </div>
+    </div>
+  </div>
+  <app-driver-roles></app-driver-roles>
+  <app-driver-features></app-driver-features>
+  <app-driver-screenshots></app-driver-screenshots>
+</div>
+
+<div class="map-container">
+  <div class="map">
+    <ng-lottie
+      [options]="mapOptions"
+      (animationCreated)="mapCreated($event)"
+    ></ng-lottie>
+  </div>
+</div>
+
+<app-footer [animationOffset]="120"></app-footer>

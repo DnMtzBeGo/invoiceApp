@@ -1,0 +1,121 @@
+<div class="personal-info">
+  <div class="form-container">
+    <form [formGroup]="personalInfoForm">
+      <div class="row">
+        <mat-form-field>
+          <mat-label>
+            {{ 'profile.edit.txt_name' | translate }}
+          </mat-label>
+          <input 
+            matInput 
+            formControlName="fullname"
+            (blur)="changeNickname()">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field>
+          <mat-label>
+            {{ 'profile.edit.txt_email' | translate }}
+          </mat-label>
+          <input 
+            matInput 
+            formControlName="email"
+            (blur)="updateEmail()">
+        </mat-form-field>
+
+        <bego-phone-input
+          [hidePhoneIcon]="true"
+          [phoneFlag]="personalInfoForm.value.phoneFlag"
+          [phoneCode]="personalInfoForm.value.phoneCode"
+          [phoneNumber]="personalInfoForm.value.phoneNumber"
+          [deleteInputOnPhoneCodeChange]="true"
+          (phoneInvalid)="phoneInvalid = $event"
+          (blur)="updatePhone($event)">
+        </bego-phone-input>
+      </div>
+
+      <div class="row">
+        <mat-form-field>
+          <mat-label>
+            {{ 'profile.edit.txt_company' | translate }}
+          </mat-label>
+          <input 
+            matInput 
+            formControlName="companyName"
+            (blur)="updateAttribute('companyName')">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>RFC</mat-label>
+          <input 
+            matInput 
+            formControlName="RFC"
+            (blur)="updateAttribute('RFC')">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+
+        <mat-form-field >
+          <mat-label>
+            CFDI
+          </mat-label>
+          <mat-select 
+            class="disable-custom-format"
+            formControlName="CFDI"
+            (selectionChange)="updateAttribute('CFDI')" >
+      
+              <mat-option value="select-document" [disabled]="true"> 
+                  {{ 'checkout.select-cfdi' | translate }}
+              </mat-option>
+      
+              <mat-option *ngFor="let option of CFDIs" [value]="option.code">
+                  {{ option.code }} - {{ option.description }}
+              </mat-option>
+      
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <bego-address-autocomplete
+          [address]="personalInfoForm.value.address"
+          (addressChange)="updateAddress($event) ">
+        </bego-address-autocomplete>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- phone verification modal -->
+<app-verification-modal
+  *ngIf="showPhoneVerificationModal"
+  [valueToVerify]="personalInfoForm.value.phoneCode+ personalInfoForm.value.phoneNumber"
+  [errorMsg]="phoneErrorMsg"
+  (codeSubmit)="verifyPhone($event)"
+  (editValueToVerify)="cancelPhoneVerification()"
+  (onCancel)="cancelPhoneVerification()"
+  (resendCode)="updatePhone({
+    phoneFlag: this.personalInfoForm.value.phoneFlag, 
+    phoneCode: this.personalInfoForm.value.phoneCode,
+    phoneNumber: this.personalInfoForm.value.phoneNumber
+  })">
+    {{ 'profile.verification.txt_we_sent' | translate}}
+</app-verification-modal>
+
+<!-- email verification modal -->
+<app-verification-modal
+  *ngIf="showEmailVerificationModal"
+  [errorMsg]="mailErrorMsg"
+  [valueToVerify]="personalInfoForm.value.email"
+  (codeSubmit)="verifyEmail($event)"
+  (editValueToVerify)="cancelEmailVerification()"
+  (onCancel)="cancelEmailVerification()">
+  {{ 'profile.verification.txt_we_sent' | translate}}
+</app-verification-modal>
+
+<bego-alert
+  *ngIf="showGeneralAlert"
+  [handlers]="generalAlertHandler">
+  {{ alertMsg }}
+</bego-alert>

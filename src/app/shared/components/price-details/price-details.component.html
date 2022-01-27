@@ -1,0 +1,79 @@
+<div class="price-details-container">
+  <div class="price-details-row">
+    <div class="price-title">
+      <p>{{ 'checkout.price-details' | translate }}</p>
+    </div>
+
+    <div class="units-row">
+      <p class="units-info">${{orderData?.['pricing']?.single}} x {{orderData?.['cargo']?.required_units}} - {{orderData?.cargo?.['53_48']}}' FTL</p>
+      <p class="units-price">{{orderData?.['pricing']?.subtotal | currency}}</p>
+    </div>
+
+    <div class="insurance-row">
+      <p class="insurance-info">
+        <span *ngIf="orderData?.add_ons && orderData?.add_ons.insurance">
+
+          <span  *ngIf="orderData?.add_ons?.min_insurance" class="insurance-orderData-p">
+            {{orderData?.add_ons?.cargo_value | currency }}
+          </span>
+
+          <span *ngIf="!orderData?.add_ons?.min_insurance" class="insurance-orderData-p">
+            {{  orderData?.add_ons?.insurance_percentage | number : '1.2' }} x {{orderData?.add_ons?.cargo_value | currency }}
+          </span>
+          
+        </span>
+        {{ 'checkout.insurance' | translate }}
+      </p>
+
+      <p>{{ orderData?.add_ons?.insurance  ? (orderData?.pricing?.insurance | currency) : 'N/A' }}</p>
+    </div>
+
+    <div class="cruce-row">
+      <p class="cruce-info">
+        <span *ngIf="customsCruce && customsCruce.cruce">
+          {{ customsCruce.cruce | currency }} USD
+        </span>
+        {{ 'checkout.cruce' | translate }}
+      </p>
+      <p>{{ orderData?.add_ons?.cruce ? (orderData?.pricing?.cruce | currency ) : 'N/A' }}</p>
+    </div>
+
+    <div class="customs-row">
+      <p>
+        <span *ngIf="customsCruce && customsCruce.customs">
+          {{ customsCruce.customs | currency }} USD
+        </span>
+        {{ 'checkout.costums' | translate }}
+      </p>
+
+      <p>{{ orderData?.['pricing']?.customs ? ( orderData['pricing']?.customs  | currency) : 'N/A' }}</p>
+    </div>
+  </div>
+
+  <div class="price-total-row">
+    <div class="subtotal-row">
+      <p class="subtotal-info">{{ 'checkout.subtotal' | translate }}:</p>
+      <p class="subtotal-price">
+        {{ orderData?.['pricing']?.pre_taxes ? (orderData?.['pricing']?.pre_taxes | currency) : ( 'checkout.to-define' | translate )}}</p>
+    </div>
+
+    <div class="taxes-row">
+      <p class="taxes-info">{{ 'checkout.taxes' | translate }}:</p>
+      <p class="taxes-price">
+        {{ orderData?.['pricing']?.taxes ? (orderData?.['pricing']?.taxes | currency) : ( 'checkout.to-define' | translate )}}
+      </p>
+    </div>
+
+    <div class="total-row">
+      <p class="total-info">{{ 'checkout.total-price' | translate }}:</p>
+      <p class="total-price">
+        {{ orderData?.['pricing']?.total ? (orderData?.['pricing']?.total | currency) : ( 'checkout.to-define' | translate )}}
+      </p>
+    </div>
+
+  </div>
+
+  <div class="extra-section">
+    <ng-content></ng-content>
+  </div>
+</div>

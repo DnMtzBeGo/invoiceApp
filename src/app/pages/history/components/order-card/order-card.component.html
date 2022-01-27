@@ -1,0 +1,35 @@
+<div  class="draft-item ripple" >
+  <div class="draft-radio">
+      <div class="radio" [ngClass]=" active ? 'active' : ''" ></div>
+  </div>
+  <div class="draft-info">
+      <div class="drafts-data-header">
+        <div class="order-date-info">
+          <div>{{order.created | date: 'dd/MM/yyyy'}}</div>
+          <div>{{order.created | date: 'shortTime'}}</div>
+          <div>#{{order.order_number}}</div>
+        </div>
+        <div class="earning-order-info">
+          <p class="earnings-order">
+            {{order.pricing?.total | currency}} USD
+          </p>  
+        </div>
+      </div>
+      <div class="drafts-data-body">
+          <div class="drafts-addresses">
+              <label>{{ 'history.history_detail.pickup' | translate }}</label>
+              <div class="addresses">{{order['pickup'].address}}</div>
+          </div>
+          <div class="drafts-addresses">
+              <label>{{ 'history.history_detail.dropoff' | translate }}</label>
+              <div class="addresses">{{order.dropoff?.address}}</div>
+          </div>
+      </div>
+      <div class="order-status">
+        <p class="status-text">
+          <i class="icon icon-dot" [ngClass]="statusListData.statusList[language][order.status]?.general.class"></i>
+          {{statusListData.statusList[language][order.status]?.general.text}}
+        </p>
+      </div>
+  </div>
+</div>

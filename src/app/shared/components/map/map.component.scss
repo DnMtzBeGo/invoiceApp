@@ -1,0 +1,14 @@
+#map {
+    height: calc(100vh - 106px);
+    transition: opacity 0.5s;
+
+    &.map-faded-out{
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &.transparent {
+        height: 100vh;
+    }    
+}
+

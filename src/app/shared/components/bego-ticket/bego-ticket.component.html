@@ -1,0 +1,29 @@
+<!-- <div>
+  <ng-content select="[header]"></ng-content>
+  hola mundo
+  <ng-content select="[body]"></ng-content>
+</div> -->
+
+<div class="ticket">
+  <div class="header">
+    <ng-content
+      *ngIf="!removeHeaderSeparator" 
+      select="[header]">
+    </ng-content>
+  </div>
+
+  <div class="ticket-holes">
+    <div class="holes">
+      <hr *ngIf="!removeHeaderSeparator" />
+      <ng-content 
+        *ngIf="removeHeaderSeparator"
+        select="[centeredHeader]">
+      </ng-content>
+    </div>
+  </div>
+
+  <div class="body">
+    <ng-content select="[body]"></ng-content>
+  </div>
+
+</div>

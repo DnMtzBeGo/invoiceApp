@@ -1,0 +1,93 @@
+@import '../../../styles.scss';
+
+.map-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  transform: translateY(35%);
+
+  .map {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: scale(1.25);
+    background: url('../../../assets/lottie/animated-map.jpg');
+    background-size: 53% 89%;
+    background-repeat: no-repeat;
+    background-origin: border-box;
+    background-position: 48% 48%;
+  }
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.customs-agent-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  box-sizing: border-box;
+
+  .customs-agent-header {
+    position: relative;
+    min-height: 1000px;
+    @include fluid('min-height', $mobile-xxs, $mobile, 500px, 1000px);
+
+    .customs-agent-pic {
+      position: absolute;
+      top: -110px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 800px;
+      z-index: 1;
+      @include mobile {
+        width: 100%;
+      }
+
+      @include mobile-xs {
+        top: -88px;
+      }
+
+      img {
+        @include mobile {
+          object-fit: contain;
+          width: 100%;
+        }
+      }
+
+      .customs-agent-title {
+        position: absolute;
+        @include fluid('bottom', $mobile-ms, $desktop-fhd, -40px, 140px);
+        @include fluid('left', $mobile, $desktop-fhd, 40px, -200px);
+        @include mobile {
+          right: 40px;
+        }
+
+        h1 {
+          color: $lighter-color;
+          font-family: 'Keep Calm';
+          @include fluid('font-size', $mobile, $desktop-fhd, 50px, 100px);
+          @include fluid('margin-bottom', $mobile, $desktop-fhd, 0px, 33.5px);
+          letter-spacing: 2px;
+          line-height: 90px;
+        }
+
+        p {
+          font-family: Avenir Next;
+          letter-spacing: 1.2px;
+          font-weight: 400;
+          line-height: 32px;
+          text-align: justify;
+          max-width: 580px;
+          @include fluid('font-size', $mobile, $desktop-fhd, 16px, 25px);
+          @include fluid('margin-left', $mobile, $desktop-fhd, 0px, 160px);
+          @include fluid('margin-top', $mobile, $desktop-fhd, 0px, 50px);
+        }
+      }
+    }
+  }
+}
