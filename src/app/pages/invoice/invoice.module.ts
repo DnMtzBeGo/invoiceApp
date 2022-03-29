@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 // import { NgxPaginationModule } from 'ngx-pagination';
-import { TextMaskModule } from 'angular2-text-mask';
+import { TextMaskModule } from "angular2-text-mask";
 
 // import { SharedModule } from '../../shared/shared.module';
 // import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 
-import { InvoiceRoutingModule } from './invoice-routing.module';
+import { InvoiceRoutingModule } from "./invoice-routing.module";
 // import {
 //   OrdersPageComponent,
 //   EditionPageComponent,
@@ -135,4 +135,4 @@ import { InvoiceRoutingModule } from './invoice-routing.module';
   ],
   // providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
 })
-export class OrdersModule {}
+export class InvoiceModule {}
