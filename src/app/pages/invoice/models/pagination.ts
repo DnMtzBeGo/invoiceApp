@@ -1,0 +1,6 @@
+export interface Paginator {
+  pageIndex: number;
+  pageSize: number;
+  pageTotal: number;
+  pageSearch: string;
+}

@@ -1,0 +1,133 @@
+<div class="container">
+  <h1 mat-dialog-title>Enviar por Correo</h1>
+  <p mat-dialog-content style="margin-bottom: 2rem">
+    Ingrese la siguiente información para enviar su comprobante por correo
+    electrónico.
+  </p>
+
+  <mat-form-field
+    appearance="outline"
+    floatLabel="always"
+    style="align-self: stretch"
+  >
+    <mat-label>Asunto</mat-label>
+    <input
+      matInput
+      name="subject"
+      [ngModel]="vm.form?.subject"
+      (ngModelChange)="vm.form.subject = $event"
+      placeholder="Ingresa el asunto con el que se enviará el correo"
+    />
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    floatLabel="always"
+    style="align-self: stretch"
+  >
+    <mat-label>Para</mat-label>
+    <mat-chip-list #emailList aria-label="to">
+      <mat-chip
+        *ngFor="let email of vm.form?.to"
+        (removed)="vm.form?.to.splice(vm.form?.to.indexOf(email), 1)"
+      >
+        {{ email }}
+        <mat-icon style="padding-bottom: 0; padding-right: 0" matChipRemove>
+          cancel
+        </mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Ingresa el correo del cliente..."
+        [matChipInputFor]="emailList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="
+          $event.value && vm.form.to.push($event.value.trim());
+          $event.input.value = ''
+        "
+      />
+    </mat-chip-list>
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    floatLabel="always"
+    style="align-self: stretch"
+  >
+    <mat-label>CC</mat-label>
+    <input
+      matInput
+      name="cc"
+      [ngModel]="vm.form?.cc"
+      (ngModelChange)="vm.form.cc = $event"
+      placeholder="Ingresa el correo donde se enviará una copia"
+    />
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    floatLabel="always"
+    style="align-self: stretch"
+  >
+    <mat-label>Mensaje</mat-label>
+    <textarea
+      matInput
+      name="message"
+      [ngModel]="vm.form?.message"
+      (ngModelChange)="vm.form.message = $event"
+      placeholder="Ingresa el mensaje que quieres que se añada al correo"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="2"
+      cdkAutosizeMaxRows="3"
+    >
+    </textarea>
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    floatLabel="always"
+    style="align-self: stretch"
+  >
+    <mat-label>Responder a</mat-label>
+    <input
+      matInput
+      name="reply_to"
+      [ngModel]="vm.form?.reply_to"
+      (ngModelChange)="vm.form.reply_to = $event"
+      placeholder="Ingresa el correo donde te podrá contactar el cliente"
+    />
+  </mat-form-field>
+
+  <div class="buttons" mat-dialog-actions>
+    <button mat-flat-button mat-dialog-close>Cancelar</button>
+    <button
+      mat-flat-button
+      [color]="vm.formSuccess === false ? 'warn' : 'primary'"
+      [style.pointer-events]="vm.formLoading || vm.formSuccess ? 'none' : 'all'"
+      style="min-width: 97px; min-height: 37px"
+      (click)="formEmitter.next(['submit', vm.form])"
+    >
+      <mat-spinner
+        [style.display]="vm.formLoading ? 'block' : 'none'"
+        color="accent"
+        [diameter]="20"
+        [strokeWidth]="4"
+        style="margin: 0 auto"
+      ></mat-spinner>
+      <mat-icon
+        [style.display]="vm.formSuccess ? 'inline-block' : 'none'"
+        style="margin-right: 4px"
+        >check</mat-icon
+      >
+      <span [style.display]="!vm.formLoading ? 'inline-block' : 'none'"
+        >{{
+          vm.formError
+            ? "Reintentar"
+            : vm.formSuccess
+            ? "Correo Enviado"
+            : "Enviar Correo"
+        }}
+      </span>
+    </button>
+  </div>
+</div>

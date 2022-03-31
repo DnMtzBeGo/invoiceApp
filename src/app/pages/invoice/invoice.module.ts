@@ -2,47 +2,56 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
-// import { NgxPaginationModule } from 'ngx-pagination';
+// import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
+import { NgxPaginationModule } from "ngx-pagination";
 import { TextMaskModule } from "angular2-text-mask";
 
-// import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from "../../shared/shared.module";
 // import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 
 import { InvoiceRoutingModule } from "./invoice-routing.module";
-// import {
-//   OrdersPageComponent,
-//   EditionPageComponent,
-//   VariablesPageComponent,
-//   OrderDetailsPageComponent,
-//   AssignDriverPageComponent,
-//   FacturasPageComponent,
-//   FacturaEditPageComponent,
-//   CartaPortePageComponent,
-//   InvoicePageComponent,
-// } from './containers';
-// import {
-//   OrderTableComponent,
-//   NewOrderComponent,
-//   CancelTableComponent,
-//   DraftTableComponent,
-//   OrderCheckoutComponent,
-//   RoutelessTableComponent,
-//   FirstStepComponent,
-//   SecondStepComponent,
-//   ThirdStepComponent,
-//   FourthStepComponent,
-//   FifthStepComponent,
-//   VariablesComponent,
-//   ChangeStatusComponent,
-//   AssignDriverComponent,
-//   DriverSelectionTableComponent,
-//   TruckSelectionTableComponent,
-//   TrailerSelectionTableComponent,
-//   RunAlgorithmComponent,
-//   FacturaTableComponent,
-//   InvoiceTableComponent,
-// } from './components';
+import {
+  //   OrdersPageComponent,
+  //   EditionPageComponent,
+  //   VariablesPageComponent,
+  //   OrderDetailsPageComponent,
+  //   AssignDriverPageComponent,
+  FacturasPageComponent,
+  //   FacturaEditPageComponent,
+  //   CartaPortePageComponent,
+  //   InvoicePageComponent,
+} from "./containers";
+import {
+  //   OrderTableComponent,
+  //   NewOrderComponent,
+  //   CancelTableComponent,
+  //   DraftTableComponent,
+  //   OrderCheckoutComponent,
+  //   RoutelessTableComponent,
+  //   FirstStepComponent,
+  //   SecondStepComponent,
+  //   ThirdStepComponent,
+  //   FourthStepComponent,
+  //   FifthStepComponent,
+  //   VariablesComponent,
+  //   ChangeStatusComponent,
+  //   AssignDriverComponent,
+  //   DriverSelectionTableComponent,
+  //   TruckSelectionTableComponent,
+  //   TrailerSelectionTableComponent,
+  //   RunAlgorithmComponent,
+  FacturaTableComponent,
+  //   InvoiceTableComponent,
+} from "./components";
+import {
+  ActionConfirmationComponent,
+  ActionCancelarFacturaComponent,
+  ActionSendEmailFacturaComponent,
+  // PushNotificationComponent,
+  // AddNoteComponent,
+  // FacturaEmisorConceptosComponent,
+  // FacturaManageDireccionesComponent,
+} from "./modals";
 // import { FacturaEmitterComponent } from './components/factura-emitter/factura-emitter.component';
 // import { EmisoresComponent } from './containers/emisores/emisores.component';
 // import { CartaPortePageComponent } from './containers/carta-porte-page/carta-porte-page.component';
@@ -90,9 +99,9 @@ import { InvoiceRoutingModule } from "./invoice-routing.module";
     // TruckSelectionTableComponent,
     // TrailerSelectionTableComponent,
     // RunAlgorithmComponent,
-    // FacturasPageComponent,
+    FacturasPageComponent,
     // FacturaEditPageComponent,
-    // FacturaTableComponent,
+    FacturaTableComponent,
     // FacturaEmitterComponent,
     // EmisoresComponent,
     // CartaPortePageComponent,
@@ -105,7 +114,6 @@ import { InvoiceRoutingModule } from "./invoice-routing.module";
     // MercanciasComponent,
     // TransporteComponent,
     // UbicacionesComponent,
-    // FacturaTableComponent,
     // InvoicePageComponent,
     // InvoiceTableComponent,
     // UbicacionComponent,
@@ -116,22 +124,32 @@ import { InvoiceRoutingModule } from "./invoice-routing.module";
     // SeriesEditPageComponent,
     // SeriesTableComponent,
     // SeriesNewComponent,
+    // MODALS
+    ActionConfirmationComponent,
+    ActionCancelarFacturaComponent,
+    ActionSendEmailFacturaComponent,
   ],
   imports: [
-    // CommonModule,
+    CommonModule,
     // NgxPermissionsModule,
-    // OrdersRoutingModule,
-    // SharedModule,
+    InvoiceRoutingModule,
+    SharedModule,
     // AppMaterialModule,
     // CoreModule,
-    // RouterModule,
-    // ReactiveFormsModule,
-    // FormsModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
     // NgxMaterialTimepickerModule,
-    // TextMaskModule,
-    // NgxPaginationModule,
+    TextMaskModule,
+    NgxPaginationModule,
     // NgxMatColorPickerModule,
     // LocationModule,
+  ],
+  exports: [
+    // MODALS
+    ActionConfirmationComponent,
+    ActionCancelarFacturaComponent,
+    ActionSendEmailFacturaComponent,
   ],
   // providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
 })

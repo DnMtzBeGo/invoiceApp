@@ -1,0 +1,365 @@
+<div class="page-header" role="heading">
+  <h1>Facturas</h1>
+  <div class="toolbar-right">
+    <button
+      mat-flat-button
+      matRipple
+      class="green-color"
+      routerLink="{{ routes.EMISORES }}"
+    >
+      Emisores
+    </button>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      class="suffix-btn"
+      style="max-width: 245px"
+    >
+      <input
+        matInput
+        aria-label="Template"
+        name="template"
+        [ngModel]="vm.template"
+        (ngModelChange)="
+          facturasEmitter.next(['template:search', (vm.template = $event)])
+        "
+        maxlength="13"
+        placeholder="Buscar Template"
+        [matAutocomplete]="auto"
+        (keydown.enter)="
+          vm.template &&
+            vm.searchAction?.type === 'template' &&
+            !vm.searchLoading &&
+            vm.receptorSearch?.template?.length === 0 &&
+            router.navigate([
+              routes.NEW_TEMPLATE,
+              {
+                template: makeTemplate({
+                  name: vm.template
+                })
+              }
+            ])
+        "
+      />
+
+      <button
+        matSuffix
+        mat-flat-button
+        color="warn"
+        *ngxPermissionsOnly="['writeOperations']"
+        [routerLink]="
+          vm.template && vm.receptorSearch?.template?.length === 0
+            ? [
+                routes.NEW_TEMPLATE,
+                {
+                  template: makeTemplate({
+                    name: vm.template
+                  })
+                }
+              ]
+            : [routes.NEW_FACTURA]
+        "
+        [style.pointer-events]="
+          vm.receptorSearch?.template?.length > 0 ? 'none' : 'unset'
+        "
+      >
+        {{
+          vm.template && vm.receptorSearch?.template?.length === 0
+            ? "New Template"
+            : vm.template && vm.receptorSearch?.template?.length > 0
+            ? "Open Template"
+            : "New Invoice"
+        }}
+      </button>
+
+      <mat-progress-bar
+        style="
+          bottom: 0px;
+          position: absolute;
+          width: calc(100% + 16px);
+          height: 2px;
+          left: -9px;
+        "
+        [style.display]="
+          vm.searchAction?.type === 'template' && vm.searchLoading
+            ? 'block'
+            : 'none'
+        "
+        mode="indeterminate"
+      ></mat-progress-bar>
+
+      <mat-autocomplete
+        autoActiveFirstOption
+        #auto="matAutocomplete"
+        (optionSelected)="
+          router.navigate([
+            routes.NEW_FACTURA,
+            {
+              template: $event.option._element.nativeElement.dataset.template
+            }
+          ])
+        "
+      >
+        <mat-option
+          *ngFor="let template of vm.receptorSearch?.template"
+          [value]="template.name"
+          class="brand-option-2"
+          [attr.data-template]="makeTemplate(template)"
+          [routerLink]="[
+            routes.NEW_FACTURA,
+            { template: makeTemplate(template) }
+          ]"
+        >
+          <a
+            [routerLink]="[
+              routes.NEW_FACTURA,
+              { template: makeTemplate(template) }
+            ]"
+            style="color: inherit; text-decoration: unset"
+          >
+            {{ template.name }}
+            <mat-icon
+              (click)="
+                $event.stopPropagation();
+                $event.preventDefault();
+                router.navigate([
+                  routes.EDIT_TEMPLATE,
+                  {
+                    id: template._id
+                  }
+                ])
+              "
+            >
+              edit
+            </mat-icon>
+          </a>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="filters">
+  <!-- <mat-form-field appearance="fill">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Start date" />
+        <input matEndDate placeholder="End date" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field> -->
+
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>UUID</mat-label>
+    <input
+      matInput
+      aria-label="UUID"
+      name="uuid"
+      [ngModel]="vm.params?.uuid"
+      (ngModelChange)="
+        router.navigate([], {
+          relativeTo: route,
+          queryParams: { uuid: $event, page: 1 },
+          queryParamsHandling: 'merge'
+        })
+      "
+      placeholder="Buscar por UUID"
+    />
+  </mat-form-field>
+</div>
+
+<div class="filters" style="margin-bottom: 16px">
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Rango de fechas</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input
+        matInput
+        matStartDate
+        placeholder="Inicial"
+        [ngModel]="vm.params?.fec_inicial"
+        (ngModelChange)="
+          router.navigate([], {
+            relativeTo: route,
+            queryParams: {
+              fec_inicial: (vm.params.fec_inicial = $event),
+              page: 1
+            },
+            queryParamsHandling: 'merge'
+          })
+        "
+      />
+      <input
+        matInput
+        matEndDate
+        placeholder="Final"
+        [ngModel]="vm.params?.fec_final"
+        (ngModelChange)="
+          router.navigate([], {
+            relativeTo: route,
+            queryParams: {
+              fec_final: (vm.params.fec_final = $event),
+              page: 1
+            },
+            queryParamsHandling: 'merge'
+          })
+        "
+      />
+    </mat-date-range-input>
+    <div matSuffix>
+      <button
+        [style.display]="
+          vm.params?.fec_inicial || vm.params?.fec_final
+            ? 'inline-flex'
+            : 'none'
+        "
+        mat-icon-button
+        (click)="
+          router.navigate([], {
+            relativeTo: route,
+            queryParams: {
+              fec_inicial: (vm.params.fec_inicial = null),
+              fec_final: (vm.params.fec_final = null),
+              page: 1
+            },
+            queryParamsHandling: 'merge'
+          });
+          $event.stopPropagation()
+        "
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-datepicker-toggle
+        [for]="picker"
+        (click)="log('open')"
+      ></mat-datepicker-toggle>
+    </div>
+    <mat-date-range-picker
+      #picker
+      (stateChanges)="log('picker', $event)"
+    ></mat-date-range-picker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Emisor</mat-label>
+    <input
+      matInput
+      aria-label="Emisor"
+      name="emisor"
+      [ngModel]="vm.params?.emisor"
+      (ngModelChange)="
+        router.navigate([], {
+          relativeTo: route,
+          queryParams: { emisor: $event, page: 1 },
+          queryParamsHandling: 'merge'
+        })
+      "
+      placeholder="Buscar por Nombre o RFC"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Receptor</mat-label>
+    <input
+      matInput
+      aria-label="Receptor"
+      name="receptor"
+      [ngModel]="vm.params?.receptor"
+      (ngModelChange)="
+        router.navigate([], {
+          relativeTo: route,
+          queryParams: { receptor: $event, page: 1 },
+          queryParamsHandling: 'merge'
+        })
+      "
+      placeholder="Buscar por Nombre o RFC"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Tipo de Comprobante</mat-label>
+    <mat-select
+      name="tipo_de_comprobante"
+      [ngModel]="vm.params?.tipo_de_comprobante"
+      (ngModelChange)="
+        router.navigate([], {
+          relativeTo: route,
+          queryParams: { tipo_de_comprobante: $event, page: 1 },
+          queryParamsHandling: 'merge'
+        })
+      "
+      placeholder="Todos"
+      class="no-custom-theme"
+    >
+      <ng-container *ngFor="let tipo of vm.tiposComprobante">
+        <mat-option *ngIf="tipo.enabled" [value]="tipo.clave">
+          {{ tipo.clave }} - {{ tipo.descripcion }}
+        </mat-option>
+      </ng-container>
+    </mat-select>
+
+    <button
+      [style.display]="vm.params?.tipo_de_comprobante ? 'block' : 'none'"
+      mat-icon-button
+      matSuffix
+      (click)="
+        router.navigate([], {
+          relativeTo: route,
+          queryParams: {
+            tipo_de_comprobante: (vm.params.tipo_de_comprobante = ''),
+            page: 1
+          },
+          queryParamsHandling: 'merge'
+        });
+        $event.stopPropagation()
+      "
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" floatLabel="always">
+    <mat-label>Status</mat-label>
+    <mat-select
+      name="status"
+      [value]="parseNumbers(vm.params?.status)"
+      (selectionChange)="
+        router.navigate([], {
+          relativeTo: route,
+          queryParams: {
+            status: (vm.params.status = $event.value.join(',')),
+            page: 1
+          },
+          queryParamsHandling: 'merge'
+        })
+      "
+      placeholder="Todos"
+      class="no-custom-theme"
+      multiple
+    >
+      <mat-option *ngFor="let tipo of vm.facturaStatus" [value]="tipo.clave">
+        {{ tipo.nombre }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div>
+  <app-factura-table
+    [orderTableData]="vm.facturas"
+    [loading]="vm.facturasLoading"
+    [page]="paginator"
+    (pageChange)="
+      router.navigate([], {
+        relativeTo: route,
+        queryParams: {
+          limit: $event.pageSize,
+          page: $event.pageIndex
+        },
+        queryParamsHandling: 'merge'
+      })
+    "
+    (refresh)="facturasEmitter.next(['refresh'])"
+  ></app-factura-table>
+</div>

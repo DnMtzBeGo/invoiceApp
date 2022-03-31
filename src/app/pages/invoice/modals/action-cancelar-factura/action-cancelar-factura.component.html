@@ -1,0 +1,76 @@
+<div class="container">
+  <h1 mat-dialog-title>Cancelar Comprobante</h1>
+  <p mat-dialog-content style="margin-bottom: 2rem">
+    Ingresa el motivo de cancelación del comprobante.
+  </p>
+
+  <mat-form-field
+    appearance="outline"
+    floatLabel="always"
+    style="align-self: stretch"
+  >
+    <mat-label>Motivo</mat-label>
+    <mat-select
+      name="motivo_cancelacion"
+      [ngModel]="vm.form?.motivo_cancelacion"
+      (ngModelChange)="vm.form.motivo_cancelacion = $event"
+      placeholder="Seleciona una opción"
+      class="no-custom-theme"
+    >
+      <mat-option *ngFor="let motivo of vm.motivos" [value]="motivo.clave">
+        {{ motivo.descripcion }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field
+    [style.display]="
+      vm.form?.motivo_cancelacion === '01' ? 'inline-block' : 'none'
+    "
+    appearance="outline"
+    floatLabel="always"
+    style="align-self: stretch"
+  >
+    <mat-label>Folio Sustitución</mat-label>
+    <input
+      matInput
+      name="uuid_relacion"
+      [ngModel]="vm.form?.uuid_relacion"
+      (ngModelChange)="vm.form.uuid_relacion = $event"
+      placeholder="Ingresa el folio fiscal del CFDI a sustituir"
+    />
+  </mat-form-field>
+
+  <div class="buttons" mat-dialog-actions>
+    <button mat-flat-button mat-dialog-close>Cancelar</button>
+    <button
+      mat-flat-button
+      [color]="vm.formSuccess === false ? 'warn' : 'primary'"
+      [style.pointer-events]="vm.formLoading || vm.formSuccess ? 'none' : 'all'"
+      style="min-width: 97px; min-height: 37px"
+      (click)="formEmitter.next(['submit', vm.form])"
+    >
+      <mat-spinner
+        [style.display]="vm.formLoading ? 'block' : 'none'"
+        color="accent"
+        [diameter]="20"
+        [strokeWidth]="4"
+        style="margin: 0 auto"
+      ></mat-spinner>
+      <mat-icon
+        [style.display]="vm.formSuccess ? 'inline-block' : 'none'"
+        style="margin-right: 4px"
+        >check</mat-icon
+      >
+      <span [style.display]="!vm.formLoading ? 'inline-block' : 'none'"
+        >{{
+          vm.formError
+            ? "Reintentar"
+            : vm.formSuccess
+            ? "Factura cancelada"
+            : "Confirmar"
+        }}
+      </span>
+    </button>
+  </div>
+</div>

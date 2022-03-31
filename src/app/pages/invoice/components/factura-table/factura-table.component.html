@@ -1,0 +1,371 @@
+<mat-card class="factura-table-wrapper">
+  <mat-card-title class="factura-table-wrapper__header">
+    <p class="factura-table-wrapper__title">Facturas</p>
+    <div>
+      <button
+        class="factura-table-wrapper__button"
+        mat-mini-fab
+        (click)="refresh.emit()"
+      >
+        <mat-icon class="factura-table-wrapper__icon">sync</mat-icon>
+      </button>
+    </div>
+  </mat-card-title>
+
+  <mat-card-content class="factura-table__content">
+    <mat-progress-bar
+      [style.display]="loading ? 'block' : 'none'"
+      style="position: absolute; top: 54px; height: 2px"
+      mode="indeterminate"
+    ></mat-progress-bar>
+
+    <table
+      class="factura-table__table"
+      mat-table
+      matSort
+      matSortStart="desc"
+      [dataSource]="dataSource"
+    >
+      <!-- Time Column -->
+      <ng-container matColumnDef="fecha_emision">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 80px"
+        >
+          Emisión
+        </th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          {{ element.fecha_emision | date: "MMM d, yy" }}
+        </td>
+      </ng-container>
+
+      <!-- Emisor Column -->
+      <ng-container matColumnDef="emisor">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 220px"
+        >
+          Emisor
+        </th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          <span style="font-weight: 500">{{ element.emisor?.nombre }}</span>
+          <span style="font-weight: 300"> {{ element.emisor?.rfc }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Receptor Column -->
+      <ng-container matColumnDef="receptor">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 220px"
+        >
+          Receptor
+        </th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          <span style="font-weight: 500">{{ element.receptor?.nombre }}</span>
+          <span style="font-weight: 300"> {{ element.receptor?.rfc }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Serie Column -->
+      <ng-container matColumnDef="serie">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 80px"
+        >
+          Serie
+        </th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          {{ element.serie_label || element.serie }}
+        </td>
+      </ng-container>
+
+      <!-- Tipo Column -->
+      <ng-container matColumnDef="tipo">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 80px"
+        >
+          Tipo
+        </th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          {{ element.tipo_de_comprobante_ }}
+        </td>
+      </ng-container>
+
+      <!-- Stamped Column -->
+      <ng-container matColumnDef="status">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 90px"
+        >
+          Status
+        </th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+          [style.color]="facturaStatus('color', element.status)"
+        >
+          {{ element.status_ }}
+        </td>
+      </ng-container>
+
+      <!-- Subtotal Column -->
+      <ng-container matColumnDef="subtotal">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 80px"
+        >
+          Subtotal
+        </th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          {{
+            element.subtotal
+              ? "$" +
+                element.subtotal.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })
+              : ""
+          }}
+        </td>
+      </ng-container>
+
+      <!-- Total Column -->
+      <ng-container matColumnDef="total">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 80px"
+        >
+          Total
+        </th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          {{
+            element.total
+              ? "$" +
+                element.total.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })
+              : ""
+          }}
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 50px"
+        ></th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button
+              mat-menu-item
+              [routerLink]="[
+                routes.EDIT_FACTURA,
+                p(element).edit
+                  ? { id: element._id }
+                  : { id: element._id, status: element.status }
+              ]"
+            >
+              <mat-icon>find_in_page</mat-icon>
+              <span>{{
+                p(element).edit ? "Editar Factura" : "Ver detalles"
+              }}</span>
+            </button>
+            <button
+              *ngIf="p(element).edit && p(element).cartaporte"
+              mat-menu-item
+              [routerLink]="[routes.CARTA_PORTE, { id: element._id }]"
+            >
+              <mat-icon>ballot</mat-icon>
+              <span>Carta porte</span>
+            </button>
+            <button
+              *ngIf="p(element).duplicar"
+              mat-menu-item
+              [routerLink]="[routes.NEW_FACTURA, { template: element._id }]"
+            >
+              <mat-icon>file_copy</mat-icon>
+              <span>Duplicar</span>
+            </button>
+            <button
+              *ngIf="p(element).vistaprevia"
+              mat-menu-item
+              (click)="downloadPreview(element)"
+            >
+              <mat-icon>download</mat-icon>
+              <span>Vista Previa</span>
+            </button>
+            <a
+              *ngIf="p(element).pdf"
+              mat-menu-item
+              [href]="element.files?.pdf"
+              download=""
+              style="font-size: 16px"
+            >
+              <mat-icon>download</mat-icon>
+              <span>Descargar PDF</span>
+            </a>
+            <a
+              *ngIf="p(element).pdf_cancelado"
+              mat-menu-item
+              [href]="element.files?.pdf_cancelado"
+              download=""
+              style="font-size: 16px"
+            >
+              <mat-icon>download</mat-icon>
+              <span>Descargar PDF</span>
+            </a>
+            <a
+              *ngIf="p(element).xml"
+              mat-menu-item
+              [href]="element.files?.xml"
+              download=""
+              style="font-size: 16px"
+            >
+              <mat-icon>download</mat-icon>
+              <span>Descargar XML</span>
+            </a>
+            <a
+              *ngIf="p(element).xml_acuse"
+              mat-menu-item
+              [href]="element.files?.xml_acuse"
+              download=""
+              style="font-size: 16px"
+            >
+              <mat-icon>download</mat-icon>
+              <span>Descargar Acuse</span>
+            </a>
+            <button
+              *ngIf="p(element).enviar_correo"
+              mat-menu-item
+              (click)="sendEmailFactura(element._id)"
+            >
+              <mat-icon>email</mat-icon>
+              <span>Enviar por Correo</span>
+            </button>
+            <button
+              *ngIf="p(element).cancelar"
+              mat-menu-item
+              (click)="cancelarFactura(element._id)"
+            >
+              <mat-icon>cancel</mat-icon>
+              <span>Cancelar factura</span>
+            </button>
+            <button
+              *ngIf="p(element).eliminar"
+              mat-menu-item
+              (click)="deleteFactura(element._id)"
+            >
+              <mat-icon>delete</mat-icon>
+              <span>Eliminar Factura</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+      <tr
+        mat-row
+        *matRowDef="
+          let row;
+          columns: displayedColumns
+            | paginate
+              : {
+                  id: 'active',
+                  itemsPerPage: page.pageSize,
+                  currentPage: page.pageIndex,
+                  totalItems: page.pageTotal * page.pageSize
+                }
+        "
+      ></tr>
+    </table>
+  </mat-card-content>
+
+  <div class="factura-table__paginator">
+    <div>
+      <mat-label>Table size</mat-label>
+      <mat-form-field>
+        <mat-select
+          [(value)]="page.pageSize"
+          (selectionChange)="pageChangeEmiter()"
+        >
+          <mat-option
+            [value]="sizeOption"
+            *ngFor="let sizeOption of sizeOptions"
+            >{{ sizeOption }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <pagination-controls
+      id="active"
+      (pageChange)="pagination($event)"
+    ></pagination-controls>
+  </div>
+</mat-card>

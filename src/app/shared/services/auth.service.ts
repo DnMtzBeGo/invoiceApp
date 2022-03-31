@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { environment } from '../../../environments/environment';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { TranslateService } from "@ngx-translate/core";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthService {
   constructor(
@@ -15,11 +15,11 @@ export class AuthService {
 
   async getOptions(options: object) {
     const defaultValues: object = {
-      loader: 'true',
-      timeout: '30000',
-      retry: '0',
-      route: '',
-      lang: this.translateService.currentLang
+      loader: "true",
+      timeout: "30000",
+      retry: "0",
+      route: "",
+      lang: this.translateService.currentLang,
     };
 
     return new HttpParams({
@@ -27,8 +27,8 @@ export class AuthService {
         ...defaultValues,
         ...Object.fromEntries(
           Object.entries(options).filter(([key]) => key in defaultValues)
-        )
-      }
+        ),
+      },
     });
   }
 
@@ -39,17 +39,17 @@ export class AuthService {
     appBehaviourOptions: object = {}
   ): Promise<Observable<any>> {
     const headers = new HttpHeaders({
-      'Access-Control-Allow-Origin': '*',
-      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
-      'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
-      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
+      "Access-Control-Allow-Origin": "*",
+      "Acceontrol-Allow-Headers": "Content-Type, Accept",
+      "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
+      Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
     });
     const params = await this.getOptions(appBehaviourOptions);
     // return this.http.post<any>(environment.URL_BASE + method, formData, { headers, params: params });
     return this.http.post<any>(environment.URL_BASE + method, formData, {
       headers,
       params,
-      ...requestOptions
+      ...requestOptions,
     });
   }
 
@@ -59,17 +59,35 @@ export class AuthService {
     options: object = {}
   ): Promise<Observable<any>> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
-      'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
-      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Acceontrol-Allow-Headers": "Content-Type, Accept",
+      "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
+      Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
     });
 
     const params = await this.getOptions(options);
     return this.http.post<any>(environment.URL_BASE + method, requestJson, {
       headers,
-      params
+      params,
+    });
+  }
+
+  public async apiRestGet(
+    method: string,
+    options: object = {}
+  ): Promise<Observable<any>> {
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Acceontrol-Allow-Headers": "Content-Type, Accept",
+      "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    });
+    const params = await this.getOptions(options);
+    return this.http.get<any>(environment.URL_BASE + method, {
+      headers,
+      params,
     });
   }
 }
