@@ -7,6 +7,7 @@ import {
   AfterViewInit,
   Output,
   EventEmitter,
+  ViewEncapsulation,
 } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatSort } from "@angular/material/sort";
@@ -34,6 +35,7 @@ import {
   selector: "app-factura-table",
   templateUrl: "./factura-table.component.html",
   styleUrls: ["./factura-table.component.scss"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
   public routes: typeof routes = routes;

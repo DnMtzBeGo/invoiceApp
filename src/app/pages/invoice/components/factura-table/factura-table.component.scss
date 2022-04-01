@@ -6,8 +6,7 @@
   padding-left: 0;
   padding-right: 0;
   margin: 0 16px 32px 16px;
-  box-shadow: 0 3px 11px 0 $shadow-white, 0 3px 3px -2px $shadow-grey,
-    0 1px 8px 0 $shadow-dark-grey;
+  background: inherit;
 
   &__header {
     padding: 0 24px;
@@ -80,6 +79,24 @@
   &__table {
     width: 100%;
     box-shadow: none;
+    background: initial;
+
+    .mat-header-cell,
+    .mat-cell {
+      color: #ededed;
+    }
+
+    .mat-header-cell {
+      font-family: "Avenir";
+      font-style: normal;
+      font-weight: 800;
+      font-size: 16px;
+      line-height: 22px;
+
+      > div {
+        justify-content: center;
+      }
+    }
 
     @media (max-width: $small) {
       width: 200%;

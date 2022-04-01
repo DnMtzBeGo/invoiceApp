@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 // import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { NgxPaginationModule } from "ngx-pagination";
 import { TextMaskModule } from "angular2-text-mask";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { SharedModule } from "../../shared/shared.module";
 // import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
@@ -131,6 +132,7 @@ import {
   ],
   imports: [
     CommonModule,
+    TranslateModule,
     // NgxPermissionsModule,
     InvoiceRoutingModule,
     SharedModule,

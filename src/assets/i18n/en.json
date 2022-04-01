@@ -638,5 +638,11 @@
             "body": "Please try again later",
             "ok": "ok"
         }
+    },
+    "invoice": {
+        "invoices": {
+            "emisor-btn": "Emisor",
+            "new-invoice": "New Invoice"
+        }
     }
 }

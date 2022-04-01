@@ -1,5 +1,5 @@
 <div class="page-header" role="heading">
-  <h1>Facturas</h1>
+  <h1></h1>
   <div class="toolbar-right">
     <button
       mat-flat-button
@@ -7,7 +7,7 @@
       class="green-color"
       routerLink="{{ routes.EMISORES }}"
     >
-      Emisores
+      {{ "invoice.invoices.emisor-btn" | translate }}
     </button>
 
     <mat-form-field
@@ -47,7 +47,6 @@
         matSuffix
         mat-flat-button
         color="warn"
-        *ngxPermissionsOnly="['writeOperations']"
         [routerLink]="
           vm.template && vm.receptorSearch?.template?.length === 0
             ? [
@@ -69,7 +68,7 @@
             ? "New Template"
             : vm.template && vm.receptorSearch?.template?.length > 0
             ? "Open Template"
-            : "New Invoice"
+            : ("invoice.invoices.new-invoice" | translate)
         }}
       </button>
 
@@ -140,17 +139,7 @@
   </div>
 </div>
 
-<div class="filters">
-  <!-- <mat-form-field appearance="fill">
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate placeholder="Start date" />
-        <input matEndDate placeholder="End date" />
-      </mat-date-range-input>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field> -->
-
+<!-- <div class="filters">
   <mat-form-field appearance="outline" floatLabel="always">
     <mat-label>UUID</mat-label>
     <input
@@ -168,9 +157,9 @@
       placeholder="Buscar por UUID"
     />
   </mat-form-field>
-</div>
+</div> -->
 
-<div class="filters" style="margin-bottom: 16px">
+<!-- <div class="filters" style="margin-bottom: 16px">
   <mat-form-field appearance="outline" floatLabel="always">
     <mat-label>Rango de fechas</mat-label>
     <mat-date-range-input [rangePicker]="picker">
@@ -343,7 +332,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-</div>
+</div> -->
 
 <div>
   <app-factura-table

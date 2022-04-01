@@ -602,5 +602,11 @@
             "body": "Favor de continuar más tarde",
             "ok": "ok"
         }
+    },
+    "invoice": {
+        "invoices": {
+            "emisor-btn": "Emisor",
+            "new-invoice": "Nuevo Emisor"
+        }
     }
 }

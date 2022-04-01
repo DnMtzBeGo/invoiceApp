@@ -318,7 +318,7 @@ export const validators = {
 
 export const facturaStatus = (key, status?) => {
   const defaults = {
-    color: "#000000DE",
+    color: "#ededed",
   };
 
   const map = {

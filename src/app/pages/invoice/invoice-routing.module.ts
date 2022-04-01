@@ -17,52 +17,47 @@ import {
 // import { CartaPortePageComponent } from './containers/carta-porte-page/carta-porte-page.component';
 
 const routes: Routes = [
-  {
-    path: "",
-    children: [
-      { path: "", component: FacturasPageComponent },
-      //     {
-      //       path: 'new',
-      //       component: FacturaEditPageComponent,
-      //       data: {
-      //         model: 'factura',
-      //       },
-      //     },
-      //     {
-      //       path: 'new-template',
-      //       component: FacturaEditPageComponent,
-      //       data: {
-      //         model: 'template',
-      //       },
-      //     },
-      //     {
-      //       path: 'edit',
-      //       component: FacturaEditPageComponent,
-      //       data: {
-      //         model: 'factura',
-      //       },
-      //     },
-      //     {
-      //       path: 'edit-template',
-      //       component: FacturaEditPageComponent,
-      //       data: {
-      //         model: 'template',
-      //       },
-      //     },
-      //     { path: 'carta-porte', component: CartaPortePageComponent },
-      //     { path: 'emisor',
-      //       children: [
-      //         { path: '', component: EmisoresComponent },
-      //         { path: 'serie',
-      //         children: [
-      //           { path: '', component: SeriesPageComponent },
-      //           { path: 'new', component: SeriesEditPageComponent },
-      //         ]
-      //         }
-      //       ],
-      //     },
-    ],
-  },
+  { path: "", component: FacturasPageComponent },
+  //     {
+  //       path: 'new',
+  //       component: FacturaEditPageComponent,
+  //       data: {
+  //         model: 'factura',
+  //       },
+  //     },
+  //     {
+  //       path: 'new-template',
+  //       component: FacturaEditPageComponent,
+  //       data: {
+  //         model: 'template',
+  //       },
+  //     },
+  //     {
+  //       path: 'edit',
+  //       component: FacturaEditPageComponent,
+  //       data: {
+  //         model: 'factura',
+  //       },
+  //     },
+  //     {
+  //       path: 'edit-template',
+  //       component: FacturaEditPageComponent,
+  //       data: {
+  //         model: 'template',
+  //       },
+  //     },
+  //     { path: 'carta-porte', component: CartaPortePageComponent },
+  //     { path: 'emisor',
+  //       children: [
+  //         { path: '', component: EmisoresComponent },
+  //         { path: 'serie',
+  //         children: [
+  //           { path: '', component: SeriesPageComponent },
+  //           { path: 'new', component: SeriesEditPageComponent },
+  //         ]
+  //         }
+  //       ],
+  //     },
 ];
 
 @NgModule({
