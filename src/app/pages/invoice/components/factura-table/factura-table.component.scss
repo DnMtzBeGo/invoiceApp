@@ -6,7 +6,7 @@
   padding-left: 0;
   padding-right: 0;
   margin: 0 16px 32px 16px;
-  background: inherit;
+  background: #0a0f14;
 
   &__header {
     padding: 0 24px;
@@ -98,6 +98,27 @@
       }
     }
 
+    .mat-cell {
+      font-family: "Avenir";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 19px;
+    }
+
+    thead th {
+      border-bottom-color: #1c232a;
+    }
+
+    tbody tr:nth-child(2n) {
+      background: linear-gradient(
+        90.03deg,
+        rgba(13, 18, 23, 0.4) 0.86%,
+        rgba(35, 37, 40, 0.163875) 51.72%,
+        rgba(83, 88, 94, 0.08) 99.51%
+      );
+    }
+
     @media (max-width: $small) {
       width: 200%;
     }
@@ -116,6 +137,7 @@
   &__table-body {
     font-size: $fs-small;
     padding: 0 8px;
+    text-align: center;
   }
 
   &__content-badge {
@@ -144,5 +166,13 @@
     mat-label {
       margin-right: 1em;
     }
+  }
+}
+
+.mat-menu-panel.brand-menu-factura {
+  background: #0a0f14;
+
+  .mat-menu-item {
+    color: #ededed;
   }
 }

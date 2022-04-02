@@ -322,7 +322,7 @@ export const facturaStatus = (key, status?) => {
   };
 
   const map = {
-    [9]: { color: "#ff4081" },
+    [9]: { color: "#fa3c00" },
   };
 
   return map[status]?.[key] ?? defaults?.[key];
