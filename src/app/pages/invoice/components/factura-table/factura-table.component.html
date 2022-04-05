@@ -35,7 +35,7 @@
           mat-sort-header
           style="width: 80px"
         >
-          Emisión
+          {{ "invoice.invoice-table.emision" | translate }}
         </th>
         <td
           class="factura-table__table-body"
@@ -55,7 +55,7 @@
           mat-sort-header
           style="width: 220px"
         >
-          Emisor
+          {{ "invoice.invoice-table.emisor" | translate }}
         </th>
         <td
           class="factura-table__table-body"
@@ -76,7 +76,7 @@
           mat-sort-header
           style="width: 220px"
         >
-          Receptor
+          {{ "invoice.invoice-table.receptor" | translate }}
         </th>
         <td
           class="factura-table__table-body"
@@ -97,7 +97,7 @@
           mat-sort-header
           style="width: 80px"
         >
-          Serie
+          {{ "invoice.invoice-table.serie" | translate }}
         </th>
         <td
           class="factura-table__table-body"
@@ -117,7 +117,7 @@
           mat-sort-header
           style="width: 80px"
         >
-          Tipo
+          {{ "invoice.invoice-table.tipo" | translate }}
         </th>
         <td
           class="factura-table__table-body"
@@ -137,7 +137,7 @@
           mat-sort-header
           style="width: 90px"
         >
-          Status
+          {{ "invoice.invoice-table.status" | translate }}
         </th>
         <td
           class="factura-table__table-body"
@@ -158,7 +158,7 @@
           mat-sort-header
           style="width: 80px"
         >
-          Subtotal
+          {{ "invoice.invoice-table.subtotal" | translate }}
         </th>
         <td
           class="factura-table__table-body"
@@ -186,7 +186,7 @@
           mat-sort-header
           style="width: 80px"
         >
-          Total
+          {{ "invoice.invoice-table.total" | translate }}
         </th>
         <td
           class="factura-table__table-body"
@@ -265,7 +265,6 @@
               mat-menu-item
               [href]="element.files?.pdf"
               download=""
-              style="font-size: 16px"
             >
               <mat-icon>download</mat-icon>
               <span>Descargar PDF</span>
@@ -275,7 +274,6 @@
               mat-menu-item
               [href]="element.files?.pdf_cancelado"
               download=""
-              style="font-size: 16px"
             >
               <mat-icon>download</mat-icon>
               <span>Descargar PDF</span>
@@ -285,7 +283,6 @@
               mat-menu-item
               [href]="element.files?.xml"
               download=""
-              style="font-size: 16px"
             >
               <mat-icon>download</mat-icon>
               <span>Descargar XML</span>
@@ -295,7 +292,6 @@
               mat-menu-item
               [href]="element.files?.xml_acuse"
               download=""
-              style="font-size: 16px"
             >
               <mat-icon>download</mat-icon>
               <span>Descargar Acuse</span>

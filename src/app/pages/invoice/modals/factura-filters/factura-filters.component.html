@@ -1,0 +1,134 @@
+<div class="app-factura-filters">
+  <div class="filters" style="margin-bottom: 1rem">
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Rango de fechas</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input
+          matInput
+          matStartDate
+          placeholder="Inicial"
+          [ngModel]="vm.params?.fec_inicial"
+          (ngModelChange)="vm.params.fec_inicial = $event"
+        />
+        <input
+          matInput
+          matEndDate
+          placeholder="Final"
+          [ngModel]="vm.params?.fec_final"
+          (ngModelChange)="vm.params.fec_final = $event"
+        />
+      </mat-date-range-input>
+      <div matSuffix>
+        <button
+          [style.display]="
+            vm.params?.fec_inicial || vm.params?.fec_final
+              ? 'inline-flex'
+              : 'none'
+          "
+          mat-icon-button
+          (click)="
+            vm.params.fec_inicial = null;
+            vm.params.fec_final = null;
+            $event.stopPropagation()
+          "
+        >
+          <mat-icon style="color: #ededed">close</mat-icon>
+        </button>
+        <mat-datepicker-toggle
+          [for]="picker"
+          (click)="log('open')"
+        ></mat-datepicker-toggle>
+      </div>
+      <mat-date-range-picker
+        #picker
+        (stateChanges)="log('picker', $event)"
+      ></mat-date-range-picker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Emisor</mat-label>
+      <input
+        matInput
+        aria-label="Emisor"
+        name="emisor"
+        [ngModel]="vm.params?.emisor"
+        (ngModelChange)="vm.params.emisor = $event"
+        placeholder="Buscar por Nombre o RFC"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Receptor</mat-label>
+      <input
+        matInput
+        aria-label="Receptor"
+        name="receptor"
+        [ngModel]="vm.params?.receptor"
+        (ngModelChange)="vm.params.receptor = $event"
+        placeholder="Buscar por Nombre o RFC"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Tipo de Comprobante</mat-label>
+      <mat-select
+        name="tipo_de_comprobante"
+        [ngModel]="vm.params?.tipo_de_comprobante"
+        (ngModelChange)="vm.params.tipo_de_comprobante = $event"
+        placeholder="Todos"
+        class="disable-custom-format"
+      >
+        <ng-container *ngFor="let tipo of vm.tiposComprobante">
+          <mat-option *ngIf="tipo.enabled" [value]="tipo.clave">
+            {{ tipo.clave }} - {{ tipo.descripcion }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+
+      <button
+        [style.display]="vm.params?.tipo_de_comprobante ? 'block' : 'none'"
+        mat-icon-button
+        matSuffix
+        (click)="vm.params.tipo_de_comprobante = ''; $event.stopPropagation()"
+      >
+        <mat-icon style="color: #ededed">close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>UUID</mat-label>
+      <input
+        matInput
+        aria-label="UUID"
+        name="uuid"
+        [ngModel]="vm.params?.uuid"
+        (ngModelChange)="vm.params.uuid = $event"
+        placeholder="Buscar por UUID"
+      />
+    </mat-form-field>
+
+    <!-- <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Status</mat-label>
+      <mat-select
+        name="status"
+        [value]="parseNumbers(vm.params?.status)"
+        (selectionChange)="vm.params.status = $event.value.join(',')"
+        placeholder="Todos"
+        class="disable-custom-format"
+        multiple
+      >
+        <mat-option *ngFor="let tipo of vm.facturaStatus" [value]="tipo.clave">
+          {{ tipo.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+  </div>
+
+  <div>
+    <div>
+      <button mat-flat-button class="brand-btn-3" (click)="apply()">
+        {{ "invoice.filters.apply" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

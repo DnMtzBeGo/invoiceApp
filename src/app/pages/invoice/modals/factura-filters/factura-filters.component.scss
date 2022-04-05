@@ -1,0 +1,46 @@
+.app-factura-filters {
+  .filters {
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem 2rem;
+    justify-content: flex-end;
+    grid-gap: 1rem;
+  }
+
+  .mat-input-element::placeholder,
+  mat-select .mat-select-placeholder {
+    color: #54575c;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+  }
+
+  mat-label,
+  .mat-select-value {
+    color: #ededed;
+  }
+
+  .mat-form-field-outline:first-child {
+    border: 1px solid #1c232a;
+    box-shadow: inset -2px -2px 4px #1c232a, inset 4px 4px 4px #02070b;
+    border-radius: 4px;
+  }
+
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    width: auto;
+    padding: 0.5em 0;
+  }
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .brand-btn-3 {
+    background: #ffbe00;
+    box-shadow: inset 4px 4px 4px #ffd354, inset -4px -4px 6px #d59e00;
+    border-radius: 8px;
+    color: #040b11;
+  }
+}

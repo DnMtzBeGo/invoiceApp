@@ -48,6 +48,7 @@ import {
   ActionConfirmationComponent,
   ActionCancelarFacturaComponent,
   ActionSendEmailFacturaComponent,
+  FacturaFiltersComponent,
   // PushNotificationComponent,
   // AddNoteComponent,
   // FacturaEmisorConceptosComponent,
@@ -129,6 +130,7 @@ import {
     ActionConfirmationComponent,
     ActionCancelarFacturaComponent,
     ActionSendEmailFacturaComponent,
+    FacturaFiltersComponent,
   ],
   imports: [
     CommonModule,
@@ -152,6 +154,7 @@ import {
     ActionConfirmationComponent,
     ActionCancelarFacturaComponent,
     ActionSendEmailFacturaComponent,
+    FacturaFiltersComponent,
   ],
   // providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
 })

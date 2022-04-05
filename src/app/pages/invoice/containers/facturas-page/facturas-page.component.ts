@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+} from "@angular/core";
 import {
   interval,
   merge,
@@ -27,25 +32,22 @@ import {
   filter,
   takeUntil,
 } from "rxjs/operators";
+import { MatDialog } from "@angular/material/dialog";
 import { Router, ActivatedRoute } from "@angular/router";
 import { routes } from "../../consts";
 import { Paginator } from "../../models";
+import { FacturaFiltersComponent } from "../../modals";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, oof } from "src/app/shared/utils/operators.rx";
 import { arrayToObject, object_compare } from "src/app/shared/utils/object";
 import { AuthService } from "src/app/shared/services/auth.service";
-
-const parseNumbers = (str?: string) => {
-  str = str || "";
-  if (str === "") return [];
-  return str.split(",").map(Number);
-};
 
 @Component({
   selector: "app-facturas-page",
   templateUrl: "./facturas-page.component.html",
   styleUrls: ["./facturas-page.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class FacturasPageComponent implements OnInit {
   public routes: typeof routes = routes;
@@ -90,10 +92,13 @@ export class FacturasPageComponent implements OnInit {
   constructor(
     public router: Router,
     public route: ActivatedRoute,
+    private matDialog: MatDialog,
     private apiRestService: AuthService
   ) {}
 
   ngOnInit(): void {
+    // setTimeout(() => this.openFilters());
+
     const loadDataAction$ = merge(
       oof(""),
       this.facturasEmitter.pipe(ofType("refresh"))
@@ -2152,12 +2157,44 @@ export class FacturasPageComponent implements OnInit {
     ).pipe(mergeAll(), pluck("result"));
   }
 
+  // MODALS
+  openFilters() {
+    const dialogRef = this.matDialog.open(FacturaFiltersComponent, {
+      data: {
+        tiposComprobante: this.vm.tiposComprobante,
+        facturaStatus: this.vm.facturaStatus,
+        params: this.vm.params,
+      },
+      restoreFocus: false,
+      autoFocus: false,
+      // panelClass: [""],
+      // hasBackdrop: true,
+      backdropClass: ["brand-dialog-filters"],
+      position: {
+        top: "13.5rem",
+      },
+    });
+
+    // TODO: false/positive when close event
+    dialogRef.afterClosed().subscribe((params) => {
+      console.log("afterClosed", params);
+      if (!params) return;
+
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          ...params,
+          page: 1,
+        },
+        queryParamsHandling: "merge",
+      });
+    });
+  }
+
   //UTILS
   log = (...args: any[]) => {
     console.log(...args);
   };
-
-  parseNumbers = parseNumbers;
 
   makeTemplate = (template: object) => {
     return encodeURIComponent(JSON.stringify(template));

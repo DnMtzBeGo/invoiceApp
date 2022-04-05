@@ -1,80 +1,109 @@
-.page-header {
-  margin: 50px 16px 24px 16px;
-  display: flex;
-  justify-content: space-between;
+.app-facturas-page {
+  .page-header {
+    margin: 50px 54px 24px 54px;
+    display: flex;
+    justify-content: space-between;
 
-  h1 {
-    font-weight: 400;
-    font-size: 38.4px;
-    color: #b9b9b9;
-    line-height: 1;
-    letter-spacing: -0.2186px;
+    h1 {
+      font-weight: 400;
+      font-size: 38.4px;
+      color: #b9b9b9;
+      line-height: 1;
+      letter-spacing: -0.2186px;
+    }
+
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding: 0.5em 0;
+    }
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
   }
 
-  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-    padding: 0.5em 0;
+  .filters {
+    padding: 0 16px;
+    margin-bottom: 8px;
+    display: grid;
+    justify-content: flex-end;
+    grid-auto-flow: column;
+    grid-gap: 1rem;
+
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding: 0.5em 0;
+    }
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
   }
 
-  ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0;
+  .mat-form-field.suffix-btn {
+    .mat-form-field-suffix {
+      top: -3px;
+
+      button {
+        max-height: 30px;
+        max-width: 110px;
+        min-width: 110px;
+        margin-right: -6px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
-}
 
-.filters {
-  padding: 0 16px;
-  margin-bottom: 8px;
-  display: grid;
-  justify-content: flex-end;
-  grid-auto-flow: column;
-  grid-gap: 1rem;
-
-  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-    padding: 0.5em 0;
+  .green-color {
+    color: #ffffff;
+    background-color: #3cd4a0;
+    &:hover {
+      background-color: #3cd4a0;
+    }
   }
 
-  ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0;
-  }
-}
-
-::ng-deep .mat-form-field.suffix-btn {
-  .mat-form-field-suffix {
-    top: -3px;
+  .toolbar-right {
+    display: flex;
+    align-items: center;
 
     button {
-      max-height: 30px;
-      max-width: 110px;
-      min-width: 110px;
-      margin-right: -6px !important;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      margin: 0 20px;
+
+      &:last-child {
+        margin: 0;
+      }
     }
   }
-}
 
-.green-color {
-  color: #ffffff;
-  background-color: #3cd4a0;
-  &:hover {
-    background-color: #3cd4a0;
+  .brand-btn-1 {
+    background: linear-gradient(180deg, #080f15 0%, #171d23 100%);
+    border: 3px solid #10161c;
+    box-shadow: inset 3px 3px 8px 3px #111416;
+    border-radius: 30.5px;
+    font-size: 14px;
+    color: #ededed;
+  }
+
+  .brand-btn-2 {
+    background: linear-gradient(180deg, #080f15 0%, #171d23 100%);
+    border: 3px solid #10161c;
+    box-shadow: inset 3px 3px 8px 3px #111416;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #ededed;
+  }
+
+  .brand-btn-3 {
+    background: #ffbe00;
+    box-shadow: inset 4px 4px 4px #ffd354, inset -4px -4px 6px #d59e00;
+    border-radius: 8px;
+    color: #040b11;
   }
 }
 
-.toolbar-right {
-  display: flex;
-  align-items: center;
+//GLOBAL
 
-  button {
-    margin: 0 20px;
-
-    &:last-child {
-      margin: 0;
-    }
-  }
-}
-
-::ng-deep .mat-option.brand-option-2 {
+.mat-option.brand-option-2 {
   height: auto;
   padding: 8px 16px;
 
@@ -115,5 +144,29 @@
     color: rgba(0, 0, 0, 0.38);
     font-size: 14px;
     background-color: transparent;
+  }
+}
+
+.cdk-overlay-backdrop.brand-dialog-filters {
+  &.cdk-overlay-backdrop-showing {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+  }
+
+  & + * {
+    > .cdk-overlay-pane {
+      width: auto;
+      margin-left: calc(80px + 54px);
+      margin-right: auto;
+    }
+
+    .mat-dialog-container {
+      padding: 32px 24px;
+      background: #0a0f14;
+      box-shadow: inset 4px 4px 5px #1a1e24, inset -4px -4px 4px #050d14;
+      border-radius: 8px;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5))
+        drop-shadow(0px -8px 8px rgba(0, 0, 0, 0.5));
+    }
   }
 }

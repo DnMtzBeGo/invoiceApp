@@ -641,8 +641,25 @@
     },
     "invoice": {
         "invoices": {
-            "emisor-btn": "Emisor",
-            "new-invoice": "New Invoice"
+            "filters": "Filters",
+            "emisor-btn": "Emisores",
+            "new-invoice": "New Invoice",
+            "template-placeholder": "Search Template",
+            "template-open": "Open Template",
+            "template-new": "New Template"
+        },
+        "invoice-table": {
+            "emision": "Emisión",
+            "emisor": "Emisor",
+            "receptor": "Receptor",
+            "serie": "Serie",
+            "tipo": "Tipo",
+            "status": "Status",
+            "subtotal": "Subtotal",
+            "total": "Total"
+        },
+        "filters": {
+            "apply": "Aplicar"
         }
     }
 }
