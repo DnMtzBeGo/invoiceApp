@@ -591,6 +591,7 @@
         "home":"Inicio",
         "drafts":"Borradores",
         "history":"Historial",
+        "invoice":"Facturas",
         "support":"Soporte",
         "faq":"FAQs",
         "terms-conditions":"T & C",
@@ -623,7 +624,17 @@
             "total": "Total"
         },
         "filters": {
-            "apply": "Aplicar"
+            "apply": "Aplicar",
+            "fechas": "Fechas",
+            "inicio": "Inicio",
+            "final": "Final",
+            "emisor": "Emisor",
+            "emisor-placeholder": "Buscar por Nombre o RFC",
+            "receptor": "Receptor",
+            "receptor-placeholder": "Buscar por Nombre o RFC",
+            "tipo-comprobante": "Tipo de Comprobante",
+            "tipo-comprobante-placeholder": "Todos",
+            "uuid-placeholder": "Buscar por UUID"
         }
     }
 }

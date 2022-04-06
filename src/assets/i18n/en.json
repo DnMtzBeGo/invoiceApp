@@ -627,6 +627,7 @@
         "home":"Home",
         "drafts":"  Drafts",
         "history":"History",
+        "invoice":"Invoice",
         "support":"Support",
         "faq":"FAQs",
         "terms-conditions":"T & C",
@@ -659,7 +660,17 @@
             "total": "Total"
         },
         "filters": {
-            "apply": "Aplicar"
+            "apply": "Aplicar",
+            "fechas": "Dates",
+            "inicio": "Start",
+            "final": "End",
+            "emisor": "Emisor",
+            "emisor-placeholder": "Search by Name or RFC",
+            "receptor": "Receptor",
+            "receptor-placeholder": "Buscar por Nombre o RFC",
+            "tipo-comprobante": "Tipo de Comprobante",
+            "tipo-comprobante-placeholder": "All",
+            "uuid-placeholder": "Search by UUID"
         }
     }
 }

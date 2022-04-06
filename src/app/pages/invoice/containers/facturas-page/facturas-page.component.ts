@@ -39,7 +39,11 @@ import { Paginator } from "../../models";
 import { FacturaFiltersComponent } from "../../modals";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, oof } from "src/app/shared/utils/operators.rx";
-import { arrayToObject, object_compare } from "src/app/shared/utils/object";
+import {
+  arrayToObject,
+  object_compare,
+  clone,
+} from "src/app/shared/utils/object";
 import { AuthService } from "src/app/shared/services/auth.service";
 
 @Component({
@@ -2163,7 +2167,7 @@ export class FacturasPageComponent implements OnInit {
       data: {
         tiposComprobante: this.vm.tiposComprobante,
         facturaStatus: this.vm.facturaStatus,
-        params: this.vm.params,
+        params: clone(this.vm.params),
       },
       restoreFocus: false,
       autoFocus: false,
