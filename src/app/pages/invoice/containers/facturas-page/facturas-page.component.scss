@@ -158,6 +158,7 @@
       width: auto;
       margin-left: calc(80px + 54px);
       margin-right: auto;
+      max-width: clamp(600px, 80vw, 70rem) !important;
     }
 
     .mat-dialog-container {

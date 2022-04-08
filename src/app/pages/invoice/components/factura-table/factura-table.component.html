@@ -344,12 +344,25 @@
   </mat-card-content>
 
   <div class="factura-table__paginator">
+    <div class="total">
+      {{ "invoice.invoice-table.showing" | translate }} {{ 1 }}
+      {{ "invoice.invoice-table.of" | translate }} {{ 2 }}
+    </div>
+    <pagination-controls
+      id="active"
+      (pageChange)="pagination($event)"
+      [previousLabel]="'invoice.invoice-table.prev' | translate"
+      [nextLabel]="'invoice.invoice-table.next' | translate"
+    ></pagination-controls>
     <div>
-      <mat-label>Table size</mat-label>
-      <mat-form-field>
+      <mat-label>{{
+        "invoice.invoice-table.items-per-page" | translate
+      }}</mat-label>
+      <mat-form-field appearance="outline" floatLabel="always">
         <mat-select
           [(value)]="page.pageSize"
           (selectionChange)="pageChangeEmiter()"
+          class="disable-custom-format"
         >
           <mat-option
             [value]="sizeOption"
@@ -359,9 +372,5 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <pagination-controls
-      id="active"
-      (pageChange)="pagination($event)"
-    ></pagination-controls>
   </div>
 </mat-card>

@@ -101,8 +101,6 @@ export class FacturasPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // setTimeout(() => this.openFilters());
-
     const loadDataAction$ = merge(
       oof(""),
       this.facturasEmitter.pipe(ofType("refresh"))

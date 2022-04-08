@@ -621,7 +621,12 @@
             "tipo": "Tipo",
             "status": "Status",
             "subtotal": "Subtotal",
-            "total": "Total"
+            "total": "Total",
+            "items-per-page": "Items per Page",
+            "showing": "Mostrar",
+            "of": "de",
+            "prev": "atrás",
+            "next": "siguiente"
         },
         "filters": {
             "apply": "Aplicar",

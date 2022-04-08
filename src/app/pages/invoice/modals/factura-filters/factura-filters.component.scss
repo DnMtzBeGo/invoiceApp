@@ -15,11 +15,20 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 19px;
+    font-family: "Avenir";
   }
 
   mat-label,
-  .mat-select-value {
+  .mat-select-value,
+  .mat-radio-label .mat-radio-label-content {
     color: #ededed;
+    font-family: "Avenir";
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  .mat-radio-label .mat-radio-label-content {
+    font-size: 14px;
   }
 
   .mat-form-field-outline:first-child {

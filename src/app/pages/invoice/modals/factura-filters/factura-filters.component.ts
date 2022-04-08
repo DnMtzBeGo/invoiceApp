@@ -8,7 +8,7 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router, ActivatedRoute } from "@angular/router";
 import { from, of, throwError, Subject } from "rxjs";
-import { mergeAll, pluck, catchError } from "rxjs/operators";
+import { mergeAll, pluck, catchError, tap } from "rxjs/operators";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, oof } from "src/app/shared/utils/operators.rx";
 import { makeRequestStream } from "src/app/shared/utils/http.rx";
@@ -18,6 +18,7 @@ import { makeRequestStream } from "src/app/shared/utils/http.rx";
 // } from "../../../../../core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { routes } from "../../consts";
+import { groupStatus } from "../../containers/factura-edit-page/factura.core";
 
 const parseNumbers = (str?: string) => {
   str = str || "";
@@ -29,7 +30,7 @@ const parseNumbers = (str?: string) => {
   selector: "app-factura-filters",
   templateUrl: "./factura-filters.component.html",
   styleUrls: ["./factura-filters.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
 export class FacturaFiltersComponent implements OnInit {
@@ -80,7 +81,7 @@ export class FacturaFiltersComponent implements OnInit {
 
     //CATALOGOS
     const tiposComprobante$ = oof(this.data.tiposComprobante);
-    const facturaStatus$ = oof(this.data.facturaStatus);
+    const facturaStatus$ = oof(groupStatus(this.data.facturaStatus));
 
     //PARAMS
     const params$ = oof(this.data.params);
@@ -124,8 +125,16 @@ export class FacturaFiltersComponent implements OnInit {
 
   //METHODS
   apply() {
-    console.log("apply");
     this.dialogRef.close(this.vm.params);
+  }
+
+  deselectRadio(event) {
+    window.requestAnimationFrame(() => {
+      const el = event.target
+        ?.closest("mat-radio-group")
+        ?.querySelector("mat-radio-button.empty-radio input");
+      el?.click();
+    });
   }
 
   // UTILS
@@ -140,4 +149,8 @@ export class FacturaFiltersComponent implements OnInit {
   };
 
   parseNumbers = parseNumbers;
+
+  filterClave = (clave) => (item) => {
+    return item !== clave;
+  };
 }

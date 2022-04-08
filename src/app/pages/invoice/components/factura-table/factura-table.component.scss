@@ -161,10 +161,115 @@
   &__paginator {
     display: flex;
     justify-content: space-between;
-    padding: 0 40px;
+    align-items: center;
+    padding: 0 35px;
+
+    .total {
+      font-family: "Avenir";
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      color: #ededed;
+    }
+
+    .ngx-pagination {
+      margin-bottom: 0;
+      padding-left: 0;
+
+      .pagination-previous,
+      .current,
+      a,
+      button,
+      .pagination-next {
+        font-family: "Avenir";
+        font-size: 12px;
+        font-weight: 500;
+        color: #ededed;
+        text-transform: uppercase;
+      }
+
+      .pagination-previous.disabled,
+      .pagination-next.disabled {
+        color: #494c50;
+      }
+
+      a:hover {
+        color: black;
+      }
+
+      li.current {
+        background: unset;
+        font-weight: 500;
+        text-decoration: underline;
+      }
+
+      .pagination-previous.disabled::before,
+      .pagination-previous a::before,
+      .pagination-next.disabled::after,
+      .pagination-next a::after {
+        font-family: "bego-icons" !important;
+        font-style: normal;
+        font-feature-settings: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-size: 14px;
+      }
+
+      .pagination-previous.disabled::before,
+      .pagination-previous a::before {
+        content: "" !important;
+        transform: translateY(1px);
+      }
+
+      .pagination-next.disabled::after,
+      .pagination-next a::after {
+        content: "";
+        transform: translateY(1px);
+      }
+    }
+
+    .mat-form-field-outline:first-child {
+      border: 1px solid #1c232a;
+      box-shadow: inset -2px -2px 4px #1c232a, inset 4px 4px 4px #02070b;
+      border-radius: 4px;
+    }
+
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      width: 3rem;
+      padding: 0.8rem 0 0.5rem;
+      border-top: unset;
+    }
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+
+    .mat-select-value {
+      color: #ededed;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
+      transform: unset;
+    }
+
+    .mat-select-arrow {
+      color: #ededed;
+    }
 
     mat-label {
       margin-right: 1em;
+      font-family: "Avenir";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-transform: capitalize;
+      color: #ededed;
     }
   }
 }

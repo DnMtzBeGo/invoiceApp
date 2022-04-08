@@ -1,5 +1,5 @@
 <div class="app-factura-filters">
-  <div class="filters" style="margin-bottom: 1rem">
+  <div class="filters" style="margin-bottom: 1.5rem">
     <mat-form-field appearance="outline" floatLabel="always">
       <mat-label>{{ "invoice.filters.fechas" | translate }}</mat-label>
       <mat-date-range-input [rangePicker]="picker">
@@ -110,27 +110,51 @@
         [placeholder]="'invoice.filters.uuid-placeholder' | translate"
       />
     </mat-form-field>
-
-    <!-- <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Status</mat-label>
-      <mat-select
-        name="status"
-        [value]="parseNumbers(vm.params?.status)"
-        (selectionChange)="vm.params.status = $event.value.join(',')"
-        placeholder="Todos"
-        class="disable-custom-format"
-        multiple
-      >
-        <mat-option *ngFor="let tipo of vm.facturaStatus" [value]="tipo.clave">
-          {{ tipo.nombre }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field> -->
   </div>
 
-  <div>
-    <div>
-      <button mat-flat-button class="brand-btn-3" (click)="apply()">
+  <div style="display: flex; justify-content: space-between">
+    <div
+      *ngFor="let group of vm.facturaStatus"
+      style="display: flex; flex-direction: column; gap: 0.6rem"
+    >
+      <ng-container *ngFor="let tipo of group">
+        <mat-radio-group
+          [value]="
+            parseNumbers(vm.params?.status)?.includes(tipo.clave)
+              ? tipo.clave
+              : ''
+          "
+        >
+          <mat-radio-button
+            [value]="tipo.clave"
+            (click)="
+              parseNumbers(vm.params?.status)?.includes(tipo.clave) &&
+                deselectRadio($event);
+              vm.params.status = !parseNumbers(vm.params?.status)?.includes(
+                tipo.clave
+              )
+                ? parseNumbers(vm.params?.status).concat(tipo.clave).join(',')
+                : parseNumbers(vm.params?.status)
+                    .filter(filterClave(tipo.clave))
+                    .join(',')
+            "
+            >{{ tipo.nombre }}
+          </mat-radio-button>
+          <mat-radio-button value="" style="display: none" class="empty-radio">
+          </mat-radio-button>
+        </mat-radio-group>
+      </ng-container>
+    </div>
+
+    <div
+      style="display: flex; align-items: flex-end; justify-content: flex-end"
+    >
+      <button
+        mat-flat-button
+        class="brand-btn-3"
+        (click)="apply()"
+        style="min-width: 110px"
+      >
         {{ "invoice.filters.apply" | translate }}
       </button>
     </div>

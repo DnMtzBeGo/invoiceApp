@@ -328,6 +328,17 @@ export const facturaStatus = (key, status?) => {
   return map[status]?.[key] ?? defaults?.[key];
 };
 
+export const groupStatus = (list) => {
+  const map = new Map();
+
+  list.forEach((item) => {
+    const group = item.nombre.split(" ").shift();
+    map.set(group, (map.get(group) ?? []).concat(item));
+  });
+
+  return Array.from(map.values());
+};
+
 export const helpTooltips = {
   receptor: {
     rfc: `RFC\nIndica el Registro Federal del Contribuyente de tu cliente.`,
