@@ -233,7 +233,9 @@
             >
               <mat-icon>find_in_page</mat-icon>
               <span>{{
-                p(element).edit ? "Editar Factura" : "Ver detalles"
+                p(element).edit
+                  ? ("invoice.invoice-table.edit-invoice" | translate)
+                  : ("invoice.invoice-table.view-details" | translate)
               }}</span>
             </button>
             <button
@@ -242,7 +244,7 @@
               [routerLink]="[routes.CARTA_PORTE, { id: element._id }]"
             >
               <mat-icon>ballot</mat-icon>
-              <span>Carta porte</span>
+              <span>{{ "invoice.invoice-table.carta-porte" | translate }}</span>
             </button>
             <button
               *ngIf="p(element).duplicar"
@@ -250,7 +252,7 @@
               [routerLink]="[routes.NEW_FACTURA, { template: element._id }]"
             >
               <mat-icon>file_copy</mat-icon>
-              <span>Duplicar</span>
+              <span>{{ "invoice.invoice-table.duplicate" | translate }}</span>
             </button>
             <button
               *ngIf="p(element).vistaprevia"
@@ -258,7 +260,7 @@
               (click)="downloadPreview(element)"
             >
               <mat-icon>download</mat-icon>
-              <span>Vista Previa</span>
+              <span>{{ "invoice.invoice-table.preview" | translate }}</span>
             </button>
             <a
               *ngIf="p(element).pdf"
@@ -267,7 +269,9 @@
               download=""
             >
               <mat-icon>download</mat-icon>
-              <span>Descargar PDF</span>
+              <span>{{
+                "invoice.invoice-table.download-pdf" | translate
+              }}</span>
             </a>
             <a
               *ngIf="p(element).pdf_cancelado"
@@ -276,7 +280,9 @@
               download=""
             >
               <mat-icon>download</mat-icon>
-              <span>Descargar PDF</span>
+              <span>{{
+                "invoice.invoice-table.download-pdf" | translate
+              }}</span>
             </a>
             <a
               *ngIf="p(element).xml"
@@ -285,7 +291,9 @@
               download=""
             >
               <mat-icon>download</mat-icon>
-              <span>Descargar XML</span>
+              <span>{{
+                "invoice.invoice-table.download-xml" | translate
+              }}</span>
             </a>
             <a
               *ngIf="p(element).xml_acuse"
@@ -294,7 +302,9 @@
               download=""
             >
               <mat-icon>download</mat-icon>
-              <span>Descargar Acuse</span>
+              <span>{{
+                "invoice.invoice-table.download-acuse" | translate
+              }}</span>
             </a>
             <button
               *ngIf="p(element).enviar_correo"
@@ -302,7 +312,9 @@
               (click)="sendEmailFactura(element._id)"
             >
               <mat-icon>email</mat-icon>
-              <span>Enviar por Correo</span>
+              <span>{{
+                "invoice.invoice-table.send-by-email" | translate
+              }}</span>
             </button>
             <button
               *ngIf="p(element).cancelar"
@@ -310,7 +322,9 @@
               (click)="cancelarFactura(element._id)"
             >
               <mat-icon>cancel</mat-icon>
-              <span>Cancelar factura</span>
+              <span
+                >{{ "invoice.invoice-table.cancel-invoice" | translate }}
+              </span>
             </button>
             <button
               *ngIf="p(element).eliminar"
@@ -318,7 +332,9 @@
               (click)="deleteFactura(element._id)"
             >
               <mat-icon>delete</mat-icon>
-              <span>Eliminar Factura</span>
+              <span>{{
+                "invoice.invoice-table.delete-invoice" | translate
+              }}</span>
             </button>
           </mat-menu>
         </td>

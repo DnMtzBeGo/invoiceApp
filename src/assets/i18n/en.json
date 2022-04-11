@@ -662,7 +662,18 @@
             "showing": "Showing",
             "of": "of",
             "prev": "prev",
-            "next": "next"
+            "next": "next",
+            "edit-invoice": "Edit Invoice",
+            "view-details": "View details",
+            "carta-porte": "Carta Porte",
+            "duplicate": "Duplicate",
+            "preview": "Preview",
+            "download-pdf": "Download PDF",
+            "download-xml": "Download XML",
+            "download-acuse": "Download Acuse",
+            "send-by-email": "Send by Email",
+            "cancel-invoice": "Cancel Invoice",
+            "delete-invoice": "Delete Invoice"
         },
         "filters": {
             "apply": "Aplicar",

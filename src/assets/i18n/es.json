@@ -626,7 +626,18 @@
             "showing": "Mostrar",
             "of": "de",
             "prev": "atrás",
-            "next": "siguiente"
+            "next": "siguiente",
+            "edit-invoice": "Editar Factura",
+            "view-details": "Ver detalles",
+            "carta-porte": "Carta Porte",
+            "duplicate": "Duplicar",
+            "preview": "Vista Previa",
+            "download-pdf": "Descargar PDF",
+            "download-xml": "Descargar XML",
+            "download-acuse": "Descargar Acuse",
+            "send-by-email": "Enviar por Correo",
+            "cancel-invoice": "Cancelar Factura",
+            "delete-invoice": "Eliminar Factura"
         },
         "filters": {
             "apply": "Aplicar",
