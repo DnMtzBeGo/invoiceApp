@@ -1,0 +1,299 @@
+<div class="app-factura-direccion-input">
+  <div class="grid">
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>Nombre Sucursal</mat-label>
+      <input
+        matInput
+        name="nombre"
+        [ngModel]="vm.direccion?.nombre"
+        (ngModelChange)="vm.direccion.nombre = $event"
+        [placeholder]="!readonly ? 'Ingresa el nombre de la Dirección' : '- -'"
+        [readonly]="readonly"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>Calle</mat-label>
+      <input
+        matInput
+        name="calle"
+        [ngModel]="vm.direccion?.calle"
+        (ngModelChange)="vm.direccion.calle = $event"
+        [placeholder]="!readonly ? 'Ingresa la calle' : '- -'"
+        [readonly]="readonly"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>No. Exterior</mat-label>
+      <input
+        matInput
+        name="numero"
+        [ngModel]="vm.direccion?.numero"
+        (ngModelChange)="vm.direccion.numero = $event"
+        [placeholder]="!readonly ? 'Ingresa el número exterior' : '- -'"
+        [readonly]="readonly"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>No. Interior</mat-label>
+      <input
+        matInput
+        name="interior"
+        [ngModel]="vm.direccion?.interior"
+        (ngModelChange)="vm.direccion.interior = $event"
+        [placeholder]="!readonly ? 'Ingresa el número interior' : '- -'"
+        [readonly]="readonly"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>País</mat-label>
+      <!-- <input
+              matInput
+              name="pais"
+              [ngModel]="vm.direccion?.pais"
+              (ngModelChange)="vm.direccion.pais = $event"
+              placeholder="Ingresa el país"
+            /> -->
+      <mat-select
+        name="pais"
+        [ngModel]="vm.direccion?.pais"
+        (ngModelChange)="
+          direccionEmitter.next(['pais:select', (vm.direccion.pais = $event)])
+        "
+        [placeholder]="
+          vm.paises == null
+            ? 'Cargando...'
+            : !readonly
+            ? 'Seleciona una opción'
+            : '- -'
+        "
+        class="no-custom-theme"
+      >
+        <mat-option *ngFor="let pais of vm.paises" [value]="pais.code">
+          {{ pais.name }}
+        </mat-option>
+      </mat-select>
+
+      <mat-progress-bar
+        [style.display]="vm.paises == null ? 'block' : 'none'"
+        style="bottom: 0px; position: absolute; height: 2px"
+        mode="indeterminate"
+      ></mat-progress-bar>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>Estado</mat-label>
+      <!-- <input
+              matInput
+              name="estado"
+              [ngModel]="vm.direccion?.estado"
+              (ngModelChange)="vm.direccion.estado = $event"
+              placeholder="Ingresa el estado"
+            /> -->
+      <mat-select
+        name="estado"
+        [ngModel]="vm.direccion?.estado"
+        (ngModelChange)="
+          direccionEmitter.next([
+            'estado:select',
+            (vm.direccion.estado = $event)
+          ])
+        "
+        [placeholder]="
+          !vm.direccion?.pais
+            ? 'Selecciona un país'
+            : vm.estados == null
+            ? 'Cargando...'
+            : !readonly
+            ? 'Seleciona una opción'
+            : '- -'
+        "
+        class="no-custom-theme"
+      >
+        <mat-option *ngFor="let estado of vm.estados" [value]="estado.clave">
+          {{ estado.nombre }}
+        </mat-option>
+      </mat-select>
+
+      <mat-progress-bar
+        [style.display]="vm.estados == null ? 'block' : 'none'"
+        style="bottom: 0px; position: absolute; height: 2px"
+        mode="indeterminate"
+      ></mat-progress-bar>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>Municipio</mat-label>
+      <!-- <input
+              matInput
+              name="municipio"
+              [ngModel]="vm.direccion?.municipio"
+              (ngModelChange)="vm.direccion.municipio = $event"
+              placeholder="Ingresa el municipio"
+            /> -->
+      <mat-select
+        name="municipio"
+        [ngModel]="vm.direccion?.municipio"
+        (ngModelChange)="
+          vm.direccion.municipio = $event;
+          vm.direccion.cp = '';
+          vm.direccion.colonia = '';
+          vm.colonias = []
+        "
+        [placeholder]="
+          !vm.direccion?.estado
+            ? 'Selecciona un estado'
+            : vm.municipios == null
+            ? 'Cargando...'
+            : !readonly
+            ? 'Seleciona una opción'
+            : '- -'
+        "
+        class="no-custom-theme"
+      >
+        <mat-option
+          *ngFor="let municipio of vm.municipios"
+          [value]="municipio.clave"
+        >
+          {{ municipio.nombre }}
+        </mat-option>
+      </mat-select>
+
+      <button
+        [style.display]="
+          vm.direccion?.municipio && !readonly ? 'block' : 'none'
+        "
+        mat-icon-button
+        matSuffix
+        (click)="
+          vm.direccion.municipio = '';
+          vm.direccion.cp = '';
+          vm.direccion.colonia = '';
+          vm.colonias = [];
+          $event.stopPropagation()
+        "
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <mat-progress-bar
+        [style.display]="vm.municipios == null ? 'block' : 'none'"
+        style="bottom: 0px; position: absolute; height: 2px"
+        mode="indeterminate"
+      ></mat-progress-bar>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>Código Postal</mat-label>
+      <input
+        matInput
+        name="cp"
+        [ngModel]="vm.direccion?.cp"
+        (ngModelChange)="
+          direccionEmitter.next(['cp:input', (vm.direccion.cp = $event)])
+        "
+        [placeholder]="!readonly ? 'Ingresa el Codigo Postal' : '- -'"
+        [readonly]="readonly"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>Colonia</mat-label>
+      <mat-select
+        name="colonia"
+        [ngModel]="vm.direccion?.colonia"
+        (ngModelChange)="vm.direccion.colonia = $event"
+        [placeholder]="
+          !vm.direccion?.cp || vm.direccion?.cp.length < 5
+            ? 'Ingresa un código postal'
+            : vm.colonias == null
+            ? 'Cargando...'
+            : !readonly
+            ? 'Seleciona una opción'
+            : '- -'
+        "
+        class="no-custom-theme"
+      >
+        <mat-option *ngFor="let colonia of vm.colonias" [value]="colonia.clave">
+          {{ colonia.nombre }}
+        </mat-option>
+      </mat-select>
+
+      <button
+        [style.display]="vm.direccion?.colonia && !readonly ? 'block' : 'none'"
+        mat-icon-button
+        matSuffix
+        (click)="vm.direccion.colonia = ''; $event.stopPropagation()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <mat-progress-bar
+        [style.display]="vm.colonias == null ? 'block' : 'none'"
+        style="bottom: 0px; position: absolute; height: 2px"
+        mode="indeterminate"
+      ></mat-progress-bar>
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [attr.readonly]="readonly"
+    >
+      <mat-label>Correo electrónico</mat-label>
+      <input
+        matInput
+        name="email"
+        [ngModel]="vm.direccion?.email"
+        (ngModelChange)="vm.direccion.email = $event"
+        [placeholder]="!readonly ? 'Ingresa el correo electrónico' : '- -'"
+        [readonly]="readonly"
+        autocomplete="off"
+      />
+    </mat-form-field>
+  </div>
+</div>

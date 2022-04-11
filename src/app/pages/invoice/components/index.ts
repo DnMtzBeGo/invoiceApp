@@ -18,4 +18,4 @@
 // export * from './trailer-selection-table/trailer-selection-table.component';
 export * from "./factura-table/factura-table.component";
 // export * from './invoice-table/invoice-table.component';
-// export * from './factura-direccion-input/factura-direccion-input.component';
+export * from "./factura-direccion-input/factura-direccion-input.component";

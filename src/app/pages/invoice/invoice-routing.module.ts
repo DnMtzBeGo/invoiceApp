@@ -8,7 +8,7 @@ import {
   //   OrderDetailsPageComponent,
   //   AssignDriverPageComponent,
   FacturasPageComponent,
-  //   FacturaEditPageComponent,
+  FacturaEditPageComponent,
   //   InvoicePageComponent,
   //   EmisoresComponent,
   //   SeriesPageComponent,
@@ -18,34 +18,34 @@ import {
 
 const routes: Routes = [
   { path: "", component: FacturasPageComponent },
-  //     {
-  //       path: 'new',
-  //       component: FacturaEditPageComponent,
-  //       data: {
-  //         model: 'factura',
-  //       },
-  //     },
-  //     {
-  //       path: 'new-template',
-  //       component: FacturaEditPageComponent,
-  //       data: {
-  //         model: 'template',
-  //       },
-  //     },
-  //     {
-  //       path: 'edit',
-  //       component: FacturaEditPageComponent,
-  //       data: {
-  //         model: 'factura',
-  //       },
-  //     },
-  //     {
-  //       path: 'edit-template',
-  //       component: FacturaEditPageComponent,
-  //       data: {
-  //         model: 'template',
-  //       },
-  //     },
+  {
+    path: "new",
+    component: FacturaEditPageComponent,
+    data: {
+      model: "factura",
+    },
+  },
+  {
+    path: "new-template",
+    component: FacturaEditPageComponent,
+    data: {
+      model: "template",
+    },
+  },
+  {
+    path: "edit",
+    component: FacturaEditPageComponent,
+    data: {
+      model: "factura",
+    },
+  },
+  {
+    path: "edit-template",
+    component: FacturaEditPageComponent,
+    data: {
+      model: "template",
+    },
+  },
   //     { path: 'carta-porte', component: CartaPortePageComponent },
   //     { path: 'emisor',
   //       children: [

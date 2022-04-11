@@ -38,25 +38,22 @@ import {
 } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, ActivatedRoute } from "@angular/router";
-import { environment } from "../../../../../environments/environment";
+import { environment } from "src/environments/environment";
 import omitEmpty from "omit-empty";
-import {
-  ApiRestService,
-  NotificationsService,
-} from "../../../../core/services";
-import { reactiveComponent } from "../../../../shared/utils/decorators";
-import {
-  ofType,
-  simpleFilters,
-  oof,
-} from "../../../../shared/utils/operators.rx";
-import { makeRequestStream } from "../../../../shared/utils/http.rx";
+// import {
+//   ApiRestService,
+//   NotificationsService,
+// } from "../../../../core/services";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { reactiveComponent } from "src/app/shared/utils/decorators";
+import { ofType, simpleFilters, oof } from "src/app/shared/utils/operators.rx";
+import { makeRequestStream } from "src/app/shared/utils/http.rx";
 import {
   clone,
   arrayToObject,
   object_compare,
-} from "../../../../shared/utils/object";
-import { routes } from "../../../../consts";
+} from "src/app/shared/utils/object";
+import { routes } from "../../consts";
 import {
   calcImporte,
   calcConcepto,
@@ -83,8 +80,8 @@ import {
   ActionConfirmationComponent,
   FacturaEmisorConceptosComponent,
   FacturaManageDireccionesComponent,
-} from "../../../../shared/utils/components/modals";
-import { SeriesNewComponent } from "../../components/series-new/series-new.component";
+} from "../../modals";
+// import { SeriesNewComponent } from "../../components/series-new/series-new.component";
 
 @Component({
   selector: "app-factura-edit-page",
@@ -263,8 +260,8 @@ export class FacturaEditPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private apiRestService: ApiRestService,
-    private notificationsService: NotificationsService,
+    private apiRestService: AuthService,
+    // private notificationsService: NotificationsService,
     private route: ActivatedRoute,
     private matDialog: MatDialog
   ) {}
@@ -1003,7 +1000,6 @@ export class FacturaEditPageComponent implements OnInit {
       panelClass: ["dialog-solid"],
       disableClose: true,
     });
-
     // TODO: false/positive when close event
     dialogRef.afterClosed().subscribe(([config, res]) => {
       if (res) {
@@ -1118,20 +1114,18 @@ export class FacturaEditPageComponent implements OnInit {
   }
 
   createEditSerie(data) {
-    const dialogRef = this.matDialog.open(SeriesNewComponent, {
-      autoFocus: false,
-      panelClass: ["dialog-solid"],
-      data,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result == null || result.success == null || result.message === "")
-        return;
-
-      this.notificationsService[
-        result.success ? "showSuccessToastr" : "showErrorToastr"
-      ](result.message);
-    });
+    // const dialogRef = this.matDialog.open(SeriesNewComponent, {
+    //   autoFocus: false,
+    //   panelClass: ["dialog-solid"],
+    //   data,
+    // });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   if (result == null || result.success == null || result.message === "")
+    //     return;
+    //   // this.notificationsService[
+    //   //   result.success ? "showSuccessToastr" : "showErrorToastr"
+    //   // ](result.message);
+    // });
   }
 
   // FORMS
@@ -1231,9 +1225,9 @@ export class FacturaEditPageComponent implements OnInit {
         setTimeout(() => URL.revokeObjectURL(linkSource), 5000);
       })
       .catch(() => {
-        this.notificationsService.showErrorToastr(
-          "Error al generar vista previa"
-        );
+        // this.notificationsService.showErrorToastr(
+        //   "Error al generar vista previa"
+        // );
       });
   };
 }

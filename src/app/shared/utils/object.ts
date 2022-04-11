@@ -9,12 +9,12 @@ export const searchInObject = (search: string) => (object: object) =>
       normalize(String(value).toLowerCase()).includes(search)
     );
 
-export const isObject = (object: object) =>
+export const isObject = (object) =>
   object != null && typeof object === "object" && object.constructor === Object;
 
-export const clone = (object: object) => JSON.parse(JSON.stringify(object));
+export const clone = (object) => JSON.parse(JSON.stringify(object));
 
-export const addObjectKeys = (object1: any, object2: any) => {
+export const addObjectKeys = (object1, object2) => {
   const uniqueKeys = [
     ...new Set([...Object.keys(object1), ...Object.keys(object2)]),
   ];
@@ -24,8 +24,7 @@ export const addObjectKeys = (object1: any, object2: any) => {
   );
 };
 
-export const arrayToObject = (key: string, keyValue: string) => (array: []) =>
-  Object.fromEntries(array.map((item: any) => [item[key], item[keyValue]]));
+export const arrayToObject = (key, keyValue) => (array) =>
+  Object.fromEntries(array.map((item) => [item[key], item[keyValue]]));
 
-export const object_compare = (a: object, b: object) =>
-  JSON.stringify(a) === JSON.stringify(b);
+export const object_compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);

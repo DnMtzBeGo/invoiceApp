@@ -1,0 +1,140 @@
+.app-factura-emisor-conceptos {
+  max-width: 700px;
+  min-width: 700px;
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .conceptos-table {
+    width: 100%;
+
+    th {
+      font-weight: 500;
+      text-align: left;
+
+      &.center {
+        text-align: center;
+      }
+
+      &.right {
+        text-align: right;
+      }
+    }
+
+    td {
+      padding: 3px 0;
+      text-align: left;
+
+      &.center {
+        text-align: center;
+      }
+
+      &.right {
+        text-align: right;
+      }
+    }
+  }
+
+  .facturas-table {
+    width: 100%;
+
+    th {
+      font-weight: 500;
+      text-align: left;
+
+      &.center {
+        text-align: center;
+      }
+
+      &.right {
+        text-align: right;
+      }
+    }
+
+    td {
+      padding: 3px 0;
+      text-align: left;
+
+      &.center {
+        text-align: center;
+      }
+
+      &.right {
+        text-align: right;
+      }
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem 2rem;
+  }
+
+  .grid-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem 2rem;
+  }
+
+  mat-expansion-panel {
+    margin-bottom: 0;
+
+    .mat-expansion-panel-header-title {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    mat-panel-description {
+      margin: 0 1.5rem 1.5rem;
+      display: block;
+    }
+  }
+
+  mat-form-field {
+    .textarea {
+      .mat-form-field-wrapper {
+        padding-bottom: unset;
+      }
+    }
+
+    mat-progress-bar {
+      bottom: 0px;
+      position: absolute;
+      width: calc(100% + 16px);
+      height: 2px;
+      left: -9px;
+    }
+  }
+
+  .factura-help-icon {
+    .mat-icon {
+      font-size: 17px;
+      color: #c5ccd0;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      cursor: pointer;
+    }
+  }
+
+  .mat-form-field {
+    .factura-help-icon {
+      display: none;
+      position: absolute;
+      right: -5px;
+      top: -4px;
+    }
+
+    &:hover,
+    &.mat-focused {
+      .factura-help-icon {
+        display: inline-block;
+      }
+    }
+  }
+}

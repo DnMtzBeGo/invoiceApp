@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 //MATERIAL MODULES
 import { MatCardModule } from "@angular/material/card";
@@ -37,10 +38,22 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 //   NgxMatNativeDateModule,
 //   NgxMatTimepickerModule,
 // } from "@angular-material-components/datetime-picker";
+import {
+  FacturaEmisorConceptosComponent,
+  FacturaManageDireccionesComponent,
+} from "src/app/pages/invoice/modals";
+import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components";
+
 @NgModule({
-  declarations: [],
+  declarations: [
+    FacturaEmisorConceptosComponent,
+    FacturaManageDireccionesComponent,
+    FacturaDireccionInputComponent,
+  ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
     MatCardModule,
     MatIconModule,
     MatMenuModule,
@@ -109,6 +122,9 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     // NgxMatDatetimePickerModule,
     // NgxMatTimepickerModule,
     // NgxMatNativeDateModule,
+    FacturaEmisorConceptosComponent,
+    FacturaManageDireccionesComponent,
+    FacturaDireccionInputComponent,
   ],
 })
 export class SharedModule {}

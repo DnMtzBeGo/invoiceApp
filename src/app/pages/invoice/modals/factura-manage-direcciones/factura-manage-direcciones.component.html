@@ -1,0 +1,193 @@
+<div class="app-factura-manage-direcciones">
+  <button mat-icon-button (click)="closeModal()" style="float: right">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <h5 style="margin-bottom: 2rem">
+    {{ models[config.model].title }}
+    <span style="margin-left: 4px; font-size: 14px; opacity: 0.5">
+      {{ models[config.model].subtitle }}
+    </span>
+  </h5>
+
+  <div
+    style="display: flex; justify-content: space-between; align-items: center"
+  >
+    <!-- Select -->
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      [style.visibility]="vm.form == null || vm.form._id ? 'visible' : 'hidden'"
+    >
+      <mat-label>Dirección ({{ config.rfc }})</mat-label>
+      <mat-select
+        name="direccion"
+        [ngModel]="vm.form"
+        (ngModelChange)="formEmitter.next(['direccion:select', $event])"
+        [placeholder]="
+          vm.direcciones == null
+            ? 'Cargando...'
+            : vm.direcciones?.length === 0
+            ? 'No se encontraron resultados'
+            : 'Seleciona una dirección'
+        "
+        [compareWith]="compareId"
+        class="no-custom-theme"
+      >
+        <mat-option
+          *ngFor="let direccion of vm.direcciones"
+          [value]="direccion"
+        >
+          {{ direccion.nombre }}
+        </mat-option>
+      </mat-select>
+
+      <mat-progress-bar
+        [style.display]="vm.direcciones == null ? 'block' : 'none'"
+        style="bottom: 0px; position: absolute; height: 2px"
+        mode="indeterminate"
+      ></mat-progress-bar>
+
+      <button
+        [style.display]="vm.form?._id ? 'block' : 'none'"
+        mat-icon-button
+        matSuffix
+        (click)="
+          formEmitter.next(['direccion:select', (vm.form = null)]);
+          $event.stopPropagation()
+        "
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <div class="actions">
+      <button
+        *ngIf="vm.form?._id"
+        mat-flat-button
+        color="warn"
+        (click)="formEmitter.next(['submit', [config, 'delete', vm.form]])"
+        [style.pointer-events]="
+          vm.formLoading || vm.formSuccess ? 'none' : 'all'
+        "
+        style="min-width: 97px; min-height: 37px"
+      >
+        <mat-spinner
+          [style.display]="
+            ['delete'].includes(vm.formMode) && vm.formLoading
+              ? 'block'
+              : 'none'
+          "
+          color="accent"
+          [diameter]="20"
+          [strokeWidth]="4"
+          style="margin: 0 auto"
+        ></mat-spinner>
+        <mat-icon
+          [style.display]="
+            ['delete'].includes(vm.formMode) && vm.formSuccess
+              ? 'inline-block'
+              : 'none'
+          "
+          style="margin-right: 4px"
+        >
+          check
+        </mat-icon>
+        <span
+          [style.display]="
+            !['delete'].includes(vm.formMode) ||
+            (['delete'].includes(vm.formMode) && !vm.formLoading)
+              ? 'inline-block'
+              : 'none'
+          "
+          >{{
+            ["delete"].includes(vm.formMode) && vm.formError
+              ? "Reintentar"
+              : ["delete"].includes(vm.formMode) && vm.formSuccess
+              ? "Dirección eliminada"
+              : "Eliminar dirección"
+          }}</span
+        >
+      </button>
+
+      <button
+        *ngIf="vm.form"
+        mat-stroked-button
+        color="warn"
+        (click)="formEmitter.next(['direccion:select', null])"
+      >
+        Cancelar
+      </button>
+
+      <button
+        mat-flat-button
+        [color]="
+          ['create', 'update'].includes(vm.formMode) && vm.formSuccess === false
+            ? 'warn'
+            : 'primary'
+        "
+        (click)="
+          vm.form
+            ? formEmitter.next([
+                'submit',
+                [config, vm.form?._id ? 'update' : 'create', vm.form]
+              ])
+            : formEmitter.next(['direccion:select', (vm.form = createForm())])
+        "
+        [style.pointer-events]="
+          vm.formLoading || vm.formSuccess ? 'none' : 'all'
+        "
+        style="min-width: 97px; min-height: 37px"
+      >
+        <mat-spinner
+          [style.display]="
+            ['create', 'update'].includes(vm.formMode) && vm.formLoading
+              ? 'block'
+              : 'none'
+          "
+          color="accent"
+          [diameter]="20"
+          [strokeWidth]="4"
+          style="margin: 0 auto"
+        ></mat-spinner>
+        <mat-icon
+          [style.display]="
+            ['create', 'update'].includes(vm.formMode) && vm.formSuccess
+              ? 'inline-block'
+              : 'none'
+          "
+          style="margin-right: 4px"
+        >
+          check
+        </mat-icon>
+        <span
+          [style.display]="
+            !['create', 'update'].includes(vm.formMode) ||
+            (['create', 'update'].includes(vm.formMode) && !vm.formLoading)
+              ? 'inline-block'
+              : 'none'
+          "
+          >{{
+            ["create", "update"].includes(vm.formMode) && vm.formError
+              ? "Reintentar"
+              : ["create", "update"].includes(vm.formMode) && vm.formSuccess
+              ? "Dirección guardada"
+              : vm.form
+              ? "Guardar"
+              : "Nueva Dirección"
+          }}</span
+        >
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <!-- <app-factura-direccion-input
+      [direccion]="vm.form"
+      (direccionChange)="(1)"
+    ></app-factura-direccion-input> -->
+  </div>
+</div>
+
+<template #container></template>

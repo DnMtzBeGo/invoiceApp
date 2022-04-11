@@ -18,7 +18,7 @@ import {
   //   OrderDetailsPageComponent,
   //   AssignDriverPageComponent,
   FacturasPageComponent,
-  //   FacturaEditPageComponent,
+  FacturaEditPageComponent,
   //   CartaPortePageComponent,
   //   InvoicePageComponent,
 } from "./containers";
@@ -50,9 +50,7 @@ import {
   ActionSendEmailFacturaComponent,
   FacturaFiltersComponent,
   // PushNotificationComponent,
-  // AddNoteComponent,
-  // FacturaEmisorConceptosComponent,
-  // FacturaManageDireccionesComponent,
+  // AddNoteComponent
 } from "./modals";
 // import { FacturaEmitterComponent } from './components/factura-emitter/factura-emitter.component';
 // import { EmisoresComponent } from './containers/emisores/emisores.component';
@@ -102,7 +100,7 @@ import {
     // TrailerSelectionTableComponent,
     // RunAlgorithmComponent,
     FacturasPageComponent,
-    // FacturaEditPageComponent,
+    FacturaEditPageComponent,
     FacturaTableComponent,
     // FacturaEmitterComponent,
     // EmisoresComponent,

@@ -19,7 +19,7 @@ import { Router } from "@angular/router";
 // } from "../../../../core/services";
 import { Paginator, TableFactura } from "../../models";
 import { routes } from "../../consts";
-import { environment } from "../../../../../environments/environment";
+import { environment } from "src/environments/environment";
 import {
   facturaPermissions,
   previewFactura,
