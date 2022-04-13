@@ -13,6 +13,7 @@ import {
   from,
   combineLatest,
   NEVER,
+  Observable,
   asapScheduler,
   animationFrameScheduler,
 } from "rxjs";
@@ -82,6 +83,9 @@ import {
   FacturaManageDireccionesComponent,
 } from "../../modals";
 // import { SeriesNewComponent } from "../../components/series-new/series-new.component";
+import CatalogsJSON from "./catalogs.json";
+import CountriesJSON from "./countries.json";
+import StatusesJSON from "./statuses.json";
 
 @Component({
   selector: "app-factura-edit-page",
@@ -98,6 +102,8 @@ export class FacturaEditPageComponent implements OnInit {
   $rx = reactiveComponent(this);
 
   vm: {
+    // "receptor" | "emisor" | "conceptos" | "complementos";
+    tab?: string;
     form?: {
       _id?: string;
       status?: number;
@@ -218,6 +224,7 @@ export class FacturaEditPageComponent implements OnInit {
   formEmitter = new Subject<
     [
       (
+        | "tab"
         | "refresh"
         | "rfc:search"
         | "nombre:search"
@@ -267,6 +274,12 @@ export class FacturaEditPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //TAB
+    const tab$ = merge(
+      of("receptor"),
+      this.formEmitter.pipe(ofType("tab")) as Observable<string>
+    );
+
     //DATA FETCHING
     const loadDataAction$ = merge(
       oof(""),
@@ -720,6 +733,7 @@ export class FacturaEditPageComponent implements OnInit {
     });
 
     this.vm = this.$rx.connect({
+      tab: tab$,
       form: form$,
       emisor: emisor$,
       readonly: readonly$,
@@ -811,7 +825,8 @@ export class FacturaEditPageComponent implements OnInit {
     // h7xma29J$
     // AUZM911206E49
     return from(
-      this.apiRestService.apiRestGet("invoice/catalogs/invoice")
+      // this.apiRestService.apiRestGet("invoice/catalogs/invoice")
+      timer(200).pipe(mapTo([CatalogsJSON]))
     ).pipe(mergeAll(), pluck("result"));
   }
 
@@ -821,9 +836,10 @@ export class FacturaEditPageComponent implements OnInit {
 
   fetchFacturaStatus = () => {
     return from(
-      this.apiRestService.apiRestGet("invoice/catalogs/statuses", {
-        loader: "false",
-      })
+      // this.apiRestService.apiRestGet("invoice/catalogs/statuses", {
+      //   loader: "false",
+      // })
+      timer(200).pipe(mapTo([StatusesJSON]))
     ).pipe(mergeAll(), pluck("result"));
   };
 
@@ -866,9 +882,10 @@ export class FacturaEditPageComponent implements OnInit {
 
   fetchPaises() {
     return from(
-      this.apiRestService.apiRestGet("invoice/catalogs/countries", {
-        loader: "false",
-      })
+      // this.apiRestService.apiRestGet("invoice/catalogs/countries", {
+      //   loader: "false",
+      // })
+      timer(200).pipe(mapTo([CountriesJSON]))
     ).pipe(mergeAll(), pluck("result"), startWith(null));
   }
 
