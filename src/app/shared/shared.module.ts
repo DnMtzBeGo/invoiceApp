@@ -32,7 +32,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
-// import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 // import {
 //   NgxMatDatetimePickerModule,
 //   NgxMatNativeDateModule,
@@ -83,7 +83,7 @@ import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components
     MatAutocompleteModule,
     MatProgressBarModule,
     MatTooltipModule,
-    // NgxMatSelectSearchModule,
+    NgxMatSelectSearchModule,
     // NgxMatDatetimePickerModule,
     // NgxMatTimepickerModule,
     // NgxMatNativeDateModule,
@@ -118,7 +118,7 @@ import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components
     MatAutocompleteModule,
     MatProgressBarModule,
     MatTooltipModule,
-    // NgxMatSelectSearchModule,
+    NgxMatSelectSearchModule,
     // NgxMatDatetimePickerModule,
     // NgxMatTimepickerModule,
     // NgxMatNativeDateModule,

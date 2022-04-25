@@ -36,6 +36,7 @@
     "ngx-currency": "^2.5.3",
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-lottie": "^7.0.4",
+    "ngx-mat-select-search": "^3.3.3",
     "ngx-material-timepicker": "^5.5.3",
     "ngx-pagination": "^5.1.0",
     "omit-empty": "1.0.0",

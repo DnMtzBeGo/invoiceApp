@@ -608,7 +608,7 @@
         "invoices": {
             "filters": "Filtros",
             "emisor-btn": "Emisores",
-            "new-invoice": "Nuevo Emisor",
+            "new-invoice": "Nueva Factura",
             "template-placeholder": "Buscar Template",
             "template-open": "Abrir Template",
             "template-new": "Nuevo Template"
@@ -651,6 +651,140 @@
             "tipo-comprobante": "Tipo de Comprobante",
             "tipo-comprobante-placeholder": "Todos",
             "uuid-placeholder": "Buscar por UUID"
+        },
+        "edit": {
+            "receptor": "Receptor",
+
+            "rfc": "RFC",
+            "rfc-placeholder": "Ingresa el RFC de tu cliente",
+            "no-results": "No se encontraron resultados",
+
+            "nombre": "Nombre o Razón social",
+            "nombre-placeholder": "Ingresa la Razón Social de tu cliente",
+
+            "usocfdi": "Uso de CFDI",
+            "usocfdi-placeholder": "Selecciona el uso del CFDI",
+            "usocfdi-placeholder-2": "Ingresa un RFC de cliente válido",
+            "type-to-search": "Escribe para buscar..",
+
+            "direccion": "Dirección",
+            "direccion-placeholder": "Seleciona una dirección",
+            "direccion-placeholder-2": "Ingresa un receptor válido",
+            "direccion-placeholder-3": "No se encontraron direcciones guardadas",
+            "loading": "Cargando...",
+
+            "addr-nombre": "Nombre Sucursal",
+            "addr-nombre-placeholder": "Ingresa el nombre de la Sucursal",
+
+            "addr-calle": "Calle",
+            "addr-no-ext": "No. Exterior",
+            "addr-no-int": "No. Interior",
+            "addr-pais": "País",
+            "addr-estado": "Estado",
+            "addr-municipio": "Municipio",
+            "addr-cp": "Código Postal",
+            "addr-colonia": "Colonia",
+            "addr-colonia-placeholder-2": "Ingresa un código postal válido",
+            "addr-email": "Correo electrónico",
+
+            "emisor": "Emisor",
+
+            "rfc-emisor": "RFC",
+            "rfc-emisor-placeholder": "Ingresa el RFC emisor",
+            "rfc-parent": "RFC Padre",
+
+            "nombre-emisor": "Nombre o Razón social",
+            "nombre-emisor-placeholder": "Ingresa la Razón Social del emisor",
+
+            "lugar-expedicion": "Lugar de Expedición (Matriz o Sucursal)",
+            "lugar-expedicion-placeholder": "Selecciona el Lugar de Expedición",
+            "lugar-expedicion-placeholder-2": "Selecciona un emisor válido",
+            "lugar-expedicion-placeholder-3": "No se encontraron lugares de expedición guardados",
+
+            "regimen": "Régimen fiscal",
+            "regimen-placeholder": "Selecciona un Régimen fiscal",
+            "regimen-placeholder-2": "Ingresa un RFC emisor válido",
+
+            "tipo-comprobante": "Tipo de comprobante",
+            "moneda": "Moneda",
+            "metodo-pago": "Método de pago",
+            "forma-pago": "Forma de pago",
+
+            "info": "Información Extra",
+            "info-placeholder": "Información Extra (máx 5000 caractéres)",
+
+            "conceptos": "Conceptos",
+
+            "concepto-nombre": "Producto o servicio",
+            "concepto-nombre-placeholder": "Ingresa tu producto o servicio",
+
+            "concepto-cve_sat": "Descripción SAT",
+            "concepto-unidad-medida": "Unidad de medida",
+            "concepto-precio": "Precio unitario",
+            "concepto-cantidad": "Cantidad",
+            "concepto-descuento": "Descuento",
+            "concepto-descripcion": "Descripción del producto o servicio",
+            "concepto-importe": "Importe",
+            "concepto-total": "Total concepto",
+            "concepto-agregar": "Agregar concepto",
+
+            "impuestos": "Impuestos",
+            "impuesto": "Impuesto",
+
+            "impuesto-tasa": "Tasa (%)",
+            "impuesto-tasa-placeholder-2": "Entre :1% y :2%",
+            "impuesto-agregar": "Agregar impuesto",
+
+            "impuesto-tasa-cuota": "Tasa o Cuota",
+            "opciones": "Opciones",
+
+            "concepto-unidad": "Unidad",
+            "concepto-concepto-desc": "Concepto y descripción",
+            "concepto-precio": "Precio",
+            "concepto-edit": "Editar",
+            "concepto-eliminar": "Eliminar",
+            "concepto-subtotal": "Subtotal",
+            "concepto-total-table": "Total",
+
+            "doc-rel": "Documentos Relacionados",
+            "doc-rel-tipo": "Tipo de relación",
+            "doc-rel-uuid": "UUID",
+            "doc-rel-add": "Agregar",
+
+            "complementos": "Complementos",
+
+            "carta-porte": "Carta Porte",
+            "carta-porte-placeholder-2": "Selecciona un tipo de comprobante",
+
+            "serie": "Serie",
+            "serie-placeholder": "Selecciona una serie",
+            "serie-placeholder-2": "Serie (Selecciona un tipo de comprobante)",
+            "serie-placeholder-3": "Serie (Selecciona un emisor válido)",
+            "serie-placeholder-4": "Serie (No hay series guardadas)",
+            "serie-editar": "Editar serie",
+            "serie-new": "Editar serie",
+
+            "btn-generar": "Generar",
+            "btn-generar-success": "Enviada a generar",
+            "btn-generar-retry": "Reintentar",
+
+            "btn-eliminar": "Eliminar Factura",
+            "btn-eliminar-tpl": "Eliminar Template",
+
+            "btn-preview": "Vista Previa",
+            "btn-duplicar": "Duplicar",
+            "btn-pdf": "Descargar PDF",
+            "btn-xml": "Descargar XML",
+            "btn-acuse": "Descargar Acuse",
+            "btn-send-email": "Enviar por Correo",
+            "btn-cancel": "Cancelar factura",
+
+            "btn-save-update": "Guardar cambios",
+            "btn-save-update-success": "Cambios guardados",
+            "btn-save-retry": "Reintentar",
+            "btn-save-save": "Guardar",
+            "btn-save-save-success": "Factura guardada",
+            "btn-save-save-success-tpl": "Template guardado"
         }
     }
 }
