@@ -4,6 +4,11 @@ import { Observable } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 import { environment } from "../../../environments/environment";
 
+const getURLBASE = (method: string) =>
+  /^invoice(\/\w+)?/.test(method)
+    ? environment.URL_DASHBOARD
+    : environment.URL_BASE;
+
 @Injectable({
   providedIn: "root",
 })
@@ -44,9 +49,10 @@ export class AuthService {
       "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
       Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
     });
+    const URL_BASE = getURLBASE(method);
     const params = await this.getOptions(appBehaviourOptions);
     // return this.http.post<any>(environment.URL_BASE + method, formData, { headers, params: params });
-    return this.http.post<any>(environment.URL_BASE + method, formData, {
+    return this.http.post<any>(URL_BASE + method, formData, {
       headers,
       params,
       ...requestOptions,
@@ -66,8 +72,9 @@ export class AuthService {
       Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
     });
 
+    const URL_BASE = getURLBASE(method);
     const params = await this.getOptions(options);
-    return this.http.post<any>(environment.URL_BASE + method, requestJson, {
+    return this.http.post<any>(URL_BASE + method, requestJson, {
       headers,
       params,
     });
@@ -84,8 +91,9 @@ export class AuthService {
       "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     });
+    const URL_BASE = getURLBASE(method);
     const params = await this.getOptions(options);
-    return this.http.get<any>(environment.URL_BASE + method, {
+    return this.http.get<any>(URL_BASE + method, {
       headers,
       params,
     });

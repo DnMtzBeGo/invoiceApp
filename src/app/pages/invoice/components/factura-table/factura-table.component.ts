@@ -39,7 +39,7 @@ import {
 })
 export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
   public routes: typeof routes = routes;
-  public URL_BASE = environment.URL_BASE;
+  public URL_DASHBOARD = environment.URL_DASHBOARD;
   public token = localStorage.getItem("token") || "";
 
   //Table data
@@ -195,7 +195,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
     if (factura == void 0) return;
 
     window
-      .fetch(this.URL_BASE + "invoice/preview", {
+      .fetch(this.URL_DASHBOARD + "invoice/preview", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

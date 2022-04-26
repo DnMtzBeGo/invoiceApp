@@ -96,7 +96,7 @@ import StatusesJSON from "./statuses.json";
 })
 export class FacturaEditPageComponent implements OnInit {
   public routes: typeof routes = routes;
-  public URL_BASE = environment.URL_BASE;
+  public URL_DASHBOARD = environment.URL_DASHBOARD;
   public token = localStorage.getItem("token") || "";
 
   $rx = reactiveComponent(this);
@@ -1273,7 +1273,7 @@ export class FacturaEditPageComponent implements OnInit {
     if (factura == void 0) return;
 
     window
-      .fetch(this.URL_BASE + "invoice/preview", {
+      .fetch(this.URL_DASHBOARD + "invoice/preview", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
