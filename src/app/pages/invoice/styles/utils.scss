@@ -1,0 +1,27 @@
+.mat-flat-button.brand-btn-3 {
+  background: #ffbe00;
+  box-shadow: inset 4px 4px 4px #ffd354, inset -4px -4px 6px #d59e00;
+  border-radius: 8px;
+  color: #040b11;
+}
+
+.mat-flat-button.brand-btn-4 {
+  background: #ffbe00;
+  box-shadow: inset 4px 4px 4px #ffd354, inset -4px -4px 6px #d59e00;
+  border-radius: 24px 0 24px 0;
+  color: #040b11;
+}
+
+.mat-progress-bar.brand-progress-bar-1 {
+  .mat-progress-bar-background {
+    fill: #5c490d;
+  }
+
+  .mat-progress-bar-buffer {
+    background-color: #5c490d;
+  }
+
+  .mat-progress-bar-fill::after {
+    background-color: #ffbe00;
+  }
+}

@@ -147,15 +147,22 @@
     </div>
 
     <div
-      style="display: flex; align-items: flex-end; justify-content: flex-end"
+      style="
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        min-height: 100px;
+        margin-right: -24px;
+      "
     >
       <button
         mat-flat-button
-        class="brand-btn-3"
+        class="brand-btn-4"
         (click)="apply()"
         style="min-width: 110px"
       >
         {{ "invoice.filters.apply" | translate }}
+        <mat-icon style="margin-right: -8px">keyboard_arrow_right</mat-icon>
       </button>
     </div>
   </div>

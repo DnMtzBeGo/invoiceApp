@@ -48,6 +48,7 @@ $carriersDashboard-theme: mat.define-light-theme((
 
 //custom styles
 @import './styles/custom-styles/radio-button.scss';
+@import './app/pages/invoice/styles/styles';
 
 //Swiper for Insurance
 @import "~swiper/css/bundle";

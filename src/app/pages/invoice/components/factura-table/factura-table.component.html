@@ -16,6 +16,7 @@
     <mat-progress-bar
       [style.display]="loading ? 'block' : 'none'"
       style="position: absolute; top: 54px; height: 2px"
+      class="brand-progress-bar-1"
       mode="indeterminate"
     ></mat-progress-bar>
 
@@ -62,8 +63,10 @@
           mat-cell
           *matCellDef="let element"
         >
-          <span style="font-weight: 500">{{ element.emisor?.nombre }}</span>
-          <span style="font-weight: 300"> {{ element.emisor?.rfc }}</span>
+          <span style="font-weight: 300">{{ element.emisor?.nombre }}</span>
+          <span style="font-weight: 300; opacity: 0.7">
+            {{ element.emisor?.rfc }}</span
+          >
         </td>
       </ng-container>
 
@@ -83,8 +86,10 @@
           mat-cell
           *matCellDef="let element"
         >
-          <span style="font-weight: 500">{{ element.receptor?.nombre }}</span>
-          <span style="font-weight: 300"> {{ element.receptor?.rfc }}</span>
+          <span style="font-weight: 300">{{ element.receptor?.nombre }}</span>
+          <span style="font-weight: 300; opacity: 0.7">
+            {{ element.receptor?.rfc }}</span
+          >
         </td>
       </ng-container>
 
