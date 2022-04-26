@@ -761,7 +761,7 @@
             "serie-placeholder-2": "Serie (Selecciona un tipo de comprobante)",
             "serie-placeholder-3": "Serie (Selecciona un emisor válido)",
             "serie-placeholder-4": "Serie (No hay series guardadas)",
-            "serie-editar": "Editar serie",
+            "serie-edit": "Editar serie",
             "serie-new": "Editar serie",
 
             "btn-generar": "Generar",

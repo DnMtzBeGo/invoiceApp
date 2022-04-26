@@ -272,26 +272,3 @@
     }
   }
 }
-
-.mat-menu-panel.brand-menu-factura {
-  background: #0a0f14;
-  box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24,
-    inset -2px -2px 4px #050d14;
-  border-radius: 8px;
-
-  .mat-menu-item {
-    color: #ededed;
-    font-weight: 400;
-    font-size: 13px;
-    letter-spacing: 0.5px;
-
-    .mat-icon {
-      font-size: 20px;
-      color: #ededed;
-    }
-
-    &:not(:last-child) {
-      border-bottom: 1px solid #1c232a;
-    }
-  }
-}

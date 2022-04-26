@@ -83,9 +83,6 @@ import {
   FacturaManageDireccionesComponent,
 } from "../../modals";
 // import { SeriesNewComponent } from "../../components/series-new/series-new.component";
-import CatalogsJSON from "./catalogs.json";
-import CountriesJSON from "./countries.json";
-import StatusesJSON from "./statuses.json";
 
 @Component({
   selector: "app-factura-edit-page",
@@ -883,8 +880,7 @@ export class FacturaEditPageComponent implements OnInit {
     // h7xma29J$
     // AUZM911206E49
     return from(
-      // this.apiRestService.apiRestGet("invoice/catalogs/invoice")
-      timer(200).pipe(mapTo([CatalogsJSON]))
+      this.apiRestService.apiRestGet("invoice/catalogs/invoice")
     ).pipe(mergeAll(), pluck("result"));
   }
 
@@ -894,10 +890,9 @@ export class FacturaEditPageComponent implements OnInit {
 
   fetchFacturaStatus = () => {
     return from(
-      // this.apiRestService.apiRestGet("invoice/catalogs/statuses", {
-      //   loader: "false",
-      // })
-      timer(200).pipe(mapTo([StatusesJSON]))
+      this.apiRestService.apiRestGet("invoice/catalogs/statuses", {
+        loader: "false",
+      })
     ).pipe(mergeAll(), pluck("result"));
   };
 
@@ -940,10 +935,9 @@ export class FacturaEditPageComponent implements OnInit {
 
   fetchPaises() {
     return from(
-      // this.apiRestService.apiRestGet("invoice/catalogs/countries", {
-      //   loader: "false",
-      // })
-      timer(200).pipe(mapTo([CountriesJSON]))
+      this.apiRestService.apiRestGet("invoice/catalogs/countries", {
+        loader: "false",
+      })
     ).pipe(mergeAll(), pluck("result"), startWith(null));
   }
 
