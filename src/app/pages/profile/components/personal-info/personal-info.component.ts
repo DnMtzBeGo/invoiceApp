@@ -139,7 +139,7 @@ export class PersonalInfoComponent implements OnInit {
         telephone_mail: mailToValidate,
         type: 'update_profile'
       };
-      (await this.webService.apiRest(JSON.stringify(bodyRequest),'shippers/send_code')).subscribe(
+      (await this.webService.apiRest(JSON.stringify(bodyRequest),'carriers/send_code')).subscribe(
         (res) => {
           this.showEmailVerificationModal = true;
 
@@ -163,7 +163,7 @@ export class PersonalInfoComponent implements OnInit {
     };
 
     (await this.webService.apiRest(
-      JSON.stringify(bodyRequest),'shippers/validate_code')
+      JSON.stringify(bodyRequest),'carriers/validate_code')
     ).subscribe(
       async ( res ) => {
 
@@ -173,7 +173,7 @@ export class PersonalInfoComponent implements OnInit {
           newTelephoneMail: newMail,
           telephone_mail: currentMail
         };
-        (await this.webService.apiRest(JSON.stringify(updateEmailBody),'shippers/change_telephone_mail')).subscribe(
+        (await this.webService.apiRest(JSON.stringify(updateEmailBody),'carriers/change_telephone_mail')).subscribe(
           (res : any)=>{
             this.profileInfoService.getProfileInfo();
             this.showEmailVerificationModal = false;
@@ -227,7 +227,7 @@ export class PersonalInfoComponent implements OnInit {
         telephone_mail: `${currentCode}${currentNumber}`,
         type: 'update_profile'
       };
-      (await this.webService.apiRest(JSON.stringify(bodyRequest),'shippers/send_code')).subscribe(
+      (await this.webService.apiRest(JSON.stringify(bodyRequest),'carriers/send_code')).subscribe(
         (res) => {
           this.showPhoneVerificationModal = true;
 
@@ -262,7 +262,7 @@ export class PersonalInfoComponent implements OnInit {
     };
 
     (await this.webService.apiRest(
-      JSON.stringify(bodyRequest),'shippers/validate_code')
+      JSON.stringify(bodyRequest),'carriers/validate_code')
     ).subscribe(
       async ( res ) => {
 
@@ -273,7 +273,7 @@ export class PersonalInfoComponent implements OnInit {
           newTelephoneMail: newPhone,
           telephone_mail: currentPhone
         };
-        (await this.webService.apiRest(JSON.stringify(updateEmailBody),'shippers/change_telephone_mail')).subscribe(
+        (await this.webService.apiRest(JSON.stringify(updateEmailBody),'carriers/change_telephone_mail')).subscribe(
           (res : any)=>{
             this.profileInfoService.getProfileInfo();
             this.showPhoneVerificationModal = false;
@@ -310,7 +310,7 @@ export class PersonalInfoComponent implements OnInit {
     
     (await this.webService.apiRest(
       JSON.stringify({attributes: bodyRequest }),
-      'shippers/insert_attributes')
+      'carriers/insert_attributes')
     ).subscribe(
       ( res )=>{
       },
@@ -332,7 +332,7 @@ export class PersonalInfoComponent implements OnInit {
       nickname: newNickname
     };
 
-    (await this.webService.apiRest(JSON.stringify(requestBody),'shippers/change_nickname')).subscribe(
+    (await this.webService.apiRest(JSON.stringify(requestBody),'carriers/change_nickname')).subscribe(
       ( res )=>{
       },
       ( err ) => {

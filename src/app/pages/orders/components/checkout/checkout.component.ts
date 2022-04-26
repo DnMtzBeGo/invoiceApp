@@ -88,7 +88,7 @@ export class CheckoutComponent implements OnInit {
       }
     );
 
-    (await this.webService.apiRest('','shippers/select_attributes')).subscribe(
+    (await this.webService.apiRest('','carriers/select_attributes')).subscribe(
 
       (res: any) => {
         this.invoiceData = res.result;
