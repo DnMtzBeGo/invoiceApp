@@ -262,6 +262,7 @@
                   "
                   [placeholderLabel]="'invoice.edit.type-to-search' | translate"
                   [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"
                 ></ngx-mat-select-search>
               </mat-option>
               <ng-container *ngFor="let uso of vm.catalogos?.usos_cfdi">
@@ -1028,6 +1029,7 @@ class="brand-progress-bar-1"
                   "
                   [placeholderLabel]="'invoice.edit.type-to-search' | translate"
                   [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"
                 ></ngx-mat-select-search>
               </mat-option>
               <ng-container
@@ -1208,6 +1210,7 @@ class="brand-progress-bar-1"
                   "
                   [placeholderLabel]="'invoice.edit.type-to-search' | translate"
                   [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"
                 ></ngx-mat-select-search>
               </mat-option>
               <mat-option
@@ -1306,7 +1309,7 @@ class="brand-progress-bar-1"
           </span>
           <button
             mat-flat-button
-            color="primary"
+            class="brand-btn-2"
             style="
               margin-left: 8px;
               min-height: 30px;
@@ -1498,6 +1501,7 @@ class="brand-progress-bar-1"
                   "
                   [placeholderLabel]="'invoice.edit.type-to-search' | translate"
                   [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"
                 ></ngx-mat-select-search>
               </mat-option>
               <mat-option
@@ -1774,7 +1778,7 @@ class="brand-progress-bar-1"
         <div style="margin-bottom: 3rem; padding-top: 0">
           <button
             mat-flat-button
-            color="primary"
+            class="brand-btn-2"
             (click)="formEmitter.next(['conceptos:add', vm.concepto])"
             [disabled]="
               !vm.concepto ||
@@ -1797,7 +1801,7 @@ class="brand-progress-bar-1"
       </section>
 
       <section
-        *ngIf="vm.form?.tipo_de_comprobante !== 'T'"
+        *ngIf="!vm.readonly && vm.form?.tipo_de_comprobante !== 'T'"
         [attr.expanded]="vm.concepto?.impuestos.length > 0"
       >
         <h6>{{ "invoice.edit.impuestos" | translate }}</h6>
@@ -1948,7 +1952,7 @@ class="brand-progress-bar-1"
         <div style="padding-bottom: 1rem; padding-top: 0">
           <button
             mat-flat-button
-            color="primary"
+            class="brand-btn-2"
             (click)="formEmitter.next(['impuestos:add', vm.impuesto])"
             [disabled]="vm.impuesto == null"
           >
@@ -2283,7 +2287,7 @@ class="brand-progress-bar-1"
           <div>
             <button
               mat-flat-button
-              color="primary"
+              class="brand-btn-2"
               (click)="
                 vm.form.documentos_relacionados.push({ uuid: vm.uuid });
                 vm.uuid = ''
@@ -2361,7 +2365,7 @@ class="brand-progress-bar-1"
           >
             <button
               mat-flat-button
-              color="primary"
+              class="brand-btn-2"
               (click)="
                 p(vm.form).cartaporte &&
                   formEmitter.next([
@@ -2405,7 +2409,7 @@ class="brand-progress-bar-1"
           >
             <button
               mat-flat-button
-              color="primary"
+              class="brand-btn-2"
               [routerLink]="
                 p(vm.form).cartaporte && [
                   routes.CARTA_PORTE,
@@ -2527,7 +2531,7 @@ class="brand-progress-bar-1"
             <button
               *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc)"
               mat-flat-button
-              color="primary"
+              class="brand-btn-2"
               (click)="
                 createEditSerie(
                   vm.form?.serie
@@ -2549,26 +2553,6 @@ class="brand-progress-bar-1"
           </div>
         </div>
       </section>
-
-      <div
-        style="
-          color: red;
-          font-size: 0.7rem;
-          align-self: flex-end;
-          flex: 1;
-          text-align: right;
-        "
-        [style.white-space]="
-          vm.form?.error?.length > 0 ? 'pre-line' : 'initial'
-        "
-      >
-        {{
-          showError(vm.formError) ||
-            (vm.form?.error?.length > 0 && !vm.readonly
-              ? showError(vm.form)
-              : "")
-        }}
-      </div>
     </div>
 
     <!-- sidebar -->
@@ -2586,25 +2570,47 @@ class="brand-progress-bar-1"
       </nav>
 
       <div class="actions" *ngIf="!vm.readonly">
+        <!-- Errors -->
+        <div
+          style="
+            grid-column: span 2;
+            color: #fa3c00;
+            font-size: 0.7rem;
+            align-self: flex-end;
+            flex: 1;
+            text-align: right;
+          "
+          [style.white-space]="
+            vm.form?.error?.length > 0 ? 'pre-line' : 'initial'
+          "
+        >
+          {{
+            showError(vm.formError) ||
+              (vm.form?.error?.length > 0 && !vm.readonly
+                ? showError(vm.form)
+                : "")
+          }}
+        </div>
+
         <div *ngIf="model === 'factura'" style="grid-column: span 2">
           <button
             mat-flat-button
-            [color]="
+            [class]="
               vm.formMode === 'stamp' && vm.formSuccess === false
-                ? 'warn'
-                : 'primary'
+                ? 'brand-btn-error'
+                : 'brand-btn-2'
             "
             (click)="formEmitter.next(['submit', [mode, 'stamp', vm.form]])"
             [style.pointer-events]="
               vm.formLoading || vm.formSuccess ? 'none' : 'all'
             "
-            style="min-width: 97px; min-height: 37px"
+            style="min-width: 97px; min-height: 43px; font-size: 16px"
           >
             <mat-spinner
               [style.display]="
                 vm.formMode === 'stamp' && vm.formLoading ? 'block' : 'none'
               "
-              color="accent"
+              class="brand-spinner-1"
               [diameter]="20"
               [strokeWidth]="4"
               style="margin: 0 auto"
@@ -2639,7 +2645,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).eliminar">
           <button
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             (click)="deleteFactura(vm.form?._id)"
           >
             {{ "invoice.edit.btn-eliminar" | translate }}
@@ -2649,7 +2655,7 @@ class="brand-progress-bar-1"
         <div *ngIf="mode === 'update' && model === 'template'">
           <button
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             (click)="deleteTemplate(vm.form?._id)"
           >
             {{ "invoice.edit.btn-eliminar-tpl" | translate }}
@@ -2659,7 +2665,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).vistaprevia && model === 'factura'">
           <button
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             (click)="downloadPreview(vm.form)"
             target="_blank"
           >
@@ -2670,7 +2676,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).duplicar">
           <a
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             [routerLink]="[routes.NEW_FACTURA, { template: vm.form?._id }]"
           >
             {{ "invoice.edit.btn-duplicar" | translate }}
@@ -2680,22 +2686,22 @@ class="brand-progress-bar-1"
         <div>
           <button
             mat-flat-button
-            [color]="
+            [class]="
               vm.formMode === 'save' && vm.formSuccess === false
-                ? 'warn'
-                : 'secondary'
+                ? 'brand-btn-error'
+                : 'brand-btn-1'
             "
             (click)="formEmitter.next(['submit', [mode, 'save', vm.form]])"
             [style.pointer-events]="
               vm.formLoading || vm.formSuccess ? 'none' : 'all'
             "
-            style="min-width: 97px; min-height: 37px"
+            style="min-width: 97px; min-height: 43px"
           >
             <mat-spinner
               [style.display]="
                 vm.formMode === 'save' && vm.formLoading ? 'block' : 'none'
               "
-              color="primary"
+              class="brand-spinner-2"
               [diameter]="20"
               [strokeWidth]="4"
               style="margin: 0 auto"
@@ -2738,7 +2744,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).pdf">
           <a
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             [href]="vm.form?.files?.pdf"
             download=""
           >
@@ -2749,7 +2755,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).pdf_cancelado">
           <a
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             [href]="vm.form?.files?.pdf_cancelado"
             download=""
           >
@@ -2760,7 +2766,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).xml">
           <a
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             [href]="vm.form?.files?.xml"
             download=""
           >
@@ -2771,7 +2777,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).xml_acuse">
           <a
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             [href]="vm.form?.files?.xml_acuse"
             download=""
           >
@@ -2782,7 +2788,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).enviar_correo">
           <button
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             (click)="sendEmailFactura(vm.form?._id)"
           >
             {{ "invoice.edit.btn-send-email" | translate }}
@@ -2792,7 +2798,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).duplicar">
           <a
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             [routerLink]="[routes.NEW_FACTURA, { template: vm.form?._id }]"
           >
             {{ "invoice.edit.btn-duplicar" | translate }}
@@ -2802,7 +2808,7 @@ class="brand-progress-bar-1"
         <div *ngIf="p(vm.form).cancelar">
           <button
             mat-flat-button
-            color="secondary"
+            class="brand-btn-1"
             (click)="cancelarFactura(vm.form?._id)"
           >
             {{ "invoice.edit.btn-cancel" | translate }}

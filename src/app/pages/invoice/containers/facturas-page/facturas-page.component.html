@@ -3,8 +3,7 @@
     <div>
       <button
         mat-flat-button
-        matRipple
-        class="brand-btn-1"
+        class="brand-btn-1 radius-30"
         (click)="openFilters()"
         style="z-index: 10000"
       >
@@ -14,8 +13,7 @@
     <div class="toolbar-right">
       <button
         mat-flat-button
-        matRipple
-        class="brand-btn-2"
+        class="brand-btn-1"
         routerLink="{{ routes.EMISORES }}"
       >
         {{ "invoice.invoices.emisor-btn" | translate }}
@@ -123,7 +121,7 @@
 
       <button
         mat-flat-button
-        class="brand-btn-3"
+        class="brand-btn-2"
         [routerLink]="
           vm.template && vm.receptorSearch?.template?.length === 0
             ? [

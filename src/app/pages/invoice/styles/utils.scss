@@ -2,37 +2,110 @@
   background: linear-gradient(180deg, #080f15 0%, #171d23 100%);
   border: 3px solid #10161c;
   box-shadow: inset 3px 3px 8px 3px #111416;
-  border-radius: 30.5px;
+  border-radius: 8px;
   font-size: 14px;
-  color: #ededed;
+  color: #c1c7d0;
+  font-weight: 600;
+
+  &:hover {
+    outline: 1px solid #ffbe00;
+  }
 }
 
 .mat-flat-button.brand-btn-2 {
-  background: linear-gradient(180deg, #080f15 0%, #171d23 100%);
-  border: 3px solid #10161c;
-  box-shadow: inset 3px 3px 8px 3px #111416;
+  background: #ffbe00;
+  box-shadow: inset 4px 4px 4px #ffd354, inset -4px -4px 6px #d59e00;
   border-radius: 8px;
+  color: #040b11;
   font-size: 14px;
-  color: #ededed;
+  font-weight: 600;
+
+  &.mat-button-disabled {
+    background: linear-gradient(180deg, #080f15 0%, #171d23 100%);
+    outline: 3px solid #10161c;
+    box-shadow: inset 3px 3px 8px 3px #111416;
+    color: #494c50;
+  }
 }
 
-.mat-flat-button.brand-btn-3 {
-  background: #ffbe00;
-  box-shadow: inset 4px 4px 4px #ffd354, inset -4px -4px 6px #d59e00;
+.mat-flat-button.brand-btn-error {
+  background: #fa3c00;
   border-radius: 8px;
-  color: #040b11;
-}
-
-.mat-flat-button.brand-btn-4 {
-  background: #ffbe00;
-  box-shadow: inset 4px 4px 4px #ffd354, inset -4px -4px 6px #d59e00;
-  border-radius: 24px 0 24px 0;
-  color: #040b11;
+  color: #ededed;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .mat-form-field-appearance-outline.brand-field-1 {
+  .mat-input-element::placeholder,
+  mat-select .mat-select-placeholder {
+    color: #70757b;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    font-family: "Avenir";
+  }
+
+  input.mat-input-element,
+  .mat-select-value {
+    caret-color: #ededed;
+    color: #ededed;
+    font-size: 15px;
+  }
+
+  mat-label,
+  .mat-radio-label .mat-radio-label-content {
+    font-family: "Avenir";
+    color: #c1c7d0;
+  }
+
+  .mat-form-field-infix {
+    width: auto;
+    padding: 0.4em 0 0.6em;
+  }
+
+  &.mat-form-field-hide-placeholder .mat-form-field-empty.mat-form-field-label {
+    top: 1.28em;
+
+    mat-label {
+      color: #70757b;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 19px;
+      font-family: "Avenir";
+    }
+  }
+
+  .mat-form-field-outline:first-child {
+    border: 1px solid #1c232a;
+    box-shadow: inset -2px -2px 4px #1c232a, inset 4px 4px 4px #02070b;
+    border-radius: 4px;
+  }
+
   .mat-form-field-outline-thick {
     color: #ffbe00;
+  }
+
+  .mat-select-disabled .mat-select-arrow,
+  .mat-select-arrow {
+    color: #63686e;
+  }
+
+  &.mat-form-field-disabled {
+    .mat-form-field-label mat-label {
+      opacity: 0.4;
+    }
+
+    .mat-form-field-outline:first-child {
+      box-shadow: none;
+    }
+
+    .mat-select-disabled .mat-select-arrow,
+    .mat-select-arrow {
+      opacity: 0.4;
+    }
   }
 }
 
@@ -88,4 +161,37 @@
   .mat-progress-bar-fill::after {
     background-color: #ffbe00;
   }
+}
+
+.mat-progress-spinner.brand-spinner-1 {
+  circle {
+    stroke: #040b11;
+  }
+}
+
+.mat-progress-spinner.brand-spinner-2 {
+  circle {
+    stroke: #ffbe00;
+  }
+}
+
+ngx-mat-select-search.brand-select-search-1 {
+  .mat-select-search-input::placeholder {
+    color: #54575c;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    font-family: "Avenir";
+  }
+}
+
+// Utils
+
+.radius-s {
+  border-radius: 24px 0 24px 0 !important;
+}
+
+.radius-30 {
+  border-radius: 30px !important;
 }
