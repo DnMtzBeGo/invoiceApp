@@ -2,7 +2,7 @@
   <div class="grid">
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>Nombre Sucursal</mat-label>
@@ -19,7 +19,7 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>Calle</mat-label>
@@ -36,7 +36,7 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>No. Exterior</mat-label>
@@ -53,7 +53,7 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>No. Interior</mat-label>
@@ -70,7 +70,7 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>País</mat-label>
@@ -94,7 +94,7 @@
             ? 'Seleciona una opción'
             : '- -'
         "
-        class="no-custom-theme"
+        class="disable-custom-format"
       >
         <mat-option *ngFor="let pais of vm.paises" [value]="pais.code">
           {{ pais.name }}
@@ -111,7 +111,7 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>Estado</mat-label>
@@ -140,7 +140,7 @@
             ? 'Seleciona una opción'
             : '- -'
         "
-        class="no-custom-theme"
+        class="disable-custom-format"
       >
         <mat-option *ngFor="let estado of vm.estados" [value]="estado.clave">
           {{ estado.nombre }}
@@ -157,7 +157,7 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>Municipio</mat-label>
@@ -186,7 +186,7 @@
             ? 'Seleciona una opción'
             : '- -'
         "
-        class="no-custom-theme"
+        class="disable-custom-format"
       >
         <mat-option
           *ngFor="let municipio of vm.municipios"
@@ -223,7 +223,7 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>Código Postal</mat-label>
@@ -242,7 +242,7 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>Colonia</mat-label>
@@ -259,7 +259,7 @@
             ? 'Seleciona una opción'
             : '- -'
         "
-        class="no-custom-theme"
+        class="disable-custom-format"
       >
         <mat-option *ngFor="let colonia of vm.colonias" [value]="colonia.clave">
           {{ colonia.nombre }}
@@ -285,7 +285,7 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [attr.readonly]="readonly"
     >
       <mat-label>Correo electrónico</mat-label>

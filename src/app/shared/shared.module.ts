@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { TranslateModule } from "@ngx-translate/core";
 
 //MATERIAL MODULES
 import { MatCardModule } from "@angular/material/card";
@@ -54,6 +55,7 @@ import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    TranslateModule,
     MatCardModule,
     MatIconModule,
     MatMenuModule,

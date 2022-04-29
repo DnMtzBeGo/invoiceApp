@@ -19,6 +19,7 @@ import {
   combineLatest,
   merge,
   Subject,
+  NEVER,
 } from "rxjs";
 import {
   mergeAll,
@@ -75,6 +76,7 @@ interface Config {
   model: "emisor" | "receptor";
   rfc: string;
   afterSuccessDelay?: Function;
+  openMode?: "create";
 }
 
 @Component({
@@ -136,8 +138,10 @@ export class FacturaManageDireccionesComponent implements OnInit {
     const direcciones$ = loadDataAction$.pipe(switchMap(this.fetchDirecciones));
 
     //FORM
-    const form$: Observable<FacturaDireccion> = this.formEmitter.pipe(
-      ofType("direccion:select"),
+    const form$: Observable<FacturaDireccion> = merge(
+      this.config.openMode === "create" ? oof(this.createForm()) : NEVER,
+      this.formEmitter.pipe(ofType("direccion:select"))
+    ).pipe(
       map(clone),
       tap((form) => {
         hostedComponent["direccion"] = form;
@@ -183,7 +187,7 @@ export class FacturaManageDireccionesComponent implements OnInit {
       nombre: "",
       rfc: this.config.rfc,
       calle: "",
-      numero: null,
+      numero: "",
       interior: "",
       pais: "",
       estado: "",

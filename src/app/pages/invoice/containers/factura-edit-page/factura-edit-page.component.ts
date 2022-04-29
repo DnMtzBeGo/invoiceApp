@@ -458,7 +458,7 @@ export class FacturaEditPageComponent implements OnInit {
       form$.pipe(pluck("rfc")),
       this.formEmitter.pipe(ofType("rfc:search")),
       this.formEmitter.pipe(ofType("rfc:set"), map(normalizeRFC))
-    );
+    ).pipe(share());
 
     const tipoPersona$ = receptorRFC$.pipe(
       distinctUntilChanged(),
@@ -467,6 +467,12 @@ export class FacturaEditPageComponent implements OnInit {
 
     //DIRECCION
     const direcciones$ = receptorRFC$.pipe(
+      // tap((rfc) => {
+      //   this.manageDirecciones({
+      //     model: "receptor",
+      //     rfc,
+      //   });
+      // }),
       switchMap((rfc) =>
         this.fetchDirecciones(rfc).pipe(
           tap((direcciones) => {
@@ -781,64 +787,7 @@ export class FacturaEditPageComponent implements OnInit {
       forma_de_pago: "",
       condiciones_de_pago: "Contado",
       info_extra: "",
-      conceptos: [
-        {
-          rfc: "",
-          impuestos: [
-            {
-              impositivo: 1,
-              label: "IVA Trasladado :tasa_cuota",
-              labelGroup: "IVA Trasladado :tasa_cuota",
-              factor: "Tasa",
-              clave: "002",
-              descripcion: "Traslado IVA",
-              traslado: true,
-              retencion: false,
-              tasaCuota: [
-                { valorMinimo: null, valorMaximo: 0.16, factor: "Tasa" },
-                { valorMinimo: null, valorMaximo: 0.08, factor: "Tasa" },
-                { valorMinimo: null, valorMaximo: 0, factor: "Tasa" },
-              ],
-              tasa_cuota: 0.16,
-            },
-          ],
-          valor_unitario: 10,
-          cantidad: 11,
-          descuento: "10",
-          nombre: "A",
-          unidad_de_medida: "32",
-          descripcion: "desc...",
-          cve_sat: "111",
-        },
-        {
-          rfc: "",
-          impuestos: [
-            {
-              impositivo: 1,
-              label: "IVA Trasladado :tasa_cuota",
-              labelGroup: "IVA Trasladado :tasa_cuota",
-              factor: "Tasa",
-              clave: "002",
-              descripcion: "Traslado IVA",
-              traslado: true,
-              retencion: false,
-              tasaCuota: [
-                { valorMinimo: null, valorMaximo: 0.16, factor: "Tasa" },
-                { valorMinimo: null, valorMaximo: 0.08, factor: "Tasa" },
-                { valorMinimo: null, valorMaximo: 0, factor: "Tasa" },
-              ],
-              tasa_cuota: 0.16,
-            },
-          ],
-          valor_unitario: 11,
-          cantidad: 21,
-          descuento: "43",
-          nombre: "B",
-          unidad_de_medida: "32",
-          descripcion: "desc...",
-          cve_sat: "111",
-        },
-      ],
+      conceptos: [],
       tipo_de_relacion: "",
       documentos_relacionados: [],
       serie: "",
@@ -872,7 +821,13 @@ export class FacturaEditPageComponent implements OnInit {
       )
     ).pipe(
       mergeAll(),
-      map((responseData) => fromFactura(responseData?.result?.invoices?.[0]))
+      map((responseData) =>
+        fromFactura(
+          responseData?.result?.invoices?.[0] ?? {
+            _notExists: true,
+          }
+        )
+      )
     );
   }
 
@@ -1066,7 +1021,7 @@ export class FacturaEditPageComponent implements OnInit {
       data,
       restoreFocus: false,
       autoFocus: false,
-      panelClass: ["dialog-solid"],
+      backdropClass: ["brand-dialog-1"],
       disableClose: true,
     });
     // TODO: false/positive when close event
@@ -1087,7 +1042,7 @@ export class FacturaEditPageComponent implements OnInit {
       data,
       restoreFocus: false,
       autoFocus: false,
-      panelClass: ["dialog-solid"],
+      backdropClass: ["brand-dialog-1"],
       disableClose: true,
     });
   }
@@ -1100,7 +1055,7 @@ export class FacturaEditPageComponent implements OnInit {
         reply_to: "",
       },
       restoreFocus: false,
-      panelClass: ["dialog-solid"],
+      backdropClass: ["brand-dialog-1"],
     });
   }
 
@@ -1120,7 +1075,7 @@ export class FacturaEditPageComponent implements OnInit {
         },
       },
       restoreFocus: false,
-      panelClass: ["dialog-solid"],
+      backdropClass: ["brand-dialog-1"],
     });
   }
 
@@ -1142,7 +1097,7 @@ export class FacturaEditPageComponent implements OnInit {
         },
       },
       restoreFocus: false,
-      panelClass: ["dialog-solid"],
+      backdropClass: ["brand-dialog-1"],
     });
 
     // TODO: false/positive when close event
@@ -1171,7 +1126,7 @@ export class FacturaEditPageComponent implements OnInit {
         },
       },
       restoreFocus: false,
-      panelClass: ["dialog-solid"],
+      backdropClass: ["brand-dialog-1"],
     });
 
     // TODO: false/positive when close event
@@ -1185,7 +1140,7 @@ export class FacturaEditPageComponent implements OnInit {
   createEditSerie(data) {
     // const dialogRef = this.matDialog.open(SeriesNewComponent, {
     //   autoFocus: false,
-    //   panelClass: ["dialog-solid"],
+    //   backdropClass: ["brand-dialog-1"],
     //   data,
     // });
     // dialogRef.afterClosed().subscribe((result) => {

@@ -38,17 +38,27 @@
   <div class="page-wrapper">
     <!-- forms -->
     <div id="form">
+      <!-- <span
+        style="
+          position: absolute;
+          display: block;
+          height: 2px;
+          top: -2px;
+          left: 0;
+          width: 100%;
+        "
+      >
+        <mat-progress-bar
+          [style.display]="!vm.form ? 'block' : 'none'"
+          style="height: 2px"
+          class="brand-progress-bar-1"
+          mode="indeterminate"
+        ></mat-progress-bar>
+      </span> -->
+
       <section>
         <h6>{{ "invoice.edit.receptor" | translate }}</h6>
 
-        <span style="display: block; height: 2px">
-          <mat-progress-bar
-            [style.display]="!vm.form ? 'block' : 'none'"
-            style="height: 2px"
-            class="brand-progress-bar-1"
-            mode="indeterminate"
-          ></mat-progress-bar>
-        </span>
         <div class="grid" [attr.readonly]="vm.readonly">
           <mat-form-field
             class="brand-field-1"
@@ -297,14 +307,6 @@
         </div>
       </section>
 
-      <!-- <div style="height: 2px">
-        <mat-progress-bar
-          [style.display]="vm.direcciones == null ? 'block' : 'none'"
-          style="height: 2px"
-class="brand-progress-bar-1"
-          mode="indeterminate"
-        ></mat-progress-bar>
-      </div> -->
       <section
         [attr.expanded]="validRFC(vm.form?.rfc) === true"
         [attr.readonly]="vm.readonly"
@@ -326,73 +328,95 @@ class="brand-progress-bar-1"
                 style="width: inherit"
             /></mat-icon>
           </span>
-          <mat-icon
-            color="primary"
-            (click)="
-              $event.stopPropagation();
-              manageDirecciones({
-                model: 'receptor',
-                rfc: vm.form.rfc
-              })
-            "
-            style="
-              margin-left: 12px;
-              align-items: center;
-              font-size: 1rem;
-              padding: 0;
-            "
-            [style.display]="
-              validRFC(vm.form?.rfc) && !vm.readonly ? 'inline-flex' : 'none'
-            "
-          >
-            settings
-          </mat-icon>
         </h6>
         <div *ngIf="!vm.readonly" class="grid">
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
-            <mat-label>{{
-              vm.form?.direccion?._id
-                ? ("invoice.edit.direccion" | translate)
-                : vm.form?.rfc && validRFC(vm.form?.rfc) !== true
-                ? ("invoice.edit.direccion-placeholder-2" | translate)
-                : vm.direcciones == null
-                ? ("invoice.edit.loading" | translate)
-                : (validRFC(vm.form?.rfc) === true &&
-                    vm.direcciones?.length) === 0
-                ? ("invoice.edit.direccion-placeholder-3" | translate)
-                : ("invoice.edit.direccion-placeholder" | translate)
-            }}</mat-label>
-            <mat-select
-              name="direccion_id"
-              [ngModel]="vm.form?.direccion"
-              (ngModelChange)="formEmitter.next(['direccion:select', $event])"
-              [compareWith]="compareId"
-              class="disable-custom-format"
-              [disabled]="vm.direcciones?.length === 0"
+          <div style="display: flex; gap: 2rem">
+            <mat-form-field
+              class="brand-field-1"
+              appearance="outline"
+              [attr.readonly]="vm.readonly"
+              style="flex: 1"
             >
-              <!-- [placeholder]="
-                validRFC(vm.form?.rfc) !== true
-                  ? 'Ingresa un receptor válido'
+              <mat-label>{{
+                vm.form?.rfc && validRFC(vm.form?.rfc) !== true
+                  ? ("invoice.edit.direccion-placeholder-2" | translate)
                   : vm.direcciones == null
-                  ? 'Cargando...'
-                  : vm.direcciones?.length === 0
-                  ? 'No se encontraron direcciones guardadas'
-                  : 'Seleciona una opción'
-              " -->
-              <mat-option
-                *ngFor="let direccion of vm.direcciones"
-                [value]="direccion"
+                  ? ("invoice.edit.loading" | translate)
+                  : validRFC(vm.form?.rfc) === true &&
+                    vm.direcciones?.length === 0
+                  ? ("invoice.edit.direccion-placeholder-3" | translate)
+                  : vm.form?.direccion?._id
+                  ? ("invoice.edit.direccion" | translate)
+                  : ("invoice.edit.direccion-placeholder" | translate)
+              }}</mat-label>
+              <mat-select
+                name="direccion_id"
+                [ngModel]="vm.form?.direccion"
+                (ngModelChange)="formEmitter.next(['direccion:select', $event])"
+                [compareWith]="compareId"
+                class="disable-custom-format"
+                [disabled]="vm.direcciones?.length === 0"
               >
-                {{ direccion.identificador }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+                <!-- [placeholder]="
+                          validRFC(vm.form?.rfc) !== true
+                            ? 'Ingresa un receptor válido'
+                            : vm.direcciones == null
+                            ? 'Cargando...'
+                            : vm.direcciones?.length === 0
+                            ? 'No se encontraron direcciones guardadas'
+                            : 'Seleciona una opción'
+                        " -->
+                <mat-option
+                  *ngFor="let direccion of vm.direcciones"
+                  [value]="direccion"
+                >
+                  {{ direccion.identificador }}
+                </mat-option>
+              </mat-select>
+              <mat-progress-bar
+                [style.display]="vm.direcciones == null ? 'block' : 'none'"
+                class="brand-progress-bar-1"
+                mode="indeterminate"
+              ></mat-progress-bar>
+            </mat-form-field>
+
+            <div style="padding-top: 8px">
+              <button
+                *ngIf="!vm.readonly"
+                mat-flat-button
+                class="brand-btn-2"
+                (click)="
+                  manageDirecciones({
+                    model: 'receptor',
+                    rfc: vm.form.rfc,
+                    openMode:
+                      validRFC(vm.form?.rfc) && vm.direcciones?.length === 0
+                        ? 'create'
+                        : null
+                  })
+                "
+                [style.pointer-events]="all"
+                style="min-width: 36px; min-height: 36px"
+                [disabled]="!validRFC(vm.form?.rfc)"
+              >
+                {{
+                  validRFC(vm.form?.rfc) && vm.direcciones?.length === 0
+                    ? ("invoice.edit.direccion-new" | translate)
+                    : ""
+                }}
+                <mat-icon
+                  *ngIf="
+                    !(validRFC(vm.form?.rfc) && vm.direcciones?.length === 0)
+                  "
+                  style="font-size: 1.2rem; height: auto"
+                  >settings</mat-icon
+                >
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="grid">
+
+        <div class="grid" style="padding-top: 1rem">
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
@@ -974,9 +998,9 @@ class="brand-progress-bar-1"
             ></mat-progress-bar>
 
             <button
-              mat-icon-button
+              mat-flat-button
               matSuffix
-              color="primary"
+              class="brand-btn-2"
               (click)="
                 $event.stopPropagation();
                 manageDirecciones({
@@ -984,7 +1008,15 @@ class="brand-progress-bar-1"
                   rfc: vm.form.emisor.rfc
                 })
               "
-              style="margin-left: 8px"
+              style="
+                margin-left: 8px;
+                min-height: 30px;
+                max-height: 30px;
+                min-width: 30px;
+                max-width: 30px;
+                padding: 4px;
+                transform: translateY(-3px);
+              "
               [style.display]="
                 vm.form?.emisor?._id &&
                 validRFC(vm.form?.emisor?.rfc) &&
@@ -993,7 +1025,7 @@ class="brand-progress-bar-1"
                   : 'none'
               "
             >
-              <mat-icon style="font-size: 1rem; padding: 0">
+              <mat-icon style="font-size: 1.2rem; padding: 0; color: #040b11">
                 settings
               </mat-icon>
             </button>
@@ -1299,7 +1331,7 @@ class="brand-progress-bar-1"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
             matTooltipClass="brand-tooltip-1"
-            style="margin-left: 8px"
+            style="margin-left: 2px"
           >
             <mat-icon
               ><img
@@ -1311,7 +1343,7 @@ class="brand-progress-bar-1"
             mat-flat-button
             class="brand-btn-2"
             style="
-              margin-left: 8px;
+              margin-left: 12px;
               min-height: 30px;
               max-height: 30px;
               min-width: 30px;
@@ -1328,7 +1360,7 @@ class="brand-progress-bar-1"
                 emisorConceptos({ mode: 'index', rfc: vm.emisor?.rfc })
             "
           >
-            <mat-icon style="font-size: 1rem; padding: 0">settings</mat-icon>
+            <mat-icon style="font-size: 1.2rem; padding: 0">settings</mat-icon>
           </button>
         </h6>
 
@@ -2198,7 +2230,7 @@ class="brand-progress-bar-1"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
             matTooltipClass="brand-tooltip-1"
-            style="margin-left: 8px"
+            style="margin-left: 2px"
           >
             <mat-icon
               ><img
@@ -2207,7 +2239,7 @@ class="brand-progress-bar-1"
             /></mat-icon>
           </span>
         </h6>
-        <div class="grid-fill" style="margin-bottom: 1rem">
+        <div class="grid-fill">
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
@@ -2344,6 +2376,7 @@ class="brand-progress-bar-1"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
             matTooltipClass="brand-tooltip-1"
+            style="margin-left: 2px"
           >
             <mat-icon
               ><img
@@ -2355,7 +2388,7 @@ class="brand-progress-bar-1"
           <div
             *ngIf="!vm.readonly && !vm.form?._id"
             style="
-              margin-left: 8px;
+              margin-left: 12px;
               display: inline-flex;
               align-items: center;
               justify-content: center;
@@ -2399,7 +2432,7 @@ class="brand-progress-bar-1"
           <div
             *ngIf="!vm.readonly && vm.form?._id"
             style="
-              margin-left: 8px;
+              margin-left: 12px;
               display: inline-flex;
               align-items: center;
               justify-content: center;

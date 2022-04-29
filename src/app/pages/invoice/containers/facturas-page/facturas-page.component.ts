@@ -308,9 +308,9 @@ export class FacturasPageComponent implements OnInit {
       autoFocus: false,
       // panelClass: [""],
       // hasBackdrop: true,
-      backdropClass: ["brand-dialog-filters"],
+      backdropClass: ["brand-dialog-1", "dialog-filters"],
       position: {
-        top: "13.5rem",
+        top: "12.5rem",
       },
     });
 

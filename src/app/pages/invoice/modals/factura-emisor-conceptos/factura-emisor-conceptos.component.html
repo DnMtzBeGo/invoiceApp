@@ -383,7 +383,7 @@
             [ngModel]="vm.form?.unidad_de_medida"
             (ngModelChange)="vm.form.unidad_de_medida = $event"
             placeholder="Selecciona una opción"
-            class="no-custom-theme"
+            class="disable-custom-format"
           >
             <mat-option>
               <ngx-mat-select-search
@@ -504,7 +504,7 @@
                 (ngModelChange)="vm.impuesto = clone($event)"
                 [compareWith]="compareImpuesto"
                 placeholder="Seleciona una opción"
-                class="no-custom-theme"
+                class="disable-custom-format"
               >
                 <mat-option
                   *ngFor="let impuesto of vm.catalogos?.tipos_de_impuesto"
@@ -555,7 +555,7 @@
                         .factor || vm.impuesto.factor
                   "
                   placeholder="Selecciona una opción"
-                  class="no-custom-theme"
+                  class="disable-custom-format"
                 >
                   <mat-option
                     *ngFor="let tasa of vm.impuesto?.tasaCuota"

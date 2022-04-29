@@ -1,13 +1,26 @@
 <div class="app-factura-manage-direcciones">
-  <button mat-icon-button (click)="closeModal()" style="float: right">
+  <button
+    mat-icon-button
+    (click)="closeModal()"
+    style="position: absolute; top: 1rem; right: 1rem"
+  >
     <mat-icon>close</mat-icon>
   </button>
 
-  <h5 style="margin-bottom: 2rem">
-    {{ models[config.model].title }}
-    <span style="margin-left: 4px; font-size: 14px; opacity: 0.5">
-      {{ models[config.model].subtitle }}
-    </span>
+  <h4 style="margin-bottom: 0rem; font-size: 20px">
+    {{ "invoice.manage-dir." + config.model + ".title" | translate }} -
+    {{ config.rfc }}
+  </h4>
+
+  <h5
+    style="
+      margin-bottom: 2rem;
+      font-weight: 500;
+      font-size: 15px;
+      color: #70757b;
+    "
+  >
+    {{ "invoice.manage-dir." + config.model + ".subtitle" | translate }}
   </h5>
 
   <div
@@ -17,23 +30,27 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       [style.visibility]="vm.form == null || vm.form._id ? 'visible' : 'hidden'"
+      style="min-width: 250px"
     >
-      <mat-label>Dirección ({{ config.rfc }})</mat-label>
+      <mat-label>
+        {{
+          vm.direcciones == null
+            ? ("invoice.edit.loading" | translate)
+            : vm.direcciones?.length === 0
+            ? ("invoice.manage-dir.direccion-placeholder-1" | translate)
+            : vm.form
+            ? ("invoice.manage-dir.direccion" | translate)
+            : ("invoice.manage-dir.direccion-placeholder" | translate)
+        }}
+      </mat-label>
       <mat-select
         name="direccion"
         [ngModel]="vm.form"
         (ngModelChange)="formEmitter.next(['direccion:select', $event])"
-        [placeholder]="
-          vm.direcciones == null
-            ? 'Cargando...'
-            : vm.direcciones?.length === 0
-            ? 'No se encontraron resultados'
-            : 'Seleciona una dirección'
-        "
         [compareWith]="compareId"
-        class="no-custom-theme"
+        class="disable-custom-format"
       >
         <mat-option
           *ngFor="let direccion of vm.direcciones"
@@ -67,7 +84,7 @@
       <button
         *ngIf="vm.form?._id"
         mat-flat-button
-        color="warn"
+        class="brand-btn-1"
         (click)="formEmitter.next(['submit', [config, 'delete', vm.form]])"
         [style.pointer-events]="
           vm.formLoading || vm.formSuccess ? 'none' : 'all'
@@ -80,7 +97,7 @@
               ? 'block'
               : 'none'
           "
-          color="accent"
+          class="brand-spinner-2"
           [diameter]="20"
           [strokeWidth]="4"
           style="margin: 0 auto"
@@ -104,81 +121,21 @@
           "
           >{{
             ["delete"].includes(vm.formMode) && vm.formError
-              ? "Reintentar"
+              ? ("invoice.manage-dir.btn-delete-retry" | translate)
               : ["delete"].includes(vm.formMode) && vm.formSuccess
-              ? "Dirección eliminada"
-              : "Eliminar dirección"
+              ? ("invoice.manage-dir.btn-delete-success" | translate)
+              : ("invoice.manage-dir.btn-delete" | translate)
           }}</span
         >
       </button>
 
       <button
-        *ngIf="vm.form"
+        *ngIf="vm.form && vm.form?._id == null"
         mat-stroked-button
-        color="warn"
+        class="brand-btn-2"
         (click)="formEmitter.next(['direccion:select', null])"
       >
         Cancelar
-      </button>
-
-      <button
-        mat-flat-button
-        [color]="
-          ['create', 'update'].includes(vm.formMode) && vm.formSuccess === false
-            ? 'warn'
-            : 'primary'
-        "
-        (click)="
-          vm.form
-            ? formEmitter.next([
-                'submit',
-                [config, vm.form?._id ? 'update' : 'create', vm.form]
-              ])
-            : formEmitter.next(['direccion:select', (vm.form = createForm())])
-        "
-        [style.pointer-events]="
-          vm.formLoading || vm.formSuccess ? 'none' : 'all'
-        "
-        style="min-width: 97px; min-height: 37px"
-      >
-        <mat-spinner
-          [style.display]="
-            ['create', 'update'].includes(vm.formMode) && vm.formLoading
-              ? 'block'
-              : 'none'
-          "
-          color="accent"
-          [diameter]="20"
-          [strokeWidth]="4"
-          style="margin: 0 auto"
-        ></mat-spinner>
-        <mat-icon
-          [style.display]="
-            ['create', 'update'].includes(vm.formMode) && vm.formSuccess
-              ? 'inline-block'
-              : 'none'
-          "
-          style="margin-right: 4px"
-        >
-          check
-        </mat-icon>
-        <span
-          [style.display]="
-            !['create', 'update'].includes(vm.formMode) ||
-            (['create', 'update'].includes(vm.formMode) && !vm.formLoading)
-              ? 'inline-block'
-              : 'none'
-          "
-          >{{
-            ["create", "update"].includes(vm.formMode) && vm.formError
-              ? "Reintentar"
-              : ["create", "update"].includes(vm.formMode) && vm.formSuccess
-              ? "Dirección guardada"
-              : vm.form
-              ? "Guardar"
-              : "Nueva Dirección"
-          }}</span
-        >
       </button>
     </div>
   </div>
@@ -189,6 +146,85 @@
       (direccionChange)="(1)"
     ></app-factura-direccion-input> -->
   </div>
+
+  <button
+    mat-flat-button
+    (click)="
+      vm.form
+        ? formEmitter.next([
+            'submit',
+            [config, vm.form?._id ? 'update' : 'create', vm.form]
+          ])
+        : formEmitter.next(['direccion:select', (vm.form = createForm())])
+    "
+    [style.pointer-events]="vm.formLoading || vm.formSuccess ? 'none' : 'all'"
+    style="
+      min-width: 155px;
+      min-height: 40px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    "
+    [ngClass]="[
+      'radius-s',
+      ['create', 'update'].includes(vm.formMode) && vm.formSuccess === false
+        ? 'brand-btn-error'
+        : 'brand-btn-2'
+    ]"
+  >
+    <mat-spinner
+      [style.display]="
+        ['create', 'update'].includes(vm.formMode) && vm.formLoading
+          ? 'block'
+          : 'none'
+      "
+      class="brand-spinner-1"
+      [diameter]="20"
+      [strokeWidth]="4"
+      style="margin: 0 auto"
+    ></mat-spinner>
+    <mat-icon
+      [style.display]="
+        ['create', 'update'].includes(vm.formMode) && vm.formSuccess
+          ? 'inline-block'
+          : 'none'
+      "
+      style="margin-right: 4px"
+    >
+      check
+    </mat-icon>
+    <span
+      [style.display]="
+        !['create', 'update'].includes(vm.formMode) ||
+        (['create', 'update'].includes(vm.formMode) && !vm.formLoading)
+          ? 'inline-block'
+          : 'none'
+      "
+      >{{
+        ["create", "update"].includes(vm.formMode) && vm.formError
+          ? ("invoice.manage-dir.btn-save-retry" | translate)
+          : ["create", "update"].includes(vm.formMode) && vm.formSuccess
+          ? vm.formMode === "create"
+            ? ("invoice.manage-dir.btn-save-save-success" | translate)
+            : ("invoice.manage-dir.btn-save-update-success" | translate)
+          : vm.form
+          ? vm.form?._id == null
+            ? ("invoice.manage-dir.btn-save-save" | translate)
+            : ("invoice.manage-dir.btn-save-update" | translate)
+          : ("invoice.manage-dir.btn-save-new" | translate)
+      }}</span
+    >
+    <mat-icon
+      [style.display]="
+        (!vm.formLoading && vm.formSuccess == null) ||
+        !['create', 'update'].includes(vm.formMode)
+          ? 'inline-block'
+          : 'none'
+      "
+      style="margin-right: -8px"
+      >keyboard_arrow_right</mat-icon
+    >
+  </button>
 </div>
 
 <template #container></template>

@@ -4,10 +4,10 @@ import { Observable } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 import { environment } from "../../../environments/environment";
 
+const isInvoice = (method: string) => /^invoice(\/\w+)?/.test(method);
+
 const getURLBASE = (method: string) =>
-  /^invoice(\/\w+)?/.test(method)
-    ? environment.URL_DASHBOARD
-    : environment.URL_BASE;
+  isInvoice(method) ? environment.URL_DASHBOARD : environment.URL_BASE;
 
 @Injectable({
   providedIn: "root",
@@ -69,7 +69,11 @@ export class AuthService {
       "Access-Control-Allow-Origin": "*",
       "Acceontrol-Allow-Headers": "Content-Type, Accept",
       "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
-      Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
+      Authorization: `Bearer ${
+        isInvoice(method)
+          ? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYxODMxMGU4NmMxNTFmZTI0ZGVhZGQxNyIsImVtYWlsIjoibWFyY29wb2xvQGJlZ28uYWkifSwiaWF0IjoxNjUwOTk1MDQ4fQ.jrvfFLuPlClABGEwKoZdpvtiHwDkTWeBBpPAUDDt49M"
+          : localStorage.getItem("token") ?? ""
+      }`,
     });
 
     const URL_BASE = getURLBASE(method);

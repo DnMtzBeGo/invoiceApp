@@ -44,7 +44,7 @@
     <!-- <bego-button class="btn-menu icon icon-referals" (click)="goTo('referals')"></bego-button> -->
     <div
       class="menu-option"
-      [ngClass]="{ selected: router.url == '/invoice' }"
+      [ngClass]="{ selected: router.url.startsWith('/invoice') }"
       (click)="goTo('invoice')"
     >
       <bego-button class="btn-menu icon icon-list icon-only"></bego-button>

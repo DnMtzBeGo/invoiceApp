@@ -671,6 +671,8 @@
             "direccion-placeholder": "Seleciona una dirección",
             "direccion-placeholder-2": "Ingresa un receptor válido",
             "direccion-placeholder-3": "No se encontraron direcciones guardadas",
+            "direccion-new": "Nueva dirección",
+            "direccion-admin": "Administrar",
             "loading": "Cargando...",
 
             "addr-nombre": "Nombre Sucursal",
@@ -785,6 +787,30 @@
             "btn-save-save": "Guardar",
             "btn-save-save-success": "Factura guardada",
             "btn-save-save-success-tpl": "Template guardado"
+        },
+        "manage-dir": {
+            "emisor": {
+                "title": "Sucursales emisor",
+                "subtitle": "(Añade, edita, elimina sucursales)"
+            },
+            "receptor": {
+                "title": "Direcciones receptor",
+                "subtitle": "(Añade, edita, elimina direcciones)"
+            },
+            "direccion": "Dirección",
+            "direccion-placeholder": "Seleciona una dirección",
+            "direccion-placeholder-1": "No se encontraron resultados",
+
+            "btn-save-retry": "Reintentar",
+            "btn-save-update": "Actualizar",
+            "btn-save-update-success": "Dirección actualizada",
+            "btn-save-save": "Guardar",
+            "btn-save-save-success": "Dirección guardada",
+            "btn-save-new": "Nueva Dirección",
+
+            "btn-delete-retry": "Reintentar",
+            "btn-delete": "Eliminar",
+            "btn-delete-success": "Dirección eliminada"
         }
     }
 }

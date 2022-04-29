@@ -15,7 +15,7 @@
       [ngModel]="vm.form?.motivo_cancelacion"
       (ngModelChange)="vm.form.motivo_cancelacion = $event"
       placeholder="Seleciona una opción"
-      class="no-custom-theme"
+      class="disable-custom-format"
     >
       <mat-option *ngFor="let motivo of vm.motivos" [value]="motivo.clave">
         {{ motivo.descripcion }}
