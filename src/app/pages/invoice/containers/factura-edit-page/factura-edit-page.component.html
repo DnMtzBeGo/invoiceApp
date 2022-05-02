@@ -1025,7 +1025,14 @@
                   : 'none'
               "
             >
-              <mat-icon style="font-size: 1.2rem; padding: 0; color: #040b11">
+              <mat-icon
+                style="
+                  font-size: 1.2rem;
+                  padding: 0;
+                  height: auto;
+                  color: #040b11;
+                "
+              >
                 settings
               </mat-icon>
             </button>
@@ -1348,7 +1355,7 @@
               max-height: 30px;
               min-width: 30px;
               max-width: 30px;
-              padding: 0;
+              padding: 4px;
             "
             [style.opacity]="
               vm.emisor?.rfc && validRFC(vm.emisor?.rfc) ? '1' : '0.4'
@@ -1360,7 +1367,9 @@
                 emisorConceptos({ mode: 'index', rfc: vm.emisor?.rfc })
             "
           >
-            <mat-icon style="font-size: 1.2rem; padding: 0">settings</mat-icon>
+            <mat-icon style="font-size: 1.2rem; height: auto; display: block"
+              >settings</mat-icon
+            >
           </button>
         </h6>
 

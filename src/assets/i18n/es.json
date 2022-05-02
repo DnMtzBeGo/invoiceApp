@@ -719,7 +719,6 @@
 
             "concepto-nombre": "Producto o servicio",
             "concepto-nombre-placeholder": "Ingresa tu producto o servicio",
-
             "concepto-cve_sat": "Descripción SAT",
             "concepto-unidad-medida": "Unidad de medida",
             "concepto-precio": "Precio unitario",
@@ -810,7 +809,39 @@
 
             "btn-delete-retry": "Reintentar",
             "btn-delete": "Eliminar",
-            "btn-delete-success": "Dirección eliminada"
+            "btn-delete-success": "Dirección eliminada",
+
+            "btn-cancel": "Cancelar"
+        },
+        "emisor-concep": {
+            "title": "Productos o Servicios",
+            "subtitle": "(Añade, edita, elimina productos o servicios)",
+
+            "btn-cancel": "Cancelar",
+
+            "btn-delete-retry": "Reintentar",
+            "btn-delete": "Eliminar",
+            "btn-delete-success": "Concepto eliminado",
+
+            "btn-import-retry": "Reintentar",
+            "btn-import": "Importar Productos",
+            "btn-import-success": "Importación exitosa",
+
+            "nombre" : "Nombre",
+            "descripcion": "Descripción",
+            "opciones": "Opciones",
+
+            "editar": "Editar",
+            "eliminar": "Eliminar",
+
+            "no-products": "No se encontraron productos o servicios",
+
+            "btn-save-retry": "Reintentar",
+            "btn-save-update": "Actualizar",
+            "btn-save-update-success": "Concepto actualizado",
+            "btn-save-save": "Guardar",
+            "btn-save-save-success": "Concepto guardado",
+            "btn-save-new": "Nuevo Producto o Servicio"
         }
     }
 }
