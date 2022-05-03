@@ -731,6 +731,7 @@
 
             "impuestos": "Impuestos",
             "impuesto": "Impuesto",
+            "impuesto-placeholder": "Selecciona una opción",
 
             "impuesto-tasa": "Tasa (%)",
             "impuesto-tasa-placeholder-2": "Entre :1% y :2%",

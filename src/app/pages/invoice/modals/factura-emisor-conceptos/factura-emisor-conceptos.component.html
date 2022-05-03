@@ -13,12 +13,7 @@
   </h4>
 
   <h5
-    style="
-      margin-bottom: 2rem;
-      font-weight: 500;
-      font-size: 15px;
-      color: #70757b;
-    "
+    style="margin-bottom: 0; font-weight: 500; font-size: 15px; color: #70757b"
   >
     {{ "invoice.emisor-concep.subtitle" | translate }}
   </h5>
@@ -169,6 +164,7 @@
             mat-icon-button
             [matMenuTriggerFor]="menu"
             [disabled]="vm.formLoading || vm.formSuccess"
+            style="color: #ededed"
           >
             <mat-spinner
               [style.display]="
@@ -176,7 +172,7 @@
                   ? 'inline-block'
                   : 'none'
               "
-              class="brand-spinner-1"
+              class="brand-spinner-2"
               [diameter]="20"
               [strokeWidth]="3"
               style="
@@ -239,7 +235,7 @@
       vm.conceptosLoading === false &&
       vm.conceptos?.length === 0
     "
-    style="text-align: center; line-height: 0"
+    style="line-height: 0"
   >
     {{ "invoice.emisor-concep.no-products" | translate }}
   </div>
@@ -461,9 +457,13 @@
       style="margin-top: 1rem"
     >
       <h6>{{ "invoice.edit.impuestos" | translate }}</h6>
-      <div class="grid-fill">
+      <div class="grid-2-2-1">
         <mat-form-field appearance="outline" class="brand-field-1">
-          <mat-label>{{ "invoice.edit.impuesto" | translate }}</mat-label>
+          <mat-label>{{
+            vm.impuesto
+              ? ("invoice.edit.impuesto" | translate)
+              : ("invoice.edit.impuesto-placeholder" | translate)
+          }}</mat-label>
           <mat-select
             name="impuesto"
             [ngModel]="vm.impuesto"
@@ -602,20 +602,20 @@
             </span>
           </mat-form-field>
         </ng-template>
+
+        <div style="padding-top: 10px">
+          <button
+            mat-flat-button
+            class="brand-btn-2"
+            (click)="conceptoEmitter.next(['impuestos:add', vm.impuesto])"
+            [disabled]="vm.impuesto == null"
+          >
+            {{ "invoice.edit.impuesto-agregar" | translate }}
+          </button>
+        </div>
       </div>
 
-      <div style="padding-top: 0">
-        <button
-          mat-flat-button
-          class="brand-btn-2"
-          (click)="conceptoEmitter.next(['impuestos:add', vm.impuesto])"
-          [disabled]="vm.impuesto == null"
-        >
-          {{ "invoice.edit.impuesto-agregar" | translate }}
-        </button>
-      </div>
-
-      <div *ngIf="vm.impuestos?.length" style="padding-top: 1.5rem">
+      <div *ngIf="vm.impuestos?.length" style="padding-top: 0.5rem">
         <table class="impuestos-table">
           <thead>
             <tr>

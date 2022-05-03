@@ -1393,6 +1393,7 @@
                 ])
               "
               [matAutocomplete]="auto4"
+              autocomplete="off"
             />
 
             <span
@@ -1467,6 +1468,7 @@
                 ])
               "
               [matAutocomplete]="auto5"
+              autocomplete="off"
             />
 
             <span
@@ -1846,9 +1848,13 @@
         [attr.expanded]="vm.concepto?.impuestos.length > 0"
       >
         <h6>{{ "invoice.edit.impuestos" | translate }}</h6>
-        <div class="grid-fill">
+        <div class="grid-2-2-1" style="padding-bottom: 0.5rem">
           <mat-form-field class="brand-field-1" appearance="outline">
-            <mat-label>{{ "invoice.edit.impuesto" | translate }}</mat-label>
+            <mat-label>{{
+              vm.impuesto
+                ? ("invoice.edit.impuesto" | translate)
+                : ("invoice.edit.impuesto-placeholder" | translate)
+            }}</mat-label>
             <mat-select
               name="impuesto"
               [ngModel]="vm.impuesto"
@@ -1988,17 +1994,17 @@
               </span>
             </mat-form-field>
           </ng-template>
-        </div>
 
-        <div style="padding-bottom: 1rem; padding-top: 0">
-          <button
-            mat-flat-button
-            class="brand-btn-2"
-            (click)="formEmitter.next(['impuestos:add', vm.impuesto])"
-            [disabled]="vm.impuesto == null"
-          >
-            {{ "invoice.edit.impuesto-agregar" | translate }}
-          </button>
+          <div style="padding-top: 10px">
+            <button
+              mat-flat-button
+              class="brand-btn-2"
+              (click)="formEmitter.next(['impuestos:add', vm.impuesto])"
+              [disabled]="vm.impuesto == null"
+            >
+              {{ "invoice.edit.impuesto-agregar" | translate }}
+            </button>
+          </div>
         </div>
 
         <table
@@ -2325,7 +2331,7 @@
             </span>
           </mat-form-field>
 
-          <div>
+          <div style="padding-top: 9px">
             <button
               mat-flat-button
               class="brand-btn-2"
@@ -2333,7 +2339,6 @@
                 vm.form.documentos_relacionados.push({ uuid: vm.uuid });
                 vm.uuid = ''
               "
-              style="margin-top: 4px"
               [disabled]="!vm.form?.tipo_de_relacion"
             >
               {{ "invoice.edit.doc-rel-add" | translate }}
@@ -2569,7 +2574,7 @@
             </button>
           </mat-form-field>
 
-          <div *ngIf="!vm.readonly">
+          <div *ngIf="!vm.readonly" style="padding-top: 9px">
             <button
               *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc)"
               mat-flat-button
@@ -2581,7 +2586,7 @@
                     : vm.series.find(findById(vm.form?.serie))
                 )
               "
-              style="margin-top: 4px; min-width: 97px; min-height: 37px"
+              style="min-width: 97px; min-height: 37px"
               [disabled]="false"
             >
               <span>
