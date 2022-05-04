@@ -672,7 +672,7 @@
             "direccion-placeholder-2": "Ingresa un receptor válido",
             "direccion-placeholder-3": "No se encontraron direcciones guardadas",
             "direccion-new": "Nueva dirección",
-            "direccion-admin": "Administrar",
+            "direccion-edit": "Editar direcciones",
             "loading": "Cargando...",
 
             "addr-nombre": "Nombre Sucursal",
@@ -702,6 +702,8 @@
             "lugar-expedicion-placeholder": "Selecciona el Lugar de Expedición",
             "lugar-expedicion-placeholder-2": "Selecciona un emisor válido",
             "lugar-expedicion-placeholder-3": "No se encontraron lugares de expedición guardados",
+            "emisor-direccion-new": "Nueva sucursal",
+            "emisor-direccion-edit": "Editar sucursales",
 
             "regimen": "Régimen fiscal",
             "regimen-placeholder": "Selecciona un Régimen fiscal",
@@ -716,6 +718,7 @@
             "info-placeholder": "Información Extra (máx 5000 caractéres)",
 
             "conceptos": "Conceptos",
+            "conceptos-edit": "Productos/Servicios",
 
             "concepto-nombre": "Producto o servicio",
             "concepto-nombre-placeholder": "Ingresa tu producto o servicio",

@@ -194,6 +194,54 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 }
 
+.mat-option.brand-option-1 {
+  height: auto;
+  padding: 8px 16px;
+  border-left: 1px solid transparent;
+
+  .mat-option-text {
+    display: inline-flex;
+    align-items: center;
+
+    > img {
+      display: block;
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    > div {
+      margin-left: 8px;
+      display: flex;
+      flex-direction: column;
+      line-height: normal;
+      color: #ededed;
+
+      .sublabel {
+        opacity: 0.7;
+        font-size: 0.9em;
+      }
+    }
+  }
+
+  &.mat-active {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 1px solid #ffbe00;
+  }
+
+  &[disabled] {
+    padding-top: 0;
+    padding-bottom: 0;
+    color: rgba(0, 0, 0, 0.38);
+    font-size: 14px;
+    background-color: transparent;
+  }
+}
+
 .cdk-overlay-backdrop.brand-dialog-1 {
   &.cdk-overlay-backdrop-showing {
     background: rgba(0, 0, 0, 0.4);

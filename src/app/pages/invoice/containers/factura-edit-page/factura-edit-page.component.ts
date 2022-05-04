@@ -315,7 +315,7 @@ export class FacturaEditPageComponent implements OnInit {
         filter(Boolean)
         // tap(({ rfc }) =>
         //   this.emisorConceptos({
-        //     mode: 'index',
+        //     mode: "index",
         //     rfc,
         //   })
         // )

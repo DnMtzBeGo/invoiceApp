@@ -319,48 +319,6 @@
   }
 }
 
-.mat-option.brand-option-1 {
-  height: auto;
-  padding: 8px 16px;
-
-  .mat-option-text {
-    display: inline-flex;
-    align-items: center;
-
-    > img {
-      display: block;
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center;
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-
-    > div {
-      margin-left: 8px;
-      display: flex;
-      flex-direction: column;
-      line-height: normal;
-      color: #ededed;
-
-      .sublabel {
-        opacity: 0.7;
-        font-size: 0.9em;
-      }
-    }
-  }
-
-  &[disabled] {
-    padding-top: 0;
-    padding-bottom: 0;
-    color: rgba(0, 0, 0, 0.38);
-    font-size: 14px;
-    background-color: transparent;
-  }
-}
-
 .mat-option.brand-option-serie {
   .mat-option-text {
     display: inline-flex;
