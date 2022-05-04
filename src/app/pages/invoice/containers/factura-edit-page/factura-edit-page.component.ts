@@ -82,7 +82,7 @@ import {
   FacturaEmisorConceptosComponent,
   FacturaManageDireccionesComponent,
 } from "../../modals";
-// import { SeriesNewComponent } from "../../components/series-new/series-new.component";
+import { SeriesNewComponent } from "../../components/series-new/series-new.component";
 
 @Component({
   selector: "app-factura-edit-page",
@@ -312,13 +312,14 @@ export class FacturaEditPageComponent implements OnInit {
     const emisor$ = merge(
       form$.pipe(
         pluck("emisor"),
-        filter(Boolean)
+        filter(Boolean),
         // tap(({ rfc }) =>
         //   this.emisorConceptos({
         //     mode: "index",
         //     rfc,
         //   })
         // )
+        tap((emisor) => this.createEditSerie(emisor))
       ),
       this.formEmitter.pipe(
         ofType("rfcEmisor:set"),
@@ -1138,18 +1139,21 @@ export class FacturaEditPageComponent implements OnInit {
   }
 
   createEditSerie(data) {
-    // const dialogRef = this.matDialog.open(SeriesNewComponent, {
-    //   autoFocus: false,
-    //   backdropClass: ["brand-dialog-1"],
-    //   data,
-    // });
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result == null || result.success == null || result.message === "")
-    //     return;
-    //   // this.notificationsService[
-    //   //   result.success ? "showSuccessToastr" : "showErrorToastr"
-    //   // ](result.message);
-    // });
+    const dialogRef = this.matDialog.open(SeriesNewComponent, {
+      data,
+      restoreFocus: false,
+      autoFocus: false,
+      backdropClass: ["brand-dialog-1"],
+      // disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == null || result.success == null || result.message === "")
+        return;
+      // this.notificationsService[
+      //   result.success ? "showSuccessToastr" : "showErrorToastr"
+      // ](result.message);
+    });
   }
 
   // FORMS

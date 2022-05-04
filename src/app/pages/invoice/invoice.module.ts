@@ -8,7 +8,11 @@ import { TextMaskModule } from "angular2-text-mask";
 import { TranslateModule } from "@ngx-translate/core";
 
 import { SharedModule } from "../../shared/shared.module";
-// import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import {
+  MAT_COLOR_FORMATS,
+  NgxMatColorPickerModule,
+  NGX_MAT_COLOR_FORMATS,
+} from "@angular-material-components/color-picker";
 
 import { InvoiceRoutingModule } from "./invoice-routing.module";
 import {
@@ -71,7 +75,7 @@ import {
 // import { SeriesPageComponent } from './containers/series-page/series-page.component';
 // import { SeriesEditPageComponent } from './containers/series-edit-page/series-edit-page.component';
 // import { SeriesTableComponent } from './components/series-table/series-table.component';
-// import { SeriesNewComponent } from './components/series-new/series-new.component';
+import { SeriesNewComponent } from "./components/series-new/series-new.component";
 // import { LocationModule } from './components/location/location.module';
 
 @NgModule({
@@ -123,7 +127,7 @@ import {
     // SeriesPageComponent,
     // SeriesEditPageComponent,
     // SeriesTableComponent,
-    // SeriesNewComponent,
+    SeriesNewComponent,
     // MODALS
     ActionConfirmationComponent,
     ActionCancelarFacturaComponent,
@@ -144,7 +148,7 @@ import {
     // NgxMaterialTimepickerModule,
     TextMaskModule,
     NgxPaginationModule,
-    // NgxMatColorPickerModule,
+    NgxMatColorPickerModule,
     // LocationModule,
   ],
   exports: [
@@ -153,7 +157,8 @@ import {
     ActionCancelarFacturaComponent,
     ActionSendEmailFacturaComponent,
     FacturaFiltersComponent,
+    NgxMatColorPickerModule,
   ],
-  // providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
+  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
 })
 export class InvoiceModule {}

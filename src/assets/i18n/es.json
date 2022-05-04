@@ -767,7 +767,7 @@
             "serie-placeholder-3": "Serie (Selecciona un emisor válido)",
             "serie-placeholder-4": "Serie (No hay series guardadas)",
             "serie-edit": "Editar serie",
-            "serie-new": "Editar serie",
+            "serie-new": "Nueva serie",
 
             "btn-generar": "Generar",
             "btn-generar-success": "Enviada a generar",
@@ -846,6 +846,22 @@
             "btn-save-save": "Guardar",
             "btn-save-save-success": "Concepto guardado",
             "btn-save-new": "Nuevo Producto o Servicio"
+        },
+        "serie-new": {
+            "title": "Series y logos",
+
+            "tipo-comprobante": "* Tipo de comprobante",
+
+            "serie": "* Serie",
+            "serie-placeholder": "* Nombre de la serie",
+
+            "folio": "* Folio",
+            "color": "Color (opcional)",
+
+            "image": "Imagen (opcional)",
+            "image-placeholder": "Seleccionar imagen (opcional)",
+
+            "btn-save": "Añadir"
         }
     }
 }
