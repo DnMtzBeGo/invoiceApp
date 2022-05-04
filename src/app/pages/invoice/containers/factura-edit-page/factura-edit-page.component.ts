@@ -312,14 +312,14 @@ export class FacturaEditPageComponent implements OnInit {
     const emisor$ = merge(
       form$.pipe(
         pluck("emisor"),
-        filter(Boolean),
+        filter(Boolean)
         // tap(({ rfc }) =>
         //   this.emisorConceptos({
         //     mode: "index",
         //     rfc,
         //   })
         // )
-        tap((emisor) => this.createEditSerie(emisor))
+        // tap((emisor) => this.createEditSerie(emisor))
       ),
       this.formEmitter.pipe(
         ofType("rfcEmisor:set"),
