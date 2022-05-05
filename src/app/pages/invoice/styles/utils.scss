@@ -85,7 +85,13 @@
   }
 
   .mat-form-field-outline-thick {
-    color: #ffbe00;
+    color: #ffbe00cc;
+
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end,
+    .mat-form-field-outline-gap {
+      border-width: 1px;
+    }
   }
 
   .mat-form-field-suffix button[matsuffix] {
