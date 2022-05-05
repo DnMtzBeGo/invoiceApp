@@ -883,10 +883,23 @@
             "reply": "Responder a",
             "reply-placeholder": "Ingresa el correo donde te podrá contactar el cliente",
 
-
             "btn-send": "Enviar Correo",
             "btn-send-success": "Correo Enviado",
-            "btn-send-success-retry": "Reintentar"
+            "btn-send-retry": "Reintentar"
+        },
+        "cancelar-factura": {
+            "title": "Cancelar Comprobante",
+            "body": "Ingresa el motivo de cancelación del comprobante.",
+
+            "motivo": "Motivo",
+            "motivo-placeholder": "Selecciona el motivo de cancelación del comprobante.",
+
+            "uuid": "Folio Sustitución",
+            "uuid-placeholder": "Ingresa el folio fiscal del CFDI a sustituir",
+
+            "btn-send": "Confirmar",
+            "btn-send-success": "Factura cancelada",
+            "btn-send-retry": "Reintentar"
         }
     }
 }
