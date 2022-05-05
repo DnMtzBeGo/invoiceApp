@@ -311,6 +311,7 @@ export class FacturaEditPageComponent implements OnInit {
 
     const emisor$ = merge(
       form$.pipe(
+        // tap((form) => this.sendEmailFactura(form._id)),
         pluck("emisor"),
         filter(Boolean)
         // tap(({ rfc }) =>

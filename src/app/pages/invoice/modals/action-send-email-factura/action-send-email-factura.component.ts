@@ -2,6 +2,7 @@ import { ENTER, COMMA } from "@angular/cdk/keycodes";
 import { Component, OnInit, Inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 import { from, of, throwError, Subject } from "rxjs";
 import { mergeAll, pluck, catchError } from "rxjs/operators";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
@@ -48,14 +49,17 @@ export class ActionSendEmailFacturaComponent implements OnInit {
     private dialogRef: MatDialogRef<ActionSendEmailFacturaComponent>,
     // private notificationsService: NotificationsService,
     private apiRestService: AuthService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
     //FORM
     const form$ = oof({
       invoice: this.data._id,
-      subject: "Tu comprobante Fiscal Digital",
+      subject: this.translateService.instant(
+        "invoice.email-factura.asunto-initial"
+      ),
       to: this.data.to || [],
       cc: "",
       message: "",

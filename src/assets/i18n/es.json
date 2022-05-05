@@ -862,6 +862,31 @@
             "image-placeholder": "Seleccionar imagen (opcional)",
 
             "btn-save": "Añadir"
+        },
+        "email-factura": {
+            "title": "Enviar por Correo",
+            "body": "Ingrese la siguiente información para enviar su comprobante por correo electrónico.",
+
+            "asunto": "Asunto",
+            "asunto-placeholder": "Ingresa el asunto con el que se enviará el correo",
+            "asunto-initial": "Tu comprobante Fiscal Digital",
+
+            "para": "Para",
+            "para-placeholder": "Ingresa el/los correo(s) del cliente",
+
+            "cc": "CC",
+            "cc-placeholder": "Ingresa el correo donde se enviará una copia (CC)",
+
+            "mensaje": "Mensaje",
+            "mensaje-placeholder": "Ingresa el mensaje que quieres que se añada al correo",
+
+            "reply": "Responder a",
+            "reply-placeholder": "Ingresa el correo donde te podrá contactar el cliente",
+
+
+            "btn-send": "Enviar Correo",
+            "btn-send-success": "Correo Enviado",
+            "btn-send-success-retry": "Reintentar"
         }
     }
 }

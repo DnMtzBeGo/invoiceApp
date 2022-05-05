@@ -140,7 +140,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
         reply_to: "",
       },
       restoreFocus: false,
-      panelClass: ["dialog-solid"],
+      backdropClass: ["brand-dialog-1"],
     });
   }
 
@@ -153,7 +153,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
         },
       },
       restoreFocus: false,
-      panelClass: ["dialog-solid"],
+      backdropClass: ["brand-dialog-1"],
     });
   }
 
@@ -175,7 +175,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
         },
       },
       restoreFocus: false,
-      panelClass: ["dialog-solid"],
+      backdropClass: ["brand-dialog-1"],
     });
 
     // TODO: false/positive when close event
