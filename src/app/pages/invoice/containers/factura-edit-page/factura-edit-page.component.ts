@@ -313,6 +313,7 @@ export class FacturaEditPageComponent implements OnInit {
       form$.pipe(
         // tap((form) => this.sendEmailFactura(form._id)),
         // tap((form) => this.cancelarFactura(form._id)),
+        // tap((form) => this.deleteFactura(form._id)),
         pluck("emisor"),
         filter(Boolean)
         // tap(({ rfc }) =>

@@ -1,27 +1,39 @@
 <div class="container">
-  <h1 mat-dialog-title>{{ data.modalTitle }}</h1>
-  <p mat-dialog-content>
-    {{ data.modalMessage }}
-  </p>
+  <h1 style="margin-bottom: 2rem; font-size: 20px">{{ data.modalTitle }}</h1>
+
+  <p
+    style="
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      font-size: 15px;
+      color: #70757b;
+      text-align: center;
+    "
+    [innerHTML]="data.modalMessage"
+  ></p>
+
   <div class="buttons" mat-dialog-actions>
-    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button mat-dialog-close class="brand-btn-1">
+      {{ "invoice.confirm.cancel" | translate }}
+    </button>
+
     <button
       *ngIf="!data.modalPayload"
-      mat-raised-button
-      color="warn"
+      mat-flat-button
+      class="brand-btn-2"
       [mat-dialog-close]="true"
       cdkFocusInitial
     >
-      Confirm
+      {{ "invoice.confirm.confirm" | translate }}
     </button>
     <button
       *ngIf="data.modalPayload"
-      mat-raised-button
-      color="warn"
+      mat-flat-button
+      class="brand-btn-2"
       (click)="confirmAction()"
       cdkFocusInitial
     >
-      Confirm
+      {{ "invoice.confirm.confirm" | translate }}
     </button>
   </div>
 </div>

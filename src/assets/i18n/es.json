@@ -900,6 +900,10 @@
             "btn-send": "Confirmar",
             "btn-send-success": "Factura cancelada",
             "btn-send-retry": "Reintentar"
+        },
+        "confirm": {
+            "cancel": "Cancelar",
+            "confirm": "Confirmar"
         }
     }
 }
