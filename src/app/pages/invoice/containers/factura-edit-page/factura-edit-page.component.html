@@ -2452,7 +2452,7 @@
               class="brand-btn-2"
               (click)="
                 createEditSerie(
-                  vm.form?.serie
+                  !vm.form?.serie
                     ? { emisor: vm.form?.emisor?._id }
                     : vm.series.find(findById(vm.form?.serie))
                 )

@@ -861,7 +861,7 @@
             "image": "Imagen (opcional)",
             "image-placeholder": "Seleccionar imagen (opcional)",
 
-            "btn-save": "Añadir"
+            "btn-save": "Guardar"
         },
         "email-factura": {
             "title": "Enviar por Correo",
