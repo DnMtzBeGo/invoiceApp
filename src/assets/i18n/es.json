@@ -904,6 +904,18 @@
         "confirm": {
             "cancel": "Cancelar",
             "confirm": "Confirmar"
+        },
+        "emisor-table": {
+            "rfc-empresa": "RFC Empresa",
+            "rfc-emisor": "RFC Emisor",
+            "razon-social": "Razón Social",
+            "regimen": "Régimen Fiscal",
+            "correo-notificacion": "Correo de Notificación",
+            "validacion": "Validación",
+
+            "edit-emisor": "Editar",
+            "view-series": "Series",
+            "delete-emisor": "Eliminar Emisor"
         }
     }
 }

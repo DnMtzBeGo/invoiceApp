@@ -21,7 +21,7 @@
           class="factura-table__table-header"
           mat-sort-header
         >
-          RFC Empresa
+          {{ "invoice.emisor-table.rfc-empresa" | translate }}
         </th>
         <td
           mat-cell
@@ -40,7 +40,7 @@
           class="factura-table__table-header"
           mat-sort-header
         >
-          RFC Emisor
+          {{ "invoice.emisor-table.rfc-emisor" | translate }}
         </th>
         <td
           mat-cell
@@ -59,7 +59,7 @@
           class="factura-table__table-header"
           mat-sort-header
         >
-          Razón Social
+          {{ "invoice.emisor-table.razon-social" | translate }}
         </th>
         <td
           mat-cell
@@ -78,7 +78,7 @@
           class="factura-table__table-header"
           mat-sort-header
         >
-          Régimen Fiscal
+          {{ "invoice.emisor-table.regimen" | translate }}
         </th>
         <td
           mat-cell
@@ -97,7 +97,7 @@
           class="factura-table__table-header"
           mat-sort-header
         >
-          Correo de Notificación
+          {{ "invoice.emisor-table.correo-notificacion" | translate }}
         </th>
         <td
           mat-cell
@@ -116,7 +116,7 @@
           class="factura-table__table-header center"
           mat-sort-header
         >
-          Validación
+          {{ "invoice.emisor-table.validacion" | translate }}
         </th>
         <td
           mat-cell
@@ -150,15 +150,17 @@
           <mat-menu #menu="matMenu" class="brand-menu-1">
             <button mat-menu-item (click)="editEmisor(element)">
               <mat-icon>edit</mat-icon>
-              <span>Editar</span>
+              <span>{{ "invoice.emisor-table.edit-emisor" | translate }}</span>
             </button>
             <button mat-menu-item (click)="getSeries(element._id)">
               <mat-icon>pin</mat-icon>
-              <span>Serie</span>
+              <span>{{ "invoice.emisor-table.view-series" | translate }}</span>
             </button>
             <button mat-menu-item (click)="deleteEmisor(element._id)">
               <mat-icon>delete</mat-icon>
-              <span>Borrar</span>
+              <span>{{
+                "invoice.emisor-table.delete-emisor" | translate
+              }}</span>
             </button>
           </mat-menu>
         </td>
