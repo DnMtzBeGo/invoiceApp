@@ -363,7 +363,7 @@ export class FacturaEditPageComponent implements OnInit {
       share()
     );
     const helpTooltips$ = this.fetchHelpTooltips();
-    const series$ = emisor$.pipe(pluck("rfc"), switchMap(this.fetchSeries));
+    const series$ = emisor$.pipe(pluck("_id"), switchMap(this.fetchSeries));
     const paises$ = this.fetchPaises();
     const facturaStatus$ = this.fetchFacturaStatus().pipe(
       map(arrayToObject("clave", "nombre")),
@@ -879,12 +879,12 @@ export class FacturaEditPageComponent implements OnInit {
   };
 
   fetchSeries = (rfc: string) => {
-    return rfc == void 0 || rfc === "" || !validRFC(rfc)
+    return id == void 0 || id === ""
       ? of([])
       : from(
           this.apiRestService.apiRest(
             JSON.stringify({
-              rfc,
+              emisor: id,
             }),
             "invoice/series",
             { loader: "false" }
