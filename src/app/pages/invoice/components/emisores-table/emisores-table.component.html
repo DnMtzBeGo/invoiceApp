@@ -9,7 +9,7 @@
     <table
       mat-table
       [dataSource]="dataSource"
-      class="factura-table__table"
+      class="brand-table-1"
       matSort
       matSortStart="desc"
     >
@@ -147,7 +147,7 @@
           <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger>
             <mat-icon>more_vert</mat-icon>
           </button>
-          <mat-menu #menu="matMenu">
+          <mat-menu #menu="matMenu" class="brand-menu-1">
             <button mat-menu-item (click)="editEmisor(element)">
               <mat-icon>edit</mat-icon>
               <span>Editar</span>

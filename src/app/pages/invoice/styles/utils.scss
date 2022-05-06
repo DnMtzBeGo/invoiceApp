@@ -266,6 +266,50 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 }
 
+.brand-table-1 {
+  width: 100%;
+  box-shadow: none;
+  background: initial;
+
+  .mat-header-cell,
+  .mat-cell {
+    color: #ededed;
+  }
+
+  .mat-header-cell {
+    font-family: "Avenir";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+
+    > div {
+      justify-content: center;
+    }
+  }
+
+  .mat-cell {
+    font-family: "Avenir";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+  }
+
+  thead th {
+    border-bottom-color: #1c232a;
+  }
+
+  tbody tr:nth-child(2n) {
+    background: linear-gradient(
+      90.03deg,
+      rgba(13, 18, 23, 0.4) 0.86%,
+      rgba(35, 37, 40, 0.163875) 51.72%,
+      rgba(83, 88, 94, 0.08) 99.51%
+    );
+  }
+}
+
 // Utils
 
 .radius-s {
