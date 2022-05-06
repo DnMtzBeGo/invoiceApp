@@ -1,0 +1,19 @@
+<div>
+  <div class="page-header" role="heading">
+    <h1>Emisores</h1>
+    <div class="toolbar-right">
+      <button mat-flat-button matRipple (click)="newEmisor()">
+        New Emisor
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <app-emisores-table
+      [emisoresTableData]="dataSource"
+      [regimenFiscal]="regimen_fiscal"
+      (refresh)="getEmisores()"
+    >
+    </app-emisores-table>
+  </div>
+</div>

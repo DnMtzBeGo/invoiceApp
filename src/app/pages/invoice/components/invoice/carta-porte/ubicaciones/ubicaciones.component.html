@@ -1,0 +1,33 @@
+<div class="figura-container">
+  <button
+    class="add-figura-btn"
+    mat-mini-fab
+    color="primary"
+    aria-label="Add"
+    (click)="addLocation()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+  <div class="figuras-wrapper">
+    <div
+      class="figuras-subwrapper"
+      *ngFor="let locationInfo of locations; let i = index"
+    >
+      <div>
+        <span class="bubble">{{ i + 1 }}</span>
+        <span>
+          <mat-icon (click)="delete(i)">delete_forever</mat-icon>
+        </span>
+      </div>
+      <app-ubicacion
+        [locationInfo]="locationInfo"
+        [allUbicaciones]="ubicacionesRef"
+      ></app-ubicacion>
+      <mat-divider *ngIf="i != locations.length - 1"></mat-divider>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <button mat-button matStepperNext>Siguiente</button>
+</div>

@@ -1,0 +1,118 @@
+<form [formGroup]="firstFormGroup">
+  <div class="grid container-row">
+    <mat-slide-toggle formControlName="transp_internac"
+      >Transporte Internacional</mat-slide-toggle
+    >
+  </div>
+  <div class="grid" *ngIf="firstFormGroup.value.transp_internac">
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>País Origen Destino</mat-label>
+      <mat-select
+        placeholder="Seleciona una opción"
+        class="no-custom-theme"
+        formControlName="pais_origen_destino"
+      >
+        <mat-option [value]="country.code" *ngFor="let country of countries">
+          {{ country.code }} - {{ country.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Movimiento de Mercancía</mat-label>
+      <mat-select
+        placeholder="Seleciona una opción"
+        class="no-custom-theme"
+        formControlName="entrada_salida_merc"
+      >
+        <mat-option value="Entrada"> Entrada </mat-option>
+        <mat-option value="salida"> Salida </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Via Ingreso o Salida del País</mat-label>
+      <mat-select
+        placeholder="Seleciona una opción"
+        class="no-custom-theme"
+        formControlName="via_entrada_salida"
+      >
+        <mat-option
+          [value]="option.clave"
+          *ngFor="let option of ingresoSalidaPais"
+        >
+          {{ option.clave }} - {{ option.descripcion }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Total Distancia Recorrida</mat-label>
+      <input
+        matInput
+        name="Distancia"
+        placeholder="0"
+      />
+    </mat-form-field> -->
+  </div>
+
+  <mat-button-toggle-group
+    #group="matButtonToggleGroup"
+    value="autotransporte"
+    class="container-row-b"
+  >
+    <mat-button-toggle
+      mat-fab
+      value="autotransporte"
+      aria-label="Autotransporte"
+    >
+      <mat-icon>local_shipping</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      mat-fab
+      value="maritimo"
+      disabled
+      aria-label="Transporte Marítimo"
+    >
+      <mat-icon>directions_boat</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      mat-fab
+      value="aereo"
+      disabled
+      aria-label="Transporte Aereo"
+    >
+      <mat-icon>flight</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle
+      mat-fab
+      value="ferroviario"
+      disabled
+      aria-label="Transporte Ferroviario"
+    >
+      <mat-icon>train</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-expansion-panel *ngIf="group.value" expanded class="expansion-body">
+    <mat-expansion-panel-header>
+      <mat-panel-title>{{ group.value | titlecase }}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+      <ng-container *ngIf="group.value === 'autotransporte'">
+        <app-autotransporte
+          [subtiposRemolques]="subtiposRemolques"
+          [info]="autotransportesInfo"
+        ></app-autotransporte>
+      </ng-container>
+      <ng-container *ngIf="group.value === 'maritimo'">
+        <app-maritimo></app-maritimo>
+      </ng-container>
+      <ng-container *ngIf="group.value === 'aereo'">
+        <app-aereo></app-aereo>
+      </ng-container>
+      <ng-container *ngIf="group.value === 'ferroviario'">
+        <app-ferroviario></app-ferroviario>
+      </ng-container>
+    </ng-template>
+  </mat-expansion-panel>
+  <div class="grid">
+    <button mat-button matStepperNext>Siguiente</button>
+  </div>
+</form>

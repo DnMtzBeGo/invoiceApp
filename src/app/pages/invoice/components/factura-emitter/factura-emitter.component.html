@@ -1,0 +1,136 @@
+<div class="series-container">
+  <div class="series-header">
+    <h6>Emisor</h6>
+    <div class="close-btn" (click)="closeModal()">
+      <mat-icon>close</mat-icon>
+    </div>
+  </div>
+  <div class="series-body">
+    <form [formGroup]="emitterAttributesForm">
+      <div class="grid">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>RFC Empresa</mat-label>
+          <input
+            matInput
+            aria-label="rfcPadre"
+            name="parent"
+            autocomplete="off"
+            formControlName="parent"
+            placeholder="Escribir RFC de la Empresa"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>RFC Emisor</mat-label>
+          <input
+            matInput
+            aria-label="rfc"
+            name="rfc"
+            autocomplete="off"
+            formControlName="rfc"
+            placeholder="Escribir RFC"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Razón Social</mat-label>
+          <input
+            matInput
+            aria-label="Nombre"
+            name="nombre"
+            autocomplete="off"
+            formControlName="nombre"
+            placeholder="Escribir nombre"
+          />
+        </mat-form-field>
+      </div>
+      <div class="grid stretch">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Correo Para Notificar</mat-label>
+          <input
+            matInput
+            aria-label="Correo Electrónico"
+            name="email"
+            autocomplete="off"
+            formControlName="email"
+            placeholder="Escribir Correo Electrónico"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Régimen Fiscal</mat-label>
+          <mat-select
+            formControlName="regimen_fiscal"
+            placeholder="Seleciona una opción"
+            name="registroFiscal"
+            class="no-custom-theme"
+          >
+            <mat-option
+              *ngFor="let option of regimen_fiscal"
+              [value]="option.clave"
+            >
+              {{ option.clave }} - {{ option.descripcion }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="grid">
+        <div class="files-wrapper">
+          <div class="files-wrapper__row">
+            <mat-label>Archivo CER</mat-label>
+            <div class="carousel">
+              <input
+                class="file"
+                type="file"
+                autocomplete="off"
+                accept=".cer"
+                title="fsdfdsf"
+                (change)="onFileSelected($event, 'archivo_cer')"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="files-wrapper">
+          <div class="files-wrapper__row">
+            <mat-label>Archivo Key</mat-label>
+            <div class="carousel">
+              <input
+                class="file"
+                type="file"
+                autocomplete="off"
+                accept=".key"
+                (change)="onFileSelected($event, 'archivo_key')"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid stretch">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Archivo Key Contraseña</mat-label>
+          <input
+            matInput
+            aria-label="Archivo Key Contraseña"
+            name="archivoKeyContrasena"
+            autocomplete="off"
+            placeholder="Escribir Archivo Key Contraseña"
+            formControlName="archivo_key_pswd"
+          />
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div class="buttons series-footer" mat-dialog-actions>
+    <button mat-raised-button matRipple (click)="closeModal()">Cancel</button>
+    <button
+      mat-raised-button
+      matRipple
+      color="warn"
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+      (click)="saveEmisor()"
+    >
+      Confirm
+    </button>
+  </div>
+</div>

@@ -878,7 +878,7 @@ export class FacturaEditPageComponent implements OnInit {
         ).pipe(mergeAll(), pluck("result"), startWith(null));
   };
 
-  fetchSeries = (rfc: string) => {
+  fetchSeries = (id: string) => {
     return id == void 0 || id === ""
       ? of([])
       : from(

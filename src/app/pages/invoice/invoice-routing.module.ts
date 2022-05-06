@@ -10,7 +10,7 @@ import {
   FacturasPageComponent,
   FacturaEditPageComponent,
   //   InvoicePageComponent,
-  //   EmisoresComponent,
+  EmisoresComponent,
   //   SeriesPageComponent,
   //   SeriesEditPageComponent
 } from "./containers";
@@ -47,17 +47,18 @@ const routes: Routes = [
     },
   },
   //     { path: 'carta-porte', component: CartaPortePageComponent },
-  //     { path: 'emisor',
-  //       children: [
-  //         { path: '', component: EmisoresComponent },
-  //         { path: 'serie',
-  //         children: [
-  //           { path: '', component: SeriesPageComponent },
-  //           { path: 'new', component: SeriesEditPageComponent },
-  //         ]
-  //         }
-  //       ],
-  //     },
+  {
+    path: "emisor",
+    children: [
+      { path: "", component: EmisoresComponent },
+      // { path: 'serie',
+      // children: [
+      //   { path: '', component: SeriesPageComponent },
+      //   { path: 'new', component: SeriesEditPageComponent },
+      // ]
+      // }
+    ],
+  },
 ];
 
 @NgModule({

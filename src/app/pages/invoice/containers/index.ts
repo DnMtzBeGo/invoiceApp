@@ -6,7 +6,7 @@
 export * from "./facturas-page/facturas-page.component";
 export * from "./factura-edit-page/factura-edit-page.component";
 // export * from './carta-porte-page/carta-porte-page.component';
-// export * from './emisores/emisores.component';
+export * from "./emisores/emisores.component";
 // export * from './series-page/series-page.component';
 // export * from './series-edit-page/series-edit-page.component';
 // export * from './invoice-page/invoice-page.component';

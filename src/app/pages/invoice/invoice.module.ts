@@ -56,8 +56,8 @@ import {
   // PushNotificationComponent,
   // AddNoteComponent
 } from "./modals";
-// import { FacturaEmitterComponent } from './components/factura-emitter/factura-emitter.component';
-// import { EmisoresComponent } from './containers/emisores/emisores.component';
+import { FacturaEmitterComponent } from "./components/factura-emitter/factura-emitter.component";
+import { EmisoresComponent } from "./containers/emisores/emisores.component";
 // import { CartaPortePageComponent } from './containers/carta-porte-page/carta-porte-page.component';
 // import { AereoComponent } from './components/invoice/carta-porte/aereo/aereo.component';
 // import { AutotransporteComponent } from './components/invoice/carta-porte/autotransporte/autotransporte.component';
@@ -70,7 +70,7 @@ import {
 // import { UbicacionesComponent } from './components/invoice/carta-porte/ubicaciones/ubicaciones.component';
 // import { UbicacionComponent } from './components/invoice/carta-porte/ubicaciones/components/ubicacion/ubicacion.component';
 // import { CommodityComponent } from './components/commodity/commodity.component';
-// import { EmisoresTableComponent } from './components/emisores-table/emisores-table.component';
+import { EmisoresTableComponent } from "./components/emisores-table/emisores-table.component";
 // import { EmisoresEditPageComponent } from './containers/emisores-edit-page/emisores-edit-page.component';
 // import { SeriesPageComponent } from './containers/series-page/series-page.component';
 // import { SeriesEditPageComponent } from './containers/series-edit-page/series-edit-page.component';
@@ -106,8 +106,8 @@ import { SeriesNewComponent } from "./components/series-new/series-new.component
     FacturasPageComponent,
     FacturaEditPageComponent,
     FacturaTableComponent,
-    // FacturaEmitterComponent,
-    // EmisoresComponent,
+    FacturaEmitterComponent,
+    EmisoresComponent,
     // CartaPortePageComponent,
     // AereoComponent,
     // AutotransporteComponent,
@@ -122,7 +122,7 @@ import { SeriesNewComponent } from "./components/series-new/series-new.component
     // InvoiceTableComponent,
     // UbicacionComponent,
     // CommodityComponent,
-    // EmisoresTableComponent,
+    EmisoresTableComponent,
     // EmisoresEditPageComponent,
     // SeriesPageComponent,
     // SeriesEditPageComponent,
