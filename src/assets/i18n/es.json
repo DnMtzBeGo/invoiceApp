@@ -905,6 +905,10 @@
             "cancel": "Cancelar",
             "confirm": "Confirmar"
         },
+        "emisores": {
+            "emisores": "Emisores",
+            "new": "Nuevo Emisor"
+        },
         "emisor-table": {
             "rfc-empresa": "RFC Empresa",
             "rfc-emisor": "RFC Emisor",
@@ -916,6 +920,24 @@
             "edit-emisor": "Editar",
             "view-series": "Series",
             "delete-emisor": "Eliminar Emisor"
+        },
+        "emisor-edit": {
+            "emisor": "Emisor",
+
+            "rfc-parent": "RFC Empresa",
+            "rfc-parent-placeholder": "Escribir RFC de la Empresa",
+            "rfc": "RFC Emisor",
+            "razon-social": "Razón Social",
+            "email": "Correo Para Notificar",
+            "email-placeholder": "Escribir Correo Electrónico",
+            "regimen": "Régimen Fiscal",
+            "regimen-placeholder": "Selecciona un Régimen Fiscal",
+            "cer": "Archivo CER",
+            "key": "Archivo Key",
+            "key-password": "Archivo Key Contraseña",
+            "key-password-placeholder": "Escribir Archivo Key Contraseña",
+
+            "btn-save": "Guardar"
         }
     }
 }

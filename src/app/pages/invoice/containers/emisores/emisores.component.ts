@@ -30,6 +30,8 @@ export class EmisoresComponent implements OnInit {
   async ngOnInit() {
     let result = await this.catalogListService.getCatalogue("regimen-fiscal");
     this.regimen_fiscal = result;
+
+    // this.newEmisor();
   }
 
   public async getEmisores() {
@@ -45,7 +47,9 @@ export class EmisoresComponent implements OnInit {
 
   newEmisor(): void {
     const dialogRef = this.dialog.open(FacturaEmitterComponent, {
-      panelClass: ["dialog-solid"],
+      restoreFocus: false,
+      autoFocus: false,
+      backdropClass: ["brand-dialog-1"],
     });
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);

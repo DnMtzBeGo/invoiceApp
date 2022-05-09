@@ -124,11 +124,13 @@
 }
 
 .series-container {
+  padding-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
-  min-width: 550px;
+  min-width: 650px;
   min-height: 400px;
   justify-content: center;
+  color: #ededed;
 
   .series-header {
     position: relative;

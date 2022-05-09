@@ -61,7 +61,9 @@ export class EmisoresTableComponent implements OnInit {
   editEmisor(emisor: any): void {
     const dialogRef = this.dialog.open(FacturaEmitterComponent, {
       data: emisor,
-      panelClass: ["dialog-solid"],
+      restoreFocus: false,
+      autoFocus: false,
+      backdropClass: ["brand-dialog-1"],
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (!result.close) {
