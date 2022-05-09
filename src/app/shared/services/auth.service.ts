@@ -30,9 +30,7 @@ export class AuthService {
     return new HttpParams({
       fromObject: {
         ...defaultValues,
-        ...Object.fromEntries(
-          Object.entries(options).filter(([key]) => key in defaultValues)
-        ),
+        ...options,
       },
     });
   }

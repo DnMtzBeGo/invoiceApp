@@ -3,4 +3,5 @@ export interface Paginator {
   pageSize: number;
   pageTotal: number;
   pageSearch: string;
+  total?: number;
 }

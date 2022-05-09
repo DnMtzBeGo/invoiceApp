@@ -143,6 +143,7 @@ export class FacturasPageComponent implements OnInit {
         switchMap(this.fetchFacturas),
         tap((result) => {
           this.paginator.pageTotal = result.pages;
+          this.paginator.total = result.size;
         }),
         pluck("invoices")
       )
@@ -244,16 +245,11 @@ export class FacturasPageComponent implements OnInit {
     delete params.fec_final;
 
     return from(
-      this.apiRestService.apiRest(
-        JSON.stringify({
-          ...params,
-          ...fechas,
-        }),
-        "invoice",
-        {
-          loader: "false",
-        }
-      )
+      this.apiRestService.apiRestGet("invoice", {
+        loader: "false",
+        ...params,
+        ...fechas,
+      })
     ).pipe(mergeAll(), pluck("result"));
   };
 

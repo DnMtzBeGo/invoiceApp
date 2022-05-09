@@ -357,7 +357,7 @@
                   id: 'active',
                   itemsPerPage: page.pageSize,
                   currentPage: page.pageIndex,
-                  totalItems: page.pageTotal * page.pageSize
+                  totalItems: page.total
                 }
         "
       ></tr>
@@ -366,8 +366,9 @@
 
   <div class="factura-table__paginator">
     <div class="total">
-      {{ "invoice.invoice-table.showing" | translate }} {{ 1 }}
-      {{ "invoice.invoice-table.of" | translate }} {{ 2 }}
+      {{ "invoice.invoice-table.showing" | translate }} {{ page.pageSize }}
+      {{ "invoice.invoice-table.of" | translate }}
+      {{ page.total }}
     </div>
     <pagination-controls
       id="active"

@@ -816,13 +816,7 @@ export class FacturaEditPageComponent implements OnInit {
     }
 
     return from(
-      this.apiRestService.apiRest(
-        JSON.stringify({
-          _id,
-        }),
-        "invoice",
-        { loader: "false" }
-      )
+      this.apiRestService.apiRestGet("invoice", { loader: "false", _id })
     ).pipe(
       mergeAll(),
       map((responseData) =>
@@ -882,14 +876,11 @@ export class FacturaEditPageComponent implements OnInit {
     return id == void 0 || id === ""
       ? of([])
       : from(
-          this.apiRestService.apiRest(
-            JSON.stringify({
-              emisor: id,
-            }),
-            "invoice/series",
-            { loader: "false" }
-          )
-        ).pipe(mergeAll(), pluck("result"), startWith(null));
+          this.apiRestService.apiRestGet("invoice/series", {
+            loader: "false",
+            emisor: id,
+          })
+        ).pipe(mergeAll(), pluck("result", "series"), startWith(null));
   };
 
   fetchPaises() {
