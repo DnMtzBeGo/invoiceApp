@@ -35,9 +35,9 @@ export class EmisoresComponent implements OnInit {
   }
 
   public async getEmisores() {
-    (await this.apiRestService.apiRest("", `invoice/emitters`)).subscribe(
+    (await this.apiRestService.apiRestGet("invoice/emitters")).subscribe(
       (res) => {
-        this.dataSource = res.result;
+        this.dataSource = res.result.documents;
       },
       (err) => {
         console.log(err);
