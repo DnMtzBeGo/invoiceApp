@@ -11,8 +11,7 @@ import {
   FacturaEditPageComponent,
   //   InvoicePageComponent,
   EmisoresComponent,
-  //   SeriesPageComponent,
-  //   SeriesEditPageComponent
+  SeriesPageComponent,
 } from "./containers";
 // import { CartaPortePageComponent } from './containers/carta-porte-page/carta-porte-page.component';
 
@@ -51,12 +50,7 @@ const routes: Routes = [
     path: "emisor",
     children: [
       { path: "", component: EmisoresComponent },
-      // { path: 'serie',
-      // children: [
-      //   { path: '', component: SeriesPageComponent },
-      //   { path: 'new', component: SeriesEditPageComponent },
-      // ]
-      // }
+      { path: "serie", component: SeriesPageComponent },
     ],
   },
 ];

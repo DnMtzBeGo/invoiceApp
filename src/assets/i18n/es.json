@@ -938,6 +938,20 @@
             "key-password-placeholder": "Escribir Archivo Key Contraseña",
 
             "btn-save": "Guardar"
+        },
+        "series": {
+            "series": "Series",
+            "new": "Nueva Serie"
+        },
+        "serie-table": {
+            "serie": "Serie",
+            "tipo-comprobante": "Tipo de Comprobante",
+            "folio": "Folio",
+            "color": "Color",
+            "logo": "Logo",
+
+            "editar": "Editar",
+            "borrar": "Borrar"
         }
     }
 }

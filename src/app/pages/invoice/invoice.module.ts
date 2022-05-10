@@ -71,10 +71,8 @@ import { EmisoresComponent } from "./containers/emisores/emisores.component";
 // import { UbicacionComponent } from './components/invoice/carta-porte/ubicaciones/components/ubicacion/ubicacion.component';
 // import { CommodityComponent } from './components/commodity/commodity.component';
 import { EmisoresTableComponent } from "./components/emisores-table/emisores-table.component";
-// import { EmisoresEditPageComponent } from './containers/emisores-edit-page/emisores-edit-page.component';
-// import { SeriesPageComponent } from './containers/series-page/series-page.component';
-// import { SeriesEditPageComponent } from './containers/series-edit-page/series-edit-page.component';
-// import { SeriesTableComponent } from './components/series-table/series-table.component';
+import { SeriesPageComponent } from "./containers/series-page/series-page.component";
+import { SeriesTableComponent } from "./components/series-table/series-table.component";
 import { SeriesNewComponent } from "./components/series-new/series-new.component";
 // import { LocationModule } from './components/location/location.module';
 
@@ -123,10 +121,8 @@ import { SeriesNewComponent } from "./components/series-new/series-new.component
     // UbicacionComponent,
     // CommodityComponent,
     EmisoresTableComponent,
-    // EmisoresEditPageComponent,
-    // SeriesPageComponent,
-    // SeriesEditPageComponent,
-    // SeriesTableComponent,
+    SeriesPageComponent,
+    SeriesTableComponent,
     SeriesNewComponent,
     // MODALS
     ActionConfirmationComponent,
