@@ -14,7 +14,7 @@ import {
   Validators,
   AbstractControl,
 } from "@angular/forms";
-import { Pedimento } from "../../../../../operations/models/invoice/carta-porte/ubicaciones";
+import { Pedimento } from "../../../../models/invoice/carta-porte/ubicaciones";
 import { CartaPorteInfoService } from "../services/carta-porte-info.service";
 import { CommodityComponent } from "../../../commodity/commodity.component";
 import { CataloguesListService } from "../services/catalogues-list.service";

@@ -5,7 +5,7 @@
 // export * from './assign-driver-page/assign-driver-page.component';
 export * from "./facturas-page/facturas-page.component";
 export * from "./factura-edit-page/factura-edit-page.component";
-// export * from './carta-porte-page/carta-porte-page.component';
+export * from "./carta-porte-page/carta-porte-page.component";
 export * from "./emisores/emisores.component";
 export * from "./series-page/series-page.component";
 // export * from './invoice-page/invoice-page.component';

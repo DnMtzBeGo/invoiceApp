@@ -7,8 +7,8 @@ import {
 } from "@angular/core";
 import { MatTable } from "@angular/material/table";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Remolques } from "src/app/pages/operations/models/invoice/carta-porte/remolques";
-import { SubtiposRemolques } from "src/app/pages/operations/models/invoice/carta-porte/subtipos-remolques";
+import { Remolques } from "src/app/pages/invoice/models/invoice/carta-porte/remolques";
+import { SubtiposRemolques } from "src/app/pages/invoice/models/invoice/carta-porte/subtipos-remolques";
 import { CataloguesListService } from "../services/catalogues-list.service";
 import { CartaPorteInfoService } from "../services/carta-porte-info.service";
 

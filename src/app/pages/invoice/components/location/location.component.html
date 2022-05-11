@@ -1,0 +1,203 @@
+<form [formGroup]="domicilioForm">
+  <h6>Domicilio</h6>
+  <div class="grid">
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>* País</mat-label>
+      <mat-select
+        placeholder="Seleciona una opción"
+        class="no-custom-theme"
+        formControlName="pais"
+        name="País"
+      >
+        <mat-option
+          (click)="clearDependentInputs()"
+          *ngFor="let option of paisCatalogue"
+          [value]="option.code"
+        >
+          {{ option.code }} - {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>* Estado</mat-label>
+      <input
+        formControlName="estado"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="estadosCatalogueRef"
+      />
+      <mat-autocomplete
+        #estadosCatalogueRef="matAutocomplete"
+        [displayWith]="getLocationText.bind(this, 'estados')"
+      >
+        <span *ngIf="domicilioForm.value.pais">
+          <mat-option
+            (click)="domicilioForm.patchValue({ municipio: '', localidad: '' })"
+            *ngFor="let option of filteredEstados"
+            [value]="option.clave"
+          >
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </span>
+        <mat-option *ngIf="!domicilioForm.value.pais">
+          Selecciona un país primero
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Código Postal</mat-label>
+      <input
+        matInput
+        (blur)="getColonias($event)"
+        formControlName="codigo_postal"
+        name="Código Postal"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Calle (Opcional)</mat-label>
+      <input matInput formControlName="calle" name="Calle" />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      *ngIf="domicilioForm.value.pais == 'MEX'"
+    >
+      <mat-label>Municipio (Opcional)</mat-label>
+      <input
+        formControlName="municipio"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="municipiosCatalogueRef"
+      />
+      <mat-autocomplete
+        #municipiosCatalogueRef="matAutocomplete"
+        [displayWith]="getLocationText.bind(this, 'municipios')"
+      >
+        <span *ngIf="domicilioForm.value.estado">
+          <mat-option
+            *ngFor="let option of filteredMunicipios"
+            [value]="option.clave"
+          >
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </span>
+        <mat-option *ngIf="!domicilioForm.value.estado">
+          Selecciona un estado primero
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      *ngIf="domicilioForm.value.pais !== 'MEX'"
+    >
+      <mat-label>Municipio (Opcional)</mat-label>
+      <input
+        formControlName="municipio"
+        autocomplete="off"
+        type="search"
+        matInput
+      />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      *ngIf="domicilioForm.value.pais == 'MEX'"
+    >
+      <mat-label>Localidad (Opcional)</mat-label>
+      <input
+        formControlName="localidad"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="localidadesCatalogueRef"
+      />
+      <mat-autocomplete
+        #localidadesCatalogueRef="matAutocomplete"
+        [displayWith]="getLocationText.bind(this, 'localidades')"
+      >
+        <span *ngIf="domicilioForm.value.estado">
+          <mat-option
+            *ngFor="let option of filteredLocalidades"
+            [value]="option.clave"
+          >
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </span>
+        <mat-option *ngIf="!domicilioForm.value.estado">
+          Selecciona un estado primero
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field
+      appearance="outline"
+      floatLabel="always"
+      *ngIf="domicilioForm.value.pais !== 'MEX'"
+    >
+      <mat-label>Localidad (Opcional)</mat-label>
+      <input
+        formControlName="localidad"
+        autocomplete="nope"
+        type="search"
+        matInput
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Número Exterior (Opcional)</mat-label>
+      <input
+        matInput
+        formControlName="numero_exterior"
+        name="Número Exterior"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Número Interior (Opcional)</mat-label>
+      <input
+        matInput
+        formControlName="numero_interior"
+        name="Número Interior"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Colonia (Opcional)</mat-label>
+      <input
+        formControlName="colonia"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="coloniasCatalogueRef"
+      />
+      <mat-autocomplete
+        #coloniasCatalogueRef="matAutocomplete"
+        [displayWith]="getLocationText.bind(this, 'colonias')"
+      >
+        <span *ngIf="domicilioForm.value.codigo_postal">
+          <mat-option
+            *ngFor="let option of filteredColonias"
+            [value]="option.clave"
+          >
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </span>
+        <mat-option *ngIf="!domicilioForm.value.codigo_postal">
+          Escribe un código postal primero
+        </mat-option>
+        <mat-option
+          *ngIf="domicilioForm.value.codigo_postal && colonias.length == 0"
+        >
+          No se encontraron colonias para el código postal actual
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Referencia (Opcional)</mat-label>
+      <input matInput formControlName="referencia" name="Referencia" />
+    </mat-form-field>
+  </div>
+</form>

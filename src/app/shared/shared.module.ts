@@ -34,14 +34,15 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-// import {
-//   NgxMatDatetimePickerModule,
-//   NgxMatNativeDateModule,
-//   NgxMatTimepickerModule,
-// } from "@angular-material-components/datetime-picker";
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule,
+} from "@angular-material-components/datetime-picker";
 import {
   FacturaEmisorConceptosComponent,
   FacturaManageDireccionesComponent,
+  InfoModalComponent,
 } from "src/app/pages/invoice/modals";
 import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components";
 
@@ -49,6 +50,7 @@ import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components
   declarations: [
     FacturaEmisorConceptosComponent,
     FacturaManageDireccionesComponent,
+    InfoModalComponent,
     FacturaDireccionInputComponent,
   ],
   imports: [
@@ -86,9 +88,9 @@ import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components
     MatProgressBarModule,
     MatTooltipModule,
     NgxMatSelectSearchModule,
-    // NgxMatDatetimePickerModule,
-    // NgxMatTimepickerModule,
-    // NgxMatNativeDateModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
   exports: [
     MatCardModule,
@@ -121,11 +123,12 @@ import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components
     MatProgressBarModule,
     MatTooltipModule,
     NgxMatSelectSearchModule,
-    // NgxMatDatetimePickerModule,
-    // NgxMatTimepickerModule,
-    // NgxMatNativeDateModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
     FacturaEmisorConceptosComponent,
     FacturaManageDireccionesComponent,
+    InfoModalComponent,
     FacturaDireccionInputComponent,
   ],
 })

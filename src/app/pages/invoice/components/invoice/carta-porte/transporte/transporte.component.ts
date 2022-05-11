@@ -5,10 +5,10 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
-import { CartaPorteCountries } from "src/app/pages/operations/models/invoice/carta-porte/CartaPorteCountries";
-import { ClavesDeTransporte } from "src/app/pages/operations/models/invoice/carta-porte/ClavesDeTransporte";
-import { SubtiposRemolques } from "src/app/pages/operations/models/invoice/carta-porte/subtipos-remolques";
-import { TiposDePermiso } from "src/app/pages/operations/models/invoice/carta-porte/TiposDePermiso";
+import { CartaPorteCountries } from "src/app/pages/invoice/models/invoice/carta-porte/CartaPorteCountries";
+import { ClavesDeTransporte } from "src/app/pages/invoice/models/invoice/carta-porte/ClavesDeTransporte";
+import { SubtiposRemolques } from "src/app/pages/invoice/models/invoice/carta-porte/subtipos-remolques";
+import { TiposDePermiso } from "src/app/pages/invoice/models/invoice/carta-porte/TiposDePermiso";
 import { CartaPorteInfoService } from "../services/carta-porte-info.service";
 import { CataloguesListService } from "../services/catalogues-list.service";
 

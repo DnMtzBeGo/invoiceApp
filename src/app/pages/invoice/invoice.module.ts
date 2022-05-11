@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-// import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
+import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { NgxPaginationModule } from "ngx-pagination";
 import { TextMaskModule } from "angular2-text-mask";
 import { TranslateModule } from "@ngx-translate/core";
@@ -23,7 +23,7 @@ import {
   //   AssignDriverPageComponent,
   FacturasPageComponent,
   FacturaEditPageComponent,
-  //   CartaPortePageComponent,
+  CartaPortePageComponent,
   //   InvoicePageComponent,
 } from "./containers";
 import {
@@ -58,23 +58,22 @@ import {
 } from "./modals";
 import { FacturaEmitterComponent } from "./components/factura-emitter/factura-emitter.component";
 import { EmisoresComponent } from "./containers/emisores/emisores.component";
-// import { CartaPortePageComponent } from './containers/carta-porte-page/carta-porte-page.component';
-// import { AereoComponent } from './components/invoice/carta-porte/aereo/aereo.component';
-// import { AutotransporteComponent } from './components/invoice/carta-porte/autotransporte/autotransporte.component';
-// import { FerroviarioComponent } from './components/invoice/carta-porte/ferroviario/ferroviario.component';
-// import { FiguraTransporteComponent } from './components/invoice/carta-porte/figura-transporte/figura-transporte.component';
-// import { FiguraComponent } from './components/invoice/carta-porte/figura-transporte/components/figura/figura.component';
-// import { MaritimoComponent } from './components/invoice/carta-porte/maritimo/maritimo.component';
-// import { MercanciasComponent } from './components/invoice/carta-porte/mercancias/mercancias.component';
-// import { TransporteComponent } from './components/invoice/carta-porte/transporte/transporte.component';
-// import { UbicacionesComponent } from './components/invoice/carta-porte/ubicaciones/ubicaciones.component';
-// import { UbicacionComponent } from './components/invoice/carta-porte/ubicaciones/components/ubicacion/ubicacion.component';
-// import { CommodityComponent } from './components/commodity/commodity.component';
+import { AereoComponent } from "./components/invoice/carta-porte/aereo/aereo.component";
+import { AutotransporteComponent } from "./components/invoice/carta-porte/autotransporte/autotransporte.component";
+import { FerroviarioComponent } from "./components/invoice/carta-porte/ferroviario/ferroviario.component";
+import { FiguraTransporteComponent } from "./components/invoice/carta-porte/figura-transporte/figura-transporte.component";
+import { FiguraComponent } from "./components/invoice/carta-porte/figura-transporte/components/figura/figura.component";
+import { MaritimoComponent } from "./components/invoice/carta-porte/maritimo/maritimo.component";
+import { MercanciasComponent } from "./components/invoice/carta-porte/mercancias/mercancias.component";
+import { TransporteComponent } from "./components/invoice/carta-porte/transporte/transporte.component";
+import { UbicacionesComponent } from "./components/invoice/carta-porte/ubicaciones/ubicaciones.component";
+import { UbicacionComponent } from "./components/invoice/carta-porte/ubicaciones/components/ubicacion/ubicacion.component";
+import { CommodityComponent } from "./components/commodity/commodity.component";
 import { EmisoresTableComponent } from "./components/emisores-table/emisores-table.component";
 import { SeriesPageComponent } from "./containers/series-page/series-page.component";
 import { SeriesTableComponent } from "./components/series-table/series-table.component";
 import { SeriesNewComponent } from "./components/series-new/series-new.component";
-// import { LocationModule } from './components/location/location.module';
+import { LocationComponent } from "./components/location/location.component";
 
 @NgModule({
   declarations: [
@@ -106,24 +105,25 @@ import { SeriesNewComponent } from "./components/series-new/series-new.component
     FacturaTableComponent,
     FacturaEmitterComponent,
     EmisoresComponent,
-    // CartaPortePageComponent,
-    // AereoComponent,
-    // AutotransporteComponent,
-    // FerroviarioComponent,
-    // FiguraTransporteComponent,
-    // FiguraComponent,
-    // MaritimoComponent,
-    // MercanciasComponent,
-    // TransporteComponent,
-    // UbicacionesComponent,
+    CartaPortePageComponent,
+    AereoComponent,
+    AutotransporteComponent,
+    FerroviarioComponent,
+    FiguraTransporteComponent,
+    FiguraComponent,
+    MaritimoComponent,
+    MercanciasComponent,
+    TransporteComponent,
+    UbicacionesComponent,
+    UbicacionComponent,
+    CommodityComponent,
     // InvoicePageComponent,
     // InvoiceTableComponent,
-    // UbicacionComponent,
-    // CommodityComponent,
     EmisoresTableComponent,
     SeriesPageComponent,
     SeriesTableComponent,
     SeriesNewComponent,
+    LocationComponent,
     // MODALS
     ActionConfirmationComponent,
     ActionCancelarFacturaComponent,
@@ -141,11 +141,10 @@ import { SeriesNewComponent } from "./components/series-new/series-new.component
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-    // NgxMaterialTimepickerModule,
+    NgxMaterialTimepickerModule,
     TextMaskModule,
     NgxPaginationModule,
     NgxMatColorPickerModule,
-    // LocationModule,
   ],
   exports: [
     // MODALS

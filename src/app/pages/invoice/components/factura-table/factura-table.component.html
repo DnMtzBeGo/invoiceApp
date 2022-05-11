@@ -244,7 +244,11 @@
               }}</span>
             </button>
             <button
-              *ngIf="p(element).edit && p(element).cartaporte"
+              *ngIf="
+                p(element).edit &&
+                p(element).cartaporte &&
+                !!element.carta_porte
+              "
               mat-menu-item
               [routerLink]="[routes.CARTA_PORTE, { id: element._id }]"
             >

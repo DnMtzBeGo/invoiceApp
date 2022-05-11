@@ -12,8 +12,8 @@ import {
   //   InvoicePageComponent,
   EmisoresComponent,
   SeriesPageComponent,
+  CartaPortePageComponent,
 } from "./containers";
-// import { CartaPortePageComponent } from './containers/carta-porte-page/carta-porte-page.component';
 
 const routes: Routes = [
   { path: "", component: FacturasPageComponent },
@@ -45,7 +45,7 @@ const routes: Routes = [
       model: "template",
     },
   },
-  //     { path: 'carta-porte', component: CartaPortePageComponent },
+  { path: "carta-porte", component: CartaPortePageComponent },
   {
     path: "emisor",
     children: [

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { Subject } from "rxjs";
-import { InfoModalComponent } from "src/app/shared/utils/components/modals/info-modal/info-modal.component";
+import { InfoModalComponent } from "src/app/pages/invoice/modals/info-modal/info-modal.component";
 
 @Injectable({
   providedIn: "root",

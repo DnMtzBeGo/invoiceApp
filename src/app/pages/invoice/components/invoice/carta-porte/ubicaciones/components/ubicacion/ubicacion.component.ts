@@ -9,7 +9,7 @@ import {
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { InfoModalComponent } from "src/app/shared/utils/components/modals/info-modal/info-modal.component";
+import { InfoModalComponent } from "../../../../../../modals/info-modal/info-modal.component";
 import { CartaPorteInfoService } from "../../../services/carta-porte-info.service";
 import { CataloguesListService } from "../../../services/catalogues-list.service";
 
