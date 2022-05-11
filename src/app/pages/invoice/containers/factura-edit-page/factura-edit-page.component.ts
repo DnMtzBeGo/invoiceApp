@@ -945,6 +945,16 @@ export class FacturaEditPageComponent implements OnInit {
       cve_sat: "term",
     };
 
+    if (["rfcEmisor", "nombreEmisor"].includes(search.type)) {
+      return from(
+        this.apiRestService.apiRestGet(endpoints[search.type], {
+          loader: "false",
+          [keys[search.type]]: search.search,
+          limit: 10,
+        })
+      ).pipe(mergeAll(), pluck("result", "documents"));
+    }
+
     return from(
       this.apiRestService.apiRest(
         JSON.stringify({
