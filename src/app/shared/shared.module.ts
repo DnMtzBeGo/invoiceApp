@@ -45,6 +45,7 @@ import {
   InfoModalComponent,
 } from "src/app/pages/invoice/modals";
 import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components";
+import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/carta-porte/services/carta-porte-info.service";
 
 @NgModule({
   declarations: [
@@ -131,5 +132,6 @@ import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components
     InfoModalComponent,
     FacturaDireccionInputComponent,
   ],
+  providers: [CartaPorteInfoService],
 })
 export class SharedModule {}
