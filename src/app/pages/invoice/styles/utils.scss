@@ -143,6 +143,10 @@
     &:not(:last-child) {
       border-bottom: 1px solid #1c232a;
     }
+
+    &:hover:not([disabled]) {
+      background: rgba(255, 255, 255, 0.03);
+    }
   }
 }
 
