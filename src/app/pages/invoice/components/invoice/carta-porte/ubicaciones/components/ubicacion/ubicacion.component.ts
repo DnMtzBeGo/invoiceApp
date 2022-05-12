@@ -9,6 +9,7 @@ import {
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
+import { TranslateService } from "@ngx-translate/core";
 import { InfoModalComponent } from "../../../../../../modals/info-modal/info-modal.component";
 import { CartaPorteInfoService } from "../../../services/carta-porte-info.service";
 import { CataloguesListService } from "../../../services/catalogues-list.service";
@@ -69,7 +70,8 @@ export class UbicacionComponent implements OnInit {
   constructor(
     public cataloguesListService: CataloguesListService,
     public cartaPorteInfoService: CartaPorteInfoService,
-    public matDialog: MatDialog
+    public matDialog: MatDialog,
+    private translateService: TranslateService
   ) {
     this.cataloguesListService.countriesSubject.subscribe((data: any[]) => {
       this.residenciaFiscal = data;

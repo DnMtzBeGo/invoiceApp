@@ -1,17 +1,19 @@
 <div>
-  <mat-toolbar class="page-header" role="heading">
-    <h1>Carta Porte 2.0</h1>
-    <button mat-button (click)="gatherInfo()">Guardar</button>
-  </mat-toolbar>
+  <div class="page-header" role="heading">
+    <h1>{{ "invoice.cp-page.carta-porte" | translate }}</h1>
+    <button mat-button (click)="gatherInfo()">
+      {{ "invoice.cp-page.btn-save" | translate }}
+    </button>
+  </div>
 
   <div class="page-wrapper">
     <mat-horizontal-stepper [linear]="isLinear" #stepper>
-      <mat-step label="Transporte">
+      <mat-step [label]="'invoice.cp-page.transporte' | translate">
         <!-- [subtiposRemolques]="catalogues?.subtipos_de_remolques"
         [ingresoSalidaPais]="catalogues?.claves_de_transporte" -->
         <app-transporte [info]="transporteInfo"></app-transporte>
       </mat-step>
-      <mat-step label="Ubicaciones">
+      <mat-step [label]="'invoice.cp-page.ubicaciones' | translate">
         <app-ubicaciones [info]="ubicacionesInfo"></app-ubicaciones>
         <!-- <form [formGroup]="secondFormGroup">
           <mat-form-field appearance="fill">
@@ -24,10 +26,10 @@
           </div>
         </form> -->
       </mat-step>
-      <mat-step label="Mercancías">
+      <mat-step [label]="'invoice.cp-page.mercancias' | translate">
         <app-mercancias [info]="mercanciasInfo"></app-mercancias>
       </mat-step>
-      <mat-step label="Figura del Transporte">
+      <mat-step [label]="'invoice.cp-page.figura-transporte' | translate">
         <app-figura-transporte
           [info]="figuraTransporteInfo"
         ></app-figura-transporte>

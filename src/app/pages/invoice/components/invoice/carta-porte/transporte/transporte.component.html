@@ -1,15 +1,16 @@
 <form [formGroup]="firstFormGroup">
   <div class="grid container-row">
-    <mat-slide-toggle formControlName="transp_internac"
-      >Transporte Internacional</mat-slide-toggle
-    >
+    <mat-slide-toggle formControlName="transp_internac">{{
+      "invoice.transporte.transporte-internacional" | translate
+    }}</mat-slide-toggle>
   </div>
   <div class="grid" *ngIf="firstFormGroup.value.transp_internac">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>País Origen Destino</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.transporte.pais-origen-destino" | translate
+      }}</mat-label>
       <mat-select
-        placeholder="Seleciona una opción"
-        class="no-custom-theme"
+        class="disable-custom-format"
         formControlName="pais_origen_destino"
       >
         <mat-option [value]="country.code" *ngFor="let country of countries">
@@ -17,22 +18,26 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Movimiento de Mercancía</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.transporte.movimiento-mercancia" | translate
+      }}</mat-label>
       <mat-select
-        placeholder="Seleciona una opción"
-        class="no-custom-theme"
+        class="disable-custom-format"
         formControlName="entrada_salida_merc"
       >
-        <mat-option value="Entrada"> Entrada </mat-option>
-        <mat-option value="salida"> Salida </mat-option>
+        <mat-option value="Entrada">{{
+          "invoice.transporte.movimiento-mercancia-entrada" | translate
+        }}</mat-option>
+        <mat-option value="salida">{{
+          "invoice.transporte.movimiento-mercancia-salida" | translate
+        }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Via Ingreso o Salida del País</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.transporte.via-entrada" | translate }}</mat-label>
       <mat-select
-        placeholder="Seleciona una opción"
-        class="no-custom-theme"
+        class="disable-custom-format"
         formControlName="via_entrada_salida"
       >
         <mat-option
@@ -43,7 +48,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <!-- <mat-form-field appearance="outline" floatLabel="always">
+    <!-- <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>Total Distancia Recorrida</mat-label>
       <input
         matInput
@@ -113,6 +118,8 @@
     </ng-template>
   </mat-expansion-panel>
   <div class="grid">
-    <button mat-button matStepperNext>Siguiente</button>
+    <button mat-button matStepperNext>
+      {{ "invoice.transporte.siguiente" | translate }}
+    </button>
   </div>
 </form>

@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
+import { TranslateService } from "@ngx-translate/core";
 // import { ApiRestService } from "src/app/core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { InfoModalComponent } from "../../modals/info-modal/info-modal.component";
@@ -33,7 +34,8 @@ export class CartaPortePageComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     public apiRestService: AuthService,
-    public matDialog: MatDialog
+    public matDialog: MatDialog,
+    private translateService: TranslateService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -103,8 +105,10 @@ export class CartaPortePageComponent implements OnInit {
   showSuccessModal() {
     this.matDialog.open(InfoModalComponent, {
       data: {
-        title: "Carta porte",
-        message: "La carta porte se ha guardado de manera satisfactoria",
+        title: this.translateService.instant("invoice.cp-page.success-title"),
+        message: this.translateService.instant(
+          "invoice.cp-page.success-message"
+        ),
         action: () => {
           if (this.redirectTo) {
             this.router.navigateByUrl(this.redirectTo);
@@ -120,7 +124,7 @@ export class CartaPortePageComponent implements OnInit {
   showErrorModal(error: string[] | string) {
     this.matDialog.open(InfoModalComponent, {
       data: {
-        title: "La información es invalida",
+        title: this.translateService.instant("invoice.cp-page.error-title"),
         message: error,
       },
       restoreFocus: false,
@@ -130,7 +134,7 @@ export class CartaPortePageComponent implements OnInit {
   showReadOnlyAlert() {
     this.matDialog.open(InfoModalComponent, {
       data: {
-        title: "Esta carta porte ya no puede ser editada",
+        title: this.translateService.instant("invoice.cp-page.readonly-title"),
         action: () => {
           this.router.navigateByUrl("/operations/facturas");
         },

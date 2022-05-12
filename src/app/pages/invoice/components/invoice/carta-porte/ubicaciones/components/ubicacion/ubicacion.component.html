@@ -1,12 +1,12 @@
 <form [formGroup]="ubicacionesForm">
   <div class="grid">
     <!-- Número de estación y nombre de la estación no van cuando se trata de autotransporte -->
-    <!-- <mat-form-field appearance="outline" floatLabel="always">
+    <!-- <mat-form-field appearance="outline" class="brand-field-1">
     <mat-label>* Tipo Estación</mat-label>
     <mat-select
       placeholder="Seleciona una opción"
       formControlName="tipoEstacion"
-      class="no-custom-theme"
+      class="disable-custom-format"
       name="Tipo Estación"
     >
       <mat-option *ngFor="let option of tipoEstacionOptions" [value]="option">
@@ -18,12 +18,12 @@
 
   <h6>Orígen / Destino</h6>
   <div class="grid">
-    <mat-form-field appearance="outline" floatLabel="always">
+    <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>* Tipo</mat-label>
       <mat-select
         placeholder="Seleciona una opción"
         formControlName="tipo_ubicacion"
-        class="no-custom-theme"
+        class="disable-custom-format"
         name="Tipo"
       >
         <mat-option *ngFor="let option of tipoUbicacion" [value]="option.clave">
@@ -32,7 +32,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="brand-field-1">
       <input
         matInput
         [ngxMatDatetimePicker]="picker"
@@ -52,7 +52,7 @@
       </ngx-mat-datetime-picker>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" floatLabel="always">
+    <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>ID Ubicación (Opcional)</mat-label>
       <input matInput formControlName="id_ubicacion" name="ID Ubicación" />
       <mat-error
@@ -60,7 +60,7 @@
       >
     </mat-form-field>
 
-    <mat-form-field appearance="outline" floatLabel="always">
+    <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>Nombre (Opcional)</mat-label>
       <input
         matInput
@@ -68,16 +68,16 @@
         name="Nombre"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
+    <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>RFC</mat-label>
       <input matInput formControlName="rfc_remitente_destinatario" name="RFC" />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
+    <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>* Residencia Fiscal</mat-label>
       <mat-select
         placeholder="Seleciona una opción"
         formControlName="residencia_fiscal"
-        class="no-custom-theme"
+        class="disable-custom-format"
         name="Residencia Fiscal"
       >
         <mat-option
@@ -88,7 +88,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
+    <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>Registro Tributario</mat-label>
       <input
         matInput
@@ -99,7 +99,7 @@
     <mat-form-field
       *ngIf="ubicacionesForm.value.tipo_ubicacion == 'Destino'"
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
     >
       <mat-label>Distancia Recorrida</mat-label>
       <input
@@ -114,7 +114,7 @@
 </form>
 
 <!-- Número de estación y nombre de la estación no van cuando se trata de autotransporte -->
-<!-- <mat-form-field appearance="outline" floatLabel="always">
+<!-- <mat-form-field appearance="outline" class="brand-field-1">
     <mat-label>Número de Estación (Opcional)</mat-label>
     <input
       matInput
@@ -123,7 +123,7 @@
       placeholder="0"
     />
   </mat-form-field> -->
-<!-- <mat-form-field appearance="outline" floatLabel="always">
+<!-- <mat-form-field appearance="outline" class="brand-field-1">
     <mat-label>Nombre de Estación (Opcional)</mat-label>
     <input
       matInput

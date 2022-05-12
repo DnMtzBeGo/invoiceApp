@@ -1,7 +1,9 @@
 <form class="content-grid" [formGroup]="autotransporteForm">
   <div class="grid">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Permiso SCT</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.permiso-sct" | translate
+      }}</mat-label>
       <input
         type="text"
         formControlName="permisoSCT"
@@ -23,74 +25,96 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Número de Permiso SCT</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.num-permiso-sct" | translate
+      }}</mat-label>
       <input
         matInput
-        name="Número de Permiso SCT"
+        [name]="'invoice.autotransporte.num-permiso-sct' | translate"
         formControlName="numeroSCT"
       />
     </mat-form-field>
   </div>
-  <h6>Seguros</h6>
+  <h6>{{ "invoice.autotransporte.seguros" | translate }}</h6>
   <div class="grid">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Nombre Aseguradora Responsabilidad Civil</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.nombre-civil" | translate
+      }}</mat-label>
       <input
         matInput
-        name="Nombre Aseguradora Responsabilidad Civil"
+        [name]="'invoice.autotransporte.nombre-civil' | translate"
         formControlName="nombreCivil"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Número Poliza Seguro Responsabilidad Civil</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.numero-civil" | translate
+      }}</mat-label>
       <input
         matInput
-        name="Número Poliza Seguro Responsabilidad Civil"
+        [name]="'invoice.autotransporte.numero-civil' | translate"
         formControlName="numeroCivil"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Nombre Aseguradora Ambiental (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.nombre-ambiental" | translate
+      }}</mat-label>
       <input
         matInput
-        name="Nombre Aseguradora Ambiental"
+        [name]="'invoice.autotransporte.nombre-ambiental' | translate"
         formControlName="nombreAmbiental"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Número Poliza Seguro Ambiental (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.numero-ambiental" | translate
+      }}</mat-label>
       <input
         matInput
-        name="Número Poliza Seguro Ambiental"
+        [name]="'invoice.autotransporte.numero-ambiental' | translate"
         formControlName="numeroAmbiental"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Nombre Aseguradora Carga (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.nombre-carga" | translate
+      }}</mat-label>
       <input
         matInput
-        name="Número Poliza Seguro Ambiental"
+        [name]="'invoice.autotransporte.nombre-carga' | translate"
         formControlName="nombreCarga"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Número Poliza Seguro Carga (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.numero-carga" | translate
+      }}</mat-label>
       <input
         matInput
-        name="Número Poliza Seguro Carga"
+        [name]="'invoice.autotransporte.numero-carga' | translate"
         formControlName="numeroCarga"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Prima Seguro (Opcional)</mat-label>
-      <input matInput name="Prima Seguro" formControlName="primaSeguro" />
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.prima-seguro" | translate
+      }}</mat-label>
+      <input
+        matInput
+        [name]="'invoice.autotransporte.prima-seguro' | translate"
+        formControlName="primaSeguro"
+      />
     </mat-form-field>
   </div>
-  <h6>Identificación Vehicular</h6>
+  <h6>{{ "invoice.autotransporte.identificacion" | translate }}</h6>
   <div class="grid">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Configuración</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.configuracion" | translate
+      }}</mat-label>
       <input
         type="text"
         formControlName="identificacionVehicularConfig"
@@ -111,33 +135,37 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Placa</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.autotransporte.placa" | translate }}</mat-label>
       <input
         matInput
-        name="Número Poliza Seguro Responsabilidad Civil"
+        [name]="'invoice.autotransporte.placa' | translate"
         formControlName="truckPlates"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Año y Modelo</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.autotransporte.año-modelo" | translate
+      }}</mat-label>
       <input
         matInput
         type="number"
-        name="Año y Modelo"
+        [name]="'invoice.autotransporte.año-modelo' | translate"
         formControlName="truckModel"
       />
-      <mat-error>El año debe de ser mayor a 1900 y menor a 2099</mat-error>
+      <mat-error>{{
+        "invoice.autotransporte.año-modelo-error" | translate
+      }}</mat-error>
     </mat-form-field>
   </div>
-  <h6>Remolques</h6>
+  <h6>{{ "invoice.autotransporte.remolques" | translate }}</h6>
   <mat-card>
     <div class="grid">
-      <!-- <mat-form-field appearance="outline" floatLabel="always">
+      <!-- <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>* Configuración</mat-label>
         <mat-select
           placeholder="Seleciona una opción"
-          class="no-custom-theme"
+          class="disable-custom-format"
           name="Configuración"
         >
           <mat-option>
@@ -146,8 +174,10 @@
         </mat-select>
       </mat-form-field> -->
 
-      <mat-form-field appearance="outline" floatLabel="always">
-        <mat-label>* Configuración</mat-label>
+      <mat-form-field appearance="outline" class="brand-field-1">
+        <mat-label>{{
+          "invoice.autotransporte.configuracion" | translate
+        }}</mat-label>
         <input
           type="text"
           formControlName="remolquesConfig"
@@ -168,9 +198,13 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" floatLabel="always">
-        <mat-label>* Placa</mat-label>
-        <input matInput name="Placa" formControlName="remolquesPlates" />
+      <mat-form-field appearance="outline" class="brand-field-1">
+        <mat-label>{{ "invoice.autotransporte.placa" | translate }}</mat-label>
+        <input
+          matInput
+          [name]="'invoice.autotransporte.placa' | translate"
+          formControlName="remolquesPlates"
+        />
       </mat-form-field>
       <!-- <button mat-mini-fab color="primary" aria-label="Add"> -->
       <!-- <button mat-mini-fab color="primary" aria-label="Add" (click)="addRemolque(mercanciasForm.get('pedimento').value)"> -->

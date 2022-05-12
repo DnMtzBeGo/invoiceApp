@@ -952,6 +952,59 @@
 
             "editar": "Editar",
             "borrar": "Borrar"
+        },
+        "cp-page": {
+            "carta-porte": "Carta Porte 2.0",
+            "btn-save": "Guardar",
+
+            "transporte": "Transporte",
+            "ubicaciones": "Ubicaciones",
+            "mercancias": "Mercancías",
+            "figura-transporte": "Figura del Transporte",
+
+            "success-title": "Carta porte",
+            "success-message": "La carta porte se ha guardado de manera satisfactoria",
+
+            "error-title": "La información es invalida",
+
+            "readonly-title": "Esta carta porte ya no puede ser editada"
+        },
+        "transporte": {
+            "transporte-internacional": "Transporte Internacional",
+
+            "pais-origen-destino": "País origen destino",
+            "movimiento-mercancia": "Movimiento de Mercancía",
+            "movimiento-mercancia-entrada": "Entrada",
+            "movimiento-mercancia-salida": "Salida",
+            "via-entrada": "Via Ingreso o Salida del País",
+
+            "siguiente": "Siguiente"
+        },
+        "autotransporte": {
+            "permiso-sct": "* Permiso SCT",
+            "num-permiso-sct": "* Número de Permiso SCT",
+
+            "seguros": "Seguros",
+
+            "nombre-civil": "* Nombre Aseguradora Responsabilidad Civil",
+            "numero-civil": "* Número Poliza Seguro Responsabilidad Civil",
+            "nombre-ambiental": "Nombre Aseguradora Ambiental (Opcional)",
+            "numero-ambiental": "Número Poliza Seguro Ambiental (Opcional)",
+            "nombre-carga": "Nombre Aseguradora Carga (Opcional)",
+            "numero-carga": "Número Poliza Seguro Carga (Opcional)",
+            "prima-seguro": "Prima Seguro (Opcional)",
+
+            "identificacion": "Identificación Vehicular",
+
+            "configuracion": "* Configuración",
+            "placa": "* Placa",
+            "año-modelo": "* Año y Modelo",
+            "año-modelo-error": "El año debe de ser mayor a 1900 y menor a 2099",
+
+            "remolques": "Remolques"
+        },
+        "ubicaciones": {
+            "siguiente": "Siguiente"
         }
     }
 }
