@@ -16,15 +16,14 @@
   </mat-form-field> -->
   </div>
 
-  <h6>Orígen / Destino</h6>
+  <h6>{{ "invoice.ubicacion.origen-destino" | translate }}</h6>
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>* Tipo</mat-label>
+      <mat-label>{{ "invoice.ubicacion.tipo" | translate }}</mat-label>
       <mat-select
-        placeholder="Seleciona una opción"
         formControlName="tipo_ubicacion"
         class="disable-custom-format"
-        name="Tipo"
+        [attr.name]="'invoice.ubicacion.tipo' | translate"
       >
         <mat-option *ngFor="let option of tipoUbicacion" [value]="option.clave">
           {{ option.clave }}
@@ -36,7 +35,7 @@
       <input
         matInput
         [ngxMatDatetimePicker]="picker"
-        placeholder="Choose a date"
+        [placeholder]="'invoice.ubicacion.choose-a-date' | translate"
         formControlName="fecha_hora_salida_llegada"
       />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -53,15 +52,17 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>ID Ubicación (Opcional)</mat-label>
+      <mat-label>{{ "invoice.ubicacion.id-ubicacion" | translate }}</mat-label>
       <input matInput formControlName="id_ubicacion" name="ID Ubicación" />
-      <mat-error
-        >El id debe de iniciar con 'OR' o 'DE' seguido de 6 dígitos</mat-error
-      >
+      <mat-error>{{
+        "invoice.ubicacion.id-ubicacion-error" | translate
+      }}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>Nombre (Opcional)</mat-label>
+      <mat-label>{{
+        "invoice.ubicacion.nombre-destinatario" | translate
+      }}</mat-label>
       <input
         matInput
         formControlName="nombre_remitente_destinatario"
@@ -69,13 +70,14 @@
       />
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>RFC</mat-label>
+      <mat-label>{{ "invoice.ubicacion.rfc" | translate }}</mat-label>
       <input matInput formControlName="rfc_remitente_destinatario" name="RFC" />
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>* Residencia Fiscal</mat-label>
+      <mat-label>{{
+        "invoice.ubicacion.residencia-fiscal" | translate
+      }}</mat-label>
       <mat-select
-        placeholder="Seleciona una opción"
         formControlName="residencia_fiscal"
         class="disable-custom-format"
         name="Residencia Fiscal"
@@ -89,7 +91,9 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>Registro Tributario</mat-label>
+      <mat-label>{{
+        "invoice.ubicacion.reg-tributario" | translate
+      }}</mat-label>
       <input
         matInput
         formControlName="num_reg_id_trib"
@@ -101,13 +105,15 @@
       appearance="outline"
       class="brand-field-1"
     >
-      <mat-label>Distancia Recorrida</mat-label>
+      <mat-label>{{
+        "invoice.ubicacion.distancia-recorrida" | translate
+      }}</mat-label>
+      <!-- placeholder="Distancia en km" -->
       <input
         matInput
         formControlName="distancia_recorrida"
         name="Distancia Recorrida"
         type="number"
-        placeholder="Distancia en km"
       />
     </mat-form-field>
   </div>

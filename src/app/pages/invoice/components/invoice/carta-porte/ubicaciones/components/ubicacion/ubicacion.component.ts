@@ -122,8 +122,12 @@ export class UbicacionComponent implements OnInit {
   showOriginAlreadySetModal() {
     this.matDialog.open(InfoModalComponent, {
       data: {
-        title: "Ya existe una ubicación con origen",
-        message: `Sólo puede existir un origen en cada carta porte`,
+        title: this.translateService.instant(
+          "invoice.ubicacion.origin-already-title"
+        ),
+        message: this.translateService.instant(
+          "invoice.ubicacion.origin-already-message"
+        ),
       },
       restoreFocus: false,
     });

@@ -1,11 +1,10 @@
 <form [formGroup]="domicilioForm">
-  <h6>Domicilio</h6>
+  <h6>{{ "invoice.location.domicilio" | translate }}</h6>
   <div class="grid">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* País</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-pais" | translate }}</mat-label>
       <mat-select
-        placeholder="Seleciona una opción"
-        class="no-custom-theme"
+        class="disable-custom-format"
         formControlName="pais"
         name="País"
       >
@@ -18,8 +17,8 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Estado</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-estado" | translate }}</mat-label>
       <input
         formControlName="estado"
         autocomplete="off"
@@ -41,12 +40,12 @@
           </mat-option>
         </span>
         <mat-option *ngIf="!domicilioForm.value.pais">
-          Selecciona un país primero
+          {{ "invoice.location.addr-estado-nocountry" | translate }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Código Postal</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-cp" | translate }}</mat-label>
       <input
         matInput
         (blur)="getColonias($event)"
@@ -54,17 +53,17 @@
         name="Código Postal"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Calle (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-calle" | translate }}</mat-label>
       <input matInput formControlName="calle" name="Calle" />
     </mat-form-field>
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       *ngIf="domicilioForm.value.pais == 'MEX'"
     >
-      <mat-label>Municipio (Opcional)</mat-label>
+      <mat-label>{{ "invoice.edit.addr-municipio" | translate }}</mat-label>
       <input
         formControlName="municipio"
         autocomplete="off"
@@ -85,16 +84,16 @@
           </mat-option>
         </span>
         <mat-option *ngIf="!domicilioForm.value.estado">
-          Selecciona un estado primero
+          {{ "invoice.location.addr-municipio-noestado" | translate }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       *ngIf="domicilioForm.value.pais !== 'MEX'"
     >
-      <mat-label>Municipio (Opcional)</mat-label>
+      <mat-label>{{ "invoice.edit.addr-municipio" | translate }}</mat-label>
       <input
         formControlName="municipio"
         autocomplete="off"
@@ -105,10 +104,10 @@
 
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       *ngIf="domicilioForm.value.pais == 'MEX'"
     >
-      <mat-label>Localidad (Opcional)</mat-label>
+      <mat-label>{{ "invoice.edit.addr-localidad" | translate }}</mat-label>
       <input
         formControlName="localidad"
         autocomplete="off"
@@ -129,16 +128,16 @@
           </mat-option>
         </span>
         <mat-option *ngIf="!domicilioForm.value.estado">
-          Selecciona un estado primero
+          {{ "invoice.location.addr-municipio-noestado" | translate }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
     <mat-form-field
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
       *ngIf="domicilioForm.value.pais !== 'MEX'"
     >
-      <mat-label>Localidad (Opcional)</mat-label>
+      <mat-label>{{ "invoice.edit.addr-localidad" | translate }}</mat-label>
       <input
         formControlName="localidad"
         autocomplete="nope"
@@ -146,16 +145,16 @@
         matInput
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Número Exterior (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-no-ext" | translate }}</mat-label>
       <input
         matInput
         formControlName="numero_exterior"
         name="Número Exterior"
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Número Interior (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-no-int" | translate }}</mat-label>
       <input
         matInput
         formControlName="numero_interior"
@@ -163,8 +162,8 @@
       />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Colonia (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-colonia" | translate }}</mat-label>
       <input
         formControlName="colonia"
         autocomplete="off"
@@ -185,18 +184,20 @@
           </mat-option>
         </span>
         <mat-option *ngIf="!domicilioForm.value.codigo_postal">
-          Escribe un código postal primero
+          {{ "invoice.location.addr-colonia-nocp" | translate }}
         </mat-option>
         <mat-option
           *ngIf="domicilioForm.value.codigo_postal && colonias.length == 0"
         >
-          No se encontraron colonias para el código postal actual
+          {{ "invoice.edit.addr-colonia-noresults" | translate }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Referencia (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.location.addr-referencia" | translate
+      }}</mat-label>
       <input matInput formControlName="referencia" name="Referencia" />
     </mat-form-field>
   </div>

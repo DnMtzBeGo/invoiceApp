@@ -684,6 +684,7 @@
             "addr-pais": "País",
             "addr-estado": "Estado",
             "addr-municipio": "Municipio",
+            "addr-localidad": "Localidad",
             "addr-cp": "Código Postal",
             "addr-colonia": "Colonia",
             "addr-colonia-placeholder-2": "Ingresa un código postal válido",
@@ -1007,6 +1008,30 @@
         },
         "ubicaciones": {
             "siguiente": "Siguiente"
+        },
+        "ubicacion": {
+            "origen-destino": "Orígen / Destino",
+
+            "tipo": "* Tipo",
+            "choose-a-date": "Choose a date",
+            "id-ubicacion": "ID Ubicación (Opcional)",
+            "id-ubicacion-error": "El id debe de iniciar con 'OR' o 'DE' seguido de 6 dígitos",
+            "nombre-destinatario": "Nombre (Opcional)",
+            "rfc": "RFC",
+            "residencia-fiscal": "* Residencia Fiscal",
+            "reg-tributario": "Registro Tributario",
+            "distancia-recorrida": "Distancia Recorrida",
+
+            "origin-already-title": "Ya existe una ubicación con origen",
+            "origin-already-message": "Sólo puede existir un origen en cada carta porte"
+        },
+        "location": {
+            "domicilio": "Domicilio",
+
+            "addr-estado-nocountry": "Selecciona un país primero",
+            "addr-municipio-noestado": " Selecciona un estado primero",
+            "addr-colonia-nocp": "Escribe un código postal primero",
+            "addr-referencia": "Referencia"
         }
     }
 }
