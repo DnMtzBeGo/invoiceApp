@@ -1151,7 +1151,9 @@
             <mat-select
               name="moneda"
               [ngModel]="vm.form?.moneda"
-              (ngModelChange)="vm.form.moneda = $event"
+              (ngModelChange)="
+                vm.form.moneda = $event; vm.form.tipo_de_cambio = null
+              "
               class="disable-custom-format"
             >
               <mat-option
@@ -1174,6 +1176,36 @@
                   src="./assets/images/invoice/help.png"
                   style="width: inherit"
               /></mat-icon>
+            </span>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="vm.form?.moneda !== 'MXN'"
+            class="brand-field-1"
+            appearance="outline"
+            [attr.readonly]="vm.readonly"
+          >
+            <mat-label>{{
+              "invoice.edit.tipo-de-cambio" | translate
+            }}</mat-label>
+            <input
+              matInput
+              type="number"
+              name="tipo_de_cambio"
+              [ngModel]="vm.form?.tipo_de_cambio"
+              (ngModelChange)="vm.form.tipo_de_cambio = $event"
+              autocomplete="off"
+              [readonly]="vm.readonly"
+            />
+
+            <span
+              class="factura-help-icon"
+              [matTooltip]="vm.helpTooltips?.tipo_de_cambio"
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1"
+            >
+              <mat-icon>help</mat-icon>
             </span>
           </mat-form-field>
         </div>
@@ -2392,7 +2424,13 @@
                     vm.tipo_de_comprobante &&
                     vm.form?.emisor?._id &&
                     validRFC(vm.form?.emisor?.rfc)
-                  ? ("invoice.edit.serie" | translate)
+                  ? ("invoice.edit.serie" | translate) +
+                    (vm.series && vm.series.find(findById(vm.form?.serie))
+                      ? " - " +
+                        ("invoice.edit.serie-folio" | translate) +
+                        ": " +
+                        vm.series.find(findById(vm.form?.serie))?.folio
+                      : "")
                   : !vm.tipo_de_comprobante
                   ? ("invoice.edit.serie-placeholder-2" | translate)
                   : !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)

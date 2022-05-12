@@ -354,6 +354,7 @@ export const helpTooltips = {
   lugar_de_expedicion: `Lugar de Expedición\nExpresa el C.P. del lugar en donde se emite el CFDI.`,
   tipo_de_comprobante: `Tipo de comprobante\nSelecciona el tipo de comprobante según sea la transacción comercial que se está realizando. Ingreso = Factura, Honorarios, Nota de Cargo, Donativos, Arrendamiento. Egreso = Nota de Crédito, Nota de devolución. Traslado = carta porte.`,
   moneda: `Moneda\nIdentifica la clave de la moneda utilizada para expresar los montos del CFDI, cuando se usa moneda nacional se registra MXN. Conforme con la especificación ISO 4217.`,
+  tipo_de_cambio: `Tipo de Cambio\nExpresa el tipo de cambio de acuerdo a la moneda seleccionada para el CFDI. El valor debe ser equivalente a una unidad de la divisa señalada en el campo "Moneda".`,
   metodo_de_pago: `Método de pago\nClave del método de pago que aplica para el CFDI, conforme al Artículo 29-A fracción VII incisos a y b del CFF.`,
   forma_de_pago: `Forma de pago\nExpresa la clave de la forma de pago de los bienes o servicios amparados por el CFDI.`,
   info_extra: `Información Extra\nExpresa información que se desea incluir en el PDF, puede incluirse información comercial o administrativa que ayude internamente.`,
