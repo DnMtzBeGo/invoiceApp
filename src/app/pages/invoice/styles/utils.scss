@@ -323,3 +323,8 @@ ngx-mat-select-search.brand-select-search-1 {
 .radius-30 {
   border-radius: 30px !important;
 }
+
+.brand-filter-1 {
+  filter: invert(78%) sepia(16%) saturate(7050%) hue-rotate(1deg)
+    brightness(106%) contrast(103%);
+}

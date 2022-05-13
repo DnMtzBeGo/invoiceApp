@@ -46,6 +46,16 @@ import {
 } from "src/app/shared/utils/object";
 import { AuthService } from "src/app/shared/services/auth.service";
 
+const filterParams = new Set([
+  "fec_inicial",
+  "fec_final",
+  "emisor",
+  "receptor",
+  "tipo_de_comprobante",
+  "uuid",
+  "status",
+]);
+
 @Component({
   selector: "app-facturas-page",
   templateUrl: "./facturas-page.component.html",
@@ -337,5 +347,11 @@ export class FacturasPageComponent implements OnInit {
 
   decodeFecha = (strDate: string) => {
     return new Date(strDate);
+  };
+
+  filtersCount = (params) => {
+    return Object.keys(params).filter(
+      (filterName) => filterParams.has(filterName) && params[filterName]
+    ).length;
   };
 }
