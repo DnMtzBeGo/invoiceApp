@@ -1,17 +1,16 @@
 <div class="mercancias-inputs" [formGroup]="mercanciasForm">
-  <mat-form-field appearance="outline" floatLabel="always">
-    <mat-label>Peso Bruto Total</mat-label>
+  <mat-form-field appearance="outline" class="brand-field-1">
+    <mat-label>{{ "invoice.mercancias.peso-bruto" | translate }}</mat-label>
     <input
       matInput
       name="peso_bruto_total"
-      placeholder=""
       type="number"
       formControlName="peso_bruto_total"
       [value]=""
     />
   </mat-form-field>
-  <mat-form-field class="unidad-peso" appearance="outline" floatLabel="always">
-    <mat-label>* Unidad Peso</mat-label>
+  <mat-form-field appearance="outline" class="brand-field-1 unidad-peso">
+    <mat-label>{{ "invoice.mercancias.unidad-peso" | translate }}</mat-label>
     <input
       formControlName="unidad_peso"
       autocomplete="off"
@@ -52,5 +51,7 @@
 </button>
 
 <div class="grid">
-  <button mat-button matStepperNext>Siguiente</button>
+  <button mat-button matStepperNext>
+    {{ "invoice.mercancias.siguiente" | translate }}
+  </button>
 </div>

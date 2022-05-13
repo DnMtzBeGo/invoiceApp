@@ -1032,6 +1032,46 @@
             "addr-municipio-noestado": " Selecciona un estado primero",
             "addr-colonia-nocp": "Escribe un código postal primero",
             "addr-referencia": "Referencia"
+        },
+        "mercancias": {
+            "peso-bruto": "Peso Bruto Total",
+            "unidad-peso": "Unidad Peso",
+            "siguiente": "Siguiente"
+        },
+        "commodity": {
+            "bienes-transportados": "Bienes Transportados",
+            "clave-unidad": "Clave Unidad",
+            "cantidad": "Cantidad",
+            "dimensiones": "Dimensiones",
+            "dimensiones-error": "Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o plg. Ejemplo: 10/10/10cm",
+            "peso": "Peso (Kg)",
+            "valor-mercancia": "Valor Mercancía",
+            "moneda": "Moneda",
+
+            "material-peligroso": "Material Peligroso",
+
+            "clave-material-peligroso": "Clave Material Peligroso",
+            "embalaje": "Embalaje",
+
+            "pedimentos": "Pedimentos",
+
+            "pedimento": "Pedimento",
+
+            "table-pedimento": "Pedimento"
+        },
+        "figura": {
+            "figura-transporte": "Figura del transporte",
+            "tipo-figura": "Tipo de Figura",
+            "rfc-figura": "RFC",
+            "residencia-figura": "Residencia Fiscal",
+            "registro-trib-figura": "Registro Tributario",
+            "nombre-figura": "Nombre",
+            "num-licencia": "Num. Licencia",
+
+            "partes-transporte": "Partes del transporte",
+            "parte-transporte": "Parte transporte",
+
+            "table-parte-transporte": "Parte transporte"
         }
     }
 }

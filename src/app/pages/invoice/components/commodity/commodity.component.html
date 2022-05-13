@@ -1,7 +1,9 @@
 <form [formGroup]="commodity">
   <div class="grid">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Bienes Transportados</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.commodity.bienes-transportados" | translate
+      }}</mat-label>
       <input
         formControlName="bienesTransportados"
         autocomplete="off"
@@ -22,19 +24,18 @@
       </mat-autocomplete>
     </mat-form-field>
     <!-- input es de tipo ferroviario -->
-    <!-- <mat-form-field appearance="outline" floatLabel="always">
+    <!-- <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>Clave STCC (Opcional)</mat-label>
       <input
         matInput
         name="claveSCTT"
-        placeholder=""
         formControlName="claveSCTT"
         [value]=""
       />
     </mat-form-field> -->
 
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Clave Unidad</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.clave-unidad" | translate }}</mat-label>
       <input
         formControlName="claveUnidad"
         autocomplete="off"
@@ -55,60 +56,56 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Cantidad</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.cantidad" | translate }}</mat-label>
       <input
         matInput
         name="cantidad"
-        placeholder=""
         type="number"
         formControlName="cantidad"
         [value]=""
       />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Dimensiones (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.dimensiones" | translate }}</mat-label>
       <input
         matInput
         name="dimensiones"
-        placeholder=""
         formControlName="dimensiones"
         [value]=""
       />
-      <mat-error
-        >Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o
-        plg. Ejemplo: 10/10/10cm</mat-error
-      >
+      <mat-error>{{
+        "invoice.commodity.dimensiones-error" | translate
+      }}</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Peso (Kg)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.peso" | translate }}</mat-label>
       <input
         matInput
         name="peso"
-        placeholder=""
         type="number"
         formControlName="peso"
         [value]=""
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Valor Mercancía (Opcional))</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.commodity.valor-mercancia" | translate
+      }}</mat-label>
       <input
         matInput
         name="valorMercancia"
-        placeholder=""
         type="number"
         formControlName="valorMercancia"
         [value]=""
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Moneda (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.moneda" | translate }}</mat-label>
       <mat-select
         formControlName="moneda"
-        placeholder="Seleciona una opción"
-        class="no-custom-theme"
+        class="disable-custom-format"
         name="moneda"
       >
         <mat-option *ngFor="let option of dataCoin" [value]="option.clave">
@@ -117,16 +114,18 @@
       </mat-select>
     </mat-form-field>
     <div>
-      <p>Material Peligroso</p>
+      <p>{{ "invoice.commodity.material-peligroso" | translate }}</p>
       <mat-slide-toggle formControlName="materialPeligroso"></mat-slide-toggle>
     </div>
 
     <mat-form-field
       *ngIf="commodity.value.materialPeligroso"
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
     >
-      <mat-label>* Clave Material Peligroso</mat-label>
+      <mat-label>{{
+        "invoice.commodity.clave-material-peligroso" | translate
+      }}</mat-label>
       <input
         formControlName="claveMaterialPeligroso"
         autocomplete="off"
@@ -150,13 +149,15 @@
     <mat-form-field
       *ngIf="commodity.value.materialPeligroso"
       appearance="outline"
-      floatLabel="always"
+      class="brand-field-1"
     >
-      <mat-label>Embalaje {{ commodity.value.embalaje }}</mat-label>
+      <mat-label
+        >{{ "invoice.commodity.embalaje" | translate }}
+        {{ commodity.value.embalaje }}</mat-label
+      >
       <mat-select
         formControlName="embalaje"
-        placeholder="Seleciona una opción"
-        class="no-custom-theme"
+        class="disable-custom-format"
         name="embalaje"
       >
         <mat-option *ngFor="let option of embalaje" [value]="option.clave">
@@ -165,14 +166,13 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <h6>Pedimentos</h6>
+  <h6>{{ "invoice.commodity.pedimentos" | translate }}</h6>
   <div class="grid">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Pedimento</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.pedimento" | translate }}</mat-label>
       <input
         matInput
         autocomplete="off"
-        placeholder=""
         (keyup.enter)="addPedimento($event)"
         (keyup)="acceptOnlyNumbers($event)"
       />
@@ -186,7 +186,9 @@
       *ngIf="dataSourcePedimento.length > 0"
     >
       <ng-container matColumnDef="value">
-        <th mat-header-cell *matHeaderCellDef>Pedimento</th>
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "invoice.commodity.table-pedimento" | translate }}
+        </th>
         <td mat-cell *matCellDef="let element">{{ element.pedimento }}</td>
       </ng-container>
 

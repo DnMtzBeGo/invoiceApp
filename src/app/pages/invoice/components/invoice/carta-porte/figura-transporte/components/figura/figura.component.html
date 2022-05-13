@@ -1,11 +1,10 @@
 <form [formGroup]="figuraTransporteForm" autocomplete="off">
-  <h6>Figura del transporte</h6>
+  <h6>{{ "invoice.figura.figura-transporte" | translate }}</h6>
   <div class="grid">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Tipo de Figura</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.tipo-figura" | translate }}</mat-label>
       <mat-select
-        placeholder="Seleciona una opción"
-        class="no-custom-theme"
+        class="disable-custom-format"
         name="tipo_figura"
         formControlName="tipo_figura"
       >
@@ -17,21 +16,21 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* RFC</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.rfc-figura" | translate }}</mat-label>
       <input
         matInput
-        placeholder=""
         name="rfc_figura"
         formControlName="rfc_figura"
         [value]=""
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Residencia Fiscal</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.figura.residencia-figura" | translate
+      }}</mat-label>
       <mat-select
-        placeholder="Seleciona una opción"
-        class="no-custom-theme"
+        class="disable-custom-format"
         formControlName="residencia_fiscal_figura"
         name="País"
       >
@@ -40,41 +39,40 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Registro Tributario</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.figura.registro-trib-figura" | translate
+      }}</mat-label>
       <input
         matInput
-        placeholder=""
         name="num_reg_id_trib_figura"
         formControlName="num_reg_id_trib_figura"
         [value]=""
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Nombre (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.nombre-figura" | translate }}</mat-label>
       <input
         matInput
-        placeholder=""
         name="nombre_figura"
         formControlName="nombre_figura"
         [value]=""
       />
     </mat-form-field>
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Num. Licencia (Opcional)</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.num-licencia" | translate }}</mat-label>
       <input
         matInput
         name="num_licencia"
-        placeholder=""
         formControlName="num_licencia"
         [value]=""
       />
     </mat-form-field>
   </div>
-  <h6>Partes del transporte</h6>
+  <h6>{{ "invoice.figura.partes-transporte" | translate }}</h6>
   <div class="grid">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>* Parte Transporte</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.parte-transporte" | translate }}</mat-label>
       <input
         formControlName="partes_transporte"
         autocomplete="off"
@@ -113,7 +111,9 @@
       *ngIf="dataSource?.length > 0"
     >
       <ng-container matColumnDef="value">
-        <th mat-header-cell *matHeaderCellDef>Parte transporte</th>
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "invoice.figura.table-parte-transporte" | translate }}
+        </th>
         <td mat-cell *matCellDef="let element">
           {{ element.clave }} – {{ element.descripcion }}
         </td>
