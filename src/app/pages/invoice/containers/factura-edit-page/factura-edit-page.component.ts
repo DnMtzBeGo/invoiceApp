@@ -39,6 +39,7 @@ import {
 } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, ActivatedRoute } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 import { environment } from "src/environments/environment";
 import omitEmpty from "omit-empty";
 // import {
@@ -73,7 +74,6 @@ import {
   previewFactura,
   validators,
   facturaStatus,
-  helpTooltips,
 } from "./factura.core";
 import {
   ActionSendEmailFacturaComponent,
@@ -268,7 +268,8 @@ export class FacturaEditPageComponent implements OnInit {
     private apiRestService: AuthService,
     // private notificationsService: NotificationsService,
     private route: ActivatedRoute,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -840,7 +841,7 @@ export class FacturaEditPageComponent implements OnInit {
   }
 
   fetchHelpTooltips() {
-    return oof(helpTooltips);
+    return oof(this.translateService.instant("invoice.tooltips"));
   }
 
   fetchFacturaStatus = () => {

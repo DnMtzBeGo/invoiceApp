@@ -8,6 +8,7 @@ import {
 import { FormControl } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 import {
   Observable,
   from,
@@ -50,7 +51,6 @@ import { Paginator } from "../../models";
 import {
   getImpuestoDescripcion,
   validators,
-  helpTooltips,
 } from "../../containers/factura-edit-page/factura.core";
 import { routes } from "../../consts";
 
@@ -163,7 +163,8 @@ export class FacturaEmisorConceptosComponent implements OnInit {
     private dialogRef: MatDialogRef<FacturaEmisorConceptosComponent>,
     // private notificationsService: NotificationsService,
     private apiRestService: AuthService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -431,7 +432,7 @@ export class FacturaEmisorConceptosComponent implements OnInit {
   }
 
   fetchHelpTooltips() {
-    return oof(helpTooltips);
+    return oof(this.translateService.instant("invoice.tooltips"));
   }
 
   searchReceptor(search) {
