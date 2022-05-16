@@ -16,11 +16,6 @@
           <div class="title">
             {{ 'orders.title-personal-info' | translate }}
           </div>
-          <div class="edit-btn">
-            <button mat-button >
-              {{ 'checkout.edit' | translate | uppercase }}
-            </button>
-          </div>
         </div>    
 
         <!-- full name -->
@@ -70,7 +65,7 @@
         </div> 
 
         <!-- reference -->
-        <div class="ticket-row">
+        <div class="ticket-row" *ngIf="selectedCard === 'pickup'">
           <div>
             {{ 'checkout.txt-reference' | translate }}
           </div>
@@ -90,11 +85,6 @@
         <div class="ticket-row">
           <div class="title">
             {{ 'orders.title-cargo-info' | translate }}
-          </div>
-          <div class="edit-btn">
-            <button mat-button >
-              {{ 'checkout.edit' | translate | uppercase }}
-            </button>
           </div>
         </div>
         

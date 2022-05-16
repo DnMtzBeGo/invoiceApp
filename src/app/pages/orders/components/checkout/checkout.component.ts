@@ -53,19 +53,20 @@ export class CheckoutComponent implements OnInit {
         }
       });
       this.checkoutSteps = [
+        
         {
-          text: translateService.instant('checkout.summary'),
+          text: translateService.instant('checkout.invoice'),
           nextBtnTxt: translateService.instant('checkout.stepper-btns.continue-to-invoice')
         },
         {
-          text: translateService.instant('checkout.invoice'),
-          nextBtnTxt: translateService.instant('checkout.stepper-btns.continue-to-payment')
-        },
-        {
-          text: translateService.instant('checkout.payment'),
+          text: translateService.instant('checkout.summary'),
           nextBtnTxt: translateService.instant('checkout.stepper-btns.submit')
-
         },
+        // {
+        //   text: translateService.instant('checkout.payment'),
+        //   nextBtnTxt: translateService.instant('checkout.stepper-btns.submit')
+
+        // },
       ];
    }
 
@@ -82,7 +83,13 @@ export class CheckoutComponent implements OnInit {
       ( res : any ) => {
         this.summaryData = res.result;
         console.log('summary data: ', this.summaryData);
-      },
+        if(!this.summaryData.manager.cer?.key || !this.summaryData.manager.key?.key) {
+          this.checkoutSteps.unshift({
+            text: this.translateService.instant('checkout.emitter'),
+            nextBtnTxt: this.translateService.instant('checkout.stepper-btns.continue-to-reciever')
+          })
+      }
+    },
       ( err: any ) => {
 
       }
@@ -109,6 +116,7 @@ export class CheckoutComponent implements OnInit {
           console.error('Error on customs cruce : ', error.customsCruce );
         }
       )
+      console.log(this.summaryData);
   }
 
   calculateProgress():number{

@@ -9,7 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { SummaryModule } from './components/summary/summary.module';
 import { InvoiceModule } from './components/invoice/invoice.module';
-import { PaymentModule } from './components/payment/payment.module';
+import { EmitterModule } from './components/emitter/emitter.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { BegoRadioCardModule } from 'src/app/shared/components/bego-radio-card/bego-radio-card.module';
 import { PriceDetailsModule } from 'src/app/shared/components/price-details/price-details.module';
@@ -18,7 +18,6 @@ import { PriceDetailsModule } from 'src/app/shared/components/price-details/pric
 @NgModule({
   declarations: [
     CheckoutComponent,
-
   ],
   imports: [
     CommonModule,
@@ -28,10 +27,10 @@ import { PriceDetailsModule } from 'src/app/shared/components/price-details/pric
     MatButtonModule,
     SummaryModule,
     InvoiceModule,
-    PaymentModule,
     TranslateModule,
     BegoRadioCardModule,
     PriceDetailsModule,
+    EmitterModule
   ]
 })
 export class CheckoutModule { }

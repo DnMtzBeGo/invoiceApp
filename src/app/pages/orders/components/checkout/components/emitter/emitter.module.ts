@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InvoiceComponent } from './invoice.component';
+import { EmitterComponent } from './emitter.component';
 import { BegoTicketModule } from 'src/app/shared/components/bego-ticket/bego-ticket.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
@@ -9,11 +9,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
-import { BegoAddressAutocompleteModule } from 'src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module';
+import { InputDirectionsModule } from 'src/app/shared/components/input-directions/input-directions.module';
 
 @NgModule({
   declarations: [
-    InvoiceComponent,
+    EmitterComponent,
   ],
   imports: [
     CommonModule,
@@ -26,10 +26,10 @@ import { BegoAddressAutocompleteModule } from 'src/app/shared/components/bego-ad
     ReactiveFormsModule,
     MatButtonModule,
     BegoPhoneInputModule,
-    BegoAddressAutocompleteModule,
+    InputDirectionsModule
   ],
   exports: [
-    InvoiceComponent,
+    EmitterComponent,
   ]
 })
-export class InvoiceModule { }
+export class EmitterModule { }

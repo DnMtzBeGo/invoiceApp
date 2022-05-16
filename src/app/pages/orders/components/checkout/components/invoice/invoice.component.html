@@ -5,81 +5,25 @@
         <div class="title">
           {{ 'checkout.title-invoice' | translate }}
         </div>
-        <div class="edit-btn">
-          <button 
-            mat-button 
-            *ngIf="!invoiceFormIsEnabled"
-            (click)="editForm()">
-              {{ 'checkout.edit' | translate | uppercase }}
-          </button>
-
-          <button 
-            mat-button 
-            *ngIf="invoiceFormIsEnabled"
-            (click)="saveForm()" >
-            {{ 'checkout.txt-save' | translate | uppercase }}
-          </button>
-        </div>
       </div>    
 
     </div>
 
     <div body>
       
-      <form [formGroup]="invoiceForm">
+      <form [formGroup]="recieverForm">
 
-        <!-- full name -->
-        <div class="ticket-row">
-          <div>
-            {{ 'checkout.placeholder-fullname' | translate }}
-          </div>
-          <div>
-            <mat-form-field class="inner-shadow" >
-              <input matInput  formControlName="fullName">
-            </mat-form-field>
-          </div>
-        </div> 
-
-        <!-- phone number -->
-        <div class="ticket-row">
-          <div>
-            {{ 'checkout.placeholder-phonenumber' | translate }}
-          </div>
-          <div>
-            <bego-phone-input
-              design="inner-shadow"
-              [phoneFlag]="invoiceForm.value.phoneCode"
-              [phoneCode]="invoiceForm.value.dialCode"
-              [phoneNumber]="invoiceForm.value.phoneNumber"
-              (phoneFlagChange)="changeFlag($event)"
-              (phoneCodeChange)="changeCode($event)"
-              (phoneNumberChange)="changePhone($event)"
-              [disabled]="invoiceForm.disabled">
-            </bego-phone-input>
-          </div>
-        </div> 
-
-        <!-- address -->
-        <div class="ticket-row">
+         <!-- address -->
+         <div class="ticket-row">
           <div>
             {{ 'checkout.placeholder-address' | translate }}
           </div>
-          <div>
-            <mat-form-field class="inner-shadow" >
-              <input matInput  formControlName="address">
-            </mat-form-field>
-          </div>
-        </div> 
-
-        <!-- email -->
-        <div class="ticket-row">
-          <div>
-            {{ 'checkout.placeholder-email' | translate }}
-          </div>
-          <div>
-            <mat-form-field class="inner-shadow" >
-              <input matInput  formControlName="email">
-            </mat-form-field>
+          <div class="address">
+            <bego-address-autocomplete
+              [address]="recieverForm.value.address.address"
+              (addressChange)="setAddressName($event)"
+              (placeIdChange)='setPlaceId($event)'>
+            </bego-address-autocomplete>
           </div>
         </div> 
 
@@ -94,8 +38,6 @@
             </mat-form-field>
           </div>
         </div> 
-
-
 
         <!-- rfc -->
         <div class="ticket-row">

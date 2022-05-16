@@ -29,6 +29,7 @@ export class BegoAddressAutocompleteComponent implements OnInit {
 
   @Input() address: string = '';
   @Output() addressChange = new EventEmitter<string>();
+  @Output() placeIdChange = new EventEmitter<string>();
 
   @ViewChild('input') input!: ElementRef
   
@@ -71,6 +72,7 @@ export class BegoAddressAutocompleteComponent implements OnInit {
   closeAutocomplete(): void {
     if(this.anOptionWasSelected){
       this.addressChange.emit(this.input.nativeElement.value)
+      this.placeIdChange.emit(this.predictions[0].place_id)
     }else{
       this.input.nativeElement.value = this.originalAddressValue;
     }

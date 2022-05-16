@@ -95,8 +95,8 @@
         "txt-order": "Orden",
         "txt-pickup": "Recolección",
         "txt-dropoff": "Entrega",
-        "txt-inovice": "Factura",
-        "title-inovice": "Información de facturación",
+        "txt-invoice": "Factura",
+        "title-invoice": "Información de Receptor",
         "placeholder-fullname": "Nombre completo",
         "placeholder-email": "Email",
         "placeholder-phonenumber": "Teléfono Móvil",
@@ -139,7 +139,6 @@
         "title-valid-route": "Nota",
         "txt-valid-route": "Esta orden será operada por uno de nuestros representantes, te contactaremos cuando esté lista.",
         "txt-save":"Guardar",
-        "title-invoice": "Información de factura",
         "to-define":"Por definir",
         "payment-method":"Método de pago",
         "transfer":"Transferencia",
@@ -179,16 +178,16 @@
             "txt-agent-prices": "(Precios en USD)"
         },
         "stepper-btns":{
-            "continue-to-invoice": "Continuar a la factura",
-            "continue-to-payment": "Continuar al pago",
+            "continue-to-reciever": "Continuar a Receptor",
+            "continue-to-invoice": "Continuar a el resumen",
             "submit": "Crear Orden"
         },
         "skip": "Omitir",
         "next": "Siguiente",
         "label-total-price": "Total:",
         "summary": "Resumen",
-        "invoice": "Factura",
-        "payment": "Pago"
+        "invoice": "Receptor",
+        "emitter": "Emisor"
     },
     "history": {
         "title": "Historial de viajes",

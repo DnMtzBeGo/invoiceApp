@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { CfdiService } from 'src/app/services/cfdi.service';
 
@@ -13,17 +13,24 @@ export class InvoiceComponent implements OnInit {
   @Input() userData: any;
   @Output() invoiceData: any = new EventEmitter<any>();
 
-  invoiceForm: FormGroup = this.formBuilder.group({
-    fullName: ['', Validators.required],
-    phoneNumber: ['', Validators.required],
-    phoneCode: ['', Validators.required],
-    dialCode: ['', Validators.required],
-    address: ['', Validators.required],
-    email: ['', Validators.required],
-    company: ['', Validators.required],
-    rfc: ['', Validators.required],
-    cfdi: ['', Validators.required],
+  recieverForm: FormGroup = this.formBuilder.group({
+    address: [{
+      address: '',
+      place_id: '',
+    }],
+    company: [''],
+    rfc: [''],
+    cfdi: [''],
+    taxRegine: [''],
   });
+ 
+  address: {
+    address: string,
+    place_id: string,
+  } = {
+    address: '',
+    place_id: '',
+  }
 
   invoiceFormIsEnabled:boolean = false;
 
@@ -62,69 +69,46 @@ export class InvoiceComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit(){
-    this.invoiceForm.disable();
-  }
-
   ngOnChanges(changes: SimpleChanges): void{
+    console.log('cambios',changes)
     if(changes.userData && this.userData) {
 
+      const {attributes } = this.userData;
 
-
-      const { nickname, email, country_code, raw_telephone, attributes } = this.userData;
-
-      let phoneNumber = raw_telephone.split(' ')
-      const dialCode = phoneNumber.shift();
-      phoneNumber = phoneNumber.join(' ');
-
-      this.invoiceForm.patchValue({
-        fullName: nickname,
-        phoneNumber: phoneNumber,
-        phoneCode: country_code,
-        dialCode: dialCode,
-        address: attributes.address,
-        email: email,
+      this.recieverForm.patchValue({
         company: attributes.companyName,
         rfc: attributes.RFC,
         cfdi:  attributes.CFDI,
+        taxRegine: attributes.taxRegine,
       });
 
     }
   }
 
-  editForm(): void {
-    this.invoiceFormIsEnabled = true;
-    this.invoiceForm.enable();
-  }
-
-  saveForm(): void {
-    this.invoiceFormIsEnabled = false;
-    this.invoiceForm.disable();
-    this.invoiceData.emit(this.invoiceForm.value)
-  }
 
   updateCFDI(cfdi: string){
     this.cfdiSelected = cfdi;
   }
 
-  changeFlag(value: string){
-    this.invoiceForm.patchValue({
-      phoneCode: value
+
+
+  setAddressName(value: any){
+  console.log('address',value)
+    this.recieverForm.patchValue({
+      address: {
+        address: value
+      }
     });
+    this.address = value;
   }
 
-  changeCode(value: string){
-    this.invoiceForm.patchValue({
-      dialCode: value
-    });
-  }
-
-  changePhone(value: string){
-    this.invoiceForm.patchValue({
-      phoneNumber: value
-    });
-  }
-
-
+  setPlaceId(value: any){
+    console.log('placeId',value)
+      this.recieverForm.patchValue({
+        address: {
+          place_id: value
+        }
+      });
+    }
 
 }

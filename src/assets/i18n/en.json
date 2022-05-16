@@ -261,7 +261,7 @@
         "txt-pickup": "Pickup",
         "txt-dropoff": "Drop off",
         "txt-inovice": "Inovice",
-        "title-invoice": "Invoice Information",
+        "title-invoice": "Reciever Information",
         "placeholder-fullname": "Full Name",
         "placeholder-email": "Email",
         "placeholder-phonenumber": "Phone Number",
@@ -343,16 +343,16 @@
             "txt-agent-prices": "(USD prices)"
         },
         "stepper-btns":{
-            "continue-to-invoice": "Continue to invoice",
-            "continue-to-payment": "Continue to Payment",
+            "continue-to-reciever": "Continue to Reciever",
+            "continue-to-invoice": "Continue to Summary",
             "submit": "Submit"
         },
         "skip": "skip",
         "next": "next",
         "label-total-price": "Total price:",
         "summary": "Summary",
-        "invoice": "Invoice",
-        "payment": "Payment"
+        "invoice": "Reciever",
+        "emitter": "Emitter"
       },
       "profile": {
         "account": {
