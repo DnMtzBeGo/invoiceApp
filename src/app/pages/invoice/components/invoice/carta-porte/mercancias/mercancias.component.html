@@ -1,0 +1,57 @@
+<div class="mercancias-inputs" [formGroup]="mercanciasForm">
+  <mat-form-field appearance="outline" class="brand-field-1">
+    <mat-label>{{ "invoice.mercancias.peso-bruto" | translate }}</mat-label>
+    <input
+      matInput
+      name="peso_bruto_total"
+      type="number"
+      formControlName="peso_bruto_total"
+      [value]=""
+    />
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="brand-field-1 unidad-peso">
+    <mat-label>{{ "invoice.mercancias.unidad-peso" | translate }}</mat-label>
+    <input
+      formControlName="unidad_peso"
+      autocomplete="off"
+      type="search"
+      matInput
+      [matAutocomplete]="unidadPesoRef"
+    />
+    <mat-autocomplete
+      #unidadPesoRef="matAutocomplete"
+      [displayWith]="getUnidadPesoText.bind(this)"
+    >
+      <mat-option
+        *ngFor="let option of filteredUnidadPeso"
+        [value]="option.clave"
+      >
+        {{ option.clave }} - {{ option.nombre }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+<mat-divider></mat-divider>
+
+<div class="commodities">
+  <ng-container *ngFor="let commodity of commodities; let index = i">
+    <app-commodity
+      [commodityInfo]="commodity"
+      [dataCoin]="monedas"
+    ></app-commodity>
+  </ng-container>
+</div>
+
+<button mat-mini-fab color="primary" (click)="addPedimento()">
+  <mat-icon>add</mat-icon>
+</button>
+
+<button mat-mini-fab color="primary" (click)="removeData()">
+  <mat-icon>remove</mat-icon>
+</button>
+
+<div class="grid">
+  <button mat-button matStepperNext>
+    {{ "invoice.mercancias.siguiente" | translate }}
+  </button>
+</div>

@@ -341,7 +341,7 @@ export class TrackingComponent implements OnInit {
       });
     });
 
-    (await this.auth.apiRest(JSON.stringify(requestExternalTRacking), 'shippers/share_tracking')).subscribe(
+    (await this.auth.apiRest(JSON.stringify(requestExternalTRacking), 'carriers/share_tracking')).subscribe(
       (res) => {
         console.log("CON LA URL DE ENVÍO", res);
         this.alertService.create({

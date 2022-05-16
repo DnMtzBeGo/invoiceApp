@@ -1,0 +1,28 @@
+<div class="figura-container">
+  <button
+    class="add-figura-btn"
+    mat-mini-fab
+    color="primary"
+    aria-label="Add"
+    (click)="addFigura()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+  <div class="figuras-wrapper">
+    <div
+      class="figuras-subwrapper"
+      *ngFor="let figura of figuras; let i = index"
+    >
+      <div>
+        <span class="bubble">{{ i + 1 }}</span>
+        <span>
+          <mat-icon (click)="delete(i)">delete_forever</mat-icon>
+        </span>
+      </div>
+      <app-figura [figuraInfo]="figura"></app-figura>
+      <mat-divider *ngIf="i != figuras.length - 1"></mat-divider>
+    </div>
+  </div>
+  <!-- <button (click)="getFiguras()">Get Figuras</button>
+  <button (click)="isValid()">Get Validity</button> -->
+</div>

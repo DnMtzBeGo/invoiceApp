@@ -1,0 +1,218 @@
+<form [formGroup]="commodity">
+  <div class="grid">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.commodity.bienes-transportados" | translate
+      }}</mat-label>
+      <input
+        formControlName="bienesTransportados"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="bienesTransportadosRef"
+      />
+      <mat-autocomplete
+        #bienesTransportadosRef="matAutocomplete"
+        [displayWith]="getBienesTransportadosText.bind(this)"
+      >
+        <mat-option
+          *ngFor="let option of filteredBienesTransportados"
+          [value]="option.code"
+        >
+          {{ option.code }} - {{ option.description }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <!-- input es de tipo ferroviario -->
+    <!-- <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>Clave STCC (Opcional)</mat-label>
+      <input
+        matInput
+        name="claveSCTT"
+        formControlName="claveSCTT"
+        [value]=""
+      />
+    </mat-form-field> -->
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.clave-unidad" | translate }}</mat-label>
+      <input
+        formControlName="claveUnidad"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="claveUnidadRef"
+      />
+      <mat-autocomplete
+        #claveUnidadRef="matAutocomplete"
+        [displayWith]="getClaveUnidadText.bind(this)"
+      >
+        <mat-option
+          *ngFor="let option of filteredClaveUnidad"
+          [value]="option.clave"
+        >
+          {{ option.clave }} - {{ option.nombre }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.cantidad" | translate }}</mat-label>
+      <input
+        matInput
+        name="cantidad"
+        type="number"
+        formControlName="cantidad"
+        [value]=""
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.dimensiones" | translate }}</mat-label>
+      <input
+        matInput
+        name="dimensiones"
+        formControlName="dimensiones"
+        [value]=""
+      />
+      <mat-error>{{
+        "invoice.commodity.dimensiones-error" | translate
+      }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.peso" | translate }}</mat-label>
+      <input
+        matInput
+        name="peso"
+        type="number"
+        formControlName="peso"
+        [value]=""
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.commodity.valor-mercancia" | translate
+      }}</mat-label>
+      <input
+        matInput
+        name="valorMercancia"
+        type="number"
+        formControlName="valorMercancia"
+        [value]=""
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.moneda" | translate }}</mat-label>
+      <mat-select
+        formControlName="moneda"
+        class="disable-custom-format"
+        name="moneda"
+      >
+        <mat-option *ngFor="let option of dataCoin" [value]="option.clave">
+          {{ option.clave }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div>
+      <p>{{ "invoice.commodity.material-peligroso" | translate }}</p>
+      <mat-slide-toggle formControlName="materialPeligroso"></mat-slide-toggle>
+    </div>
+
+    <mat-form-field
+      *ngIf="commodity.value.materialPeligroso"
+      appearance="outline"
+      class="brand-field-1"
+    >
+      <mat-label>{{
+        "invoice.commodity.clave-material-peligroso" | translate
+      }}</mat-label>
+      <input
+        formControlName="claveMaterialPeligroso"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="claveMaterialPeligrosoRef"
+      />
+      <mat-autocomplete
+        #claveMaterialPeligrosoRef="matAutocomplete"
+        [displayWith]="getMaterialPeligrosoText.bind(this)"
+      >
+        <mat-option
+          *ngFor="let option of filteredMaterialPeligroso"
+          [value]="option.clave"
+        >
+          {{ option.clave }} - {{ option.descripcion }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field
+      *ngIf="commodity.value.materialPeligroso"
+      appearance="outline"
+      class="brand-field-1"
+    >
+      <mat-label
+        >{{ "invoice.commodity.embalaje" | translate }}
+        {{ commodity.value.embalaje }}</mat-label
+      >
+      <mat-select
+        formControlName="embalaje"
+        class="disable-custom-format"
+        name="embalaje"
+      >
+        <mat-option *ngFor="let option of embalaje" [value]="option.clave">
+          {{ option.clave }} - {{ option.descripcion }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <h6>{{ "invoice.commodity.pedimentos" | translate }}</h6>
+  <div class="grid">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.commodity.pedimento" | translate }}</mat-label>
+      <input
+        matInput
+        autocomplete="off"
+        (keyup.enter)="addPedimento($event)"
+        (keyup)="acceptOnlyNumbers($event)"
+      />
+    </mat-form-field>
+  </div>
+  <div class="grid">
+    <table
+      mat-table
+      [dataSource]="dataSourcePedimento"
+      class="cartaPorteTable"
+      *ngIf="dataSourcePedimento.length > 0"
+    >
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "invoice.commodity.table-pedimento" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.pedimento }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <button
+            type="button"
+            mat-icon-button
+            color="warn"
+            (click)="removeData(i)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        matRipple
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
+    </table>
+  </div>
+</form>
+<mat-divider></mat-divider>

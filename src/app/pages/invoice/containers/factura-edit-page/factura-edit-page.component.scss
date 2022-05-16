@@ -1,0 +1,347 @@
+.app-factura-edit-page {
+  // .page-header {
+  //   padding-top: 1.5rem;
+  // }
+
+  .page-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+
+    #form {
+      position: relative;
+      padding: 1rem 48px 0 56px;
+      background-color: #0a0f14;
+      z-index: 2;
+    }
+
+    #sidebar {
+      padding: 0 32px 0 0;
+      margin-left: -4px;
+
+      #menu {
+        position: sticky;
+        top: 3rem;
+        margin-top: 3rem;
+        list-style: none;
+
+        li {
+          font-family: "Avenir";
+          font-style: normal;
+          font-weight: 500;
+          font-size: 18px;
+
+          span {
+            display: inline-block;
+            padding: 4px 24px 4px 32px;
+            border-radius: 0;
+            color: #494c50;
+            cursor: pointer;
+            transition: padding 200ms linear, color 200ms linear;
+
+            &::first-letter {
+              text-transform: uppercase;
+            }
+          }
+
+          &.selected span {
+            padding: 14px 24px 14px 28px;
+            margin: 8px 0;
+            font-weight: 600;
+            font-size: 20px;
+            color: #ededed;
+            background: linear-gradient(270deg, #090d12 5.77%, #0a0f14 100%);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.7),
+              inset 0px -4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 6px #1c232a;
+            border-radius: 0 99px 99px 0;
+          }
+        }
+      }
+
+      .actions {
+        position: fixed;
+        bottom: 0;
+        width: 380px;
+        padding: 0 32px 32px 32px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+
+        .mat-flat-button {
+          width: 100%;
+        }
+      }
+    }
+
+    section {
+      margin-bottom: 2rem;
+
+      > h6 {
+        font-family: "Avenir";
+        font-style: normal;
+        font-size: 20px;
+        color: #ededed;
+      }
+
+      > div {
+        padding-top: 1.5rem;
+
+        > div {
+          label {
+            display: block;
+            margin-bottom: 4px;
+            color: rgba(0, 0, 0, 0.6);
+          }
+        }
+      }
+
+      > div[readonly="true"] {
+        box-shadow: unset;
+      }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem 2rem;
+    }
+
+    .grid-fill {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem 2rem;
+    }
+
+    .grid-concepto {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem 2rem;
+    }
+
+    .grid-2-2-1 {
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr;
+      gap: 1rem 2rem;
+    }
+
+    // .mat-form-field-wrapper {
+    //   padding-bottom: 0;
+    // }
+
+    mat-form-field {
+      .textarea {
+        .mat-form-field-wrapper {
+          padding-bottom: unset;
+        }
+      }
+
+      // .mat-form-field-wrapper {
+      //   padding-bottom: 0;
+      // }
+
+      mat-progress-bar {
+        bottom: 0px;
+        position: absolute;
+        width: calc(100% + 16px);
+        height: 2px;
+        left: -9px;
+      }
+    }
+
+    #concepto-calc {
+      margin-bottom: 20px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      grid-column: span 2;
+      gap: 2rem;
+      border: 1px solid #1c232a;
+      border-radius: 8px;
+      background: linear-gradient(
+        32.19deg,
+        rgba(24, 28, 32, 0.59) 15.17%,
+        rgba(13, 16, 19, 0.35) 56.6%
+      );
+
+      > div {
+        text-align: right;
+        font-weight: 500;
+        font-family: "Avenir";
+        font-style: normal;
+
+        > div:nth-child(1) {
+          span:nth-child(1) {
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #ededed;
+          }
+
+          span:nth-child(2) {
+            font-size: 15px;
+            color: #70757b;
+          }
+        }
+
+        .label {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          font-size: 12px;
+          color: #c1c7d0;
+          text-transform: uppercase;
+        }
+      }
+
+      .separator {
+        width: 1px;
+        height: 100%;
+        background: linear-gradient(
+          0deg,
+          rgba(80, 80, 80, 1) 0%,
+          rgba(52, 57, 63, 0.15) 100%
+        );
+      }
+    }
+
+    // .mat-form-field .mat-input-element {
+    //   color: initial;
+    // }
+  }
+
+  mat-form-field[readonly="true"] {
+    pointer-events: none;
+
+    .mat-form-field-outline {
+      display: none;
+    }
+
+    .mat-select .mat-select-arrow {
+      visibility: hidden;
+    }
+  }
+
+  .impuestos-table,
+  .facturas-table {
+    width: 100%;
+
+    th {
+      font-weight: 500;
+      text-align: left;
+
+      &.center {
+        text-align: center;
+      }
+
+      &.right {
+        text-align: right;
+      }
+    }
+
+    td {
+      padding: 3px 0;
+      text-align: left;
+
+      &.center {
+        text-align: center;
+      }
+
+      &.right {
+        text-align: right;
+      }
+    }
+  }
+
+  .impuestos-table {
+    thead th {
+      font-family: "Avenir";
+      font-style: normal;
+      font-weight: 800;
+      font-size: 15px;
+      line-height: 20px;
+      color: #5c5f64;
+    }
+
+    tbody td {
+      font-size: 15px;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+      color: #ededed;
+    }
+  }
+
+  .facturas-table {
+    thead th {
+      font-family: "Avenir";
+      font-style: normal;
+      font-weight: 800;
+      font-size: 14px;
+      line-height: 19px;
+      color: #ffffff;
+    }
+
+    tbody td {
+      font-family: "Avenir";
+      font-style: normal;
+      font-weight: 300;
+      font-size: 14px;
+      color: #ededed;
+    }
+  }
+
+  .factura-help-icon {
+    .mat-icon {
+      font-size: 17px;
+      color: #c5ccd0;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      cursor: pointer;
+    }
+  }
+
+  .mat-form-field {
+    .factura-help-icon {
+      display: none;
+      position: absolute;
+      right: -5px;
+      top: -4px;
+    }
+
+    &:hover,
+    &.mat-focused {
+      .factura-help-icon {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.mat-option.brand-option-serie {
+  .mat-option-text {
+    display: inline-flex;
+    align-items: center;
+
+    > img {
+      display: block;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    > div {
+      margin-left: 8px;
+      color: #ededed;
+
+      span {
+        // color: 0.4;
+      }
+    }
+  }
+}

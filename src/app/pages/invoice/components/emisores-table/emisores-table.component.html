@@ -1,0 +1,195 @@
+<mat-card class="factura-table-wrapper">
+  <mat-card-content class="factura-table__content">
+    <!-- <mat-progress-bar
+      [style.display]="loading ? 'block' : 'none'"
+      style="position: absolute; top: 54px; height: 2px"
+      mode="indeterminate"
+    ></mat-progress-bar> -->
+
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="brand-table-1"
+      matSort
+      matSortStart="desc"
+    >
+      <!-- RFC Padre -->
+      <ng-container matColumnDef="rfcPadre">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="factura-table__table-header"
+          mat-sort-header
+        >
+          {{ "invoice.emisor-table.rfc-empresa" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="factura-table__table-body"
+        >
+          {{ element.parent }}
+        </td>
+      </ng-container>
+
+      <!-- Emisor -->
+      <ng-container matColumnDef="emisor">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="factura-table__table-header"
+          mat-sort-header
+        >
+          {{ "invoice.emisor-table.rfc-emisor" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="factura-table__table-body"
+        >
+          {{ element.rfc }}
+        </td>
+      </ng-container>
+
+      <!-- Nombre de la Empresa -->
+      <ng-container matColumnDef="nombre">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="factura-table__table-header"
+          mat-sort-header
+        >
+          {{ "invoice.emisor-table.razon-social" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="factura-table__table-body"
+        >
+          {{ element.nombre }}
+        </td>
+      </ng-container>
+
+      <!-- Regimen Fiscal -->
+      <ng-container matColumnDef="regimenFiscal">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="factura-table__table-header"
+          mat-sort-header
+        >
+          {{ "invoice.emisor-table.regimen" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="factura-table__table-body"
+        >
+          {{ element.regimen_fiscal }}
+        </td>
+      </ng-container>
+
+      <!-- Correo de Notificación -->
+      <ng-container matColumnDef="email">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="factura-table__table-header"
+          mat-sort-header
+        >
+          {{ "invoice.emisor-table.correo-notificacion" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="factura-table__table-body"
+        >
+          {{ element.email }}
+        </td>
+      </ng-container>
+
+      <!-- Puede Timbrar -->
+      <ng-container matColumnDef="validado">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="factura-table__table-header center"
+          mat-sort-header
+        >
+          {{ "invoice.emisor-table.validacion" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="factura-table__table-body"
+        >
+          <span *ngIf="element.puede_timbrar"
+            ><mat-icon class="verified">verified</mat-icon></span
+          >
+          <span *ngIf="!element.puede_timbrar"
+            ><mat-icon class="unverified">cancel</mat-icon></span
+          >
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 50px"
+        ></th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger>
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" class="brand-menu-1">
+            <button mat-menu-item (click)="editEmisor(element)">
+              <mat-icon>edit</mat-icon>
+              <span>{{ "invoice.emisor-table.edit-emisor" | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="getSeries(element._id)">
+              <mat-icon>pin</mat-icon>
+              <span>{{ "invoice.emisor-table.view-series" | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="deleteEmisor(element._id)">
+              <mat-icon>delete</mat-icon>
+              <span>{{
+                "invoice.emisor-table.delete-emisor" | translate
+              }}</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+
+  <!-- <div class="factura-table__paginator">
+    <div>
+      <mat-label>Table size</mat-label>
+      <mat-form-field>
+        <mat-select
+          [(value)]="page.pageSize"
+          (selectionChange)="pageChangeEmiter()"
+        >
+          <mat-option
+            [value]="sizeOption"
+            *ngFor="let sizeOption of sizeOptions"
+            >{{ sizeOption }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <pagination-controls
+      id="active"
+      (pageChange)="pagination($event)"
+    ></pagination-controls>
+  </div> -->
+</mat-card>

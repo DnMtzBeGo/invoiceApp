@@ -1,0 +1,340 @@
+import { addObjectKeys } from "../../../../shared/utils/object";
+
+const add = (x, y) => x + y;
+
+const isaN = (n) => !isNaN(n);
+
+export const validRFC = (rfc) =>
+  rfc != void 0 && rfc.length >= 12 && rfc.length <= 13;
+
+const isRetencion = (impuesto) =>
+  impuesto.retencion === true ||
+  impuesto.es_retencion === true ||
+  impuesto.es_retencion === "true";
+
+export const getImpuestoDescripcion = (impuesto) => {
+  if (impuesto.descripcion) return impuesto.descripcion;
+
+  const tipo = isRetencion(impuesto) ? "Retención" : "Traslado";
+  let factor = impuesto.tipo_factor || impuesto.factor || "";
+  factor = factor === "Tasa" || factor === "" ? [] : [`(${factor})`];
+
+  return [tipo, "IVA"].concat(factor).join(" ");
+};
+
+export const calcImporte = (concepto) => {
+  const cantidad = !isNaN(concepto.cantidad) ? Number(concepto.cantidad) : 0;
+  const valor_unitario = !isNaN(concepto.valor_unitario)
+    ? Number(concepto.valor_unitario)
+    : 0;
+
+  return cantidad * valor_unitario;
+};
+
+export const calcImpuesto = (subtotal) => (impuesto) => {
+  const tasa_cuota = !isNaN(impuesto.tasa_cuota)
+    ? Number(impuesto.tasa_cuota)
+    : 0;
+
+  return subtotal * tasa_cuota * (isRetencion(impuesto) ? -1 : 1);
+};
+
+export const calcConceptoSubtotal = (concepto) => {
+  const importe = calcImporte(concepto);
+  const descuento = !isNaN(concepto.descuento) ? Number(concepto.descuento) : 0;
+  const subtotal = importe - descuento;
+
+  return subtotal;
+};
+
+export const calcConcepto = (concepto) => {
+  const subtotal = calcConceptoSubtotal(concepto);
+  const impuestos = (concepto.impuestos || [])
+    .map(calcImpuesto(subtotal))
+    .reduce(add, 0);
+  const total = subtotal + impuestos;
+
+  return total;
+};
+
+export const calcSubtotal = (conceptos) =>
+  conceptos.map(calcImporte).reduce(add, 0);
+
+export const calcDescuentos = (conceptos) =>
+  conceptos
+    .map((concepto) => concepto.descuento)
+    .filter(isaN)
+    .map(Number)
+    .reduce(add, 0);
+
+export const calcTotal = (conceptos) =>
+  conceptos.map(calcConcepto).reduce(add, 0);
+
+export const resolveImpuestoLabel = (impuestos, key, impuesto) => {
+  const label =
+    impuesto[key] ||
+    (impuestos || []).find(
+      (impuesto_) =>
+        getImpuestoDescripcion(impuesto_) === getImpuestoDescripcion(impuesto)
+    )?.[key] ||
+    "";
+
+  const tasa_cuota = !isNaN(impuesto.tasa_cuota)
+    ? `${Number(impuesto.tasa_cuota * 100)}%`
+    : "";
+
+  return label.replace(":tasa_cuota", tasa_cuota);
+};
+
+export const resolveImpuesto = (concepto, impuesto) => {
+  const subtotal = calcConceptoSubtotal(concepto);
+  const calc = calcImpuesto(subtotal)(impuesto);
+
+  return isNaN(impuesto.tasa_cuota)
+    ? ""
+    : isRetencion(impuesto)
+    ? `($${Math.abs(calc).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })})`
+    : `$${calc.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`;
+};
+
+export const resolveImpuestosGroup = (impuestos, key, conceptos) => {
+  const allImpuestos = conceptos.flatMap((concepto) =>
+    (concepto.impuestos || [])
+      .filter((impuesto) => resolveImpuestoLabel(impuestos, key, impuesto))
+      .map((impuesto) => {
+        const label = resolveImpuestoLabel(impuestos, key, impuesto);
+
+        return [
+          {
+            [label]: Math.abs(
+              calcImpuesto(calcConceptoSubtotal(concepto))(impuesto)
+            ),
+          },
+          { [label]: isRetencion(impuesto) },
+        ];
+      })
+  );
+
+  const impuestosGroupImpositivo = allImpuestos
+    .map((result) => result[1])
+    .reduce((o1, o2) => Object.assign(o1, o2), {});
+
+  const impuestosGroup = allImpuestos
+    .map((result) => result[0])
+    .reduce(addObjectKeys, {});
+
+  return Object.entries(impuestosGroup).map(([label, impuesto]) => ({
+    label,
+    impuesto,
+    retencion: impuestosGroupImpositivo[label],
+  }));
+};
+
+export const fromFactura = (factura) => {
+  const rfc = factura.receptor?.rfc?.toUpperCase() ?? "";
+  const nombre = factura.receptor?.nombre;
+  const usoCFDI = factura.receptor?.uso_cfdi;
+  const direccion = factura.receptor?.direccion ?? {};
+  const emisor = factura.emisor ?? {};
+  const lugar_de_expedicion = factura.lugar_de_expedicion ?? {};
+  const conceptos = factura.conceptos ?? [];
+  const documentos_relacionados = factura.documentos_relacionados ?? [];
+
+  const newFactura = {
+    rfc,
+    nombre,
+    usoCFDI,
+    direccion,
+    emisor,
+    lugar_de_expedicion,
+    conceptos,
+    documentos_relacionados,
+    ...factura,
+  };
+
+  delete newFactura.receptor;
+
+  return newFactura;
+};
+
+export const toFactura = (factura: any) => {
+  const receptor = {
+    rfc: factura.rfc,
+    nombre: factura.nombre,
+    uso_cfdi: factura.usoCFDI,
+    direccion: { ...(factura.direccion || {}) },
+  };
+
+  const conceptos = (factura.conceptos || []).map((concepto) => ({
+    ...concepto,
+    impuestos: (concepto.impuestos || []).map((impuesto) => {
+      return {
+        ...impuesto,
+        cve_sat: impuesto.clave ?? impuesto.cve_sat,
+        es_retencion: impuesto.retencion ?? impuesto.es_retencion,
+        tipo_factor: impuesto.factor ?? impuesto.tipo_factor,
+      };
+    }),
+  }));
+
+  const newFactura = {
+    ...factura,
+    receptor,
+    conceptos,
+    fecha_emision: new Date().toString(),
+  };
+
+  delete newFactura.rfc;
+  delete newFactura.nombre;
+  delete newFactura.usoCFDI;
+  delete newFactura.direccion;
+
+  return newFactura;
+};
+
+export const fromFacturaCopy = (factura) => {
+  delete factura._id;
+  delete factura.status;
+  delete factura.updated_at;
+  delete factura.canceled;
+  delete factura.error;
+  delete factura.source;
+  delete factura.stamped;
+  delete factura.exportacion;
+  delete factura.fecha_emision;
+  return factura;
+};
+
+export const facturaPermissions = (factura) => {
+  const edit = !factura?.status || [1, 9].includes(factura.status);
+
+  return {
+    edit,
+    readonly: !edit,
+    vistaprevia: !factura?.status || [1, 9].includes(factura.status),
+    pdf: factura?.status && [3, 4, 5].includes(factura.status),
+    xml: factura?.status && [3, 4, 5].includes(factura.status),
+    pdf_cancelado: factura?.status && [6, 7, 8].includes(factura.status),
+    xml_acuse: factura?.status && [6, 7, 8].includes(factura.status),
+    enviar_correo: factura?.status && [3, 4, 5].includes(factura.status),
+    duplicar:
+      factura?.status && [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(factura.status),
+    cancelar: factura?.status && [3].includes(factura.status),
+    eliminar: factura?.status && [1, 9].includes(factura.status),
+    cartaporte:
+      factura?.tipo_de_comprobante &&
+      ["I", "T"].includes(factura.tipo_de_comprobante),
+  };
+};
+
+export const makeReceptorTemplate = (user) => {
+  return encodeURIComponent(
+    JSON.stringify({
+      receptor: {
+        rfc: user?.rfc,
+        nombre: user?.company,
+        uso_cfdi: user?.cfdi,
+      },
+    })
+  );
+};
+
+export const makeEmisorTemplate = (user) => {
+  return encodeURIComponent(
+    JSON.stringify({
+      emisor: {
+        rfc: user?.rfc,
+        nombre: user?.company,
+      },
+    })
+  );
+};
+
+export const previewFactura = (factura) => {
+  return {
+    ...factura,
+    subtotal: calcSubtotal(factura.conceptos),
+    total: calcTotal(factura.conceptos),
+    conceptos: (factura.conceptos || []).map((concepto) => {
+      const subtotal = calcConceptoSubtotal(concepto);
+      return {
+        ...concepto,
+        importe: calcImporte(concepto),
+        total: calcConcepto(concepto),
+        impuestos: (concepto.impuestos || []).map((impuesto) => {
+          return {
+            ...impuesto,
+            total: calcImpuesto(subtotal)(impuesto),
+          };
+        }),
+      };
+    }),
+    fecha_emision: new Date().toISOString(),
+  };
+};
+
+const empty = () => "";
+export const validators = {
+  valor_unitario: (control, value) => {
+    const validations = [
+      (v) => !Boolean(String(v ?? "")) && "Campo numérico requerido",
+      (v) => +v < 0 && "Valor mínimo requerido de 0",
+    ];
+
+    return control.dirty || control.touched
+      ? (validations.find((f) => f(value)) || empty)(value)
+      : "";
+  },
+  cantidad: (control, value) => {
+    const validations = [
+      (v) => !Boolean(String(v ?? "")) && "Campo numérico requerido",
+      (v) => +v < 0 && "Valor mínimo requerido de 0",
+    ];
+
+    return control.dirty || control.touched
+      ? (validations.find((f) => f(value)) || empty)(value)
+      : "";
+  },
+  descuento: (control, value, concepto?) => {
+    const validations = [
+      (v) => isNaN(v ?? undefined) && "Campo numérico requerido",
+      (v) => +v < 0 && "Valor mínimo requerido de 0",
+      (v) =>
+        +v > calcImporte(concepto) &&
+        "El descuento no puede superar el importe",
+    ];
+
+    return (control.dirty || control.touched) && value != null
+      ? (validations.find((f) => f(value)) || empty)(value)
+      : "";
+  },
+};
+
+export const facturaStatus = (key, status?) => {
+  const defaults = {
+    color: "#ededed",
+  };
+
+  const map = {
+    [9]: { color: "#fa3c00" },
+  };
+
+  return map[status]?.[key] ?? defaults?.[key];
+};
+
+export const groupStatus = (list) => {
+  const map = new Map();
+
+  list.forEach((item) => {
+    const group = item.nombre.split(" ").shift();
+    map.set(group, (map.get(group) ?? []).concat(item));
+  });
+
+  return Array.from(map.values());
+};

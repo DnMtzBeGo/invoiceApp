@@ -1,0 +1,144 @@
+<form [formGroup]="ubicacionesForm">
+  <div class="grid">
+    <!-- Número de estación y nombre de la estación no van cuando se trata de autotransporte -->
+    <!-- <mat-form-field appearance="outline" class="brand-field-1">
+    <mat-label>* Tipo Estación</mat-label>
+    <mat-select
+      placeholder="Seleciona una opción"
+      formControlName="tipoEstacion"
+      class="disable-custom-format"
+      name="Tipo Estación"
+    >
+      <mat-option *ngFor="let option of tipoEstacionOptions" [value]="option">
+       {{ option.clave}} - {{ option.descripcion }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field> -->
+  </div>
+
+  <h6>{{ "invoice.ubicacion.origen-destino" | translate }}</h6>
+  <div class="grid">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.ubicacion.tipo" | translate }}</mat-label>
+      <mat-select
+        formControlName="tipo_ubicacion"
+        class="disable-custom-format"
+        [attr.name]="'invoice.ubicacion.tipo' | translate"
+      >
+        <mat-option *ngFor="let option of tipoUbicacion" [value]="option.clave">
+          {{ option.clave }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <input
+        matInput
+        [ngxMatDatetimePicker]="picker"
+        [placeholder]="'invoice.ubicacion.choose-a-date' | translate"
+        formControlName="fecha_hora_salida_llegada"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker
+        #picker
+        [showSpinners]="true"
+        [showSeconds]="true"
+        color="primary"
+        [enableMeridian]="true"
+        [disableMinute]="false"
+        [hideTime]="false"
+      >
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.ubicacion.id-ubicacion" | translate }}</mat-label>
+      <input matInput formControlName="id_ubicacion" name="ID Ubicación" />
+      <mat-error>{{
+        "invoice.ubicacion.id-ubicacion-error" | translate
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.ubicacion.nombre-destinatario" | translate
+      }}</mat-label>
+      <input
+        matInput
+        formControlName="nombre_remitente_destinatario"
+        name="Nombre"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.ubicacion.rfc" | translate }}</mat-label>
+      <input matInput formControlName="rfc_remitente_destinatario" name="RFC" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.ubicacion.residencia-fiscal" | translate
+      }}</mat-label>
+      <mat-select
+        formControlName="residencia_fiscal"
+        class="disable-custom-format"
+        name="Residencia Fiscal"
+      >
+        <mat-option
+          *ngFor="let option of residenciaFiscal"
+          [value]="option.code"
+        >
+          {{ option.code }} - {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.ubicacion.reg-tributario" | translate
+      }}</mat-label>
+      <input
+        matInput
+        formControlName="num_reg_id_trib"
+        name="Registro Tributario"
+      />
+    </mat-form-field>
+    <mat-form-field
+      *ngIf="ubicacionesForm.value.tipo_ubicacion == 'Destino'"
+      appearance="outline"
+      class="brand-field-1"
+    >
+      <mat-label>{{
+        "invoice.ubicacion.distancia-recorrida" | translate
+      }}</mat-label>
+      <!-- placeholder="Distancia en km" -->
+      <input
+        matInput
+        formControlName="distancia_recorrida"
+        name="Distancia Recorrida"
+        type="number"
+      />
+    </mat-form-field>
+  </div>
+</form>
+
+<!-- Número de estación y nombre de la estación no van cuando se trata de autotransporte -->
+<!-- <mat-form-field appearance="outline" class="brand-field-1">
+    <mat-label>Número de Estación (Opcional)</mat-label>
+    <input
+      matInput
+      formControlName="numeroEstacion"
+      name="Número de Estación"
+      placeholder="0"
+    />
+  </mat-form-field> -->
+<!-- <mat-form-field appearance="outline" class="brand-field-1">
+    <mat-label>Nombre de Estación (Opcional)</mat-label>
+    <input
+      matInput
+      formControlName="nombreEstacion"
+      name="Nombre de Estación"
+      placeholder="0"
+    />
+  </mat-form-field> -->
+<app-location
+  [locationInfo]="locationInfo.domicilio"
+  (locationInfoChanges)="catchLocationInfoChanges($event)"
+></app-location>

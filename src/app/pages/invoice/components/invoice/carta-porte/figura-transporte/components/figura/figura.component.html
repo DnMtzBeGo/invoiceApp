@@ -1,0 +1,145 @@
+<form [formGroup]="figuraTransporteForm" autocomplete="off">
+  <h6>{{ "invoice.figura.figura-transporte" | translate }}</h6>
+  <div class="grid">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.tipo-figura" | translate }}</mat-label>
+      <mat-select
+        class="disable-custom-format"
+        name="tipo_figura"
+        formControlName="tipo_figura"
+      >
+        <mat-option
+          *ngFor="let option of tiposDeTransporte"
+          [value]="option.clave"
+        >
+          {{ option.descripcion }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.rfc-figura" | translate }}</mat-label>
+      <input
+        matInput
+        name="rfc_figura"
+        formControlName="rfc_figura"
+        [value]=""
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.figura.residencia-figura" | translate
+      }}</mat-label>
+      <mat-select
+        class="disable-custom-format"
+        formControlName="residencia_fiscal_figura"
+        name="País"
+      >
+        <mat-option *ngFor="let option of paisCatalogue" [value]="option.code">
+          {{ option.code }} - {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.figura.registro-trib-figura" | translate
+      }}</mat-label>
+      <input
+        matInput
+        name="num_reg_id_trib_figura"
+        formControlName="num_reg_id_trib_figura"
+        [value]=""
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.nombre-figura" | translate }}</mat-label>
+      <input
+        matInput
+        name="nombre_figura"
+        formControlName="nombre_figura"
+        [value]=""
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.num-licencia" | translate }}</mat-label>
+      <input
+        matInput
+        name="num_licencia"
+        formControlName="num_licencia"
+        [value]=""
+      />
+    </mat-form-field>
+  </div>
+  <h6>{{ "invoice.figura.partes-transporte" | translate }}</h6>
+  <div class="grid">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.figura.parte-transporte" | translate }}</mat-label>
+      <input
+        formControlName="partes_transporte"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="parte_transporteCatalogueRef"
+      />
+      <mat-autocomplete
+        #parte_transporteCatalogueRef="matAutocomplete"
+        [displayWith]="getAutoCompleteText"
+        (optionSelected)="
+          addParteTransporte(
+            figuraTransporteForm.get('partes_transporte').value
+          )
+        "
+      >
+        <mat-option
+          *ngFor="let option of filteredParteTransporte"
+          [value]="option"
+        >
+          {{ option.clave }} - {{ option.descripcion }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <!-- <button mat-icon-button color="primary" aria-label="Add" (click)="$event.preventDefault(); addparte_transporte(figuraTransporteForm.get('parte_transporte').value)">
+      <mat-icon>add</mat-icon>
+    </button> -->
+  </div>
+
+  <div class="grid">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="cartaPorteTable"
+      *ngIf="dataSource?.length > 0"
+    >
+      <ng-container matColumnDef="value">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ "invoice.figura.table-parte-transporte" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.clave }} – {{ element.descripcion }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <button mat-icon-button color="warn" (click)="removeData(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        matRipple
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
+    </table>
+  </div>
+</form>
+
+<app-location
+  [locationInfo]="figuraInfo.domicilio"
+  (locationInfoChanges)="catchLocationInfoChanges($event)"
+></app-location>
+<!-- <button (click)="formChanged()">Status Check</button> -->

@@ -627,6 +627,7 @@
         "home":"Home",
         "drafts":"  Drafts",
         "history":"History",
+        "invoice":"Invoice",
         "support":"Support",
         "faq":"FAQs",
         "terms-conditions":"T & C",
@@ -637,6 +638,55 @@
             "title": "Error code: timeout",
             "body": "Please try again later",
             "ok": "ok"
+        }
+    },
+    "invoice": {
+        "invoices": {
+            "filters": "Filters",
+            "emisor-btn": "Emisores",
+            "new-invoice": "New Invoice",
+            "template-placeholder": "Search Template",
+            "template-open": "Open Template",
+            "template-new": "New Template"
+        },
+        "invoice-table": {
+            "emision": "Emisión",
+            "emisor": "Emisor",
+            "receptor": "Receptor",
+            "serie": "Serie",
+            "tipo": "Tipo",
+            "status": "Status",
+            "subtotal": "Subtotal",
+            "total": "Total",
+            "items-per-page": "Items per Page",
+            "showing": "Showing",
+            "of": "of",
+            "prev": "prev",
+            "next": "next",
+            "edit-invoice": "Edit Invoice",
+            "view-details": "View details",
+            "carta-porte": "Carta Porte",
+            "duplicate": "Duplicate",
+            "preview": "Preview",
+            "download-pdf": "Download PDF",
+            "download-xml": "Download XML",
+            "download-acuse": "Download Acuse",
+            "send-by-email": "Send by Email",
+            "cancel-invoice": "Cancel Invoice",
+            "delete-invoice": "Delete Invoice"
+        },
+        "filters": {
+            "apply": "Aplicar",
+            "fechas": "Dates",
+            "inicio": "Start",
+            "final": "End",
+            "emisor": "Emisor",
+            "emisor-placeholder": "Search by Name or RFC",
+            "receptor": "Receptor",
+            "receptor-placeholder": "Buscar por Nombre o RFC",
+            "tipo-comprobante": "Tipo de Comprobante",
+            "tipo-comprobante-placeholder": "All",
+            "uuid-placeholder": "Search by UUID"
         }
     }
 }
