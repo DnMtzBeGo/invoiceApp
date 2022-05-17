@@ -42,11 +42,8 @@ import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, oof, simpleFilters } from "src/app/shared/utils/operators.rx";
 import { object_compare, clone } from "src/app/shared/utils/object";
 import { makeRequestStream } from "src/app/shared/utils/http.rx";
-// import {
-//   ApiRestService,
-//   NotificationsService,
-// } from "../../../../../core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { Paginator } from "../../models";
 import {
   getImpuestoDescripcion,
@@ -161,7 +158,7 @@ export class FacturaEmisorConceptosComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public config: Config,
     private dialogRef: MatDialogRef<FacturaEmisorConceptosComponent>,
-    // private notificationsService: NotificationsService,
+    private notificationsService: NotificationsService,
     private apiRestService: AuthService,
     private router: Router,
     private translateService: TranslateService
@@ -273,7 +270,7 @@ export class FacturaEmisorConceptosComponent implements OnInit {
         }
       },
       afterError: (error) => {
-        // this.notificationsService.showErrorToastr(this.showError(error));
+        this.notificationsService.showErrorToastr(this.showError(error));
       },
     });
 
@@ -372,7 +369,7 @@ export class FacturaEmisorConceptosComponent implements OnInit {
         this.conceptoEmitter.next(["refresh", ""]);
       },
       afterError: (error) => {
-        // this.notificationsService.showErrorToastr(this.showError(error));
+        this.notificationsService.showErrorToastr(this.showError(error));
       },
     });
 

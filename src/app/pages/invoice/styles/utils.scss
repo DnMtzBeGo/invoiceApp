@@ -314,6 +314,16 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 }
 
+snack-bar-container.brand-snackbar-1 {
+  background: linear-gradient(180deg, #080f15 0%, #171d23 100%);
+  border: 3px solid #10161c;
+  box-shadow: inset 3px 3px 8px 3px #111416;
+
+  .mat-simple-snackbar span {
+    color: #ffbe00;
+  }
+}
+
 // Utils
 
 .radius-s {

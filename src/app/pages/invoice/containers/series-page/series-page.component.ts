@@ -5,7 +5,7 @@ import {
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
 import { AuthService } from "src/app/shared/services/auth.service";
-// import { ApiRestService, NotificationsService } from "src/app/core/services";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { SeriesNewComponent } from "../../components/series-new/series-new.component";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -21,7 +21,7 @@ export class SeriesPageComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    // private notificationsService: NotificationsService,
+    private notificationsService: NotificationsService,
     public apiRestService: AuthService,
     private router: Router,
     private route: ActivatedRoute
@@ -43,7 +43,7 @@ export class SeriesPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.message != "") {
-        // this.notificationsService.showSuccessToastr(result.message);
+        this.notificationsService.showSuccessToastr(result.message);
         this.getSeries();
       }
     });

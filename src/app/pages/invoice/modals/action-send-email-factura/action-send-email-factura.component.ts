@@ -8,12 +8,8 @@ import { mergeAll, pluck, catchError } from "rxjs/operators";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, oof } from "src/app/shared/utils/operators.rx";
 import { makeRequestStream } from "src/app/shared/utils/http.rx";
-
-// import {
-//   ApiRestService,
-//   NotificationsService,
-// } from "../../../../../core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { routes } from "../../consts";
 
 @Component({
@@ -47,7 +43,7 @@ export class ActionSendEmailFacturaComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private dialogRef: MatDialogRef<ActionSendEmailFacturaComponent>,
-    // private notificationsService: NotificationsService,
+    private notificationsService: NotificationsService,
     private apiRestService: AuthService,
     private router: Router,
     private translateService: TranslateService
@@ -79,7 +75,7 @@ export class ActionSendEmailFacturaComponent implements OnInit {
         this.data.afterSuccessDelay?.();
       },
       afterError: (error) => {
-        // this.notificationsService.showErrorToastr(this.showError(error));
+        this.notificationsService.showErrorToastr(this.showError(error));
       },
     });
 

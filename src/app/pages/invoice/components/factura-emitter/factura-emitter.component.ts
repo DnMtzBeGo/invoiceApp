@@ -1,8 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from "@angular/core";
-// import {
-//   ApiRestService,
-//   NotificationsService,
-// } from "../../../../core/services";
+import { TranslateService } from "@ngx-translate/core";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { cloneObject } from "src/app/shared/utils/clone-format";
 import { EmitterAttributesInterface } from "../../models/invoice/emisores";
@@ -63,6 +60,7 @@ export class FacturaEmitterComponent implements OnInit {
 
   constructor(
     private apiRestService: AuthService,
+    private translateService: TranslateService,
     public dialogRef: MatDialogRef<FacturaEmitterComponent>,
     @Inject(MAT_DIALOG_DATA) public editData: EmitterAttributesInterface,
     private catalogListService: CataloguesListService
@@ -120,7 +118,9 @@ export class FacturaEmitterComponent implements OnInit {
       (res) => {
         this.dialogRef.close({
           success: true,
-          message: "Emisor guardado",
+          message: this.translateService.instant(
+            "invoice.emisor-edit.save-success"
+          ),
         });
       },
       (err) => {

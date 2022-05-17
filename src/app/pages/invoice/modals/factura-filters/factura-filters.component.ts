@@ -12,12 +12,7 @@ import { mergeAll, pluck, catchError, tap } from "rxjs/operators";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, oof } from "src/app/shared/utils/operators.rx";
 import { makeRequestStream } from "src/app/shared/utils/http.rx";
-// import {
-// ApiRestService,
-// NotificationsService,
-// } from "../../../../../core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
-import { routes } from "../../consts";
 import { groupStatus } from "../../containers/factura-edit-page/factura.core";
 
 const parseNumbers = (str?: string) => {
@@ -34,8 +29,6 @@ const parseNumbers = (str?: string) => {
   encapsulation: ViewEncapsulation.None,
 })
 export class FacturaFiltersComponent implements OnInit {
-  public routes: typeof routes = routes;
-
   $rx = reactiveComponent(this);
 
   vm: {
@@ -55,17 +48,11 @@ export class FacturaFiltersComponent implements OnInit {
       tipo_de_comprobante?: string;
       status?: string;
     };
-    formLoading?: boolean;
-    formError?: any;
-    formSuccess?: any;
   };
-
-  formEmitter = new Subject<["submit", unknown]>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private dialogRef: MatDialogRef<FacturaFiltersComponent>,
-    // private notificationsService: NotificationsService,
     private apiRestService: AuthService,
     public router: Router,
     public route: ActivatedRoute
@@ -86,42 +73,13 @@ export class FacturaFiltersComponent implements OnInit {
     //PARAMS
     const params$ = oof(this.data.params);
 
-    //FORM SUBMIT
-    const {
-      loading$: formLoading$,
-      error$: formError$,
-      success$: formSuccess$,
-    } = makeRequestStream({
-      fetch$: this.formEmitter.pipe(ofType("submit")),
-      fetch: this.submitForm,
-      afterSuccessDelay: () => {
-        this.dialogRef.close();
-        this.data.afterSuccessDelay?.();
-      },
-      afterError: (error) => {
-        // this.notificationsService.showErrorToastr(this.showError(error));
-      },
-    });
-
     this.vm = this.$rx.connect({
       form: form$,
       tiposComprobante: tiposComprobante$,
       facturaStatus: facturaStatus$,
       params: params$,
-      formLoading: formLoading$,
-      formError: formError$,
-      formSuccess: formSuccess$,
     });
   }
-
-  //API call
-  submitForm = (form) => {
-    return from(
-      this.apiRestService.apiRest(JSON.stringify(form), "invoice/cancel", {
-        loader: "false",
-      })
-    ).pipe(mergeAll());
-  };
 
   //METHODS
   apply() {

@@ -75,6 +75,9 @@ import { SeriesTableComponent } from "./components/series-table/series-table.com
 import { SeriesNewComponent } from "./components/series-new/series-new.component";
 import { LocationComponent } from "./components/location/location.component";
 
+// Services
+import { NotificationsService } from "src/app/shared/services/notifications.service";
+
 @NgModule({
   declarations: [
     // OrdersPageComponent,
@@ -154,6 +157,9 @@ import { LocationComponent } from "./components/location/location.component";
     FacturaFiltersComponent,
     NgxMatColorPickerModule,
   ],
-  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }],
+  providers: [
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },
+    NotificationsService,
+  ],
 })
 export class InvoiceModule {}

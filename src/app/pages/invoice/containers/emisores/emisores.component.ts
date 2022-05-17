@@ -4,8 +4,9 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
-// import { ApiRestService, NotificationsService } from "src/app/core/services";
+import { TranslateService } from "@ngx-translate/core";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { FacturaEmitterComponent } from "../../components/factura-emitter/factura-emitter.component";
 import { CataloguesListService } from "../../components/invoice/carta-porte/services/catalogues-list.service";
 
@@ -20,9 +21,10 @@ export class EmisoresComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    // private notificationsService: NotificationsService,
+    private notificationsService: NotificationsService,
     private apiRestService: AuthService,
-    private catalogListService: CataloguesListService
+    private catalogListService: CataloguesListService,
+    private translateService: TranslateService
   ) {
     this.getEmisores();
   }
@@ -55,12 +57,14 @@ export class EmisoresComponent implements OnInit {
       console.log(result);
       if (!result.close) {
         if (result) {
-          // this.notificationsService.showSuccessToastr("Emisor creado");
+          this.notificationsService.showSuccessToastr(
+            this.translateService.instant("invoice.emisores.create-success")
+          );
           this.getEmisores();
         } else {
-          // this.notificationsService.showErrorToastr(
-          //   "No se pudo crear el Emisor"
-          // );
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant("invoice.emisores.create-error")
+          );
         }
       }
     });

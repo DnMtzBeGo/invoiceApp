@@ -39,11 +39,8 @@ import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, oof } from "src/app/shared/utils/operators.rx";
 import { clone } from "src/app/shared/utils/object";
 import { makeRequestStream } from "src/app/shared/utils/http.rx";
-// import {
-//   ApiRestService,
-//   NotificationsService,
-// } from "../../../../../core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { routes } from "../../consts";
 import { FacturaDireccion } from "../../models";
 import { validRFC } from "../../containers/factura-edit-page/factura.core";
@@ -51,8 +48,6 @@ import { FacturaDireccionInputComponent } from "../../components";
 
 const models = {
   emisor: {
-    title: "Sucursales emisor",
-    subtitle: "Añade, edita, elimina sucursales",
     endpoints: {
       list: "invoice/expedition-places",
       create: "invoice/expedition-places/create",
@@ -61,8 +56,6 @@ const models = {
     },
   },
   receptor: {
-    title: "Direcciones receptor",
-    subtitle: "Añade, edita, elimina direcciones",
     endpoints: {
       list: "invoice/branch-offices",
       create: "invoice/branch-offices/create",
@@ -111,7 +104,7 @@ export class FacturaManageDireccionesComponent implements OnInit {
     private dialogRef: MatDialogRef<FacturaManageDireccionesComponent>,
     private container: ViewContainerRef,
     private resolver: ComponentFactoryResolver,
-    // private notificationsService: NotificationsService,
+    private notificationsService: NotificationsService,
     private apiRestService: AuthService
   ) {}
 
@@ -168,7 +161,7 @@ export class FacturaManageDireccionesComponent implements OnInit {
         this.formEmitter.next(["refresh", ""]);
       },
       afterError: (error) => {
-        // this.notificationsService.showErrorToastr(this.showError(error));
+        this.notificationsService.showErrorToastr(this.showError(error));
       },
     });
 
