@@ -2,6 +2,14 @@ $icomoon-font-family: "bego-icons" !default;
 // $icomoon-font-path: "../fonts/bego-icons" !default;
 $icomoon-font-path: "../../../assets/fonts/bego-icons" !default;
 
+$icon-trash1: "\e939";
+$icon-image: "\e93a";
+$icon-fleet: "\e93b";
+$icon-calendar1: "\e93c";
+$icon-truck: "\e93d";
+$icon-ship: "\e93e";
+$icon-airplane: "\e93f";
+$icon-train: "\e940";
 $icon-document: "\e935";
 $icon-close: "\e933";
 $icon-filter: "\e934";
@@ -56,6 +64,8 @@ $icon-drafts: "\e904";
 $icon-history: "\e905";
 $icon-referals: "\e906";
 $icon-chat: "\e907";
+$icon-invoice: "\e938";
+$icon-edit: "\e941";
 $icon-download: "\e936";
 $icon-shared: "\e937";
 
@@ -71,7 +81,46 @@ $icon-shared: "\e937";
 
   font-size: 14px;
 
-
+  &.icon-trash1 {
+    &:before {
+      content: $icon-trash1; 
+    }
+  }
+  &.icon-image {
+    &:before {
+      content: $icon-image; 
+    }
+  }
+  &.icon-fleet {
+    &:before {
+      content: $icon-fleet; 
+    }
+  }
+  &.icon-calendar1 {
+    &:before {
+      content: $icon-calendar1; 
+    }
+  }
+  &.icon-truck {
+    &:before {
+      content: $icon-truck; 
+    }
+  }
+  &.icon-ship {
+    &:before {
+      content: $icon-ship; 
+    }
+  }
+  &.icon-airplane {
+    &:before {
+      content: $icon-airplane; 
+    }
+  }
+  &.icon-train {
+    &:before {
+      content: $icon-train; 
+    }
+  }
   &.icon-document {
     &:before {
       content: $icon-document; 
@@ -342,6 +391,16 @@ $icon-shared: "\e937";
       content: $icon-chat; 
     }
   }
+  &.icon-invoice {
+    &:before {
+      content: $icon-invoice; 
+    }
+  }
+  &.icon-edit {
+    &:before {
+      content: $icon-edit; 
+    }
+  }
   &.icon-download {
     &:before {
       content: $icon-download; 
@@ -358,9 +417,9 @@ $icon-shared: "\e937";
 @font-face {
     font-family: '#{$icomoon-font-family}';
     src:
-      url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?a2m7ui') format('truetype'),
-      url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?a2m7ui') format('woff'),
-      url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?a2m7ui##{$icomoon-font-family}') format('svg');
+      url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?dho560') format('truetype'),
+      url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?dho560') format('woff'),
+      url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?dho560##{$icomoon-font-family}') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
