@@ -716,6 +716,7 @@
             "regimen": "Régimen fiscal",
             "regimen-placeholder": "Selecciona un Régimen fiscal",
             "regimen-placeholder-2": "Ingresa un RFC emisor válido",
+            "regimen-placeholder-3": "Ingresa un RFC de cliente válido",
 
             "tipo-comprobante": "Tipo de comprobante",
             "moneda": "Moneda",
@@ -1110,6 +1111,7 @@
                 "rfc":"RFC\nIndica el Registro Federal del Contribuyente de tu cliente.",
                 "nombre":"Nombre o Razón social\nExpresa el nombre, denominación o Razón Social de tu cliente.",
                 "uso_cfdi":"Uso de CFDI\nSelecciona el uso que le dará tu cliente al CFDI.",
+                "regimen_fiscal": "Régimen fiscal\nIncorpora la clave del régimen fiscal del contribuyente receptor al que aplicará el efecto fiscal de este comprobante.",
                 "direccion":"Dirección\nPrecisa el domicilio fiscal del receptor, si tiene un sólo domicilio se expresa como \"Principal\". En caso de requerir agregar sucursales para el receptor, se identificarán con la información de \"Nombre Dirección\"."
             },
             "emisor": {

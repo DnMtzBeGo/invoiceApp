@@ -140,6 +140,7 @@ export const fromFactura = (factura) => {
   const rfc = factura.receptor?.rfc?.toUpperCase() ?? "";
   const nombre = factura.receptor?.nombre;
   const usoCFDI = factura.receptor?.uso_cfdi;
+  const regimen_fiscal = factura.receptor?.regimen_fiscal;
   const direccion = factura.receptor?.direccion ?? {};
   const emisor = factura.emisor ?? {};
   const lugar_de_expedicion = factura.lugar_de_expedicion ?? {};
@@ -150,6 +151,7 @@ export const fromFactura = (factura) => {
     rfc,
     nombre,
     usoCFDI,
+    regimen_fiscal,
     direccion,
     emisor,
     lugar_de_expedicion,
@@ -168,6 +170,7 @@ export const toFactura = (factura: any) => {
     rfc: factura.rfc,
     nombre: factura.nombre,
     uso_cfdi: factura.usoCFDI,
+    regimen_fiscal: factura.regimen_fiscal,
     direccion: { ...(factura.direccion || {}) },
   };
 

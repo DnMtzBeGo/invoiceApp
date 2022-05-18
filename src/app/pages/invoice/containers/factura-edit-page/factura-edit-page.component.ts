@@ -108,6 +108,7 @@ export class FacturaEditPageComponent implements OnInit {
       rfc: string;
       nombre: string;
       usoCFDI: string;
+      regimen_fiscal: string;
       // direccion
       direccion: any;
       // emisor
@@ -382,8 +383,9 @@ export class FacturaEditPageComponent implements OnInit {
         ofType("rfc:search"),
         map((search: string) => ({ type: "rfc" as const, search })),
         tap(() => {
-          this.vm.form.usoCFDI = "";
           this.vm.form.nombre = "";
+          this.vm.form.usoCFDI = "";
+          this.vm.form.regimen_fiscal = "";
           this.vm.form.direccion = {};
         })
       ),
@@ -777,6 +779,7 @@ export class FacturaEditPageComponent implements OnInit {
       rfc: "",
       nombre: "",
       usoCFDI: "",
+      regimen_fiscal: "",
       direccion: {},
       emisor: {
         rfc: "",

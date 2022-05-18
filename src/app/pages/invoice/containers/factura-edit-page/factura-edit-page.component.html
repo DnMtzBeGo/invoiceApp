@@ -115,6 +115,10 @@
               (optionSelected)="
                 vm.form.nombre =
                   $event.option._element.nativeElement.dataset.nombre;
+                vm.form.usoCFDI =
+                  $event.option._element.nativeElement.dataset.uso_cfdi;
+                vm.form.regimen_fiscal =
+                  $event.option._element.nativeElement.dataset.regimen_fiscal;
                 formEmitter.next(['rfc:set', $event.option.value]);
                 formEmitter.next(['autocomplete:cancel', ''])
               "
@@ -132,6 +136,8 @@
                 [value]="receptor.rfc"
                 class="brand-option-1"
                 [attr.data-nombre]="receptor.razon_social"
+                [attr.data-uso_cfdi]="receptor.uso_cfdi"
+                [attr.data-regimen_fiscal]="receptor.regimen_fiscal"
               >
                 <div>
                   <span style="text-transform: uppercase">{{
@@ -192,6 +198,10 @@
               autoActiveFirstOption
               #auto2="matAutocomplete"
               (optionSelected)="
+                vm.form.usoCFDI =
+                  $event.option._element.nativeElement.dataset.uso_cfdi;
+                vm.form.regimen_fiscal =
+                  $event.option._element.nativeElement.dataset.regimen_fiscal;
                 formEmitter.next([
                   'rfc:set',
                   (vm.form.rfc =
@@ -216,6 +226,8 @@
                 [value]="receptor.razon_social"
                 class="brand-option-1"
                 [attr.data-rfc]="receptor.rfc"
+                [attr.data-uso_cfdi]="receptor.uso_cfdi"
+                [attr.data-regimen_fiscal]="receptor.regimen_fiscal"
               >
                 <div>
                   <span>{{ receptor.razon_social }}</span>
@@ -280,6 +292,71 @@
             <span
               class="factura-help-icon"
               [matTooltip]="vm.helpTooltips?.receptor?.uso_cfdi"
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1"
+            >
+              <mat-icon
+                ><img
+                  src="./assets/images/invoice/help.png"
+                  style="width: inherit"
+              /></mat-icon>
+            </span>
+          </mat-form-field>
+
+          <mat-form-field
+            class="brand-field-1"
+            appearance="outline"
+            [attr.readonly]="vm.readonly"
+          >
+            <mat-label>{{
+              vm.form?.regimen_fiscal
+                ? ("invoice.edit.regimen" | translate)
+                : vm.form.rfc && !vm.tipoPersona
+                ? ("invoice.edit.regimen-placeholder-3" | translate)
+                : ("invoice.edit.regimen-placeholder" | translate)
+            }}</mat-label>
+            <mat-select
+              name="regimen_fiscal"
+              [ngModel]="vm.form?.regimen_fiscal"
+              (ngModelChange)="vm.form.regimen_fiscal = $event"
+              class="disable-custom-format"
+              [disabled]="!vm.tipoPersona || vm.readonly"
+            >
+              <mat-option>
+                <ngx-mat-select-search
+                  ngModel
+                  (ngModelChange)="
+                    formEmitter.next([
+                      'catalogos:search',
+                      ['regimen_fiscal', $event.toLowerCase()]
+                    ])
+                  "
+                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"
+                ></ngx-mat-select-search>
+              </mat-option>
+              <ng-container
+                *ngFor="let regimen of vm.catalogos?.regimen_fiscal"
+              >
+                <mat-option
+                  *ngIf="
+                    (vm.tipoPersona &&
+                      regimen.persona_fisica &&
+                      vm.tipoPersona === 'fisica') ||
+                    (regimen.persona_moral && vm.tipoPersona === 'moral')
+                  "
+                  [value]="regimen.clave"
+                >
+                  {{ regimen.clave }} - {{ regimen.descripcion }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+
+            <span
+              class="factura-help-icon"
+              [matTooltip]="vm.helpTooltips?.receptor?.regimen_fiscal"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
               matTooltipClass="brand-tooltip-1"
