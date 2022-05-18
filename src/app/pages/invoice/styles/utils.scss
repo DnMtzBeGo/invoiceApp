@@ -120,6 +120,20 @@
     .mat-select-arrow {
       opacity: 0.4;
     }
+
+    .mat-form-field-outline:first-child {
+      opacity: 0.4;
+    }
+  }
+
+  &[readonly="true"] {
+    .mat-form-field-outline {
+      display: none;
+    }
+
+    .mat-select .mat-select-arrow {
+      visibility: hidden;
+    }
   }
 }
 

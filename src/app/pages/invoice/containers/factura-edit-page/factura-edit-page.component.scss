@@ -95,10 +95,6 @@
           }
         }
       }
-
-      > div[readonly="true"] {
-        box-shadow: unset;
-      }
     }
 
     .grid {
@@ -209,18 +205,6 @@
     // .mat-form-field .mat-input-element {
     //   color: initial;
     // }
-  }
-
-  mat-form-field[readonly="true"] {
-    pointer-events: none;
-
-    .mat-form-field-outline {
-      display: none;
-    }
-
-    .mat-select .mat-select-arrow {
-      visibility: hidden;
-    }
   }
 
   .impuestos-table,

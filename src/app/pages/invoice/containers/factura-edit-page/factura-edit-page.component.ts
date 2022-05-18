@@ -103,6 +103,7 @@ export class FacturaEditPageComponent implements OnInit {
       status?: number;
       created_at?: string;
       error?: any[];
+      order?: string;
       // rfc
       rfc: string;
       nombre: string;
