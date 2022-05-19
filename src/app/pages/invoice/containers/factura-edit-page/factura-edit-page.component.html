@@ -59,7 +59,7 @@
       <section>
         <h6>{{ "invoice.edit.receptor" | translate }}</h6>
 
-        <div class="grid" [attr.readonly]="vm.readonly">
+        <div class="grid">
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
@@ -84,9 +84,6 @@
               [matAutocomplete]="auto"
               [readonly]="vm.readonly"
             />
-            <!-- [placeholder]="
-                !vm.readonly ? 'Ingresa el RFC de tu cliente' : '- -'
-              " -->
 
             <span
               class="factura-help-icon"
@@ -118,6 +115,10 @@
               (optionSelected)="
                 vm.form.nombre =
                   $event.option._element.nativeElement.dataset.nombre;
+                vm.form.usoCFDI =
+                  $event.option._element.nativeElement.dataset.uso_cfdi;
+                vm.form.regimen_fiscal =
+                  $event.option._element.nativeElement.dataset.regimen_fiscal;
                 formEmitter.next(['rfc:set', $event.option.value]);
                 formEmitter.next(['autocomplete:cancel', ''])
               "
@@ -135,6 +136,8 @@
                 [value]="receptor.rfc"
                 class="brand-option-1"
                 [attr.data-nombre]="receptor.razon_social"
+                [attr.data-uso_cfdi]="receptor.uso_cfdi"
+                [attr.data-regimen_fiscal]="receptor.regimen_fiscal"
               >
                 <div>
                   <span style="text-transform: uppercase">{{
@@ -166,9 +169,6 @@
               [matAutocomplete]="auto2"
               [readonly]="vm.readonly"
             />
-            <!-- [placeholder]="
-                !vm.readonly ? 'Ingresa la Razón Social de tu cliente' : '- -'
-              " -->
 
             <span
               class="factura-help-icon"
@@ -198,6 +198,10 @@
               autoActiveFirstOption
               #auto2="matAutocomplete"
               (optionSelected)="
+                vm.form.usoCFDI =
+                  $event.option._element.nativeElement.dataset.uso_cfdi;
+                vm.form.regimen_fiscal =
+                  $event.option._element.nativeElement.dataset.regimen_fiscal;
                 formEmitter.next([
                   'rfc:set',
                   (vm.form.rfc =
@@ -222,6 +226,8 @@
                 [value]="receptor.razon_social"
                 class="brand-option-1"
                 [attr.data-rfc]="receptor.rfc"
+                [attr.data-uso_cfdi]="receptor.uso_cfdi"
+                [attr.data-regimen_fiscal]="receptor.regimen_fiscal"
               >
                 <div>
                   <span>{{ receptor.razon_social }}</span>
@@ -252,15 +258,8 @@
               [ngModel]="vm.form?.usoCFDI"
               (ngModelChange)="vm.form.usoCFDI = $event"
               class="disable-custom-format"
-              [disabled]="!vm.tipoPersona"
+              [disabled]="!vm.tipoPersona || vm.readonly"
             >
-              <!-- [placeholder]="
-                !vm.readonly
-                  ? vm.tipoPersona
-                    ? 'Selecciona una opción'
-                    : 'Ingresa un RFC válido'
-                  : '- -'
-              " -->
               <mat-option>
                 <ngx-mat-select-search
                   ngModel
@@ -304,13 +303,75 @@
               /></mat-icon>
             </span>
           </mat-form-field>
+
+          <mat-form-field
+            class="brand-field-1"
+            appearance="outline"
+            [attr.readonly]="vm.readonly"
+          >
+            <mat-label>{{
+              vm.form?.regimen_fiscal
+                ? ("invoice.edit.regimen" | translate)
+                : vm.form.rfc && !vm.tipoPersona
+                ? ("invoice.edit.regimen-placeholder-3" | translate)
+                : ("invoice.edit.regimen-placeholder" | translate)
+            }}</mat-label>
+            <mat-select
+              name="regimen_fiscal"
+              [ngModel]="vm.form?.regimen_fiscal"
+              (ngModelChange)="vm.form.regimen_fiscal = $event"
+              class="disable-custom-format"
+              [disabled]="!vm.tipoPersona || vm.readonly"
+            >
+              <mat-option>
+                <ngx-mat-select-search
+                  ngModel
+                  (ngModelChange)="
+                    formEmitter.next([
+                      'catalogos:search',
+                      ['regimen_fiscal', $event.toLowerCase()]
+                    ])
+                  "
+                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"
+                ></ngx-mat-select-search>
+              </mat-option>
+              <ng-container
+                *ngFor="let regimen of vm.catalogos?.regimen_fiscal"
+              >
+                <mat-option
+                  *ngIf="
+                    (vm.tipoPersona &&
+                      regimen.persona_fisica &&
+                      vm.tipoPersona === 'fisica') ||
+                    (regimen.persona_moral && vm.tipoPersona === 'moral')
+                  "
+                  [value]="regimen.clave"
+                >
+                  {{ regimen.clave }} - {{ regimen.descripcion }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+
+            <span
+              class="factura-help-icon"
+              [matTooltip]="vm.helpTooltips?.receptor?.regimen_fiscal"
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1"
+            >
+              <mat-icon
+                ><img
+                  src="./assets/images/invoice/help.png"
+                  style="width: inherit"
+              /></mat-icon>
+            </span>
+          </mat-form-field>
         </div>
       </section>
 
-      <section
-        [attr.expanded]="validRFC(vm.form?.rfc) === true"
-        [attr.readonly]="vm.readonly"
-      >
+      <section>
         <h6>
           {{ "invoice.edit.direccion" | translate }}
           <span
@@ -334,7 +395,7 @@
             <mat-form-field
               class="brand-field-1"
               appearance="outline"
-              [attr.readonly]="vm.readonly"
+              [attr.readonly]="vm.readonly || !!vm.form?.order"
               style="flex: 1"
             >
               <mat-label>{{
@@ -355,17 +416,12 @@
                 (ngModelChange)="formEmitter.next(['direccion:select', $event])"
                 [compareWith]="compareId"
                 class="disable-custom-format"
-                [disabled]="vm.direcciones?.length === 0"
+                [disabled]="
+                  vm.direcciones?.length === 0 ||
+                  vm.readonly ||
+                  !!vm.form?.order
+                "
               >
-                <!-- [placeholder]="
-                          validRFC(vm.form?.rfc) !== true
-                            ? 'Ingresa un receptor válido'
-                            : vm.direcciones == null
-                            ? 'Cargando...'
-                            : vm.direcciones?.length === 0
-                            ? 'No se encontraron direcciones guardadas'
-                            : 'Seleciona una opción'
-                        " -->
                 <mat-option
                   *ngFor="let direccion of vm.direcciones"
                   [value]="direccion"
@@ -397,7 +453,7 @@
                 "
                 [style.pointer-events]="all"
                 style="min-width: 36px; min-height: 36px"
-                [disabled]="!validRFC(vm.form?.rfc)"
+                [disabled]="!validRFC(vm.form?.rfc) || !!vm.form?.order"
               >
                 {{
                   validRFC(vm.form?.rfc) && vm.direcciones?.length === 0
@@ -413,7 +469,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               vm.form?.direccion?.identificador
@@ -426,14 +482,14 @@
               [ngModel]="vm.form?.direccion?.identificador"
               (ngModelChange)="vm.form.direccion.identificador = $event"
               autocomplete="off"
-              [readonly]="vm.readonly"
+              [readonly]="vm.readonly || !!vm.form?.order"
             />
           </mat-form-field>
 
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{ "invoice.edit.addr-calle" | translate }}</mat-label>
             <input
@@ -442,14 +498,14 @@
               [ngModel]="vm.form?.direccion?.calle"
               (ngModelChange)="vm.form.direccion.calle = $event"
               autocomplete="off"
-              [readonly]="vm.readonly"
+              [readonly]="vm.readonly || !!vm.form?.order"
             />
           </mat-form-field>
 
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{ "invoice.edit.addr-no-ext" | translate }}</mat-label>
             <input
@@ -458,14 +514,14 @@
               [ngModel]="vm.form?.direccion?.numero"
               (ngModelChange)="vm.form.direccion.numero = $event"
               autocomplete="off"
-              [readonly]="vm.readonly"
+              [readonly]="vm.readonly || !!vm.form?.order"
             />
           </mat-form-field>
 
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{ "invoice.edit.addr-no-int" | translate }}</mat-label>
             <input
@@ -474,14 +530,14 @@
               [ngModel]="vm.form?.direccion?.interior"
               (ngModelChange)="vm.form.direccion.interior = $event"
               autocomplete="off"
-              [readonly]="vm.readonly"
+              [readonly]="vm.readonly || !!vm.form?.order"
             />
           </mat-form-field>
 
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               vm.paises == null
@@ -505,6 +561,7 @@
                 ])
               "
               class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
             >
               <mat-option *ngFor="let pais of vm.paises" [value]="pais.code">
                 {{ pais.name }}
@@ -522,7 +579,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               vm.estados == null
@@ -546,6 +603,7 @@
                 ])
               "
               class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
             >
               <mat-option
                 *ngFor="let estado of vm.estados"
@@ -566,7 +624,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               vm.municipios == null
@@ -590,6 +648,7 @@
                 vm.colonias = []
               "
               class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
             >
               <mat-option
                 *ngFor="let municipio of vm.municipios"
@@ -601,7 +660,9 @@
 
             <button
               [style.display]="
-                vm.form?.direccion?.municipio && !vm.readonly ? 'block' : 'none'
+                vm.form?.direccion?.municipio && !vm.readonly && !vm.form?.order
+                  ? 'block'
+                  : 'none'
               "
               mat-icon-button
               matSuffix
@@ -627,7 +688,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{ "invoice.edit.addr-cp" | translate }}</mat-label>
             <input
@@ -639,14 +700,14 @@
                 formEmitter.next(['cp:input', (vm.form.direccion.cp = $event)])
               "
               autocomplete="off"
-              [readonly]="vm.readonly"
+              [readonly]="vm.readonly || !!vm.form?.order"
             />
           </mat-form-field>
 
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               vm.form?.direccion?.cp && vm.form?.direccion?.cp.length < 5
@@ -660,16 +721,8 @@
               [ngModel]="vm.form?.direccion?.colonia"
               (ngModelChange)="vm.form.direccion.colonia = $event"
               class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
             >
-              <!-- [placeholder]="
-                !vm.form?.direccion?.cp || vm.form?.direccion?.cp.length < 5
-                  ? 'Ingresa un código postal'
-                  : vm.colonias == null
-                  ? 'Cargando...'
-                  : !vm.readonly
-                  ? 'Seleciona una opción'
-                  : '- -'
-              " -->
               <mat-option
                 *ngFor="let colonia of vm.colonias"
                 [value]="colonia.clave"
@@ -680,7 +733,9 @@
 
             <button
               [style.display]="
-                vm.form?.direccion?.colonia && !vm.readonly ? 'block' : 'none'
+                vm.form?.direccion?.colonia && !vm.readonly && !vm.form?.order
+                  ? 'block'
+                  : 'none'
               "
               mat-icon-button
               matSuffix
@@ -700,7 +755,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{ "invoice.edit.addr-email" | translate }}</mat-label>
             <input
@@ -709,19 +764,19 @@
               [ngModel]="vm.form?.direccion?.email"
               (ngModelChange)="vm.form.direccion.email = $event"
               autocomplete="off"
-              [readonly]="vm.readonly"
+              [readonly]="vm.readonly || !!vm.form?.order"
             />
           </mat-form-field>
         </div>
       </section>
 
-      <section [attr.expanded]="true" [attr.readonly]="vm.readonly">
+      <section>
         <h6>{{ "invoice.edit.emisor" | translate }}</h6>
         <div class="grid">
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               vm.form?.emisor.rfc
@@ -741,7 +796,7 @@
               "
               maxlength="13"
               [matAutocomplete]="autoEmisorRFC"
-              [readonly]="vm.readonly"
+              [readonly]="vm.readonly || !!vm.form?.order"
             />
 
             <span
@@ -826,7 +881,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               vm.form?.emisor.nombre
@@ -845,7 +900,7 @@
                 ])
               "
               [matAutocomplete]="autoEmisorNombre"
-              [readonly]="vm.readonly"
+              [readonly]="vm.readonly || !!vm.form?.order"
             />
 
             <span
@@ -927,7 +982,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
             style="flex: 1"
           >
             <mat-label>{{
@@ -950,18 +1005,8 @@
               (ngModelChange)="vm.form.lugar_de_expedicion = $event"
               [compareWith]="compareId"
               class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
             >
-              <!-- [placeholder]="
-                vm.lugaresExpedicion == null
-                  ? 'Cargando...'
-                  : !vm.readonly
-                  ? vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc)
-                    ? vm.lugaresExpedicion?.length === 0
-                      ? 'No se encontraron lugares de expedición guardados'
-                      : 'Seleciona una opción'
-                    : 'Selecciona un emisor válido'
-                  : '- -'
-              " -->
               <mat-option
                 *ngFor="let lugar of vm.lugaresExpedicion"
                 [value]="lugar"
@@ -1014,7 +1059,7 @@
                   vm.form?.emisor?._id &&
                   validRFC(vm.form?.emisor?.rfc) &&
                   !vm.readonly
-                )
+                ) || !!vm.form?.order
               "
             >
               {{
@@ -1031,7 +1076,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               vm.form?.emisor?.regimen_fiscal
@@ -1045,7 +1090,7 @@
               [ngModel]="vm.form?.emisor.regimen_fiscal"
               (ngModelChange)="vm.form.emisor.regimen_fiscal = $event"
               class="disable-custom-format"
-              [disabled]="!vm.emisor"
+              [disabled]="!vm.emisor || vm.readonly || !!vm.form?.order"
             >
               <mat-option>
                 <ngx-mat-select-search
@@ -1099,7 +1144,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               "invoice.edit.tipo-comprobante" | translate
@@ -1114,6 +1159,7 @@
                 ])
               "
               class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
             >
               <ng-container
                 *ngFor="let comprobante of vm.catalogos?.tipos_de_comprobante"
@@ -1145,7 +1191,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{ "invoice.edit.moneda" | translate }}</mat-label>
             <mat-select
@@ -1155,6 +1201,7 @@
                 vm.form.moneda = $event; vm.form.tipo_de_cambio = null
               "
               class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
             >
               <mat-option
                 *ngFor="let moneda of vm.catalogos?.monedas"
@@ -1183,7 +1230,7 @@
             *ngIf="vm.form?.moneda !== 'MXN'"
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               "invoice.edit.tipo-de-cambio" | translate
@@ -1195,7 +1242,7 @@
               [ngModel]="vm.form?.tipo_de_cambio"
               (ngModelChange)="vm.form.tipo_de_cambio = $event"
               autocomplete="off"
-              [readonly]="vm.readonly"
+              [readonly]="vm.readonly || !!vm.form?.order"
             />
 
             <span
@@ -1212,8 +1259,8 @@
 
         <div class="grid">
           <mat-form-field
-            class="brand-field-1"
             *ngIf="vm.form?.tipo_de_comprobante !== 'T'"
+            class="brand-field-1"
             appearance="outline"
             [attr.readonly]="vm.readonly"
           >
@@ -1223,6 +1270,7 @@
               [ngModel]="vm.form?.metodo_de_pago"
               (ngModelChange)="vm.form.metodo_de_pago = $event"
               class="disable-custom-format"
+              [disabled]="vm.readonly"
             >
               <mat-option
                 *ngFor="let metodopago of vm.catalogos?.metodos_de_pago"
@@ -1248,10 +1296,10 @@
           </mat-form-field>
 
           <mat-form-field
-            class="brand-field-1"
             *ngIf="vm.form?.tipo_de_comprobante !== 'T'"
+            class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{ "invoice.edit.forma-pago" | translate }}</mat-label>
             <mat-select
@@ -1259,6 +1307,7 @@
               [ngModel]="vm.form?.forma_de_pago"
               (ngModelChange)="vm.form.forma_de_pago = $event"
               class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
             >
               <mat-option>
                 <ngx-mat-select-search
@@ -1302,7 +1351,7 @@
           <mat-form-field
             class="brand-field-1 textarea"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{
               vm.form?.info_extra
@@ -1318,6 +1367,7 @@
               cdkAutosizeMinRows="2"
               cdkAutosizeMaxRows="3"
               [readonly]="vm.readonly"
+              [disabled]="!!vm.form?.order"
             >
             </textarea>
 
@@ -1339,8 +1389,7 @@
       </section>
 
       <section
-        *ngIf="!vm.readonly"
-        [attr.expanded]="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc)"
+        *ngIf="!vm.readonly && !vm.form?.order"
         [disabled]="!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)"
         id="conceptos"
         #tooltip="matTooltip"
@@ -1854,7 +1903,11 @@
       </section>
 
       <section
-        *ngIf="!vm.readonly && vm.form?.tipo_de_comprobante !== 'T'"
+        *ngIf="
+          !vm.readonly &&
+          !vm.form?.order &&
+          vm.form?.tipo_de_comprobante !== 'T'
+        "
         [attr.expanded]="vm.concepto?.impuestos.length > 0"
       >
         <h6>{{ "invoice.edit.impuestos" | translate }}</h6>
@@ -1895,7 +1948,11 @@
             </span>
 
             <button
-              [style.display]="vm.impuesto && !vm.readonly ? 'block' : 'none'"
+              [style.display]="
+                vm.impuesto && !vm.readonly && !vm.form?.order
+                  ? 'block'
+                  : 'none'
+              "
               mat-icon-button
               matSuffix
               (click)="vm.impuesto = null; $event.stopPropagation()"
@@ -2076,7 +2133,7 @@
               <th class="right">
                 {{ "invoice.edit.concepto-importe" | translate }}
               </th>
-              <th *ngIf="!vm.readonly" class="center">
+              <th *ngIf="!vm.readonly && !vm.form?.order" class="center">
                 {{ "invoice.edit.opciones" | translate }}
               </th>
             </tr>
@@ -2137,7 +2194,7 @@
                   })
                 }}
               </td>
-              <td *ngIf="!vm.readonly" class="center">
+              <td *ngIf="!vm.readonly && !vm.form?.order" class="center">
                 <button mat-icon-button [matMenuTriggerFor]="conceptosMenu">
                   <mat-icon>more_vert</mat-icon>
                 </button>
@@ -2176,7 +2233,7 @@
                   })
                 }}
               </td>
-              <td *ngIf="!vm.readonly"></td>
+              <td *ngIf="!vm.readonly && !vm.form?.order"></td>
             </tr>
             <tr *ngIf="calcDescuentos(vm.conceptos) > 0">
               <td colspan="5"></td>
@@ -2191,7 +2248,7 @@
                   })
                 }})
               </td>
-              <td *ngIf="!vm.readonly"></td>
+              <td *ngIf="!vm.readonly && !vm.form?.order"></td>
             </tr>
             <tr
               *ngFor="
@@ -2220,7 +2277,7 @@
                       })
                 }}
               </td>
-              <td *ngIf="!vm.readonly"></td>
+              <td *ngIf="!vm.readonly && !vm.form?.order"></td>
             </tr>
             <tr>
               <td colspan="5"></td>
@@ -2235,17 +2292,13 @@
                   })
                 }}
               </td>
-              <td *ngIf="!vm.readonly"></td>
+              <td *ngIf="!vm.readonly && !vm.form?.order"></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <section
-        *ngIf="!vm.readonly || vm.form?.tipo_de_relacion"
-        [attr.expanded]="vm.readonly"
-        [attr.readonly]="vm.readonly"
-      >
+      <section *ngIf="!vm.readonly || vm.form?.tipo_de_relacion">
         <h6>
           {{ "invoice.edit.doc-rel" | translate }}
           <span
@@ -2268,7 +2321,7 @@
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>{{ "invoice.edit.doc-rel-tipo" | translate }}</mat-label>
             <mat-select
@@ -2276,6 +2329,7 @@
               [ngModel]="vm.form?.tipo_de_relacion"
               (ngModelChange)="vm.form.tipo_de_relacion = $event"
               class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
             >
               <mat-option
                 *ngFor="let tipo_de_relacion of vm.catalogos?.tipos_de_relacion"
@@ -2304,7 +2358,9 @@
 
             <button
               [style.display]="
-                vm.form?.tipo_de_relacion && !vm.readonly ? 'block' : 'none'
+                vm.form?.tipo_de_relacion && !vm.readonly && !vm.form?.order
+                  ? 'block'
+                  : 'none'
               "
               mat-icon-button
               matSuffix
@@ -2315,7 +2371,11 @@
           </mat-form-field>
         </div>
 
-        <div class="grid-fill" *ngIf="!vm.readonly" style="padding-top: 0">
+        <div
+          class="grid-fill"
+          *ngIf="!vm.readonly && !vm.form?.order"
+          style="padding-top: 0"
+        >
           <mat-form-field class="brand-field-1" appearance="outline">
             <mat-label>{{ "invoice.edit.doc-rel-uuid" | translate }}</mat-label>
             <input
@@ -2359,12 +2419,14 @@
         <table
           *ngIf="vm.form?.documentos_relacionados.length"
           class="impuestos-table"
-          style="max-width: 70%"
+          style="max-width: 70%; margin-bottom: 3.5rem"
         >
           <thead>
             <tr>
               <th width="50%">{{ "invoice.edit.doc-rel-uuid" | translate }}</th>
-              <th width="50%">{{ "invoice.edit.opciones" | translate }}</th>
+              <th *ngIf="!vm.readonly && !vm.form?.order" width="50%">
+                {{ "invoice.edit.opciones" | translate }}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -2377,7 +2439,7 @@
               <td>
                 {{ doc.uuid }}
               </td>
-              <td>
+              <td *ngIf="!vm.readonly && !vm.form?.order">
                 <button
                   mat-icon-button
                   (click)="vm.form.documentos_relacionados.splice(index, 1)"
@@ -2410,11 +2472,11 @@
           </span>
         </h6>
 
-        <div class="grid-fill" [attr.readonly]="vm.readonly">
+        <div class="grid-fill">
           <mat-form-field
             class="brand-field-1"
             appearance="outline"
-            [attr.readonly]="vm.readonly"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
           >
             <mat-label>
               {{
@@ -2445,7 +2507,9 @@
               [ngModel]="vm.form?.serie"
               (ngModelChange)="vm.form.serie = $event"
               class="disable-custom-format"
-              [disabled]="!vm.tipo_de_comprobante"
+              [disabled]="
+                !vm.tipo_de_comprobante || vm.readonly || !!vm.form?.order
+              "
             >
               <ng-container *ngFor="let serie of vm.series">
                 <mat-option
@@ -2473,7 +2537,9 @@
 
             <button
               [style.display]="
-                vm.form?.serie && !vm.readonly ? 'block' : 'none'
+                vm.form?.serie && !vm.readonly && !vm.form?.order
+                  ? 'block'
+                  : 'none'
               "
               mat-icon-button
               matSuffix
@@ -2496,7 +2562,7 @@
                 )
               "
               style="min-width: 97px; min-height: 37px"
-              [disabled]="false"
+              [disabled]="!!vm.form?.order"
             >
               <span>
                 {{
@@ -2622,6 +2688,10 @@
             </div>
           </div>
         </h6>
+
+        <div id="cartaporte">
+          <app-carta-porte-page></app-carta-porte-page>
+        </div>
       </section>
     </div>
 
@@ -2718,26 +2788,6 @@
           </button>
         </div>
 
-        <div *ngIf="p(vm.form).eliminar">
-          <button
-            mat-flat-button
-            class="brand-btn-1"
-            (click)="deleteFactura(vm.form?._id)"
-          >
-            {{ "invoice.edit.btn-eliminar" | translate }}
-          </button>
-        </div>
-
-        <div *ngIf="mode === 'update' && model === 'template'">
-          <button
-            mat-flat-button
-            class="brand-btn-1"
-            (click)="deleteTemplate(vm.form?._id)"
-          >
-            {{ "invoice.edit.btn-eliminar-tpl" | translate }}
-          </button>
-        </div>
-
         <div *ngIf="p(vm.form).vistaprevia && model === 'factura'">
           <button
             mat-flat-button
@@ -2747,16 +2797,6 @@
           >
             {{ "invoice.edit.btn-preview" | translate }}
           </button>
-        </div>
-
-        <div *ngIf="p(vm.form).duplicar">
-          <a
-            mat-flat-button
-            class="brand-btn-1"
-            [routerLink]="[routes.NEW_FACTURA, { template: vm.form?._id }]"
-          >
-            {{ "invoice.edit.btn-duplicar" | translate }}
-          </a>
         </div>
 
         <div>
@@ -2812,6 +2852,36 @@
                   : ("invoice.edit.btn-save-save" | translate)
               }}
             </span>
+          </button>
+        </div>
+
+        <div *ngIf="p(vm.form).duplicar">
+          <a
+            mat-flat-button
+            class="brand-btn-1"
+            [routerLink]="[routes.NEW_FACTURA, { template: vm.form?._id }]"
+          >
+            {{ "invoice.edit.btn-duplicar" | translate }}
+          </a>
+        </div>
+
+        <div *ngIf="p(vm.form).eliminar">
+          <button
+            mat-flat-button
+            class="brand-btn-1"
+            (click)="deleteFactura(vm.form?._id)"
+          >
+            {{ "invoice.edit.btn-eliminar" | translate }}
+          </button>
+        </div>
+
+        <div *ngIf="mode === 'update' && model === 'template'">
+          <button
+            mat-flat-button
+            class="brand-btn-1"
+            (click)="deleteTemplate(vm.form?._id)"
+          >
+            {{ "invoice.edit.btn-eliminar-tpl" | translate }}
           </button>
         </div>
       </div>

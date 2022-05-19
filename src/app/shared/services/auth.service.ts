@@ -4,7 +4,9 @@ import { Observable } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 import { environment } from "../../../environments/environment";
 
-const isInvoice = (method: string) => /^invoice(\/\w+)?/.test(method);
+const isInvoice = (method: string) =>
+  // ^invoice(\/\w+)?/.test(method);
+  0;
 
 const getURLBASE = (method: string) =>
   isInvoice(method) ? environment.URL_DASHBOARD : environment.URL_BASE;

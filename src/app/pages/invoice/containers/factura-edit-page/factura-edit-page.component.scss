@@ -3,7 +3,7 @@
   //   padding-top: 1.5rem;
   // }
 
-  .page-wrapper {
+  > .page-wrapper {
     max-width: 1440px;
     margin: 0 auto;
     display: grid;
@@ -94,10 +94,6 @@
             color: rgba(0, 0, 0, 0.6);
           }
         }
-      }
-
-      > div[readonly="true"] {
-        box-shadow: unset;
       }
     }
 
@@ -209,18 +205,6 @@
     // .mat-form-field .mat-input-element {
     //   color: initial;
     // }
-  }
-
-  mat-form-field[readonly="true"] {
-    pointer-events: none;
-
-    .mat-form-field-outline {
-      display: none;
-    }
-
-    .mat-select .mat-select-arrow {
-      visibility: hidden;
-    }
   }
 
   .impuestos-table,
