@@ -1,7 +1,10 @@
 <div class="order-info-row-driver" *ngIf="orderData">
   <div class="info-driver-container">
     <!-- <img src="../../../../../assets/images/history/user-profile.svg" alt=""> -->
-    <i class="icon icon-user-profile"></i>
+    <i *ngIf="!orderData.driver?.thumbnail" class="icon icon-user-profile"></i>
+    <div  *ngIf="orderData.driver?.thumbnail">
+      <img class="avatar" [src]="orderData.driver?.thumbnail">
+    </div>
     <p class="driver-name">{{orderData['driver']?.nickname}}</p>
 
     <div class="truck-trailer-container">
