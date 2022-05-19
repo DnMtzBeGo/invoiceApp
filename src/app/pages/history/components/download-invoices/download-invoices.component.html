@@ -1,0 +1,40 @@
+<div class="invoices" *ngIf="!(showPreview && userRole == '1') !ShowPreview ">
+  <div *ngIf="pdf && xml; else elseBlock">
+    {{ showPreview ? ('history.consignment_note.invoice_preview' | translate) : ('history.consignment_note.invoice' | translate) }}
+  </div>
+  <ng-template #elseBlock>
+    <h6>{{ 'invoice.single' | translate }}</h6>
+  </ng-template>
+  <div *ngIf="(pdf && files.pdf) || showPreview">
+    <div class="invoice-container embossed">
+      <div>
+        <!-- <mat-icon name="document-outline">chat_bubble_outline</mat-icon> -->
+        <i class="icon icon-document"></i>
+        <!-- mi -->
+      </div>
+      <div (click)="downloadInvoice('pdf')">
+        <div class="file-name">{{orderRefNumber}}.pdf</div>
+        <div class="file-type">
+         {{ showPreview ? ('history.consignment_note.invoice_preview' | translate): ('history.consignment_note.invoice' | translate)}}
+          <span *ngIf="files.date"> | {{ files.date | date:'dd/MM/YYYY' }}</span>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="xml && files.xml && ! showPreview">
+    <div class="invoice-container embossed">
+      <div>
+        <mat-icon name="document-outline">chat_bubble_outline</mat-icon>
+        <!-- mi -->
+      </div>
+      <div (click)="downloadInvoice('xml')">
+        <div class="file-name">{{orderRefNumber}}.xml</div>
+        <div class="file-type"> {{ showPreview ? ('history.consignment_note.invoice_preview' | translate): ('history.consignment_note.invoice' | translate)}}
+          <span *ngIf="files.date"> | {{ files.date | date:'dd/MM/YYYY' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

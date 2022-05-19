@@ -28,4 +28,8 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   public changePickupDropoff(row: string): void {
     this.selectedRow = row;
   }
+
+  orderCreatedByCarrierManager(orderInfo: any) {
+    return orderInfo.user_id == orderInfo.manager?._id;
+  }
 }

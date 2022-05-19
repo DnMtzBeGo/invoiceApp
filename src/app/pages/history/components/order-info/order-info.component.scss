@@ -219,3 +219,12 @@
 app-drop-down {
   margin-top: 35px;
 }
+
+
+::ng-deep{
+  .invoices{
+    margin-top: 50px!important;
+    margin-left: 20px!important;
+    margin-right: 20px!important;
+  }
+}
