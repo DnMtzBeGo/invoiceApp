@@ -2,11 +2,8 @@ import { Component, Inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 
 import { Router } from "@angular/router";
-// import {
-//   ApiRestService,
-//   NotificationsService,
-// } from "../../../../../core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { routes } from "../../consts";
 
 @Component({
@@ -20,7 +17,7 @@ export class ActionConfirmationComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private dialogRef: MatDialogRef<ActionConfirmationComponent>,
-    // private notificationsService: NotificationsService,
+    private notificationsService: NotificationsService,
     private apiRestService: AuthService,
     private router: Router
   ) {}
@@ -34,18 +31,18 @@ export class ActionConfirmationComponent {
     ).subscribe(
       (res) => {
         console.log(res);
-        // this.notificationsService.showSuccessToastr(
-        //   this.data.modalPayload.successMessage
-        // );
+        this.notificationsService.showSuccessToastr(
+          this.data.modalPayload.successMessage
+        );
         this.dialogRef.close(true);
       },
       (err) => {
         if (err.status === 401) {
           this.router.navigate([this.routes.LOGIN]).then();
         } else {
-          // this.notificationsService.showErrorToastr(
-          //   this.data.modalPayload.errorMessage
-          // );
+          this.notificationsService.showErrorToastr(
+            this.data.modalPayload.errorMessage
+          );
           console.error("ON ERROR", err);
         }
 

@@ -10,13 +10,11 @@ import {
   ViewEncapsulation,
 } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
+import { TranslateService } from "@ngx-translate/core";
 import { MatSort } from "@angular/material/sort";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-
-// import {
-// NotificationsService,
-// } from "../../../../core/services";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { Paginator, TableFactura } from "../../models";
 import { routes } from "../../consts";
 import { environment } from "src/environments/environment";
@@ -75,9 +73,10 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() refresh: EventEmitter<void> = new EventEmitter();
 
   constructor(
-    // private notificationsService: NotificationsService,
     private matDialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private notificationsService: NotificationsService,
+    private translateService: TranslateService
   ) {}
 
   public ngOnChanges(): void {
@@ -160,16 +159,23 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
   deleteFactura(_id: string) {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
-        modalTitle: "Warning",
-        modalMessage: `Are you sure you want to delete this factura with ID: ${_id}?
-      This action can't be undone.`,
+        modalTitle: this.translateService.instant(
+          "invoice.invoice-table.delete-title"
+        ),
+        modalMessage: this.translateService.instant(
+          "invoice.invoice-table.delete-message"
+        ),
         modalPayload: {
           body: {
             _id,
           },
           endpoint: "invoice/delete",
-          successMessage: "Factura deleted!",
-          errorMessage: "Error deleting factura",
+          successMessage: this.translateService.instant(
+            "invoice.invoice-table.delete-success"
+          ),
+          errorMessage: this.translateService.instant(
+            "invoice.invoice-table.delete-error"
+          ),
           // TODO: remove action?
           action: "emitBegoUser",
         },
@@ -222,9 +228,9 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
         setTimeout(() => URL.revokeObjectURL(linkSource), 5000);
       })
       .catch(() => {
-        // this.notificationsService.showErrorToastr(
-        //   "Error al generar vista previa"
-        // );
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant("invoice.invoice-table.preview-error")
+        );
       });
   };
 }

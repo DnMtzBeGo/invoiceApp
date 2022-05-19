@@ -28,6 +28,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -83,6 +84,7 @@ import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/
     MatRadioModule,
     MatTabsModule,
     MatSlideToggleModule,
+    MatSnackBarModule,
     MatDialogModule,
     MatChipsModule,
     MatAutocompleteModule,
@@ -118,6 +120,7 @@ import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/
     MatRadioModule,
     MatTabsModule,
     MatSlideToggleModule,
+    MatSnackBarModule,
     MatDialogModule,
     MatChipsModule,
     MatAutocompleteModule,

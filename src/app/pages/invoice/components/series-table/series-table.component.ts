@@ -8,9 +8,10 @@ import {
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTable, MatTableDataSource } from "@angular/material/table";
+import { TranslateService } from "@ngx-translate/core";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/services/auth.service";
-// import { ApiRestService, NotificationsService } from "src/app/core/services";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { SerieAttributesInterface } from "../../models/invoice/series";
 import { SeriesNewComponent } from "../series-new/series-new.component";
 
@@ -37,9 +38,10 @@ export class SeriesTableComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    // private notificationsService: NotificationsService,
+    private notificationsService: NotificationsService,
     private router: Router,
-    private apiRestService: AuthService
+    private apiRestService: AuthService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {}
@@ -59,7 +61,9 @@ export class SeriesTableComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.message != "") {
-        // this.notificationsService.showSuccessToastr("Serie guardado");
+        this.notificationsService.showSuccessToastr(
+          this.translateService.instant("invoice.serie-table.save-success")
+        );
         this.refresh.emit();
         this.table.renderRows();
       }
@@ -77,7 +81,9 @@ export class SeriesTableComponent implements OnInit {
       )
     ).subscribe(
       (res) => {
-        // this.notificationsService.showErrorToastr("Serie Borrado");
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant("invoice.serie-table.save-error")
+        );
         this.refresh.emit();
       },
       (err) => {

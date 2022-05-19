@@ -659,7 +659,14 @@
             "download-acuse": "Descargar Acuse",
             "send-by-email": "Enviar por Correo",
             "cancel-invoice": "Cancelar Factura",
-            "delete-invoice": "Eliminar Factura"
+            "delete-invoice": "Eliminar Factura",
+
+            "preview-error": "Error al generar vista previa",
+
+            "delete-title": "Atención",
+            "delete-message": "¿Estas seguro que deseas eliminar esta Factura? Esta acción no se puede deshacer.",
+            "delete-success": "Factura borrada!",
+            "delete-error": "Error borrando Factura"
         },
         "filters": {
             "apply": "Aplicar",
@@ -731,6 +738,7 @@
             "regimen": "Régimen fiscal",
             "regimen-placeholder": "Selecciona un Régimen fiscal",
             "regimen-placeholder-2": "Ingresa un RFC emisor válido",
+            "regimen-placeholder-3": "Ingresa un RFC de cliente válido",
 
             "tipo-comprobante": "Tipo de comprobante",
             "moneda": "Moneda",
@@ -814,7 +822,14 @@
             "btn-save-retry": "Reintentar",
             "btn-save-save": "Guardar",
             "btn-save-save-success": "Factura guardada",
-            "btn-save-save-success-tpl": "Template guardado"
+            "btn-save-save-success-tpl": "Template guardado",
+
+            "preview-error": "Error al generar vista previa",
+
+           "template-delete-title": "Atención",
+           "template-delete-message": "¿Estas seguro que deseas eliminar este Template? Esta acción no se puede deshacer.",
+           "template-delete-success": "Template borrado",
+           "template-delete-error": "Error borrando el Template"
         },
         "manage-dir": {
             "emisor": {
@@ -886,7 +901,11 @@
             "image": "Imagen (opcional)",
             "image-placeholder": "Seleccionar imagen (opcional)",
 
-            "btn-save": "Guardar"
+            "btn-save": "Guardar",
+
+            "close-update-success": "Serie actualizada con éxito!",
+            "close-create-success": "Serie creada con éxito!",
+            "close-error": "Ocurrió un error"
         },
         "email-factura": {
             "title": "Enviar por Correo",
@@ -932,7 +951,10 @@
         },
         "emisores": {
             "emisores": "Emisores",
-            "new": "Nuevo Emisor"
+            "new": "Nuevo Emisor",
+
+            "create-success": "Emisor creado",
+            "create-error": "No se pudo crear el Emisor"
         },
         "emisor-table": {
             "rfc-empresa": "RFC Empresa",
@@ -944,7 +966,13 @@
 
             "edit-emisor": "Editar",
             "view-series": "Series",
-            "delete-emisor": "Eliminar Emisor"
+            "delete-emisor": "Eliminar Emisor",
+
+            "edit-success": "Cambio exitoso",
+            "edit-error": "No se pudo editar el Emisor",
+
+            "delete-success": "Emisor Borrado",
+            "delete-error": "No se pudo borrar el Emisor"
         },
         "emisor-edit": {
             "emisor": "Emisor",
@@ -962,7 +990,9 @@
             "key-password": "Archivo Key Contraseña",
             "key-password-placeholder": "Escribir Archivo Key Contraseña",
 
-            "btn-save": "Guardar"
+            "btn-save": "Guardar",
+
+            "save-success": "Emisor guardado"
         },
         "series": {
             "series": "Series",
@@ -976,7 +1006,10 @@
             "logo": "Logo",
 
             "editar": "Editar",
-            "borrar": "Borrar"
+            "borrar": "Borrar",
+
+            "save-success": "Serie guardada",
+            "save-error": "Serie borrada"
         },
         "cp-page": {
             "carta-porte": "Carta Porte 2.0",
@@ -1096,13 +1129,14 @@
             "table-parte-transporte": "Parte transporte"
         },
         "tooltips": {
-            "receptor":{
+            "receptor": {
                 "rfc":"RFC\nIndica el Registro Federal del Contribuyente de tu cliente.",
                 "nombre":"Nombre o Razón social\nExpresa el nombre, denominación o Razón Social de tu cliente.",
                 "uso_cfdi":"Uso de CFDI\nSelecciona el uso que le dará tu cliente al CFDI.",
+                "regimen_fiscal": "Régimen fiscal\nIncorpora la clave del régimen fiscal del contribuyente receptor al que aplicará el efecto fiscal de este comprobante.",
                 "direccion":"Dirección\nPrecisa el domicilio fiscal del receptor, si tiene un sólo domicilio se expresa como \"Principal\". En caso de requerir agregar sucursales para el receptor, se identificarán con la información de \"Nombre Dirección\"."
             },
-            "emisor":{
+            "emisor": {
                 "rfc":"RFC\nIndica el Registro Federal del Contribuyente del emisor.",
                 "nombre":"Nombre o Razón social\nExpresa el nombre, denominación o Razón Social del emisor.",
                 "regimen_fiscal":"Régimen fiscal\nIncorpora la clave del régimen fiscal del contribuyente emisor al que aplicará el efecto fiscal de este comprobante."
@@ -1115,7 +1149,7 @@
             "forma_de_pago":"Forma de pago\nExpresa la clave de la forma de pago de los bienes o servicios amparados por el CFDI.",
             "info_extra":"Información Extra\nExpresa información que se desea incluir en el PDF, puede incluirse información comercial o administrativa que ayude internamente.",
             "conceptos":"Conceptos\nEn éste apartado agregarás la información de los productos o servicios que se incluirán en el CFDI.",
-            "concepto":{
+            "concepto": {
                 "nombre":"Producto o Servicio\nNombre del producto o servicio a incluir en el CFDI",
                 "cve_sat":"Descripción SAT\nIndica la descripción de tu producto, se desplegarán las posibles opciones del catálogo del SAT. Selecciona la opción que más se apegue a tu producto.",
                 "unidad_de_medida":"Unidad de medida\nUnidad de medida del producto o servicio que se esta incluyendo en el CFDI.",
@@ -1126,12 +1160,12 @@
                 "importe":"Importe\nExpresa el importe del producto o servicio. Resultado de la multiplicación de la cantidad por el precio unitario. Sin comas, sólo indica después del punto los decimales. Ej. 1568.40",
                 "total":"Total concepto\nExpresa el valor neto del producto o servicio, incluyendo impuestos y/o descuento."
             },
-            "impuesto":{
+            "impuesto": {
                 "impuesto":"Impuesto\nExpresa el impuesto a incluir en el producto o servicio.",
                 "tasa_cuota":"Tasa\nSelecciona el porcentaje de la tasa que corresponda al impuesto seleccionado. El porcentaje se  calcula con base al importe del producto o servicio. Ej. Si el importe es $100 y la tasa 16%,  el monto del impuesto será igual a $16.00. 8% sólo aplica para emisores autorizados por el SAT en zona fronteriza."
             },
             "documentos_relacionados":"Documentos relacionados\nExpresa la información de los CFDI relacionados al comprobante que se está emitiendo.",
-            "documentos_relacionado":{
+            "documentos_relacionado": {
                 "tipo_de_relacion":"Tipo de relación\nIndica la relación que existe entre el CFDI que se está generando y el/los CFDI previo(s).",
                 "uuid":"UUID\nFolio fiscal del CFDI. Ejemplo: 1335D8A8-1D90-445C-A20D-3371CCDE6006"
             },

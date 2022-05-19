@@ -5,6 +5,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
+import { TranslateService } from "@ngx-translate/core";
 // import { ApiRestService } from "src/app/core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
 
@@ -36,7 +37,8 @@ export class SeriesNewComponent implements OnInit {
   constructor(
     public matDialogRef: MatDialogRef<SeriesNewComponent>,
     private apiRestService: AuthService,
-    @Inject(MAT_DIALOG_DATA) public seriesData
+    @Inject(MAT_DIALOG_DATA) public seriesData,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -100,13 +102,17 @@ export class SeriesNewComponent implements OnInit {
       (res) => {
         this.matDialogRef.close({
           success: true,
-          message: "Series " + type + "d successfully",
+          message: this.translateService.instant(
+            "invoice.serie-new.close-" + type + "-success"
+          ),
         });
       },
       (err) => {
         this.matDialogRef.close({
           success: false,
-          message: "An error occured",
+          message: this.translateService.instant(
+            "invoice.serie-new.close-error"
+          ),
         });
       }
     );

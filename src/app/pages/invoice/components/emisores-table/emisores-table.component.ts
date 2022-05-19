@@ -6,10 +6,11 @@ import {
   EventEmitter,
   ViewChild,
 } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
 import { EmitterAttributesInterface } from "../../models/invoice/emisores";
 import { MatTableDataSource, MatTable } from "@angular/material/table";
-// import { ApiRestService, NotificationsService } from "src/app/core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import {
   MatDialog,
   MatDialogRef,
@@ -44,9 +45,10 @@ export class EmisoresTableComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    // private notificationsService: NotificationsService,
+    private notificationsService: NotificationsService,
     private router: Router,
-    private apiRestService: AuthService
+    private apiRestService: AuthService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {}
@@ -68,13 +70,15 @@ export class EmisoresTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (!result.close) {
         if (result.success) {
-          // this.notificationsService.showSuccessToastr("Cambio exitoso");
+          this.notificationsService.showSuccessToastr(
+            this.translateService.instant("invoice.emisor-table.edit-success")
+          );
           this.refresh.emit();
           this.table.renderRows();
         } else {
-          // this.notificationsService.showErrorToastr(
-          //   "No se pudo editar el Emisor"
-          // );
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant("invoice.emisor-table.edit-error")
+          );
         }
       }
     });
@@ -92,14 +96,16 @@ export class EmisoresTableComponent implements OnInit {
       )
     ).subscribe(
       (res) => {
-        // this.notificationsService.showErrorToastr("Emisor Borrado");
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant("invoice.emisor-table.delete-success")
+        );
         this.refresh.emit();
         this.table.renderRows();
       },
       (err) => {
-        // this.notificationsService.showErrorToastr(
-        //   "No se pudo borrar el Emisor"
-        // );
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant("invoice.emisor-table.delete-error")
+        );
         console.log(err);
       }
     );

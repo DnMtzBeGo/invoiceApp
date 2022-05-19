@@ -42,11 +42,8 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { environment } from "src/environments/environment";
 import omitEmpty from "omit-empty";
-// import {
-//   ApiRestService,
-//   NotificationsService,
-// } from "../../../../core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, simpleFilters, oof } from "src/app/shared/utils/operators.rx";
 import { makeRequestStream } from "src/app/shared/utils/http.rx";
@@ -106,10 +103,12 @@ export class FacturaEditPageComponent implements OnInit {
       status?: number;
       created_at?: string;
       error?: any[];
+      order?: string;
       // rfc
       rfc: string;
       nombre: string;
       usoCFDI: string;
+      regimen_fiscal: string;
       // direccion
       direccion: any;
       // emisor
@@ -266,7 +265,7 @@ export class FacturaEditPageComponent implements OnInit {
   constructor(
     private router: Router,
     private apiRestService: AuthService,
-    // private notificationsService: NotificationsService,
+    private notificationsService: NotificationsService,
     private route: ActivatedRoute,
     private matDialog: MatDialog,
     private translateService: TranslateService
@@ -384,8 +383,9 @@ export class FacturaEditPageComponent implements OnInit {
         ofType("rfc:search"),
         map((search: string) => ({ type: "rfc" as const, search })),
         tap(() => {
-          this.vm.form.usoCFDI = "";
           this.vm.form.nombre = "";
+          this.vm.form.usoCFDI = "";
+          this.vm.form.regimen_fiscal = "";
           this.vm.form.direccion = {};
         })
       ),
@@ -779,6 +779,7 @@ export class FacturaEditPageComponent implements OnInit {
       rfc: "",
       nombre: "",
       usoCFDI: "",
+      regimen_fiscal: "",
       direccion: {},
       emisor: {
         rfc: "",
@@ -1090,16 +1091,23 @@ export class FacturaEditPageComponent implements OnInit {
   deleteFactura(_id: string) {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
-        modalTitle: "Warning",
-        modalMessage: `Are you sure you want to delete this factura with ID: ${_id}?
-      This action can't be undone.`,
+        modalTitle: this.translateService.instant(
+          "invoice.invoice-table.delete-title"
+        ),
+        modalMessage: this.translateService.instant(
+          "invoice.invoice-table.delete-message"
+        ),
         modalPayload: {
           body: {
             _id,
           },
           endpoint: "invoice/delete",
-          successMessage: "Factura deleted!",
-          errorMessage: "Error deleting factura",
+          successMessage: this.translateService.instant(
+            "invoice.invoice-table.delete-success"
+          ),
+          errorMessage: this.translateService.instant(
+            "invoice.invoice-table.delete-error"
+          ),
           // TODO: remove action?
           action: "emitBegoUser",
         },
@@ -1119,16 +1127,23 @@ export class FacturaEditPageComponent implements OnInit {
   deleteTemplate(_id: string) {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
-        modalTitle: "Warning",
-        modalMessage: `Are you sure you want to delete this template with ID: ${_id}?
-      This action can't be undone.`,
+        modalTitle: this.translateService.instant(
+          "invoice.edit.template-delete-title"
+        ),
+        modalMessage: this.translateService.instant(
+          "invoice.edit.template-delete-message"
+        ),
         modalPayload: {
           body: {
             draft_id: _id,
           },
           endpoint: "invoice/delete_draft",
-          successMessage: "Template deleted!",
-          errorMessage: "Error deleting template",
+          successMessage: this.translateService.instant(
+            "invoice.edit.template-delete-success"
+          ),
+          errorMessage: this.translateService.instant(
+            "invoice.edit.template-delete-error"
+          ),
           // TODO: remove action?
           action: "emitBegoUser",
         },
@@ -1157,9 +1172,9 @@ export class FacturaEditPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result == null || result.success == null || result.message === "")
         return;
-      // this.notificationsService[
-      //   result.success ? "showSuccessToastr" : "showErrorToastr"
-      // ](result.message);
+      this.notificationsService[
+        result.success ? "showSuccessToastr" : "showErrorToastr"
+      ](result.message);
     });
   }
 
@@ -1260,9 +1275,9 @@ export class FacturaEditPageComponent implements OnInit {
         setTimeout(() => URL.revokeObjectURL(linkSource), 5000);
       })
       .catch(() => {
-        // this.notificationsService.showErrorToastr(
-        //   "Error al generar vista previa"
-        // );
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant("invoice.edit.preview-error")
+        );
       });
   };
 }

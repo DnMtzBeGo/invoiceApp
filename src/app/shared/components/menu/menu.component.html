@@ -21,7 +21,7 @@
       [ngClass]="{ selected: router.url == '/calendar' }"
       (click)="goTo('calendar')"
     >
-      <bego-button class="btn-menu icon icon-home icon-only"></bego-button>
+      <bego-button class="btn-menu icon icon-calendar1 icon-only"></bego-button>
       {{ "menu.calendar" | translate }}
     </div>
 
@@ -47,7 +47,7 @@
       [ngClass]="{ selected: router.url.startsWith('/invoice') }"
       (click)="goTo('invoice')"
     >
-      <bego-button class="btn-menu icon icon-list icon-only"></bego-button>
+      <bego-button class="btn-menu icon icon-invoice icon-only"></bego-button>
       {{ "menu.invoice" | translate }}
     </div>
     <div
