@@ -312,7 +312,7 @@
             <mat-label>{{
               vm.form?.regimen_fiscal
                 ? ("invoice.edit.regimen" | translate)
-                : vm.form.rfc && !vm.tipoPersona
+                : vm.form?.rfc && !vm.tipoPersona
                 ? ("invoice.edit.regimen-placeholder-3" | translate)
                 : ("invoice.edit.regimen-placeholder" | translate)
             }}</mat-label>
