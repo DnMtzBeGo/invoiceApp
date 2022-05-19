@@ -136,6 +136,21 @@
 
         </div>
 
+         <!-- merchandise type -->
+        <div class="ticket-row">
+          <div>
+            {{ 'checkout.merchandise_type' | translate }}
+          </div>
+          <div>
+            <mat-form-field class="inner-shadow" >
+              <input
+                [disabled]="formIsDisabled"
+                matInput  
+                [value]="orderData?.cargo.cargo_goods ? orderData?.cargo.cargo_goods : ''">
+            </mat-form-field>
+          </div>
+        </div> 
+
         <!-- date -->
         <div class="ticket-row">
           <div>

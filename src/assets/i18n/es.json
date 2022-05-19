@@ -210,7 +210,11 @@
         "summary": "Resumen",
         "invoice": "Receptor",
         "emitter": "Emisor",
-        "invalid_rfc": "RFC invalido"
+        "invalid_rfc": "RFC invalido",
+        "preview": "Factura",
+        "invoice-preview": "previo de Factura",
+        "merchandise_type": "Tipo de Mercancia",
+        "file_size_error": "El archivo es demasiado pesado"
     },
     "history": {
         "title": "Historial de viajes",

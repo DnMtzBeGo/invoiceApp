@@ -67,12 +67,12 @@
 
                 <ng-template #elseBlockCer>
                     <div class="fileUpload">
-                        <mat-icon> insert_drive_file_outline</mat-icon>
+                        <bego-button class="icon icon-document icon-only"></bego-button>
                         <div class="name">
                             <span>Certificate.cer</span>
                             <span>{{ cerDate | date: 'dd MMM yyyy' }} | {{ cerSize }} </span>
                         </div>
-                        <mat-icon (click)="removeFile('cer')">delete_outline</mat-icon>
+                        <bego-button class="icon icon-trash icon-only" (click)="removeFile('cer')"></bego-button>
                     </div>
                 </ng-template>
 
@@ -101,12 +101,12 @@
 
                <ng-template #elseBlockKey>
                    <div class="fileUpload">
-                       <mat-icon> insert_drive_file_outline</mat-icon>
+                       <bego-button class="icon icon-document icon-only"></bego-button>
                        <div class="name">
                            <span>Key.key</span>
                            <span>{{ keyDate | date: 'dd MMM yyyy' }} | {{ keySize }} </span>
                        </div>
-                       <mat-icon (click)="removeFile('key')">delete_outline</mat-icon>
+                       <bego-button class="icon icon-trash icon-only" (click)="removeFile('key')"></bego-button>
                    </div>
                </ng-template>
 

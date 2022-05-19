@@ -17,7 +17,7 @@ export class BegoAddressAutocompleteComponent implements OnInit {
   predictions: Array<any> = [];
 
   autocompleteForm =  this.formBuilder.group({
-    address : ['', Validators.required],
+    address : [''],
   });
 
   autoCompletePredictions: Array<any> = [];

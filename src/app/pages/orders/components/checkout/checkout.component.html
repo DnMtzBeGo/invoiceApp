@@ -11,22 +11,20 @@
     </app-stepper>
 
     
-
+    
     <div>
       <!-- only show cards if selected tab is 'summary'-->
-      <div class="pickup-dropoff-cards" *ngIf="currentStepIndex == checkoutSteps.length - 1">
+      <div class="previewBox" (click)="getInvoicePreview()" *ngIf="currentStepIndex == checkoutSteps.length - 1">
+        <bego-button class="icon icon-document icon-only"></bego-button>
+        <div class="name">
+          <span *ngIf="summaryData.order_number">{{ summaryData.order_number }}.pdf</span>
+          <span *ngIf="!summaryData.order_number">{{ 'checkout.preview' | translate }}.pdf</span>
+          <span>{{ 'checkout.invoice-preview' | translate }}</span>
+        </div>
+      </div>
 
-        <div class="previewBox" (click)="getInvoicePreview()">
-          <mat-icon> insert_drive_file_outline</mat-icon>
-          <div class="name">
-            <span>Invoice.pdf</span>
-            <span>Invoice Preview</span>
-          </div>
-        </div>
+      <div class="pickup-dropoff-cards" *ngIf="currentStepIndex == checkoutSteps.length - 1">
         
-        <div>
-          
-        </div>
 
         <bego-radio-card
           (click)=" changeSelectedCard('pickup') "

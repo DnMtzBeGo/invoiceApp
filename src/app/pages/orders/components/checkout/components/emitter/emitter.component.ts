@@ -117,6 +117,7 @@ export class EmitterComponent implements OnInit {
 
     onFileChange(event: File, type: string ) {
         if(event[0].name.includes('.cer') || event[0].name.includes('.key')){
+          if(event[0].size > this.maxSize) return this.alert(this.traslateService.instant('checkout.file_size_error'));
           if(type === 'cer'){
             this.receiverForm.patchValue({
               archivo_cer: event[0]
@@ -135,19 +136,23 @@ export class EmitterComponent implements OnInit {
           this.emit()
         }
         else{
-          this.alerService.create({
-            title: this.traslateService.instant('checkout.alerts.fileType'),
-            handlers:[
-              {
-                text: this.traslateService.instant('Ok'),
-                  color: '#ffbe00',
-                action: async () => {
-                this.alerService.close();
-              }
-              }
-            ]
-          })
+          this.alert(this.traslateService.instant('checkout.alerts.fileType'));
         }
+    }
+
+    alert(message: string){
+      this.alerService.create({
+        body: message,
+        handlers:[
+          {
+            text: this.traslateService.instant('Ok'),
+              color: '#ffbe00',
+            action: async () => {
+            this.alerService.close();
+          }
+          }
+        ]
+      })
     }
 
     removeFile(type: string){

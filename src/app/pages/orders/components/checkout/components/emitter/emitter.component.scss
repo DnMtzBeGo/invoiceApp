@@ -38,9 +38,17 @@
             align-items: center;
         }
 
-        mat-icon:last-child{
+        bego-button{
+            transform: scale(1.5);
+        }
+
+        bego-button:last-child{
             cursor: pointer;
         }
+    }
+    mat-select{
+        background-color: #091016;
+        box-shadow: none;
     }
   }
   

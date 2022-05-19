@@ -376,7 +376,11 @@
         "summary": "Summary",
         "invoice": "Receiver",
         "emitter": "Emitter",
-        "invalid_rfc": "Invalid RFC"
+        "invalid_rfc": "Invalid RFC",
+        "preview": "Invoice",
+        "invoice-preview": "Invoice Preview",
+        "merchandise_type": "Merchandise Type",
+        "file_size_error": "The file is too big"
       },
       "profile": {
         "account": {

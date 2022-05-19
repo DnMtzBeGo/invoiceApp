@@ -119,6 +119,7 @@ export class CheckoutComponent implements OnInit {
 
       (res: any) => {
         this.invoiceData = res.result;
+        // this.invoiceData.attributes.tax_regime = ''
         // if(!this.invoiceData.cer && !this.invoiceData.key) {
           this.checkoutSteps.unshift({
             text: this.translateService.instant('checkout.emitter'),
@@ -273,22 +274,6 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  async infoAlert(title: string, message: string) {
-    this.alertService.create({
-      title: title,
-      body: message,
-      handlers: [
-        {
-          text: this.translateService.instant('OK'),
-          color: '#ffbe00',
-          action: async () => {
-            this.alertService.close();
-          }
-        }
-      ]
-    });
-  }
-
   async verificationAlert(title: string, message: string) {
     this.alertService.create({
       title: title,
@@ -376,10 +361,12 @@ export class CheckoutComponent implements OnInit {
           });
         },
         err => {
-          console.log(err.error.error[0].error)
+          console.log(err.error.error.error)
+          let message:string;
+          Array.isArray(err.error.error) ? message = err.error.error[0].error.split(',').join('\n') : message = err.error.error.error;
           this.alertService.create({
             title: this.translateService.instant('checkout.alerts.emitter-validated-fail'),
-            body: err.error.error[0].error,
+            body: message,
             handlers: [
               {
                 text: this.translateService.instant('checkout.btn-retry'),
@@ -417,7 +404,6 @@ export class CheckoutComponent implements OnInit {
     this.receiverData.taxRegime ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-tax_regime'));
 
     if(faltates.length > 0){
-      console.log(faltates.join(',')+'\n'+ 'taka');
       let errores = faltates.join(', ');
       this.alertService.create({
         title: this.translateService.instant('checkout.alerts.receiver-stamp'),
