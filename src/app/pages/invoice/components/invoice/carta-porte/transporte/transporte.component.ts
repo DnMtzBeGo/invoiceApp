@@ -26,9 +26,13 @@ export class TransporteComponent implements OnInit {
   public ingresoSalidaPais: ClavesDeTransporte[];
   public countries: CartaPorteCountries[];
 
+  public cartaPorteType: string = 'autotransporte';
+
+  public transporteInternacional: string = 'No';
+
   public internationalTransport: boolean = false;
   firstFormGroup: FormGroup = new FormGroup({
-    transp_internac: new FormControl(false),
+    transp_internac: new FormControl(""),
     pais_origen_destino: new FormControl(""),
     entrada_salida_merc: new FormControl(""),
     via_entrada_salida: new FormControl(""),
@@ -84,5 +88,9 @@ export class TransporteComponent implements OnInit {
         via_entrada_salida: via_entrada_salida,
       });
     }
+  }
+
+  onValChange(value) {
+    console.log(value)
   }
 }
