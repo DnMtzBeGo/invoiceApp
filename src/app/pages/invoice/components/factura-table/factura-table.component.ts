@@ -22,7 +22,9 @@ import {
   facturaPermissions,
   previewFactura,
   facturaStatus,
+  toFactura,
 } from "../../containers/factura-edit-page/factura.core";
+import { clone } from "../../../../shared/utils/object";
 import {
   ActionSendEmailFacturaComponent,
   ActionCancelarFacturaComponent,
@@ -210,7 +212,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
           "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
           Authorization: `Bearer ${this.token}`,
         },
-        body: JSON.stringify(previewFactura(factura)),
+        body: JSON.stringify(previewFactura(toFactura(clone(factura)))),
       })
       .then((responseData) => responseData.arrayBuffer())
       .then((buffer) => {
