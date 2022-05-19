@@ -45,11 +45,13 @@ export class BegoAddressAutocompleteComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void{
-    if(changes.address  ){
+      if(changes.address && changes.address.currentValue){
       this.originalAddressValue = this.address;
+      this.autocompleteForm.controls.address.setValue(this.address);
       if(this.input?.nativeElement){
-        this.input.nativeElement.value = this.originalAddressValue;
-      }
+          this.input.nativeElement.value = this.originalAddressValue;
+          console.log('valor del input',this.input.nativeElement.value)
+        }
     }
   }
 

@@ -13,6 +13,7 @@ import { EmitterModule } from './components/emitter/emitter.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { BegoRadioCardModule } from 'src/app/shared/components/bego-radio-card/bego-radio-card.module';
 import { PriceDetailsModule } from 'src/app/shared/components/price-details/price-details.module';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { PriceDetailsModule } from 'src/app/shared/components/price-details/pric
     TranslateModule,
     BegoRadioCardModule,
     PriceDetailsModule,
-    EmitterModule
+    EmitterModule,
+    MatIconModule
   ]
 })
 export class CheckoutModule { }

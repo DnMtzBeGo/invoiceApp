@@ -11,7 +11,7 @@
 
     <div body>
       
-      <form [formGroup]="recieverForm">
+      <form [formGroup]="receiverForm">
 
          <!-- address -->
          <div class="ticket-row">
@@ -20,7 +20,7 @@
           </div>
           <div class="address">
             <bego-address-autocomplete
-              [address]="recieverForm.value.address.address"
+              [address]="addressName"
               (addressChange)="setAddressName($event)"
               (placeIdChange)='setPlaceId($event)'>
             </bego-address-autocomplete>
@@ -34,7 +34,7 @@
           </div>
           <div>
             <mat-form-field  class="inner-shadow" >
-              <input matInput  formControlName="company">
+              <input matInput (focusout)="emitreceiverData()" formControlName="company">
             </mat-form-field>
           </div>
         </div> 
@@ -46,8 +46,9 @@
           </div>
           <div>
             <mat-form-field class="inner-shadow"  >
-              <input matInput formControlName="rfc">
+              <input matInput (focusout)="validateRFC()" formControlName="rfc">
             </mat-form-field>
+            <p class="error" *ngIf="!validRFC && receiverForm.controls.rfc.value">{{ 'checkout.invalid_rfc' | translate }}</p>
           </div>
         </div> 
 
@@ -59,10 +60,9 @@
           <div>
             <mat-form-field class="small-input-inner-shadow">
               <mat-select 
-                class="disable-custom-format"
                 formControlName="cfdi"
-                (valueChange)="updateCFDI($event)" >
-          
+                (valueChange)="updateCFDI($event)" 
+                >
                   <mat-option value="select-document" [disabled]="true"> 
                       {{ 'checkout.select-cfdi' | translate }}
                   </mat-option>
@@ -76,6 +76,29 @@
           </div>
         </div> 
 
+         <!-- tax_regime -->
+         <div class="ticket-row">
+          <div>
+            {{ 'checkout.placeholder-tax_regime' | translate }}
+          </div>
+          <div>
+            <mat-form-field class="small-input-inner-shadow">
+              <mat-select 
+                formControlName="taxRegime"
+                (valueChange)="updateTaxRegime($event)">
+          
+                  <mat-option value="select-document" [disabled]="true"> 
+                      {{ 'checkout.select-tax' | translate }}
+                  </mat-option>
+          
+                  <mat-option *ngFor="let j of tax_regimes" [value]="j.code">
+                      {{ j.code }} - {{ j.description }}
+                  </mat-option>
+          
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div> 
       </form>
 
     </div>

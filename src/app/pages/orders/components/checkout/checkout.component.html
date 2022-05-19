@@ -10,9 +10,24 @@
       [steps]="checkoutSteps">
     </app-stepper>
 
+    
+
     <div>
       <!-- only show cards if selected tab is 'summary'-->
       <div class="pickup-dropoff-cards" *ngIf="currentStepIndex == checkoutSteps.length - 1">
+
+        <div class="previewBox" (click)="getInvoicePreview()">
+          <mat-icon> insert_drive_file_outline</mat-icon>
+          <div class="name">
+            <span>Invoice.pdf</span>
+            <span>Invoice Preview</span>
+          </div>
+        </div>
+        
+        <div>
+          
+        </div>
+
         <bego-radio-card
           (click)=" changeSelectedCard('pickup') "
           [cardIsSelected]=" selectedCard == 'pickup' ">
@@ -89,7 +104,7 @@
             <div class="tab-container">
               <app-invoice
                 [userData]="invoiceData"
-                (invoiceData)="updateInvoiceData($event)">
+                (receiverData)="updatereceiverData($event)">
               </app-invoice>
             </div>
           </mat-tab>
@@ -114,7 +129,8 @@
             <mat-tab >
               <div class="tab-container">
                 <app-emitter
-                  [userData]="summaryData">
+                  [userData]="invoiceData"
+                  (emitterData)="updateEmitterData($event)">>
                 </app-emitter>
               </div>
             </mat-tab>
@@ -123,7 +139,7 @@
               <div class="tab-container">
                 <app-invoice
                   [userData]="invoiceData"
-                  (invoiceData)="updateInvoiceData($event)">
+                  (receiverData)="updatereceiverData($event)">
                 </app-invoice>
               </div>
             </mat-tab>
@@ -164,7 +180,7 @@
         <button 
           mat-raised-button 
           class="bego-btn yellow full-width thick-btn"
-          (click)="nextStep()">
+          (click)="validate()">
           <span class="bold">
             {{ checkoutSteps[currentStepIndex]?.nextBtnTxt }}
           </span>

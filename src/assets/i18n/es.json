@@ -92,6 +92,7 @@
     "checkout": {
         "title-checkout": "Checkout",
         "txt-reference": "Referencia",
+        "title-emitter": "Informacion del Emisor",
         "txt-order": "Orden",
         "txt-pickup": "Recolección",
         "txt-dropoff": "Entrega",
@@ -101,10 +102,12 @@
         "placeholder-email": "Email",
         "placeholder-phonenumber": "Teléfono Móvil",
         "placeholder-address": "Dirección",
-        "placeholder-company": "Compañía (nombre legal)",
+        "placeholder-company": "Razon social",
         "placeholder-rfc": "RFC",
         "placeholder-cfdi": "Uso de CFDI",
+        "placeholder-tax_regime": "Regimen Fiscal",
         "select-cfdi":"Selecciona un CFDI",
+        "select-tax":"Selecciona un Regimen Fiscal",
         "edit": "Editar",
         "unit": "Unidad",
         "tons": "tons",
@@ -128,8 +131,15 @@
         "total-price": "Total",
         "placeholder-cargo": "Descripción del cargo",
         "placeholder-notes": "Notas Extra",
+        "placeholder-file_cer": "Selecciona tu certificado (CSD)",
+        "placeholder-file_key": "Selecciona tu llave",
+        "btn-file_cer": "Certificado de cello digital (.cer)",
+        "btn-file_key": "LLave de cello digital (.key)",
+        "placeholder-password": "Contraseña del Certificado",
         "btn-continue": "Continuar",
+        "btn-retry": "Reintentar",
         "btn-submit": "Crear Orden",
+        "upload": "Subir",
         "txt-reference-payment": "Referencia",
         "txt-account-payment": "Clabe Interbancaria",
         "txt-company-payment": "Razón Social",
@@ -155,7 +165,19 @@
             "txt-valid-invoice": "Favor de completar los campos de tu factura.",
             "verify-user-title": "Antes de completar la orden debemos verificar tu cuenta",
             "verify-user-body": "Completa la documentación en la página de perfil", 
-            "error-orderid": "El ID de la Orden no es válido"
+            "error-orderid": "El ID de la Orden no es válido",
+            "fileSize": "el archivo es demasiado pesado",
+            "fileType": "el tipo de archivo debe ser .cer o .key",
+            "emitter-validated": "Emisor validado",
+            "emitter-validated-fail": "Emisor no validado",
+            "emitter-create": "Para crear el emisor: ",
+            "emitter-tax_regime": "Falta el régimen fiscal del emisor",
+            "receiver-stamp": "Para generar carta porte:",
+            "receiver-address": "Falta la dirección del receptor",
+            "receiver-company": "Falta la razón social del receptor",
+            "receiver-rfc": "Falta el RFC del receptor",
+            "receiver-cfdi": "Falta el CFDI del receptor",
+            "receiver-tax_regime": "Falta el régimen fiscal del receptor"
         },
         "insurance-modal": {
             "title-insurance": "¿Seguro para tu carga?",
@@ -178,16 +200,17 @@
             "txt-agent-prices": "(Precios en USD)"
         },
         "stepper-btns":{
-            "continue-to-reciever": "Continuar a Receptor",
-            "continue-to-invoice": "Continuar a el resumen",
-            "submit": "Crear Orden"
+            "continue-to-emitter": "Continuar a Receptor",
+            "continue-to-invoice": "Continuar a el Resumen",
+            "summary": "Crear Orden"
         },
         "skip": "Omitir",
         "next": "Siguiente",
         "label-total-price": "Total:",
         "summary": "Resumen",
         "invoice": "Receptor",
-        "emitter": "Emisor"
+        "emitter": "Emisor",
+        "invalid_rfc": "RFC invalido"
     },
     "history": {
         "title": "Historial de viajes",

@@ -9,11 +9,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
-import { InputDirectionsModule } from 'src/app/shared/components/input-directions/input-directions.module';
+import { BegoAddressAutocompleteModule } from 'src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module';
+import { MatIconModule } from '@angular/material/icon';
+import { DateFormatterPipe } from 'src/app/shared/pipes/date-formatter/date-formatter.pipe';
 
 @NgModule({
   declarations: [
     EmitterComponent,
+    DateFormatterPipe
   ],
   imports: [
     CommonModule,
@@ -26,7 +29,8 @@ import { InputDirectionsModule } from 'src/app/shared/components/input-direction
     ReactiveFormsModule,
     MatButtonModule,
     BegoPhoneInputModule,
-    InputDirectionsModule
+    BegoAddressAutocompleteModule,
+    MatIconModule
   ],
   exports: [
     EmitterComponent,

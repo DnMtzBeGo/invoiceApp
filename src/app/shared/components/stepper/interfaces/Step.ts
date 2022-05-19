@@ -15,4 +15,8 @@ export interface Step {
      * The text to be put on the next btn
      */
     nextBtnTxt?:string,
+    /**	
+     * The step name
+     */
+     step?: string,
 }

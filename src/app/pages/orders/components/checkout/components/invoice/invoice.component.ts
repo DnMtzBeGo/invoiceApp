@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { CfdiService } from 'src/app/services/cfdi.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { from } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import {map, mergeAll} from "rxjs/operators";
 
 @Component({
   selector: 'app-invoice',
@@ -11,104 +12,106 @@ import { CfdiService } from 'src/app/services/cfdi.service';
 export class InvoiceComponent implements OnInit {
 
   @Input() userData: any;
-  @Output() invoiceData: any = new EventEmitter<any>();
+  @Output() receiverData: any = new EventEmitter<any>();
 
-  recieverForm: FormGroup = this.formBuilder.group({
-    address: [{
-      address: '',
-      place_id: '',
-    }],
+  receiverForm: FormGroup = this.formBuilder.group({
+    address: [''],
+    place_id: [''],
     company: [''],
     rfc: [''],
     cfdi: [''],
-    taxRegine: [''],
+    taxRegime: [''],
   });
- 
-  address: {
-    address: string,
-    place_id: string,
-  } = {
-    address: '',
-    place_id: '',
-  }
 
-  invoiceFormIsEnabled:boolean = false;
+
+  validRFC: boolean = true;
+  addressName: string = '';
 
   CFDIs!: Array<any>;
+  tax_regimes: Array<any>;
+  taxSelected: string = 'select-document';
   cfdiSelected: string = 'select-document';
 
   constructor(
     private formBuilder: FormBuilder,
-    private cfdiService: CfdiService,
-    private translateService: TranslateService,
-  ) {
-    this.translateService.onLangChange.subscribe((lang: any) => {
-      
-      if(lang.lang == 'es'){
-        this.cfdiService.getCFDI_es().subscribe( ( result ) => {
-          this.CFDIs = result;
-        })
-      }else{
-        this.cfdiService.getCFDI_en().subscribe( ( result ) => {
-          this.CFDIs = result;
-        })
-      }
-      })
-  }
+    private apiRestService: AuthService,
+  ) {}
 
-  ngOnInit(): void {
-    const lang = localStorage.getItem('lang');
-    if(lang == 'es'){
-      this.cfdiService.getCFDI_es().subscribe( ( result ) => {
-        this.CFDIs = result;
-      })
-    }else{
-      this.cfdiService.getCFDI_en().subscribe( ( result ) => {
-        this.CFDIs = result;
-      })
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void{
-    console.log('cambios',changes)
-    if(changes.userData && this.userData) {
-
-      const {attributes } = this.userData;
-
-      this.recieverForm.patchValue({
-        company: attributes.companyName,
-        rfc: attributes.RFC,
-        cfdi:  attributes.CFDI,
-        taxRegine: attributes.taxRegine,
-      });
-
-    }
+  ngOnInit() {
+   this.fetchCatalogs().subscribe(data => {
+     this.CFDIs = data[0].documents;
+     this.tax_regimes = data[1].documents;
+   })
   }
 
 
-  updateCFDI(cfdi: string){
+  fetchCatalogs(){
+    return from(
+      this.apiRestService.apiRest(JSON.stringify({
+        catalogs:[{
+          name: 'sat_usos_cfdi',
+          version: 0,
+        },
+      {
+        name: 'sat_regimen_fiscal',
+        version: 0,
+      }]
+      }), '/invoice/catalogs/fetch')
+   ).pipe(
+     mergeAll(),
+     map(data => data.result.catalogs)
+     )
+  }
+
+  async updateCFDI(cfdi: string){
     this.cfdiSelected = cfdi;
+    await this.receiverForm.patchValue({
+      cfdi: cfdi
+    })
+    this.emitreceiverData()
+  }
+
+  async updateTaxRegime(tax_regime: string){
+    this.taxSelected = tax_regime;
+    await this.receiverForm.patchValue({
+      taxRegime: tax_regime
+    })
+    this.emitreceiverData()
   }
 
 
 
   setAddressName(value: any){
   console.log('address',value)
-    this.recieverForm.patchValue({
-      address: {
-        address: value
-      }
+    this.receiverForm.patchValue({
+      address: value
     });
-    this.address = value;
+    this.addressName = value;
   }
 
   setPlaceId(value: any){
     console.log('placeId',value)
-      this.recieverForm.patchValue({
-        address: {
-          place_id: value
-        }
+      this.receiverForm.patchValue({
+        place_id: value
       });
+      this.emitreceiverData()
     }
 
+    emitreceiverData(){
+      this.receiverData.emit(this.receiverForm.value);
+    }
+
+    validateRFC(){
+      if(
+        /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/.test(
+          this.receiverForm.value.rfc
+          ) && this.receiverForm.value.rfc.length >= 12
+          ){
+            this.validRFC = true;
+            this.emitreceiverData()
+          }
+          else{
+            this.validRFC = false;
+          }
+    }
 }

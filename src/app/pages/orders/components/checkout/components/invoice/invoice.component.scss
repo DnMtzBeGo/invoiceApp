@@ -7,10 +7,11 @@
   padding: 17px 0px;
   color: #ededed;
 
-  .address{
-    width: 100%;
-    padding-left: 0% !important;
-    padding-right: 0% !important;
+  .error{
+    display: flex;
+    justify-content: flex-end;
+    color: red;
+    font-size: small;
   }
 }
 

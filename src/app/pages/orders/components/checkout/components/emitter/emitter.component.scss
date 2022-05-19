@@ -1,0 +1,51 @@
+.ticket-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    text-align:left;
+    font-size: 18px;
+    padding: 17px 0px;
+    color: #ededed;
+  
+    .button-file{
+        width: 100%;
+        height: 50px;
+        color: #ededed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px dashed #1c232a;
+        cursor: pointer;
+        
+        mat-icon{
+            color:#ffbe00;
+            margin-right: 15px;
+        }
+    }
+
+    .fileUpload{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 50px;
+        font-size: small;
+        border: 1px dashed #1c232a;
+
+        .name{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        mat-icon:last-child{
+            cursor: pointer;
+        }
+    }
+  }
+  
+  .header{
+    position: absolute;
+    top: -35px;
+    width: 100%;
+  }
