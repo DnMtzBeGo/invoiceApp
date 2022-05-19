@@ -2106,7 +2106,10 @@
                   mat-icon-button
                   (click)="formEmitter.next(['impuestos:remove', index])"
                 >
-                  <mat-icon>delete</mat-icon>
+                  <mat-icon
+                    class="icon icon-trash1 icon-only"
+                    style="font-size: 18px"
+                  ></mat-icon>
                 </button>
               </td>
             </tr>
@@ -2212,7 +2215,10 @@
                     mat-menu-item
                     (click)="formEmitter.next(['conceptos:remove', index])"
                   >
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon
+                      class="icon icon-trash1 icon-only"
+                      style="font-size: 18px"
+                    ></mat-icon>
                     <span>{{
                       "invoice.edit.concepto-eliminar" | translate
                     }}</span>
@@ -2423,8 +2429,8 @@
         >
           <thead>
             <tr>
-              <th width="50%">{{ "invoice.edit.doc-rel-uuid" | translate }}</th>
-              <th *ngIf="!vm.readonly && !vm.form?.order" width="50%">
+              <th width="80%">{{ "invoice.edit.doc-rel-uuid" | translate }}</th>
+              <th *ngIf="!vm.readonly && !vm.form?.order" width="20%">
                 {{ "invoice.edit.opciones" | translate }}
               </th>
             </tr>
@@ -2444,7 +2450,10 @@
                   mat-icon-button
                   (click)="vm.form.documentos_relacionados.splice(index, 1)"
                 >
-                  <mat-icon>delete</mat-icon>
+                  <mat-icon
+                    class="icon icon-trash1 icon-only"
+                    style="font-size: 18px"
+                  ></mat-icon>
                 </button>
               </td>
             </tr>
