@@ -49,7 +49,6 @@ export class EmitterComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    console.log('userData',this.userData)
     if(this.userData.attributes.address){
       this.setAddressName(this.userData.attributes.address);
     }
@@ -59,7 +58,6 @@ export class EmitterComponent implements OnInit {
   }
 
    ngOnChanges(changes: any): void{
-    console.log('cambios emitter',changes)
     if(changes.userData && this.userData) {
 
       const {attributes } = this.userData;
@@ -99,7 +97,6 @@ export class EmitterComponent implements OnInit {
   }
 
   setAddressName(value: any){
-  console.log('address',value)
     this.receiverForm.patchValue({
         address: value
     });
@@ -107,7 +104,6 @@ export class EmitterComponent implements OnInit {
   }
 
   setPlaceId(value: any){
-    console.log('placeId',value)
       this.receiverForm.patchValue({
           place_id: value
       });

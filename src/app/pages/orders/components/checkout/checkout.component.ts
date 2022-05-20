@@ -93,6 +93,7 @@ export class CheckoutComponent implements OnInit {
             step: e.step
           }
         })
+        this.calculateProgress();
       })      
    }
 
@@ -144,7 +145,6 @@ export class CheckoutComponent implements OnInit {
           console.error('Error on customs cruce : ', error.customsCruce );
         }
       )
-      console.log(this.summaryData);
   }
 
   calculateProgress():number{
@@ -173,13 +173,11 @@ export class CheckoutComponent implements OnInit {
   }
 
   async updatereceiverData(data: any) {
-    console.log('updatereceiverData', data);
     this.receiverData = data;
   }  
 
   updateEmitterData(data: emitterData){
     this.emitterData = data;
-    console.log('emitter DATA',this.emitterData)
   }
   /**
    * Moves checkout stepper to the next step
@@ -217,7 +215,6 @@ export class CheckoutComponent implements OnInit {
         "propertyToUpdate": "invoice",
         // "newValue": this.userValidateData
       }
-      console.log(datos);
   
       let requestJson = JSON.stringify(datos);
   
@@ -355,13 +352,13 @@ export class CheckoutComponent implements OnInit {
                 color: '#ffbe00',
                 action: async () => {
                   this.alertService.close();
+                  this.nextStep();
                 }
               }
             ]
           });
         },
         err => {
-          console.log(err.error.error.error)
           let message:string;
           Array.isArray(err.error.error) ? message = err.error.error[0].error.split(',').join('\n') : message = err.error.error.error;
           this.alertService.create({
@@ -453,6 +450,19 @@ export class CheckoutComponent implements OnInit {
         this.nextStep();
       },
       err => {
+        this.alertService.create({
+          title: this.translateService.instant('errors.timeout.title'),
+          body: this.translateService.instant('errors.timeout.body'),
+          handlers: [
+            {
+              text: this.translateService.instant('Ok'),
+              color: '#ffbe00',
+              action: async () => {
+                this.alertService.close();
+              }
+            }
+          ]
+        });
         console.log(err)
       }
     )

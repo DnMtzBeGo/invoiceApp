@@ -24,7 +24,7 @@ export class InvoiceComponent implements OnInit {
   });
 
 
-  validRFC: boolean = true;
+  validRFC: boolean = false;
   addressName: string = '';
 
   CFDIs!: Array<any>;
@@ -82,7 +82,6 @@ export class InvoiceComponent implements OnInit {
 
 
   setAddressName(value: any){
-  console.log('address',value)
     this.receiverForm.patchValue({
       address: value
     });
@@ -90,7 +89,6 @@ export class InvoiceComponent implements OnInit {
   }
 
   setPlaceId(value: any){
-    console.log('placeId',value)
       this.receiverForm.patchValue({
         place_id: value
       });
@@ -111,8 +109,9 @@ export class InvoiceComponent implements OnInit {
             this.emitreceiverData()
           }
           else{
+            this.validRFC && this.receiverData.emit({...this.receiverForm.value, rfc: ''});
             this.validRFC = false;
-            this.receiverData.emit({...this.receiverForm.value, rfc: ''});
+            
           }
     }
 }

@@ -50,7 +50,6 @@ export class BegoAddressAutocompleteComponent implements OnInit {
       this.autocompleteForm.controls.address.setValue(this.address);
       if(this.input?.nativeElement){
           this.input.nativeElement.value = this.originalAddressValue;
-          console.log('valor del input',this.input.nativeElement.value)
         }
     }
   }

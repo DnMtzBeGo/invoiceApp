@@ -333,7 +333,7 @@
             "error-orderid": "Invalid Order Id",
             "fileSize": "the file is too big",
             "fileType": "file type must be .cer or .key",
-            "emitter-validated": "Emitter validated",
+            "emitter-validated": "Emitter Created",
             "emitter-validated-fail": "Invalid Emitter",
             "emitter-create": "To create an emitter: ",
             "emitter-tax_regime": "Emitter tax regime is missing",

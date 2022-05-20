@@ -168,7 +168,7 @@
             "error-orderid": "El ID de la Orden no es válido",
             "fileSize": "el archivo es demasiado pesado",
             "fileType": "el tipo de archivo debe ser .cer o .key",
-            "emitter-validated": "Emisor validado",
+            "emitter-validated": "Emisor Creado",
             "emitter-validated-fail": "Emisor no validado",
             "emitter-create": "Para crear el emisor: ",
             "emitter-tax_regime": "Falta el régimen fiscal del emisor",
