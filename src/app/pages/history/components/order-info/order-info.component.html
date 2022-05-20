@@ -1,11 +1,20 @@
 <div class="order-info-container">
   <div class="order-info-row-status">
     <div class="order-data-gral">
-      <div class="order-reference-date">
-        <p class="order-reference">{{'history.history_detail.reference' | translate }} {{orderInfo['reference_number']}}</p>
-        <p class="order-date">{{orderInfo['created'] | date: 'dd/MM/yyyy'}} <i class="icon icon-dot"></i> {{orderInfo['created'] | date: 'shortTime'}}</p>
+      <div>
+        <div class="order-reference-date">
+          <p class="order-reference">{{'history.history_detail.reference' | translate }}
+            {{orderInfo['reference_number']}}</p>
+        </div>
+        <div class="order-number">{{'history.history_detail.order' | translate }} #{{orderInfo['order_number']}}</div>
+        <div class="order-date">{{orderInfo['created'] | date: 'dd/MM/yyyy'}} <i class="icon icon-dot"></i>
+          {{orderInfo['created'] | date: 'shortTime'}}</div>
       </div>
-      <div class="order-number">{{'history.history_detail.order' | translate }} #{{orderInfo['order_number']}}</div>
+      <div class="edit-cn-btn-wrapper">
+        <app-edit-cn-btn *ngIf="orderInfo.user_id == orderInfo.manager?._id" [progress]="orderInfo?.stampedPercentage"
+          [orderId]="orderInfo._id"></app-edit-cn-btn>
+      </div>
+
     </div>
 
     <div class="order-info-status">

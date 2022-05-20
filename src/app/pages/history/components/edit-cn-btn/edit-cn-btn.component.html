@@ -1,0 +1,13 @@
+<div *ngIf="showComponent" class="wrapper" (click)="editConsignmentNote()">
+  <div>
+    <div class="progress">
+      <div class="barOverflow">
+        <div class="bar" #bar></div>
+      </div>
+      <span class="progress-text">{{progress || 0}}</span>%
+    </div>
+  </div>
+  <div class="label">
+    {{'history.consignment_note.complete_invoice' | translate}}
+  </div>
+</div>

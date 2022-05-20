@@ -17,6 +17,7 @@ import { NoOrdersYetComponent } from './components/no-orders-yet/no-orders-yet.c
 import { MatButtonModule } from '@angular/material/button';
 import { DownloadInvoicesComponent } from './components/download-invoices/download-invoices.component';
 import { MatIconModule } from '@angular/material/icon';
+import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
     OrderCardComponent,
     NoOrdersYetComponent,
     DownloadInvoicesComponent,
+    EditCnBtnComponent,
   ],
   imports: [
     CommonModule,

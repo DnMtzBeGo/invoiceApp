@@ -13,12 +13,34 @@
     border-radius: 8px;
 
     .order-data-gral {
-      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      margin: 0px 46px 32px 46px;
+      padding-top: 39px;
+      .order-date{
+        font-family: 'Avenir-Light';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        text-transform: capitalize;
+        color: #ededed;
+      }
+      .icon {
+        font-size: 5px;
+        color: #EDEDED;
+        line-height: 18px;
+        margin: 0 5px;
+        line-height: 32px;
+      }
+
+      .edit-cn-btn-wrapper{
+        align-self: center;
+      }
     }
   }
 
   .order-number {
-    margin-left: 46px;
     font-family: 'Avenir-Light';
     font-style: normal;
     font-weight: 800;
@@ -34,7 +56,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 39px;
     margin-bottom: 5px;
     p {
       font-family: 'Avenir-Light';
@@ -46,16 +67,7 @@
       color: #FFFFFF;
     }
 
-    p:nth-child(1) {
-      margin-left: 46px;
-    }
 
-    .icon {
-      font-size: 5px;
-      color: #EDEDED;
-      line-height: 18px;
-      margin: 0 5px;
-    }
 
     p:nth-child(2) {
       margin-right: 40px;
