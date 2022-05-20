@@ -135,6 +135,29 @@
       visibility: hidden;
     }
   }
+
+  .brand-icon-help {
+    display: none;
+    position: absolute;
+    // right: -5px;
+    // top: -4px;
+    right: -1px;
+    top: 2px;
+  }
+
+  &.mat-form-field-type-mat-select {
+    .brand-icon-help {
+      right: 21px;
+      top: 3px;
+    }
+  }
+
+  &:hover,
+  &.mat-focused {
+    .brand-icon-help {
+      display: inline-block;
+    }
+  }
 }
 
 .mat-menu-panel.brand-menu-1 {
@@ -335,6 +358,17 @@ snack-bar-container.brand-snackbar-1 {
 
   .mat-simple-snackbar span {
     color: #ffbe00;
+  }
+}
+
+.brand-icon-help {
+  .mat-icon {
+    font-size: 17px;
+    color: #c5ccd0;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    cursor: pointer;
   }
 }
 

@@ -22,7 +22,9 @@ import {
   facturaPermissions,
   previewFactura,
   facturaStatus,
+  toFactura,
 } from "../../containers/factura-edit-page/factura.core";
+import { clone } from "../../../../shared/utils/object";
 import {
   ActionSendEmailFacturaComponent,
   ActionCancelarFacturaComponent,
@@ -37,7 +39,7 @@ import {
 })
 export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
   public routes: typeof routes = routes;
-  public URL_DASHBOARD = environment.URL_DASHBOARD;
+  public URL_BASE = environment.URL_BASE;
   public token = localStorage.getItem("token") || "";
 
   //Table data
@@ -201,7 +203,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
     if (factura == void 0) return;
 
     window
-      .fetch(this.URL_DASHBOARD + "invoice/preview", {
+      .fetch(this.URL_BASE + "invoice/preview", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -210,7 +212,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
           "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
           Authorization: `Bearer ${this.token}`,
         },
-        body: JSON.stringify(previewFactura(factura)),
+        body: JSON.stringify(previewFactura(toFactura(clone(factura)))),
       })
       .then((responseData) => responseData.arrayBuffer())
       .then((buffer) => {

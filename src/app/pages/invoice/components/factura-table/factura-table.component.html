@@ -340,7 +340,10 @@
               mat-menu-item
               (click)="deleteFactura(element._id)"
             >
-              <mat-icon>delete</mat-icon>
+              <mat-icon
+                class="icon icon-trash1 icon-only"
+                style="font-size: 18px"
+              ></mat-icon>
               <span>{{
                 "invoice.invoice-table.delete-invoice" | translate
               }}</span>
