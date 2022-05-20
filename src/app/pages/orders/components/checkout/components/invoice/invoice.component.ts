@@ -112,6 +112,7 @@ export class InvoiceComponent implements OnInit {
           }
           else{
             this.validRFC = false;
+            this.receiverData.emit({...this.receiverForm.value, rfc: ''});
           }
     }
 }

@@ -335,15 +335,14 @@
             "fileType": "file type must be .cer or .key",
             "emitter-validated": "Emitter validated",
             "emitter-validated-fail": "Invalid Emitter",
-            "emitter-create": "Para crear el emisor: ",
-            "emitter-tax_regime": "Falta el régimen fiscal del emisor",
-            "receiver-stamp": "Para generar carta porte:",
-            "receiver-address": "Falta la dirección del receptor",
-            "receiver-company": "Falta la razón social del receptor",
-            "receiver-rfc": "Falta el RFC del receptor",
-            "receiver-cfdi": "Falta el CFDI del receptor",
-            "receiver-tax_regime": "Falta el régimen fiscal del receptor"
-            
+            "emitter-create": "To create an emitter: ",
+            "emitter-tax_regime": "Emitter tax regime is missing",
+            "receiver-stamp": "To create consignment note:",
+            "receiver-address": "Receiver address is missing",
+            "receiver-company": "Receiver business name is missing",
+            "receiver-rfc": "Receiver RFC is missing",
+            "receiver-cfdi": "Receiver CFDI is missing",
+            "receiver-tax_regime": "Receiver tax regime is missing"
         },
         "insurance-modal": {
             "title-insurance": "Insurance?",

@@ -46,7 +46,7 @@
           </div>
           <div>
             <mat-form-field class="inner-shadow"  >
-              <input matInput (focusout)="validateRFC()" formControlName="rfc">
+              <input matInput (keyup)="validateRFC()" formControlName="rfc">
             </mat-form-field>
             <p class="error" *ngIf="!validRFC && receiverForm.controls.rfc.value">{{ 'checkout.invalid_rfc' | translate }}</p>
           </div>
