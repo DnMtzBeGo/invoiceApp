@@ -56,7 +56,12 @@
         ></mat-progress-bar>
       </span> -->
 
-      <section>
+      <section
+        id="receptor"
+        [style.display]="
+          vm.readonly || vm.tab === 'receptor' ? 'block' : 'none'
+        "
+      >
         <h6>{{ "invoice.edit.receptor" | translate }}</h6>
 
         <div class="grid">
@@ -371,7 +376,11 @@
         </div>
       </section>
 
-      <section>
+      <section
+        [style.display]="
+          vm.readonly || vm.tab === 'receptor' ? 'block' : 'none'
+        "
+      >
         <h6>
           {{ "invoice.edit.direccion" | translate }}
           <span
@@ -770,7 +779,10 @@
         </div>
       </section>
 
-      <section>
+      <section
+        id="emisor"
+        [style.display]="vm.readonly || vm.tab === 'emisor' ? 'block' : 'none'"
+      >
         <h6>{{ "invoice.edit.emisor" | translate }}</h6>
         <div class="grid">
           <mat-form-field
@@ -1389,9 +1401,15 @@
       </section>
 
       <section
-        *ngIf="!vm.readonly && !vm.form?.order"
-        [disabled]="!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)"
-        id="conceptos"
+        [style.display]="
+          !vm.readonly && !vm.form?.order && vm.tab === 'conceptos'
+            ? 'block'
+            : 'none'
+        "
+        [attr.disabled]="
+          !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
+        "
+        [id]="!vm.readonly ? 'conceptos' : null"
         #tooltip="matTooltip"
         [matTooltip]="
           !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
@@ -1903,10 +1921,13 @@
       </section>
 
       <section
-        *ngIf="
+        [style.display]="
           !vm.readonly &&
           !vm.form?.order &&
-          vm.form?.tipo_de_comprobante !== 'T'
+          vm.form?.tipo_de_comprobante !== 'T' &&
+          vm.tab === 'conceptos'
+            ? 'block'
+            : 'none'
         "
         [attr.expanded]="vm.concepto?.impuestos.length > 0"
       >
@@ -2117,7 +2138,41 @@
         </table>
       </section>
 
-      <div *ngIf="vm.conceptos?.length" style="margin-bottom: 1rem">
+      <div
+        [id]="vm.readonly ? 'conceptos' : null"
+        [style.display]="
+          vm.readonly || (vm.tab === 'conceptos' && vm.conceptos?.length)
+            ? 'block'
+            : 'none'
+        "
+      >
+        <h6
+          style="
+            margin-bottom: 1.5rem;
+            align-items: center;
+            font-family: 'Avenir';
+            font-style: normal;
+            font-size: 20px;
+            color: #ededed;
+          "
+        >
+          {{ "invoice.edit.conceptos" | translate }}
+          <span
+            class="brand-icon-help"
+            [matTooltip]="vm.helpTooltips?.conceptos"
+            matTooltipPosition="right"
+            matTooltipHideDelay="100"
+            matTooltipClass="brand-tooltip-1"
+            style="margin-left: 2px"
+          >
+            <mat-icon
+              ><img
+                src="./assets/images/invoice/help.png"
+                style="width: inherit"
+            /></mat-icon>
+          </span>
+        </h6>
+
         <table class="facturas-table">
           <thead>
             <tr>
@@ -2304,7 +2359,136 @@
         </table>
       </div>
 
-      <section *ngIf="!vm.readonly || vm.form?.tipo_de_relacion">
+      <section
+        id="serie"
+        [style.display]="vm.readonly || vm.tab === 'serie' ? 'block' : 'none'"
+      >
+        <h6>
+          {{ "invoice.edit.serie" | translate }}
+          <span
+            *ngIf="!vm.readonly"
+            class="brand-icon-help"
+            [matTooltip]="vm.helpTooltips?.serie"
+            matTooltipPosition="right"
+            matTooltipHideDelay="100"
+            matTooltipClass="brand-tooltip-1"
+            style="margin-left: 2px"
+          >
+            <mat-icon
+              ><img
+                src="./assets/images/invoice/help.png"
+                style="width: inherit"
+            /></mat-icon>
+          </span>
+        </h6>
+
+        <div class="grid-fill">
+          <mat-form-field
+            class="brand-field-1"
+            appearance="outline"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
+          >
+            <mat-label>
+              {{
+                vm.series == null
+                  ? ("invoice.edit.loading" | translate)
+                  : vm.form?.serie &&
+                    vm.tipo_de_comprobante &&
+                    vm.form?.emisor?._id &&
+                    validRFC(vm.form?.emisor?.rfc)
+                  ? ("invoice.edit.serie" | translate) +
+                    (vm.series && vm.series.find(findById(vm.form?.serie))
+                      ? " - " +
+                        ("invoice.edit.serie-folio" | translate) +
+                        ": " +
+                        vm.series.find(findById(vm.form?.serie))?.folio
+                      : "")
+                  : !vm.tipo_de_comprobante
+                  ? ("invoice.edit.serie-placeholder-2" | translate)
+                  : !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
+                  ? ("invoice.edit.serie-placeholder-3" | translate)
+                  : vm.series?.length === 0
+                  ? ("invoice.edit.serie-placeholder-4" | translate)
+                  : ("invoice.edit.serie-placeholder" | translate)
+              }}
+            </mat-label>
+            <mat-select
+              name="serie"
+              [ngModel]="vm.form?.serie"
+              (ngModelChange)="vm.form.serie = $event"
+              class="disable-custom-format"
+              [disabled]="
+                !vm.tipo_de_comprobante || vm.readonly || !!vm.form?.order
+              "
+            >
+              <ng-container *ngFor="let serie of vm.series">
+                <mat-option
+                  *ngIf="
+                    vm.tipo_de_comprobante &&
+                    vm.tipo_de_comprobante.clave === serie.tipo_comprobante
+                  "
+                  [value]="serie._id"
+                  class="brand-option-serie"
+                >
+                  <img [src]="serie.logo" />
+                  <div>
+                    {{ serie.serie }}
+                  </div>
+                </mat-option>
+              </ng-container>
+            </mat-select>
+
+            <mat-progress-bar
+              [style.display]="vm.series == null ? 'block' : 'none'"
+              style="bottom: 0px; position: absolute; height: 2px"
+              class="brand-progress-bar-1"
+              mode="indeterminate"
+            ></mat-progress-bar>
+
+            <button
+              [style.display]="
+                vm.form?.serie && !vm.readonly && !vm.form?.order
+                  ? 'block'
+                  : 'none'
+              "
+              mat-icon-button
+              matSuffix
+              (click)="vm.form.serie = ''; $event.stopPropagation()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <div *ngIf="!vm.readonly" style="padding-top: 9px">
+            <button
+              *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc)"
+              mat-flat-button
+              class="brand-btn-2"
+              (click)="
+                createEditSerie(
+                  !vm.form?.serie
+                    ? { emisor: vm.form?.emisor?._id }
+                    : vm.series.find(findById(vm.form?.serie))
+                )
+              "
+              style="min-width: 97px; min-height: 37px"
+              [disabled]="!!vm.form?.order"
+            >
+              <span>
+                {{
+                  vm.form?.serie
+                    ? ("invoice.edit.serie-edit" | translate)
+                    : ("invoice.edit.serie-new" | translate)
+                }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section
+        [style.display]="vm.readonly || vm.tab === 'serie' ? 'block' : 'none'"
+      >
         <h6>
           {{ "invoice.edit.doc-rel" | translate }}
           <span
@@ -2461,131 +2645,12 @@
         </table>
       </section>
 
-      <section>
-        <h6>
-          {{ "invoice.edit.serie" | translate }}
-          <span
-            *ngIf="!vm.readonly"
-            class="brand-icon-help"
-            [matTooltip]="vm.helpTooltips?.serie"
-            matTooltipPosition="right"
-            matTooltipHideDelay="100"
-            matTooltipClass="brand-tooltip-1"
-            style="margin-left: 2px"
-          >
-            <mat-icon
-              ><img
-                src="./assets/images/invoice/help.png"
-                style="width: inherit"
-            /></mat-icon>
-          </span>
-        </h6>
-
-        <div class="grid-fill">
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly || !!vm.form?.order"
-          >
-            <mat-label>
-              {{
-                vm.series == null
-                  ? ("invoice.edit.loading" | translate)
-                  : vm.form?.serie &&
-                    vm.tipo_de_comprobante &&
-                    vm.form?.emisor?._id &&
-                    validRFC(vm.form?.emisor?.rfc)
-                  ? ("invoice.edit.serie" | translate) +
-                    (vm.series && vm.series.find(findById(vm.form?.serie))
-                      ? " - " +
-                        ("invoice.edit.serie-folio" | translate) +
-                        ": " +
-                        vm.series.find(findById(vm.form?.serie))?.folio
-                      : "")
-                  : !vm.tipo_de_comprobante
-                  ? ("invoice.edit.serie-placeholder-2" | translate)
-                  : !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
-                  ? ("invoice.edit.serie-placeholder-3" | translate)
-                  : vm.series?.length === 0
-                  ? ("invoice.edit.serie-placeholder-4" | translate)
-                  : ("invoice.edit.serie-placeholder" | translate)
-              }}
-            </mat-label>
-            <mat-select
-              name="serie"
-              [ngModel]="vm.form?.serie"
-              (ngModelChange)="vm.form.serie = $event"
-              class="disable-custom-format"
-              [disabled]="
-                !vm.tipo_de_comprobante || vm.readonly || !!vm.form?.order
-              "
-            >
-              <ng-container *ngFor="let serie of vm.series">
-                <mat-option
-                  *ngIf="
-                    vm.tipo_de_comprobante &&
-                    vm.tipo_de_comprobante.clave === serie.tipo_comprobante
-                  "
-                  [value]="serie._id"
-                  class="brand-option-serie"
-                >
-                  <img [src]="serie.logo" />
-                  <div>
-                    {{ serie.serie }}
-                  </div>
-                </mat-option>
-              </ng-container>
-            </mat-select>
-
-            <mat-progress-bar
-              [style.display]="vm.series == null ? 'block' : 'none'"
-              style="bottom: 0px; position: absolute; height: 2px"
-              class="brand-progress-bar-1"
-              mode="indeterminate"
-            ></mat-progress-bar>
-
-            <button
-              [style.display]="
-                vm.form?.serie && !vm.readonly && !vm.form?.order
-                  ? 'block'
-                  : 'none'
-              "
-              mat-icon-button
-              matSuffix
-              (click)="vm.form.serie = ''; $event.stopPropagation()"
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-
-          <div *ngIf="!vm.readonly" style="padding-top: 9px">
-            <button
-              *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc)"
-              mat-flat-button
-              class="brand-btn-2"
-              (click)="
-                createEditSerie(
-                  !vm.form?.serie
-                    ? { emisor: vm.form?.emisor?._id }
-                    : vm.series.find(findById(vm.form?.serie))
-                )
-              "
-              style="min-width: 97px; min-height: 37px"
-              [disabled]="!!vm.form?.order"
-            >
-              <span>
-                {{
-                  vm.form?.serie
-                    ? ("invoice.edit.serie-edit" | translate)
-                    : ("invoice.edit.serie-new" | translate)
-                }}
-              </span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section>
+      <section
+        id="complementos"
+        [style.display]="
+          vm.readonly || vm.tab === 'complementos' ? 'block' : 'none'
+        "
+      >
         <!-- <h6>
           {{ "invoice.edit.complementos" | translate }}
           <span

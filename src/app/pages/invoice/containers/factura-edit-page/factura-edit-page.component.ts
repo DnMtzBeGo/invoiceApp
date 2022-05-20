@@ -275,7 +275,16 @@ export class FacturaEditPageComponent implements OnInit {
     //TAB
     const tab$ = merge(
       of("receptor"),
-      this.formEmitter.pipe(ofType("tab")) as Observable<string>
+      (this.formEmitter.pipe(ofType("tab")) as Observable<string>).pipe(
+        distinctUntilChanged(),
+        tap((id) => {
+          this.vm.readonly &&
+            window.scrollTo({
+              top: 112 + window.document.getElementById(id)?.offsetTop - 16,
+              behavior: "smooth",
+            });
+        })
+      )
     );
 
     //DATA FETCHING
@@ -637,14 +646,13 @@ export class FacturaEditPageComponent implements OnInit {
             pluck("1"),
             map((concepto) => () => concepto),
             tap(() => {
-              window.document
-                .getElementsByTagName("mat-sidenav-content")?.[0]
-                ?.scrollTo({
-                  top:
-                    window.document.getElementById("conceptos").offsetTop -
-                    (70 + 16),
-                  behavior: "smooth",
-                });
+              window.scrollTo({
+                top:
+                  112 +
+                  window.document.getElementById("conceptos")?.offsetTop -
+                  16,
+                behavior: "smooth",
+              });
             })
           ),
           this.formEmitter.pipe(
@@ -732,12 +740,10 @@ export class FacturaEditPageComponent implements OnInit {
         }
       },
       afterError: () => {
-        window.document
-          .getElementsByTagName("mat-sidenav-content")?.[0]
-          ?.scrollTo({
-            top: 9999999,
-            behavior: "smooth",
-          });
+        window.scrollTo({
+          top: 9999999,
+          behavior: "smooth",
+        });
       },
     });
 
@@ -1083,12 +1089,10 @@ export class FacturaEditPageComponent implements OnInit {
       data: {
         _id,
         afterSuccessDelay: () => {
-          window.document
-            .getElementsByTagName("mat-sidenav-content")?.[0]
-            ?.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
           this.router.navigate([routes.EDIT_FACTURA, { id: _id, status: 4 }]);
           this.formEmitter.next(["refresh", ""]);
         },
