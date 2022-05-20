@@ -130,7 +130,10 @@
               <span>{{ "invoice.serie-table.editar" | translate }}</span>
             </button>
             <button mat-menu-item (click)="deleteSerie(element._id)">
-              <mat-icon>delete</mat-icon>
+              <mat-icon
+                class="icon icon-trash1 icon-only"
+                style="font-size: 18px"
+              ></mat-icon>
               <span>{{ "invoice.serie-table.borrar" | translate }}</span>
             </button>
           </mat-menu>

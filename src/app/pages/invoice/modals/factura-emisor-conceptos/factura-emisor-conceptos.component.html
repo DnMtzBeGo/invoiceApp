@@ -259,7 +259,7 @@
         />
 
         <span
-          class="factura-help-icon"
+          class="brand-icon-help"
           [matTooltip]="vm.helpTooltips?.concepto?.nombre"
           matTooltipPosition="right"
           matTooltipHideDelay="100"
@@ -289,7 +289,7 @@
         />
 
         <span
-          class="factura-help-icon"
+          class="brand-icon-help"
           [matTooltip]="vm.helpTooltips?.concepto?.cve_sat"
           matTooltipPosition="right"
           matTooltipHideDelay="100"
@@ -369,7 +369,7 @@
         </mat-select>
 
         <span
-          class="factura-help-icon"
+          class="brand-icon-help"
           [matTooltip]="vm.helpTooltips?.concepto?.unidad_de_medida"
           matTooltipPosition="right"
           matTooltipHideDelay="100"
@@ -400,7 +400,7 @@
         />
 
         <span
-          class="factura-help-icon"
+          class="brand-icon-help"
           [matTooltip]="vm.helpTooltips?.concepto?.valor_unitario"
           matTooltipPosition="right"
           matTooltipHideDelay="100"
@@ -442,7 +442,7 @@
         </textarea>
 
         <span
-          class="factura-help-icon"
+          class="brand-icon-help"
           [matTooltip]="vm.helpTooltips?.concepto?.descripcion"
           matTooltipPosition="right"
           matTooltipHideDelay="100"
@@ -484,7 +484,7 @@
           </mat-select>
 
           <span
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.impuesto?.impuesto"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -541,7 +541,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.impuesto?.tasa_cuota"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -592,7 +592,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.impuesto?.tasa_cuota"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -646,7 +646,10 @@
                   mat-icon-button
                   (click)="conceptoEmitter.next(['impuestos:remove', index])"
                 >
-                  <mat-icon>delete</mat-icon>
+                  <mat-icon
+                    class="icon icon-trash1 icon-only"
+                    style="font-size: 18px"
+                  ></mat-icon>
                 </button>
               </td>
             </tr>

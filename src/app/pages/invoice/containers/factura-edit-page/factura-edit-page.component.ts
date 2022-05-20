@@ -90,7 +90,7 @@ import { SeriesNewComponent } from "../../components/series-new/series-new.compo
 })
 export class FacturaEditPageComponent implements OnInit {
   public routes: typeof routes = routes;
-  public URL_DASHBOARD = environment.URL_DASHBOARD;
+  public URL_BASE = environment.URL_BASE;
   public token = localStorage.getItem("token") || "";
 
   $rx = reactiveComponent(this);
@@ -275,7 +275,16 @@ export class FacturaEditPageComponent implements OnInit {
     //TAB
     const tab$ = merge(
       of("receptor"),
-      this.formEmitter.pipe(ofType("tab")) as Observable<string>
+      (this.formEmitter.pipe(ofType("tab")) as Observable<string>).pipe(
+        distinctUntilChanged(),
+        tap((id) => {
+          this.vm.readonly &&
+            window.scrollTo({
+              top: 112 + window.document.getElementById(id)?.offsetTop - 16,
+              behavior: "smooth",
+            });
+        })
+      )
     );
 
     //DATA FETCHING
@@ -637,14 +646,13 @@ export class FacturaEditPageComponent implements OnInit {
             pluck("1"),
             map((concepto) => () => concepto),
             tap(() => {
-              window.document
-                .getElementsByTagName("mat-sidenav-content")?.[0]
-                ?.scrollTo({
-                  top:
-                    window.document.getElementById("conceptos").offsetTop -
-                    (70 + 16),
-                  behavior: "smooth",
-                });
+              window.scrollTo({
+                top:
+                  112 +
+                  window.document.getElementById("conceptos")?.offsetTop -
+                  16,
+                behavior: "smooth",
+              });
             })
           ),
           this.formEmitter.pipe(
@@ -732,12 +740,10 @@ export class FacturaEditPageComponent implements OnInit {
         }
       },
       afterError: () => {
-        window.document
-          .getElementsByTagName("mat-sidenav-content")?.[0]
-          ?.scrollTo({
-            top: 9999999,
-            behavior: "smooth",
-          });
+        window.scrollTo({
+          top: 9999999,
+          behavior: "smooth",
+        });
       },
     });
 
@@ -959,6 +965,16 @@ export class FacturaEditPageComponent implements OnInit {
       ).pipe(mergeAll(), pluck("result", "documents"));
     }
 
+    if (["cve_sat"].includes(search.type)) {
+      return from(
+        this.apiRestService.apiRestGet(endpoints[search.type], {
+          loader: "false",
+          [keys[search.type]]: search.search,
+          limit: 15,
+        })
+      ).pipe(mergeAll(), pluck("result", "productos_servicios"));
+    }
+
     return from(
       this.apiRestService.apiRest(
         JSON.stringify({
@@ -1073,12 +1089,10 @@ export class FacturaEditPageComponent implements OnInit {
       data: {
         _id,
         afterSuccessDelay: () => {
-          window.document
-            .getElementsByTagName("mat-sidenav-content")?.[0]
-            ?.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
           this.router.navigate([routes.EDIT_FACTURA, { id: _id, status: 4 }]);
           this.formEmitter.next(["refresh", ""]);
         },
@@ -1248,7 +1262,7 @@ export class FacturaEditPageComponent implements OnInit {
     if (factura == void 0) return;
 
     window
-      .fetch(this.URL_DASHBOARD + "invoice/preview", {
+      .fetch(this.URL_BASE + "invoice/preview", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1257,7 +1271,7 @@ export class FacturaEditPageComponent implements OnInit {
           "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
           Authorization: `Bearer ${this.token}`,
         },
-        body: JSON.stringify(previewFactura(factura)),
+        body: JSON.stringify(previewFactura(toFactura(clone(factura)))),
       })
       .then((responseData) => responseData.arrayBuffer())
       .then((buffer) => {

@@ -56,7 +56,12 @@
         ></mat-progress-bar>
       </span> -->
 
-      <section>
+      <section
+        id="receptor"
+        [style.display]="
+          vm.readonly || vm.tab === 'receptor' ? 'block' : 'none'
+        "
+      >
         <h6>{{ "invoice.edit.receptor" | translate }}</h6>
 
         <div class="grid">
@@ -86,7 +91,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.rfc"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -171,7 +176,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.nombre"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -290,7 +295,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.uso_cfdi"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -312,7 +317,7 @@
             <mat-label>{{
               vm.form?.regimen_fiscal
                 ? ("invoice.edit.regimen" | translate)
-                : vm.form.rfc && !vm.tipoPersona
+                : vm.form?.rfc && !vm.tipoPersona
                 ? ("invoice.edit.regimen-placeholder-3" | translate)
                 : ("invoice.edit.regimen-placeholder" | translate)
             }}</mat-label>
@@ -355,7 +360,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.regimen_fiscal"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -371,12 +376,16 @@
         </div>
       </section>
 
-      <section>
+      <section
+        [style.display]="
+          vm.readonly || vm.tab === 'receptor' ? 'block' : 'none'
+        "
+      >
         <h6>
           {{ "invoice.edit.direccion" | translate }}
           <span
             *ngIf="!vm.readonly"
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.receptor?.direccion"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -770,7 +779,10 @@
         </div>
       </section>
 
-      <section>
+      <section
+        id="emisor"
+        [style.display]="vm.readonly || vm.tab === 'emisor' ? 'block' : 'none'"
+      >
         <h6>{{ "invoice.edit.emisor" | translate }}</h6>
         <div class="grid">
           <mat-form-field
@@ -800,7 +812,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.emisor?.rfc"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -904,7 +916,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.emisor?.nombre"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1016,7 +1028,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.lugar_de_expedicion"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1125,7 +1137,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.emisor?.regimen_fiscal"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1174,7 +1186,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.tipo_de_comprobante"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1212,7 +1224,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.moneda"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1246,7 +1258,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.tipo_de_cambio"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1281,7 +1293,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.metodo_de_pago"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1332,7 +1344,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.forma_de_pago"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1372,7 +1384,7 @@
             </textarea>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.info_extra"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1389,9 +1401,15 @@
       </section>
 
       <section
-        *ngIf="!vm.readonly && !vm.form?.order"
-        [disabled]="!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)"
-        id="conceptos"
+        [style.display]="
+          !vm.readonly && !vm.form?.order && vm.tab === 'conceptos'
+            ? 'block'
+            : 'none'
+        "
+        [attr.disabled]="
+          !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
+        "
+        [id]="!vm.readonly ? 'conceptos' : null"
         #tooltip="matTooltip"
         [matTooltip]="
           !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
@@ -1404,7 +1422,7 @@
         <h6 style="align-items: center">
           {{ "invoice.edit.conceptos" | translate }}
           <span
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.conceptos"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -1456,7 +1474,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.nombre"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1531,7 +1549,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.cve_sat"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1615,7 +1633,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.unidad_de_medida"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1652,7 +1670,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.valor_unitario"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1700,7 +1718,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.cantidad"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1746,7 +1764,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.descuento"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1790,7 +1808,7 @@
             </textarea>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.descripcion"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1822,7 +1840,7 @@
               <div class="label">
                 {{ "invoice.edit.concepto-importe" | translate }}
                 <span
-                  class="factura-help-icon"
+                  class="brand-icon-help"
                   [matTooltip]="vm.helpTooltips?.concepto?.importe"
                   matTooltipPosition="right"
                   matTooltipHideDelay="100"
@@ -1857,7 +1875,7 @@
               <div class="label">
                 {{ "invoice.edit.concepto-total" | translate }}
                 <span
-                  class="factura-help-icon"
+                  class="brand-icon-help"
                   [matTooltip]="vm.helpTooltips?.concepto?.total"
                   matTooltipPosition="right"
                   matTooltipHideDelay="100"
@@ -1903,10 +1921,13 @@
       </section>
 
       <section
-        *ngIf="
+        [style.display]="
           !vm.readonly &&
           !vm.form?.order &&
-          vm.form?.tipo_de_comprobante !== 'T'
+          vm.form?.tipo_de_comprobante !== 'T' &&
+          vm.tab === 'conceptos'
+            ? 'block'
+            : 'none'
         "
         [attr.expanded]="vm.concepto?.impuestos.length > 0"
       >
@@ -1934,7 +1955,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.impuesto?.impuesto"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1995,7 +2016,7 @@
               </mat-select>
 
               <span
-                class="factura-help-icon"
+                class="brand-icon-help"
                 [matTooltip]="vm.helpTooltips?.impuesto?.tasa_cuota"
                 matTooltipPosition="right"
                 matTooltipHideDelay="100"
@@ -2047,7 +2068,7 @@
               />
 
               <span
-                class="factura-help-icon"
+                class="brand-icon-help"
                 [matTooltip]="vm.helpTooltips?.impuesto?.tasa_cuota"
                 matTooltipPosition="right"
                 matTooltipHideDelay="100"
@@ -2106,7 +2127,10 @@
                   mat-icon-button
                   (click)="formEmitter.next(['impuestos:remove', index])"
                 >
-                  <mat-icon>delete</mat-icon>
+                  <mat-icon
+                    class="icon icon-trash1 icon-only"
+                    style="font-size: 18px"
+                  ></mat-icon>
                 </button>
               </td>
             </tr>
@@ -2114,7 +2138,41 @@
         </table>
       </section>
 
-      <div *ngIf="vm.conceptos?.length" style="margin-bottom: 1rem">
+      <div
+        [id]="vm.readonly ? 'conceptos' : null"
+        [style.display]="
+          vm.readonly || (vm.tab === 'conceptos' && vm.conceptos?.length)
+            ? 'block'
+            : 'none'
+        "
+      >
+        <h6
+          style="
+            margin-bottom: 1.5rem;
+            align-items: center;
+            font-family: 'Avenir';
+            font-style: normal;
+            font-size: 20px;
+            color: #ededed;
+          "
+        >
+          {{ "invoice.edit.conceptos" | translate }}
+          <span
+            class="brand-icon-help"
+            [matTooltip]="vm.helpTooltips?.conceptos"
+            matTooltipPosition="right"
+            matTooltipHideDelay="100"
+            matTooltipClass="brand-tooltip-1"
+            style="margin-left: 2px"
+          >
+            <mat-icon
+              ><img
+                src="./assets/images/invoice/help.png"
+                style="width: inherit"
+            /></mat-icon>
+          </span>
+        </h6>
+
         <table class="facturas-table">
           <thead>
             <tr>
@@ -2212,7 +2270,10 @@
                     mat-menu-item
                     (click)="formEmitter.next(['conceptos:remove', index])"
                   >
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon
+                      class="icon icon-trash1 icon-only"
+                      style="font-size: 18px"
+                    ></mat-icon>
                     <span>{{
                       "invoice.edit.concepto-eliminar" | translate
                     }}</span>
@@ -2298,166 +2359,15 @@
         </table>
       </div>
 
-      <section *ngIf="!vm.readonly || vm.form?.tipo_de_relacion">
-        <h6>
-          {{ "invoice.edit.doc-rel" | translate }}
-          <span
-            *ngIf="!vm.readonly"
-            class="factura-help-icon"
-            [matTooltip]="vm.helpTooltips?.documentos_relacionados"
-            matTooltipPosition="right"
-            matTooltipHideDelay="100"
-            matTooltipClass="brand-tooltip-1"
-            style="margin-left: 2px"
-          >
-            <mat-icon
-              ><img
-                src="./assets/images/invoice/help.png"
-                style="width: inherit"
-            /></mat-icon>
-          </span>
-        </h6>
-        <div class="grid-fill">
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly || !!vm.form?.order"
-          >
-            <mat-label>{{ "invoice.edit.doc-rel-tipo" | translate }}</mat-label>
-            <mat-select
-              name="tipo_de_relacion"
-              [ngModel]="vm.form?.tipo_de_relacion"
-              (ngModelChange)="vm.form.tipo_de_relacion = $event"
-              class="disable-custom-format"
-              [disabled]="vm.readonly || !!vm.form?.order"
-            >
-              <mat-option
-                *ngFor="let tipo_de_relacion of vm.catalogos?.tipos_de_relacion"
-                [value]="tipo_de_relacion.clave"
-              >
-                {{ tipo_de_relacion.clave }} -
-                {{ tipo_de_relacion.descripcion }}
-              </mat-option>
-            </mat-select>
-
-            <span
-              class="factura-help-icon"
-              [matTooltip]="
-                vm.helpTooltips?.documentos_relacionado?.tipo_de_relacion
-              "
-              matTooltipPosition="right"
-              matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
-            </span>
-
-            <button
-              [style.display]="
-                vm.form?.tipo_de_relacion && !vm.readonly && !vm.form?.order
-                  ? 'block'
-                  : 'none'
-              "
-              mat-icon-button
-              matSuffix
-              (click)="vm.form.tipo_de_relacion = ''; $event.stopPropagation()"
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-        </div>
-
-        <div
-          class="grid-fill"
-          *ngIf="!vm.readonly && !vm.form?.order"
-          style="padding-top: 0"
-        >
-          <mat-form-field class="brand-field-1" appearance="outline">
-            <mat-label>{{ "invoice.edit.doc-rel-uuid" | translate }}</mat-label>
-            <input
-              matInput
-              name="uuid"
-              [ngModel]="vm.uuid"
-              (ngModelChange)="vm.uuid = $event"
-              autocomplete="off"
-            />
-
-            <span
-              class="factura-help-icon"
-              [matTooltip]="vm.helpTooltips?.documentos_relacionado?.uuid"
-              matTooltipPosition="right"
-              matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
-            </span>
-          </mat-form-field>
-
-          <div style="padding-top: 9px">
-            <button
-              mat-flat-button
-              class="brand-btn-2"
-              (click)="
-                vm.form.documentos_relacionados.push({ uuid: vm.uuid });
-                vm.uuid = ''
-              "
-              [disabled]="!vm.form?.tipo_de_relacion"
-            >
-              {{ "invoice.edit.doc-rel-add" | translate }}
-            </button>
-          </div>
-        </div>
-
-        <table
-          *ngIf="vm.form?.documentos_relacionados.length"
-          class="impuestos-table"
-          style="max-width: 70%; margin-bottom: 3.5rem"
-        >
-          <thead>
-            <tr>
-              <th width="50%">{{ "invoice.edit.doc-rel-uuid" | translate }}</th>
-              <th *ngIf="!vm.readonly && !vm.form?.order" width="50%">
-                {{ "invoice.edit.opciones" | translate }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="
-                let doc of vm.form?.documentos_relacionados;
-                index as index
-              "
-            >
-              <td>
-                {{ doc.uuid }}
-              </td>
-              <td *ngIf="!vm.readonly && !vm.form?.order">
-                <button
-                  mat-icon-button
-                  (click)="vm.form.documentos_relacionados.splice(index, 1)"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
+      <section
+        id="serie"
+        [style.display]="vm.readonly || vm.tab === 'serie' ? 'block' : 'none'"
+      >
         <h6>
           {{ "invoice.edit.serie" | translate }}
           <span
             *ngIf="!vm.readonly"
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.serie"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -2576,12 +2486,176 @@
         </div>
       </section>
 
-      <section>
+      <section
+        [style.display]="vm.readonly || vm.tab === 'serie' ? 'block' : 'none'"
+      >
         <h6>
+          {{ "invoice.edit.doc-rel" | translate }}
+          <span
+            *ngIf="!vm.readonly"
+            class="brand-icon-help"
+            [matTooltip]="vm.helpTooltips?.documentos_relacionados"
+            matTooltipPosition="right"
+            matTooltipHideDelay="100"
+            matTooltipClass="brand-tooltip-1"
+            style="margin-left: 2px"
+          >
+            <mat-icon
+              ><img
+                src="./assets/images/invoice/help.png"
+                style="width: inherit"
+            /></mat-icon>
+          </span>
+        </h6>
+        <div class="grid-fill">
+          <mat-form-field
+            class="brand-field-1"
+            appearance="outline"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
+          >
+            <mat-label>{{ "invoice.edit.doc-rel-tipo" | translate }}</mat-label>
+            <mat-select
+              name="tipo_de_relacion"
+              [ngModel]="vm.form?.tipo_de_relacion"
+              (ngModelChange)="vm.form.tipo_de_relacion = $event"
+              class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order"
+            >
+              <mat-option
+                *ngFor="let tipo_de_relacion of vm.catalogos?.tipos_de_relacion"
+                [value]="tipo_de_relacion.clave"
+              >
+                {{ tipo_de_relacion.clave }} -
+                {{ tipo_de_relacion.descripcion }}
+              </mat-option>
+            </mat-select>
+
+            <span
+              class="brand-icon-help"
+              [matTooltip]="
+                vm.helpTooltips?.documentos_relacionado?.tipo_de_relacion
+              "
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1"
+            >
+              <mat-icon
+                ><img
+                  src="./assets/images/invoice/help.png"
+                  style="width: inherit"
+              /></mat-icon>
+            </span>
+
+            <button
+              [style.display]="
+                vm.form?.tipo_de_relacion && !vm.readonly && !vm.form?.order
+                  ? 'block'
+                  : 'none'
+              "
+              mat-icon-button
+              matSuffix
+              (click)="vm.form.tipo_de_relacion = ''; $event.stopPropagation()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <div
+          class="grid-fill"
+          *ngIf="!vm.readonly && !vm.form?.order"
+          style="padding-top: 0"
+        >
+          <mat-form-field class="brand-field-1" appearance="outline">
+            <mat-label>{{ "invoice.edit.doc-rel-uuid" | translate }}</mat-label>
+            <input
+              matInput
+              name="uuid"
+              [ngModel]="vm.uuid"
+              (ngModelChange)="vm.uuid = $event"
+              autocomplete="off"
+            />
+
+            <span
+              class="brand-icon-help"
+              [matTooltip]="vm.helpTooltips?.documentos_relacionado?.uuid"
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1"
+            >
+              <mat-icon
+                ><img
+                  src="./assets/images/invoice/help.png"
+                  style="width: inherit"
+              /></mat-icon>
+            </span>
+          </mat-form-field>
+
+          <div style="padding-top: 9px">
+            <button
+              mat-flat-button
+              class="brand-btn-2"
+              (click)="
+                vm.form.documentos_relacionados.push({ uuid: vm.uuid });
+                vm.uuid = ''
+              "
+              [disabled]="!vm.form?.tipo_de_relacion"
+            >
+              {{ "invoice.edit.doc-rel-add" | translate }}
+            </button>
+          </div>
+        </div>
+
+        <table
+          *ngIf="vm.form?.documentos_relacionados.length"
+          class="impuestos-table"
+          style="max-width: 70%; margin-bottom: 3.5rem"
+        >
+          <thead>
+            <tr>
+              <th width="80%">{{ "invoice.edit.doc-rel-uuid" | translate }}</th>
+              <th *ngIf="!vm.readonly && !vm.form?.order" width="20%">
+                {{ "invoice.edit.opciones" | translate }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let doc of vm.form?.documentos_relacionados;
+                index as index
+              "
+            >
+              <td>
+                {{ doc.uuid }}
+              </td>
+              <td *ngIf="!vm.readonly && !vm.form?.order">
+                <button
+                  mat-icon-button
+                  (click)="vm.form.documentos_relacionados.splice(index, 1)"
+                >
+                  <mat-icon
+                    class="icon icon-trash1 icon-only"
+                    style="font-size: 18px"
+                  ></mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section
+        id="complementos"
+        [style.display]="
+          vm.readonly || vm.tab === 'complementos' ? 'block' : 'none'
+        "
+      >
+        <!-- <h6>
           {{ "invoice.edit.complementos" | translate }}
           <span
             *ngIf="!vm.readonly"
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.complementos"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -2687,11 +2761,9 @@
               {{ "invoice.edit.carta-porte" | translate }}
             </div>
           </div>
-        </h6>
+        </h6> -->
 
-        <div id="cartaporte">
-          <app-carta-porte-page></app-carta-porte-page>
-        </div>
+        <app-carta-porte-page></app-carta-porte-page>
       </section>
     </div>
 
