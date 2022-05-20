@@ -64,3 +64,15 @@
   box-shadow: 0px 4px 5px #020507;
   color: #1C232A;
 }
+
+.btn-dark-bego.mat-icon-button {
+  color:#EDEDED;
+  background: linear-gradient(152.01deg, rgba(8, 15, 22, 0.29) 13.84%, rgba(33, 37, 44, 0.44) 80.67%);
+  box-shadow: 0px 4px 10px #040B11;
+  backdrop-filter: blur(30px);
+  font-size: 18px;
+  line-height: 18px;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+}
