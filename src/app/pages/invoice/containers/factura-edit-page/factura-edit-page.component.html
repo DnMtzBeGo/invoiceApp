@@ -86,7 +86,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.rfc"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -171,7 +171,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.nombre"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -290,7 +290,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.uso_cfdi"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -312,7 +312,7 @@
             <mat-label>{{
               vm.form?.regimen_fiscal
                 ? ("invoice.edit.regimen" | translate)
-                : vm.form.rfc && !vm.tipoPersona
+                : vm.form?.rfc && !vm.tipoPersona
                 ? ("invoice.edit.regimen-placeholder-3" | translate)
                 : ("invoice.edit.regimen-placeholder" | translate)
             }}</mat-label>
@@ -355,7 +355,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.regimen_fiscal"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -376,7 +376,7 @@
           {{ "invoice.edit.direccion" | translate }}
           <span
             *ngIf="!vm.readonly"
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.receptor?.direccion"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -800,7 +800,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.emisor?.rfc"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -904,7 +904,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.emisor?.nombre"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1016,7 +1016,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.lugar_de_expedicion"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1125,7 +1125,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.emisor?.regimen_fiscal"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1174,7 +1174,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.tipo_de_comprobante"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1212,7 +1212,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.moneda"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1246,7 +1246,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.tipo_de_cambio"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1281,7 +1281,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.metodo_de_pago"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1332,7 +1332,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.forma_de_pago"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1372,7 +1372,7 @@
             </textarea>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.info_extra"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1404,7 +1404,7 @@
         <h6 style="align-items: center">
           {{ "invoice.edit.conceptos" | translate }}
           <span
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.conceptos"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -1456,7 +1456,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.nombre"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1531,7 +1531,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.cve_sat"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1615,7 +1615,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.unidad_de_medida"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1652,7 +1652,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.valor_unitario"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1700,7 +1700,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.cantidad"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1746,7 +1746,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.descuento"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1790,7 +1790,7 @@
             </textarea>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.descripcion"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1822,7 +1822,7 @@
               <div class="label">
                 {{ "invoice.edit.concepto-importe" | translate }}
                 <span
-                  class="factura-help-icon"
+                  class="brand-icon-help"
                   [matTooltip]="vm.helpTooltips?.concepto?.importe"
                   matTooltipPosition="right"
                   matTooltipHideDelay="100"
@@ -1857,7 +1857,7 @@
               <div class="label">
                 {{ "invoice.edit.concepto-total" | translate }}
                 <span
-                  class="factura-help-icon"
+                  class="brand-icon-help"
                   [matTooltip]="vm.helpTooltips?.concepto?.total"
                   matTooltipPosition="right"
                   matTooltipHideDelay="100"
@@ -1934,7 +1934,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.impuesto?.impuesto"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -1995,7 +1995,7 @@
               </mat-select>
 
               <span
-                class="factura-help-icon"
+                class="brand-icon-help"
                 [matTooltip]="vm.helpTooltips?.impuesto?.tasa_cuota"
                 matTooltipPosition="right"
                 matTooltipHideDelay="100"
@@ -2047,7 +2047,7 @@
               />
 
               <span
-                class="factura-help-icon"
+                class="brand-icon-help"
                 [matTooltip]="vm.helpTooltips?.impuesto?.tasa_cuota"
                 matTooltipPosition="right"
                 matTooltipHideDelay="100"
@@ -2106,7 +2106,10 @@
                   mat-icon-button
                   (click)="formEmitter.next(['impuestos:remove', index])"
                 >
-                  <mat-icon>delete</mat-icon>
+                  <mat-icon
+                    class="icon icon-trash1 icon-only"
+                    style="font-size: 18px"
+                  ></mat-icon>
                 </button>
               </td>
             </tr>
@@ -2212,7 +2215,10 @@
                     mat-menu-item
                     (click)="formEmitter.next(['conceptos:remove', index])"
                   >
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon
+                      class="icon icon-trash1 icon-only"
+                      style="font-size: 18px"
+                    ></mat-icon>
                     <span>{{
                       "invoice.edit.concepto-eliminar" | translate
                     }}</span>
@@ -2303,7 +2309,7 @@
           {{ "invoice.edit.doc-rel" | translate }}
           <span
             *ngIf="!vm.readonly"
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.documentos_relacionados"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -2341,7 +2347,7 @@
             </mat-select>
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="
                 vm.helpTooltips?.documentos_relacionado?.tipo_de_relacion
               "
@@ -2387,7 +2393,7 @@
             />
 
             <span
-              class="factura-help-icon"
+              class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.documentos_relacionado?.uuid"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
@@ -2423,8 +2429,8 @@
         >
           <thead>
             <tr>
-              <th width="50%">{{ "invoice.edit.doc-rel-uuid" | translate }}</th>
-              <th *ngIf="!vm.readonly && !vm.form?.order" width="50%">
+              <th width="80%">{{ "invoice.edit.doc-rel-uuid" | translate }}</th>
+              <th *ngIf="!vm.readonly && !vm.form?.order" width="20%">
                 {{ "invoice.edit.opciones" | translate }}
               </th>
             </tr>
@@ -2444,7 +2450,10 @@
                   mat-icon-button
                   (click)="vm.form.documentos_relacionados.splice(index, 1)"
                 >
-                  <mat-icon>delete</mat-icon>
+                  <mat-icon
+                    class="icon icon-trash1 icon-only"
+                    style="font-size: 18px"
+                  ></mat-icon>
                 </button>
               </td>
             </tr>
@@ -2457,7 +2466,7 @@
           {{ "invoice.edit.serie" | translate }}
           <span
             *ngIf="!vm.readonly"
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.serie"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -2577,11 +2586,11 @@
       </section>
 
       <section>
-        <h6>
+        <!-- <h6>
           {{ "invoice.edit.complementos" | translate }}
           <span
             *ngIf="!vm.readonly"
-            class="factura-help-icon"
+            class="brand-icon-help"
             [matTooltip]="vm.helpTooltips?.complementos"
             matTooltipPosition="right"
             matTooltipHideDelay="100"
@@ -2687,7 +2696,9 @@
               {{ "invoice.edit.carta-porte" | translate }}
             </div>
           </div>
-        </h6>
+        </h6> -->
+
+        <app-carta-porte-page></app-carta-porte-page>
       </section>
     </div>
 

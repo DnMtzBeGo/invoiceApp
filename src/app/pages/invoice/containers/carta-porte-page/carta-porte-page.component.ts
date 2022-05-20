@@ -3,7 +3,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { TranslateService } from "@ngx-translate/core";
-// import { ApiRestService } from "src/app/core/services";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { InfoModalComponent } from "../../modals/info-modal/info-modal.component";
 import { CartaPorteInfoService } from "../../components/invoice/carta-porte/services/carta-porte-info.service";

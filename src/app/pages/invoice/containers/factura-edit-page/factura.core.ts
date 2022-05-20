@@ -196,6 +196,7 @@ export const toFactura = (factura: any) => {
   delete newFactura.rfc;
   delete newFactura.nombre;
   delete newFactura.usoCFDI;
+  delete newFactura.regimen_fiscal;
   delete newFactura.direccion;
 
   return newFactura;

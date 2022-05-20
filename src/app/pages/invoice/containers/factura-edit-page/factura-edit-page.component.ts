@@ -90,7 +90,7 @@ import { SeriesNewComponent } from "../../components/series-new/series-new.compo
 })
 export class FacturaEditPageComponent implements OnInit {
   public routes: typeof routes = routes;
-  public URL_DASHBOARD = environment.URL_DASHBOARD;
+  public URL_BASE = environment.URL_BASE;
   public token = localStorage.getItem("token") || "";
 
   $rx = reactiveComponent(this);
@@ -959,6 +959,16 @@ export class FacturaEditPageComponent implements OnInit {
       ).pipe(mergeAll(), pluck("result", "documents"));
     }
 
+    if (["cve_sat"].includes(search.type)) {
+      return from(
+        this.apiRestService.apiRestGet(endpoints[search.type], {
+          loader: "false",
+          [keys[search.type]]: search.search,
+          limit: 15,
+        })
+      ).pipe(mergeAll(), pluck("result", "productos_servicios"));
+    }
+
     return from(
       this.apiRestService.apiRest(
         JSON.stringify({
@@ -1248,7 +1258,7 @@ export class FacturaEditPageComponent implements OnInit {
     if (factura == void 0) return;
 
     window
-      .fetch(this.URL_DASHBOARD + "invoice/preview", {
+      .fetch(this.URL_BASE + "invoice/preview", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1257,7 +1267,7 @@ export class FacturaEditPageComponent implements OnInit {
           "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
           Authorization: `Bearer ${this.token}`,
         },
-        body: JSON.stringify(previewFactura(factura)),
+        body: JSON.stringify(previewFactura(toFactura(clone(factura)))),
       })
       .then((responseData) => responseData.arrayBuffer())
       .then((buffer) => {
