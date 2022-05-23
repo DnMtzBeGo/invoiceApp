@@ -10,7 +10,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
 import { BegoAddressAutocompleteModule } from 'src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module';
-import { MatIconModule } from '@angular/material/icon';
 import { DateFormatterPipe } from 'src/app/shared/pipes/date-formatter/date-formatter.pipe';
 
 @NgModule({
@@ -30,7 +29,6 @@ import { DateFormatterPipe } from 'src/app/shared/pipes/date-formatter/date-form
     MatButtonModule,
     BegoPhoneInputModule,
     BegoAddressAutocompleteModule,
-    MatIconModule
   ],
   exports: [
     EmitterComponent,

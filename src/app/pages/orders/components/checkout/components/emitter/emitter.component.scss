@@ -17,9 +17,14 @@
         border: 1px dashed #1c232a;
         cursor: pointer;
         
-        mat-icon{
+        bego-button{
             color:#ffbe00;
             margin-right: 15px;
+            transform: scale(1.5);
+
+            span{
+                color: #ededed;
+            }
         }
     }
 
