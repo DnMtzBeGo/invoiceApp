@@ -1,5 +1,116 @@
 @import "../../../../styles.scss";
 
+.rest-of-members {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  background: #0B1117;
+  box-shadow: 0px 10px 10px #040B11, inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+  border-radius: 50px;
+}
+
+.drivers-container,
+.trucks-container,
+.trailers-container {
+  padding: 0 0 0 31px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+::ng-deep .mat-datepicker-content {
+  left: -303px;
+  top: -80px;
+  position: absolute;
+}
+
+.assigned-date-time-row {
+  height: 235px;
+  background: #0A0F14;
+  box-shadow: 0px 10px 10px #040B11, inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+  border-radius: 8px;
+  padding-top: 40px;
+  form {
+    position: relative;
+
+    > .assigned-time-title {
+      margin: 0 0 0 34px;
+    }
+  }
+}
+
+.input-calendar {
+    width: 100%;
+}
+
+.btn-input-calendar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  > input:nth-child(1) {
+    width: 20px;
+    margin: 0 16px 0 35px;
+  }
+
+  > p {
+    margin: 0 10px 0 0;
+  }
+
+  .date-input {
+    width: 90px;
+  }
+}
+
+.date-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #494C50;
+  opacity: 1; /* Firefox */
+}
+
+.date-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #494C50;
+}
+
+.date-input::-ms-input-placeholder { /* Microsoft Edge */
+  color: #494C50;
+}
+
+.input-timer {
+  position: absolute;
+  top: 5px;
+  right: 30px;
+}
+
+.eta-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+
+  > p:nth-child(2) {
+    width: 130px;
+    height: 34px;
+    left: 1211px;
+    top: 450px;
+    background: linear-gradient(152.01deg, rgba(11, 22, 32, 0.29) 13.84%, rgba(60, 67, 78, 0.19) 80.67%);
+    box-shadow: 0px 4px 10px #040B11;
+    backdrop-filter: blur(30px);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+}
+
+::ng-deep .select-fleet-members {
+    margin-top: 20px !important;
+}
+
 section {
     background: #0B1117;
     box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
@@ -8,7 +119,7 @@ section {
     height: 80vh;
     overflow-y: hidden;
     pointer-events: auto;
-
+		position: relative;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -234,4 +345,20 @@ bego-button {
 
 .hide-input {
     display: none;
+}
+
+app-fleet-members {
+	transition: all 1s ease-in-out;
+	width: 400px;
+	background-color: #10161C;
+	height: 80vh;
+	position: absolute;
+	top: 840px;
+    display: flex;
+    justify-content: center;
+}
+
+.show-fleet-members {
+	transition: all 1s ease-in-out;
+	top: 0px;
 }

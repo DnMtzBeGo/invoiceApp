@@ -1,0 +1,14 @@
+<div class="circular-avatar-container">
+  <div class="circular-avatar-middle-container">
+    <div class="circular-avatar-int-container">
+      <div class="available-dot">
+        <i class="icon icon-dot"></i>
+      </div>
+      <div class="circular-avatar-photo-container">
+        <img [src]="data?.photo ? data.photo : fallbackImage" alt="">
+      </div>
+      <div class="selected-dot"></div>
+      <i class="icon icon-check show-check-icon" *ngIf="data?.isSelected"></i>
+    </div>
+  </div>
+</div>

@@ -9,7 +9,8 @@ import {
   ElementRef,
   Inject,
   SimpleChanges,
-  Renderer2
+  Renderer2,
+  ChangeDetectorRef
 } from '@angular/core';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
 import { AuthService } from '../../services/auth.service';
@@ -17,6 +18,9 @@ import { googleAutocompleted } from '../../interfaces/google-autocomplete';
 import { GoogleMapsService } from '../../services/google-maps/google-maps.service';
 import { HomeComponent } from '../../../pages/home/home.component';
 import { Subscription } from 'rxjs';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
 declare var google: any;
 
 @Component({
@@ -30,7 +34,7 @@ export class InputDirectionsComponent implements OnInit {
   @ViewChild('btnOrder', { static: false }) public btnOrder!: ElementRef;
 
   @Input('typeMap') public typeMap?: string;
-  @Input('savedPlaces') savedPlaces = new Set<string>([]);
+  @Input('savedPlaces') savedPlaces: Set<string> | null = new Set();
 
   @Output('showNewOrderCard') showNewOrderCard = new EventEmitter<void>();
   @Output('updateLocations') updateLocations =
@@ -41,6 +45,32 @@ export class InputDirectionsComponent implements OnInit {
 
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
+  events: string = 'DD / MM / YY';
+  calendar: any = new Date();
+  lastTime: any;
+  firstLoad: boolean = true;
+  destroyPicker: boolean = false;
+  minTime: Date = new Date(Date.now());
+  maxTime: Date = new Date();
+  ismeridian: boolean = false;
+  aproxETA: number = 0;
+  drivers: Array<object> = [];
+  trucks: Array<object> = [];
+  trailers: Array<object> = [];
+  selectMembersToAssign: any = {};
+  fleetData: any;
+  isDatesSelected: boolean = false;
+  showFleetMembersContainer: boolean = false;
+  canGoToSteps: boolean = false;
+  titleFleetMembers: any = '';
+  fromDate: number = 0;
+  toDate: number = 0;
+
+
+  orderForm = new FormGroup({
+    datepickup: new FormControl(this.events, Validators.required),
+    timepickup: new FormControl(this.events)
+  })
 
   private locations: GoogleLocation = {
     pickup: '',
@@ -114,6 +144,7 @@ export class InputDirectionsComponent implements OnInit {
     public zone: NgZone,
     public render: Renderer2,
     private googlemaps: GoogleMapsService,
+    private cdr: ChangeDetectorRef,
     @Inject(HomeComponent) public parent: HomeComponent
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -344,12 +375,125 @@ export class InputDirectionsComponent implements OnInit {
     event.stopPropagation();
 
     this.inputPlaceEmmiter.emit([
-      !this.savedPlaces.has(placeId) ? 'add' : 'delete',
+      !this.savedPlaces?.has(placeId) ? 'add' : 'delete',
       placeId
     ]);
   }
 
   cancelChangeLocations() {
     this.hideMap = false;
+  }
+
+  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    if(event.value) this.minTime = new Date(event.value);
+    this.events = moment(new Date(`${event.value}`), 'MM-DD-YYYY').format('MMMM DD YYYY');
+    /* console.log('ASIGNANDO EL MES', this.events, event.value); */
+  }
+
+  timepickerValid (data: any) {
+    this.lastTime = this.orderForm.controls['timepickup'].value || this.lastTime;
+    if(this.lastTime != 'DD / MM / YY') {
+      this.isDatesSelected = true;
+      this.fromDate = moment(this.lastTime).valueOf();
+      this.getETA(this.locations);
+    }
+    
+    if(!data && !this.firstLoad) {
+      this.destroyPicker = true;
+      this.cdr.detectChanges();
+      setTimeout(() => {
+        this.destroyPicker = false;
+        this.cdr.detectChanges();
+        this.firstLoad = true;
+        this.orderForm.controls['timepickup'].setValue(this.lastTime);
+      }, 0);
+    }
+    this.firstLoad = false;
+  }
+
+  async getETA(data: any) {
+    let requestETA = {
+      pickup: {
+        lat: data.pickupLat,
+        lng: data.pickupLng
+      },
+      dropoff: {
+        lat: data.dropoffLat,
+        lng: data.dropoffLng
+      }
+    };
+
+    (await this.auth.apiRest(JSON.stringify(requestETA), 'orders/calculate_ETA')).subscribe( res => {
+      let eta = res.result.ETA / 3600000;
+      this.toDate = this.fromDate + res.result.ETA;
+      this.aproxETA = Math.round(eta);
+      this.getFleetListDetails();
+    }, error => {
+      console.log('Something went wrong', error.error);
+    })
+  }
+
+  async getFleetListDetails() {
+    let requestAvailavilityFleetMembers = {
+      "fromDate": this.fromDate,
+      "toDate": this.toDate
+    };
+    (await this.auth.apiRest(JSON.stringify(requestAvailavilityFleetMembers), 'orders/calendar', { apiVersion: 'v1.1' })).subscribe(({result}) => {
+      this.drivers = result.drivers;
+      this.trucks = result.trucks;
+      this.trailers = result.trailers;
+    }, error => {
+      console.log('Something went wrong', error.error);
+    });
+  }
+
+  public selectMembersForOrder(member: any, typeMember: keyof this, index: number) {
+    let obj = this[typeMember] as any;
+    member['isSelected'] = true;
+    this.selectMembersToAssign[typeMember] = member;
+    
+    for (const [i, iterator] of obj.entries()) {
+      if(iterator._id != member._id) {
+        iterator['isSelected'] = false;
+      }
+    }
+  }
+
+  public showFleetContainer(memberType: keyof this) {
+    this.titleFleetMembers = memberType;
+    this.fleetData = this[memberType];
+    this.showFleetMembersContainer = true;
+  }
+// quitar el indesd de esta function
+  public getMemberSelected(event: any) {
+    this.selectMembersForOrder(event['member'], event['memberType'], 9);
+  }
+
+  public closeFleetMembers(titleKey: keyof this): boolean {
+    let obj = this[titleKey] as any;
+    let result;
+    for (const [i, iterator] of obj.entries()) {
+      if (this.selectMembersToAssign[titleKey]._id === iterator._id && i > 3) {
+        switch (titleKey) {
+          case 'drivers':
+            result = this.drivers.splice(i, 1);
+            this.drivers.unshift(result[0]);
+            break;
+          case 'trucks':
+            result = this.trucks.splice(i, 1);
+            this.trucks.unshift(result[0]);
+            break;
+          case 'trailers':
+            result = this.trailers.splice(i, 1);
+            this.trailers.unshift(result[0]);
+            break;
+        }
+      };
+    }
+    return this.showFleetMembersContainer = false;
+  }
+
+  public dateChange(event: any) {
+    console.log('CAMBIANDOOOOOO', event)
   }
 }
