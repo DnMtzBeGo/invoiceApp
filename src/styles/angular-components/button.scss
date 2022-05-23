@@ -76,3 +76,17 @@
   width: 30px;
   height: 30px;
 }
+
+.white-toggle {
+  // --background: linear-gradient(180deg, rgba(39,42,46,1) 0%, rgba(39,42,46,1) 60%, rgba(60,65,71,1) 100%);
+  // --background-checked: linear-gradient(180deg, rgba(226,178,0,1) 0%, rgba(255,201,0,1) 10%, rgba(255,201,0,1) 60%);
+  // --handle-spacing: 1px;
+  // --handle-height: 22px;
+  // --handle-width: 22px;
+  // --handle-background: #fff url(/assets/order/handle.svg) no-repeat center / contain;
+  // --handle-background-checked: #fff url(/assets/order/handle.svg) no-repeat center / contain;
+  width: 50px !important;
+  height: 25px !important;
+  border: 2px solid white;
+  border-radius: 20px;
+}
