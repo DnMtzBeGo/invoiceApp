@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, SimpleChange, SimpleChanges } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
@@ -20,8 +20,7 @@ export class CartaPortePageComponent implements OnInit {
   private cartaPorteId: string;
   private redirectTo: string;
 
-  @Input()
-  public facturaInfo: any;
+  @Input() facturaInfo: any;
 
   public transporteInfo: any;
   public ubicacionesInfo: any;
@@ -40,25 +39,37 @@ export class CartaPortePageComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.cartaPorteId = this.route.snapshot.paramMap.get("id");
-    this.redirectTo = this.route.snapshot.paramMap.get("redirectTo");
-    const payload = { _id: this.cartaPorteId };
-    this.facturaInfo = (
-      await this.apiRestService.apiRestGet("invoice", payload)
-    ).subscribe((e) => {
-      this.facturaInfo = e.result.invoices[0];
+    // this.cartaPorteId = this.route.snapshot.paramMap.get("id");
+    // this.redirectTo = this.route.snapshot.paramMap.get("redirectTo");
+    // const payload = { _id: this.cartaPorteId };
+    // this.facturaInfo = (
+    //   await this.apiRestService.apiRestGet("invoice", payload)
+    // ).subscribe((e) => {
+    //   this.facturaInfo = e.result.invoices[0];
+    //   const { carta_porte } = this.facturaInfo;
+    //   if (carta_porte) {
+    //     this.transporteInfo = carta_porte;
+    //     this.figuraTransporteInfo = carta_porte.figura_transporte;
+    //     this.ubicacionesInfo = carta_porte.ubicaciones;
+    //     this.mercanciasInfo = carta_porte.mercancias;
+    //   }
+    //   const { readonly } = facturaPermissions(this.facturaInfo);
+    //   if (readonly) {
+    //     this.showReadOnlyAlert();
+    //   }
+    // });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.facturaInfo?.currentValue.carta_porte) {
+      this.facturaInfo = changes.facturaInfo?.currentValue;
       const { carta_porte } = this.facturaInfo;
-      if (carta_porte) {
-        this.transporteInfo = carta_porte;
-        this.figuraTransporteInfo = carta_porte.figura_transporte;
-        this.ubicacionesInfo = carta_porte.ubicaciones;
-        this.mercanciasInfo = carta_porte.mercancias;
-      }
-      const { readonly } = facturaPermissions(this.facturaInfo);
-      if (readonly) {
-        this.showReadOnlyAlert();
-      }
-    });
+      this.transporteInfo = carta_porte;
+      this.figuraTransporteInfo = carta_porte.figura_transporte;
+      this.ubicacionesInfo = carta_porte.ubicaciones;
+      this.mercanciasInfo = carta_porte.mercancias;
+    }
+
   }
 
   async gatherInfo(): Promise<void> {
@@ -79,28 +90,28 @@ export class CartaPortePageComponent implements OnInit {
       delete this.facturaInfo.carta_porte.via_entrada_salida;
     }
 
-    (
-      await this.apiRestService.apiRest(
-        JSON.stringify(this.facturaInfo),
-        "invoice/update"
-      )
-    ).subscribe(
-      (r) => {
-        this.showSuccessModal();
-      },
-      (error) => {
-        console.log("an error ocurrend, error is: ", error);
-        this.showErrorModal(
-          error.error.result.message.map((e) => {
-            const msg = e.error;
-            const pre = e.field.split("/");
+    // (
+    //   await this.apiRestService.apiRest(
+    //     JSON.stringify(this.facturaInfo),
+    //     "invoice/update"
+    //   )
+    // ).subscribe(
+    //   (r) => {
+    //     this.showSuccessModal();
+    //   },
+    //   (error) => {
+    //     console.log("an error ocurrend, error is: ", error);
+    //     this.showErrorModal(
+    //       error.error.result.message.map((e) => {
+    //         const msg = e.error;
+    //         const pre = e.field.split("/");
 
-            if (pre[2]?.trim() == "autotransporte") pre[1] = "Autotransporte";
-            return `En ${pre[1]}: ${msg}`;
-          })
-        );
-      }
-    );
+    //         if (pre[2]?.trim() == "autotransporte") pre[1] = "Autotransporte";
+    //         return `En ${pre[1]}: ${msg}`;
+    //       })
+    //     );
+    //   }
+    // );
   }
 
   showSuccessModal() {
