@@ -18,13 +18,27 @@ input[type="number"] {
     bottom: 0px;
     right: 10px;
     z-index: 2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .icon {
+      background: linear-gradient(180deg, #FFD200 0%, #FFBE00 100%);
+      color:#040B11;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   .figuras-subwrapper {
     position: relative;
 
     > div {
-      position: absolute;
       right: 10px;
       top: 10px;
       width: auto;
