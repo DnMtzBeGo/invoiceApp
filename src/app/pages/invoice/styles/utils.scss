@@ -258,7 +258,7 @@ ngx-mat-select-search.brand-select-search-1 {
       border-radius: 50%;
       object-fit: cover;
       object-position: center;
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.08);
     }
 
     > div {
@@ -275,7 +275,8 @@ ngx-mat-select-search.brand-select-search-1 {
     }
   }
 
-  &.mat-active {
+  &.mat-active,
+  &.mat-active.mat-selected {
     background: rgba(255, 255, 255, 0.03);
     border-left: 1px solid #ffbe00;
   }

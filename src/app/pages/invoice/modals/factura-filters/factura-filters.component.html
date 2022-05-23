@@ -83,7 +83,11 @@
         class="disable-custom-format"
       >
         <ng-container *ngFor="let tipo of vm.tiposComprobante">
-          <mat-option *ngIf="tipo.enabled" [value]="tipo.clave">
+          <mat-option
+            *ngIf="tipo.enabled"
+            [value]="tipo.clave"
+            class="brand-option-1"
+          >
             {{ tipo.clave }} - {{ tipo.descripcion }}
           </mat-option>
         </ng-container>

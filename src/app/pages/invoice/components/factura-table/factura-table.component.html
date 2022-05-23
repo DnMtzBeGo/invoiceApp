@@ -244,7 +244,7 @@
                   : ("invoice.invoice-table.view-details" | translate)
               }}</span>
             </button>
-            <button
+            <!-- <button
               *ngIf="
                 p(element).edit &&
                 p(element).cartaporte &&
@@ -255,7 +255,7 @@
             >
               <mat-icon>ballot</mat-icon>
               <span>{{ "invoice.invoice-table.carta-porte" | translate }}</span>
-            </button>
+            </button> -->
             <button
               *ngIf="p(element).vistaprevia"
               mat-menu-item
@@ -388,7 +388,11 @@
       <mat-label>{{
         "invoice.invoice-table.items-per-page" | translate
       }}</mat-label>
-      <mat-form-field appearance="outline" floatLabel="always">
+      <mat-form-field
+        appearance="outline"
+        floatLabel="always"
+        class="brand-field-1"
+      >
         <mat-select
           [(value)]="page.pageSize"
           (selectionChange)="pageChangeEmiter()"
@@ -397,6 +401,7 @@
           <mat-option
             [value]="sizeOption"
             *ngFor="let sizeOption of sizeOptions"
+            class="brand-option-1"
             >{{ sizeOption }}</mat-option
           >
         </mat-select>

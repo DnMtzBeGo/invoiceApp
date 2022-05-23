@@ -96,7 +96,11 @@
         "
         class="disable-custom-format"
       >
-        <mat-option *ngFor="let pais of vm.paises" [value]="pais.code">
+        <mat-option
+          *ngFor="let pais of vm.paises"
+          [value]="pais.code"
+          class="brand-option-1"
+        >
           {{ pais.name }}
         </mat-option>
       </mat-select>
@@ -142,7 +146,11 @@
         "
         class="disable-custom-format"
       >
-        <mat-option *ngFor="let estado of vm.estados" [value]="estado.clave">
+        <mat-option
+          *ngFor="let estado of vm.estados"
+          [value]="estado.clave"
+          class="brand-option-1"
+        >
           {{ estado.nombre }}
         </mat-option>
       </mat-select>
@@ -191,6 +199,7 @@
         <mat-option
           *ngFor="let municipio of vm.municipios"
           [value]="municipio.clave"
+          class="brand-option-1"
         >
           {{ municipio.nombre }}
         </mat-option>
@@ -261,7 +270,11 @@
         "
         class="disable-custom-format"
       >
-        <mat-option *ngFor="let colonia of vm.colonias" [value]="colonia.clave">
+        <mat-option
+          *ngFor="let colonia of vm.colonias"
+          [value]="colonia.clave"
+          class="brand-option-1"
+        >
           {{ colonia.nombre }}
         </mat-option>
       </mat-select>
