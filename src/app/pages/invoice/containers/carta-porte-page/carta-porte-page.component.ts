@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, SimpleChange, SimpleChanges } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
@@ -20,8 +20,7 @@ export class CartaPortePageComponent implements OnInit {
   private cartaPorteId: string;
   private redirectTo: string;
 
-  @Input()
-  public facturaInfo: any;
+  @Input() facturaInfo: any;
 
   public transporteInfo: any;
   public ubicacionesInfo: any;
@@ -59,6 +58,18 @@ export class CartaPortePageComponent implements OnInit {
     //     this.showReadOnlyAlert();
     //   }
     // });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.facturaInfo?.currentValue.carta_porte) {
+      this.facturaInfo = changes.facturaInfo?.currentValue;
+      const { carta_porte } = this.facturaInfo;
+      this.transporteInfo = carta_porte;
+      this.figuraTransporteInfo = carta_porte.figura_transporte;
+      this.ubicacionesInfo = carta_porte.ubicaciones;
+      this.mercanciasInfo = carta_porte.mercancias;
+    }
+
   }
 
   async gatherInfo(): Promise<void> {
