@@ -1,41 +1,78 @@
 
-.bego-btn{
-    font-family: Avenir;
-    border-radius: 8px;
-    min-width: 125px;
+.bego-btn {
+  font-family: Avenir;
+  border-radius: 8px;
+  min-width: 125px;
 
-    &.thick-btn{
-      padding: 10px;
-      font-weight: 600;
-      font-size: 18px;
-    }
-  
-    &.yellow{
-      background-color: #ffbe00;
-    }
-  
-    &.gray{
-      background: linear-gradient(107.27deg, #181F25 21.25%, #151B21 87.17%);
-      border: 1px solid #10161C;
-      box-sizing: border-box;
-      box-shadow: inset 4px 4px 6px #1D242C, inset -4px -4px 6px #10161C;
-      color: white;
-  
-    }
-  
-    &.medium-size{
-      min-width: 262px;
-    }
-
-    &.full-width{
-      width: 100%;
-    }
-
-    &.mat-button-disabled{
-      color: #1C232A!important;
-      box-shadow: 0px 1px 4px #040b11, inset -3px -3px 4px #13181e, inset 3px 3px 4px #000000!important;
-      background: #040B11;
-      border-radius: 8px;
-    }
-    // color: black;
+  &.thick-btn{
+    padding: 10px;
+    font-weight: 600;
+    font-size: 18px;
   }
+
+  &.yellow{
+    background-color: #ffbe00;
+  }
+
+  &.gray{
+    background: linear-gradient(107.27deg, #181F25 21.25%, #151B21 87.17%);
+    border: 1px solid #10161C;
+    box-sizing: border-box;
+    box-shadow: inset 4px 4px 6px #1D242C, inset -4px -4px 6px #10161C;
+    color: white;
+
+  }
+
+  &.medium-size{
+    min-width: 262px;
+  }
+
+  &.full-width{
+    width: 100%;
+  }
+
+  &.mat-button-disabled{
+    color: #1C232A!important;
+    box-shadow: 0px 1px 4px #040b11, inset -3px -3px 4px #13181e, inset 3px 3px 4px #000000!important;
+    background: #040B11;
+    border-radius: 8px;
+  }
+  // color: black;
+}
+
+.bego-icon.mat-icon-button {
+  color:#000000;
+  background: #FFBE00;
+  box-shadow: inset 4px 4px 4px #FFD354, inset -4px -4px 6px #D59E00;
+  border-radius: 10px !important;
+  font-size: 26px;
+}
+
+.bego-icon.mat-button.mat-primary.mat-button-disabled,
+.bego-icon.mat-button.mat-accent.mat-button-disabled,
+.bego-icon.mat-button.mat-warn.mat-button-disabled,
+.bego-icon.mat-button.mat-button-disabled.mat-button-disabled,
+.bego-icon.mat-icon-button.mat-primary.mat-button-disabled,
+.bego-icon.mat-icon-button.mat-accent.mat-button-disabled,
+.bego-icon.mat-icon-button.mat-warn.mat-button-disabled,
+.bego-icon.mat-icon-button.mat-button-disabled.mat-button-disabled,
+.bego-icon.mat-stroked-button.mat-primary.mat-button-disabled,
+.bego-icon.mat-stroked-button.mat-accent.mat-button-disabled,
+.bego-icon.mat-stroked-button.mat-warn.mat-button-disabled,
+.bego-icon.mat-stroked-button.mat-button-disabled.mat-button-disabled {
+  background: linear-gradient(152.01deg, rgba(8, 15, 22, 0.29) 13.84%, rgba(33, 37, 44, 0.44) 80.67%);
+  box-shadow: 0px 4px 5px #020507;
+  color: #1C232A;
+}
+
+.btn-dark-bego.mat-icon-button {
+  color:#EDEDED;
+  background: linear-gradient(152.01deg, rgba(8, 15, 22, 0.29) 13.84%, rgba(33, 37, 44, 0.44) 80.67%);
+  box-shadow: 0px 4px 10px #040B11;
+  backdrop-filter: blur(30px);
+  font-size: 18px;
+  line-height: 18px;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+}
