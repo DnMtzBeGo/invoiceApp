@@ -62,7 +62,7 @@
                 *ngIf="!hasCer; else elseBlockCer"
                 class="button-file"
                 (click)="fileInputCer.click()">
-                <bego-button class="icon icon-cloud-upload icon only"> <span> {{ 'checkout.upload' | translate }} </span></bego-button>
+                <bego-button class="icon icon-cloud-upload icon only"></bego-button> {{ 'checkout.upload' | translate }}
                 </button>
 
                 <ng-template #elseBlockCer>
@@ -96,7 +96,7 @@
                *ngIf="!hasKey; else elseBlockKey"
                class="button-file"
                (click)="fileInputKey.click()">
-               <bego-button class="icon icon-cloud-upload icon only"> <span> {{ 'checkout.upload' | translate }} </span></bego-button>
+               <bego-button class="icon icon-cloud-upload icon only"></bego-button> {{ 'checkout.upload' | translate }}
                </button>
 
                <ng-template #elseBlockKey>
