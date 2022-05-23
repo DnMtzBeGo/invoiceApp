@@ -2,6 +2,19 @@ $icomoon-font-family: "bego-icons" !default;
 // $icomoon-font-path: "../fonts/bego-icons" !default;
 $icomoon-font-path: "../../../assets/fonts/bego-icons" !default;
 
+$icon-cloud-upload: "\e942";
+$icon-flag: "\e943";
+$icon-drag: "\e944";
+$icon-camera: "\e945";
+$icon-comment: "\e946";
+$icon-key: "\e947";
+$icon-grid: "\e948";
+$icon-avatar: "\e949";
+$icon-lightning: "\e94a";
+$icon-checked: "\e94b";
+$icon-star: "\e94c";
+$icon-trailer: "\e94d";
+$icon-stretch: "\e94e";
 $icon-trash1: "\e939";
 $icon-image: "\e93a";
 $icon-fleet: "\e93b";
@@ -69,6 +82,7 @@ $icon-edit: "\e941";
 $icon-download: "\e936";
 $icon-shared: "\e937";
 
+
 .icon {
   font-family: '#{$icomoon-font-family}' !important;
   font-style: normal;
@@ -81,6 +95,73 @@ $icon-shared: "\e937";
 
   font-size: 14px;
 
+  
+  &.icon-cloud-upload {
+    &:before {
+      content: $icon-cloud-upload; 
+    }
+  }
+  &.icon-flag {
+    &:before {
+      content: $icon-flag; 
+    }
+  }
+  &.icon-drag {
+    &:before {
+      content: $icon-drag;     
+      color: #494c50;
+    }
+  }
+  &.icon-camera {
+    &:before {
+      content: $icon-camera; 
+    }
+  }
+  &.icon-comment {
+    &:before {
+      content: $icon-comment; 
+    }
+  }
+  &.icon-key {
+    &:before {
+      content: $icon-key; 
+    }
+  }
+  &.icon-grid {
+    &:before {
+      content: $icon-grid; 
+    }
+  }
+  &.icon-avatar {
+    &:before {
+      content: $icon-avatar; 
+    }
+  }
+  &.icon-lightning {
+    &:before {
+      content: $icon-lightning; 
+    }
+  }
+  &.icon-checked {
+    &:before {
+      content: $icon-checked; 
+    }
+  }
+  &.icon-star {
+    &:before {
+      content: $icon-star; 
+    }
+  }
+  &.icon-trailer {
+    &:before {
+      content: $icon-trailer; 
+    }
+  }
+  &.icon-stretch {
+    &:before {
+      content: $icon-stretch; 
+    }
+  }
   &.icon-trash1 {
     &:before {
       content: $icon-trash1; 
@@ -411,7 +492,6 @@ $icon-shared: "\e937";
       content: $icon-shared; 
     }
   }
-
 }
 
 @font-face {
