@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
@@ -19,6 +19,8 @@ export class CartaPortePageComponent implements OnInit {
   public catalogues: any;
   private cartaPorteId: string;
   private redirectTo: string;
+
+  @Input()
   public facturaInfo: any;
 
   public transporteInfo: any;

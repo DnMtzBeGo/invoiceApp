@@ -212,6 +212,7 @@ export const fromFacturaCopy = (factura) => {
   delete factura.stamped;
   delete factura.exportacion;
   delete factura.fecha_emision;
+  delete factura.order;
   return factura;
 };
 

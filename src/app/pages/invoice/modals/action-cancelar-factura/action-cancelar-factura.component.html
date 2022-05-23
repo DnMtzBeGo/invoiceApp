@@ -30,7 +30,11 @@
       (ngModelChange)="vm.form.motivo_cancelacion = $event"
       class="disable-custom-format"
     >
-      <mat-option *ngFor="let motivo of vm.motivos" [value]="motivo.clave">
+      <mat-option
+        *ngFor="let motivo of vm.motivos"
+        [value]="motivo.clave"
+        class="brand-option-1"
+      >
         {{ motivo.descripcion }}
       </mat-option>
     </mat-select>
