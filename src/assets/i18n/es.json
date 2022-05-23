@@ -1003,7 +1003,9 @@
 
             "error-title": "La información es invalida",
 
-            "readonly-title": "Esta carta porte ya no puede ser editada"
+            "readonly-title": "Esta carta porte ya no puede ser editada",
+            "siguiente": "Siguiente",
+            "anterior": "Anterior"
         },
         "transporte": {
             "transporte-internacional": "Transporte Internacional",
@@ -1046,7 +1048,7 @@
             "origen-destino": "Orígen / Destino",
 
             "tipo": "* Tipo",
-            "choose-a-date": "Choose a date",
+            "choose-a-date": "Elige una fecha",
             "id-ubicacion": "ID Ubicación (Opcional)",
             "id-ubicacion-error": "El id debe de iniciar con 'OR' o 'DE' seguido de 6 dígitos",
             "nombre-destinatario": "Nombre (Opcional)",

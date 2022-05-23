@@ -1,0 +1,37 @@
+.stepper {
+  background-color: transparent;
+
+  .mat-step-header .mat-step-label.mat-step-label-active.mat-step-label-selected {
+    color: #C1C7D0;
+  }
+
+  .mat-step-header .mat-step-label.mat-step-label-active {
+    color: #494C50;
+  }
+
+  .mat-step-header .mat-step-icon {
+    background-color: #10161C;
+    box-shadow: inset 2px 2px 4px #1C232A, inset -2px -2px 4px #10161C;
+    color: #494C50;
+    border-radius: 8px;
+  }
+
+  .mat-step-icon {
+    border-radius: 8px;
+  }
+
+  .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+    background-color: #FFBE00;
+    box-shadow: inset 2px 2px 4px #FFBE00, inset -2px -2px 4px #C69400;
+    color: #040B11
+  }
+
+  .mat-horizontal-stepper-header::before, .mat-horizontal-stepper-header::after, .mat-stepper-horizontal-line {
+    border-top-color: #494C50;
+  }
+
+  .mat-expansion-panel, .mat-card {
+    background: transparent;
+  }
+}
+

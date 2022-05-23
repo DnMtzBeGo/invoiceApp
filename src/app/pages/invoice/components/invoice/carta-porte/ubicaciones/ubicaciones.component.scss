@@ -12,12 +12,28 @@ input[type="number"] {
 
 .figura-container {
   position: relative;
+  padding-bottom: 35px;
 
   .add-figura-btn {
     position: absolute;
     bottom: 0px;
     right: 10px;
     z-index: 2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .icon {
+      background: linear-gradient(180deg, #FFD200 0%, #FFBE00 100%);
+      color:#040B11;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   .figuras-subwrapper {
@@ -33,13 +49,16 @@ input[type="number"] {
       cursor: pointer;
       bottom: 30px;
       justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
 
       .bubble {
         border-radius: 50%;
         width: 20px;
         height: 20px;
-        background-color: #536cfe;
-        color: white;
+        background: linear-gradient(180deg, #FFD200 0%, #FFBE00 100%);
+        color: #040B11;
+        cursor: initial;
         display: flex;
         align-items: center;
         font-size: 11px;

@@ -1,10 +1,45 @@
 <form [formGroup]="firstFormGroup">
   <div class="grid container-row">
-    <mat-slide-toggle formControlName="transp_internac">{{
+
+    <!-- <mat-slide-toggle formControlName="transp_internac">{{
       "invoice.transporte.transporte-internacional" | translate
-    }}</mat-slide-toggle>
+    }}</mat-slide-toggle> -->
+    <div>
+      <button mat-icon-button class="bego-icon icon icon-truck" type="button">
+      </button>
+      <button mat-icon-button class="bego-icon icon icon-ship" type="button" disabled>
+      </button>
+      <button mat-icon-button class="bego-icon icon icon-airplane" type="button" disabled>
+      </button>
+      <button mat-icon-button class="bego-icon icon icon-train" type="button" disabled>
+      </button>
+    </div>
+    <mat-button-toggle-group
+      #group="matButtonToggleGroup"
+      class="container-row-b"
+      value="No"
+      formControlName="transp_internac"
+    >
+      <mat-button-toggle
+        mat-fab
+        value="No"
+        aria-label="Nacional"
+      >
+      Nacional
+      </mat-button-toggle>
+
+      <mat-button-toggle
+        mat-fab
+        value="Sí"
+        aria-label="Internacional"
+      >
+      Internacional
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+
   </div>
-  <div class="grid" *ngIf="firstFormGroup.value.transp_internac">
+  <div class="grid" *ngIf="transporteInternacional">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{
         "invoice.transporte.pais-origen-destino" | translate
@@ -57,66 +92,21 @@
       />
     </mat-form-field> -->
   </div>
-
-  <mat-button-toggle-group
-    #group="matButtonToggleGroup"
-    value="autotransporte"
-    class="container-row-b"
-  >
-    <mat-button-toggle
-      mat-fab
-      value="autotransporte"
-      aria-label="Autotransporte"
-    >
-      <mat-icon>local_shipping</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle
-      mat-fab
-      value="maritimo"
-      disabled
-      aria-label="Transporte Marítimo"
-    >
-      <mat-icon>directions_boat</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle
-      mat-fab
-      value="aereo"
-      disabled
-      aria-label="Transporte Aereo"
-    >
-      <mat-icon>flight</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle
-      mat-fab
-      value="ferroviario"
-      disabled
-      aria-label="Transporte Ferroviario"
-    >
-      <mat-icon>train</mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-  <mat-expansion-panel *ngIf="group.value" expanded class="expansion-body">
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{ group.value | titlecase }}</mat-panel-title>
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
-      <ng-container *ngIf="group.value === 'autotransporte'">
-        <app-autotransporte
-          [subtiposRemolques]="subtiposRemolques"
-          [info]="autotransportesInfo"
-        ></app-autotransporte>
-      </ng-container>
-      <ng-container *ngIf="group.value === 'maritimo'">
-        <app-maritimo></app-maritimo>
-      </ng-container>
-      <ng-container *ngIf="group.value === 'aereo'">
-        <app-aereo></app-aereo>
-      </ng-container>
-      <ng-container *ngIf="group.value === 'ferroviario'">
-        <app-ferroviario></app-ferroviario>
-      </ng-container>
-    </ng-template>
-  </mat-expansion-panel>
+  <div class="grid" *ngIf="cartaPorteType === 'autotransporte'">
+    <app-autotransporte
+      [subtiposRemolques]="subtiposRemolques"
+      [info]="autotransportesInfo"
+    ></app-autotransporte>
+  </div>
+  <div class="grid" *ngIf="cartaPorteType === 'maritimo'">
+    <app-maritimo></app-maritimo>
+  </div>
+  <div class="grid" *ngIf="cartaPorteType === 'aereo'">
+    <app-aereo></app-aereo>
+  </div>
+  <div class="grid" *ngIf="cartaPorteType === 'ferroviario'">
+    <app-ferroviario></app-ferroviario>
+  </div>
   <div class="grid">
     <button mat-button matStepperNext>
       {{ "invoice.transporte.siguiente" | translate }}
