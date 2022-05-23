@@ -61,7 +61,7 @@ export class CartaPortePageComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.facturaInfo?.currentValue.carta_porte) {
+    if(changes.facturaInfo?.currentValue?.carta_porte) {
       this.facturaInfo = changes.facturaInfo?.currentValue;
       const { carta_porte } = this.facturaInfo;
       this.transporteInfo = carta_porte;
