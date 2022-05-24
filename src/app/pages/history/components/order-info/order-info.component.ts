@@ -23,6 +23,9 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.selectedRow = 'pickup';
     this.statusOrder = this.orderInfo.status;
+    if(this.statusOrder > 3){
+      this.changePickupDropoff('dropoff');
+    }
   }
 
   public changePickupDropoff(row: string): void {

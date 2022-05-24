@@ -87,7 +87,8 @@ export class EditCnBtnComponent implements OnInit {
 
   updateProgress(): void {
     if (this.barRef) {
-      this.barRef.nativeElement.style.transform = 'rotate(' + (45 + this.progress * 1.8) + 'deg)';
+      this.barRef.nativeElement.style.transform = 'rotate(' + (45 + (this.progress || 0) * 1.8) + 'deg)';
+
     }
   }
 }
