@@ -91,8 +91,7 @@
     </div>
   </div>
 
-  <div class="truck-trailer-info"
-    [ngClass]="{'border-bottom': (! (orderData.status == 2 && title == 'pickup') || (orderData.status !== 4 && title!=='pickup')) && orderData.status <6}">
+  <div class="truck-trailer-info" [ngClass]="{'border-bottom': (! (orderData.status == 2 && title == 'pickup') || (orderData.status !== 4 && title!=='pickup')) && orderData.status <6}">
     <div class="truck-info" *ngIf="orderData.truck">
       <i class="icon icon-fleet"></i>
       <span class="label">
@@ -113,14 +112,14 @@
   <span *ngIf="orderData.status < 6">
     <!--pickup track btn-->
     <div class="track-button-container" *ngIf="title=='pickup' ">
-      <button class="track-button" [disabled]="orderData.status !== 2" (click)="sendIdForTrackingOrder()">
+      <button class="track-button" [disabled]="!(orderData.status >= 2 && orderData.status < 3)" (click)="sendIdForTrackingOrder()">
         {{ 'history.history_detail.btn_track' | translate }}
       </button>
     </div>
 
     <!--dropoff track btn-->
     <div class="track-button-container" *ngIf="title!=='pickup' ">
-      <button class="track-button" [disabled]="orderData.status !== 4" (click)="sendIdForTrackingOrder()">
+      <button class="track-button" [disabled]="!(orderData.status >= 4 && orderData.status < 5)" (click)="sendIdForTrackingOrder()">
         {{ 'history.history_detail.btn_track' | translate }}
       </button>
     </div>
