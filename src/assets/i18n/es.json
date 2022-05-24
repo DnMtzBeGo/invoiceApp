@@ -193,6 +193,7 @@
     "history": {
         "title": "Historial de viajes",
         "search": "Buscar por dirección...",
+        "total_earnings": "Ganancias totales", 
         "no-comments":"Sin Comentarios",
         "upcoming_detail_title":"Próximo",
         "completed_detail_title":"Completado",

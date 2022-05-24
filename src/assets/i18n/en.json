@@ -427,6 +427,7 @@
       "history": {
         "title": "History",
         "search": "Search by address...",
+        "total_earnings": "Total Earnings",
         "no-comments":"No Comments",
         "upcoming_detail_title":"Upcoming",
         "completed_detail_title":"Complete",
