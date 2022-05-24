@@ -1,13 +1,20 @@
 import { normalize } from "./string";
 
-export const searchInObject = (search: string) => (object: object) =>
-  Object.entries(object)
-    .filter(
-      ([_, value]) => typeof value === "string" || typeof value === "number"
-    )
-    .some(([_, value]) =>
+const searchTypes = new Set(["string", "number"]);
+export const searchInObject = (search: string) => (object: object) => {
+  for (const prop in object) {
+    const value = object[prop];
+
+    if (
+      searchTypes.has(typeof value) &&
+      value !== "" &&
       normalize(String(value).toLowerCase()).includes(search)
-    );
+    )
+      return true;
+  }
+
+  return false;
+};
 
 export const isObject = (object) =>
   object != null && typeof object === "object" && object.constructor === Object;
