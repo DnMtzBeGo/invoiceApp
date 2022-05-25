@@ -62,7 +62,7 @@
   <app-driver-status-card [title]="selectedRow" [orderData]="orderInfo"></app-driver-status-card>
 
   <!-- WE ARE NOT APPLYING RULES FOR MANAGERS-->
-  <app-download-invoices #downloadInvoicesRef *ngIf="orderCreatedByCarrierManager(orderInfo)" [orderId]="orderInfo._id"
+  <app-download-invoices #downloadInvoicesRef *ngIf="orderInfo.user_id == orderInfo.manager?._id" [orderId]="orderInfo._id"
     [orderRefNumber]="orderInfo.order_number" [pdf]="true" [xml]="true"></app-download-invoices>
 
   <app-drop-down *ngIf="selectedRow === 'pickup'" [title]=" 'history.history_detail.pickup_info_tab' | translate ">
