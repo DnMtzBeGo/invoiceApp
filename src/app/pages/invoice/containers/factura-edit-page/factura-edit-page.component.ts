@@ -72,6 +72,7 @@ import {
   previewFactura,
   validators,
   facturaStatus,
+  optimizeInvoiceCatalog,
 } from "./factura.core";
 import {
   ActionSendEmailFacturaComponent,
@@ -847,7 +848,7 @@ export class FacturaEditPageComponent implements OnInit {
     // AUZM911206E49
     return from(
       this.apiRestService.apiRestGet("invoice/catalogs/invoice")
-    ).pipe(mergeAll(), pluck("result"));
+    ).pipe(mergeAll(), pluck("result"), map(optimizeInvoiceCatalog));
   }
 
   fetchHelpTooltips() {

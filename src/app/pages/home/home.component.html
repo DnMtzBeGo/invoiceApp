@@ -19,12 +19,13 @@
       </app-orders>
     </div>
 
-    <div class="input-directions" >
+    <div class="input-directions">
       <app-input-directions
         [showMapPreview]="showOrderDetails"
         (showNewOrderCard)="showNewOrderCard()"
         (updateLocations)="updateLocations($event)"
         [typeMap]="typeMap"
+        [savedPlaces]="savedPlaces$ | async"
         (inputPlace)="placesService.emitter.next($event)"
       >
       </app-input-directions>

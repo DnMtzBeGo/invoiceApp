@@ -550,7 +550,7 @@ export class OrdersComponent implements OnInit {
           });
         } else if(page === 'draft') {
         } else {
-          this.router.navigate(['services'], {
+          this.router.navigate(['pricing'], {
             state: {
               orderId: result._id
             },

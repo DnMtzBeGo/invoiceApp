@@ -9,5 +9,7 @@
   [title]="alert.title"
   [handlers]="alert.handlers"
 >
-  {{ alert.body }}
+  <div [innerHTML]="alert.body">
+
+  </div>
 </bego-alert>

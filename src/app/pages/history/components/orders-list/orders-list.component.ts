@@ -81,7 +81,7 @@ export class OrdersListComponent implements OnInit {
       search: this.inputSearch
     };
 
-    (await this.authService.apiRest(JSON.stringify(requestOrders), 'orders/dashboard_history')).subscribe( res => {
+    (await this.authService.apiRest(JSON.stringify(requestOrders), 'carriers/dashboard_history')).subscribe( res => {
       this.pagesGroup = [];
       this.orderTabs[currentTab].orders = res.result.orders;      
       if(!this.orderTabs[currentTab].orders.length){

@@ -45,8 +45,7 @@ export class PickupDropoffInfoComponent implements OnInit {
       this.extraNotes = this.orderData[this.title]?.extra_notes;
       this.phone = this.orderData[this.title]?.contact_info.telephone;
       this.email = this.orderData[this.title]?.contact_info.email;
-      this.cargoType = this.orderData.cargo.type;
-
+      this.cargoType = this.orderData.cargo?.type;
     }
 
   }

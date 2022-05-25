@@ -48,6 +48,7 @@ import { Paginator } from "../../models";
 import {
   getImpuestoDescripcion,
   validators,
+  optimizeInvoiceCatalog,
 } from "../../containers/factura-edit-page/factura.core";
 import { routes } from "../../consts";
 
@@ -425,7 +426,7 @@ export class FacturaEmisorConceptosComponent implements OnInit {
   fetchCatalogosSAT() {
     return from(
       this.apiRestService.apiRestGet("invoice/catalogs/invoice")
-    ).pipe(mergeAll(), pluck("result"));
+    ).pipe(mergeAll(), pluck("result"), map(optimizeInvoiceCatalog));
   }
 
   fetchHelpTooltips() {

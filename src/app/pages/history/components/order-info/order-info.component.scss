@@ -1,3 +1,5 @@
+@import '../../../../../styles.scss';
+
 .order-info-container {
   max-width: 508px;
   width: 508px;
@@ -13,12 +15,34 @@
     border-radius: 8px;
 
     .order-data-gral {
-      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      margin: 0px 46px 32px 46px;
+      padding-top: 39px;
+      .order-date{
+        font-family: 'Avenir-Light';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        text-transform: capitalize;
+        color: #ededed;
+      }
+      .icon {
+        font-size: 5px;
+        color: #EDEDED;
+        line-height: 18px;
+        margin: 0 5px;
+        line-height: 32px;
+      }
+
+      .edit-cn-btn-wrapper{
+        align-self: center;
+      }
     }
   }
 
   .order-number {
-    margin-left: 46px;
     font-family: 'Avenir-Light';
     font-style: normal;
     font-weight: 800;
@@ -34,7 +58,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 39px;
     margin-bottom: 5px;
     p {
       font-family: 'Avenir-Light';
@@ -46,16 +69,7 @@
       color: #FFFFFF;
     }
 
-    p:nth-child(1) {
-      margin-left: 46px;
-    }
 
-    .icon {
-      font-size: 5px;
-      color: #EDEDED;
-      line-height: 18px;
-      margin: 0 5px;
-    }
 
     p:nth-child(2) {
       margin-right: 40px;
@@ -218,4 +232,44 @@
 
 app-drop-down {
   margin-top: 35px;
+}
+
+
+::ng-deep{
+  .invoices{
+    margin-top: 50px!important;
+    margin-left: 20px!important;
+    margin-right: 20px!important;
+  }
+}
+
+.total-price {
+  padding: 15px 0px;
+  text-align: center;
+
+  .title {
+    color: #ededed;
+    font-family: Avenir;
+    font-size: 16px;
+  }
+
+  .earnings {
+    color: #ededed;
+    font-family: Avenir;
+    font-size: 8vw;
+    font-weight: 900;
+  }
+
+  .driver-earnings {
+    @include fluid('font-size', 320px, 375px, 11px, 14.5px);
+    color: #ffbe00;
+  }
+}
+
+$dark1: #10161c;
+.earnings-card{
+  background: #0B1117;
+  box-shadow: 0px 4px 4px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
+  border-radius: 10px;
+  margin-top: 50px;
 }
