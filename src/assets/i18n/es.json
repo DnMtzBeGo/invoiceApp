@@ -180,16 +180,12 @@
             "receiver-tax_regime": "Falta el régimen fiscal del receptor"
         },
         "insurance-modal": {
-            "title-insurance": "¿Seguro para tu carga?",
-            "txt-insurance": "Agrega el valor de la carga y agregalo a tu carro de compras",
-            "btn-accept": "Agregar seguro de carga",
-            "btn-deny": "Continuar sin seguro",
-            "title-cargo": "¿Y ahora que lo tienes?",
-            "btn-add": "Agrega",
-            "btn-quit": "Remover",
-            "txt-cargo": "¿Cuál es el valor de tu carga?",
-            "btn-cargo": "Agregar Seguro",
-            "txt-total": "El importe total del seguro es"
+            "title-insurance": "Total",
+            "txt-insurance": "Escribe el precio total del servicio",
+            "txt-insurance-taxes": "(Antes de impuestos)",
+            "deferred-PUE": "Pago en una sola exhibición",
+            "deferred-PPD": "Pago en parcialidades",
+            "btn": "Siguiente"
         },
         "agent-modal": {
             "title-agent": "¿Quieres Agente y Cruce?",
