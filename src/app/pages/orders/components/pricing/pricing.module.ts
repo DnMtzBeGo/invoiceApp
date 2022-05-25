@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InsuranceComponent } from './insurance.component';
+import { PricingComponent } from './pricing.component';
+import { NgxCurrencyModule } from "ngx-currency";
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxCurrencyModule } from "ngx-currency";
+import { PricingRoutingModule } from './pricing-routing.module';
+
 
 @NgModule({
   declarations: [
-    InsuranceComponent
+    PricingComponent,
   ],
   imports: [
     CommonModule,
+    NgxCurrencyModule,
     TranslateModule,
     FormsModule,
-    NgxCurrencyModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-    InsuranceComponent
+    ReactiveFormsModule,
+    PricingRoutingModule
   ]
 })
-export class InsuranceModule { }
+export class PricingModule { }

@@ -323,16 +323,12 @@
             "error-orderid": "Invalid Order Id"
         },
         "insurance-modal": {
-            "title-insurance": "Insurance?",
-            "txt-insurance": "Type your cargo value and add it to your checkout cart",
-            "btn-accept": "Now I have Insurance",
-            "btn-deny": "Continue Without Insurance",
-            "title-cargo": "Now that you have it",
-            "btn-add": "Add",
-            "btn-quit": "Remove",
-            "txt-cargo": "What is your cargo value?",
-            "btn-cargo": "Add",
-            "txt-total": "Your total insurance amount is"
+            "title-insurance": "Total",
+            "txt-insurance": "White the total price of the service",
+            "txt-insurance-taxes": "(Before taxes)",
+            "deferred-PUE": "Single payment",
+            "deferred-PPD": "Deferred payment",
+            "btn": "Next"
         },
         "agent-modal": {
             "title-agent": "Customs & Agent?",
