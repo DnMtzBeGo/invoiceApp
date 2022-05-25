@@ -1,5 +1,24 @@
 @import "../../../../styles.scss";
 
+.fleet-info-container {
+  .fleet-drivers-row {
+    margin-top: 30px;
+
+    > p {
+      margin: 0 0 14px 33px;
+    }
+  }
+
+  .fleet-trucks-row,
+  .fleet-trailers-row {
+    margin-top: 20px;
+
+    > p {
+      margin: 0 0 14px 33px;
+    }
+  }
+}
+
 .rest-of-members {
   cursor: pointer;
   display: flex;
@@ -124,12 +143,24 @@ section {
     flex-direction: column;
     overflow: hidden;
 
+    .input-directions-scroll {
+      overflow: scroll;
+    }
+
     .input-directions-component{
         display: flex;
         transition: transform 1s;
-        position: relative;
         height: 100%;
-    
+        
+        > div:nth-child(1) {
+          display: flex;
+          flex-direction: column;
+
+          bego-button {
+            margin-top: 50px;
+          }
+        }
+
         &.show-map{
             .map-preview{
                 opacity: 1;

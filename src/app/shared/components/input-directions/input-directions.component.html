@@ -2,7 +2,7 @@
 
   <div
     class="input-directions-component"
-    [ngClass]="[parent.showOrderDetails ? 'show-map' : '', hideMap ? 'hide-map' : '']"
+    [ngClass]="[parent.showOrderDetails ? 'show-map' : '', hideMap ? 'hide-map' : '', showScroll ? 'input-directions-scroll' : '' ]"
     >
     <div>
       <div class="directions" [ngClass]=" hideMap ? 'hide-line' : ''">
@@ -170,9 +170,7 @@
                   (isValid)="timepickerValid($event)"
                   [hourStep]="1"
                   [minuteStep]="1"
-                  [min]="minTime"
                   [showMeridian]="ismeridian"
-                  (meridianChange)="dateChange($event)"
                   *ngIf="!destroyPicker"
                 ></timepicker>
             </div>
@@ -244,6 +242,13 @@
         </div>
       </div>
 
+     <!--  <bego-button 
+        *ngIf="canGoToSteps"
+        (click)="openNewOrderMenu()"
+        class="btn-yellow"
+        [text]="'location.btn-order' | translate">
+      </bego-button> -->
+
       <bego-button 
         *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
         [disabled]="!pickupSelected || !dropoffSelected || isDatesSelected"
@@ -252,19 +257,18 @@
         [text]="'location.btn-order' | translate">
       </bego-button>
       
-    <!--  <bego-button
+     <bego-button
         *ngIf="hideMap"
         (click)="cancelChangeLocations()"
         class="btn-yellow"
         [text]="'orders.btn-cancel' | translate">
-      </bego-button> -->
+      </bego-button>
   
     </div>
   
     <div class="map-preview" *ngIf="!showFleetMembersContainer && canGoToSteps">
 
       <bego-button
-        [disabled]="!pickupSelected || !dropoffSelected ||showFleetMembersContainer"
         (click)="openNewOrderMenu()"
         class="btn-yellow"
         [text]="'location.btn-order' | translate"

@@ -62,6 +62,7 @@ export class InputDirectionsComponent implements OnInit {
   isDatesSelected: boolean = false;
   showFleetMembersContainer: boolean = false;
   canGoToSteps: boolean = false;
+  showScroll: boolean = false;
   titleFleetMembers: any = '';
   fromDate: number = 0;
   toDate: number = 0;
@@ -169,6 +170,9 @@ export class InputDirectionsComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);
+    if(changes.hasOwnProperty('showMapPreview') && !changes.showMapPreview.currentValue && changes.showMapPreview.previousValue) {
+      this.showScroll = true;
+    }
   }
 
   async selectSearchResultPickup(item: any) {
@@ -363,6 +367,7 @@ export class InputDirectionsComponent implements OnInit {
   openNewOrderMenu() {
     this.showNewOrderCard.emit();
     this.showMapPreview = true;
+    this.showScroll = false;
   }
 
   togglePlace(placeId: string, event: MouseEvent): void {
@@ -386,28 +391,28 @@ export class InputDirectionsComponent implements OnInit {
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     if(event.value) this.minTime = new Date(event.value);
+    let result = event.value;
     this.events = moment(new Date(`${event.value}`), 'MM-DD-YYYY').format('MMMM DD YYYY');
-    /* console.log('ASIGNANDO EL MES', this.events, event.value); */
   }
 
   timepickerValid (data: any) {
     this.lastTime = this.orderForm.controls['timepickup'].value || this.lastTime;
     if(this.lastTime != 'DD / MM / YY') {
       this.isDatesSelected = true;
-      this.fromDate = moment(this.lastTime).valueOf();
+      this.showScroll = true;
+      let hours = moment(this.lastTime).format("HH");
+      let minutes = moment(this.lastTime).format('mm')
+      let hoursInt = parseInt(hours);
+      let minutesInt = parseInt(minutes);
+      let resHours = ((hoursInt * 60) * 60000);
+      let resMinutes = (minutesInt * 60000);
+      let resMilliseconds = resHours + resMinutes;
+      let total = moment(this.events).valueOf();
+      this.fromDate = total + resMilliseconds;
+
       this.getETA(this.locations);
     }
     
-    if(!data && !this.firstLoad) {
-      this.destroyPicker = true;
-      this.cdr.detectChanges();
-      setTimeout(() => {
-        this.destroyPicker = false;
-        this.cdr.detectChanges();
-        this.firstLoad = true;
-        this.orderForm.controls['timepickup'].setValue(this.lastTime);
-      }, 0);
-    }
     this.firstLoad = false;
   }
 
@@ -439,6 +444,8 @@ export class InputDirectionsComponent implements OnInit {
       "toDate": this.toDate
     };
     (await this.auth.apiRest(JSON.stringify(requestAvailavilityFleetMembers), 'orders/calendar', { apiVersion: 'v1.1' })).subscribe(({result}) => {
+      this.canGoToSteps = false;
+      this.selectMembersToAssign = {};
       this.drivers = result.drivers;
       this.trucks = result.trucks;
       this.trailers = result.trailers;
@@ -456,6 +463,9 @@ export class InputDirectionsComponent implements OnInit {
       if(iterator._id != member._id) {
         iterator['isSelected'] = false;
       }
+    }
+    if(this.selectMembersToAssign.hasOwnProperty('drivers') && this.selectMembersToAssign.hasOwnProperty('trucks') && this.selectMembersToAssign.hasOwnProperty('trailers')) {
+      this.canGoToSteps = true;
     }
   }
 
@@ -491,9 +501,5 @@ export class InputDirectionsComponent implements OnInit {
       };
     }
     return this.showFleetMembersContainer = false;
-  }
-
-  public dateChange(event: any) {
-    console.log('CAMBIANDOOOOOO', event)
   }
 }
