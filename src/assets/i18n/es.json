@@ -215,6 +215,7 @@
     "history": {
         "title": "Historial de viajes",
         "search": "Buscar por dirección...",
+        "total_earnings": "Ganancias totales", 
         "no-comments":"Sin Comentarios",
         "upcoming_detail_title":"Próximo",
         "completed_detail_title":"Completado",
@@ -333,7 +334,22 @@
             "stand-by":"Pendiente",
             "in-progress":"En curso",
             "completed":"Completado"
-        }
+      },
+      "consignment_note": {
+        "edit_consignment_note": "Editar carta porte",
+        "order": "Orden",
+        "pickup": "Recolección",
+        "dropoff": "Entrega",
+        "save_changes": "Guardar cambios",
+        "info_updated": "La información para la carta porte fue actualizada",
+        "cannot_edit": "Aún no puedes editar",
+        "complete_invoice": "Completar factura",
+        "price": "Precio",
+        "stamp": "Timbrar",
+        "stamp_request": "Se solicitó la creación de la carta porte",
+        "invoice": "Factura",
+        "invoice_preview": "Previo de factura"
+      }
     },
     "fiscal-documents": {
         "cards-instructions":"Arrastra un archivo en cada tarjeta o haz clic en ellas para elegir un archivo.",

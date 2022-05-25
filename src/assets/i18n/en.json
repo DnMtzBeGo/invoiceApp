@@ -450,6 +450,7 @@
       "history": {
         "title": "History",
         "search": "Search by address...",
+        "total_earnings": "Total Earnings",
         "no-comments":"No Comments",
         "upcoming_detail_title":"Upcoming",
         "completed_detail_title":"Complete",
@@ -608,6 +609,21 @@
             "stand-by":"Stand by",
             "in-progress":"In Progress",
             "completed":"Completed"
+        },
+        "consignment_note": {
+          "edit_consignment_note": "Edit consignment note",
+          "order": "Order",
+          "pickup": "Pickup",
+          "dropoff": "Dropoff",
+          "save_changes": "Save changes",
+          "info_updated": "Information for consignment note was updated",
+          "cannot_edit": "You cannot edit yet",
+          "complete_invoice": "Complete invoice",
+          "price": "Price",
+          "stamp": "Stamp",
+          "stamp_request": "Creation for consignment note was requested",
+          "invoice": "Invoice",
+          "invoice_preview": "Invoice preview"
         }
     },
     "header": {

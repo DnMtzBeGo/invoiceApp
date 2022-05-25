@@ -15,6 +15,9 @@ import { OrderCardComponent } from './components/order-card/order-card.component
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoOrdersYetComponent } from './components/no-orders-yet/no-orders-yet.component';
 import { MatButtonModule } from '@angular/material/button';
+import { DownloadInvoicesComponent } from './components/download-invoices/download-invoices.component';
+import { MatIconModule } from '@angular/material/icon';
+import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,8 @@ import { MatButtonModule } from '@angular/material/button';
     OrderEvidenceComponent,
     OrderCardComponent,
     NoOrdersYetComponent,
+    DownloadInvoicesComponent,
+    EditCnBtnComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +41,7 @@ import { MatButtonModule } from '@angular/material/button';
     TranslateModule,
     MatTabsModule,
     MatButtonModule,
+    MatIconModule
   ]
 })
 export class HistoryModule { }
