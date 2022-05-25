@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DownloadInvoicesComponent } from './components/download-invoices/download-invoices.component';
 import { MatIconModule } from '@angular/material/icon';
 import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.component';
+import { SimpleAvatarModule } from 'src/app/shared/components/simple-avatar/simple-avatar.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.compone
     TranslateModule,
     MatTabsModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    SimpleAvatarModule
   ]
 })
 export class HistoryModule { }

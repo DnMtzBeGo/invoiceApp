@@ -3,8 +3,10 @@
     <div class="info-driver-container">
       <!-- <img src="../../../../../assets/images/history/user-profile.svg" alt=""> -->
       <i *ngIf="!orderData.driver?.thumbnail" class="icon icon-user-profile"></i>
-      <div *ngIf="orderData.driver?.thumbnail">
-        <img class="avatar" [src]="orderData.driver?.thumbnail">
+      <div class="avatar-wrapper">
+        <app-simple-avatar 
+          [picture]="orderData.driver?.thumbnail">
+        </app-simple-avatar>
       </div>
       <p class="driver-name">{{orderData['driver']?.nickname}}</p>
 
