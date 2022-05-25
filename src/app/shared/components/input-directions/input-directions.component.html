@@ -2,7 +2,7 @@
 
   <div
     class="input-directions-component"
-    [ngClass]="[parent.showOrderDetails ? 'show-map' : '', hideMap ? 'hide-map' : '']"
+    [ngClass]="[parent.showOrderDetails ? 'show-map' : '', hideMap ? 'hide-map' : '', showScroll ? 'input-directions-scroll' : '' ]"
     >
     <div>
       <div class="directions" [ngClass]=" hideMap ? 'hide-line' : ''">
@@ -59,7 +59,7 @@
             <div class="list-icon-address">
               <img
                 [src]="
-                  savedPlaces.has(item.place_id)
+                  savedPlaces?.has(item.place_id)
                     ? '/assets/images/maps/marker-fav-on.svg'
                     : '/assets/images/maps/marker-fav-off.svg'
                 "
@@ -97,7 +97,7 @@
             >
               <img
                 [src]="
-                  savedPlaces.has(item.place_id)
+                  savedPlaces?.has(item.place_id)
                     ? '/assets/images/maps/marker-fav-on.svg'
                     : '/assets/images/maps/marker-fav-off.svg'
                 "
@@ -147,28 +147,128 @@
           </div>
         </div>
       </div>
-  
-    <bego-button 
-      *ngIf="!hideMap"
-      [disabled]="!pickupSelected || !dropoffSelected"
-      (click)="openNewOrderMenu()"
-      class="btn-yellow"
-      [text]="'location.btn-order' | translate">
-    </bego-button>
-    
-    <bego-button
-      *ngIf="hideMap"
-      (click)="cancelChangeLocations()"
-      class="btn-yellow"
-      [text]="'orders.btn-cancel' | translate">
-    </bego-button>
+
+      <div class="assigned-date-time-container" *ngIf="pickupSelected && dropoffSelected">
+
+        <div class="assigned-date-time-row">
+          <form [formGroup]="orderForm">
+            <p class="assigned-time-title">Assigned time & date</p>
+            <mat-form-field class="input-calendar" appearance="fill">
+              <mat-datepicker #picker></mat-datepicker>
+              <div class="btn-input-calendar" (click)="picker.open()">
+                <input type="radio" name="" id="">
+                <p>Schedule to:</p>
+                <input class="date-input" matInput formControlName="datepickup" [matDatepicker]="picker" (dateChange)="addEvent('change', $event)" [min]="calendar" placeholder="MM/DD/YY">
+                <mat-datepicker #picker></mat-datepicker>
+              </div>
+            </mat-form-field>
+
+            <div class="input-timer">
+                <timepicker
+                  [formControlName]="'timepickup'"
+                  class="timepicker"
+                  (isValid)="timepickerValid($event)"
+                  [hourStep]="1"
+                  [minuteStep]="1"
+                  [showMeridian]="ismeridian"
+                  *ngIf="!destroyPicker"
+                ></timepicker>
+            </div>
+
+            <div class="eta-container">
+              <p>Aprox Time Load</p>
+              <p>{{aproxETA}} hrs</p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="fleet-info-container" *ngIf="isDatesSelected">
+        <div class="fleet-drivers-row">
+          <p>Available drivers</p>
+          <div class="drivers-container">
+            <ng-container *ngFor="let driver of drivers; let i = index">
+              <app-circular-avatar
+                [data]="driver"
+                title="drivers"
+                *ngIf="i < 4"
+                (click)="selectMembersForOrder(driver, 'drivers', i)">
+              </app-circular-avatar>
+            </ng-container>
+            <div 
+              class="rest-of-members" 
+              *ngIf="drivers.length > 4"
+              (click)="showFleetContainer('drivers')" >
+              <p>+{{drivers.length - 4 }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="fleet-trucks-row">
+          <p>Trucks</p>
+          <div class="trucks-container">
+            <ng-container *ngFor="let truck of trucks; let i = index">
+              <app-circular-avatar 
+                [data]="truck"
+                title="trucks"
+                *ngIf="i < 4"
+                (click)="selectMembersForOrder(truck, 'trucks', i)">
+              </app-circular-avatar>
+            </ng-container>
+            <div 
+              class="rest-of-members" 
+              *ngIf="trucks.length > 4"
+              (click)="showFleetContainer('trucks')" >
+              <p>+{{trucks.length - 4}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="fleet-trailers-row">
+          <p>Trailers</p>
+          <div class="trailers-container">
+            <ng-container *ngFor="let trailer of trailers; let i = index">
+              <app-circular-avatar
+                [data]="trailer"
+                title="trailers"
+                *ngIf="i < 4"
+                (click)="selectMembersForOrder(trailer, 'trailers', i)">
+              </app-circular-avatar>
+            </ng-container>
+            <div class="rest-of-members" *ngIf="trailers.length > 4" (click)="showFleetContainer('trailers')">
+              <p>+{{trailers.length -4 }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     <!--  <bego-button 
+        *ngIf="canGoToSteps"
+        (click)="openNewOrderMenu()"
+        class="btn-yellow"
+        [text]="'location.btn-order' | translate">
+      </bego-button> -->
+
+      <bego-button 
+        *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
+        [disabled]="!pickupSelected || !dropoffSelected || isDatesSelected"
+        (click)="openNewOrderMenu()"
+        class="btn-yellow"
+        [text]="'location.btn-order' | translate">
+      </bego-button>
+      
+     <bego-button
+        *ngIf="hideMap"
+        (click)="cancelChangeLocations()"
+        class="btn-yellow"
+        [text]="'orders.btn-cancel' | translate">
+      </bego-button>
   
     </div>
   
-    <div class="map-preview">
+    <div class="map-preview" *ngIf="!showFleetMembersContainer && canGoToSteps">
 
       <bego-button
-        [disabled]="!pickupSelected || !dropoffSelected"
         (click)="openNewOrderMenu()"
         class="btn-yellow"
         [text]="'location.btn-order' | translate"
@@ -180,4 +280,21 @@
       <bego-map [typeMap]="typeMap"> </bego-map>
     </div>
   </div>
+
+  <app-fleet-members 
+    [ngClass]="showFleetMembersContainer ? 'show-fleet-members' : ''" 
+    [titleFleetMembers]="titleFleetMembers"  >
+    <ng-container *ngFor="let fleet of fleetData">
+      <app-member-card-selection 
+        [data]="fleet"
+        [titleFleetMembers]="titleFleetMembers"
+        (sendMemberSelected)="getMemberSelected($event)" ></app-member-card-selection>
+    </ng-container>
+
+    <bego-button 
+      class="btn-yellow select-fleet-members"
+      text="Seleccionar"
+      (click)="closeFleetMembers(titleFleetMembers)" >
+    </bego-button>
+  </app-fleet-members>
 </section>
