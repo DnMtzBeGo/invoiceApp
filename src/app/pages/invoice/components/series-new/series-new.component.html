@@ -19,7 +19,11 @@
           name="tipo_comprobante"
           formControlName="tipo_comprobante"
         >
-          <mat-option *ngFor="let type of receiptTypes" [value]="type.clave">
+          <mat-option
+            *ngFor="let type of receiptTypes"
+            [value]="type.clave"
+            class="brand-option-1"
+          >
             {{ type.descripcion }}
           </mat-option>
         </mat-select>
