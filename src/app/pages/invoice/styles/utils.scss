@@ -7,8 +7,12 @@
   color: #c1c7d0;
   font-weight: 600;
 
-  &:hover {
+  &:not(.mat-button-disabled):hover {
     outline: 1px solid #ffbe00;
+  }
+
+  &.mat-button-disabled {
+    color: #494c50;
   }
 }
 

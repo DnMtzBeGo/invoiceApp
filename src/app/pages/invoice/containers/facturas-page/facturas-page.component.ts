@@ -31,12 +31,19 @@ import {
   skip,
   filter,
   takeUntil,
+  startWith,
 } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
+import { TranslateService } from "@ngx-translate/core";
 import { Router, ActivatedRoute } from "@angular/router";
+import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { routes } from "../../consts";
 import { Paginator } from "../../models";
-import { FacturaFiltersComponent } from "../../modals";
+import {
+  FacturaFiltersComponent,
+  ActionConfirmationComponent,
+} from "../../modals";
+import { FacturaEmitterComponent } from "../../components/factura-emitter/factura-emitter.component";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, oof } from "src/app/shared/utils/operators.rx";
 import {
@@ -67,6 +74,8 @@ export class FacturasPageComponent implements OnInit {
   public routes: typeof routes = routes;
   $rx = reactiveComponent(this);
 
+  private filtersDialogRef;
+
   vm!: {
     tiposComprobante?: unknown;
     facturaStatus?: unknown;
@@ -81,6 +90,7 @@ export class FacturasPageComponent implements OnInit {
     };
     facturas?: unknown[];
     facturasLoading?: boolean;
+    defaultEmisor?: unknown[];
     template?: string;
     searchAction?: {
       type: "template";
@@ -93,7 +103,16 @@ export class FacturasPageComponent implements OnInit {
   };
 
   facturasEmitter = new Subject<
-    ["refresh" | "filters:set" | "template:search" | "template:set", unknown?]
+    [
+      (
+        | "refresh"
+        | "filters:set"
+        | "template:search"
+        | "template:set"
+        | "refresh:defaultEmisor"
+      ),
+      unknown?
+    ]
   >();
 
   paginator: Paginator = {
@@ -107,7 +126,9 @@ export class FacturasPageComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     private matDialog: MatDialog,
-    private apiRestService: AuthService
+    private apiRestService: AuthService,
+    private translateService: TranslateService,
+    private notificationsService: NotificationsService
   ) {}
 
   ngOnInit(): void {
@@ -175,6 +196,13 @@ export class FacturasPageComponent implements OnInit {
       facturas$.pipe(mapTo(false))
     );
 
+    // EMISORES
+    const defaultEmisor$ = this.fetchEmisores().pipe(
+      repeatWhen(() =>
+        this.facturasEmitter.pipe(ofType("refresh:defaultEmisor"))
+      )
+    );
+
     //TEMPLATES
     const emptySearch = (search: any) => search.search === "";
     const validSearch = (search: any) => !emptySearch(search);
@@ -230,6 +258,7 @@ export class FacturasPageComponent implements OnInit {
       params: params$,
       facturas: facturas$,
       facturasLoading: facturasLoading$,
+      defaultEmisor: defaultEmisor$,
       template: template$,
       searchAction: searchAction$,
       searchLoading: searchLoading$,
@@ -279,6 +308,27 @@ export class FacturasPageComponent implements OnInit {
     ).pipe(mergeAll(), pluck("result"));
   };
 
+  fetchEmisores() {
+    return from(
+      this.apiRestService.apiRestGet("invoice/emitters", {
+        loader: "false",
+      })
+    ).pipe(
+      mergeAll(),
+      map((responseData) => {
+        const emisores = responseData?.result?.documents;
+
+        // return void 0;
+        // return [];
+
+        if (emisores == void 0) return void 0;
+
+        return emisores.length === 0 ? [] : [emisores.pop()];
+      }),
+      startWith(null)
+    );
+  }
+
   searchTemplate(search: { type: "template"; search: string }) {
     const endpoints = {
       template: "invoice/get_drafts",
@@ -304,7 +354,9 @@ export class FacturasPageComponent implements OnInit {
 
   // MODALS
   openFilters() {
-    const dialogRef = this.matDialog.open(FacturaFiltersComponent, {
+    if (this.filtersDialogRef) return;
+
+    this.filtersDialogRef = this.matDialog.open(FacturaFiltersComponent, {
       data: {
         tiposComprobante: this.vm.tiposComprobante,
         facturaStatus: this.vm.facturaStatus,
@@ -321,8 +373,9 @@ export class FacturasPageComponent implements OnInit {
     });
 
     // TODO: false/positive when close event
-    dialogRef.afterClosed().subscribe((params) => {
-      console.log("afterClosed", params);
+    this.filtersDialogRef.afterClosed().subscribe((params) => {
+      this.filtersDialogRef = void 0;
+
       if (!params) return;
 
       this.router.navigate([], {
@@ -333,6 +386,56 @@ export class FacturasPageComponent implements OnInit {
         },
         queryParamsHandling: "merge",
       });
+    });
+  }
+
+  noEmisorAlert() {
+    const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
+      data: {
+        modalTitle: this.translateService.instant(
+          "invoice.invoices.noemisor-title"
+        ),
+        modalMessage: this.translateService.instant(
+          "invoice.invoices.noemisor-message"
+        ),
+        confirm: this.translateService.instant(
+          "invoice.invoices.noemisor-confirm"
+        ),
+      },
+      restoreFocus: false,
+      backdropClass: ["brand-dialog-1"],
+    });
+
+    // TODO: false/positive when close event
+    dialogRef.afterClosed().subscribe((res?) => {
+      res && this.createEditEmisor();
+    });
+  }
+
+  createEditEmisor(emisor?) {
+    const dialogRef = this.matDialog.open(FacturaEmitterComponent, {
+      data: emisor,
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ["brand-dialog-1"],
+    });
+
+    dialogRef.afterClosed().subscribe((result?) => {
+      console.log("result", result);
+      if (result != void 0) {
+        if (result.success === true) {
+          this.notificationsService.showSuccessToastr(
+            this.translateService.instant("invoice.emisores.create-success")
+          );
+
+          this.facturasEmitter.next(["refresh:defaultEmisor"]);
+        } else if (result.success === false) {
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant("invoice.emisores.create-error")
+          );
+        }
+      }
     });
   }
 

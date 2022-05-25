@@ -645,11 +645,17 @@
     "invoice": {
         "invoices": {
             "filters": "Filtros",
-            "emisor-btn": "Emisores",
+            "series": "Series",
+            "emisor-btn-new": "Registrar Emisor",
+            "emisor-btn-edit": "Emisor",
             "new-invoice": "Nueva Factura",
             "template-placeholder": "Buscar Template",
             "template-open": "Abrir Template",
-            "template-new": "Nuevo Template"
+            "template-new": "Nuevo Template",
+
+            "noemisor-title": "Atención",
+            "noemisor-message": "Se debe dar de alta a un Emisor antes de comenzar a Facturar",
+            "noemisor-confirm": "Crear ahora"
         },
         "invoice-table": {
             "emision": "Emisión",
