@@ -120,14 +120,13 @@ export class CheckoutComponent implements OnInit {
 
       (res: any) => {
         this.invoiceData = res.result;
-        // this.invoiceData.attributes.tax_regime = ''
-        // if(!this.invoiceData.cer && !this.invoiceData.key) {
+        if(!this.invoiceData.cer && !this.invoiceData.key) {
           this.checkoutSteps.unshift({
             text: this.translateService.instant('checkout.emitter'),
             nextBtnTxt: this.translateService.instant('checkout.stepper-btns.continue-to-emitter'),
             step: 'emitter'
           })
-      // }
+      }
         console.log('Receiving select attributes : ', this.invoiceData);
       },
       (err: any) => {
