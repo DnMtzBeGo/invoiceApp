@@ -3,6 +3,7 @@ import {
   OnInit,
   ViewEncapsulation,
   ChangeDetectionStrategy,
+  ViewChild,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import {
@@ -71,6 +72,7 @@ import {
   previewFactura,
   validators,
   facturaStatus,
+  optimizeInvoiceCatalog,
 } from "./factura.core";
 import {
   ActionSendEmailFacturaComponent,
@@ -261,6 +263,8 @@ export class FacturaEditPageComponent implements OnInit {
   valor_unitario = new FormControl(null);
   cantidad = new FormControl(null);
   descuento = new FormControl(null);
+
+  @ViewChild("cartaporteCmp") cartaporteCmp: any;
 
   constructor(
     private router: Router,
@@ -740,10 +744,10 @@ export class FacturaEditPageComponent implements OnInit {
         }
       },
       afterError: () => {
-        window.scrollTo({
-          top: 9999999,
-          behavior: "smooth",
-        });
+        // window.scrollTo({
+        //   top: 9999999,
+        //   behavior: "smooth",
+        // });
       },
     });
 
@@ -844,7 +848,7 @@ export class FacturaEditPageComponent implements OnInit {
     // AUZM911206E49
     return from(
       this.apiRestService.apiRestGet("invoice/catalogs/invoice")
-    ).pipe(mergeAll(), pluck("result"));
+    ).pipe(mergeAll(), pluck("result"), map(optimizeInvoiceCatalog));
   }
 
   fetchHelpTooltips() {
@@ -1003,9 +1007,9 @@ export class FacturaEditPageComponent implements OnInit {
   };
 
   submitFactura = ([mode, saveMode, factura]) => {
-    factura = clone(factura);
-
     if (this.model === "template") {
+      factura = clone(factura);
+
       const draft_id = factura._id;
       const data =
         mode === "create"
@@ -1028,6 +1032,10 @@ export class FacturaEditPageComponent implements OnInit {
         }))
       );
     }
+
+    // formatting carta porte data side effect
+    this.cartaporteCmp.gatherInfo();
+    factura = clone(this.vm?.form);
 
     return from(
       this.apiRestService.apiRest(

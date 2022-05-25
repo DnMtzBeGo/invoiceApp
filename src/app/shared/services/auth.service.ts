@@ -62,7 +62,7 @@ export class AuthService {
   public async apiRest(
     requestJson: string,
     method: string,
-    options: object = {}
+    options: any = {}
   ): Promise<Observable<any>> {
     const headers = new HttpHeaders({
       "Content-Type": "application/json",
@@ -78,7 +78,16 @@ export class AuthService {
 
     const URL_BASE = getURLBASE(method);
     const params = await this.getOptions(options);
-    return this.http.post<any>(URL_BASE + method, requestJson, {
+    let splitUrl, url;
+
+    if(options && options["apiVersion"]) {
+      splitUrl = environment.URL_BASE.split("/");
+      splitUrl[splitUrl.length - 2] = options["apiVersion"];
+      url = splitUrl.join("/");
+    } else {
+      url = environment.URL_BASE;
+    }
+    return this.http.post<any>(url + method, requestJson, {
       headers,
       params,
     });
@@ -97,7 +106,17 @@ export class AuthService {
     });
     const URL_BASE = getURLBASE(method);
     const params = await this.getOptions(options);
-    return this.http.get<any>(URL_BASE + method, {
+    let splitUrl, url;
+
+    if(options && options["apiVersion"]) {
+      splitUrl = environment.URL_BASE.split("/");
+      splitUrl[splitUrl.length - 2] = options["apiVersion"];
+      url = splitUrl.join("/");
+    } else {
+      url = environment.URL_BASE;
+    }
+
+    return this.http.post<any>(url + method, {
       headers,
       params,
     });

@@ -34,6 +34,48 @@ section{
     }
   }
 
+  .previewBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    box-shadow: inset -2px -2px 4px 0 #040b11, inset 2px 2px 4px 0 #1c232a,
+    0 13px 9px 0 #000000 !important;
+    cursor: pointer;
+    background-color: #091016 !important;
+    margin-top: 66px;
+    
+    bego-button{
+      transform: scale(1.5);
+    }
+
+    .name{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-left: 10px;
+
+      span:first-child{
+        font-family: "Avenir-Medium", Arial, Helvetica, sans-serif;
+        font-size: 0.75rem;
+        color: #ededed;
+        white-space: nowrap;
+        overflow: hidden;
+        font-weight: 500;
+        text-overflow: ellipsis;
+      }
+
+      span:last-child{
+        font-family: 'Avenir';
+        font-weight: 400;
+        font-size: 11px;
+        color: #89898a;
+      }
+      
+    }
+  }
+
   ::ng-deep bego-radio-card{
     cursor: pointer;
     

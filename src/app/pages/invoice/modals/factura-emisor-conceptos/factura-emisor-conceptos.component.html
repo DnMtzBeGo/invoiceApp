@@ -363,6 +363,7 @@
           <mat-option
             *ngFor="let unidad of vm.catalogos?.unidades_de_medida"
             [value]="unidad.clave"
+            class="brand-option-1"
           >
             {{ unidad.clave }} - {{ unidad.descripcion }}
           </mat-option>
@@ -478,6 +479,7 @@
             <mat-option
               *ngFor="let impuesto of vm.catalogos?.tipos_de_impuesto"
               [value]="impuesto"
+              class="brand-option-1"
             >
               {{ getImpuestoDescripcion(impuesto) }}
             </mat-option>
@@ -535,6 +537,7 @@
                 *ngFor="let tasa of vm.impuesto?.tasaCuota"
                 [value]="tasa.valorMaximo"
                 [attr.data-factor]="tasa.factor"
+                class="brand-option-1"
               >
                 {{ tasa.valorMaximo * 100 }}%
               </mat-option>

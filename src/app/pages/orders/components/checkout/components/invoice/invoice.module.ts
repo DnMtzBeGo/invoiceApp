@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
+import { BegoAddressAutocompleteModule } from 'src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input
     ReactiveFormsModule,
     MatButtonModule,
     BegoPhoneInputModule,
+    BegoAddressAutocompleteModule,
   ],
   exports: [
     InvoiceComponent,

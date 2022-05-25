@@ -212,6 +212,7 @@ export const fromFacturaCopy = (factura) => {
   delete factura.stamped;
   delete factura.exportacion;
   delete factura.fecha_emision;
+  delete factura.order;
   return factura;
 };
 
@@ -341,4 +342,16 @@ export const groupStatus = (list) => {
   });
 
   return Array.from(map.values());
+};
+
+export const optimizeInvoiceCatalog = (catalog?) => {
+  // if (catalog?.unidades_de_medida)
+  //   return {
+  //     ...catalog,
+  //     unidades_de_medida: catalog.unidades_de_medida.filter(
+  //       (item) => item.enabled === true
+  //     ),
+  //   };
+
+  return catalog;
 };

@@ -17,7 +17,7 @@ export class BegoAddressAutocompleteComponent implements OnInit {
   predictions: Array<any> = [];
 
   autocompleteForm =  this.formBuilder.group({
-    address : ['', Validators.required],
+    address : [''],
   });
 
   autoCompletePredictions: Array<any> = [];
@@ -29,6 +29,7 @@ export class BegoAddressAutocompleteComponent implements OnInit {
 
   @Input() address: string = '';
   @Output() addressChange = new EventEmitter<string>();
+  @Output() placeIdChange = new EventEmitter<string>();
 
   @ViewChild('input') input!: ElementRef
   
@@ -44,11 +45,12 @@ export class BegoAddressAutocompleteComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void{
-    if(changes.address  ){
+      if(changes.address && changes.address.currentValue){
       this.originalAddressValue = this.address;
+      this.autocompleteForm.controls.address.setValue(this.address);
       if(this.input?.nativeElement){
-        this.input.nativeElement.value = this.originalAddressValue;
-      }
+          this.input.nativeElement.value = this.originalAddressValue;
+        }
     }
   }
 
@@ -71,6 +73,7 @@ export class BegoAddressAutocompleteComponent implements OnInit {
   closeAutocomplete(): void {
     if(this.anOptionWasSelected){
       this.addressChange.emit(this.input.nativeElement.value)
+      this.placeIdChange.emit(this.predictions[0].place_id)
     }else{
       this.input.nativeElement.value = this.originalAddressValue;
     }
