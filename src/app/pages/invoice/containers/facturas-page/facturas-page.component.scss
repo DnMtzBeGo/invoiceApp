@@ -113,6 +113,12 @@
     }
   }
 
+  &.mat-active,
+  &.mat-active.mat-selected {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 1px solid #ffbe00;
+  }
+
   &[disabled] {
     padding-top: 0;
     padding-bottom: 0;

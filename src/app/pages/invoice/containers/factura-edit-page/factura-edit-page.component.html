@@ -288,6 +288,7 @@
                     (uso.persona_moral && vm.tipoPersona === 'moral')
                   "
                   [value]="uso.clave"
+                  class="brand-option-1"
                 >
                   {{ uso.clave }} - {{ uso.descripcion }}
                 </mat-option>
@@ -353,6 +354,7 @@
                     (regimen.persona_moral && vm.tipoPersona === 'moral')
                   "
                   [value]="regimen.clave"
+                  class="brand-option-1"
                 >
                   {{ regimen.clave }} - {{ regimen.descripcion }}
                 </mat-option>
@@ -434,6 +436,7 @@
                 <mat-option
                   *ngFor="let direccion of vm.direcciones"
                   [value]="direccion"
+                  class="brand-option-1"
                 >
                   {{ direccion.identificador }}
                 </mat-option>
@@ -572,7 +575,11 @@
               class="disable-custom-format"
               [disabled]="vm.readonly || !!vm.form?.order"
             >
-              <mat-option *ngFor="let pais of vm.paises" [value]="pais.code">
+              <mat-option
+                *ngFor="let pais of vm.paises"
+                [value]="pais.code"
+                class="brand-option-1"
+              >
                 {{ pais.name }}
               </mat-option>
             </mat-select>
@@ -617,6 +624,7 @@
               <mat-option
                 *ngFor="let estado of vm.estados"
                 [value]="estado.clave"
+                class="brand-option-1"
               >
                 {{ estado.nombre }}
               </mat-option>
@@ -662,6 +670,7 @@
               <mat-option
                 *ngFor="let municipio of vm.municipios"
                 [value]="municipio.clave"
+                class="brand-option-1"
               >
                 {{ municipio.nombre }}
               </mat-option>
@@ -735,6 +744,7 @@
               <mat-option
                 *ngFor="let colonia of vm.colonias"
                 [value]="colonia.clave"
+                class="brand-option-1"
               >
                 {{ colonia.nombre }}
               </mat-option>
@@ -874,7 +884,7 @@
                 [attr.data-regimen_fiscal]="emisor.regimen_fiscal"
                 [attr.data-_id]="emisor._id"
               >
-                <img [src]="emisor.logo" />
+                <img [src]="emisor.logo" onerror="placeholder(this)" />
                 <div>
                   <span style="text-transform: uppercase">{{
                     emisor.rfc
@@ -978,7 +988,7 @@
                 [attr.data-regimen_fiscal]="emisor.regimen_fiscal"
                 [attr.data-_id]="emisor._id"
               >
-                <img [src]="emisor.logo" />
+                <img [src]="emisor.logo" onerror="placeholder(this)" />
                 <div>
                   <span>{{ emisor.nombre }}</span>
                   <span class="sublabel" style="text-transform: uppercase">{{
@@ -1022,6 +1032,7 @@
               <mat-option
                 *ngFor="let lugar of vm.lugaresExpedicion"
                 [value]="lugar"
+                class="brand-option-1"
               >
                 {{ lugar.cp }} - {{ lugar.nombre }}
               </mat-option>
@@ -1130,6 +1141,7 @@
                       vm.emisor?.tipoPersona === 'moral')
                   "
                   [value]="regimen.clave"
+                  class="brand-option-1"
                 >
                   {{ regimen.clave }} - {{ regimen.descripcion }}
                 </mat-option>
@@ -1179,6 +1191,7 @@
                 <mat-option
                   *ngIf="comprobante.enabled !== false"
                   [value]="comprobante.clave"
+                  class="brand-option-1"
                 >
                   {{ comprobante.clave }} - {{ comprobante.descripcion }}
                 </mat-option>
@@ -1218,6 +1231,7 @@
               <mat-option
                 *ngFor="let moneda of vm.catalogos?.monedas"
                 [value]="moneda.clave"
+                class="brand-option-1"
               >
                 {{ moneda.clave }} - {{ moneda.descripcion }}
               </mat-option>
@@ -1287,6 +1301,7 @@
               <mat-option
                 *ngFor="let metodopago of vm.catalogos?.metodos_de_pago"
                 [value]="metodopago.clave"
+                class="brand-option-1"
               >
                 {{ metodopago.clave }} - {{ metodopago.descripcion }}
               </mat-option>
@@ -1338,6 +1353,7 @@
               <mat-option
                 *ngFor="let formadepago of vm.catalogos?.formas_de_pago"
                 [value]="formadepago.clave"
+                class="brand-option-1"
               >
                 {{ formadepago.clave }} - {{ formadepago.descripcion }}
               </mat-option>
@@ -1627,6 +1643,7 @@
               <mat-option
                 *ngFor="let unidad of vm.catalogos?.unidades_de_medida"
                 [value]="unidad.clave"
+                class="brand-option-1"
               >
                 {{ unidad.clave }} - {{ unidad.descripcion }}
               </mat-option>
@@ -1949,6 +1966,7 @@
               <mat-option
                 *ngFor="let impuesto of vm.catalogos?.tipos_de_impuesto"
                 [value]="impuesto"
+                class="brand-option-1"
               >
                 {{ getImpuestoDescripcion(impuesto) }}
               </mat-option>
@@ -2010,6 +2028,7 @@
                   *ngFor="let tasa of vm.impuesto?.tasaCuota"
                   [value]="tasa.valorMaximo"
                   [attr.data-factor]="tasa.factor"
+                  class="brand-option-1"
                 >
                   {{ tasa.valorMaximo * 100 }}%
                 </mat-option>
@@ -2428,7 +2447,7 @@
                     vm.tipo_de_comprobante.clave === serie.tipo_comprobante
                   "
                   [value]="serie._id"
-                  class="brand-option-serie"
+                  class="brand-option-serie brand-option-1"
                 >
                   <img [src]="serie.logo" />
                   <div>
@@ -2524,6 +2543,7 @@
               <mat-option
                 *ngFor="let tipo_de_relacion of vm.catalogos?.tipos_de_relacion"
                 [value]="tipo_de_relacion.clave"
+                class="brand-option-1"
               >
                 {{ tipo_de_relacion.clave }} -
                 {{ tipo_de_relacion.descripcion }}
@@ -2763,7 +2783,10 @@
           </div>
         </h6> -->
 
-        <app-carta-porte-page></app-carta-porte-page>
+        <app-carta-porte-page
+          [facturaInfo]="vm.form"
+          #cartaporteCmp
+        ></app-carta-porte-page>
       </section>
     </div>
 
