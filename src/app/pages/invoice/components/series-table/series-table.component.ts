@@ -24,15 +24,10 @@ export class SeriesTableComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<SerieAttributesInterface>;
   @Input() seriesTableData: SerieAttributesInterface[];
 
+  @Input() readonly: boolean = false;
+
   public dataSource: MatTableDataSource<SerieAttributesInterface>;
-  displayedColumns: string[] = [
-    "serie",
-    "comprobante",
-    "folio",
-    "color",
-    "logo",
-    "actions",
-  ];
+  displayedColumns: string[];
 
   @Output() refresh: EventEmitter<void> = new EventEmitter();
 
@@ -44,7 +39,15 @@ export class SeriesTableComponent implements OnInit {
     private translateService: TranslateService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.displayedColumns = [
+      "serie",
+      "comprobante",
+      "folio",
+      "color",
+      "logo",
+    ].concat(this.readonly ? [] : ["actions"]);
+  }
 
   ngOnChanges() {
     this.dataSource = new MatTableDataSource<SerieAttributesInterface>(

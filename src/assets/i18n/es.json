@@ -166,6 +166,8 @@
             "verify-user-title": "Antes de completar la orden debemos verificar tu cuenta",
             "verify-user-body": "Completa la documentación en la página de perfil", 
             "error-orderid": "El ID de la Orden no es válido",
+            "error-something": "Algo a salido mal: ",
+            "error-missing-orderId": "No se encuentra el order Id",
             "fileSize": "el archivo es demasiado pesado",
             "fileType": "el tipo de archivo debe ser .cer o .key",
             "emitter-validated": "Emisor Creado",
@@ -645,11 +647,17 @@
     "invoice": {
         "invoices": {
             "filters": "Filtros",
-            "emisor-btn": "Emisores",
+            "series": "Series",
+            "emisor-btn-new": "Registrar Emisor",
+            "emisor-btn-edit": "Emisor",
             "new-invoice": "Nueva Factura",
             "template-placeholder": "Buscar Template",
             "template-open": "Abrir Template",
-            "template-new": "Nuevo Template"
+            "template-new": "Nuevo Template",
+
+            "noemisor-title": "Atención",
+            "noemisor-message": "Se debe dar de alta a un Emisor antes de comenzar a Facturar",
+            "noemisor-confirm": "Crear ahora"
         },
         "invoice-table": {
             "emision": "Emisión",
