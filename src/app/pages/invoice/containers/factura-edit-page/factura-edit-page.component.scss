@@ -56,6 +56,11 @@
               inset 0px -4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 6px #1c232a;
             border-radius: 0 99px 99px 0;
           }
+
+          &.disabled span {
+            opacity: 0.6;
+            font-weight: 400;
+          }
         }
       }
 

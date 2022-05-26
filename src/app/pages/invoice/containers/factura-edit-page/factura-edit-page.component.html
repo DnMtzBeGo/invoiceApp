@@ -1435,7 +1435,7 @@
         matTooltipPosition="above"
         matTooltipHideDelay="100"
       >
-        <h6 style="align-items: center">
+        <h6 style="margin-bottom: 1rem; align-items: center">
           {{ "invoice.edit.conceptos" | translate }}
           <span
             class="brand-icon-help"
@@ -2804,7 +2804,25 @@
             ]
           "
           [class.selected]="vm.tab === tab"
-          (click)="formEmitter.next(['tab', tab])"
+          [class.disabled]="
+            ['conceptos', 'serie'].includes(tab) &&
+            (!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc))
+          "
+          (click)="
+            !(
+              ['conceptos', 'serie'].includes(tab) &&
+              (!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc))
+            ) && formEmitter.next(['tab', tab])
+          "
+          #tooltip="matTooltip"
+          [matTooltip]="
+            ['conceptos', 'serie'].includes(tab) &&
+            (!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc))
+              ? ('invoice.edit.lugar-expedicion-placeholder-2' | translate)
+              : ''
+          "
+          matTooltipPosition="above"
+          matTooltipHideDelay="100"
         >
           <span>{{ "invoice.edit." + tab | translate }}</span>
         </li>
