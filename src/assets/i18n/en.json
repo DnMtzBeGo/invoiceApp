@@ -331,6 +331,8 @@
             "verify-user-title": "We could not submit your order because your account is not verified",
             "verify-user-body": "Complete the documentation in your profile",
             "error-orderid": "Invalid Order Id",
+            "error-something": "Something went wrong: ",
+            "error-missing-orderId": "Missing Order Id",
             "fileSize": "the file is too big",
             "fileType": "file type must be .cer or .key",
             "emitter-validated": "Emitter Created",

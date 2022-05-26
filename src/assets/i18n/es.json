@@ -166,6 +166,8 @@
             "verify-user-title": "Antes de completar la orden debemos verificar tu cuenta",
             "verify-user-body": "Completa la documentación en la página de perfil", 
             "error-orderid": "El ID de la Orden no es válido",
+            "error-something": "Algo a salido mal: ",
+            "error-missing-orderId": "No se encuentra el order Id",
             "fileSize": "el archivo es demasiado pesado",
             "fileType": "el tipo de archivo debe ser .cer o .key",
             "emitter-validated": "Emisor Creado",

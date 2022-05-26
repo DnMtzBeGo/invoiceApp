@@ -69,7 +69,21 @@ export class CheckoutComponent implements OnInit {
           }
 
           if(!this.orderId){
-            this.router.navigate(['/home']);
+            this.alertService.create({
+              title: this.translateService.instant('checkout.alerts.error-something'),
+              body: this.translateService.instant('checkout.alerts.error-missing-orderId'),
+              handlers: [
+                {
+                  text: this.translateService.instant('OK'),
+                  color: '#ffbe00',
+                  action: async () => {
+                    this.alertService.close();
+                    this.router.navigate(['/home']);
+                  }
+                }
+              ]
+            });
+
           }
         }
       });
