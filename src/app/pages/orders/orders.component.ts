@@ -336,7 +336,7 @@ export class OrdersComponent implements OnInit {
     if (this.isOrderWithCP) {
       this.orderData.pickup.contact_info["rfc"] = data.rfc;
     }
-    console.log("spt1 data:", data);
+    // console.log("spt1 data:", data);
   }
 
   getStep2FormData(data: any) {
@@ -362,6 +362,9 @@ export class OrdersComponent implements OnInit {
     if (data.hazardousType !== "select-catergory" && data.hazardousType) {
       this.orderData.cargo["hazardous_type"] = data.hazardousType;
     }
+    if (this.isOrderWithCP) {
+      this.orderData.cargo["cargo_goods"] = data.cargo_goods;
+    }
     this.orderData.cargo.weigth = data.cargoWeight;
     // console.log("stp2 data:", data);
     // console.log("orderDATA", this.orderData);
@@ -375,6 +378,11 @@ export class OrdersComponent implements OnInit {
     );
     this.orderData.dropoff.contact_info.email = data.email;
     this.orderData.dropoff.contact_info.country_code = data.country_code;
+    if (this.isOrderWithCP) {
+      this.orderData.dropoff.contact_info["rfc"] = data.rfc;
+    }
+    // console.log("stp3 data:", data);
+    // console.log("orderDATA", this.orderData);
   }
 
   getStep4FormData(data: any) {
@@ -520,69 +528,69 @@ export class OrdersComponent implements OnInit {
 
     this.orderData.completion_percentage = this.progress;
 
-    console.log(this.orderData);
+    // console.log("ultimoCommit:", this.orderData);
 
-    // const requestJson = JSON.stringify(this.orderData);
-    // // console.log("Se envia la orden:", this.orderData);
-    // (await this.auth.apiRest(requestJson, "orders/create")).subscribe(
-    //   async ({ result }) => {
-    //     // console.log(result)
-    //     this.validateRoute = result.bego_order;
-    //     // console.log(this.validateRoute)
-    //     // console.log(this.hazardousFile)
-    //     if (this.hazardousFile) {
-    //       const formData = new FormData();
-    //       formData.append("order_id", result._id);
-    //       // formData.append('file', this.hazardousFile[0]);
-    //       // console.log(formData);
-    //       (
-    //         await this.auth.uploadFilesSerivce(formData, "orders/upload_hazardous")
-    //       ).subscribe(async (data) => {
-    //         // console.log(await data);
-    //       });
-    //     }
+    const requestJson = JSON.stringify(this.orderData);
+    // console.log("Se envia la orden:", this.orderData);
+    (await this.auth.apiRest(requestJson, "orders/create")).subscribe(
+      async ({ result }) => {
+        // console.log(result)
+        this.validateRoute = result.bego_order;
+        // console.log(this.validateRoute)
+        // console.log(this.hazardousFile)
+        if (this.hazardousFile) {
+          const formData = new FormData();
+          formData.append("order_id", result._id);
+          // formData.append('file', this.hazardousFile[0]);
+          // console.log(formData);
+          (
+            await this.auth.uploadFilesSerivce(formData, "orders/upload_hazardous")
+          ).subscribe(async (data) => {
+            // console.log(await data);
+          });
+        }
 
-    //     if (!this.validateRoute && page === "orders") {
-    //       this.alertService.create({
-    //         title: this.translateService.instant("orders.title-valid-route"),
-    //         body: this.translateService.instant("orders.txt-valid-route"),
-    //         handlers: [
-    //           {
-    //             text: this.translateService.instant("draft.btn-cancel"),
-    //             color: "#ffbe00",
-    //             action: async () => {
-    //               this.alertService.close();
-    //             },
-    //           },
-    //           {
-    //             text: this.translateService.instant("Ok"),
-    //             color: "#ffbe00",
-    //             action: async () => {
-    //               this.alertService.close();
-    //               this.router.navigate(["checkout"], {
-    //                 state: {
-    //                   orderId: result._id,
-    //                   validateRoute: this.validateRoute,
-    //                 },
-    //               });
-    //             },
-    //           },
-    //         ],
-    //       });
-    //     } else if (page === "draft") {
-    //     } else {
-    //       this.router.navigate(["services"], {
-    //         state: {
-    //           orderId: result._id,
-    //         },
-    //       });
-    //     }
-    //     this.uploadScreenShotOrderMap(result._id);
-    //   },
-    //   async (res) => {
-    //     // this.errorAlert(res.error.error[this.lang]);
-    //   }
-    // );
+        if (!this.validateRoute && page === "orders") {
+          this.alertService.create({
+            title: this.translateService.instant("orders.title-valid-route"),
+            body: this.translateService.instant("orders.txt-valid-route"),
+            handlers: [
+              {
+                text: this.translateService.instant("draft.btn-cancel"),
+                color: "#ffbe00",
+                action: async () => {
+                  this.alertService.close();
+                },
+              },
+              {
+                text: this.translateService.instant("Ok"),
+                color: "#ffbe00",
+                action: async () => {
+                  this.alertService.close();
+                  this.router.navigate(["checkout"], {
+                    state: {
+                      orderId: result._id,
+                      validateRoute: this.validateRoute,
+                    },
+                  });
+                },
+              },
+            ],
+          });
+        } else if (page === "draft") {
+        } else {
+          this.router.navigate(["services"], {
+            state: {
+              orderId: result._id,
+            },
+          });
+        }
+        this.uploadScreenShotOrderMap(result._id);
+      },
+      async (res) => {
+        // this.errorAlert(res.error.error[this.lang]);
+      }
+    );
   }
 
   public async uploadScreenShotOrderMap(orderId: string) {
