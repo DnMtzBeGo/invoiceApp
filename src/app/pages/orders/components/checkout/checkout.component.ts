@@ -414,7 +414,7 @@ export class CheckoutComponent implements OnInit {
     this.receiverData.taxRegime ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-tax_regime'));
 
     if(faltates.length > 0){
-      let errores = faltates.join(', ');
+      let errores = faltates.join('<br>');
       this.alertService.create({
         title: this.translateService.instant('checkout.alerts.receiver-stamp'),
         body: errores,

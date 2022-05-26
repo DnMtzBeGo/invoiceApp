@@ -145,6 +145,14 @@ section{
     }
   }
 
+
+  ::ng-deep .mat-form-field-infix{
+    padding-left: 0px !important;
+  }
+
+  ::ng-deep .mat-form-field-label-wrapper{
+    transform: translate(0px);
+  }
 }
 
 ::ng-deep .mat-tab-header {
