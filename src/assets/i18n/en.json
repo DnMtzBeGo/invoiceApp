@@ -524,6 +524,7 @@
         },
         "history_detail": {
             "reference": "Reference",
+            "edit_order":"edit",
             "order": "Order",
             "pickup_info_tab": "Pickup information",
             "dropoff_info_tab": "Dropoff information",

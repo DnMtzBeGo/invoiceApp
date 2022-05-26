@@ -1,0 +1,17 @@
+.header{
+  display: flex;
+  align-items: center;
+  // font-size: 2rem;
+  padding: 15px;
+
+  .title{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.25rem;
+  }
+
+  .icon-back{
+    cursor: pointer;
+    padding: 5px;
+  }
+}

@@ -249,6 +249,7 @@
         "btn_start_driving": "Comenzar",
         "history_detail": {
             "reference": "Referencia",
+            "edit_order": "Editar",
             "order": "Orden",
             "pickup_info_tab": "Datos de recolección",
             "dropoff_info_tab": "Datos de entrega",

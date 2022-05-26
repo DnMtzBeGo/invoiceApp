@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DownloadInvoicesComponent } from './components/download-invoices/download-invoices.component';
 import { MatIconModule } from '@angular/material/icon';
 import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.component';
+import { EditOrderFleetComponent } from './components/edit-order-fleet/edit-order-fleet.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.compone
     NoOrdersYetComponent,
     DownloadInvoicesComponent,
     EditCnBtnComponent,
+    EditOrderFleetComponent,
   ],
   imports: [
     CommonModule,
