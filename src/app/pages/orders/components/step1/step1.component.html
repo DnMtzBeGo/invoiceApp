@@ -1,18 +1,22 @@
 <div class="steps">
   <form [formGroup]="step1Form">
     <div class="steps-container">
-
       <div class="address-box">
-        <p class="icons address-check">{{locations.pickup | splitGoogleAddress}}<span>{{locations.pickup | splitGoogleAddressSecond}}</span></p>
-        <div class="btn-change icons change-route" (click)="changeLocation('pickup')">{{ 'orders.btn-change-route-pickup' | translate }}</div>
+        <p class="icons address-check">
+          {{ locations.pickup | splitGoogleAddress
+          }}<span>{{ locations.pickup | splitGoogleAddressSecond }}</span>
+        </p>
+        <div class="btn-change icons change-route" (click)="changeLocation('pickup')">
+          {{ "orders.btn-change-route-pickup" | translate }}
+        </div>
       </div>
 
-      <h2><span>* </span>{{ 'orders.title-personal-info' | translate }}</h2>
+      <h2><span>* </span>{{ "orders.title-personal-info" | translate }}</h2>
 
       <mat-form-field>
         <i class="icon icon-user"></i>
-        <mat-label>{{ 'orders.placeholder-fullname' | translate }}</mat-label>
-        <input matInput formControlName="fullname">
+        <mat-label>{{ "orders.placeholder-fullname" | translate }}</mat-label>
+        <input matInput formControlName="fullname" />
       </mat-form-field>
 
       <bego-phone-input
@@ -27,16 +31,21 @@
 
       <mat-form-field>
         <i class="icon icon-email"></i>
-        <mat-label>{{ 'orders.placeholder-mail' | translate }}</mat-label>
-        <input matInput formControlName="email">
+        <mat-label>{{ "orders.placeholder-mail" | translate }}</mat-label>
+        <input matInput formControlName="email" />
       </mat-form-field>
 
       <mat-form-field>
         <i class="icon icon-list"></i>
-        <mat-label>{{ 'orders.placeholder-reference' | translate }}</mat-label>
-        <input matInput formControlName="reference">
+        <mat-label>{{ "orders.placeholder-reference" | translate }}</mat-label>
+        <input matInput formControlName="reference" />
       </mat-form-field>
 
+      <mat-form-field *ngIf="orderWithCP">
+        <img src="../../../assets/orders/rfc.svg" alt="" class="icon" />
+        <mat-label>RFC</mat-label>
+        <input matInput formControlName="rfc" />
+      </mat-form-field>
     </div>
   </form>
 </div>
