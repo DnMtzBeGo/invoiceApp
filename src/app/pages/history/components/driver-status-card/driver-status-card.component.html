@@ -1,8 +1,6 @@
 <div class="order-info-row-driver" *ngIf="orderData">
   <div class="status-card">
     <div class="info-driver-container">
-      <!-- <img src="../../../../../assets/images/history/user-profile.svg" alt=""> -->
-      <i *ngIf="!orderData.driver?.thumbnail" class="icon icon-user-profile"></i>
       <div class="avatar-wrapper">
         <app-simple-avatar 
           [picture]="orderData.driver?.thumbnail">
