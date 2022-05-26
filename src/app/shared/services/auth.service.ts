@@ -116,7 +116,7 @@ export class AuthService {
       url = environment.URL_BASE;
     }
 
-    return this.http.post<any>(url + method, {
+    return this.http.get<any>(url + method, {
       headers,
       params,
     });

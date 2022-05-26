@@ -17,11 +17,26 @@
     </div>
     <div class="toolbar-right">
       <button
+        *ngIf="vm.defaultEmisor?.[0]"
         mat-flat-button
         class="brand-btn-1"
-        routerLink="{{ routes.EMISORES }}"
+        [routerLink]="[routes.SERIES, { id: vm.defaultEmisor?.[0]._id }]"
       >
-        {{ "invoice.invoices.emisor-btn" | translate }}
+        {{ "invoice.invoices.series" | translate }}
+      </button>
+
+      <!-- routerLink="{{ routes.EMISORES }}" -->
+      <button
+        mat-flat-button
+        class="brand-btn-1"
+        (click)="createEditEmisor(vm.defaultEmisor?.[0])"
+        [disabled]="!vm.defaultEmisor"
+      >
+        {{
+          vm.defaultEmisor?.length === 0
+            ? ("invoice.invoices.emisor-btn-new" | translate)
+            : ("invoice.invoices.emisor-btn-edit" | translate)
+        }}
       </button>
 
       <mat-form-field
@@ -128,20 +143,24 @@
         mat-flat-button
         class="brand-btn-2"
         [routerLink]="
-          vm.template && vm.receptorSearch?.template?.length === 0
-            ? [
-                routes.NEW_TEMPLATE,
-                {
-                  template: makeTemplate({
-                    name: vm.template
-                  })
-                }
-              ]
-            : [routes.NEW_FACTURA]
+          vm.defaultEmisor?.[0]
+            ? vm.template && vm.receptorSearch?.template?.length === 0
+              ? [
+                  routes.NEW_TEMPLATE,
+                  {
+                    template: makeTemplate({
+                      name: vm.template
+                    })
+                  }
+                ]
+              : [routes.NEW_FACTURA]
+            : null
         "
+        (click)="!vm.defaultEmisor?.[0] && noEmisorAlert()"
         [style.pointer-events]="
           vm.receptorSearch?.template?.length > 0 ? 'none' : 'unset'
         "
+        [disabled]="!vm.defaultEmisor"
       >
         {{
           vm.template && vm.receptorSearch?.template?.length === 0
