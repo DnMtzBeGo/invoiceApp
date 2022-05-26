@@ -28,8 +28,6 @@ export class TransporteComponent implements OnInit {
 
   public cartaPorteType: string = 'autotransporte';
 
-  public transporteInternacional: string = 'No';
-
   public internationalTransport: boolean = false;
   firstFormGroup: FormGroup = new FormGroup({
     transp_internac: new FormControl(""),
@@ -53,6 +51,7 @@ export class TransporteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.firstFormGroup.controls["transp_internac"].setValue('No');
     this.cartaPorteInfoService.infoRecolector.subscribe((value) => {
       this.cartaPorteInfoService.addRecolectedInfo({
         ...this.firstFormGroup.value,
@@ -90,7 +89,4 @@ export class TransporteComponent implements OnInit {
     }
   }
 
-  onValChange(value) {
-    console.log(value)
-  }
 }

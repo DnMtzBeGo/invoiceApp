@@ -17,7 +17,6 @@
     <mat-button-toggle-group
       #group="matButtonToggleGroup"
       class="container-row-b"
-      value="No"
       formControlName="transp_internac"
     >
       <mat-button-toggle
@@ -39,7 +38,7 @@
 
 
   </div>
-  <div class="grid" *ngIf="transporteInternacional">
+  <div class="grid" *ngIf="group.value == 'Sí'">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{
         "invoice.transporte.pais-origen-destino" | translate
