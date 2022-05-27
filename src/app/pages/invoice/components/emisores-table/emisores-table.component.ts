@@ -67,15 +67,15 @@ export class EmisoresTableComponent implements OnInit {
       autoFocus: false,
       backdropClass: ["brand-dialog-1"],
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (!result.close) {
-        if (result.success) {
+    dialogRef.afterClosed().subscribe((result?) => {
+      if (result != void 0) {
+        if (result.success === true) {
           this.notificationsService.showSuccessToastr(
             this.translateService.instant("invoice.emisor-table.edit-success")
           );
           this.refresh.emit();
           this.table.renderRows();
-        } else {
+        } else if (result.success === false) {
           this.notificationsService.showErrorToastr(
             this.translateService.instant("invoice.emisor-table.edit-error")
           );
@@ -113,5 +113,33 @@ export class EmisoresTableComponent implements OnInit {
 
   getSeries(id_emisor: string): void {
     this.router.navigate([routes.SERIES, { id: id_emisor }]);
+  }
+
+  async setDefault(id: string) {
+    (
+      await this.apiRestService.apiRest(
+        JSON.stringify({ id }),
+        "invoice/emitters/set-default"
+      )
+    ).subscribe(
+      (res) => {
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant(
+            "invoice.emisor-table.set-default-success"
+          )
+        );
+
+        this.refresh.emit();
+        this.table.renderRows();
+      },
+      (err) => {
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant(
+            "invoice.emisor-table.set-default-error"
+          )
+        );
+        console.log(err);
+      }
+    );
   }
 }

@@ -74,7 +74,7 @@ export class FacturaEmitterComponent implements OnInit {
     let result = await this.catalogListService.getCatalogue("regimen-fiscal");
     this.regimen_fiscal = result;
     if (this.editData) {
-      this.isEditing = Object.keys(this.editData).length > 1;
+      this.isEditing = !!this.editData?._id;
       this.emitterAttributesForm.patchValue(this.editData);
       this.emitterAttributesForm.get("archivo_key_pswd").patchValue("");
     }
@@ -121,12 +121,19 @@ export class FacturaEmitterComponent implements OnInit {
           message: this.translateService.instant(
             "invoice.emisor-edit.save-success"
           ),
+          data: {
+            _id: res.result?._id,
+            rfc: this.emitterAttributesForm.get("rfc").value,
+            nombre: this.emitterAttributesForm.get("nombre").value,
+            regimen_fiscal:
+              this.emitterAttributesForm.get("regimen_fiscal").value,
+          },
         });
       },
       (err) => {
         this.dialogRef.close({
           success: false,
-          message: err.result.message,
+          message: err.result?.message ?? err.message ?? err.error,
         });
       }
     );

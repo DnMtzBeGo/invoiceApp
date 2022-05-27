@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { TranslateModule } from "@ngx-translate/core";
 
 //MATERIAL MODULES
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
@@ -60,6 +61,7 @@ import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/
     ReactiveFormsModule,
     FormsModule,
     TranslateModule,
+    MatBadgeModule,
     MatCardModule,
     MatIconModule,
     MatMenuModule,
@@ -96,6 +98,7 @@ import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/
     NgxMatNativeDateModule,
   ],
   exports: [
+    MatBadgeModule,
     MatCardModule,
     MatIconModule,
     MatMenuModule,

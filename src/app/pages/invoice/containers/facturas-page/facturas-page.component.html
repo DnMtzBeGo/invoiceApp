@@ -17,26 +17,11 @@
     </div>
     <div class="toolbar-right">
       <button
-        *ngIf="vm.defaultEmisor?.[0]"
         mat-flat-button
         class="brand-btn-1"
-        [routerLink]="[routes.SERIES, { id: vm.defaultEmisor?.[0]._id }]"
+        [routerLink]="routes.EMISORES"
       >
-        {{ "invoice.invoices.series" | translate }}
-      </button>
-
-      <!-- routerLink="{{ routes.EMISORES }}" -->
-      <button
-        mat-flat-button
-        class="brand-btn-1"
-        (click)="createEditEmisor(vm.defaultEmisor?.[0])"
-        [disabled]="!vm.defaultEmisor"
-      >
-        {{
-          vm.defaultEmisor?.length === 0
-            ? ("invoice.invoices.emisor-btn-new" | translate)
-            : ("invoice.invoices.emisor-btn-edit" | translate)
-        }}
+        {{ "invoice.invoices.emisor-btn" | translate }}
       </button>
 
       <mat-form-field

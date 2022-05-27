@@ -648,8 +648,7 @@
         "invoices": {
             "filters": "Filtros",
             "series": "Series",
-            "emisor-btn-new": "Registrar Emisor",
-            "emisor-btn-edit": "Emisor",
+            "emisor-btn": "Emisores",
             "new-invoice": "Nueva Factura",
             "template-placeholder": "Buscar Template",
             "template-open": "Abrir Template",
@@ -744,9 +743,11 @@
             "addr-email": "Correo electrónico",
 
             "emisor": "Emisor",
+            "emisor-btn-new": "Nuevo Emisor",
 
             "rfc-emisor": "RFC",
             "rfc-emisor-placeholder": "Ingresa el RFC emisor",
+            "rfc-emisor-new": "Registrar Emisor",
             "rfc-parent": "RFC Padre",
 
             "nombre-emisor": "Nombre o Razón social",
@@ -975,7 +976,7 @@
         },
         "emisores": {
             "emisores": "Emisores",
-            "new": "Nuevo Emisor",
+            "new": "Registrar Emisor",
 
             "create-success": "Emisor creado",
             "create-error": "No se pudo crear el Emisor"
@@ -991,12 +992,16 @@
             "edit-emisor": "Editar",
             "view-series": "Series",
             "delete-emisor": "Eliminar Emisor",
+            "set-default": "Establecer Principal",
 
             "edit-success": "Cambio exitoso",
             "edit-error": "No se pudo editar el Emisor",
 
             "delete-success": "Emisor Borrado",
-            "delete-error": "No se pudo borrar el Emisor"
+            "delete-error": "No se pudo borrar el Emisor",
+
+            "set-default-success": "Cambio exitoso",
+            "set-default-error": "No se pudo establecer como principal"
         },
         "emisor-edit": {
             "emisor": "Emisor",

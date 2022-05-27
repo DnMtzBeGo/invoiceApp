@@ -32,6 +32,21 @@
   }
 }
 
+.mat-mini-fab.brand-btn-2 {
+  background: #ffbe00;
+  color: #040b11;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+
+  mat-icon {
+    height: auto;
+    font-size: 11px;
+  }
+}
+
 .mat-flat-button.brand-btn-error {
   background: #fa3c00;
   border-radius: 8px;
