@@ -156,25 +156,7 @@
         </div>
       </ng-template>
 
-      <div>
-        <div class="price-details">
-          <app-price-details
-            [orderData]="summaryData"
-            [customsCruce]="customsCruce"
-            >
-              <div class="payment-details">
-                <div>
-                  {{ 'checkout.payment-method' | translate }}
-                </div>
-                <div class="method">
-                  {{ 'checkout.transfer' | translate }}
-                </div>
-              </div>
-              
-              
-          </app-price-details>
-        </div>
-        
+      <div class="step-button">      
         <button 
           mat-raised-button 
           class="bego-btn yellow full-width thick-btn"

@@ -793,7 +793,20 @@
         id="emisor"
         [style.display]="vm.readonly || vm.tab === 'emisor' ? 'block' : 'none'"
       >
-        <h6>{{ "invoice.edit.emisor" | translate }}</h6>
+        <h6 style="display: flex; justify-content: space-between">
+          {{ "invoice.edit.emisor" | translate }}
+          <!-- <div
+            style="display: flex; align-items: center; cursor: pointer"
+            (click)="(1)"
+          >
+            <button mat-mini-fab class="brand-btn-2">
+              <mat-icon class="icon icon-plus"></mat-icon>
+            </button>
+            <span style="margin-left: 8px; font-weight: 400; font-size: 16px">{{
+              "invoice.edit.emisor-btn-new" | translate
+            }}</span>
+          </div> -->
+        </h6>
         <div class="grid">
           <mat-form-field
             class="brand-field-1"
@@ -865,12 +878,41 @@
               "
             >
               <mat-option
-                *ngIf="vm.receptorSearch?.rfcEmisor?.length === 0"
+                *ngIf="
+                  validRFC(vm.form?.emisor.rfc) !== true &&
+                  vm.receptorSearch?.rfcEmisor?.length === 0
+                "
                 value=""
                 class="brand-option-1"
                 disabled
               >
                 {{ "invoice.edit.no-results" | translate }}
+              </mat-option>
+              <mat-option
+                *ngIf="
+                  validRFC(vm.form?.emisor.rfc) === true &&
+                  vm.receptorSearch?.rfcEmisor?.length === 0
+                "
+                value=""
+                class="brand-option-1"
+                disabled
+                (click)="newEmisor(vm.form?.emisor)"
+                style="cursor: pointer"
+              >
+                <button
+                  mat-mini-fab
+                  class="brand-btn-2"
+                  style="margin-right: 8px"
+                >
+                  <mat-icon
+                    class="icon icon-plus"
+                    style="margin-right: 0"
+                  ></mat-icon>
+                </button>
+                <span
+                  style="letter-spacing: 0.4px; color: #ededee !important"
+                  >{{ "invoice.edit.rfc-emisor-new" | translate }}</span
+                >
               </mat-option>
               <mat-option
                 *ngFor="
@@ -2480,7 +2522,7 @@
 
           <div *ngIf="!vm.readonly" style="padding-top: 9px">
             <button
-              *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc)"
+              *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc) && !vm.form?.serie"
               mat-flat-button
               class="brand-btn-2"
               (click)="

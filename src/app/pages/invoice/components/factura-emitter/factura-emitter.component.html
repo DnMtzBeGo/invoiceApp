@@ -9,8 +9,8 @@
   </div>
   <div class="series-body">
     <form [formGroup]="emitterAttributesForm">
-      <div class="grid">
-        <mat-form-field appearance="outline" class="brand-field-1">
+      <div class="grid stretch">
+        <!-- <mat-form-field appearance="outline" class="brand-field-1">
           <mat-label>{{
             emitterAttributesForm.get("parent").value
               ? ("invoice.emisor-edit.rfc-parent" | translate)
@@ -23,7 +23,7 @@
             autocomplete="off"
             formControlName="parent"
           />
-        </mat-form-field>
+        </mat-form-field> -->
 
         <mat-form-field appearance="outline" class="brand-field-1">
           <mat-label>{{ "invoice.emisor-edit.rfc" | translate }}</mat-label>

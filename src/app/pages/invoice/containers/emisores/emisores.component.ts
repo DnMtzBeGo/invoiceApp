@@ -51,17 +51,18 @@ export class EmisoresComponent implements OnInit {
     const dialogRef = this.dialog.open(FacturaEmitterComponent, {
       restoreFocus: false,
       autoFocus: false,
+      disableClose: true,
       backdropClass: ["brand-dialog-1"],
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result?) => {
       console.log(result);
-      if (!result.close) {
-        if (result) {
+      if (result != void 0) {
+        if (result.success === true) {
           this.notificationsService.showSuccessToastr(
             this.translateService.instant("invoice.emisores.create-success")
           );
           this.getEmisores();
-        } else {
+        } else if (result.success === false) {
           this.notificationsService.showErrorToastr(
             this.translateService.instant("invoice.emisores.create-error")
           );

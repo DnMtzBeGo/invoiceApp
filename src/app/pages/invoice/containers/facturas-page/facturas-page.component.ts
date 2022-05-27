@@ -452,9 +452,9 @@ export class FacturasPageComponent implements OnInit {
     return new Date(strDate);
   };
 
-  filtersCount = (params) => {
+  filtersCount = (params = {}) => {
     return Object.keys(params).filter(
       (filterName) => filterParams.has(filterName) && params[filterName]
-    ).length;
+    ).length || null;
   };
 }

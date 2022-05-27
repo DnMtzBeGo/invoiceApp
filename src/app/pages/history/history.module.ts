@@ -21,6 +21,8 @@ import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.compone
 import { EditOrderFleetComponent } from './components/edit-order-fleet/edit-order-fleet.component';
 import { FleetAssetCardComponent } from './components/fleet-asset-card/fleet-asset-card.component';
 import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/circular-avatar.module';
+import { SimpleAvatarModule } from 'src/app/shared/components/simple-avatar/simple-avatar.module';
+
 @NgModule({
   declarations: [
     HistoryComponent,
@@ -46,7 +48,8 @@ import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/
     MatTabsModule,
     MatButtonModule,
     MatIconModule,
-    CircularAvatarModule
+    CircularAvatarModule,
+    SimpleAvatarModule
   ]
 })
 export class HistoryModule { }

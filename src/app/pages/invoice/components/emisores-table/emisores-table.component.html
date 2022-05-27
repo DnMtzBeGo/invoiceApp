@@ -47,7 +47,21 @@
           *matCellDef="let element"
           class="factura-table__table-body"
         >
-          {{ element.rfc }}
+          <span class="mat-badge">
+            {{ element.rfc }}
+            <mat-icon
+              class="icon icon-pin icon-only"
+              style="
+                position: absolute;
+                left: 0;
+                top: 1px;
+                font-size: 16px;
+                transform: translateX(-105%);
+              "
+              [style.color]="element.main ? '#ffbe00' : '#494c50'"
+            >
+            </mat-icon>
+          </span>
         </td>
       </ng-container>
 
@@ -156,8 +170,26 @@
               <mat-icon>pin</mat-icon>
               <span>{{ "invoice.emisor-table.view-series" | translate }}</span>
             </button>
-            <button mat-menu-item (click)="deleteEmisor(element._id)">
-              <mat-icon>delete</mat-icon>
+            <button
+              *ngIf="!element.main && element.puede_timbrar"
+              mat-menu-item
+              (click)="setDefault(element._id)"
+            >
+              <mat-icon
+                class="icon icon-pin icon-only"
+                style="font-size: 18px"
+              ></mat-icon>
+              <span>{{ "invoice.emisor-table.set-default" | translate }}</span>
+            </button>
+            <button
+              *ngIf="!element.main"
+              mat-menu-item
+              (click)="deleteEmisor(element._id)"
+            >
+              <mat-icon
+                class="icon icon-trash1 icon-only"
+                style="font-size: 18px"
+              ></mat-icon>
               <span>{{
                 "invoice.emisor-table.delete-emisor" | translate
               }}</span>

@@ -1,0 +1,25 @@
+<div mat-dialog-content class="content">
+  <input
+    class="inputSearch"
+    type="text"
+    placeholder="Buscar"
+    (keyup)="handleInput($event)"
+  />
+  <mat-select #mySelect [(value)]="selected" panelOpen="true">
+    <mat-option *ngFor="let option of selectOptions" [value]="option">
+      {{ option.viewValue }}
+    </mat-option>
+  </mat-select>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-raised-button [mat-dialog-close]="false" class="bego-btn gray">
+    Cancel
+  </button>
+  <button
+    mat-raised-button
+    [mat-dialog-close]="selected"
+    class="bego-btn yellow medium-size"
+  >
+    Confirm
+  </button>
+</mat-dialog-actions>
