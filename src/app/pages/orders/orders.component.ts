@@ -523,7 +523,6 @@ export class OrdersComponent implements OnInit {
             orderId: result._id,
           },
         });
-        }
         this.uploadScreenShotOrderMap(result._id);
       },
       async (res) => {
