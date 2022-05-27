@@ -1,18 +1,18 @@
 .page-header {
-    margin: 24px 54px 24px 54px;
+  margin: 24px 54px 24px 54px;
+  display: flex;
+  justify-content: space-between;
+
+  .toolbar-right {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
 
-    .toolbar-right {
-      display: flex;
-      align-items: center;
+    button {
+      margin: 0 12px;
 
-      button {
-        margin: 0 12px;
-
-        &:last-child {
-          margin-right: 0;
-        }
+      &:last-child {
+        margin-right: 0;
       }
     }
+  }
 }

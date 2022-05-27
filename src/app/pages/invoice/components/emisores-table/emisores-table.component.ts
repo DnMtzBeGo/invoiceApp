@@ -34,7 +34,7 @@ export class EmisoresTableComponent implements OnInit {
   public routes: typeof routes = routes;
   public dataSource: MatTableDataSource<EmitterAttributesInterface>;
   displayedColumns: string[] = [
-    "rfcPadre",
+    // "rfcPadre",
     "emisor",
     "nombre",
     "regimenFiscal",

@@ -28,21 +28,7 @@
           *matCellDef="let element"
           class="factura-table__table-body"
         >
-          <span class="mat-badge">
-            {{ element.parent }}
-            <mat-icon
-              class="icon icon-pin icon-only"
-              style="
-                position: absolute;
-                left: 0;
-                top: 1px;
-                font-size: 16px;
-                transform: translateX(-105%);
-              "
-              [style.color]="element.default ? '#ffbe00' : '#494c50'"
-            >
-            </mat-icon>
-          </span>
+          {{ element.parent }}
         </td>
       </ng-container>
 
@@ -61,7 +47,21 @@
           *matCellDef="let element"
           class="factura-table__table-body"
         >
-          {{ element.rfc }}
+          <span class="mat-badge">
+            {{ element.rfc }}
+            <mat-icon
+              class="icon icon-pin icon-only"
+              style="
+                position: absolute;
+                left: 0;
+                top: 1px;
+                font-size: 16px;
+                transform: translateX(-105%);
+              "
+              [style.color]="element.default ? '#ffbe00' : '#494c50'"
+            >
+            </mat-icon>
+          </span>
         </td>
       </ng-container>
 
