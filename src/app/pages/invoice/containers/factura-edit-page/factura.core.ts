@@ -58,17 +58,17 @@ export const calcConcepto = (concepto) => {
 };
 
 export const calcSubtotal = (conceptos) =>
-  conceptos.map(calcImporte).reduce(add, 0);
+  (conceptos || []).map(calcImporte).reduce(add, 0);
 
 export const calcDescuentos = (conceptos) =>
-  conceptos
+  (conceptos || [])
     .map((concepto) => concepto.descuento)
     .filter(isaN)
     .map(Number)
     .reduce(add, 0);
 
 export const calcTotal = (conceptos) =>
-  conceptos.map(calcConcepto).reduce(add, 0);
+  (conceptos || []).map(calcConcepto).reduce(add, 0);
 
 export const resolveImpuestoLabel = (impuestos, key, impuesto) => {
   const label =
@@ -104,7 +104,7 @@ export const resolveImpuesto = (concepto, impuesto) => {
 };
 
 export const resolveImpuestosGroup = (impuestos, key, conceptos) => {
-  const allImpuestos = conceptos.flatMap((concepto) =>
+  const allImpuestos = (conceptos || []).flatMap((concepto) =>
     (concepto.impuestos || [])
       .filter((impuesto) => resolveImpuestoLabel(impuestos, key, impuesto))
       .map((impuesto) => {
@@ -196,6 +196,7 @@ export const toFactura = (factura: any) => {
   delete newFactura.rfc;
   delete newFactura.nombre;
   delete newFactura.usoCFDI;
+  delete newFactura.regimen_fiscal;
   delete newFactura.direccion;
 
   return newFactura;
@@ -211,6 +212,7 @@ export const fromFacturaCopy = (factura) => {
   delete factura.stamped;
   delete factura.exportacion;
   delete factura.fecha_emision;
+  delete factura.order;
   return factura;
 };
 
@@ -340,4 +342,16 @@ export const groupStatus = (list) => {
   });
 
   return Array.from(map.values());
+};
+
+export const optimizeInvoiceCatalog = (catalog?) => {
+  // if (catalog?.unidades_de_medida)
+  //   return {
+  //     ...catalog,
+  //     unidades_de_medida: catalog.unidades_de_medida.filter(
+  //       (item) => item.enabled === true
+  //     ),
+  //   };
+
+  return catalog;
 };

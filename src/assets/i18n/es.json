@@ -92,19 +92,22 @@
     "checkout": {
         "title-checkout": "Checkout",
         "txt-reference": "Referencia",
+        "title-emitter": "Informacion del Emisor",
         "txt-order": "Orden",
         "txt-pickup": "Recolección",
         "txt-dropoff": "Entrega",
-        "txt-inovice": "Factura",
-        "title-inovice": "Información de facturación",
+        "txt-invoice": "Factura",
+        "title-invoice": "Información de Receptor",
         "placeholder-fullname": "Nombre completo",
         "placeholder-email": "Email",
         "placeholder-phonenumber": "Teléfono Móvil",
         "placeholder-address": "Dirección",
-        "placeholder-company": "Compañía (nombre legal)",
+        "placeholder-company": "Razon social",
         "placeholder-rfc": "RFC",
         "placeholder-cfdi": "Uso de CFDI",
+        "placeholder-tax_regime": "Regimen Fiscal",
         "select-cfdi":"Selecciona un CFDI",
+        "select-tax":"Selecciona un Regimen Fiscal",
         "edit": "Editar",
         "unit": "Unidad",
         "tons": "tons",
@@ -128,8 +131,15 @@
         "total-price": "Total",
         "placeholder-cargo": "Descripción del cargo",
         "placeholder-notes": "Notas Extra",
+        "placeholder-file_cer": "Selecciona tu certificado (CSD)",
+        "placeholder-file_key": "Selecciona tu llave",
+        "btn-file_cer": "Certificado de cello digital (.cer)",
+        "btn-file_key": "LLave de cello digital (.key)",
+        "placeholder-password": "Contraseña del Certificado",
         "btn-continue": "Continuar",
+        "btn-retry": "Reintentar",
         "btn-submit": "Crear Orden",
+        "upload": "Subir",
         "txt-reference-payment": "Referencia",
         "txt-account-payment": "Clabe Interbancaria",
         "txt-company-payment": "Razón Social",
@@ -139,7 +149,6 @@
         "title-valid-route": "Nota",
         "txt-valid-route": "Esta orden será operada por uno de nuestros representantes, te contactaremos cuando esté lista.",
         "txt-save":"Guardar",
-        "title-invoice": "Información de factura",
         "to-define":"Por definir",
         "payment-method":"Método de pago",
         "transfer":"Transferencia",
@@ -156,19 +165,29 @@
             "txt-valid-invoice": "Favor de completar los campos de tu factura.",
             "verify-user-title": "Antes de completar la orden debemos verificar tu cuenta",
             "verify-user-body": "Completa la documentación en la página de perfil", 
-            "error-orderid": "El ID de la Orden no es válido"
+            "error-orderid": "El ID de la Orden no es válido",
+            "error-something": "Algo a salido mal: ",
+            "error-missing-orderId": "No se encuentra el order Id",
+            "fileSize": "el archivo es demasiado pesado",
+            "fileType": "el tipo de archivo debe ser .cer o .key",
+            "emitter-validated": "Emisor Creado",
+            "emitter-validated-fail": "Emisor no validado",
+            "emitter-create": "Para crear el emisor: ",
+            "emitter-tax_regime": "Falta el régimen fiscal del emisor",
+            "receiver-stamp": "Para generar carta porte:",
+            "receiver-address": "Falta la dirección del receptor",
+            "receiver-company": "Falta la razón social del receptor",
+            "receiver-rfc": "Falta el RFC del receptor",
+            "receiver-cfdi": "Falta el CFDI del receptor",
+            "receiver-tax_regime": "Falta el régimen fiscal del receptor"
         },
         "insurance-modal": {
-            "title-insurance": "¿Seguro para tu carga?",
-            "txt-insurance": "Agrega el valor de la carga y agregalo a tu carro de compras",
-            "btn-accept": "Agregar seguro de carga",
-            "btn-deny": "Continuar sin seguro",
-            "title-cargo": "¿Y ahora que lo tienes?",
-            "btn-add": "Agrega",
-            "btn-quit": "Remover",
-            "txt-cargo": "¿Cuál es el valor de tu carga?",
-            "btn-cargo": "Agregar Seguro",
-            "txt-total": "El importe total del seguro es"
+            "title-insurance": "Total",
+            "txt-insurance": "Escribe el precio total del servicio",
+            "txt-insurance-taxes": "(Antes de impuestos)",
+            "deferred-PUE": "Pago en una sola exhibición",
+            "deferred-PPD": "Pago en parcialidades",
+            "btn": "Siguiente"
         },
         "agent-modal": {
             "title-agent": "¿Quieres Agente y Cruce?",
@@ -179,20 +198,26 @@
             "txt-agent-prices": "(Precios en USD)"
         },
         "stepper-btns":{
-            "continue-to-invoice": "Continuar a la factura",
-            "continue-to-payment": "Continuar al pago",
-            "submit": "Crear Orden"
+            "continue-to-emitter": "Continuar a Receptor",
+            "continue-to-invoice": "Continuar a el Resumen",
+            "summary": "Crear Orden"
         },
         "skip": "Omitir",
         "next": "Siguiente",
         "label-total-price": "Total:",
         "summary": "Resumen",
-        "invoice": "Factura",
-        "payment": "Pago"
+        "invoice": "Receptor",
+        "emitter": "Emisor",
+        "invalid_rfc": "RFC invalido",
+        "preview": "Factura",
+        "invoice-preview": "previo de Factura",
+        "merchandise_type": "Tipo de Mercancia",
+        "file_size_error": "El archivo es demasiado pesado"
     },
     "history": {
         "title": "Historial de viajes",
         "search": "Buscar por dirección...",
+        "total_earnings": "Ganancias totales", 
         "no-comments":"Sin Comentarios",
         "upcoming_detail_title":"Próximo",
         "completed_detail_title":"Completado",
@@ -311,7 +336,22 @@
             "stand-by":"Pendiente",
             "in-progress":"En curso",
             "completed":"Completado"
-        }
+      },
+      "consignment_note": {
+        "edit_consignment_note": "Editar carta porte",
+        "order": "Orden",
+        "pickup": "Recolección",
+        "dropoff": "Entrega",
+        "save_changes": "Guardar cambios",
+        "info_updated": "La información para la carta porte fue actualizada",
+        "cannot_edit": "Aún no puedes editar",
+        "complete_invoice": "Completar factura",
+        "price": "Precio",
+        "stamp": "Timbrar",
+        "stamp_request": "Se solicitó la creación de la carta porte",
+        "invoice": "Factura",
+        "invoice_preview": "Previo de factura"
+      }
     },
     "fiscal-documents": {
         "cards-instructions":"Arrastra un archivo en cada tarjeta o haz clic en ellas para elegir un archivo.",
@@ -607,11 +647,16 @@
     "invoice": {
         "invoices": {
             "filters": "Filtros",
+            "series": "Series",
             "emisor-btn": "Emisores",
             "new-invoice": "Nueva Factura",
             "template-placeholder": "Buscar Template",
             "template-open": "Abrir Template",
-            "template-new": "Nuevo Template"
+            "template-new": "Nuevo Template",
+
+            "noemisor-title": "Atención",
+            "noemisor-message": "Se debe dar de alta a un Emisor antes de comenzar a Facturar",
+            "noemisor-confirm": "Crear ahora"
         },
         "invoice-table": {
             "emision": "Emisión",
@@ -698,9 +743,11 @@
             "addr-email": "Correo electrónico",
 
             "emisor": "Emisor",
+            "emisor-btn-new": "Nuevo Emisor",
 
             "rfc-emisor": "RFC",
             "rfc-emisor-placeholder": "Ingresa el RFC emisor",
+            "rfc-emisor-new": "Registrar Emisor",
             "rfc-parent": "RFC Padre",
 
             "nombre-emisor": "Nombre o Razón social",
@@ -929,7 +976,7 @@
         },
         "emisores": {
             "emisores": "Emisores",
-            "new": "Nuevo Emisor",
+            "new": "Registrar Emisor",
 
             "create-success": "Emisor creado",
             "create-error": "No se pudo crear el Emisor"
@@ -945,12 +992,16 @@
             "edit-emisor": "Editar",
             "view-series": "Series",
             "delete-emisor": "Eliminar Emisor",
+            "set-default": "Establecer Principal",
 
             "edit-success": "Cambio exitoso",
             "edit-error": "No se pudo editar el Emisor",
 
             "delete-success": "Emisor Borrado",
-            "delete-error": "No se pudo borrar el Emisor"
+            "delete-error": "No se pudo borrar el Emisor",
+
+            "set-default-success": "Cambio exitoso",
+            "set-default-error": "No se pudo establecer como principal"
         },
         "emisor-edit": {
             "emisor": "Emisor",
@@ -1003,7 +1054,9 @@
 
             "error-title": "La información es invalida",
 
-            "readonly-title": "Esta carta porte ya no puede ser editada"
+            "readonly-title": "Esta carta porte ya no puede ser editada",
+            "siguiente": "Siguiente",
+            "anterior": "Anterior"
         },
         "transporte": {
             "transporte-internacional": "Transporte Internacional",
@@ -1046,7 +1099,7 @@
             "origen-destino": "Orígen / Destino",
 
             "tipo": "* Tipo",
-            "choose-a-date": "Choose a date",
+            "choose-a-date": "Elige una fecha",
             "id-ubicacion": "ID Ubicación (Opcional)",
             "id-ubicacion-error": "El id debe de iniciar con 'OR' o 'DE' seguido de 6 dígitos",
             "nombre-destinatario": "Nombre (Opcional)",

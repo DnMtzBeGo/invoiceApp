@@ -12,6 +12,7 @@ import {
   startWith,
   tap,
   observeOn,
+  debounceTime,
 } from "rxjs/operators";
 import { searchInObject, isObject } from "./object";
 
@@ -46,7 +47,10 @@ export const simpleFilters = (searchAction$) => (source$) => {
               key,
               searchAction$.pipe(
                 ofType(key),
-                map((search: string) => list.filter(searchInObject(search))),
+                debounceTime(150),
+                map((search: string) =>
+                  search !== "" ? list.filter(searchInObject(search)) : list
+                ),
                 startWith(list)
               ),
             ];

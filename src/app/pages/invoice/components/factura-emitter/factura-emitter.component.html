@@ -3,14 +3,14 @@
     <h1 style="margin-bottom: 1rem; font-size: 20px">
       {{ "invoice.emisor-edit.emisor" | translate }}
     </h1>
-    <!-- <div class="close-btn" (click)="closeModal()">
+    <div class="close-btn" (click)="closeModal()">
       <mat-icon>close</mat-icon>
-    </div> -->
+    </div>
   </div>
   <div class="series-body">
     <form [formGroup]="emitterAttributesForm">
-      <div class="grid">
-        <mat-form-field appearance="outline" class="brand-field-1">
+      <div class="grid stretch">
+        <!-- <mat-form-field appearance="outline" class="brand-field-1">
           <mat-label>{{
             emitterAttributesForm.get("parent").value
               ? ("invoice.emisor-edit.rfc-parent" | translate)
@@ -23,7 +23,7 @@
             autocomplete="off"
             formControlName="parent"
           />
-        </mat-form-field>
+        </mat-form-field> -->
 
         <mat-form-field appearance="outline" class="brand-field-1">
           <mat-label>{{ "invoice.emisor-edit.rfc" | translate }}</mat-label>
@@ -79,6 +79,7 @@
             <mat-option
               *ngFor="let option of regimen_fiscal"
               [value]="option.clave"
+              class="brand-option-1"
             >
               {{ option.clave }} - {{ option.descripcion }}
             </mat-option>

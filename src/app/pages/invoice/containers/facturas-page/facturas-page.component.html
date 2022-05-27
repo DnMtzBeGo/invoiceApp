@@ -6,6 +6,10 @@
         class="brand-btn-1 radius-30"
         (click)="openFilters()"
         style="z-index: 10000"
+        [matBadge]="filtersCount(vm.params)"
+        matBadgeColor="warn"
+        matBadgeSize="small"
+        matBadgeOverlap="true"
       >
         {{ "invoice.invoices.filters" | translate }}
         <img
@@ -19,7 +23,7 @@
       <button
         mat-flat-button
         class="brand-btn-1"
-        routerLink="{{ routes.EMISORES }}"
+        [routerLink]="routes.EMISORES"
       >
         {{ "invoice.invoices.emisor-btn" | translate }}
       </button>
@@ -128,20 +132,24 @@
         mat-flat-button
         class="brand-btn-2"
         [routerLink]="
-          vm.template && vm.receptorSearch?.template?.length === 0
-            ? [
-                routes.NEW_TEMPLATE,
-                {
-                  template: makeTemplate({
-                    name: vm.template
-                  })
-                }
-              ]
-            : [routes.NEW_FACTURA]
+          vm.defaultEmisor?.[0]
+            ? vm.template && vm.receptorSearch?.template?.length === 0
+              ? [
+                  routes.NEW_TEMPLATE,
+                  {
+                    template: makeTemplate({
+                      name: vm.template
+                    })
+                  }
+                ]
+              : [routes.NEW_FACTURA]
+            : null
         "
+        (click)="!vm.defaultEmisor?.[0] && noEmisorAlert()"
         [style.pointer-events]="
           vm.receptorSearch?.template?.length > 0 ? 'none' : 'unset'
         "
+        [disabled]="!vm.defaultEmisor"
       >
         {{
           vm.template && vm.receptorSearch?.template?.length === 0

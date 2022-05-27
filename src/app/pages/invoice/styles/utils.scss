@@ -7,8 +7,12 @@
   color: #c1c7d0;
   font-weight: 600;
 
-  &:hover {
+  &:not(.mat-button-disabled):hover {
     outline: 1px solid #ffbe00;
+  }
+
+  &.mat-button-disabled {
+    color: #494c50;
   }
 }
 
@@ -25,6 +29,21 @@
     outline: 3px solid #10161c;
     box-shadow: inset 3px 3px 8px 3px #111416;
     color: #494c50;
+  }
+}
+
+.mat-mini-fab.brand-btn-2 {
+  background: #ffbe00;
+  color: #040b11;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+
+  mat-icon {
+    height: auto;
+    font-size: 11px;
   }
 }
 
@@ -135,6 +154,29 @@
       visibility: hidden;
     }
   }
+
+  .brand-icon-help {
+    display: none;
+    position: absolute;
+    // right: -5px;
+    // top: -4px;
+    right: -1px;
+    top: 2px;
+  }
+
+  &.mat-form-field-type-mat-select {
+    .brand-icon-help {
+      right: 21px;
+      top: 3px;
+    }
+  }
+
+  &:hover,
+  &.mat-focused {
+    .brand-icon-help {
+      display: inline-block;
+    }
+  }
 }
 
 .mat-menu-panel.brand-menu-1 {
@@ -235,7 +277,7 @@ ngx-mat-select-search.brand-select-search-1 {
       border-radius: 50%;
       object-fit: cover;
       object-position: center;
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.08);
     }
 
     > div {
@@ -252,7 +294,8 @@ ngx-mat-select-search.brand-select-search-1 {
     }
   }
 
-  &.mat-active {
+  &.mat-active,
+  &.mat-active.mat-selected {
     background: rgba(255, 255, 255, 0.03);
     border-left: 1px solid #ffbe00;
   }
@@ -335,6 +378,17 @@ snack-bar-container.brand-snackbar-1 {
 
   .mat-simple-snackbar span {
     color: #ffbe00;
+  }
+}
+
+.brand-icon-help {
+  .mat-icon {
+    font-size: 17px;
+    color: #c5ccd0;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    cursor: pointer;
   }
 }
 

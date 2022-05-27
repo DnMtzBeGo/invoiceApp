@@ -518,41 +518,11 @@ export class OrdersComponent implements OnInit {
             // console.log(await data);
           });
         }
-
-        if (!this.validateRoute && page === "orders") {
-          this.alertService.create({
-            title: this.translateService.instant("orders.title-valid-route"),
-            body: this.translateService.instant("orders.txt-valid-route"),
-            handlers: [
-              {
-                text: this.translateService.instant("draft.btn-cancel"),
-                color: "#ffbe00",
-                action: async () => {
-                  this.alertService.close();
-                },
-              },
-              {
-                text: this.translateService.instant("Ok"),
-                color: "#ffbe00",
-                action: async () => {
-                  this.alertService.close();
-                  this.router.navigate(["checkout"], {
-                    state: {
-                      orderId: result._id,
-                      validateRoute: this.validateRoute,
-                    },
-                  });
-                },
-              },
-            ],
-          });
-        } else if (page === "draft") {
-        } else {
-          this.router.navigate(["services"], {
-            state: {
-              orderId: result._id,
-            },
-          });
+        this.router.navigate(['pricing'], {
+          state: {
+            orderId: result._id,
+          },
+        });
         }
         this.uploadScreenShotOrderMap(result._id);
       },

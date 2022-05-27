@@ -3,6 +3,7 @@ import {
   OnInit,
   ViewEncapsulation,
   ChangeDetectionStrategy,
+  ViewChild,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import {
@@ -71,6 +72,7 @@ import {
   previewFactura,
   validators,
   facturaStatus,
+  optimizeInvoiceCatalog,
 } from "./factura.core";
 import {
   ActionSendEmailFacturaComponent,
@@ -79,6 +81,7 @@ import {
   FacturaEmisorConceptosComponent,
   FacturaManageDireccionesComponent,
 } from "../../modals";
+import { FacturaEmitterComponent } from "../../components/factura-emitter/factura-emitter.component";
 import { SeriesNewComponent } from "../../components/series-new/series-new.component";
 
 @Component({
@@ -90,7 +93,7 @@ import { SeriesNewComponent } from "../../components/series-new/series-new.compo
 })
 export class FacturaEditPageComponent implements OnInit {
   public routes: typeof routes = routes;
-  public URL_DASHBOARD = environment.URL_DASHBOARD;
+  public URL_BASE = environment.URL_BASE;
   public token = localStorage.getItem("token") || "";
 
   $rx = reactiveComponent(this);
@@ -228,6 +231,7 @@ export class FacturaEditPageComponent implements OnInit {
         | "autocomplete:cancel"
         | "rfc:set"
         | "catalogos:search"
+        | "series:reload"
         | "rfcEmisor:search"
         | "rfcEmisor:set"
         | "nombreEmisor:search"
@@ -262,6 +266,8 @@ export class FacturaEditPageComponent implements OnInit {
   cantidad = new FormControl(null);
   descuento = new FormControl(null);
 
+  @ViewChild("cartaporteCmp") cartaporteCmp: any;
+
   constructor(
     private router: Router,
     private apiRestService: AuthService,
@@ -275,7 +281,16 @@ export class FacturaEditPageComponent implements OnInit {
     //TAB
     const tab$ = merge(
       of("receptor"),
-      this.formEmitter.pipe(ofType("tab")) as Observable<string>
+      (this.formEmitter.pipe(ofType("tab")) as Observable<string>).pipe(
+        distinctUntilChanged(),
+        tap((id) => {
+          this.vm.readonly &&
+            window.scrollTo({
+              top: 112 + window.document.getElementById(id)?.offsetTop - 16,
+              behavior: "smooth",
+            });
+        })
+      )
     );
 
     //DATA FETCHING
@@ -364,7 +379,14 @@ export class FacturaEditPageComponent implements OnInit {
       share()
     );
     const helpTooltips$ = this.fetchHelpTooltips();
-    const series$ = emisor$.pipe(pluck("_id"), switchMap(this.fetchSeries));
+    const series$ = emisor$.pipe(
+      pluck("_id"),
+      switchMap((emisorId) =>
+        this.fetchSeries(emisorId).pipe(
+          repeatWhen(() => this.formEmitter.pipe(ofType("series:reload")))
+        )
+      )
+    );
     const paises$ = this.fetchPaises();
     const facturaStatus$ = this.fetchFacturaStatus().pipe(
       map(arrayToObject("clave", "nombre")),
@@ -637,14 +659,13 @@ export class FacturaEditPageComponent implements OnInit {
             pluck("1"),
             map((concepto) => () => concepto),
             tap(() => {
-              window.document
-                .getElementsByTagName("mat-sidenav-content")?.[0]
-                ?.scrollTo({
-                  top:
-                    window.document.getElementById("conceptos").offsetTop -
-                    (70 + 16),
-                  behavior: "smooth",
-                });
+              window.scrollTo({
+                top:
+                  112 +
+                  window.document.getElementById("conceptos")?.offsetTop -
+                  16,
+                behavior: "smooth",
+              });
             })
           ),
           this.formEmitter.pipe(
@@ -732,12 +753,10 @@ export class FacturaEditPageComponent implements OnInit {
         }
       },
       afterError: () => {
-        window.document
-          .getElementsByTagName("mat-sidenav-content")?.[0]
-          ?.scrollTo({
-            top: 9999999,
-            behavior: "smooth",
-          });
+        // window.scrollTo({
+        //   top: 9999999,
+        //   behavior: "smooth",
+        // });
       },
     });
 
@@ -838,7 +857,7 @@ export class FacturaEditPageComponent implements OnInit {
     // AUZM911206E49
     return from(
       this.apiRestService.apiRestGet("invoice/catalogs/invoice")
-    ).pipe(mergeAll(), pluck("result"));
+    ).pipe(mergeAll(), pluck("result"), map(optimizeInvoiceCatalog));
   }
 
   fetchHelpTooltips() {
@@ -959,6 +978,16 @@ export class FacturaEditPageComponent implements OnInit {
       ).pipe(mergeAll(), pluck("result", "documents"));
     }
 
+    if (["cve_sat"].includes(search.type)) {
+      return from(
+        this.apiRestService.apiRestGet(endpoints[search.type], {
+          loader: "false",
+          [keys[search.type]]: search.search,
+          limit: 15,
+        })
+      ).pipe(mergeAll(), pluck("result", "productos_servicios"));
+    }
+
     return from(
       this.apiRestService.apiRest(
         JSON.stringify({
@@ -987,9 +1016,9 @@ export class FacturaEditPageComponent implements OnInit {
   };
 
   submitFactura = ([mode, saveMode, factura]) => {
-    factura = clone(factura);
-
     if (this.model === "template") {
+      factura = clone(factura);
+
       const draft_id = factura._id;
       const data =
         mode === "create"
@@ -1012,6 +1041,10 @@ export class FacturaEditPageComponent implements OnInit {
         }))
       );
     }
+
+    // formatting carta porte data side effect
+    this.cartaporteCmp.gatherInfo();
+    factura = clone(this.vm?.form);
 
     return from(
       this.apiRestService.apiRest(
@@ -1073,12 +1106,10 @@ export class FacturaEditPageComponent implements OnInit {
       data: {
         _id,
         afterSuccessDelay: () => {
-          window.document
-            .getElementsByTagName("mat-sidenav-content")?.[0]
-            ?.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
           this.router.navigate([routes.EDIT_FACTURA, { id: _id, status: 4 }]);
           this.formEmitter.next(["refresh", ""]);
         },
@@ -1169,12 +1200,46 @@ export class FacturaEditPageComponent implements OnInit {
       // disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result == null || result.success == null || result.message === "")
-        return;
+    dialogRef.afterClosed().subscribe((result?) => {
+      if (result == null || result.success == null) return;
+
       this.notificationsService[
         result.success ? "showSuccessToastr" : "showErrorToastr"
       ](result.message);
+
+      if (result.success !== true) return;
+
+      this.vm.form.serie = result.data._id;
+      this.formEmitter.next(["series:reload", ""]);
+    });
+  }
+
+  newEmisor(emisor?) {
+    const dialogRef = this.matDialog.open(FacturaEmitterComponent, {
+      data: emisor,
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ["brand-dialog-1"],
+    });
+    dialogRef.afterClosed().subscribe((result?) => {
+      // console.log(result);
+      if (result != void 0) {
+        if (result.success === true) {
+          this.notificationsService.showSuccessToastr(
+            this.translateService.instant("invoice.emisores.create-success")
+          );
+
+          // console.log("newEmisor", result.data);
+          this.vm.form.emisor = result.data;
+          this.formEmitter.next(["rfcEmisor:set", result.data]);
+          this.formEmitter.next(["autocomplete:cancel", ""]);
+        } else if (result.success === false) {
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant("invoice.emisores.create-error")
+          );
+        }
+      }
     });
   }
 
@@ -1248,7 +1313,7 @@ export class FacturaEditPageComponent implements OnInit {
     if (factura == void 0) return;
 
     window
-      .fetch(this.URL_DASHBOARD + "invoice/preview", {
+      .fetch(this.URL_BASE + "invoice/preview", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -1257,7 +1322,7 @@ export class FacturaEditPageComponent implements OnInit {
           "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
           Authorization: `Bearer ${this.token}`,
         },
-        body: JSON.stringify(previewFactura(factura)),
+        body: JSON.stringify(previewFactura(toFactura(clone(factura)))),
       })
       .then((responseData) => responseData.arrayBuffer())
       .then((buffer) => {

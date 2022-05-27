@@ -1,13 +1,13 @@
 <div>
   <div class="page-header" role="heading">
     <h1>{{ "invoice.cp-page.carta-porte" | translate }}</h1>
-    <button mat-button (click)="gatherInfo()">
+    <!-- <button mat-button (click)="gatherInfo()">
       {{ "invoice.cp-page.btn-save" | translate }}
-    </button>
+    </button> -->
   </div>
 
   <div class="page-wrapper">
-    <mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-horizontal-stepper [linear]="isLinear" #stepper class="stepper">
       <mat-step [label]="'invoice.cp-page.transporte' | translate">
         <!-- [subtiposRemolques]="catalogues?.subtipos_de_remolques"
         [ingresoSalidaPais]="catalogues?.claves_de_transporte" -->

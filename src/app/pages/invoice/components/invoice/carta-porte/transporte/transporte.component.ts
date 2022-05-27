@@ -26,9 +26,11 @@ export class TransporteComponent implements OnInit {
   public ingresoSalidaPais: ClavesDeTransporte[];
   public countries: CartaPorteCountries[];
 
+  public cartaPorteType: string = 'autotransporte';
+
   public internationalTransport: boolean = false;
   firstFormGroup: FormGroup = new FormGroup({
-    transp_internac: new FormControl(false),
+    transp_internac: new FormControl(""),
     pais_origen_destino: new FormControl(""),
     entrada_salida_merc: new FormControl(""),
     via_entrada_salida: new FormControl(""),
@@ -49,6 +51,7 @@ export class TransporteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.firstFormGroup.controls["transp_internac"].setValue('No');
     this.cartaPorteInfoService.infoRecolector.subscribe((value) => {
       this.cartaPorteInfoService.addRecolectedInfo({
         ...this.firstFormGroup.value,
@@ -85,4 +88,5 @@ export class TransporteComponent implements OnInit {
       });
     }
   }
+
 }

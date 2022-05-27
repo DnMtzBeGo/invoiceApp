@@ -41,12 +41,13 @@ $carriersDashboard-theme: mat.define-light-theme(
 @import "~aos/dist/aos.css";
 
 //angular material components
-@import "./styles/angular-components/button-toggle-group.scss";
-@import "./styles//angular-components/select.scss";
-@import "./styles//angular-components/button.scss";
-@import "./styles//angular-components/input.scss";
-@import "./styles/angular-components/autocomplete.scss";
-@import "./styles/custom-styles/textarea.scss";
+@import './styles/angular-components/button-toggle-group.scss';
+@import './styles//angular-components/select.scss';
+@import './styles//angular-components/button.scss';
+@import './styles//angular-components/input.scss';
+@import './styles/angular-components/autocomplete.scss';
+@import './styles/angular-components/stepper.scss';
+@import './styles/custom-styles/textarea.scss';
 
 //custom styles
 @import "./styles/custom-styles/radio-button.scss";
@@ -697,8 +698,8 @@ input[type="search"]::-webkit-search-cancel-button {
   }
 
   .mat-form-field-infix {
-    padding-left: 60px;
-    padding-bottom: 18px;
+    // padding-left: 60px;
+    // padding-bottom: 18px;
   }
 }
 
@@ -1239,4 +1240,8 @@ input[type="number"] {
   border: 2px solid #171e24;
   border-radius: 8px;
   margin: 0;
+}
+
+.input-timepicker.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
+  color: #EDEDED;
 }

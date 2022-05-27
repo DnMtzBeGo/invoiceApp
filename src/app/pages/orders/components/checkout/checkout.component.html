@@ -10,9 +10,22 @@
       [steps]="checkoutSteps">
     </app-stepper>
 
+    
+    
     <div>
       <!-- only show cards if selected tab is 'summary'-->
-      <div class="pickup-dropoff-cards" *ngIf="currentStepIndex == 0">
+      <div class="previewBox" (click)="getInvoicePreview()" *ngIf="currentStepIndex == checkoutSteps.length - 1">
+        <bego-button class="icon icon-document icon-only"></bego-button>
+        <div class="name">
+          <span *ngIf="summaryData.order_number">{{ summaryData.order_number }}.pdf</span>
+          <span *ngIf="!summaryData.order_number">{{ 'checkout.preview' | translate }}.pdf</span>
+          <span>{{ 'checkout.invoice-preview' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="pickup-dropoff-cards" *ngIf="currentStepIndex == checkoutSteps.length - 1">
+        
+
         <bego-radio-card
           (click)=" changeSelectedCard('pickup') "
           [cardIsSelected]=" selectedCard == 'pickup' ">
@@ -82,62 +95,72 @@
     </div>
 
     <div class="checkout-body" >
-      <div class="tabs" >
+      <div class="tabs" *ngIf="checkoutSteps.length === 2; else elseBlock">
         <mat-tab-group [(selectedIndex)]="currentStepIndex" class="invisible-tabs" >
+
+          <mat-tab >
+            <div class="tab-container">
+              <app-invoice
+                [userData]="invoiceData"
+                (receiverData)="updatereceiverData($event)">
+              </app-invoice>
+            </div>
+          </mat-tab>
+
 
           <mat-tab  >
             <div class="tab-container">
               <app-summary
                 [orderData]="summaryData"
                 [selectedCard]="selectedCard">
-                
               </app-summary>
-            </div>
-          </mat-tab>
-
-          <mat-tab >
-            <div class="tab-container">
-              <app-invoice
-                [userData]="invoiceData"
-                (invoiceData)="updateInvoiceData($event)">
-              </app-invoice>
-            </div>
-          </mat-tab>
-
-          <mat-tab >
-            <div class="tab-container">
-              <app-payment
-                [orderData]="summaryData">
-              </app-payment>
             </div>
           </mat-tab>
 
         </mat-tab-group>
       </div>
 
-      <div>
-        <div class="price-details">
-          <app-price-details
-            [orderData]="summaryData"
-            [customsCruce]="customsCruce"
-            >
-              <div class="payment-details">
-                <div>
-                  {{ 'checkout.payment-method' | translate }}
-                </div>
-                <div class="method">
-                  {{ 'checkout.transfer' | translate }}
-                </div>
+      <ng-template #elseBlock>
+        <div class="tabs">
+          <mat-tab-group [(selectedIndex)]="currentStepIndex" class="invisible-tabs" >
+  
+            <mat-tab >
+              <div class="tab-container">
+                <app-emitter
+                  [userData]="invoiceData"
+                  (emitterData)="updateEmitterData($event)">>
+                </app-emitter>
               </div>
-              
-              
-          </app-price-details>
+            </mat-tab>
+  
+            <mat-tab >
+              <div class="tab-container">
+                <app-invoice
+                  [userData]="invoiceData"
+                  (receiverData)="updatereceiverData($event)">
+                </app-invoice>
+              </div>
+            </mat-tab>
+  
+  
+            <mat-tab  >
+              <div class="tab-container">
+                <app-summary
+                  [orderData]="summaryData"
+                  [selectedCard]="selectedCard">
+                </app-summary>
+              </div>
+            </mat-tab>
+  
+          </mat-tab-group>
         </div>
-        
+      </ng-template>
+
+      <div class="step-button">      
         <button 
           mat-raised-button 
           class="bego-btn yellow full-width thick-btn"
-          (click)="nextStep()">
+          (click)="validate()">
           <span class="bold">
             {{ checkoutSteps[currentStepIndex]?.nextBtnTxt }}
           </span>

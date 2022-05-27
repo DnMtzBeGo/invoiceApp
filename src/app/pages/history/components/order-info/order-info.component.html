@@ -1,22 +1,31 @@
 <div class="order-info-container">
   <div class="order-info-row-status">
     <div class="order-data-gral">
-      <div class="order-reference-date">
-        <p class="order-reference">{{'history.history_detail.reference' | translate }} {{orderInfo['reference_number']}}</p>
-        <p class="order-date">{{orderInfo['created'] | date: 'dd/MM/yyyy'}} <i class="icon icon-dot"></i> {{orderInfo['created'] | date: 'shortTime'}}</p>
+      <div>
+        <div class="order-reference-date">
+          <p class="order-reference">{{'history.history_detail.reference' | translate }}
+            {{orderInfo['reference_number']}}</p>
+        </div>
+        <div class="order-number">{{'history.history_detail.order' | translate }} #{{orderInfo['order_number']}}</div>
+        <div class="order-date">{{orderInfo['created'] | date: 'dd/MM/yyyy'}} <i class="icon icon-dot"></i>
+          {{orderInfo['created'] | date: 'shortTime'}}</div>
       </div>
-      <div class="order-number">{{'history.history_detail.order' | translate }} #{{orderInfo['order_number']}}</div>
+      <div class="edit-cn-btn-wrapper">
+        <app-edit-cn-btn *ngIf="orderInfo.user_id == orderInfo.manager?._id" [progress]="orderInfo?.stampedPercentage"
+          [orderId]="orderInfo._id"></app-edit-cn-btn>
+      </div>
+
     </div>
 
     <div class="order-info-status">
       <div class="status-active">
         <div class="draft-radio">
           <div class="radio" [ngClass]="selectedRow == 'pickup' ? 'active' : ''"></div>
-      </div>
-      <span class="dot-line"></span>
-      <div class="draft-radio">
-        <div class="radio" [ngClass]="selectedRow == 'dropoff' ? 'active' : ''"></div>
-      </div>
+        </div>
+        <span class="dot-line"></span>
+        <div class="draft-radio">
+          <div class="radio" [ngClass]="selectedRow == 'dropoff' ? 'active' : ''"></div>
+        </div>
       </div>
 
       <div class="status-address">
@@ -52,6 +61,10 @@
 
   <app-driver-status-card [title]="selectedRow" [orderData]="orderInfo"></app-driver-status-card>
 
+  <!-- WE ARE NOT APPLYING RULES FOR MANAGERS-->
+  <app-download-invoices #downloadInvoicesRef *ngIf="orderInfo.user_id == orderInfo.manager?._id" [orderId]="orderInfo._id"
+    [orderRefNumber]="orderInfo.order_number" [pdf]="true" [xml]="true"></app-download-invoices>
+
   <app-drop-down *ngIf="selectedRow === 'pickup'" [title]=" 'history.history_detail.pickup_info_tab' | translate ">
     <app-pickup-dropoff-info title="pickup" [orderData]="orderInfo"></app-pickup-dropoff-info>
   </app-drop-down>
@@ -60,13 +73,19 @@
     <app-pickup-dropoff-info title="dropoff" [orderData]="orderInfo"></app-pickup-dropoff-info>
   </app-drop-down>
 
-  <app-order-evidence
-    *ngIf=" orderInfo?.status >= 3"
-    [orderData]="orderInfo?.[selectedRow]"
-    [orderId]="orderInfo?._id"
+  <app-order-evidence *ngIf=" orderInfo?.status >= 3" [orderData]="orderInfo?.[selectedRow]" [orderId]="orderInfo?._id"
     [orderStatus]="orderInfo?.status"
     [commentsText]="selectedRow == 'pickup' ? orderInfo?.cargo?.description : orderInfo?.dropoff?.extra_notes">
   </app-order-evidence>
 
-  <app-price-details [orderData]="orderInfo"></app-price-details>
+  <div class="earnings-card" *ngIf="orderInfo.pricing" >
+    <div class="total-price">
+      <small><b>{{ 'history.total_earnings' | translate }}:</b></small>
+      <small class="driver-earnings">
+        {{ orderInfo.pricing?.driver_earnings ? (orderInfo.pricing?.driver_earnings | currency ) : '-' }}
+      </small>
+    </div>
+  </div>
+
+  <!-- <app-price-details [orderData]="orderInfo"></app-price-details> -->
 </div>

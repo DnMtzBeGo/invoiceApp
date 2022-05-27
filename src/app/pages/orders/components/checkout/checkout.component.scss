@@ -5,15 +5,22 @@ section{
 
   .checkout-body{
     display: grid;
-    grid-template-columns: 4fr 2fr ;
-    // gap: 63px;
+    justify-content: center;
+    align-items: center;
     margin-top: 80px;
 
     &:first-child{
       min-height: 100%;
     }
 
+    .tabs{
+      width: 750px;
+    }
 
+    .step-button{
+      margin-top: 50px;
+      width: 690px;
+    }
   }
 
   .tab-container{
@@ -31,6 +38,48 @@ section{
       justify-content: space-between;
       align-items: center;
       gap: 6px;
+    }
+  }
+
+  .previewBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    box-shadow: inset -2px -2px 4px 0 #040b11, inset 2px 2px 4px 0 #1c232a,
+    0 13px 9px 0 #000000 !important;
+    cursor: pointer;
+    background-color: #091016 !important;
+    margin-top: 66px;
+    
+    bego-button{
+      transform: scale(1.5);
+    }
+
+    .name{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-left: 10px;
+
+      span:first-child{
+        font-family: "Avenir-Medium", Arial, Helvetica, sans-serif;
+        font-size: 0.75rem;
+        color: #ededed;
+        white-space: nowrap;
+        overflow: hidden;
+        font-weight: 500;
+        text-overflow: ellipsis;
+      }
+
+      span:last-child{
+        font-family: 'Avenir';
+        font-weight: 400;
+        font-size: 11px;
+        color: #89898a;
+      }
+      
     }
   }
 
@@ -86,31 +135,15 @@ section{
     }
   }
 
-  .price-details{
-    background: #0B1117;
-    box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
-    border-radius: 8px;
-    padding-top: 1px;
-    margin-bottom: 40px;
-
-    .payment-details{
-      display: flex;
-      justify-content: space-between;
-
-      .method{
-        color: #ffbe00;
-      }
-    }
+  ::ng-deep .mat-form-field-infix{
+    padding-left: 0px !important;
   }
 
+  ::ng-deep .mat-form-field-label-wrapper{
+    transform: translate(0px);
+  }
 }
 
 ::ng-deep .mat-tab-header {
   display: none!important;
-}
-
-::ng-deep app-price-details{
-  .price-details-row>div, .price-total-row>div {
-    margin-bottom: 25px!important;
-  }
 }

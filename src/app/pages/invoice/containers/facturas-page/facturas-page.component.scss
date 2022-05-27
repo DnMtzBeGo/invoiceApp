@@ -67,10 +67,10 @@
     align-items: center;
 
     button {
-      margin: 0 20px;
+      margin: 0 12px;
 
       &:last-child {
-        margin: 0;
+        margin-right: 0;
       }
     }
   }
@@ -111,6 +111,12 @@
         justify-content: center;
       }
     }
+  }
+
+  &.mat-active,
+  &.mat-active.mat-selected {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 1px solid #ffbe00;
   }
 
   &[disabled] {
