@@ -1,8 +1,8 @@
-@use './app/shared/styles/cross-icon.scss';
+@use "./app/shared/styles/cross-icon.scss";
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '~@angular/material' as mat;
+@use "~@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -21,21 +21,23 @@ $carriersDashboard-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$carriersDashboard-theme: mat.define-light-theme((
-  color: (
-    primary: $carriersDashboard-primary,
-    accent: $carriersDashboard-accent,
-    warn: $carriersDashboard-warn,
+$carriersDashboard-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $carriersDashboard-primary,
+      accent: $carriersDashboard-accent,
+      warn: $carriersDashboard-warn,
+    ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($carriersDashboard-theme);
 
-@import './app/shared/styles/cross-icon.scss';
-@import './app/shared/styles/icomoon.scss';
+@import "./app/shared/styles/cross-icon.scss";
+@import "./app/shared/styles/icomoon.scss";
 @import "~aos/dist/aos.css";
 
 //angular material components
@@ -48,8 +50,8 @@ $carriersDashboard-theme: mat.define-light-theme((
 @import './styles/custom-styles/textarea.scss';
 
 //custom styles
-@import './styles/custom-styles/radio-button.scss';
-@import './app/pages/invoice/styles/styles';
+@import "./styles/custom-styles/radio-button.scss";
+@import "./app/pages/invoice/styles/styles";
 
 //Swiper for Insurance
 @import "~swiper/css/bundle";
@@ -59,28 +61,32 @@ $carriersDashboard-theme: mat.define-light-theme((
   padding-top: 50px;
   padding-bottom: 50px;
 
-  .swiper-slide-next, .swiper-slide-prev {
-
+  .swiper-slide-next,
+  .swiper-slide-prev {
   }
 
-  .swiper-button-next, .swiper-button-prev {
-    color: #FFBE00;
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: #ffbe00;
   }
 
-  .swiper-button-next:after, .swiper-button-prev:after {
-    font-family: 'bego-icons';
+  .swiper-button-next:after,
+  .swiper-button-prev:after {
+    font-family: "bego-icons";
   }
 
-  .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
-    content: '\e90f';
+  .swiper-button-next:after,
+  .swiper-rtl .swiper-button-prev:after {
+    content: "\e90f";
   }
 
-  .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
-    content: '\e908';
+  .swiper-button-prev:after,
+  .swiper-rtl .swiper-button-next:after {
+    content: "\e908";
   }
 
-  .swiper-pagination-bullet{
-    background: #FFBE00;
+  .swiper-pagination-bullet {
+    background: #ffbe00;
     opacity: 0.3;
     position: relative;
     width: 12px;
@@ -88,21 +94,22 @@ $carriersDashboard-theme: mat.define-light-theme((
   }
 
   .swiper-pagination-bullet-active {
-    background: #FFBE00;
+    background: #ffbe00;
     opacity: 1;
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%,-50%);
-      border: 3px solid #FFBE00;
+      transform: translate(-50%, -50%);
+      border: 3px solid #ffbe00;
       width: 37px;
       height: 37px;
       border-radius: 50%;
     }
   }
-  .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+  .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
+  .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
     margin: 0 15px;
   }
 }
@@ -119,18 +126,18 @@ $carriersDashboard-theme: mat.define-light-theme((
   width: 100%;
 }
 //theme component styles
-@import './styles/components/_loader';
+@import "./styles/components/_loader";
 
 // =============================================================================
 // Colors
 // =============================================================================
 
-$background-color: #040B11;
-$lighter-color: #EDEDED;
-$light-color: #C1C7D0;
+$background-color: #040b11;
+$lighter-color: #ededed;
+$light-color: #c1c7d0;
 $yellow-color: #ffbe00;
-$white: #FFFFFF;
-$color-font-grey: #C1C7D0;
+$white: #ffffff;
+$color-font-grey: #c1c7d0;
 
 $bego-menu-width: 80px;
 $bego-menu-width-open: 196px;
@@ -140,18 +147,21 @@ $bego-menu-width-open: 196px;
 // =============================================================================
 
 * {
-    margin: 0;
-    box-sizing: border-box;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-size: 16px;
-    font-family: 'Avenir', Helvetica, sans-serif;
-    background: $background-color;
-    color: $white;
+  font-size: 16px;
+  font-family: "Avenir", Helvetica, sans-serif;
+  background: $background-color;
+  color: $white;
 }
 
-html, body { height: 100%; }
+html,
+body {
+  height: 100%;
+}
 
 // =============================================================================
 // Font face
@@ -160,96 +170,96 @@ html, body { height: 100%; }
 $font-url: "assets/fonts/avenir/";
 
 @font-face {
-    font-family: 'Avenir';
-    src: url($font-url+'Avenir-Heavy.eot');
-    src: url($font-url+'Avenir-Heavy.eot?#iefix') format('embedded-opentype'),
-        url($font-url+'Avenir-Heavy.woff2') format('woff2'),
-        url($font-url+'Avenir-Heavy.woff') format('woff'),
-        url($font-url+'Avenir-Heavy.ttf') format('truetype'),
-        url($font-url+'Avenir-Heavy.svg#Avenir-Heavy') format('svg');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Avenir";
+  src: url($font-url + "Avenir-Heavy.eot");
+  src: url($font-url + "Avenir-Heavy.eot?#iefix") format("embedded-opentype"),
+    url($font-url + "Avenir-Heavy.woff2") format("woff2"),
+    url($font-url + "Avenir-Heavy.woff") format("woff"),
+    url($font-url + "Avenir-Heavy.ttf") format("truetype"),
+    url($font-url + "Avenir-Heavy.svg#Avenir-Heavy") format("svg");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Avenir';
-    src: url($font-url+'Avenir-Medium.eot');
-    src: url($font-url+'Avenir-Medium.eot?#iefix') format('embedded-opentype'),
-        url($font-url+'Avenir-Medium.woff2') format('woff2'),
-        url($font-url+'Avenir-Medium.woff') format('woff'),
-        url($font-url+'Avenir-Medium.ttf') format('truetype'),
-        url($font-url+'Avenir-Medium.svg#Avenir-Medium') format('svg');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Avenir";
+  src: url($font-url + "Avenir-Medium.eot");
+  src: url($font-url + "Avenir-Medium.eot?#iefix") format("embedded-opentype"),
+    url($font-url + "Avenir-Medium.woff2") format("woff2"),
+    url($font-url + "Avenir-Medium.woff") format("woff"),
+    url($font-url + "Avenir-Medium.ttf") format("truetype"),
+    url($font-url + "Avenir-Medium.svg#Avenir-Medium") format("svg");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Avenir';
-    src: url($font-url+'Avenir-Light.eot');
-    src: url($font-url+'Avenir-Light.eot?#iefix') format('embedded-opentype'),
-        url($font-url+'Avenir-Light.woff2') format('woff2'),
-        url($font-url+'Avenir-Light.woff') format('woff'),
-        url($font-url+'Avenir-Light.ttf') format('truetype'),
-        url($font-url+'Avenir-Light.svg#Avenir-Light') format('svg');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Avenir";
+  src: url($font-url + "Avenir-Light.eot");
+  src: url($font-url + "Avenir-Light.eot?#iefix") format("embedded-opentype"),
+    url($font-url + "Avenir-Light.woff2") format("woff2"),
+    url($font-url + "Avenir-Light.woff") format("woff"),
+    url($font-url + "Avenir-Light.ttf") format("truetype"),
+    url($font-url + "Avenir-Light.svg#Avenir-Light") format("svg");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Avenir Book';
-    src: url($font-url+'Avenir-Book.eot');
-    src: url($font-url+'Avenir-Book.eot?#iefix') format('embedded-opentype'),
-        url($font-url+'Avenir-Book.woff2') format('woff2'),
-        url($font-url+'Avenir-Book.woff') format('woff'),
-        url($font-url+'Avenir-Book.ttf') format('truetype'),
-        url($font-url+'Avenir-Book.svg#Avenir-Book') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Avenir Book";
+  src: url($font-url + "Avenir-Book.eot");
+  src: url($font-url + "Avenir-Book.eot?#iefix") format("embedded-opentype"),
+    url($font-url + "Avenir-Book.woff2") format("woff2"),
+    url($font-url + "Avenir-Book.woff") format("woff"),
+    url($font-url + "Avenir-Book.ttf") format("truetype"),
+    url($font-url + "Avenir-Book.svg#Avenir-Book") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Avenir';
-    src: url($font-url+'Avenir-Black.eot');
-    src: url($font-url+'Avenir-Black.eot?#iefix') format('embedded-opentype'),
-        url($font-url+'Avenir-Black.woff2') format('woff2'),
-        url($font-url+'Avenir-Black.woff') format('woff'),
-        url($font-url+'Avenir-Black.ttf') format('truetype'),
-        url($font-url+'Avenir-Black.svg#Avenir-Black') format('svg');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Avenir";
+  src: url($font-url + "Avenir-Black.eot");
+  src: url($font-url + "Avenir-Black.eot?#iefix") format("embedded-opentype"),
+    url($font-url + "Avenir-Black.woff2") format("woff2"),
+    url($font-url + "Avenir-Black.woff") format("woff"),
+    url($font-url + "Avenir-Black.ttf") format("truetype"),
+    url($font-url + "Avenir-Black.svg#Avenir-Black") format("svg");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Avenir';
-    src: url($font-url+'Avenir-Roman.eot');
-    src: url($font-url+'Avenir-Roman.eot?#iefix') format('embedded-opentype'),
-        url($font-url+'Avenir-Roman.woff2') format('woff2'),
-        url($font-url+'Avenir-Roman.woff') format('woff'),
-        url($font-url+'Avenir-Roman.ttf') format('truetype'),
-        url($font-url+'Avenir-Roman.svg#Avenir-Roman') format('svg');
-    font-weight: 400;
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Avenir";
+  src: url($font-url + "Avenir-Roman.eot");
+  src: url($font-url + "Avenir-Roman.eot?#iefix") format("embedded-opentype"),
+    url($font-url + "Avenir-Roman.woff2") format("woff2"),
+    url($font-url + "Avenir-Roman.woff") format("woff"),
+    url($font-url + "Avenir-Roman.ttf") format("truetype"),
+    url($font-url + "Avenir-Roman.svg#Avenir-Roman") format("svg");
+  font-weight: 400;
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Avenir Next';
-    src: url($font-url+'AvenirNext-Regular.eot');
-    src: url($font-url+'AvenirNext-Regular.eot?#iefix') format('embedded-opentype'),
-        url($font-url+'AvenirNext-Regular.woff2') format('woff2'),
-        url($font-url+'AvenirNext-Regular.woff') format('woff'),
-        url($font-url+'AvenirNext-Regular.ttf') format('truetype'),
-        url($font-url+'AvenirNext-Regular.svg#AvenirNext-Regular') format('svg');
-    font-weight: 400;
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Avenir Next";
+  src: url($font-url + "AvenirNext-Regular.eot");
+  src: url($font-url + "AvenirNext-Regular.eot?#iefix") format("embedded-opentype"),
+    url($font-url + "AvenirNext-Regular.woff2") format("woff2"),
+    url($font-url + "AvenirNext-Regular.woff") format("woff"),
+    url($font-url + "AvenirNext-Regular.ttf") format("truetype"),
+    url($font-url + "AvenirNext-Regular.svg#AvenirNext-Regular") format("svg");
+  font-weight: 400;
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -263,180 +273,188 @@ $font-url: "assets/fonts/avenir/";
 // Media Querries
 // =============================================================================
 
-  @mixin custom-resolution($resolution) {
-    @media (max-width: #{$resolution}) {
-      @content;
-    }
+@mixin custom-resolution($resolution) {
+  @media (max-width: #{$resolution}) {
+    @content;
   }
+}
 
-  @mixin desktop-4k {
-    @media (min-width: #{$desktop-fhd}) {
-      @content;
-    }
+@mixin desktop-4k {
+  @media (min-width: #{$desktop-fhd}) {
+    @content;
   }
+}
 
-  @mixin desktop-hd {
-    @media (max-width: #{$desktop-hd}) {
-      @content;
-    }
+@mixin desktop-hd {
+  @media (max-width: #{$desktop-hd}) {
+    @content;
   }
-  
-  @mixin desktop {
-    @media (max-width: #{$desktop}) {
-      @content;
-    }
-  }
-  
-  @mixin tablet {
-    @media (max-width: #{$mobile}) {
-      @content;
-    }
-  }
-  
-  @mixin mobile {
-    @media (max-width: #{$mobile}) {
-      @content;
-    }
-  }
-  
-  @mixin mobile-xs {
-    @media (max-width: #{$mobile-xs}) {
-      @content;
-    }
-  }
+}
 
-  @mixin mobile-xxs {
-    @media (max-width: #{$mobile-xxs}) {
-      @content;
-    }
+@mixin desktop {
+  @media (max-width: #{$desktop}) {
+    @content;
   }
+}
 
-  @mixin mobile-ms {
-    @media (max-width: #{$mobile-ms}) {
-      @content;
-    }
+@mixin tablet {
+  @media (max-width: #{$mobile}) {
+    @content;
   }
+}
 
-  @mixin touch {
-    @media only screen and (hover: none) {
-      @content;
-    }
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
   }
+}
 
-  @mixin tablet-landscape {
-    @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
-      @content;
-    }
+@mixin mobile-xs {
+  @media (max-width: #{$mobile-xs}) {
+    @content;
   }
+}
 
-  @mixin inner-shadow{
-    background: #0B1117;
-    box-shadow: 0px 3px 2px #131A21;
-    border-radius: 8px;
+@mixin mobile-xxs {
+  @media (max-width: #{$mobile-xxs}) {
+    @content;
   }
+}
 
-  .inner-shadow{
-    @include inner-shadow;
+@mixin mobile-ms {
+  @media (max-width: #{$mobile-ms}) {
+    @content;
   }
-  
-  // =============================================================================
-  // CrossBrowsing
-  // =============================================================================
-  
-  @mixin edge {
-    @supports (-ms-accelerator:true) {
-        @content;
-    }
-    @supports (-ms-ime-align:auto) {
-        @content;
-    }
-  }
-  
-  @mixin ie11 {
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-        @content;
-    }
-  }
+}
 
-  // =============================================================================
-  // Fluid Typography
-  // =============================================================================
-
-  @function strip-unit($value) {
-    @return $value / ($value * 0 + 1);
+@mixin touch {
+  @media only screen and (hover: none) {
+    @content;
   }
+}
 
-  @mixin fluid-type($min-vw, $max-vw, $min-font-size, $max-font-size) {
-    $u1: unit($min-vw);
-    $u2: unit($max-vw);
-    $u3: unit($min-font-size);
-    $u4: unit($max-font-size);
-  
-    @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
-      & {
-        font-size: $min-font-size;
-        @media screen and (min-width: $min-vw) {
-          font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
-        }
-        @media screen and (min-width: $max-vw) {
-          font-size: $max-font-size;
-        }
+@mixin tablet-landscape {
+  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin inner-shadow {
+  background: #0b1117;
+  box-shadow: 0px 3px 2px #131a21;
+  border-radius: 8px;
+}
+
+.inner-shadow {
+  @include inner-shadow;
+}
+
+// =============================================================================
+// CrossBrowsing
+// =============================================================================
+
+@mixin edge {
+  @supports (-ms-accelerator: true) {
+    @content;
+  }
+  @supports (-ms-ime-align: auto) {
+    @content;
+  }
+}
+
+@mixin ie11 {
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    @content;
+  }
+}
+
+// =============================================================================
+// Fluid Typography
+// =============================================================================
+
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+@mixin fluid-type($min-vw, $max-vw, $min-font-size, $max-font-size) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-font-size);
+  $u4: unit($max-font-size);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      font-size: $min-font-size;
+      @media screen and (min-width: $min-vw) {
+        font-size: calc(
+          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
+            ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
+        );
+      }
+      @media screen and (min-width: $max-vw) {
+        font-size: $max-font-size;
       }
     }
   }
+}
 
-  @mixin fluid-padding-left($min-vw, $max-vw, $min-font-size, $max-font-size) {
-    $u1: unit($min-vw);
-    $u2: unit($max-vw);
-    $u3: unit($min-font-size);
-    $u4: unit($max-font-size);
-  
-    @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
-      & {
-        padding-left: $min-font-size;
-        @media screen and (min-width: $min-vw) {
-          padding-left: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
-        }
-        @media screen and (min-width: $max-vw) {
-          padding-left: $max-font-size;
-        }
+@mixin fluid-padding-left($min-vw, $max-vw, $min-font-size, $max-font-size) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-font-size);
+  $u4: unit($max-font-size);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      padding-left: $min-font-size;
+      @media screen and (min-width: $min-vw) {
+        padding-left: calc(
+          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
+            ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
+        );
+      }
+      @media screen and (min-width: $max-vw) {
+        padding-left: $max-font-size;
       }
     }
   }
-  
-  @mixin fluid($property, $min-vw, $max-vw, $min-font-size, $max-font-size) {
-    $u1: unit($min-vw);
-    $u2: unit($max-vw);
-    $u3: unit($min-font-size);
-    $u4: unit($max-font-size);
-  
-    @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
-      & {
-        #{$property}: $min-font-size;
-        @media screen and (min-width: $min-vw) {
-          #{$property}: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
-        }
-        @media screen and (min-width: $max-vw) {
-          #{$property}: $max-font-size;
-        }
+}
+
+@mixin fluid($property, $min-vw, $max-vw, $min-font-size, $max-font-size) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-font-size);
+  $u4: unit($max-font-size);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      #{$property}: $min-font-size;
+      @media screen and (min-width: $min-vw) {
+        #{$property}: calc(
+          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
+            ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
+        );
+      }
+      @media screen and (min-width: $max-vw) {
+        #{$property}: $max-font-size;
       }
     }
   }
+}
 
 ::ng-deep .small-input-inner-shadow {
-    
   min-width: 100%;
 
-  .mat-form-field-infix{
+  .mat-form-field-infix {
     padding: 0px;
     border-top: unset;
   }
 
-  .mat-form-field-wrapper{
+  .mat-form-field-wrapper {
     padding-bottom: 0px;
   }
 
-  .mat-form-field-label-wrapper{
+  .mat-form-field-label-wrapper {
     top: 0px;
     padding-top: 0px;
   }
@@ -445,9 +463,9 @@ $font-url: "assets/fonts/avenir/";
     display: none;
   }
 
-  mat-select{
-    background: #0B1117;
-    box-shadow: 0px 3px 2px #131A21;
+  mat-select {
+    background: #0b1117;
+    box-shadow: 0px 3px 2px #131a21;
     border-radius: 8px;
     color: white;
     padding: 5px 24px 5px 0px;
@@ -456,20 +474,19 @@ $font-url: "assets/fonts/avenir/";
     width: 100%;
     box-sizing: border-box;
   }
-
 }
 
 // =============================================================================
 // Other
 // =============================================================================
 
-  //Hardware acceleration (forces GPU usage instead of CPU)
-  @mixin hardware($backface: true, $perspective: 1000) {
-    @if $backface {
-      backface-visibility: hidden;
-    }
-    perspective: $perspective;
+//Hardware acceleration (forces GPU usage instead of CPU)
+@mixin hardware($backface: true, $perspective: 1000) {
+  @if $backface {
+    backface-visibility: hidden;
   }
+  perspective: $perspective;
+}
 
 // =============================================================================
 // Media Queries Variables
@@ -484,31 +501,29 @@ $mobile-xs: 576px;
 $mobile-xxs: 375px;
 $mobile-ms: 320px;
 
-  
 // =============================================================================
 // Forms
 // =============================================================================
 
 input {
-    background: transparent;
-    border: none;
-    outline: 0;
-    padding: 0;
-    width: 100%;
+  background: transparent;
+  border: none;
+  outline: 0;
+  padding: 0;
+  width: 100%;
 }
-
 
 @keyframes pulse-yellow {
   0% {
     transform: scale(0.3);
     box-shadow: 0 0 0 20px rgba(255, 190, 0, 0.7);
   }
-  
+
   70% {
     transform: scale(1);
     box-shadow: 0 0 0 50px rgba(255, 190, 0, 0);
   }
-  
+
   100% {
     transform: scale(0.3);
     box-shadow: 0 0 0 20px rgba(255, 190, 0, 0);
@@ -520,49 +535,44 @@ input {
     transform: scale(0.3);
     box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.7);
   }
-  
+
   70% {
     transform: scale(1);
     box-shadow: 0 0 0 50px rgba(255, 255, 255, 0);
   }
-  
+
   100% {
     transform: scale(0.3);
     box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
   }
 }
 
-
-.hidden{
-  display: none!important;
+.hidden {
+  display: none !important;
 }
 
 #map div[title="yellow"] {
   box-shadow: 0 0 0 0 rgba(255, 190, 0, 1);
   animation: pulse-yellow 2s infinite;
-  border-radius:51px;
+  border-radius: 51px;
 }
 
 #map div[title="white"] {
   box-shadow: 0 0 0 0 rgba(255, 255, 255, 1);
   animation: pulse-white 2s infinite;
-  border-radius:51px;
+  border-radius: 51px;
 }
 
 .blob.yellow {
-
 }
 
-
-
 #map div[title="title"] img {
-  display:none;
+  display: none;
 }
 
 input[type="search"]::-webkit-search-cancel-button {
-
   -webkit-appearance: none;
-    
+
   height: 10px;
   width: 10px;
   border-radius: 50%;
@@ -574,30 +584,26 @@ input[type="search"]::-webkit-search-cancel-button {
 /********** Scrollbar **********/
 /*******************************/
 
-::-webkit-scrollbar-track
-{
+::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: rgba(66, 66, 66, 0);
   opacity: 0;
 }
 
-::-webkit-scrollbar
-{
+::-webkit-scrollbar {
   width: 8px;
-  background-color: #040B11;
+  background-color: #040b11;
   opacity: 0;
 }
 
-::-webkit-scrollbar-thumb
-{
+::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: rgba(66, 66, 66, 1);
-  -webkit-box-shadow: inset 4px 4px 4px 0 #1D2024, inset -4px -4px 4px 0 #10161C;
+  -webkit-box-shadow: inset 4px 4px 4px 0 #1d2024, inset -4px -4px 4px 0 #10161c;
 }
 
-::-webkit-scrollbar-corner
-{
-  background-color: #040B11;
+::-webkit-scrollbar-corner {
+  background-color: #040b11;
 }
 
 /* Ripple effect */
@@ -606,14 +612,13 @@ input[type="search"]::-webkit-search-cancel-button {
   transition: background 0.6s;
 }
 .ripple:hover {
-  background: #10161C radial-gradient(circle, transparent 1%, #10161C 1%) center/20000%;
+  background: #10161c radial-gradient(circle, transparent 1%, #10161c 1%) center/20000%;
 }
 .ripple:active {
-  background-color: #040B11;
+  background-color: #040b11;
   background-size: 100%;
   transition: background 0s;
 }
-
 
 /*Loader ellipsis*/
 
@@ -679,7 +684,7 @@ input[type="search"]::-webkit-search-cancel-button {
 /*Inputs*/
 
 .mat-form-field-appearance-legacy {
-  font-family: 'Avenir', Helvetica, sans-serif;
+  font-family: "Avenir", Helvetica, sans-serif;
   font-weight: 400;
   position: relative;
 
@@ -699,22 +704,23 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 input.mat-input-element {
-  caret-color: #EDEDED;
-  color: #EDEDED;
+  caret-color: #ededed;
+  color: #ededed;
   font-size: 18px;
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-label-wrapper {
-  transform: translate(60px,0);
-  width: calc( 100% - 60px );
+  transform: translate(60px, 0);
+  width: calc(100% - 60px);
 }
 
-.mat-form-field.mat-focused .mat-form-field-label, .mat-form-field-appearance-legacy .mat-form-field-label {
-  color: #89898A;
+.mat-form-field.mat-focused .mat-form-field-label,
+.mat-form-field-appearance-legacy .mat-form-field-label {
+  color: #89898a;
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-underline {
-  background-color: #494C50;
+  background-color: #494c50;
 }
 
 .mat-form-field.mat-focused .mat-form-field-ripple {
@@ -724,13 +730,18 @@ input.mat-input-element {
 /**** Mat-group *****/
 .mat-tab-group,
 .mat-calendar,
-.mat-button, .mat-raised-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button, .mat-fab, .mat-mini-fab {
-  font-family: 'Avenir', Helvetica, sans-serif;
+.mat-button,
+.mat-raised-button,
+.mat-icon-button,
+.mat-stroked-button,
+.mat-flat-button,
+.mat-fab,
+.mat-mini-fab {
+  font-family: "Avenir", Helvetica, sans-serif;
 }
 
-
 /*** MAT Calendar ***/
-.mat-calendar-body-label{
+.mat-calendar-body-label {
   opacity: 0;
 }
 
@@ -740,7 +751,8 @@ input.mat-input-element {
 
 .mat-datepicker-content {
   background: #091016;
-  box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1C232A, inset -4px -4px 4px #040B11;
+  box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a,
+    inset -4px -4px 4px #040b11;
 }
 
 .mat-datepicker-content,
@@ -750,11 +762,11 @@ input.mat-input-element {
 .mat-datepicker-toggle,
 .mat-datepicker-content .mat-calendar-next-button,
 .mat-datepicker-content .mat-calendar-previous-button {
-  color: #EDEDED;
+  color: #ededed;
 }
 
 .mat-calendar-arrow {
-  fill: #EDEDED;
+  fill: #ededed;
 }
 
 // .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical), .cdk-keyboard-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical), .cdk-program-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
@@ -767,24 +779,30 @@ input.mat-input-element {
 // }
 
 .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
-  border: 1px solid #1C232A;
+  border: 1px solid #1c232a;
   border-radius: 8px;
-  background-color: #10161C;
-  box-shadow: inset -2px -2px 4px 0 rgba(44,46,50,0.45), inset 2px 2px 4px 0 #000000;
+  background-color: #10161c;
+  box-shadow: inset -2px -2px 4px 0 rgba(44, 46, 50, 0.45), inset 2px 2px 4px 0 #000000;
 }
 
-.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical), 
-.cdk-keyboard-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical), 
-.cdk-program-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
-  background-color: #10161C;
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover
+  > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
+.cdk-keyboard-focused
+  .mat-calendar-body-active
+  > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
+.cdk-program-focused
+  .mat-calendar-body-active
+  > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  background-color: #10161c;
 }
 
-.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover
+  > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
   background-color: $yellow-color;
   font-weight: 800;
   letter-spacing: 0.5px;
-  color: #040B11;
-  box-shadow: inset 2px 2px 4px #FFBE00, inset -2px -2px 4px #C69400;
+  color: #040b11;
+  box-shadow: inset 2px 2px 4px #ffbe00, inset -2px -2px 4px #c69400;
 }
 
 .mat-calendar-table-header th {
@@ -798,14 +816,14 @@ input.mat-input-element {
 
 .mat-calendar-body-selected {
   background-color: $yellow-color;
-  color: #040B11 !important;
-  box-shadow: inset 2px 2px 4px #FFBE00, inset -2px -2px 4px #C69400;
+  color: #040b11 !important;
+  box-shadow: inset 2px 2px 4px #ffbe00, inset -2px -2px 4px #c69400;
   font-weight: 800;
   letter-spacing: 0.5px;
 }
 
 .mat-calendar-body-today.mat-calendar-body-selected {
-  box-shadow: inset 2px 2px 4px #FFBE00, inset -2px -2px 4px #C69400;
+  box-shadow: inset 2px 2px 4px #ffbe00, inset -2px -2px 4px #c69400;
   border-radius: 8px;
 }
 
@@ -813,8 +831,9 @@ input.mat-input-element {
   background: transparent;
 }
 
-.mat-calendar-body-disabled > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
-  color: #89898A;
+.mat-calendar-body-disabled
+  > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  color: #89898a;
 }
 /*   Button Toggle   */
 
@@ -822,22 +841,23 @@ input.mat-input-element {
   border-left: none;
 }
 
-.mat-button-toggle-standalone.mat-button-toggle-appearance-standard, .mat-button-toggle-group-appearance-standard {
+.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
+.mat-button-toggle-group-appearance-standard {
   border-radius: 8px !important;
-  background: #0B1117;
-  border: 2px solid #171E24;
-  box-shadow: inset 4px 4px 10px #040B11;
+  background: #0b1117;
+  border: 2px solid #171e24;
+  box-shadow: inset 4px 4px 10px #040b11;
   min-width: 300px;
 }
 
 .mat-button-toggle-appearance-standard {
   background: none;
-  color: #EDEDED;
+  color: #ededed;
 }
 
 .mat-button-toggle-checked {
-  background-color: #FFBE00;
-  color: #040B11 !important;
+  background-color: #ffbe00;
+  color: #040b11 !important;
   border-radius: 8px !important;
   min-width: 153px;
 }
@@ -847,7 +867,7 @@ input.mat-input-element {
 }
 
 .mat-button-toggle {
-  font-family: 'Avenir', Helvetica, sans-serif;
+  font-family: "Avenir", Helvetica, sans-serif;
   font-size: 18px;
   text-transform: capitalize;
   min-width: 153px;
@@ -855,36 +875,41 @@ input.mat-input-element {
   text-align: center;
 }
 
-.mat-button-toggle-standalone, .mat-button-toggle-group {
+.mat-button-toggle-standalone,
+.mat-button-toggle-group {
   justify-content: space-around;
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: #FFBE00
+  border-color: #ffbe00;
 }
 
-.mat-ripple-element{
+.mat-ripple-element {
   display: none !important;
 }
 
-.mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
-  background-color: #FFBE00
+.mat-radio-button.mat-accent .mat-radio-inner-circle,
+.mat-radio-button.mat-accent
+  .mat-radio-ripple
+  .mat-ripple-element:not(.mat-radio-persistent-ripple),
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
+.mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
+  background-color: #ffbe00;
 }
 
 .mat-radio-outer-circle {
-  border: 2px solid #1C232A;
-  background: #10161C;
+  border: 2px solid #1c232a;
+  background: #10161c;
   box-shadow: inset 0px 4px 4px #000000;
 }
 /***** Time Input ******/
 
 .ngx-timepicker-control__arrow {
-  color: #494C50 !important;
+  color: #494c50 !important;
 
   &:hover {
-    color: #C1C7D0 !important;
+    color: #c1c7d0 !important;
   }
-
 }
 
 .ngx-timepicker-control__arrows {
@@ -908,28 +933,28 @@ input.mat-input-element {
 }
 
 .ngx-timepicker__control--first {
-  border-left: 1px solid #161B20;
-  border-top: 1px solid #161B20;
-  border-bottom: 1px solid #161B20;
+  border-left: 1px solid #161b20;
+  border-top: 1px solid #161b20;
+  border-bottom: 1px solid #161b20;
   border-radius: 4px 0 0 4px;
 }
 
 .ngx-timepicker__control--second {
-  border-top: 1px solid #161B20;
-  border-bottom: 1px solid #161B20;
+  border-top: 1px solid #161b20;
+  border-bottom: 1px solid #161b20;
   height: 32px;
 }
 
 .ngx-timepicker__control--third {
-  border-right: 1px solid #161B20;
-  border-top: 1px solid #161B20;
-  border-bottom: 1px solid #161B20;
+  border-right: 1px solid #161b20;
+  border-top: 1px solid #161b20;
+  border-bottom: 1px solid #161b20;
   border-radius: 0 4px 4px 0;
 }
 
 .ngx-timepicker__control--forth {
-  background: #12171D;
-  box-shadow: inset 2px 2px 5px #292E35, inset -2px -2px 4px #0D1215;
+  background: #12171d;
+  box-shadow: inset 2px 2px 5px #292e35, inset -2px -2px 4px #0d1215;
   border-radius: 6px;
   height: 32px;
   display: flex;
@@ -947,7 +972,7 @@ input.mat-input-element {
 }
 
 .period-control__arrow {
-  color: #C1C7D0 !important;
+  color: #c1c7d0 !important;
   margin-left: 5px !important;
   font-size: 10px !important;
 }
@@ -958,7 +983,8 @@ input.mat-input-element {
 
 .period-selector {
   background: #091016 !important;
-  box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1C232A, inset -4px -4px 4px #040B11 !important;
+  box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a,
+    inset -4px -4px 4px #040b11 !important;
   border-radius: 4px;
 }
 
@@ -981,7 +1007,7 @@ input.mat-input-element {
 .input-textarea.mat-form-field-appearance-legacy .mat-form-field-infix {
   // padding: 0;
   textarea {
-    border: 1px solid #1C232A;
+    border: 1px solid #1c232a;
     border-radius: 8px;
     caret-color: $white;
     padding: 10px;
@@ -993,15 +1019,15 @@ input.mat-input-element {
 
   &.mat-input-element {
     box-sizing: border-box;
-    border: 1px solid #1C232A;
+    border: 1px solid #1c232a;
     border-radius: 8px;
-    caret-color: #FFFFFF;
+    caret-color: #ffffff;
     padding: 10px;
-    font-family: 'Avenir', Helvetica, sans-serif;
+    font-family: "Avenir", Helvetica, sans-serif;
 
     &::placeholder {
-        font-family: 'Avenir', Helvetica, sans-serif;
-        color: #89898A;
+      font-family: "Avenir", Helvetica, sans-serif;
+      color: #89898a;
     }
   }
 }
@@ -1009,55 +1035,58 @@ input.mat-input-element {
 .mat-form-field-appearance-fill .mat-form-field-underline::before {
   content: none !important;
 }
-.mat-form-field-appearance-fill:not(.mat-form-field-disabled) .mat-form-field-flex:hover~.mat-form-field-underline .mat-form-field-ripple {
+.mat-form-field-appearance-fill:not(.mat-form-field-disabled)
+  .mat-form-field-flex:hover
+  ~ .mat-form-field-underline
+  .mat-form-field-ripple {
   opacity: 0 !important;
 }
 
 .mat-form-field-appearance-fill .mat-form-field-flex {
   padding: 0.75em 0 0 !important;
 }
-.browse-btn{
-  color: #FFBE00;
+.browse-btn {
+  color: #ffbe00;
   text-decoration: underline;
   cursor: pointer;
 
-  &.disabled{
+  &.disabled {
     color: #313336;
     cursor: unset;
     pointer-events: none;
-
   }
 }
 
 // Status dots
 .blue-dot {
-  color: #61AAFF;
+  color: #61aaff;
 }
 
 .yellow-dot {
-  color: #FFBE00;
+  color: #ffbe00;
 }
 
 .grey-dot {
-  color: #C1C7D0;
+  color: #c1c7d0;
 }
 
 .blue-dot-bg {
-  color: #61AAFF;
+  color: #61aaff;
 }
 
 .yellow-dot-bg {
-  color: #FFBE00;
+  color: #ffbe00;
 }
 
 .grey-dot-bg {
-  color: #C1C7D0;
+  color: #c1c7d0;
 }
 
 .modal {
   .mat-dialog-container {
     background: #091016;
-    box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1C232A, inset -4px -4px 4px #040B11;
+    box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a,
+      inset -4px -4px 4px #040b11;
     border-radius: 4px;
     color: $white;
     position: relative;
@@ -1081,7 +1110,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -1092,12 +1121,12 @@ input[type=number] {
     border-spacing: 0;
     tbody {
       tr {
-        &:nth-of-type(2){
+        &:nth-of-type(2) {
           td {
-            &:nth-of-type(1){
-              border-top: 2px solid #161B20;
-              border-bottom: 2px solid #161B20;
-              border-left: 2px solid #161B20;
+            &:nth-of-type(1) {
+              border-top: 2px solid #161b20;
+              border-bottom: 2px solid #161b20;
+              border-left: 2px solid #161b20;
               border-right: none;
               border-radius: 4px 0 0 4px;
               input {
@@ -1106,20 +1135,20 @@ input[type=number] {
                 }
               }
             }
-            &:nth-of-type(2){
-              border-top: 2px solid #161B20;
-              border-bottom: 2px solid #161B20;
+            &:nth-of-type(2) {
+              border-top: 2px solid #161b20;
+              border-bottom: 2px solid #161b20;
               border-left: none;
               border-right: none;
               border-radius: 0;
               font-size: 18px;
-              font-family: 'Avenir', Helvetica, sans-serif;
+              font-family: "Avenir", Helvetica, sans-serif;
             }
-            &:nth-of-type(3){
-              border-top: 2px solid #161B20;
-              border-bottom: 2px solid #161B20;
+            &:nth-of-type(3) {
+              border-top: 2px solid #161b20;
+              border-bottom: 2px solid #161b20;
               border-left: none;
-              border-right: 2px solid #161B20;
+              border-right: 2px solid #161b20;
               border-radius: 0 4px 4px 0;
               input {
                 &.bs-timepicker-field {
@@ -1133,10 +1162,10 @@ input[type=number] {
     }
   }
   .bs-timepicker-field {
-    color: #EDEDED;
+    color: #ededed;
     text-align: center;
     font-size: 18px;
-    font-family: 'Avenir', Helvetica, sans-serif;
+    font-family: "Avenir", Helvetica, sans-serif;
     letter-spacing: 2px;
     padding: 0;
   }
@@ -1149,16 +1178,16 @@ input[type=number] {
     transform: none;
     border-left: 5.5px solid transparent;
     border-right: 5.5px solid transparent;
-    border-bottom: 5.48px solid #494C50;
+    border-bottom: 5.48px solid #494c50;
   }
   .bs-chevron-down {
     top: 0;
     transform: none;
     border-left: 5.5px solid transparent;
     border-right: 5.5px solid transparent;
-    border-top: 5.48px solid #494C50;
+    border-top: 5.48px solid #494c50;
   }
-  
+
   .text-center {
     text-align: center;
   }
@@ -1171,15 +1200,15 @@ input[type=number] {
 
   .btn-default {
     width: 71px;
-    background: #12171D;
-    box-shadow: inset 2px 2px 5px #292E35, inset -2px -2px 4px #0D1215;
+    background: #12171d;
+    box-shadow: inset 2px 2px 5px #292e35, inset -2px -2px 4px #0d1215;
     border-radius: 6px;
-    font-family: 'Avenir', Helvetica, sans-serif;
+    font-family: "Avenir", Helvetica, sans-serif;
     font-size: 18px;
     font-weight: 500px;
     line-height: 41px;
     letter-spacing: 2px;
-    color: #EDEDED;
+    color: #ededed;
     outline: none;
     border: 0;
     cursor: pointer;
@@ -1189,20 +1218,28 @@ input[type=number] {
 .input-timer {
   display: flex;
   align-items: center;
-  
-  .icon-timer {
-      background: #0B1117;
-      box-shadow: 0px 10px 10px #040B11, inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
-      border-radius: 4px;
-      padding: 7.5px;
-      text-align: center;
-      display: inline-block;
-      margin-right: 29px;
 
-      &::before {
-          font-size: 21px;
-      }
+  .icon-timer {
+    background: #0b1117;
+    box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24,
+      inset -2px -2px 4px #050d14;
+    border-radius: 4px;
+    padding: 7.5px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 29px;
+
+    &::before {
+      font-size: 21px;
+    }
   }
+}
+
+.app-full-bleed-dialog .mat-dialog-container {
+  background-color: #0b1117;
+  border: 2px solid #171e24;
+  border-radius: 8px;
+  margin: 0;
 }
 
 .input-timepicker.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
