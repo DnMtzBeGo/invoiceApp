@@ -6,6 +6,10 @@
         class="brand-btn-1 radius-30"
         (click)="openFilters()"
         style="z-index: 10000"
+        [matBadge]="filtersCount(vm.params)"
+        matBadgeColor="warn"
+        matBadgeSize="small"
+        matBadgeOverlap="true"
       >
         {{ "invoice.invoices.filters" | translate }}
         <img
