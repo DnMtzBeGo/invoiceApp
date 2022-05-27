@@ -161,7 +161,16 @@ export class Step2Component implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
+    if (this.orderWithCP) {
+      const cargo_good = this.step2Form.get("cargo_goods");
+      cargo_good.setValidators(Validators.required);
+      cargo_good.updateValueAndValidity();
+    } else {
+      const cargo_good = this.step2Form.get("cargo_goods");
+      cargo_good.clearValidators();
+      cargo_good.updateValueAndValidity();
+    }
+
     if (
       changes.draftData &&
       changes.draftData.currentValue &&

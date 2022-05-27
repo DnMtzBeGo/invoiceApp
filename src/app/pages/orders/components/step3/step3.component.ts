@@ -41,14 +41,8 @@ export class Step3Component implements OnInit {
     phoneCode: [this.phoneCode],
     phonenumber: [this.phoneNumber, Validators.required],
     country_code: [this.phoneFlag],
-    rfc: [
-      "",
-      Validators.compose([
-        Validators.pattern(
-          /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/
-        ),
-      ]),
-    ],
+    orderWithCP: [false],
+    rfc: [""],
   });
 
   constructor(
@@ -58,6 +52,23 @@ export class Step3Component implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.step3Form.get("orderWithCP").valueChanges.subscribe((value) => {
+      const rfc = this.step3Form.get("rfc");
+      if (this.orderWithCP) {
+        rfc.setValidators([
+          Validators.required,
+          Validators.compose([
+            Validators.pattern(
+              /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/
+            ),
+          ]),
+        ]);
+      } else {
+        rfc.clearValidators();
+      }
+      rfc.updateValueAndValidity();
+    });
+
     this.step3Form.statusChanges.subscribe((val) => {
       if (val === "VALID") {
         this.validFormStep3.emit(true);
@@ -72,6 +83,7 @@ export class Step3Component implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.step3Form.get("orderWithCP").setValue(this.orderWithCP);
     if (
       changes.draftData &&
       changes.draftData.currentValue &&

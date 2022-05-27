@@ -251,9 +251,14 @@ export class OrdersComponent implements OnInit {
   //   return consecutivePositionValited/(this.ordersSteps.length-1) *100;
   // }
   calculateProgress(): number {
-    // console.log('Current index:', this.currentStepIndex, 'total elements:¨', this.ordersSteps.length)
+    // console.log(
+    //   "Current index:",
+    //   this.currentStepIndex,
+    //   "total elements:¨",
+    //   this.ordersSteps.length
+    // );
     this.checkoutProgress = (this.currentStepIndex / (this.ordersSteps.length - 1)) * 100;
-    // console.log('calculateProgress', this.checkoutProgress);
+    console.log("calculateProgress", this.checkoutProgress);
 
     if (this.currentStepIndex < 2) {
       this.typeOrder = this.translateService.instant("orders.title-pickup");
@@ -336,7 +341,7 @@ export class OrdersComponent implements OnInit {
     if (this.isOrderWithCP) {
       this.orderData.pickup.contact_info["rfc"] = data.rfc;
     }
-    // console.log("spt1 data:", data);
+    console.log("spt1 data:", data);
   }
 
   getStep2FormData(data: any) {
@@ -402,6 +407,7 @@ export class OrdersComponent implements OnInit {
   }
 
   validStep1(valid: any) {
+    console.log("orders-valid:", valid);
     if (valid) {
       this.stepsValidate[0] = true;
     } else {
