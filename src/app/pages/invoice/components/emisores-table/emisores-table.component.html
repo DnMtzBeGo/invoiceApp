@@ -58,7 +58,7 @@
                 font-size: 16px;
                 transform: translateX(-105%);
               "
-              [style.color]="element.default ? '#ffbe00' : '#494c50'"
+              [style.color]="element.main ? '#ffbe00' : '#494c50'"
             >
             </mat-icon>
           </span>
@@ -171,7 +171,7 @@
               <span>{{ "invoice.emisor-table.view-series" | translate }}</span>
             </button>
             <button
-              *ngIf="!element.default && element.puede_timbrar"
+              *ngIf="!element.main && element.puede_timbrar"
               mat-menu-item
               (click)="setDefault(element._id)"
             >
@@ -182,7 +182,7 @@
               <span>{{ "invoice.emisor-table.set-default" | translate }}</span>
             </button>
             <button
-              *ngIf="!element.default"
+              *ngIf="!element.main"
               mat-menu-item
               (click)="deleteEmisor(element._id)"
             >
