@@ -80,5 +80,9 @@ export class FiguraTransporteComponent implements OnInit {
   delete(index) {
     this.figuras.splice(index, 1);
     this.changeDetectorRef.markForCheck();
+    if (this.figuras.length > 1) {
+      this.figuras.splice(index, 1);
+      this.changeDetectorRef.markForCheck();
+    }
   }
 }

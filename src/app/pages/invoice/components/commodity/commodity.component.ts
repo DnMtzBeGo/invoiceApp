@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatTable } from "@angular/material/table";
+import { CartaPorteInfoService } from '../invoice/carta-porte/services/carta-porte-info.service';
 import { CataloguesListService } from "../invoice/carta-porte/services/catalogues-list.service";
 @Component({
   selector: "app-commodity",
@@ -27,6 +28,7 @@ export class CommodityComponent implements OnInit {
   public pedimento: any[] = [];
   public dataSourcePedimento: Array<object> = [];
   public displayedColumns: string[] = ["value", "action"];
+  public showFraccion: boolean = false;
   public commodity: any = new FormGroup({
     bienesTransportados: new FormControl(""),
     bienesTransportadosDescripcion: new FormControl(""),
@@ -46,11 +48,24 @@ export class CommodityComponent implements OnInit {
     claveMaterialPeligroso: new FormControl(""),
     embalaje: new FormControl(""),
     cantidad: new FormControl(""),
+    fraccionArancelaria: new FormControl(''),
+    UUIDComercioExt: new FormControl(     '',
+    Validators.compose([
+      Validators.pattern(/^[a-f0-9A-F]{8}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{12}$/),
+    ]))
   });
 
-  constructor(private catalogListService: CataloguesListService) {}
+  constructor(
+    private catalogListService: CataloguesListService,
+    private cartaPorteInfoService: CartaPorteInfoService
+  ) {}
 
   async ngOnInit() {
+    this.cartaPorteInfoService.emitShowFraccion.subscribe((value) => {
+      if(value) this.showFraccion = true;
+      else this.showFraccion = false;
+    })
+    
     this.catalogListService.consignmentNoteSubject.subscribe((data: any) => {
       this.embalaje = data.tipos_de_embalaje;
       this.claveUnidad = data.claves_de_unidad;

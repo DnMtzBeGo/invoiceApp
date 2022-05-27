@@ -165,6 +165,32 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" *ngIf="showFraccion">
+      <mat-label>Fracción arancelaria</mat-label>
+      <input
+        matInput
+        name="fraccionArancelaria"
+        placeholder=""
+        type="text"
+        formControlName="fraccionArancelaria"
+        [value]=""
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" *ngIf="showFraccion">
+      <mat-label>UUID del comprobante de comercio exterior</mat-label>
+      <input
+        matInput
+        name="UUIDComercioExt"
+        placeholder=""
+        type="text"
+        formControlName="UUIDComercioExt"
+        [value]=""
+      />
+      <mat-error>Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o plg. Ejemplo: 10/10/10cm</mat-error>
+    </mat-form-field>
+    
   </div>
   <h6>{{ "invoice.commodity.pedimentos" | translate }}</h6>
   <div class="grid">

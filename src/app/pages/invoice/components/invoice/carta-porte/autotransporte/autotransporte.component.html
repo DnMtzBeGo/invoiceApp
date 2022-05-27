@@ -106,6 +106,7 @@
         matInput
         [name]="'invoice.autotransporte.prima-seguro' | translate"
         formControlName="primaSeguro"
+        appTwoDigitDecimaNumber
       />
     </mat-form-field>
   </div>
@@ -116,9 +117,9 @@
         "invoice.autotransporte.configuracion" | translate
       }}</mat-label>
       <input
-        type="text"
+        type="search"
+        autocomplete="off"
         formControlName="identificacionVehicularConfig"
-        aria-label="Number"
         matInput
         [matAutocomplete]="identificacionVehicularConfigRef"
       />
@@ -141,7 +142,10 @@
         matInput
         [name]="'invoice.autotransporte.placa' | translate"
         formControlName="truckPlates"
+        (keypress)="omitSpecialChar($event)"
+        [maxlength]="7"
       />
+      <mat-error>Las placas deben ser entre 5 a 7 caracteres</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{
@@ -179,16 +183,15 @@
           "invoice.autotransporte.configuracion" | translate
         }}</mat-label>
         <input
-          type="text"
+          type="search"
+          autocomplete="off"
           formControlName="remolquesConfig"
-          aria-label="Number"
           matInput
           [matAutocomplete]="remolquesConfigRef"
-        />
-        <mat-autocomplete
+          >
+        <mat-autocomplete 
           #remolquesConfigRef="matAutocomplete"
-          [displayWith]="getOptionText.bind(this, 'remolquesConfig')"
-        >
+          [displayWith]="getOptionText.bind(this, 'remolquesConfig')">
           <mat-option
             *ngFor="let option of filteredRemolquesConfig"
             [value]="option.clave"
@@ -204,6 +207,8 @@
           matInput
           [name]="'invoice.autotransporte.placa' | translate"
           formControlName="remolquesPlates"
+          (keypress)="omitSpecialChar($event)"
+          [maxlength]="7"
         />
       </mat-form-field>
       <!-- <button mat-mini-fab color="primary" aria-label="Add"> -->
@@ -211,14 +216,14 @@
       <!-- <mat-icon>add</mat-icon> -->
       <!-- </button> -->
     </div>
-    <!-- <table mat-table [remolquesSource]="remolquesSource" class="cartaPorteTable" *ngIf="remolquesSource.length > 0">
+    <table mat-table [dataSource]="remolquesSource" class="cartaPorteTable" *ngIf="remolquesSource.length > 0">
 
-      <ng-container matColumnDef="value">
+      <ng-container matColumnDef="conf">
         <th mat-header-cell *matHeaderCellDef>Configuración</th>
         <td mat-cell *matCellDef="let element">{{element.configuracion}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="value">
+      <ng-container matColumnDef="plate">
         <th mat-header-cell *matHeaderCellDef>Placa</th>
         <td mat-cell *matCellDef="let element">{{element.placa}}</td>
       </ng-container>
@@ -234,6 +239,6 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table> -->
+    </table>
   </mat-card>
 </form>
