@@ -107,14 +107,12 @@ export class Step2Component implements OnInit {
     }
     this.minTime.setHours(1);
     this.minTime.setMinutes(0);
-    // console.log('Hazardous list is : ', this.hazardousList);
 
     this.step2Form.get("timepickup")!.setValue(new Date());
   }
 
   ngOnInit(): void {
     this.step2Form.statusChanges.subscribe((val) => {
-      console.log(val);
       if (val === "VALID") {
         this.validFormStep2.emit(true);
       } else {
@@ -129,30 +127,23 @@ export class Step2Component implements OnInit {
     });
 
     this.step2Form.get("datepickup")!.valueChanges.subscribe((val) => {
-      console.log("asdadsadsadsadsadsa:", this.creationTime);
       let oldDate = moment(this.calendar, "MM-DD-YYYY").format("MMMM DD YYYY");
       let newDate = moment(val, "MM-DD-YYYY").format("MMMM DD YYYY");
-      console.log(val);
       if (oldDate !== newDate) {
-        console.log("Borra");
         // this.minTime.setHours(0);
         // this.minTime.setMinutes(0);
         // this.minTime.setSeconds(0);
         this.minTime = this.creationTime;
         this.step2Form.controls.timepickup.setValue(void 0);
       } else {
-        console.log("Cambia:", moment(this.creationTime).valueOf());
         this.minTime = this.creationTime;
       }
     });
 
     this.step2Form.get("timepickup")!.valueChanges.subscribe((val) => {
       // if(val===null) {
-
       // }
       // let value = val.moment().hour();
-
-      console.log("TIMEPICKER: ", val);
     });
 
     this.step2Form.valueChanges.subscribe(() => {
@@ -181,7 +172,6 @@ export class Step2Component implements OnInit {
         this.draftDate = changes.draftData.currentValue.pickup.startDate;
       }
       this.step2Form.get("cargoType")!.setValue(changes.draftData);
-      console.log(changes.draftData.currentValue.cargo["53_48"]);
       this.step2Form
         .get("unitType")!
         .setValue(changes.draftData.currentValue.cargo["53_48"]);
@@ -202,11 +192,7 @@ export class Step2Component implements OnInit {
     }
     if (changes.creationTime && changes.creationTime.currentValue) {
       this.calendar = changes.creationTime.currentValue;
-
-      console.log(this.draftDate);
-      console.log(moment(this.calendar).valueOf());
       if (this.draftDate > 0 && moment(this.calendar).valueOf() > this.draftDate) {
-        // console.log('Borrar Fecha!!!!!!!');
         // this.step2Form.get('datepickup')!.setValue('');
         // // this.ordersService.resetDropoffDate(true);")
         this.step2Form.get("datepickup")!.setValue(new Date(this.draftDate));
@@ -252,9 +238,7 @@ export class Step2Component implements OnInit {
     this.events = moment(new Date(`${event.value}`), "MM-DD-YYYY").format("MMMM DD YYYY");
   }
 
-  timeChange(time: any) {
-    console.log(time);
-  }
+  timeChange(time: any) {}
 
   increment() {
     if (this.quantityunits < 100) {
@@ -271,8 +255,6 @@ export class Step2Component implements OnInit {
   }
 
   selectedUnits(unit: MatButtonToggleChange): void {
-    console.log(this.step2Form.get("cargoUnits")!.value);
-    console.log(this.step2Form.get("cargoWeight")!.value);
     this.step2Form.get("unitType")!.setValue(unit.value);
     const dialogRef = this.dialog.open(CargoWeightComponent, {
       width: "312px",
@@ -329,11 +311,10 @@ export class Step2Component implements OnInit {
 
   selectHazardousFile(file: any) {
     this.step2Form.get("hazardousFile")!.setValue(file);
-    console.log("Select hazardous file", file);
   }
 
   dropHazardousFile() {
-    console.log("Here goes the logic to drop hazardous file");
+    // console.log("Here goes the logic to drop hazardous file");
   }
 
   // hourValidator(c: AbstractControl): {} {
@@ -377,6 +358,5 @@ export class Step2Component implements OnInit {
         this.modalSelected = true;
       }
     });
-    console.log(this.step2Form);
   }
 }

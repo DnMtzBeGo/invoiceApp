@@ -77,7 +77,6 @@ export class Step1Component implements OnInit {
       } else {
         this.validFormStep1.emit(false);
       }
-      // console.log(this.locations)
     });
 
     this.step1Form.valueChanges.subscribe(() => {
@@ -93,7 +92,6 @@ export class Step1Component implements OnInit {
       changes.draftData.currentValue.pickup &&
       changes.draftData.currentValue.pickup.contact_info
     ) {
-      console.log(changes.draftData.currentValue);
       let [telephoneCode, ...telephone] =
         changes.draftData.currentValue.pickup.contact_info.telephone.split(" ");
       telephone = telephone.join(" ");

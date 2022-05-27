@@ -198,7 +198,6 @@ export class OrdersComponent implements OnInit {
 
     if (changes.locations && changes.locations.currentValue.pickupPostalCode > 0) {
       let locations = changes.locations.currentValue;
-      console.log(locations);
       this.orderData.pickup.address = locations.pickup;
       this.orderData.pickup.lat = locations.pickupLat;
       this.orderData.pickup.lng = locations.pickupLng;
@@ -208,7 +207,6 @@ export class OrdersComponent implements OnInit {
       this.orderData.dropoff.lng = locations.dropoffLng;
       this.orderData.dropoff.zip_code = locations.dropoffPostalCode;
       this.getETA(locations);
-      console.log(this.orderData);
     }
     if (changes.draftData && changes.draftData.currentValue) {
       this.getHazardous(changes.draftData.currentValue._id);
@@ -228,7 +226,6 @@ export class OrdersComponent implements OnInit {
   }
 
   toggleCard() {
-    console.log("call toggleCard");
     this.cardIsOpen = !this.cardIsOpen;
   }
 
@@ -251,14 +248,7 @@ export class OrdersComponent implements OnInit {
   //   return consecutivePositionValited/(this.ordersSteps.length-1) *100;
   // }
   calculateProgress(): number {
-    // console.log(
-    //   "Current index:",
-    //   this.currentStepIndex,
-    //   "total elements:¨",
-    //   this.ordersSteps.length
-    // );
     this.checkoutProgress = (this.currentStepIndex / (this.ordersSteps.length - 1)) * 100;
-    console.log("calculateProgress", this.checkoutProgress);
 
     if (this.currentStepIndex < 2) {
       this.typeOrder = this.translateService.instant("orders.title-pickup");
@@ -305,7 +295,6 @@ export class OrdersComponent implements OnInit {
       this.stepsValidate[3] &&
       this.currentStepIndex > 2
     ) {
-      // console.log(this.orderData)
       this.sendOrders("orders");
     }
   }
@@ -341,22 +330,16 @@ export class OrdersComponent implements OnInit {
     if (this.isOrderWithCP) {
       this.orderData.pickup.contact_info["rfc"] = data.rfc;
     }
-    console.log("spt1 data:", data);
   }
 
   getStep2FormData(data: any) {
-    // console.log(data.datepickup)
-    // console.log(data.timepickup)
     if (data.datepickup && data.timepickup !== "") {
       this.orderData.pickup.startDate = this.convertDateMs(
         data.datepickup,
         data.timepickup
       );
-      console.log(this.convertDateMs(data.datepickup, data.timepickup));
       let sumETA = this.convertDateMs(data.datepickup, data.timepickup) + this.ETA;
-      console.log(sumETA);
       this.minDropoff = new Date(sumETA);
-      console.log(this.minDropoff);
     } else {
       this.orderData.pickup.startDate = 0;
     }
@@ -371,8 +354,6 @@ export class OrdersComponent implements OnInit {
       this.orderData.cargo["cargo_goods"] = data.cargo_goods;
     }
     this.orderData.cargo.weigth = data.cargoWeight;
-    // console.log("stp2 data:", data);
-    // console.log("orderDATA", this.orderData);
   }
 
   getStep3FormData(data: any) {
@@ -386,8 +367,6 @@ export class OrdersComponent implements OnInit {
     if (this.isOrderWithCP) {
       this.orderData.dropoff.contact_info["rfc"] = data.rfc;
     }
-    // console.log("stp3 data:", data);
-    // console.log("orderDATA", this.orderData);
   }
 
   getStep4FormData(data: any) {
@@ -400,21 +379,18 @@ export class OrdersComponent implements OnInit {
       data.timeenddropoff
     );
     this.orderData.dropoff.extra_notes = data.notes;
-    console.log(data);
     if (this.stepsValidate.includes(false) && this.currentStepIndex > 2) {
-      console.log("COOOOOOOLLLLLLLLLLLLL");
+      // console.log("COOOOOOOLLLLLLLLLLLLL");
     }
   }
 
   validStep1(valid: any) {
-    console.log("orders-valid:", valid);
     if (valid) {
       this.stepsValidate[0] = true;
     } else {
       this.stepsValidate[0] = false;
     }
     this.calculateProgress();
-    // console.log("Step1 Valid:", valid)
   }
 
   validStep2(valid: any) {
@@ -424,7 +400,6 @@ export class OrdersComponent implements OnInit {
       this.stepsValidate[1] = false;
     }
     this.calculateProgress();
-    console.log("Step2 Valid:", valid);
   }
 
   validStep3(valid: any) {
@@ -434,7 +409,6 @@ export class OrdersComponent implements OnInit {
       this.stepsValidate[2] = false;
     }
     this.calculateProgress();
-    // console.log("Step3 Valid:", valid)
   }
 
   validStep4(valid: any) {
@@ -444,7 +418,6 @@ export class OrdersComponent implements OnInit {
       this.stepsValidate[3] = false;
     }
     this.calculateProgress();
-    console.log("Step4 Valid:", valid);
   }
 
   async getETA(locations: GoogleLocation) {
@@ -464,7 +437,6 @@ export class OrdersComponent implements OnInit {
     (await this.auth.apiRest(requestJson, "orders/calculate_ETA")).subscribe(
       async (res) => {
         this.ETA = res.result.ETA;
-        console.log("ETA: ", this.ETA);
         this.getCreationTime(locations);
       },
       async (res) => {
@@ -477,7 +449,6 @@ export class OrdersComponent implements OnInit {
     (await this.auth.apiRest("", "orders/get_creation_time")).subscribe(
       async (res) => {
         this.creationTime = moment().add(res.result.creation_time, "ms").toDate();
-        console.log("Creation Time: ", res.result.creation_time);
         // this.getETA(locations);
       },
       async (res) => {
@@ -514,7 +485,6 @@ export class OrdersComponent implements OnInit {
   porcentageComplete(orderData: any) {
     if (orderData) {
       this.progress += 1 / 12;
-      // console.log("PROGRESOOOOOOOOO: ",this.progress)
     }
   }
 
@@ -534,21 +504,14 @@ export class OrdersComponent implements OnInit {
 
     this.orderData.completion_percentage = this.progress;
 
-    // console.log("ultimoCommit:", this.orderData);
-
     const requestJson = JSON.stringify(this.orderData);
-    // console.log("Se envia la orden:", this.orderData);
     (await this.auth.apiRest(requestJson, "orders/create")).subscribe(
       async ({ result }) => {
-        // console.log(result)
         this.validateRoute = result.bego_order;
-        // console.log(this.validateRoute)
-        // console.log(this.hazardousFile)
         if (this.hazardousFile) {
           const formData = new FormData();
           formData.append("order_id", result._id);
           // formData.append('file', this.hazardousFile[0]);
-          // console.log(formData);
           (
             await this.auth.uploadFilesSerivce(formData, "orders/upload_hazardous")
           ).subscribe(async (data) => {
