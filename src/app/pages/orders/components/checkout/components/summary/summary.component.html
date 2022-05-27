@@ -137,7 +137,7 @@
         </div>
 
          <!-- merchandise type -->
-        <div class="ticket-row">
+        <div class="ticket-row" *ngIf="selectedCard === 'pickup'">
           <div>
             {{ 'checkout.merchandise_type' | translate }}
           </div>
