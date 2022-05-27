@@ -285,11 +285,14 @@
         },
         "overview": {
             "title": "Assignado a",
-            "edit": "Editar",
-            "driver": "Conductor",
-            "vehicle": "Vehículo",
-            "btn_confirm": "Confirmar"
-        },
+            "title_order-assigment": "Asignado a",
+            "label_driver": "Conductor",
+            "label_vehicle": "Unidad",
+            "label_trailer": "Caja",
+            "btn-edit": "EDITAR",
+            "btn-submit": "Enviar",
+            "btn-confirm": "Confirmar"      
+         },
         "tracking": {
             "title": "Ubicación de la carga",
             "distance": "Distancia",
@@ -1199,5 +1202,20 @@
             "complementos":"Complementos\nInformación adicional regulada por el SAT, se incluye en el XML. Puede incluir información para un sector o actividad específica.",
             "serie":"Serie\nExpresa letra o conjunto de letras para tener un control interno de los CFDI."
         }
+    },
+    "fleet":{
+        "colors": {
+            "red": "Rojo",
+            "orange": "Naranja",
+            "yellow": "Amarillo",
+            "green": "Verde",
+            "blue": "Azul",
+            "purple": "Morado",
+            "pink": "Rosa",
+            "white": "Blanco",
+            "black": "Negro",
+            "gray": "Gris",
+            "grey": "Gris"
+          }
     }
 }

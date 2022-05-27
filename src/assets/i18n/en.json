@@ -560,10 +560,12 @@
         },
         "overview": {
             "title": "Order Assignment",
-            "edit": "Edit",
-            "driver": "Driver",
-            "vehicle": "vehicle",
-            "btn_confirm": "Confirm"
+            "label_driver": "Driver",
+            "label_vehicle": "Truck",
+            "label_trailer": "Trailer",
+            "btn-edit": "EDIT",
+            "btn-submit": "Submit",
+            "btn-confirm": "Confirm"
         },
         "tracking": {
             "title": "Track order",
@@ -730,5 +732,20 @@
             "tipo-comprobante-placeholder": "All",
             "uuid-placeholder": "Search by UUID"
         }
+    },
+    "fleet": {
+        "colors": {
+            "red": "Red",
+            "orange": "Orange",
+            "yellow": "Yellow",
+            "green": "Green",
+            "blue": "Blue",
+            "purple": "Purple",
+            "pink": "Pink",
+            "white": "White",
+            "black": "Black",
+            "gray": "Gray",
+            "grey": "Gray"
+          }
     }
 }

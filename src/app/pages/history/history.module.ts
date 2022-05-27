@@ -19,7 +19,8 @@ import { DownloadInvoicesComponent } from './components/download-invoices/downlo
 import { MatIconModule } from '@angular/material/icon';
 import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.component';
 import { EditOrderFleetComponent } from './components/edit-order-fleet/edit-order-fleet.component';
-
+import { FleetAssetCardComponent } from './components/fleet-asset-card/fleet-asset-card.component';
+import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/circular-avatar.module';
 @NgModule({
   declarations: [
     HistoryComponent,
@@ -33,6 +34,7 @@ import { EditOrderFleetComponent } from './components/edit-order-fleet/edit-orde
     DownloadInvoicesComponent,
     EditCnBtnComponent,
     EditOrderFleetComponent,
+    FleetAssetCardComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +45,8 @@ import { EditOrderFleetComponent } from './components/edit-order-fleet/edit-orde
     TranslateModule,
     MatTabsModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    CircularAvatarModule
   ]
 })
 export class HistoryModule { }

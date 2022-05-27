@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-edit-order-fleet',
@@ -8,6 +8,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class EditOrderFleetComponent implements OnInit {
 
   @Output() goBack = new EventEmitter<void>();
+  @Input() orderData: any;
 
   constructor() { }
 
