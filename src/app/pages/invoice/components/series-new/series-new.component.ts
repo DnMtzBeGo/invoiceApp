@@ -105,6 +105,9 @@ export class SeriesNewComponent implements OnInit {
           message: this.translateService.instant(
             "invoice.serie-new.close-" + type + "-success"
           ),
+          data: {
+            _id: res.result?._id,
+          },
         });
       },
       (err) => {

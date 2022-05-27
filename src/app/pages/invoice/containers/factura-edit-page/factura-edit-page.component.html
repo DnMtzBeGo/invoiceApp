@@ -2522,7 +2522,7 @@
 
           <div *ngIf="!vm.readonly" style="padding-top: 9px">
             <button
-              *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc)"
+              *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc) && !vm.form?.serie"
               mat-flat-button
               class="brand-btn-2"
               (click)="

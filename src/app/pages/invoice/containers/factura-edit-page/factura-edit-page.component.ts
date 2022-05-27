@@ -231,6 +231,7 @@ export class FacturaEditPageComponent implements OnInit {
         | "autocomplete:cancel"
         | "rfc:set"
         | "catalogos:search"
+        | "series:reload"
         | "rfcEmisor:search"
         | "rfcEmisor:set"
         | "nombreEmisor:search"
@@ -378,7 +379,14 @@ export class FacturaEditPageComponent implements OnInit {
       share()
     );
     const helpTooltips$ = this.fetchHelpTooltips();
-    const series$ = emisor$.pipe(pluck("_id"), switchMap(this.fetchSeries));
+    const series$ = emisor$.pipe(
+      pluck("_id"),
+      switchMap((emisorId) =>
+        this.fetchSeries(emisorId).pipe(
+          repeatWhen(() => this.formEmitter.pipe(ofType("series:reload")))
+        )
+      )
+    );
     const paises$ = this.fetchPaises();
     const facturaStatus$ = this.fetchFacturaStatus().pipe(
       map(arrayToObject("clave", "nombre")),
@@ -1192,12 +1200,17 @@ export class FacturaEditPageComponent implements OnInit {
       // disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result == null || result.success == null || result.message === "")
-        return;
+    dialogRef.afterClosed().subscribe((result?) => {
+      if (result == null || result.success == null) return;
+
       this.notificationsService[
         result.success ? "showSuccessToastr" : "showErrorToastr"
       ](result.message);
+
+      if (result.success !== true) return;
+
+      this.vm.form.serie = result.data._id;
+      this.formEmitter.next(["series:reload", ""]);
     });
   }
 
