@@ -82,7 +82,7 @@
     <div class="total-price">
       <small><b>{{ 'history.total_earnings' | translate }}:</b></small>
       <small class="driver-earnings">
-        {{ orderInfo.pricing?.driver_earnings ? (orderInfo.pricing?.driver_earnings | number:'1.2' ) : '-' }}
+        {{ orderInfo.pricing?.driver_earnings ? (orderInfo.pricing?.driver_earnings | currency ) : '-' }}
       </small>
     </div>
   </div>

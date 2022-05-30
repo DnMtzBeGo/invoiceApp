@@ -1,45 +1,44 @@
-import { 
-  Component, 
-  OnInit, 
-  Input, 
-  ViewChild, 
-  ElementRef, 
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ElementRef,
   Output,
   EventEmitter,
   SimpleChange,
-  SimpleChanges, 
-} from '@angular/core';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Step } from '../../shared/components/stepper/interfaces/Step';
-import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { Order } from '../../shared/interfaces/order.model';
-import * as moment from 'moment';
-import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
-import { Router } from '@angular/router';
-import { AlertService } from 'src/app/shared/services/alert.service';
-import { Subscription } from 'rxjs';
+  SimpleChanges,
+} from "@angular/core";
+import { LangChangeEvent, TranslateService } from "@ngx-translate/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Step } from "../../shared/components/stepper/interfaces/Step";
+import { GoogleLocation } from "src/app/shared/interfaces/google-location";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { Order } from "../../shared/interfaces/order.model";
+import * as moment from "moment";
+import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
+import { Router } from "@angular/router";
+import { AlertService } from "src/app/shared/services/alert.service";
+import { Subscription } from "rxjs";
 @Component({
-  selector: 'app-orders',
-  templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.scss']
+  selector: "app-orders",
+  templateUrl: "./orders.component.html",
+  styleUrls: ["./orders.component.scss"],
 })
 export class OrdersComponent implements OnInit {
-
-  @ViewChild('ordersRef') public ordersRef!: ElementRef;
+  @ViewChild("ordersRef") public ordersRef!: ElementRef;
   @Input() cardIsOpen: boolean = false;
   @Output() cardIsOpenChange = new EventEmitter<boolean>();
   @Input() draftData: any;
   @Input() locations: GoogleLocation = {
-    pickup: '',
-    dropoff: '',
-    pickupLat: '',
-    pickupLng: '',
-    dropoffLat: '',
-    dropoffLng: '',
+    pickup: "",
+    dropoff: "",
+    pickupLat: "",
+    pickupLng: "",
+    dropoffLat: "",
+    dropoffLng: "",
     pickupPostalCode: 0,
-    dropoffPostalCode: 0
+    dropoffPostalCode: 0,
   };
   @Input() imageFromGoogle: any;
   screenshotOrderMap: any;
@@ -48,64 +47,64 @@ export class OrdersComponent implements OnInit {
   creationTime: any;
   ordersSteps: Step[] = [
     {
-      text: '1',
-      nextBtnTxt: this.translateService.instant('orders.next-step'),
+      text: "1",
+      nextBtnTxt: this.translateService.instant("orders.next-step"),
     },
     {
-      text: '2',
-      nextBtnTxt: this.translateService.instant('orders.continue-to-dropoff'),
+      text: "2",
+      nextBtnTxt: this.translateService.instant("orders.continue-to-dropoff"),
     },
     {
-      text: '3',
-      nextBtnTxt: this.translateService.instant('orders.next-step'),
+      text: "3",
+      nextBtnTxt: this.translateService.instant("orders.next-step"),
     },
     {
-      text: '4',
-      nextBtnTxt: this.translateService.instant('orders.proceed-checkout'),
+      text: "4",
+      nextBtnTxt: this.translateService.instant("orders.proceed-checkout"),
     },
   ];
 
   validateRoute: boolean = false;
-  progress:number = 0;
+  progress: number = 0;
   hazardousFile?: File;
 
   public orderData: Order = {
-    reference_number: '',
+    reference_number: "",
     status: -1,
     completion_percentage: this.progress,
     cargo: {
-      '53_48': '',
-      type: '',
+      "53_48": "",
+      type: "",
       required_units: 1,
-      description: '',
+      description: "",
       weigth: [1],
     },
     pickup: {
       lat: 0,
       lng: 0,
-      address: '',
+      address: "",
       startDate: 0,
       zip_code: 0,
       contact_info: {
-        name: '',
-        telephone: '',
-        email: '',
-        country_code: ''
+        name: "",
+        telephone: "",
+        email: "",
+        country_code: "",
       },
     },
     dropoff: {
       startDate: 0,
       endDate: 0,
-      extra_notes: '',
+      extra_notes: "",
       lat: 0,
       lng: 0,
       zip_code: 0,
-      address: '',
+      address: "",
       contact_info: {
-        name: '',
-        telephone: '',
-        email: '',
-        country_code: ''
+        name: "",
+        telephone: "",
+        email: "",
+        country_code: "",
       },
     },
   };
@@ -120,11 +119,11 @@ export class OrdersComponent implements OnInit {
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
 
-  stepsValidate = [
-    false,false,false,false
-  ]
+  stepsValidate = [false, false, false, false];
 
   private subscription: Subscription;
+
+  public isOrderWithCP: boolean;
 
   constructor(
     private translateService: TranslateService,
@@ -133,69 +132,72 @@ export class OrdersComponent implements OnInit {
     private googlemaps: GoogleMapsService,
     private router: Router,
     private alertService: AlertService
-  ) { 
-    this.subscription = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
-
-      switch(this.currentStepIndex) {
-        case 0: 
-          this.typeOrder = this.translateService.instant('orders.title-pickup');
-          this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-          break;
-        case 1:
-          this.typeOrder = this.translateService.instant('orders.title-pickup');
-          this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.continue-to-dropoff');
-          break;
-        case 2:
-          this.typeOrder = this.translateService.instant('orders.title-dropoff');
-          this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-          break;
-        case 3:
-          this.typeOrder = this.translateService.instant('orders.title-dropoff');
-          this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.proceed-checkout');
-          break;
+  ) {
+    this.subscription = this.translateService.onLangChange.subscribe(
+      (langChangeEvent: LangChangeEvent) => {
+        switch (this.currentStepIndex) {
+          case 0:
+            this.typeOrder = this.translateService.instant("orders.title-pickup");
+            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+              this.translateService.instant("orders.next-step");
+            break;
+          case 1:
+            this.typeOrder = this.translateService.instant("orders.title-pickup");
+            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+              this.translateService.instant("orders.continue-to-dropoff");
+            break;
+          case 2:
+            this.typeOrder = this.translateService.instant("orders.title-dropoff");
+            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+              this.translateService.instant("orders.next-step");
+            break;
+          case 3:
+            this.typeOrder = this.translateService.instant("orders.title-dropoff");
+            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+              this.translateService.instant("orders.proceed-checkout");
+            break;
+        }
       }
-    });
+    );
   }
 
-  typeOrder: string = this.translateService.instant('orders.title-pickup')
+  typeOrder: string = this.translateService.instant("orders.title-pickup");
   btnStatusNext: boolean = false;
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+      firstCtrl: ["", Validators.required],
     });
     this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+      secondCtrl: ["", Validators.required],
     });
-    
-    this.subscription = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
-      if(this.currentStepIndex < 2) {
-        this.typeOrder = this.translateService.instant('orders.title-pickup')
-      } else {
-        this.typeOrder = this.translateService.instant('orders.title-dropoff')
+
+    this.subscription = this.translateService.onLangChange.subscribe(
+      (langChangeEvent: LangChangeEvent) => {
+        if (this.currentStepIndex < 2) {
+          this.typeOrder = this.translateService.instant("orders.title-pickup");
+        } else {
+          this.typeOrder = this.translateService.instant("orders.title-dropoff");
+        }
       }
-    });
+    );
   }
 
-  ngAfterViewInit():void {
-
-  }
+  ngAfterViewInit(): void {}
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(this.imageFromGoogle && !this.sendMap) {
-      this.screenshotOrderMap = new File(this.imageFromGoogle, 'image');
-      this.requestScreenshotOrderMap.append('map', this.screenshotOrderMap);
+    if (this.imageFromGoogle && !this.sendMap) {
+      this.screenshotOrderMap = new File(this.imageFromGoogle, "image");
+      this.requestScreenshotOrderMap.append("map", this.screenshotOrderMap);
       this.sendMap = true;
     }
 
-    if(changes.locations && changes.locations.currentValue.pickupPostalCode > 0) {
-      
+    if (changes.locations && changes.locations.currentValue.pickupPostalCode > 0) {
       let locations = changes.locations.currentValue;
-      console.log(locations)
       this.orderData.pickup.address = locations.pickup;
       this.orderData.pickup.lat = locations.pickupLat;
       this.orderData.pickup.lng = locations.pickupLng;
@@ -205,12 +207,9 @@ export class OrdersComponent implements OnInit {
       this.orderData.dropoff.lng = locations.dropoffLng;
       this.orderData.dropoff.zip_code = locations.dropoffPostalCode;
       this.getETA(locations);
-      console.log(this.orderData)
     }
-    if (
-      changes.draftData && changes.draftData.currentValue
-    ) {
-      this.getHazardous(changes.draftData.currentValue._id)
+    if (changes.draftData && changes.draftData.currentValue) {
+      this.getHazardous(changes.draftData.currentValue._id);
     }
     // this.locations = {
     //   dropoff: "Perif. Blvd. Manuel Ávila Camacho 3130, Valle Dorado, 54020 Tlalnepantla de Baz, Méx., Mexico",
@@ -226,8 +225,7 @@ export class OrdersComponent implements OnInit {
     // this.getCreationTime();
   }
 
-  toggleCard(){
-    console.log('call toggleCard');
+  toggleCard() {
     this.cardIsOpen = !this.cardIsOpen;
   }
 
@@ -249,15 +247,13 @@ export class OrdersComponent implements OnInit {
 
   //   return consecutivePositionValited/(this.ordersSteps.length-1) *100;
   // }
-  calculateProgress():number{
-    // console.log('Current index:', this.currentStepIndex, 'total elements:¨', this.ordersSteps.length)
-    this.checkoutProgress = (this.currentStepIndex  )/(this.ordersSteps.length -1 ) * 100;
-    // console.log('calculateProgress', this.checkoutProgress);
+  calculateProgress(): number {
+    this.checkoutProgress = (this.currentStepIndex / (this.ordersSteps.length - 1)) * 100;
 
-    if(this.currentStepIndex < 2) {
-      this.typeOrder = this.translateService.instant('orders.title-pickup')
+    if (this.currentStepIndex < 2) {
+      this.typeOrder = this.translateService.instant("orders.title-pickup");
     } else {
-      this.typeOrder = this.translateService.instant('orders.title-dropoff')
+      this.typeOrder = this.translateService.instant("orders.title-dropoff");
     }
 
     if (this.currentStepIndex < 3) {
@@ -265,9 +261,9 @@ export class OrdersComponent implements OnInit {
     } else {
       this.btnStatusNext = !this.validateForm();
     }
-    
-    this.ordersSteps.forEach((e,i)=>{
-      if(this.stepsValidate[i]) {
+
+    this.ordersSteps.forEach((e, i) => {
+      if (this.stepsValidate[i]) {
         e.validated = true;
         return false;
       } else {
@@ -280,143 +276,151 @@ export class OrdersComponent implements OnInit {
   }
 
   validateForm() {
-   
     const v = this.stepsValidate;
     return v[0] && v[1] && v[2] && v[3];
   }
 
-  nextSlide(){
+  nextSlide() {
     if (this.currentStepIndex < 3) {
-      this.currentStepIndex = this.currentStepIndex +1;
-      if(this.currentStepIndex > 2) {
+      this.currentStepIndex = this.currentStepIndex + 1;
+      if (this.currentStepIndex > 2) {
         this.btnStatusNext = !this.validateForm();
       }
     }
 
-    if(this.stepsValidate[0] &&
+    if (
+      this.stepsValidate[0] &&
       this.stepsValidate[1] &&
-      this.stepsValidate[2]  &&
-      this.stepsValidate[3]  &&
-      this.currentStepIndex > 2 ) {
-      // console.log(this.orderData)
-      this.sendOrders('orders')
+      this.stepsValidate[2] &&
+      this.stepsValidate[3] &&
+      this.currentStepIndex > 2
+    ) {
+      this.sendOrders("orders");
     }
   }
 
-  prevSlide(){
-    if(this.currentStepIndex > 0)
-      this.currentStepIndex = this.currentStepIndex -1;
-    else
-      this.cardIsOpenChange.emit(false);
+  prevSlide() {
+    if (this.currentStepIndex > 0) this.currentStepIndex = this.currentStepIndex - 1;
+    else this.cardIsOpenChange.emit(false);
 
-    if(this.currentStepIndex < 3 ) {
+    if (this.currentStepIndex < 3) {
       this.btnStatusNext = false;
     }
   }
 
-
   jumpStepTitle() {
-    if(this.currentStepIndex < 2 ) {
+    if (this.currentStepIndex < 2) {
       this.currentStepIndex = 2;
-      this.typeOrder = this.translateService.instant('orders.title-dropoff')
+      this.typeOrder = this.translateService.instant("orders.title-dropoff");
     } else {
       this.currentStepIndex = 0;
-      this.typeOrder = this.translateService.instant('orders.title-pickup')
+      this.typeOrder = this.translateService.instant("orders.title-pickup");
     }
   }
 
   getStep1FormData(data: any) {
     this.orderData.pickup.contact_info.name = data.fullname;
-    this.orderData.pickup.contact_info.telephone = data.phoneCode.concat(' ', data.phonenumber);
+    this.orderData.pickup.contact_info.telephone = data.phoneCode.concat(
+      " ",
+      data.phonenumber
+    );
     this.orderData.pickup.contact_info.email = data.email;
     this.orderData.reference_number = data.reference;
     this.orderData.pickup.contact_info.country_code = data.country_code;
-    console.log(data)
+    if (this.isOrderWithCP) {
+      this.orderData.pickup.contact_info["rfc"] = data.rfc;
+    }
   }
 
   getStep2FormData(data: any) {
-    // console.log(data.datepickup)
-    // console.log(data.timepickup)
-    if (data.datepickup && data.timepickup !== '') {
-      this.orderData.pickup.startDate = this.convertDateMs(data.datepickup,data.timepickup);
-      console.log(this.convertDateMs(data.datepickup,data.timepickup))
-      let sumETA = this.convertDateMs(data.datepickup,data.timepickup)+ this.ETA
-      console.log(sumETA)
+    if (data.datepickup && data.timepickup !== "") {
+      this.orderData.pickup.startDate = this.convertDateMs(
+        data.datepickup,
+        data.timepickup
+      );
+      let sumETA = this.convertDateMs(data.datepickup, data.timepickup) + this.ETA;
       this.minDropoff = new Date(sumETA);
-      console.log(this.minDropoff);
     } else {
       this.orderData.pickup.startDate = 0;
     }
-    this.orderData.cargo['53_48'] = data.unitType;
+    this.orderData.cargo["53_48"] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoUnits;
     this.orderData.cargo.description = data.description;
-    if(data.hazardousType !== 'select-catergory' && data.hazardousType) {
+    if (data.hazardousType !== "select-catergory" && data.hazardousType) {
       this.orderData.cargo["hazardous_type"] = data.hazardousType;
     }
+    if (this.isOrderWithCP) {
+      this.orderData.cargo["cargo_goods"] = data.cargo_goods;
+    }
     this.orderData.cargo.weigth = data.cargoWeight;
-    console.log(data)
   }
 
   getStep3FormData(data: any) {
     this.orderData.dropoff.contact_info.name = data.fullname;
-    this.orderData.dropoff.contact_info.telephone = data.phoneCode.concat(' ', data.phonenumber);
+    this.orderData.dropoff.contact_info.telephone = data.phoneCode.concat(
+      " ",
+      data.phonenumber
+    );
     this.orderData.dropoff.contact_info.email = data.email;
     this.orderData.dropoff.contact_info.country_code = data.country_code;
+    if (this.isOrderWithCP) {
+      this.orderData.dropoff.contact_info["rfc"] = data.rfc;
+    }
   }
 
   getStep4FormData(data: any) {
-    this.orderData.dropoff.startDate = this.convertDateMs(data.datedropoff,data.timestartdropoff);
-    this.orderData.dropoff.endDate = this.convertDateMs(data.datedropoff,data.timeenddropoff);
+    this.orderData.dropoff.startDate = this.convertDateMs(
+      data.datedropoff,
+      data.timestartdropoff
+    );
+    this.orderData.dropoff.endDate = this.convertDateMs(
+      data.datedropoff,
+      data.timeenddropoff
+    );
     this.orderData.dropoff.extra_notes = data.notes;
-    console.log(data)
-    if (this.stepsValidate.includes(false) &&
-        this.currentStepIndex > 2) {
-          console.log("COOOOOOOLLLLLLLLLLLLL")
+    if (this.stepsValidate.includes(false) && this.currentStepIndex > 2) {
+      // console.log("COOOOOOOLLLLLLLLLLLLL");
     }
   }
 
   validStep1(valid: any) {
-    if(valid) {
+    if (valid) {
       this.stepsValidate[0] = true;
     } else {
       this.stepsValidate[0] = false;
     }
     this.calculateProgress();
-    // console.log("Step1 Valid:", valid)
   }
 
   validStep2(valid: any) {
-    if(valid) {
+    if (valid) {
       this.stepsValidate[1] = true;
     } else {
       this.stepsValidate[1] = false;
     }
     this.calculateProgress();
-    console.log("Step2 Valid:", valid)
   }
 
   validStep3(valid: any) {
-    if(valid) {
+    if (valid) {
       this.stepsValidate[2] = true;
     } else {
       this.stepsValidate[2] = false;
     }
     this.calculateProgress();
-    // console.log("Step3 Valid:", valid)
   }
 
   validStep4(valid: any) {
-    if(valid) {
+    if (valid) {
       this.stepsValidate[3] = true;
     } else {
       this.stepsValidate[3] = false;
     }
     this.calculateProgress();
-    console.log("Step4 Valid:", valid)
   }
 
-  async getETA(locations:GoogleLocation) {
+  async getETA(locations: GoogleLocation) {
     let datos = {
       pickup: {
         lat: locations.pickupLat,
@@ -430,10 +434,9 @@ export class OrdersComponent implements OnInit {
 
     let requestJson = JSON.stringify(datos);
 
-    (await this.auth.apiRest(requestJson, 'orders/calculate_ETA')).subscribe(
+    (await this.auth.apiRest(requestJson, "orders/calculate_ETA")).subscribe(
       async (res) => {
         this.ETA = res.result.ETA;
-        console.log('ETA: ', this.ETA);
         this.getCreationTime(locations);
       },
       async (res) => {
@@ -442,11 +445,10 @@ export class OrdersComponent implements OnInit {
     );
   }
 
-  async getCreationTime(locations:GoogleLocation) {
-    (await this.auth.apiRest('', 'orders/get_creation_time')).subscribe(
+  async getCreationTime(locations: GoogleLocation) {
+    (await this.auth.apiRest("", "orders/get_creation_time")).subscribe(
       async (res) => {
-        this.creationTime = moment().add(res.result.creation_time, 'ms').toDate();
-        console.log("Creation Time: ",res.result.creation_time)
+        this.creationTime = moment().add(res.result.creation_time, "ms").toDate();
         // this.getETA(locations);
       },
       async (res) => {
@@ -454,16 +456,17 @@ export class OrdersComponent implements OnInit {
       }
     );
   }
-  
-  async getHazardous(orderId: string) {
 
+  async getHazardous(orderId: string) {
     let dataRequest = {
-      order_id: orderId
+      order_id: orderId,
     };
 
-    (await this.auth.apiRest(JSON.stringify(dataRequest), 'orders/get_hazardous')).subscribe(
+    (
+      await this.auth.apiRest(JSON.stringify(dataRequest), "orders/get_hazardous")
+    ).subscribe(
       async ({ result }) => {
-        console.log(result)
+        console.log(result);
       },
       async (res) => {
         console.log(res);
@@ -480,14 +483,12 @@ export class OrdersComponent implements OnInit {
   }
 
   porcentageComplete(orderData: any) {
-    if(orderData) {
+    if (orderData) {
       this.progress += 1 / 12;
-      // console.log("PROGRESOOOOOOOOO: ",this.progress)
     }
   }
 
   async sendOrders(page: string) {
-    
     this.progress = 0;
     this.porcentageComplete(this.orderData.pickup.contact_info.name);
     this.porcentageComplete(this.orderData.pickup.contact_info.email);
@@ -501,61 +502,27 @@ export class OrdersComponent implements OnInit {
     this.porcentageComplete(this.orderData.dropoff.startDate);
     this.porcentageComplete(this.orderData.dropoff.endDate);
 
-    this.orderData.completion_percentage = this.progress
+    this.orderData.completion_percentage = this.progress;
 
     const requestJson = JSON.stringify(this.orderData);
-    // console.log("Se envia la orden:", this.orderData);
-    (await this.auth.apiRest(requestJson, 'orders/create')).subscribe(
+    (await this.auth.apiRest(requestJson, "orders/create")).subscribe(
       async ({ result }) => {
-        // console.log(result)
-        this.validateRoute = result.bego_order
-        // console.log(this.validateRoute)
-        // console.log(this.hazardousFile)
+        this.validateRoute = result.bego_order;
         if (this.hazardousFile) {
           const formData = new FormData();
-          formData.append('order_id', result._id);
+          formData.append("order_id", result._id);
           // formData.append('file', this.hazardousFile[0]);
-          // console.log(formData);
-          (await this.auth.uploadFilesSerivce(formData, 'orders/upload_hazardous')).subscribe(async (data) => {
+          (
+            await this.auth.uploadFilesSerivce(formData, "orders/upload_hazardous")
+          ).subscribe(async (data) => {
             // console.log(await data);
           });
         }
-
-        if(!this.validateRoute && page === 'orders') {
-          this.alertService.create({
-            title: this.translateService.instant('orders.title-valid-route'),
-            body: this.translateService.instant('orders.txt-valid-route'),
-            handlers: [
-              {
-                text: this.translateService.instant('draft.btn-cancel'),
-                color: '#ffbe00',
-                action: async () => {
-                  this.alertService.close();
-                }
-              },
-              {
-                text: this.translateService.instant('Ok'),
-                color: '#ffbe00',
-                action: async () => {
-                  this.alertService.close();
-                  this.router.navigate(['checkout'], {
-                    state: {
-                      'orderId': result._id,
-                      'validateRoute': this.validateRoute
-                    }
-                  });
-                }
-              }
-            ]
-          });
-        } else if(page === 'draft') {
-        } else {
-          this.router.navigate(['pricing'], {
-            state: {
-              orderId: result._id
-            },
-          });
-        }
+        this.router.navigate(['pricing'], {
+          state: {
+            orderId: result._id,
+          },
+        });
         this.uploadScreenShotOrderMap(result._id);
       },
       async (res) => {
@@ -565,13 +532,22 @@ export class OrdersComponent implements OnInit {
   }
 
   public async uploadScreenShotOrderMap(orderId: string) {
-    this.requestScreenshotOrderMap.append('order_id', orderId);
+    this.requestScreenshotOrderMap.append("order_id", orderId);
 
-    (await this.auth.uploadFilesSerivce(this.requestScreenshotOrderMap, 'orders/upload_map')).subscribe( res => {
-      
-    }, error => {
-      console.log("Con el error", error.error.errror);
-    })
+    (
+      await this.auth.uploadFilesSerivce(
+        this.requestScreenshotOrderMap,
+        "orders/upload_map"
+      )
+    ).subscribe(
+      (res) => {},
+      (error) => {
+        console.log("Con el error", error.error.errror);
+      }
+    );
   }
 
+  public toogleOrderWithCP() {
+    this.isOrderWithCP = !this.isOrderWithCP;
+  }
 }

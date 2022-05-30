@@ -166,6 +166,8 @@
             "verify-user-title": "Antes de completar la orden debemos verificar tu cuenta",
             "verify-user-body": "Completa la documentación en la página de perfil", 
             "error-orderid": "El ID de la Orden no es válido",
+            "error-something": "Algo a salido mal: ",
+            "error-missing-orderId": "No se encuentra el order Id",
             "fileSize": "el archivo es demasiado pesado",
             "fileType": "el tipo de archivo debe ser .cer o .key",
             "emitter-validated": "Emisor Creado",
@@ -646,8 +648,7 @@
         "invoices": {
             "filters": "Filtros",
             "series": "Series",
-            "emisor-btn-new": "Registrar Emisor",
-            "emisor-btn-edit": "Emisor",
+            "emisor-btn": "Emisores",
             "new-invoice": "Nueva Factura",
             "template-placeholder": "Buscar Template",
             "template-open": "Abrir Template",
@@ -742,9 +743,11 @@
             "addr-email": "Correo electrónico",
 
             "emisor": "Emisor",
+            "emisor-btn-new": "Nuevo Emisor",
 
             "rfc-emisor": "RFC",
             "rfc-emisor-placeholder": "Ingresa el RFC emisor",
+            "rfc-emisor-new": "Registrar Emisor",
             "rfc-parent": "RFC Padre",
 
             "nombre-emisor": "Nombre o Razón social",
@@ -973,7 +976,7 @@
         },
         "emisores": {
             "emisores": "Emisores",
-            "new": "Nuevo Emisor",
+            "new": "Registrar Emisor",
 
             "create-success": "Emisor creado",
             "create-error": "No se pudo crear el Emisor"
@@ -989,12 +992,16 @@
             "edit-emisor": "Editar",
             "view-series": "Series",
             "delete-emisor": "Eliminar Emisor",
+            "set-default": "Establecer Principal",
 
             "edit-success": "Cambio exitoso",
             "edit-error": "No se pudo editar el Emisor",
 
             "delete-success": "Emisor Borrado",
-            "delete-error": "No se pudo borrar el Emisor"
+            "delete-error": "No se pudo borrar el Emisor",
+
+            "set-default-success": "Cambio exitoso",
+            "set-default-error": "No se pudo establecer como principal"
         },
         "emisor-edit": {
             "emisor": "Emisor",

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import {routes} from '../../../../pages/invoice/consts';
 
 @Component({
   selector: 'app-edit-cn-btn',
@@ -75,12 +76,15 @@ export class EditCnBtnComponent implements OnInit {
         });
 
       } else {
-        this.router.navigate(['/invoice/new'], {
-          state: {
-            order_id: this.orderId,
-            prevUrl: this.router.url
+        (await this.webService.apiRestGet(`/invoice?order=${this.orderId}`)).subscribe(
+          ({result})=>{
+            const {_id } = result.invoices[0];
+            this.router.navigate([routes.EDIT_FACTURA,{id: _id} ]);
+          }, 
+          (err)=>{
+            console.error('Error: ', err);
           }
-        });
+        );
       }
     });
   }

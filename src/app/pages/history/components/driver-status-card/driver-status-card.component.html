@@ -1,10 +1,10 @@
 <div class="order-info-row-driver" *ngIf="orderData">
   <div class="status-card">
     <div class="info-driver-container">
-      <!-- <img src="../../../../../assets/images/history/user-profile.svg" alt=""> -->
-      <i *ngIf="!orderData.driver?.thumbnail" class="icon icon-user-profile"></i>
-      <div *ngIf="orderData.driver?.thumbnail">
-        <img class="avatar" [src]="orderData.driver?.thumbnail">
+      <div class="avatar-wrapper">
+        <app-simple-avatar 
+          [picture]="orderData.driver?.thumbnail">
+        </app-simple-avatar>
       </div>
       <p class="driver-name">{{orderData['driver']?.nickname}}</p>
 
@@ -17,14 +17,6 @@
         </div>
       </span>
 
-      <p *ngIf="orderData.status == 2 || orderData.status == 4" class="date-info">
-        <span *ngIf=" title == 'pickup'">
-          {{ orderData.pickup.startDate | date : 'shortTime'}}
-        </span>
-        <span *ngIf=" title == 'dropoff'">
-          {{ orderData.dropoff.startDate | date : 'shortTime'}}
-        </span>
-      </p>
     </div>
 
     <!-- pickup timeline -->
