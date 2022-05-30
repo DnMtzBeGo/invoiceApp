@@ -89,7 +89,7 @@ export class FacturaEmitterComponent implements OnInit {
 
   public async saveEmisor() {
     const formData = new FormData();
-    formData.append("parent", this.emitterAttributesForm.get("parent").value);
+    // formData.append("parent", this.emitterAttributesForm.get("parent").value);
     formData.append("rfc", this.emitterAttributesForm.get("rfc").value);
     formData.append("nombre", this.emitterAttributesForm.get("nombre").value);
     formData.append(
