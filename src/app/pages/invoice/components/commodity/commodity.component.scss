@@ -89,6 +89,7 @@ mat-form-field {
 }
 
 .cartaPorteTable {
+  background: transparent;
   width: 100%;
   margin-bottom: 15px;
 
@@ -96,6 +97,10 @@ mat-form-field {
     td:last-of-type {
       text-align: right;
     }
+  }
+
+  mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    color: #ffffff;
   }
 }
 

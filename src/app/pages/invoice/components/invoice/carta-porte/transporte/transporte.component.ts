@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
+import { Subscription } from 'rxjs';
 import { CartaPorteCountries } from "src/app/pages/invoice/models/invoice/carta-porte/CartaPorteCountries";
 import { ClavesDeTransporte } from "src/app/pages/invoice/models/invoice/carta-porte/ClavesDeTransporte";
 import { SubtiposRemolques } from "src/app/pages/invoice/models/invoice/carta-porte/subtipos-remolques";
@@ -25,6 +26,7 @@ export class TransporteComponent implements OnInit {
 
   public ingresoSalidaPais: ClavesDeTransporte[];
   public countries: CartaPorteCountries[];
+  public subscribedCartaPorte: Subscription;
 
   public cartaPorteType: string = 'autotransporte';
 
@@ -52,7 +54,7 @@ export class TransporteComponent implements OnInit {
 
   ngOnInit(): void {
     this.firstFormGroup.controls["transp_internac"].setValue('No');
-    this.cartaPorteInfoService.infoRecolector.subscribe((value) => {
+    this.subscribedCartaPorte = this.cartaPorteInfoService.infoRecolector.subscribe((value) => {
       this.cartaPorteInfoService.addRecolectedInfo({
         ...this.firstFormGroup.value,
         transp_internac: this.firstFormGroup.value.transp_internac
@@ -61,6 +63,32 @@ export class TransporteComponent implements OnInit {
         isValid: this.firstFormGroup.status,
       });
     });
+
+    this.firstFormGroup.controls.transp_internac.valueChanges.subscribe(
+      (inputValue) => {
+        console.log(inputValue)
+        if (inputValue && this.firstFormGroup.get('entrada_salida_merc').value == 'salida') {
+          this.cartaPorteInfoService.showFraccionArancelaria(true);
+        } else {
+          this.cartaPorteInfoService.showFraccionArancelaria(false);
+        }
+      }
+    );
+
+    this.firstFormGroup.controls.entrada_salida_merc.valueChanges.subscribe(
+      (inputValue) => {
+        console.log(inputValue)
+        if (inputValue == 'salida' && this.firstFormGroup.get('transp_internac').value) {
+          this.cartaPorteInfoService.showFraccionArancelaria(true);
+        } else {
+          this.cartaPorteInfoService.showFraccionArancelaria(false);
+        }
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscribedCartaPorte.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
