@@ -4,13 +4,6 @@ import { Observable } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 import { environment } from "../../../environments/environment";
 
-const isInvoice = (method: string) =>
-  // ^invoice(\/\w+)?/.test(method);
-  0;
-
-const getURLBASE = (method: string) =>
-  isInvoice(method) ? environment.URL_DASHBOARD : environment.URL_BASE;
-
 @Injectable({
   providedIn: "root",
 })
@@ -49,7 +42,7 @@ export class AuthService {
       "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
       Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
     });
-    const URL_BASE = getURLBASE(method);
+    const URL_BASE = environment.URL_BASE;
     const params = await this.getOptions(appBehaviourOptions);
     // return this.http.post<any>(environment.URL_BASE + method, formData, { headers, params: params });
     return this.http.post<any>(URL_BASE + method, formData, {
@@ -70,13 +63,11 @@ export class AuthService {
       "Acceontrol-Allow-Headers": "Content-Type, Accept",
       "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
       Authorization: `Bearer ${
-        isInvoice(method)
-          ? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYxODMxMGU4NmMxNTFmZTI0ZGVhZGQxNyIsImVtYWlsIjoibWFyY29wb2xvQGJlZ28uYWkifSwiaWF0IjoxNjUwOTk1MDQ4fQ.jrvfFLuPlClABGEwKoZdpvtiHwDkTWeBBpPAUDDt49M"
-          : localStorage.getItem("token") ?? ""
+          localStorage.getItem("token") ?? ""
       }`,
     });
 
-    const URL_BASE = getURLBASE(method);
+    const URL_BASE = environment.URL_BASE;
     const params = await this.getOptions(options);
     let splitUrl, url;
 
@@ -104,7 +95,7 @@ export class AuthService {
       "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     });
-    const URL_BASE = getURLBASE(method);
+    const URL_BASE = environment.URL_BASE;
     const params = await this.getOptions(options);
     let splitUrl, url;
 
