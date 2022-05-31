@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { CfdiService } from 'src/app/services/cfdi.service';
+import { from } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import {map, mergeAll} from "rxjs/operators";
 
 @Component({
   selector: 'app-invoice',
@@ -11,120 +12,106 @@ import { CfdiService } from 'src/app/services/cfdi.service';
 export class InvoiceComponent implements OnInit {
 
   @Input() userData: any;
-  @Output() invoiceData: any = new EventEmitter<any>();
+  @Output() receiverData: any = new EventEmitter<any>();
 
-  invoiceForm: FormGroup = this.formBuilder.group({
-    fullName: ['', Validators.required],
-    phoneNumber: ['', Validators.required],
-    phoneCode: ['', Validators.required],
-    dialCode: ['', Validators.required],
-    address: ['', Validators.required],
-    email: ['', Validators.required],
-    company: ['', Validators.required],
-    rfc: ['', Validators.required],
-    cfdi: ['', Validators.required],
+  receiverForm: FormGroup = this.formBuilder.group({
+    address: [''],
+    place_id: [''],
+    company: [''],
+    rfc: [''],
+    cfdi: [''],
+    taxRegime: [''],
   });
 
-  invoiceFormIsEnabled:boolean = false;
+
+  validRFC: boolean = false;
+  addressName: string = '';
 
   CFDIs!: Array<any>;
+  tax_regimes: Array<any>;
+  taxSelected: string = 'select-document';
   cfdiSelected: string = 'select-document';
 
   constructor(
     private formBuilder: FormBuilder,
-    private cfdiService: CfdiService,
-    private translateService: TranslateService,
-  ) {
-    this.translateService.onLangChange.subscribe((lang: any) => {
-      
-      if(lang.lang == 'es'){
-        this.cfdiService.getCFDI_es().subscribe( ( result ) => {
-          this.CFDIs = result;
-        })
-      }else{
-        this.cfdiService.getCFDI_en().subscribe( ( result ) => {
-          this.CFDIs = result;
-        })
-      }
-      })
+    private apiRestService: AuthService,
+  ) {}
+
+  ngOnInit() {
+   this.fetchCatalogs().subscribe(data => {
+     this.CFDIs = data[0].documents;
+     this.tax_regimes = data[1].documents;
+   })
   }
 
-  ngOnInit(): void {
-    const lang = localStorage.getItem('lang');
-    if(lang == 'es'){
-      this.cfdiService.getCFDI_es().subscribe( ( result ) => {
-        this.CFDIs = result;
-      })
-    }else{
-      this.cfdiService.getCFDI_en().subscribe( ( result ) => {
-        this.CFDIs = result;
-      })
-    }
+
+  fetchCatalogs(){
+    return from(
+      this.apiRestService.apiRest(JSON.stringify({
+        catalogs:[{
+          name: 'sat_usos_cfdi',
+          version: 0,
+        },
+      {
+        name: 'sat_regimen_fiscal',
+        version: 0,
+      }]
+      }), '/invoice/catalogs/fetch')
+   ).pipe(
+     mergeAll(),
+     map(data => data.result.catalogs)
+     )
   }
 
-  ngAfterViewInit(){
-    this.invoiceForm.disable();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void{
-    if(changes.userData && this.userData) {
-
-
-
-      const { nickname, email, country_code, raw_telephone, attributes } = this.userData;
-
-      let phoneNumber = raw_telephone.split(' ')
-      const dialCode = phoneNumber.shift();
-      phoneNumber = phoneNumber.join(' ');
-
-      this.invoiceForm.patchValue({
-        fullName: nickname,
-        phoneNumber: phoneNumber,
-        phoneCode: country_code,
-        dialCode: dialCode,
-        address: attributes.address,
-        email: email,
-        company: attributes.companyName,
-        rfc: attributes.RFC,
-        cfdi:  attributes.CFDI,
-      });
-
-    }
-  }
-
-  editForm(): void {
-    this.invoiceFormIsEnabled = true;
-    this.invoiceForm.enable();
-  }
-
-  saveForm(): void {
-    this.invoiceFormIsEnabled = false;
-    this.invoiceForm.disable();
-    this.invoiceData.emit(this.invoiceForm.value)
-  }
-
-  updateCFDI(cfdi: string){
+  async updateCFDI(cfdi: string){
     this.cfdiSelected = cfdi;
+    await this.receiverForm.patchValue({
+      cfdi: cfdi
+    })
+    this.emitreceiverData()
   }
 
-  changeFlag(value: string){
-    this.invoiceForm.patchValue({
-      phoneCode: value
+  async updateTaxRegime(tax_regime: string){
+    this.taxSelected = tax_regime;
+    await this.receiverForm.patchValue({
+      taxRegime: tax_regime
+    })
+    this.emitreceiverData()
+  }
+
+
+
+  setAddressName(value: any){
+    this.receiverForm.patchValue({
+      address: value
     });
+    this.addressName = value;
   }
 
-  changeCode(value: string){
-    this.invoiceForm.patchValue({
-      dialCode: value
-    });
-  }
+  setPlaceId(value: any){
+      this.receiverForm.patchValue({
+        place_id: value
+      });
+      this.emitreceiverData()
+    }
 
-  changePhone(value: string){
-    this.invoiceForm.patchValue({
-      phoneNumber: value
-    });
-  }
+    emitreceiverData(){
+      this.receiverData.emit(this.receiverForm.value);
+    }
 
-
-
+    validateRFC(){
+      if(
+        /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/.test(
+          this.receiverForm.value.rfc
+          ) && this.receiverForm.value.rfc.length >= 12
+          ){
+            this.validRFC = true;
+            this.emitreceiverData()
+          }
+          else{
+            this.validRFC && this.receiverData.emit({...this.receiverForm.value, rfc: ''});
+            this.validRFC = false;
+            
+          }
+    }
 }

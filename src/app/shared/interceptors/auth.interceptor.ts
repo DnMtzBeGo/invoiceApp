@@ -24,11 +24,11 @@ export class AuthInterceptor implements HttpInterceptor {
       window.localStorage.getItem('token') ??
       '';
 
-    if (!token)
+    /* if (!token)
       window.setTimeout(
         () => (window.location.href = environment.website_url),
         1000
-      );
+      ); */
 
     window.localStorage.setItem('token', token);
   }
@@ -41,10 +41,10 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((err) => {
         if (err instanceof HttpErrorResponse && err.status === 401) {
           // TODO: show alert service and the redirect?
-          window.setTimeout(() => {
+          /* window.setTimeout(() => {
             window.location.href = environment.website_url;
           }, 1000);
-          throw new Error('Invalid token');
+          throw new Error('Invalid token'); */
         }
 
         throw err;
@@ -59,9 +59,9 @@ export class AuthInterceptor implements HttpInterceptor {
         if (isValid) return;
 
         // TODO: show alert service and the redirect?
-        window.setTimeout(() => {
+        /* window.setTimeout(() => {
           window.location.href = environment.website_url;
-        }, 1000);
+        }, 1000); */
 
         throw new Error('Invalid token');
       })

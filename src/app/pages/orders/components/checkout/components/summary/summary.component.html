@@ -16,11 +16,6 @@
           <div class="title">
             {{ 'orders.title-personal-info' | translate }}
           </div>
-          <div class="edit-btn">
-            <button mat-button >
-              {{ 'checkout.edit' | translate | uppercase }}
-            </button>
-          </div>
         </div>    
 
         <!-- full name -->
@@ -70,7 +65,7 @@
         </div> 
 
         <!-- reference -->
-        <div class="ticket-row">
+        <div class="ticket-row" *ngIf="selectedCard === 'pickup'">
           <div>
             {{ 'checkout.txt-reference' | translate }}
           </div>
@@ -90,11 +85,6 @@
         <div class="ticket-row">
           <div class="title">
             {{ 'orders.title-cargo-info' | translate }}
-          </div>
-          <div class="edit-btn">
-            <button mat-button >
-              {{ 'checkout.edit' | translate | uppercase }}
-            </button>
           </div>
         </div>
         
@@ -145,6 +135,21 @@
         </div> 
 
         </div>
+
+         <!-- merchandise type -->
+        <div class="ticket-row" *ngIf="selectedCard === 'pickup'">
+          <div>
+            {{ 'checkout.merchandise_type' | translate }}
+          </div>
+          <div>
+            <mat-form-field class="inner-shadow" >
+              <input
+                [disabled]="formIsDisabled"
+                matInput  
+                [value]="orderData?.cargo.cargo_goods ? orderData?.cargo.cargo_goods : ''">
+            </mat-form-field>
+          </div>
+        </div> 
 
         <!-- date -->
         <div class="ticket-row">

@@ -1,0 +1,86 @@
+.series-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 550px;
+  // min-height: 400px;
+  justify-content: center;
+  color: #ededed;
+
+  .series-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 2rem;
+
+    .close-btn {
+      position: absolute;
+      right: 10px;
+      top: 0px;
+      cursor: pointer;
+
+      mat-icon {
+        color: rgb(150, 150, 150);
+      }
+    }
+  }
+
+  .series-body {
+    display: flex;
+    flex-direction: row;
+
+    .series-image-container {
+      flex: 1;
+      padding: 0px 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+
+      mat-labe {
+        font-family: "Avenir";
+        font-style: normal;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 20px;
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      margin-right: 5px;
+    }
+
+    img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      user-select: none;
+    }
+  }
+
+  // .series-footer {
+  //   display: flex;
+  //   flex-direction: row;
+
+  //   button {
+  //     flex: 1;
+  //     margin: 0px 10px;
+  //   }
+
+  //   .disabled {
+  //     cursor: not-allowed;
+  //     filter: grayscale(100%);
+  //     pointer-events: none;
+  //   }
+  // }
+}
+
+// ::ng-deep .mat-dialog-container {
+//   background: linear-gradient(
+//     0deg,
+//     rgb(255 255 255 / 85%) 0%,
+//     rgb(255 255 255 / 95%) 100%
+//   ) !important;
+// }

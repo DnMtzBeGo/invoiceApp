@@ -26,7 +26,7 @@ export class UploadFiscalDocsComponent implements OnInit {
 
   selectedFormat: FileInterfaceFormats = "cards";
   documentsToUpload!: FileInfo[];
-  userType: string  ="shippers";
+  userType: string  ="carriers";
   fiscalDocSelected!: any ;
 
   showImgTest: boolean = false;

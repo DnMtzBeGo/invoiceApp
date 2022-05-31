@@ -1,0 +1,77 @@
+import {
+  Component,
+  Input,
+  OnInit,
+  QueryList,
+  SimpleChanges,
+  ViewChildren,
+} from "@angular/core";
+import { CartaPorteInfoService } from "../services/carta-porte-info.service";
+import { CataloguesListService } from "../services/catalogues-list.service";
+import { UbicacionComponent } from "./components/ubicacion/ubicacion.component";
+
+@Component({
+  selector: "app-ubicaciones",
+  templateUrl: "./ubicaciones.component.html",
+  styleUrls: ["./ubicaciones.component.scss"],
+})
+export class UbicacionesComponent implements OnInit {
+  public locations: any[];
+  public counter = 0;
+
+  @ViewChildren(UbicacionComponent)
+  ubicacionesRef: QueryList<UbicacionComponent>;
+
+  @Input() info: any;
+
+  constructor(
+    public cataloguesListService: CataloguesListService,
+    public cartaPorteInfoService: CartaPorteInfoService
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    this.cartaPorteInfoService.infoRecolector.subscribe(() => {
+      try {
+        const ubicaciones = this.ubicacionesRef?.toArray().map((e) => {
+          return e.getFormattedUbicacion();
+        });
+        this.cartaPorteInfoService.addRecolectedInfo({
+          ubicaciones,
+          isValid: this.checkIfUbicacionesValid(),
+        });
+      } catch (e) {
+        console.log("Error: ", e);
+        this.cartaPorteInfoService.addRecolectedInfo({
+          ubicaciones: [],
+          isValid: false,
+        });
+      }
+    });
+
+    this.locations = [this.counter];
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.info) {
+      this.locations = this.info;
+    }
+  }
+
+  addLocation() {
+    this.locations.push(++this.counter);
+  }
+
+  checkIfUbicacionesValid(): boolean {
+    return !this.ubicacionesRef
+      ?.toArray()
+      .map((e) => {
+        return e.checkIfFormValid();
+      })
+      .some((e) => e == false);
+  }
+
+  delete(index) {
+    this.locations.splice(index, 1);
+    if (this.locations.length > 1) this.locations.splice(index, 1);
+  }
+}

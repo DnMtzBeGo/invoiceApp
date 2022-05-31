@@ -1,0 +1,95 @@
+.circular-avatar-container {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 60px;
+  height: 60px;
+  background: 
+    linear-gradient(rgba(102, 218, 61, 1), rgba(26, 74, 34, 0.6)) padding-box,
+    linear-gradient(to bottom, rgba(102, 218, 61, 1), rgba(26, 74, 34, 0.6)) border-box;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.circular-avatar-middle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  background: rgba(88, 103, 118, 1);
+  border-radius: 50%;
+}
+
+.circular-avatar-int-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: #000;
+  border-radius: 50%;
+  position: relative;
+}
+
+.circular-avatar-photo-container {
+  width: 45px;
+  height: 45px;
+
+  img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+  }
+}
+
+.available-dot {
+  box-sizing: border-box;
+  width: 15px;
+  height: 15px;
+  background: #000;
+  position: absolute;
+  top: -3px;
+  right: -5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > i {
+    font-size: 7.3px;
+    color: #66DA3D;
+  }
+}
+
+.selected-dot {
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%;
+  background: #0A0F14;
+  border: 1px dashed #C1C7D0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.show-check-icon {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  background: linear-gradient(180deg, #FFD200 0%, #FFBE00 100%);
+  box-shadow: inset 0px -2px 4px #A27900, inset 2px 2px 4px #FED869;
+  border-radius: 50%;
+  color: black;
+  font-size: 8px;
+}

@@ -234,13 +234,12 @@ export class TrackingComponent implements OnInit {
     let currentTime = new Date().getTime();
     let requestData = {  order_id: this.orderId,
     encrypted: false };
-    //console.log("ANTES DE ENVIAR EL SERVICIO", this.orderId)
-    this.http.post<any>('https://begomx-develop.herokuapp.com/v1.0/orders/tracking', requestData).subscribe( res => {
-      this.etaData = res.result;
+    (await this.auth.apiRest(JSON.stringify(requestData),'/orders/tracking')).subscribe(({result}) => {
+      this.etaData = result;
       this.etaData['currentTime'] = currentTime;
-      this.statusOrder = res.result.status;
-      this.driverLocation = new google.maps.LatLng(res.result.origin.lat, res.result.origin.lng);
-      this.destinationLocation = new google.maps.LatLng(res.result.destination.lat, res.result.destination.lng);
+      this.statusOrder = result.status;
+      this.driverLocation = new google.maps.LatLng(result.origin.lat, result.origin.lng);
+      this.destinationLocation = new google.maps.LatLng(result.destination.lat, result.destination.lng);
       if(this.firstLocation) {
         this.initMap();
         this.createRoute(this.map, this.driverLocation, this.destinationLocation, this.directionsRenderer, this.directionsService, this.firstLocation);
@@ -248,10 +247,8 @@ export class TrackingComponent implements OnInit {
       }
       else {
         this.refreshRoute(this.driverLocation, this.destinationLocation);
-        
       }
-    }, error => {
-      console.log(error);
+    }, (error)=>{
       if(error) {
         this.router.navigate(['/home']);
       }
@@ -341,7 +338,7 @@ export class TrackingComponent implements OnInit {
       });
     });
 
-    (await this.auth.apiRest(JSON.stringify(requestExternalTRacking), 'shippers/share_tracking')).subscribe(
+    (await this.auth.apiRest(JSON.stringify(requestExternalTRacking), 'carriers/share_tracking')).subscribe(
       (res) => {
         console.log("CON LA URL DE ENVÍO", res);
         this.alertService.create({

@@ -1,0 +1,49 @@
+<div>
+  <div class="page-header" role="heading">
+    <h1>{{ "invoice.cp-page.carta-porte" | translate }}</h1>
+    <!-- <button mat-button (click)="gatherInfo()">
+      {{ "invoice.cp-page.btn-save" | translate }}
+    </button> -->
+  </div>
+
+  <div class="page-wrapper">
+    <mat-horizontal-stepper [linear]="isLinear" #stepper class="stepper">
+      <mat-step [label]="'invoice.cp-page.transporte' | translate">
+        <!-- [subtiposRemolques]="catalogues?.subtipos_de_remolques"
+        [ingresoSalidaPais]="catalogues?.claves_de_transporte" -->
+        <app-transporte [info]="transporteInfo"></app-transporte>
+      </mat-step>
+      <mat-step [label]="'invoice.cp-page.ubicaciones' | translate">
+        <app-ubicaciones [info]="ubicacionesInfo"></app-ubicaciones>
+        <!-- <form [formGroup]="secondFormGroup">
+          <mat-form-field appearance="fill">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form> -->
+      </mat-step>
+      <mat-step [label]="'invoice.cp-page.mercancias' | translate">
+        <app-mercancias [info]="mercanciasInfo"></app-mercancias>
+      </mat-step>
+      <mat-step [label]="'invoice.cp-page.figura-transporte' | translate">
+        <app-figura-transporte
+          [info]="figuraTransporteInfo"
+        ></app-figura-transporte>
+      </mat-step>
+      <!-- MOSTRAR SE MOSTRARÁ A FUTURO-->
+      <!-- <mat-step label="Resumen">
+        <p>You are now done.</p>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()">Send</button>
+        </div>
+      </mat-step> -->
+    </mat-horizontal-stepper>
+  </div>
+
+  <!-- <app-footer></app-footer> -->
+</div>

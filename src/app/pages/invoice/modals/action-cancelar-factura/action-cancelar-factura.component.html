@@ -1,0 +1,110 @@
+<div class="container">
+  <h1 style="margin-bottom: 3rem; font-size: 20px">
+    {{ "invoice.cancelar-factura.title" | translate }}
+  </h1>
+
+  <!-- <p
+    style="
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      font-size: 15px;
+      color: #70757b;
+    "
+  >
+    {{ "invoice.cancelar-factura.body" | translate }}
+  </p> -->
+
+  <mat-form-field
+    appearance="outline"
+    class="brand-field-1"
+    style="align-self: stretch"
+  >
+    <mat-label>{{
+      vm.form?.motivo_cancelacion
+        ? ("invoice.cancelar-factura.motivo" | translate)
+        : ("invoice.cancelar-factura.motivo-placeholder" | translate)
+    }}</mat-label>
+    <mat-select
+      name="motivo_cancelacion"
+      [ngModel]="vm.form?.motivo_cancelacion"
+      (ngModelChange)="vm.form.motivo_cancelacion = $event"
+      class="disable-custom-format"
+    >
+      <mat-option
+        *ngFor="let motivo of vm.motivos"
+        [value]="motivo.clave"
+        class="brand-option-1"
+      >
+        {{ motivo.descripcion }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field
+    [style.display]="
+      vm.form?.motivo_cancelacion === '01' ? 'inline-block' : 'none'
+    "
+    appearance="outline"
+    class="brand-field-1"
+    style="align-self: stretch"
+  >
+    <mat-label>{{
+      vm.form?.uuid_relacion
+        ? ("invoice.cancelar-factura.uuid" | translate)
+        : ("invoice.cancelar-factura.uuid-placeholder" | translate)
+    }}</mat-label>
+    <input
+      matInput
+      name="uuid_relacion"
+      [ngModel]="vm.form?.uuid_relacion"
+      (ngModelChange)="vm.form.uuid_relacion = $event"
+    />
+  </mat-form-field>
+
+  <button
+    mat-flat-button
+    [ngClass]="[
+      'radius-s',
+      vm.formSuccess === false ? 'brand-btn-error' : 'brand-btn-2'
+    ]"
+    [style.pointer-events]="vm.formLoading || vm.formSuccess ? 'none' : 'all'"
+    [disabled]="!vm.form?.motivo_cancelacion"
+    style="
+      min-width: 155px;
+      min-height: 40px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    "
+    (click)="formEmitter.next(['submit', vm.form])"
+  >
+    <mat-spinner
+      [style.display]="vm.formLoading ? 'block' : 'none'"
+      class="brand-spinner-1"
+      [diameter]="20"
+      [strokeWidth]="4"
+      style="margin: 0 auto"
+    ></mat-spinner>
+    <mat-icon
+      [style.display]="vm.formSuccess ? 'inline-block' : 'none'"
+      style="margin-right: 4px"
+      >check</mat-icon
+    >
+    <span [style.display]="!vm.formLoading ? 'inline-block' : 'none'"
+      >{{
+        vm.formError
+          ? ("invoice.cancelar-factura.btn-send-retry" | translate)
+          : vm.formSuccess
+          ? ("invoice.cancelar-factura.btn-send-success" | translate)
+          : ("invoice.cancelar-factura.btn-send" | translate)
+      }}
+    </span>
+    <mat-icon
+      [style.display]="
+        !vm.formLoading && vm.formSuccess == null ? 'inline-block' : 'none'
+      "
+      style="margin-right: -8px"
+      >keyboard_arrow_right</mat-icon
+    >
+  </button>
+</div>

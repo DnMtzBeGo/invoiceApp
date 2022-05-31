@@ -256,12 +256,13 @@
     "checkout": {
         "title-checkout": "Checkout",
         "title-payment": "Transfer",
+        "title-emitter": "Emitter Information",
         "txt-reference": "Reference",
         "txt-order": "Order",
         "txt-pickup": "Pickup",
         "txt-dropoff": "Drop off",
         "txt-inovice": "Inovice",
-        "title-invoice": "Invoice Information",
+        "title-invoice": "Receiver Information",
         "placeholder-fullname": "Full Name",
         "placeholder-email": "Email",
         "placeholder-phonenumber": "Phone Number",
@@ -269,7 +270,9 @@
         "placeholder-company": "Company",
         "placeholder-rfc": "RFC",
         "placeholder-cfdi": "CFDI",
+        "placeholder-tax_regime": "Tax Regime",
         "select-cfdi":"Select CFDI",
+        "select-tax":"Select Tax Regime",
         "edit": "Edit",
         "unit": "Unit",
         "tons": "tons",
@@ -293,8 +296,15 @@
         "total-price": "Total price",
         "placeholder-cargo": "Cargo Description",
         "placeholder-notes": "Extra Notes",
+        "placeholder-file_cer": "Select your Certificate",
+        "placeholder-file_key": "Select your Key",
+        "btn-file_cer": "SAT Certificate (.cer)",
+        "btn-file_key": "SAT Key (.key)",
+        "btn-retry": "Retry",
+        "placeholder-password": "Certificate Password",
         "btn-continue": "Continue",
         "btn-submit": "Submit Order",
+        "upload": "Upload",
         "txt-reference-payment": "Reference",
         "txt-account-payment": "Account number",
         "txt-company-payment": "Company name",
@@ -320,19 +330,29 @@
             "txt-valid-invoice": "Please complete your invoice information.",
             "verify-user-title": "We could not submit your order because your account is not verified",
             "verify-user-body": "Complete the documentation in your profile",
-            "error-orderid": "Invalid Order Id"
+            "error-orderid": "Invalid Order Id",
+            "error-something": "Something went wrong: ",
+            "error-missing-orderId": "Missing Order Id",
+            "fileSize": "the file is too big",
+            "fileType": "file type must be .cer or .key",
+            "emitter-validated": "Emitter Created",
+            "emitter-validated-fail": "Invalid Emitter",
+            "emitter-create": "To create an emitter: ",
+            "emitter-tax_regime": "Emitter tax regime is missing",
+            "receiver-stamp": "To create consignment note:",
+            "receiver-address": "Receiver address is missing",
+            "receiver-company": "Receiver business name is missing",
+            "receiver-rfc": "Receiver RFC is missing",
+            "receiver-cfdi": "Receiver CFDI is missing",
+            "receiver-tax_regime": "Receiver tax regime is missing"
         },
         "insurance-modal": {
-            "title-insurance": "Insurance?",
-            "txt-insurance": "Type your cargo value and add it to your checkout cart",
-            "btn-accept": "Now I have Insurance",
-            "btn-deny": "Continue Without Insurance",
-            "title-cargo": "Now that you have it",
-            "btn-add": "Add",
-            "btn-quit": "Remove",
-            "txt-cargo": "What is your cargo value?",
-            "btn-cargo": "Add",
-            "txt-total": "Your total insurance amount is"
+            "title-insurance": "Total",
+            "txt-insurance": "White the total price of the service",
+            "txt-insurance-taxes": "(Before taxes)",
+            "deferred-PUE": "Single payment",
+            "deferred-PPD": "Deferred payment",
+            "btn": "Next"
         },
         "agent-modal": {
             "title-agent": "Customs & Agent?",
@@ -343,16 +363,21 @@
             "txt-agent-prices": "(USD prices)"
         },
         "stepper-btns":{
-            "continue-to-invoice": "Continue to invoice",
-            "continue-to-payment": "Continue to Payment",
-            "submit": "Submit"
+            "continue-to-emitter": "Continue to Receiver",
+            "continue-to-invoice": "Continue to Summary",
+            "summary": "Submit"
         },
         "skip": "skip",
         "next": "next",
         "label-total-price": "Total price:",
         "summary": "Summary",
-        "invoice": "Invoice",
-        "payment": "Payment"
+        "invoice": "Receiver",
+        "emitter": "Emitter",
+        "invalid_rfc": "Invalid RFC",
+        "preview": "Invoice",
+        "invoice-preview": "Invoice Preview",
+        "merchandise_type": "Merchandise Type",
+        "file_size_error": "The file is too big"
       },
       "profile": {
         "account": {
@@ -427,6 +452,7 @@
       "history": {
         "title": "History",
         "search": "Search by address...",
+        "total_earnings": "Total Earnings",
         "no-comments":"No Comments",
         "upcoming_detail_title":"Upcoming",
         "completed_detail_title":"Complete",
@@ -585,6 +611,21 @@
             "stand-by":"Stand by",
             "in-progress":"In Progress",
             "completed":"Completed"
+        },
+        "consignment_note": {
+          "edit_consignment_note": "Edit consignment note",
+          "order": "Order",
+          "pickup": "Pickup",
+          "dropoff": "Dropoff",
+          "save_changes": "Save changes",
+          "info_updated": "Information for consignment note was updated",
+          "cannot_edit": "You cannot edit yet",
+          "complete_invoice": "Complete invoice",
+          "price": "Price",
+          "stamp": "Stamp",
+          "stamp_request": "Creation for consignment note was requested",
+          "invoice": "Invoice",
+          "invoice_preview": "Invoice preview"
         }
     },
     "header": {
@@ -627,6 +668,7 @@
         "home":"Home",
         "drafts":"  Drafts",
         "history":"History",
+        "invoice":"Invoice",
         "support":"Support",
         "faq":"FAQs",
         "terms-conditions":"T & C",
@@ -637,6 +679,55 @@
             "title": "Error code: timeout",
             "body": "Please try again later",
             "ok": "ok"
+        }
+    },
+    "invoice": {
+        "invoices": {
+            "filters": "Filters",
+            "emisor-btn": "Emisores",
+            "new-invoice": "New Invoice",
+            "template-placeholder": "Search Template",
+            "template-open": "Open Template",
+            "template-new": "New Template"
+        },
+        "invoice-table": {
+            "emision": "Emisión",
+            "emisor": "Emisor",
+            "receptor": "Receptor",
+            "serie": "Serie",
+            "tipo": "Tipo",
+            "status": "Status",
+            "subtotal": "Subtotal",
+            "total": "Total",
+            "items-per-page": "Items per Page",
+            "showing": "Showing",
+            "of": "of",
+            "prev": "prev",
+            "next": "next",
+            "edit-invoice": "Edit Invoice",
+            "view-details": "View details",
+            "carta-porte": "Carta Porte",
+            "duplicate": "Duplicate",
+            "preview": "Preview",
+            "download-pdf": "Download PDF",
+            "download-xml": "Download XML",
+            "download-acuse": "Download Acuse",
+            "send-by-email": "Send by Email",
+            "cancel-invoice": "Cancel Invoice",
+            "delete-invoice": "Delete Invoice"
+        },
+        "filters": {
+            "apply": "Aplicar",
+            "fechas": "Dates",
+            "inicio": "Start",
+            "final": "End",
+            "emisor": "Emisor",
+            "emisor-placeholder": "Search by Name or RFC",
+            "receptor": "Receptor",
+            "receptor-placeholder": "Buscar por Nombre o RFC",
+            "tipo-comprobante": "Tipo de Comprobante",
+            "tipo-comprobante-placeholder": "All",
+            "uuid-placeholder": "Search by UUID"
         }
     }
 }

@@ -1,0 +1,155 @@
+<div class="series-container">
+  <div class="series-header">
+    <h1 style="margin-bottom: 1rem; font-size: 20px">
+      {{ "invoice.emisor-edit.emisor" | translate }}
+    </h1>
+    <div class="close-btn" (click)="closeModal()">
+      <mat-icon>close</mat-icon>
+    </div>
+  </div>
+  <div class="series-body">
+    <form [formGroup]="emitterAttributesForm">
+      <div class="grid stretch">
+        <!-- <mat-form-field appearance="outline" class="brand-field-1">
+          <mat-label>{{
+            emitterAttributesForm.get("parent").value
+              ? ("invoice.emisor-edit.rfc-parent" | translate)
+              : ("invoice.emisor-edit.rfc-parent-placeholder" | translate)
+          }}</mat-label>
+          <input
+            matInput
+            aria-label="rfcPadre"
+            name="parent"
+            autocomplete="off"
+            formControlName="parent"
+          />
+        </mat-form-field> -->
+
+        <mat-form-field appearance="outline" class="brand-field-1">
+          <mat-label>{{ "invoice.emisor-edit.rfc" | translate }}</mat-label>
+          <input
+            matInput
+            aria-label="rfc"
+            name="rfc"
+            autocomplete="off"
+            formControlName="rfc"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="brand-field-1">
+          <mat-label>{{
+            "invoice.emisor-edit.razon-social" | translate
+          }}</mat-label>
+          <input
+            matInput
+            [attr.aria-label]="'invoice.emisor-edit.razon-social' | translate"
+            name="nombre"
+            autocomplete="off"
+            formControlName="nombre"
+          />
+        </mat-form-field>
+      </div>
+      <div class="grid stretch">
+        <mat-form-field appearance="outline" class="brand-field-1">
+          <mat-label>{{
+            emitterAttributesForm.get("email").value
+              ? ("invoice.emisor-edit.email" | translate)
+              : ("invoice.emisor-edit.email-placeholder" | translate)
+          }}</mat-label>
+          <input
+            matInput
+            [attr.aria-label]="'invoice.emisor-edit.email' | translate"
+            name="email"
+            autocomplete="off"
+            formControlName="email"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="brand-field-1">
+          <mat-label>{{
+            emitterAttributesForm.get("regimen_fiscal").value
+              ? ("invoice.emisor-edit.regimen" | translate)
+              : ("invoice.emisor-edit.regimen-placeholder" | translate)
+          }}</mat-label>
+          <mat-select
+            formControlName="regimen_fiscal"
+            name="registroFiscal"
+            class="disable-custom-format"
+          >
+            <mat-option
+              *ngFor="let option of regimen_fiscal"
+              [value]="option.clave"
+              class="brand-option-1"
+            >
+              {{ option.clave }} - {{ option.descripcion }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="grid">
+        <div class="files-wrapper">
+          <div class="files-wrapper__row">
+            <mat-label>{{ "invoice.emisor-edit.cer" | translate }}</mat-label>
+            <div class="carousel">
+              <input
+                class="file"
+                type="file"
+                autocomplete="off"
+                accept=".cer"
+                title="fsdfdsf"
+                (change)="onFileSelected($event, 'archivo_cer')"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="files-wrapper">
+          <div class="files-wrapper__row">
+            <mat-label>{{ "invoice.emisor-edit.key" | translate }}</mat-label>
+            <div class="carousel">
+              <input
+                class="file"
+                type="file"
+                autocomplete="off"
+                accept=".key"
+                (change)="onFileSelected($event, 'archivo_key')"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid stretch">
+        <mat-form-field appearance="outline" class="brand-field-1">
+          <mat-label>{{
+            emitterAttributesForm.get("archivo_key_pswd").value
+              ? ("invoice.emisor-edit.key-password" | translate)
+              : ("invoice.emisor-edit.key-password-placeholder" | translate)
+          }}</mat-label>
+          <input
+            matInput
+            [attr.aria-label]="'invoice.emisor-edit.key-password' | translate"
+            name="archivoKeyContrasena"
+            autocomplete="off"
+            formControlName="archivo_key_pswd"
+          />
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+
+  <button
+    mat-flat-button
+    cdkFocusInitial
+    (click)="saveEmisor()"
+    class="brand-btn-2 radius-s"
+    style="
+      min-width: 155px;
+      min-height: 40px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    "
+  >
+    {{ "invoice.emisor-edit.btn-save" | translate }}
+    <mat-icon style="margin-right: -8px"> keyboard_arrow_right </mat-icon>
+  </button>
+</div>

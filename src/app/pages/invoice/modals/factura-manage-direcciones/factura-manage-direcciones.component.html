@@ -1,0 +1,231 @@
+<div class="app-factura-manage-direcciones">
+  <button
+    mat-icon-button
+    (click)="closeModal()"
+    style="position: absolute; top: 1rem; right: 1rem"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <h4 style="margin-bottom: 0rem; font-size: 20px">
+    {{ "invoice.manage-dir." + config.model + ".title" | translate }} -
+    {{ config.rfc }}
+  </h4>
+
+  <h5
+    style="
+      margin-bottom: 2rem;
+      font-weight: 500;
+      font-size: 15px;
+      color: #70757b;
+    "
+  >
+    {{ "invoice.manage-dir." + config.model + ".subtitle" | translate }}
+  </h5>
+
+  <div
+    style="display: flex; justify-content: space-between; align-items: center"
+  >
+    <!-- Select -->
+
+    <mat-form-field
+      appearance="outline"
+      class="brand-field-1"
+      [style.visibility]="vm.form == null || vm.form._id ? 'visible' : 'hidden'"
+      style="min-width: 250px"
+    >
+      <mat-label>
+        {{
+          vm.direcciones == null
+            ? ("invoice.edit.loading" | translate)
+            : vm.direcciones?.length === 0
+            ? ("invoice.manage-dir.direccion-placeholder-1" | translate)
+            : vm.form
+            ? ("invoice.manage-dir.direccion" | translate)
+            : ("invoice.manage-dir.direccion-placeholder" | translate)
+        }}
+      </mat-label>
+      <mat-select
+        name="direccion"
+        [ngModel]="vm.form"
+        (ngModelChange)="formEmitter.next(['direccion:select', $event])"
+        [compareWith]="compareId"
+        class="disable-custom-format"
+      >
+        <mat-option
+          *ngFor="let direccion of vm.direcciones"
+          [value]="direccion"
+          class="brand-option-1"
+        >
+          {{ direccion.nombre }}
+        </mat-option>
+      </mat-select>
+
+      <mat-progress-bar
+        [style.display]="vm.direcciones == null ? 'block' : 'none'"
+        style="bottom: 0px; position: absolute; height: 2px"
+        class="brand-progress-bar-1"
+        mode="indeterminate"
+      ></mat-progress-bar>
+
+      <button
+        [style.display]="vm.form?._id ? 'block' : 'none'"
+        mat-icon-button
+        matSuffix
+        (click)="
+          formEmitter.next(['direccion:select', (vm.form = null)]);
+          $event.stopPropagation()
+        "
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <div class="actions">
+      <button
+        *ngIf="vm.form?._id"
+        mat-flat-button
+        class="brand-btn-1"
+        (click)="formEmitter.next(['submit', [config, 'delete', vm.form]])"
+        [style.pointer-events]="
+          vm.formLoading || vm.formSuccess ? 'none' : 'all'
+        "
+        style="min-width: 97px; min-height: 37px"
+      >
+        <mat-spinner
+          [style.display]="
+            ['delete'].includes(vm.formMode) && vm.formLoading
+              ? 'block'
+              : 'none'
+          "
+          class="brand-spinner-2"
+          [diameter]="20"
+          [strokeWidth]="4"
+          style="margin: 0 auto"
+        ></mat-spinner>
+        <mat-icon
+          [style.display]="
+            ['delete'].includes(vm.formMode) && vm.formSuccess
+              ? 'inline-block'
+              : 'none'
+          "
+          style="margin-right: 4px"
+        >
+          check
+        </mat-icon>
+        <span
+          [style.display]="
+            !['delete'].includes(vm.formMode) ||
+            (['delete'].includes(vm.formMode) && !vm.formLoading)
+              ? 'inline-block'
+              : 'none'
+          "
+          >{{
+            ["delete"].includes(vm.formMode) && vm.formError
+              ? ("invoice.manage-dir.btn-delete-retry" | translate)
+              : ["delete"].includes(vm.formMode) && vm.formSuccess
+              ? ("invoice.manage-dir.btn-delete-success" | translate)
+              : ("invoice.manage-dir.btn-delete" | translate)
+          }}</span
+        >
+      </button>
+
+      <button
+        *ngIf="vm.form && vm.form?._id == null"
+        mat-stroked-button
+        class="brand-btn-2"
+        (click)="formEmitter.next(['direccion:select', null])"
+      >
+        {{ "invoice.manage-dir.btn-cancel" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <!-- <app-factura-direccion-input
+      [direccion]="vm.form"
+      (direccionChange)="(1)"
+    ></app-factura-direccion-input> -->
+  </div>
+
+  <button
+    mat-flat-button
+    (click)="
+      vm.form
+        ? formEmitter.next([
+            'submit',
+            [config, vm.form?._id ? 'update' : 'create', vm.form]
+          ])
+        : formEmitter.next(['direccion:select', (vm.form = createForm())])
+    "
+    [style.pointer-events]="vm.formLoading || vm.formSuccess ? 'none' : 'all'"
+    style="
+      min-width: 155px;
+      min-height: 40px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    "
+    [ngClass]="[
+      'radius-s',
+      ['create', 'update'].includes(vm.formMode) && vm.formSuccess === false
+        ? 'brand-btn-error'
+        : 'brand-btn-2'
+    ]"
+  >
+    <mat-spinner
+      [style.display]="
+        ['create', 'update'].includes(vm.formMode) && vm.formLoading
+          ? 'block'
+          : 'none'
+      "
+      class="brand-spinner-1"
+      [diameter]="20"
+      [strokeWidth]="4"
+      style="margin: 0 auto"
+    ></mat-spinner>
+    <mat-icon
+      [style.display]="
+        ['create', 'update'].includes(vm.formMode) && vm.formSuccess
+          ? 'inline-block'
+          : 'none'
+      "
+      style="margin-right: 4px"
+    >
+      check
+    </mat-icon>
+    <span
+      [style.display]="
+        !['create', 'update'].includes(vm.formMode) ||
+        (['create', 'update'].includes(vm.formMode) && !vm.formLoading)
+          ? 'inline-block'
+          : 'none'
+      "
+      >{{
+        ["create", "update"].includes(vm.formMode) && vm.formError
+          ? ("invoice.manage-dir.btn-save-retry" | translate)
+          : ["create", "update"].includes(vm.formMode) && vm.formSuccess
+          ? vm.formMode === "create"
+            ? ("invoice.manage-dir.btn-save-save-success" | translate)
+            : ("invoice.manage-dir.btn-save-update-success" | translate)
+          : vm.form
+          ? vm.form?._id == null
+            ? ("invoice.manage-dir.btn-save-save" | translate)
+            : ("invoice.manage-dir.btn-save-update" | translate)
+          : ("invoice.manage-dir.btn-save-new" | translate)
+      }}</span
+    >
+    <mat-icon
+      [style.display]="
+        (!vm.formLoading && vm.formSuccess == null) ||
+        !['create', 'update'].includes(vm.formMode)
+          ? 'inline-block'
+          : 'none'
+      "
+      style="margin-right: -8px"
+      >keyboard_arrow_right</mat-icon
+    >
+  </button>
+</div>
+
+<template #container></template>
