@@ -976,13 +976,9 @@
         },
         "emisores": {
             "emisores": "Emisores",
-            "new": "Registrar Emisor",
-
-            "create-success": "Emisor creado",
-            "create-error": "No se pudo crear el Emisor"
+            "new": "Registrar Emisor"
         },
         "emisor-table": {
-            "rfc-empresa": "RFC Empresa",
             "rfc-emisor": "RFC Emisor",
             "razon-social": "Razón Social",
             "regimen": "Régimen Fiscal",
@@ -995,9 +991,6 @@
             "set-default": "Establecer Principal",
             "delete-emisor": "Eliminar Emisor",
 
-            "edit-success": "Cambio exitoso",
-            "edit-error": "No se pudo editar el Emisor",
-
             "delete-success": "Emisor Borrado",
             "delete-error": "No se pudo borrar el Emisor",
 
@@ -1007,10 +1000,6 @@
         "emisor-edit": {
             "emisor": "Emisor",
 
-            "rfc-parent": "RFC Empresa",
-            "rfc-parent-placeholder": "Escribir RFC de la Empresa",
-            "rfc": "RFC Emisor",
-            "razon-social": "Razón Social",
             "email": "Correo Para Notificar",
             "email-placeholder": "Escribir Correo Electrónico",
             "regimen": "Régimen Fiscal",
@@ -1022,7 +1011,8 @@
 
             "btn-save": "Guardar",
 
-            "save-success": "Emisor guardado"
+            "create-success": "Emisor guardado",
+            "update-success": "Cambio exitoso"
         },
         "series": {
             "series": "Series",
