@@ -41,6 +41,7 @@ export class Step2Component implements OnInit {
   @Input() creationTime: any;
   @Input() draftData: any;
   @Input() orderWithCP: boolean;
+  @Input() creationdatepickup: number;
   @Output() step2FormData: EventEmitter<any> = new EventEmitter();
   @Output() validFormStep2: EventEmitter<boolean> = new EventEmitter();
 
@@ -52,6 +53,7 @@ export class Step2Component implements OnInit {
   draftDate: number = 0;
   minTime: Date = new Date();
   maxTime: Date = new Date();
+  creationDatePickupLabel: string;
 
   cargoType: CargoType = "general";
   hazardousList: Array<any> = [];
@@ -79,7 +81,7 @@ export class Step2Component implements OnInit {
   step2Form = new FormGroup({
     cargo_goods: new FormControl(),
     datepickup: new FormControl(this.events, Validators.required),
-    timepickup: new FormControl(new Date(), Validators.required),
+    timepickup: new FormControl("", Validators.required),
     // timepickup: new FormControl(new Date(), [Validators.required, this.hourValidator]),
     unitType: new FormControl("", Validators.required),
     cargoUnits: new FormControl(1, Validators.required),
@@ -209,6 +211,15 @@ export class Step2Component implements OnInit {
         this.step2Form.get("timepickup")!.setValue(this.calendar);
         this.minTime = this.calendar;
       }
+    }
+
+    if (changes.creationdatepickup && changes.creationdatepickup.currentValue) {
+      const date = changes.creationdatepickup.currentValue;
+      this.step2Form.value.datepickup = date;
+      this.creationDatePickupLabel = moment(new Date(date), "MM-DD-YYYY").format(
+        "MMMM DD YYYY"
+      );
+      this.step2Form.get("timepickup").setValue(new Date(date));
     }
 
     this.validFormStep2.emit(this.step2Form.valid);

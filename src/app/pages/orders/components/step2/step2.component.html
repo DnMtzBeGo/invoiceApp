@@ -28,8 +28,9 @@
             [min]="calendar"
           />
           <mat-datepicker #picker></mat-datepicker>
-          <div class="btn-input-calendar" (click)="picker.open()">
-            <i class="icon icon-calendar"></i> {{ events }} <i class="icon icon-down"></i>
+          <div class="btn-input-calendar">
+            <i class="icon icon-calendar"></i> {{ creationDatePickupLabel }}
+            <i class="icon icon-down"></i>
           </div>
         </mat-form-field>
 
@@ -43,7 +44,7 @@
             [hourStep]="1"
             [minuteStep]="1"
             [min]="minTime"
-            *ngIf="!destroyPicker"
+            disabled="true"
           ></timepicker>
         </div>
       </div>

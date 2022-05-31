@@ -40,6 +40,7 @@ export class OrdersComponent implements OnInit {
     pickupPostalCode: 0,
     dropoffPostalCode: 0,
   };
+  @Input() datepickup: number;
   @Input() imageFromGoogle: any;
   screenshotOrderMap: any;
   requestScreenshotOrderMap: FormData = new FormData();
@@ -223,6 +224,10 @@ export class OrdersComponent implements OnInit {
     // }
     // this.getETA(this.locations);
     // this.getCreationTime();
+
+    if (changes.datepickup && changes.datepickup.currentValue) {
+      this.orderData.pickup.startDate = this.datepickup;
+    }
   }
 
   toggleCard() {
@@ -518,7 +523,7 @@ export class OrdersComponent implements OnInit {
             // console.log(await data);
           });
         }
-        this.router.navigate(['pricing'], {
+        this.router.navigate(["pricing"], {
           state: {
             orderId: result._id,
           },
