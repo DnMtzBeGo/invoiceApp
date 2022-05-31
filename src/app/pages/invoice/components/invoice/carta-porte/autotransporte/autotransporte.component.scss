@@ -107,4 +107,8 @@ h6 {
       text-align: right;
     }
   }
+  
+  mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    color: #ffffff;
+  }
 }

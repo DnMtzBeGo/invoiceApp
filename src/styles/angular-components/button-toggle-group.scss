@@ -22,3 +22,50 @@
   
   }
   
+
+  ::ng-deep .mat-slide-toggle {
+    .mat-slide-toggle-bar {
+      position: relative;
+      width: 42px;
+      height: 19px;
+      background: linear-gradient(180deg, rgba(39,42,46,1) 0%, rgba(39,42,46,1) 60%, rgba(60,65,71,1) 100%);
+  
+      &::before {
+        content: '';
+        position: absolute;
+        width: 47px;
+        height: 22px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 11px;
+        background: linear-gradient(296.12deg, #97AAAA 18.18%, #E8EFEE 42.55%);
+        z-index: -1;
+      }
+    }
+  
+    &.mat-checked .mat-slide-toggle-bar {
+      background: linear-gradient(180deg, rgba(226,178,0,1) 0%, rgba(255,201,0,1) 10%, rgba(255,201,0,1) 60%) ;
+    }
+  
+    &.mat-checked .mat-slide-toggle-thumb {
+      background-color: transparent;
+    }
+  
+    .mat-slide-toggle-thumb {
+      height: 22px;
+      width: 22px;
+      background: #fff url(/assets/images/invoice/handle.svg) no-repeat center / contain;
+    }
+  
+    .mat-slide-toggle-thumb-container {
+      width: 22px;
+      height: 22px;
+      top: -1px;
+      left: -4px;
+    }
+  
+    &.mat-checked .mat-slide-toggle-thumb-container {
+      transform: translate3d(28px, 0, 0) !important;
+    }
+  }
