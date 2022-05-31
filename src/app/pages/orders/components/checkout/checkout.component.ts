@@ -438,7 +438,7 @@ export class CheckoutComponent implements OnInit {
       });
    }
    else{
-     this.nextStep();
+     this.updateInvoiceData();
    }
   }
 
