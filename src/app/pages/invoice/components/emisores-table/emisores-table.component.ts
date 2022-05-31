@@ -142,4 +142,22 @@ export class EmisoresTableComponent implements OnInit {
       }
     );
   }
+
+  gotoNewInvoice(emisor) {
+    this.router.navigate([
+      routes.NEW_FACTURA,
+      {
+        template: encodeURIComponent(
+          JSON.stringify({
+            emisor: {
+              _id: emisor?._id,
+              rfc: emisor?.rfc,
+              nombre: emisor?.nombre,
+              regimen_fiscal: emisor?.regimen_fiscal,
+            },
+          })
+        ),
+      },
+    ]);
+  }
 }

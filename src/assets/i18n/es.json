@@ -989,10 +989,11 @@
             "correo-notificacion": "Correo de Notificación",
             "validacion": "Validación",
 
-            "edit-emisor": "Editar",
             "view-series": "Series",
-            "delete-emisor": "Eliminar Emisor",
+            "new-invoice": "Nueva Factura",
+            "edit-emisor": "Editar",
             "set-default": "Establecer Principal",
+            "delete-emisor": "Eliminar Emisor",
 
             "edit-success": "Cambio exitoso",
             "edit-error": "No se pudo editar el Emisor",
