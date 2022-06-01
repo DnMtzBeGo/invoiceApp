@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild, ElementRef, Host } from '@angular/core';
 import EmblaCarousel from 'embla-carousel';
-
+import { FleetElementType } from 'src/app/shared/interfaces/FleetElement.type';
+import { ChooseFleetElementComponent } from '../choose-fleet-element/choose-fleet-element.component';
 @Component({
   selector: 'app-order-info',
   templateUrl: './order-info.component.html',
@@ -20,6 +21,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
 
   @ViewChild('embla', { static: true }) protected embla: any;
   @ViewChild('viewPort', { static: true }) protected viewPort: any;
+  @ViewChild('chooseFleetElementRef') public chooseElementRef: ChooseFleetElementComponent;
 
   ngOnInit(): void {
     this.language = localStorage.getItem('lang');
@@ -47,5 +49,10 @@ export class OrderInfoComponent implements OnInit, OnChanges {
 
   public changePickupDropoff(row: string): void {
     this.selectedRow = row;
+  }
+
+  public chooseFleetElement(fleetElement: FleetElementType): void{
+    this.chooseElementRef.setElementToChoose(fleetElement);
+    this.slider.scrollNext();
   }
 }

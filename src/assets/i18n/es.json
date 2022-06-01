@@ -271,7 +271,8 @@
             "truck":"Unidad",
             "trailer":"Carga",
             "subtotal":"Subtotal",
-            "total_price": "Precio Total"
+            "total_price": "Precio Total",
+            "select":"Seleccionar"
         },
         "driver_assignment": {
             "title": "Asignado a",
@@ -284,14 +285,14 @@
             "btn_confirm": "Confirmar"
         },
         "overview": {
-            "title": "Assignado a",
+            "title": "Asignado a",
             "title_order-assigment": "Asignado a",
             "label_driver": "Conductor",
             "label_vehicle": "Unidad",
             "label_trailer": "Caja",
-            "btn-edit": "EDITAR",
+            "btn-edit": "Editar",
             "btn-submit": "Enviar",
-            "btn-confirm": "Confirmar"      
+            "btn-confirm": "Confirmar"
          },
         "tracking": {
             "title": "Ubicación de la carga",

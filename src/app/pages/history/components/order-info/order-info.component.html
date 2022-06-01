@@ -61,7 +61,7 @@
 
 
   <div
-  class="embla investors-mobile"
+  class="embla"
   #embla
 >
   <div class="embla__viewport" #viewPort>
@@ -88,9 +88,23 @@
           <div class="investor-slide">
             <app-edit-order-fleet
               [orderData]="orderInfo"
-              (goBack)="slider.scrollPrev()">
+              (goBack)="slider.scrollPrev()"
+              (edit)="chooseFleetElement($event)">
             </app-edit-order-fleet>
 
+          </div>
+        </div>
+      </div>
+
+      <!-- Change fleet element goes here  -->
+      <div class="embla__slide">
+        <div class="embla__slide__inner">
+          <div class="investor-slide"> 
+            <app-choose-fleet-element 
+              #chooseFleetElementRef
+              [orderInfo]="orderInfo"
+              (goBack)="slider.scrollPrev()">
+            </app-choose-fleet-element>
           </div>
         </div>
       </div>

@@ -546,7 +546,8 @@
             "truck":"Truck",
             "trailer":"Trailer",
             "subtotal":"Subtotal",
-            "total_price": "Total price"
+            "total_price": "Total price",
+            "select":"Select"
         },
         "driver_assignment": {
             "title": "Assigned to",
@@ -563,7 +564,7 @@
             "label_driver": "Driver",
             "label_vehicle": "Truck",
             "label_trailer": "Trailer",
-            "btn-edit": "EDIT",
+            "btn-edit": "Edit",
             "btn-submit": "Submit",
             "btn-confirm": "Confirm"
         },

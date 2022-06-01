@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-
+import { FleetElementType } from '../../../../shared/interfaces/FleetElement.type';
 
 interface FleetAssetCardProps {
-  type: 'drivers'| 'trucks' | 'trailers',
+  type: FleetElementType,
   picture: string
 }
 

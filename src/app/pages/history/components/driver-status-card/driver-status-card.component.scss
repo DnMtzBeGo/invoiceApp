@@ -140,7 +140,6 @@ $border: 1px solid #1C232A;
 
   .status-card{
     display: flex;
-    padding-top: 40px;
     min-height: 240px;
   }
 }
@@ -193,8 +192,8 @@ $border: 1px solid #1C232A;
 
   .edit-order-btn {
     text-align: right;
-    position: absolute;
-    padding: 18px;
+    padding-top: 30px;
+    padding-right: 30px;
     color: #FFBE00;
     font-size: 15px;
     font-weight: 500;

@@ -120,7 +120,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatSelectModule,
     LottieModule.forRoot({ player: playerFactory }),
     CalendarModule,
-    // SharedModule,
+    SharedModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
