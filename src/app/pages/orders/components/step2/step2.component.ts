@@ -132,19 +132,19 @@ export class Step2Component implements OnInit {
       this.handleCargoTypeChange();
     });
 
-    this.step2Form.get("datepickup")!.valueChanges.subscribe((val) => {
-      let oldDate = moment(this.calendar, "MM-DD-YYYY").format("MMMM DD YYYY");
-      let newDate = moment(val, "MM-DD-YYYY").format("MMMM DD YYYY");
-      if (oldDate !== newDate) {
-        // this.minTime.setHours(0);
-        // this.minTime.setMinutes(0);
-        // this.minTime.setSeconds(0);
-        this.minTime = this.creationTime;
-        this.step2Form.controls.timepickup.setValue(void 0);
-      } else {
-        this.minTime = this.creationTime;
-      }
-    });
+    // this.step2Form.get("datepickup")!.valueChanges.subscribe((val) => {
+    //   let oldDate = moment(this.calendar, "MM-DD-YYYY").format("MMMM DD YYYY");
+    //   let newDate = moment(val, "MM-DD-YYYY").format("MMMM DD YYYY");
+    //   if (oldDate !== newDate) {
+    //     // this.minTime.setHours(0);
+    //     // this.minTime.setMinutes(0);
+    //     // this.minTime.setSeconds(0);
+    //     this.minTime = this.creationTime;
+    //     this.step2Form.controls.timepickup.setValue(void 0);
+    //   } else {
+    //     this.minTime = this.creationTime;
+    //   }
+    // });
 
     this.step2Form.get("timepickup")!.valueChanges.subscribe((val) => {
       // if(val===null) {
@@ -196,28 +196,33 @@ export class Step2Component implements OnInit {
         .get("description")!
         .setValue(changes.draftData.currentValue.cargo.description);
     }
-    if (changes.creationTime && changes.creationTime.currentValue) {
-      this.calendar = changes.creationTime.currentValue;
-      if (this.draftDate > 0 && moment(this.calendar).valueOf() > this.draftDate) {
-        // this.step2Form.get('datepickup')!.setValue('');
-        // // this.ordersService.resetDropoffDate(true);")
-        this.step2Form.get("datepickup")!.setValue(new Date(this.draftDate));
-        this.events = moment(new Date(this.draftDate), "MM-DD-YYYY").format(
-          "MMMM DD YYYY"
-        );
-        this.step2Form.get("timepickup")!.setValue(new Date(this.draftDate));
-      } else {
-        this.step2Form.get("datepickup")!.setValue(this.calendar);
-        this.events = moment(
-          new Date(moment(this.calendar).valueOf()),
-          "MM-DD-YYYY"
-        ).format("MMMM DD YYYY");
-        this.step2Form.get("timepickup")!.setValue(this.calendar);
-        this.minTime = this.calendar;
-      }
-    }
+    // if (changes.creationTime && changes.creationTime.currentValue) {
+    //   this.calendar = changes.creationTime.currentValue;
+    //   if (this.draftDate > 0 && moment(this.calendar).valueOf() > this.draftDate) {
+    //     // this.step2Form.get('datepickup')!.setValue('');
+    //     // // this.ordersService.resetDropoffDate(true);")
+    //     this.step2Form.get("datepickup")!.setValue(new Date(this.draftDate));
+    //     this.events = moment(new Date(this.draftDate), "MM-DD-YYYY").format(
+    //       "MMMM DD YYYY"
+    //     );
+    //     this.step2Form.get("timepickup")!.setValue(new Date(this.draftDate));
+    //   } else {
+    //     this.step2Form.get("datepickup")!.setValue(this.calendar);
+    //     this.events = moment(
+    //       new Date(moment(this.calendar).valueOf()),
+    //       "MM-DD-YYYY"
+    //     ).format("MMMM DD YYYY");
+    //     this.step2Form.get("timepickup")!.setValue(this.calendar);
+    //     this.minTime = this.calendar;
+    //   }
+    // }
 
     if (changes.creationdatepickup && changes.creationdatepickup.currentValue) {
+      console.log(
+        "PICKUP DATE",
+        changes.creationdatepickup.currentValue,
+        new Date(changes.creationdatepickup.currentValue)
+      );
       const date = changes.creationdatepickup.currentValue;
       this.step2Form.value.datepickup = date;
       this.creationDatePickupLabel = moment(new Date(date), "MM-DD-YYYY").format(
@@ -230,7 +235,6 @@ export class Step2Component implements OnInit {
   }
 
   handleCargoTypeChange(): void {
-    console.log("cambio a hazardous");
     const cargoType = this.step2Form.get("cargoType")?.value;
     if (cargoType === "hazardous") {
       const validators = [Validators.required];

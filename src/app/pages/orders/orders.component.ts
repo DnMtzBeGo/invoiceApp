@@ -338,16 +338,16 @@ export class OrdersComponent implements OnInit {
   }
 
   getStep2FormData(data: any) {
-    if (data.datepickup && data.timepickup !== "") {
-      this.orderData.pickup.startDate = this.convertDateMs(
-        data.datepickup,
-        data.timepickup
-      );
-      let sumETA = this.convertDateMs(data.datepickup, data.timepickup) + this.ETA;
-      this.minDropoff = new Date(sumETA);
-    } else {
-      this.orderData.pickup.startDate = 0;
-    }
+    // if (data.datepickup && data.timepickup !== "") {
+    //   this.orderData.pickup.startDate = this.convertDateMs(
+    //     data.datepickup,
+    //     data.timepickup
+    //   );
+    //   let sumETA = this.convertDateMs(data.datepickup, data.timepickup) + this.ETA;
+    //   this.minDropoff = new Date(sumETA);
+    // } else {
+    //   this.orderData.pickup.startDate = 0;
+    // }
     this.orderData.cargo["53_48"] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoUnits;
@@ -375,6 +375,7 @@ export class OrdersComponent implements OnInit {
   }
 
   getStep4FormData(data: any) {
+    console.log("step4 data:", data);
     this.orderData.dropoff.startDate = this.convertDateMs(
       data.datedropoff,
       data.timestartdropoff
