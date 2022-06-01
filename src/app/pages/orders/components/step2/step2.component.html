@@ -10,13 +10,13 @@
       </div>
       <div
         class="input-selectable-container"
-        (click)="showInputSelectorCP()"
+        (click)="showInputSelectorCP('merc')"
         *ngIf="orderWithCP"
       >
-        <p class="value-selected" *ngIf="!modalSelected">
-          <i class="icon icon-search"></i>SELECTOR
+        <p class="value-selected" *ngIf="!mercModalSelected">
+          <i class="icon icon-search"></i>Selecciona el tipo de mercancía
         </p>
-        <p class="value-selected" *ngIf="modalSelected">{{ modalOption.viewValue }}</p>
+        <p class="value-selected" *ngIf="mercModalSelected">{{ mercModal.viewValue }}</p>
       </div>
       <div class="section section-padding">
         <mat-form-field class="input-calendar" appearance="fill">
@@ -100,7 +100,33 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" style="flex-direction: column">
+        <div class="selectableHazard" *ngIf="cargoType == 'hazardous'">
+          <div
+            class="input-selectable-container"
+            (click)="showInputSelectorCP('emba')"
+            *ngIf="orderWithCP"
+          >
+            <p class="value-selected" *ngIf="!packModalSelected">
+              <i class="icon icon-search"></i>Selecciona tu embalaje
+            </p>
+            <p class="value-selected" *ngIf="packModalSelected">
+              {{ packModal.viewValue }}
+            </p>
+          </div>
+          <div
+            class="input-selectable-container"
+            (click)="showInputSelectorCP('hzrd')"
+            *ngIf="orderWithCP"
+          >
+            <p class="value-selected" *ngIf="!hzrdModalSelected">
+              <i class="icon icon-search"></i>Selecciona el tipo de carga peligrosa
+            </p>
+            <p class="value-selected" *ngIf="hzrdModalSelected">
+              {{ hzrdModal.viewValue }}
+            </p>
+          </div>
+        </div>
         <div class="hazardous-container" *ngIf="cargoType == 'hazardous'">
           <div class="hazardous-input">
             <mat-select formControlName="hazardousType" [(value)]="hazardousType">

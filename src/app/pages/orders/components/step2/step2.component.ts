@@ -27,8 +27,8 @@ import { isObject } from "../../../../shared/utils/object";
 type CargoType = "general" | "hazardous";
 
 interface Option {
-  value: string;
-  viewValue: string;
+  value?: string;
+  viewValue?: string;
 }
 
 @Component({
@@ -79,7 +79,7 @@ export class Step2Component implements OnInit {
   //   file: ['valid', Validators.required],
   // });
   step2Form = new FormGroup({
-    cargo_goods: new FormControl(),
+    cargo_goods: new FormControl(""),
     datepickup: new FormControl(this.events, Validators.required),
     timepickup: new FormControl("", Validators.required),
     // timepickup: new FormControl(new Date(), [Validators.required, this.hourValidator]),
@@ -90,8 +90,12 @@ export class Step2Component implements OnInit {
     description: new FormControl("", Validators.required),
   });
 
-  modalOption: Option;
-  modalSelected: boolean = false;
+  mercModal: Option;
+  mercModalSelected: boolean = false;
+  packModal: Option;
+  packModalSelected: boolean = false;
+  hzrdModal: Option;
+  hzrdModalSelected: boolean = false;
 
   constructor(
     translateService: TranslateService,
@@ -154,15 +158,15 @@ export class Step2Component implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.orderWithCP) {
-      const cargo_good = this.step2Form.get("cargo_goods");
-      cargo_good.setValidators(Validators.required);
-      cargo_good.updateValueAndValidity();
-    } else {
-      const cargo_good = this.step2Form.get("cargo_goods");
-      cargo_good.clearValidators();
-      cargo_good.updateValueAndValidity();
-    }
+    // if (this.orderWithCP) {
+    //   const cargo_good = this.step2Form.get("cargo_goods");
+    //   cargo_good.setValidators(Validators.required);
+    //   cargo_good.updateValueAndValidity();
+    // } else {
+    //   const cargo_good = this.step2Form.get("cargo_goods");
+    //   cargo_good.clearValidators();
+    //   cargo_good.updateValueAndValidity();
+    // }
 
     if (
       changes.draftData &&
@@ -226,6 +230,7 @@ export class Step2Component implements OnInit {
   }
 
   handleCargoTypeChange(): void {
+    console.log("cambio a hazardous");
     const cargoType = this.step2Form.get("cargoType")?.value;
     if (cargoType === "hazardous") {
       const validators = [Validators.required];
@@ -238,10 +243,16 @@ export class Step2Component implements OnInit {
         "hazardousFile",
         new FormControl(this.hazardousFile, validators)
       );
+      if (this.orderWithCP) {
+        this.step2Form.addControl("packaging", new FormControl(""));
+        this.step2Form.addControl("hazardous_material", new FormControl(""));
+      }
     } else {
       this.step2Form.removeControl("hazardousType");
       this.step2Form.removeControl("hazardousUn");
       this.step2Form.removeControl("hazardousFile");
+      this.step2Form.removeControl("hazardous_material");
+      this.step2Form.removeControl("packaging");
     }
   }
 
@@ -316,6 +327,9 @@ export class Step2Component implements OnInit {
   setCargoType(value: MatButtonToggleChange): void {
     this.step2Form.get("cargoType")!.setValue(value.value);
     this.cargoType = value.value;
+    if (value.value === "hazardous") {
+      this.step2Form.get("file");
+    }
   }
 
   clickFileInputElement() {}
@@ -357,16 +371,30 @@ export class Step2Component implements OnInit {
     this.firstLoad = false;
   }
 
-  showInputSelectorCP() {
+  showInputSelectorCP(type) {
+    const modalData =
+      type === "merc"
+        ? this.mercModal
+        : type === "emba"
+        ? this.packModal
+        : this.hzrdModal;
     const dialogRef = this.dialog.open(InputSelectableComponent, {
       panelClass: "app-full-bleed-dialog",
-      data: this.modalOption,
+      data: { data: modalData, type },
     });
     dialogRef.afterClosed().subscribe(async (res) => {
       if (typeof res === "object") {
-        this.modalOption = res;
+        if (type === "merc") {
+          this.mercModal = res;
+          this.mercModalSelected = true;
+        } else if (type === "emba") {
+          this.packModal = res;
+          this.packModalSelected = true;
+        } else {
+          this.hzrdModal = res;
+          this.hzrdModalSelected = true;
+        }
         this.step2Form.get("cargo_goods")!.setValue(res.value);
-        this.modalSelected = true;
       }
     });
   }
