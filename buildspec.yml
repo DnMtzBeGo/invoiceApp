@@ -14,4 +14,6 @@ phases:
       - ng build --configuration production
 artifacts:
   files:
-    - dist/**/*
+    - "**/*"
+  discard-paths: no
+  base-directory: dist/carriersDashboard
