@@ -91,6 +91,7 @@
           *matHeaderCellDef
           class="factura-table__table-header"
           mat-sort-header
+          style="width: 320px"
         >
           {{ "invoice.emisor-table.regimen" | translate }}
         </th>
@@ -99,7 +100,7 @@
           *matCellDef="let element"
           class="factura-table__table-body"
         >
-          {{ element.regimen_fiscal }}
+          {{ element.regimen_fiscal }} - {{ element.regimen_fiscal_desc }}
         </td>
       </ng-container>
 
@@ -162,13 +163,21 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu" class="brand-menu-1">
-            <button mat-menu-item (click)="editEmisor(element)">
-              <mat-icon>edit</mat-icon>
-              <span>{{ "invoice.emisor-table.edit-emisor" | translate }}</span>
-            </button>
             <button mat-menu-item (click)="getSeries(element._id)">
               <mat-icon>pin</mat-icon>
               <span>{{ "invoice.emisor-table.view-series" | translate }}</span>
+            </button>
+            <button
+              *ngIf="element.puede_timbrar"
+              mat-menu-item
+              (click)="gotoNewInvoice(element)"
+            >
+              <mat-icon class="icon icon-invoice"></mat-icon>
+              <span>{{ "invoice.emisor-table.new-invoice" | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="editEmisor(element)">
+              <mat-icon>edit</mat-icon>
+              <span>{{ "invoice.emisor-table.edit-emisor" | translate }}</span>
             </button>
             <button
               *ngIf="!element.main && element.puede_timbrar"

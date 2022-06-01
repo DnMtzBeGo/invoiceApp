@@ -91,6 +91,10 @@ mat-form-field {
 .cartaPorteTable {
   background: transparent;
   width: 100%;
+
+  mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    color: #ffffff;
+  }
 }
 
 .mercancias-inputs {

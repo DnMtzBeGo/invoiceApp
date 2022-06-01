@@ -59,7 +59,60 @@
     </div>
   </div>
 
-  <app-driver-status-card [title]="selectedRow" [orderData]="orderInfo"></app-driver-status-card>
+
+  <div
+  class="embla"
+  #embla
+>
+  <div class="embla__viewport" #viewPort>
+    <div class="embla__container">
+      
+      <!-- Order status slide -->
+      <div class="embla__slide">
+        <div class="embla__slide__inner">
+          <div class="investor-slide">
+            <div>
+              <app-driver-status-card 
+                [title]="selectedRow" 
+                [orderData]="orderInfo"
+                (editOrder)="slider.scrollNext()">
+              </app-driver-status-card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit order info slide  -->
+      <div class="embla__slide">
+        <div class="embla__slide__inner">
+          <div class="investor-slide">
+            <app-edit-order-fleet
+              [orderData]="orderInfo"
+              (goBack)="slider.scrollPrev()"
+              (edit)="chooseFleetElement($event)">
+            </app-edit-order-fleet>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Change fleet element goes here  -->
+      <div class="embla__slide">
+        <div class="embla__slide__inner">
+          <div class="investor-slide"> 
+            <app-choose-fleet-element 
+              #chooseFleetElementRef
+              [orderInfo]="orderInfo"
+              (goBack)="slider.scrollPrev()">
+            </app-choose-fleet-element>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
 
   <!-- WE ARE NOT APPLYING RULES FOR MANAGERS-->
   <app-download-invoices #downloadInvoicesRef *ngIf="orderInfo.user_id == orderInfo.manager?._id" [orderId]="orderInfo._id"

@@ -10,46 +10,6 @@
   <div class="series-body">
     <form [formGroup]="emitterAttributesForm">
       <div class="grid stretch">
-        <!-- <mat-form-field appearance="outline" class="brand-field-1">
-          <mat-label>{{
-            emitterAttributesForm.get("parent").value
-              ? ("invoice.emisor-edit.rfc-parent" | translate)
-              : ("invoice.emisor-edit.rfc-parent-placeholder" | translate)
-          }}</mat-label>
-          <input
-            matInput
-            aria-label="rfcPadre"
-            name="parent"
-            autocomplete="off"
-            formControlName="parent"
-          />
-        </mat-form-field> -->
-
-        <mat-form-field appearance="outline" class="brand-field-1">
-          <mat-label>{{ "invoice.emisor-edit.rfc" | translate }}</mat-label>
-          <input
-            matInput
-            aria-label="rfc"
-            name="rfc"
-            autocomplete="off"
-            formControlName="rfc"
-          />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="brand-field-1">
-          <mat-label>{{
-            "invoice.emisor-edit.razon-social" | translate
-          }}</mat-label>
-          <input
-            matInput
-            [attr.aria-label]="'invoice.emisor-edit.razon-social' | translate"
-            name="nombre"
-            autocomplete="off"
-            formControlName="nombre"
-          />
-        </mat-form-field>
-      </div>
-      <div class="grid stretch">
         <mat-form-field appearance="outline" class="brand-field-1">
           <mat-label>{{
             emitterAttributesForm.get("email").value
@@ -148,6 +108,7 @@
       bottom: 0;
       right: 0;
     "
+    [disabled]="isLoading"
   >
     {{ "invoice.emisor-edit.btn-save" | translate }}
     <mat-icon style="margin-right: -8px"> keyboard_arrow_right </mat-icon>

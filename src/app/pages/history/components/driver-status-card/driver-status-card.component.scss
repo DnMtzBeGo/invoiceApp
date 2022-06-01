@@ -3,7 +3,6 @@
 $border: 1px solid #1C232A;
 
 .order-info-row-driver {
-  margin-top: 34px;
   width: 506px;
   background: #0B1117;
   box-shadow: 0px 8px 10px #040B11, inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
@@ -141,7 +140,6 @@ $border: 1px solid #1C232A;
 
   .status-card{
     display: flex;
-    padding-top: 40px;
     min-height: 240px;
   }
 }
@@ -185,5 +183,24 @@ $border: 1px solid #1C232A;
     &:not(:last-child){
       border-right: $border ;
     }
+  }
+}
+
+.edit-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+
+  .edit-order-btn {
+    text-align: right;
+    padding-top: 30px;
+    padding-right: 30px;
+    color: #FFBE00;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16px;
+    justify-content: flex-end;
+    text-transform: uppercase;
+    cursor: pointer;
   }
 }

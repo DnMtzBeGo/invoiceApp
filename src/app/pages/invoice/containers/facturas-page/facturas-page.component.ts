@@ -441,19 +441,8 @@ export class FacturasPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result?) => {
-      console.log("result", result);
-      if (result != void 0) {
-        if (result.success === true) {
-          this.notificationsService.showSuccessToastr(
-            this.translateService.instant("invoice.emisores.create-success")
-          );
-
-          this.facturasEmitter.next(["refresh:defaultEmisor"]);
-        } else if (result.success === false) {
-          this.notificationsService.showErrorToastr(
-            this.translateService.instant("invoice.emisores.create-error")
-          );
-        }
+      if (result?.success === true) {
+        this.facturasEmitter.next(["refresh:defaultEmisor"]);
       }
     });
   }
@@ -471,11 +460,8 @@ export class FacturasPageComponent implements OnInit {
     return new Date(strDate);
   };
 
-  filtersCount = (params = {}) => {
-    return (
-      Object.keys(params).filter(
-        (filterName) => filterParams.has(filterName) && params[filterName]
-      ).length || null
-    );
-  };
+  filtersCount = (params = {}) =>
+    Object.keys(params).filter(
+      (filterName) => filterParams.has(filterName) && params[filterName]
+    ).length || null;
 }

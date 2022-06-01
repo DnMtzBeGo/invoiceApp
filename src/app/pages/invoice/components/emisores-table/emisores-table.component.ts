@@ -57,7 +57,6 @@ export class EmisoresTableComponent implements OnInit {
     this.dataSource = new MatTableDataSource<EmitterAttributesInterface>(
       this.emisoresTableData
     );
-    console.log(this.regimenFiscal);
   }
 
   editEmisor(emisor: any): void {
@@ -68,18 +67,9 @@ export class EmisoresTableComponent implements OnInit {
       backdropClass: ["brand-dialog-1"],
     });
     dialogRef.afterClosed().subscribe((result?) => {
-      if (result != void 0) {
-        if (result.success === true) {
-          this.notificationsService.showSuccessToastr(
-            this.translateService.instant("invoice.emisor-table.edit-success")
-          );
-          this.refresh.emit();
-          this.table.renderRows();
-        } else if (result.success === false) {
-          this.notificationsService.showErrorToastr(
-            this.translateService.instant("invoice.emisor-table.edit-error")
-          );
-        }
+      if (result?.success === true) {
+        this.refresh.emit();
+        this.table.renderRows();
       }
     });
   }
@@ -141,5 +131,23 @@ export class EmisoresTableComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  gotoNewInvoice(emisor) {
+    this.router.navigate([
+      routes.NEW_FACTURA,
+      {
+        template: encodeURIComponent(
+          JSON.stringify({
+            emisor: {
+              _id: emisor?._id,
+              rfc: emisor?.rfc,
+              nombre: emisor?.nombre,
+              regimen_fiscal: emisor?.regimen_fiscal,
+            },
+          })
+        ),
+      },
+    ]);
   }
 }
