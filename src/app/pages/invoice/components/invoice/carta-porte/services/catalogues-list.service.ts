@@ -47,10 +47,17 @@ export class CataloguesListService {
       if (!this.catalogues[endpoint] || payload) {
         (
           await (payload
-            ? this.apiRestService.apiRest(
-                payload,
-                `invoice/catalogs/${endpoint}`
+            ? ["states", "locations", "municipalities", "suburbs"].includes(
+                endpoint
               )
+              ? this.apiRestService.apiRestGet(
+                  `invoice/catalogs/${endpoint}`,
+                  payload
+                )
+              : this.apiRestService.apiRest(
+                  payload,
+                  `invoice/catalogs/${endpoint}`
+                )
             : this.apiRestService.apiRestGet(`invoice/catalogs/${endpoint}`))
         ).subscribe(
           (res) => {

@@ -181,11 +181,10 @@ export class FacturaDireccionInputComponent implements OnInit {
     return pais == void 0 || pais === ""
       ? of([])
       : from(
-          this.apiRestService.apiRest(
-            JSON.stringify({ pais }),
-            "invoice/catalogs/states",
-            { loader: "false" }
-          )
+          this.apiRestService.apiRestGet("invoice/catalogs/states", {
+            loader: "false",
+            pais,
+          })
         ).pipe(mergeAll(), pluck("result"), startWith(null));
   };
 
@@ -193,11 +192,10 @@ export class FacturaDireccionInputComponent implements OnInit {
     return estado == void 0 || estado === ""
       ? of([])
       : from(
-          this.apiRestService.apiRest(
-            JSON.stringify({ estado }),
-            "invoice/catalogs/municipalities",
-            { loader: "false" }
-          )
+          this.apiRestService.apiRestGet("invoice/catalogs/municipalities", {
+            loader: "false",
+            estado,
+          })
         ).pipe(mergeAll(), pluck("result"), startWith(null));
   };
 
@@ -205,11 +203,10 @@ export class FacturaDireccionInputComponent implements OnInit {
     return cp == void 0 || cp.trim() === "" || cp.length < 5
       ? of([])
       : from(
-          this.apiRestService.apiRest(
-            JSON.stringify({ cp }),
-            "invoice/catalogs/suburbs",
-            { loader: "false" }
-          )
+          this.apiRestService.apiRestGet("invoice/catalogs/suburbs", {
+            loader: "false",
+            cp,
+          })
         ).pipe(mergeAll(), pluck("result"), startWith(null));
   };
 

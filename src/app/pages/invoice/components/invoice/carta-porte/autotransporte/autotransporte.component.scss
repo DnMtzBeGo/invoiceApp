@@ -40,6 +40,7 @@ mat-expansion-panel {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem 2rem;
+  align-items: center;
 }
 
 mat-form-field {
@@ -94,4 +95,20 @@ h6 {
   line-height: 27px;
   color: #EDEDED;
   margin: 15px 0 25px 0;
+}
+
+.cartaPorteTable {
+  background: transparent;
+  width: 100%;
+  margin-bottom: 15px;
+
+  tr {
+    td:last-of-type {
+      text-align: right;
+    }
+  }
+  
+  mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    color: #ffffff;
+  }
 }
