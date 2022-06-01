@@ -71,6 +71,6 @@ export class UbicacionesComponent implements OnInit {
   }
 
   delete(index) {
-    this.locations.splice(index, 1);
+    if (this.locations.length > 1) this.locations.splice(index, 1);
   }
 }

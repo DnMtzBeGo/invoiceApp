@@ -42,9 +42,9 @@
     <div>
       <span class="bubble">{{ i + 1 }}</span>
       <span>
-        <button mat-icon-button class="btn-dark-bego icon icon-trash1" type="button" (click)="delete(i)"></button>
+        <button mat-icon-button class="btn-dark-bego icon icon-trash1" type="button" (click)="removeData()"></button>
       </span>
-      <span (click)="delete(i)">Eliminar</span>
+      <span (click)="removeData()">Eliminar</span>
     </div>
     <app-commodity
       [commodityInfo]="commodity"

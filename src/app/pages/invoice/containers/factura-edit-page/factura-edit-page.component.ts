@@ -1220,22 +1220,11 @@ export class FacturaEditPageComponent implements OnInit {
       backdropClass: ["brand-dialog-1"],
     });
     dialogRef.afterClosed().subscribe((result?) => {
-      // console.log(result);
-      if (result != void 0) {
-        if (result.success === true) {
-          this.notificationsService.showSuccessToastr(
-            this.translateService.instant("invoice.emisores.create-success")
-          );
-
-          // console.log("newEmisor", result.data);
-          this.vm.form.emisor = result.data;
-          this.formEmitter.next(["rfcEmisor:set", result.data]);
-          this.formEmitter.next(["autocomplete:cancel", ""]);
-        } else if (result.success === false) {
-          this.notificationsService.showErrorToastr(
-            this.translateService.instant("invoice.emisores.create-error")
-          );
-        }
+      if (result?.success === true) {
+        // console.log("newEmisor", result.data);
+        this.vm.form.emisor = result.data;
+        this.formEmitter.next(["rfcEmisor:set", result.data]);
+        this.formEmitter.next(["autocomplete:cancel", ""]);
       }
     });
   }

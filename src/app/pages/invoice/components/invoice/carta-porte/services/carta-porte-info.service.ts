@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { Subject } from "rxjs";
+import { BehaviorSubject, Subject } from 'rxjs';
 import { InfoModalComponent } from "src/app/pages/invoice/modals/info-modal/info-modal.component";
 
 @Injectable({
@@ -9,6 +9,7 @@ import { InfoModalComponent } from "src/app/pages/invoice/modals/info-modal/info
 export class CartaPorteInfoService {
   public info: any;
   public infoRecolector = new Subject();
+  public emitShowFraccion = new BehaviorSubject(false);
   public invalidInfo: boolean;
 
   constructor(private matDialog: MatDialog) {
@@ -53,4 +54,9 @@ export class CartaPorteInfoService {
   }
 
   showSuccessModal() {}
+
+  showFraccionArancelaria(data: boolean) {
+    this.emitShowFraccion.next(data);
+    return this.emitShowFraccion
+  }
 }
