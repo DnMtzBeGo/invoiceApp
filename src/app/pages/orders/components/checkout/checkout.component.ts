@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Step } from '../../../../shared/components/stepper/interfaces/Step'
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { Router, ActivatedRoute, NavigationEnd  } from '@angular/router';
+import { Router, NavigationEnd  } from '@angular/router';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { emitterData} from './interfaces/emitterData';
+import { receiverData } from './interfaces/receiverData';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-checkout',
@@ -21,6 +24,24 @@ export class CheckoutComponent implements OnInit {
   customsCruce: any;
 
   invoiceData: any;
+
+  emitterData: emitterData ={
+    address: '',
+    place_id: '',
+    tax_regime: '',
+    archivo_cer: null,
+    archivo_key: null,
+    archivo_key_pswd: ''
+  };
+
+  receiverData: receiverData = {
+    address: '',
+    place_id: '',
+    company: '',
+    rfc : '',
+    cfdi: '',
+    taxRegime: '',
+  }
 
   checkoutProgress: number = 0;
   weights: any;
@@ -48,25 +69,46 @@ export class CheckoutComponent implements OnInit {
           }
 
           if(!this.orderId){
-            this.router.navigate(['/home']);
+            this.alertService.create({
+              title: this.translateService.instant('checkout.alerts.error-something'),
+              body: this.translateService.instant('checkout.alerts.error-missing-orderId'),
+              handlers: [
+                {
+                  text: this.translateService.instant('OK'),
+                  color: '#ffbe00',
+                  action: async () => {
+                    this.alertService.close();
+                    this.router.navigate(['/home']);
+                  }
+                }
+              ]
+            });
+
           }
         }
       });
       this.checkoutSteps = [
         {
-          text: translateService.instant('checkout.summary'),
-          nextBtnTxt: translateService.instant('checkout.stepper-btns.continue-to-invoice')
-        },
-        {
           text: translateService.instant('checkout.invoice'),
-          nextBtnTxt: translateService.instant('checkout.stepper-btns.continue-to-payment')
+          nextBtnTxt: translateService.instant('checkout.stepper-btns.continue-to-invoice'),
+          step: 'invoice'
         },
         {
-          text: translateService.instant('checkout.payment'),
-          nextBtnTxt: translateService.instant('checkout.stepper-btns.submit')
-
+          text: translateService.instant('checkout.summary'),
+          nextBtnTxt: translateService.instant('checkout.stepper-btns.summary'),
+          step: 'summary'
         },
       ];
+      this.translateService.onLangChange.subscribe(() => {
+        this.checkoutSteps = this.checkoutSteps.map(e => {
+          return {
+            text:translateService.instant(`checkout.${e.step}`),
+            nextBtnTxt: e.step === 'summary' ? translateService.instant(`checkout.stepper-btns.summary`) : translateService.instant(`checkout.stepper-btns.continue-to-${e.step}`),
+            step: e.step
+          }
+        })
+        this.calculateProgress();
+      })      
    }
 
   async ngOnInit(): Promise<void> {
@@ -82,13 +124,13 @@ export class CheckoutComponent implements OnInit {
       ( res : any ) => {
         this.summaryData = res.result;
         console.log('summary data: ', this.summaryData);
-      },
+    },
       ( err: any ) => {
 
       }
     );
 
-    (await this.webService.apiRest('','shippers/select_attributes')).subscribe(
+    (await this.webService.apiRest('','carriers/select_attributes')).subscribe(
 
       (res: any) => {
         this.invoiceData = res.result;
@@ -98,6 +140,19 @@ export class CheckoutComponent implements OnInit {
         console.error('An error ocurred', err);
       }
       );
+
+      
+    (await this.webService.apiRest('','profile/get_emitter_files')).subscribe(
+      (res: any) => {},
+      (err: any) => {
+        this.checkoutSteps.unshift({
+          text: this.translateService.instant('checkout.emitter'),
+          nextBtnTxt: this.translateService.instant('checkout.stepper-btns.continue-to-emitter'),
+          step: 'emitter'
+        })
+      }
+      );
+
 
       (await this.webService.apiRest('','orders/get_customs_cruce')).subscribe(
         (res: any) => {
@@ -136,9 +191,13 @@ export class CheckoutComponent implements OnInit {
 
   }
 
-  updateInvoiceData(data: any) {
-    console.log(data)
+  async updatereceiverData(data: any) {
+    this.receiverData = data;
   }  
+
+  updateEmitterData(data: emitterData){
+    this.emitterData = data;
+  }
   /**
    * Moves checkout stepper to the next step
    */
@@ -148,6 +207,15 @@ export class CheckoutComponent implements OnInit {
       this.calculateProgress();
     } else {
       this.updateOrder();
+    }
+  }
+
+  validate(){
+    if(this.currentStepIndex === 0 && this.checkoutSteps.length === 3){
+      this.validateEmitter();
+    }
+    else{
+      this.validateReceiver();
     }
   }
 
@@ -222,22 +290,6 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  async infoAlert(title: string, message: string) {
-    this.alertService.create({
-      title: title,
-      body: message,
-      handlers: [
-        {
-          text: this.translateService.instant('OK'),
-          color: '#ffbe00',
-          action: async () => {
-            this.alertService.close();
-          }
-        }
-      ]
-    });
-  }
-
   async verificationAlert(title: string, message: string) {
     this.alertService.create({
       title: title,
@@ -271,5 +323,174 @@ export class CheckoutComponent implements OnInit {
       ]
     });
   }
+
+  async validateEmitter() {
+    if(this.emitterData.tax_regime){
+      let attributes = {};
+      attributes['tax_regime'] = this.emitterData.tax_regime;
+      this.emitterData.address ? attributes['address'] = this.emitterData.address : null;
+      this.emitterData.place_id ? attributes['place_id'] = this.emitterData.place_id : null;
+
+      let request = {
+        carrier_id: this.summaryData.user_id,
+        attributes
+      };
+
+      (await this.webService.apiRest(JSON.stringify(request),'carriers/insert_attributes'))
+    }
+      if(this.emitterData.archivo_cer && this.emitterData.archivo_key && this.emitterData.archivo_key_pswd){
+        if(!this.emitterData.tax_regime && !this.invoiceData.attributes.tax_regime){
+          this.alertService.create({
+            title: this.translateService.instant('checkout.alerts.emitter-create'),
+            body: this.translateService.instant('checkout.alerts.emitter-tax_regime'),
+            handlers: [
+              {
+                text: this.translateService.instant('OK'),
+                color: '#ffbe00',
+                action: async () => {
+                  this.alertService.close();
+                }
+              }
+            ]
+          });
+        }
+        else{
+
+          let form = new FormData();
+          form.append('archivo_cer', this.emitterData.archivo_cer);
+          form.append('archivo_key', this.emitterData.archivo_key);
+          form.append('archivo_key_pswd', this.emitterData.archivo_key_pswd);
+          (await this.webService.uploadFilesSerivce(form, 'profile/validate_emitter'))
+          .subscribe(
+        res => {
+          this.alertService.create({
+            title: this.translateService.instant('checkout.alerts.emitter-validated'),
+            handlers: [
+              {
+                text: this.translateService.instant('OK'),
+                color: '#ffbe00',
+                action: async () => {
+                  this.alertService.close();
+                  this.nextStep();
+                }
+              }
+            ]
+          });
+        },
+        err => {
+          let message:string;
+          Array.isArray(err.error.error) ? message = err.error.error[0].error.split(',').join('\n') : message = err.error.error.error;
+          this.alertService.create({
+            title: this.translateService.instant('checkout.alerts.emitter-validated-fail'),
+            body: message,
+            handlers: [
+              {
+                text: this.translateService.instant('checkout.btn-retry'),
+                color: '#ffbe00',
+                action: async () => {
+                  this.alertService.close();
+                }
+              },
+              {
+                text: this.translateService.instant('checkout.btn-continue'),
+                color: '#ffbe00',
+                action: async () => {
+                  this.alertService.close();
+                  this.nextStep();
+                }
+              },
+            ]
+          });
+         }
+        )
+      }
+      }
+      else{
+        this.nextStep();
+      }
+    
+  }
+
+  validateReceiver() {
+    let faltates = [];
+    this.receiverData.address ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-address')+'\n');
+    this.receiverData.company ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-company'));
+    this.receiverData.cfdi ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-cfdi'));
+    this.receiverData.rfc ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-rfc'));
+    this.receiverData.taxRegime ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-tax_regime'));
+
+    if(faltates.length > 0){
+      let errores = faltates.join('<br>');
+      this.alertService.create({
+        title: this.translateService.instant('checkout.alerts.receiver-stamp'),
+        body: errores,
+        handlers: [
+          {
+            text: this.translateService.instant('profile.account.btn_cancel'),
+            color: '#ffbe00',
+            action: async () => {
+              this.alertService.close();
+            }
+          },
+          {
+            text: this.translateService.instant('checkout.btn-continue'),
+            color: '#ffbe00',
+            action: async () => {
+              this.alertService.close();
+              this.updateInvoiceData();
+            }
+          }
+        ]
+      });
+   }
+   else{
+     this.updateInvoiceData();
+   }
+  }
+
+  async updateInvoiceData(){
+    let receiver = { 
+      address:{
+        address: this.receiverData.address,
+        place_id: this.receiverData.place_id
+      },
+      company: this.receiverData.company,
+      rfc: this.receiverData.rfc,
+      cfdi: this.receiverData.cfdi,
+      tax_regime: this.receiverData.taxRegime
+    };
+    let request = {
+      order_id: this.orderId,
+      receiver
+    };
+
+    (await this.webService.apiRest(JSON.stringify(request),'orders/update_invoice')).subscribe(
+      res => {
+        this.nextStep();
+      },
+      err => {
+        this.alertService.create({
+          title: this.translateService.instant('errors.timeout.title'),
+          body: this.translateService.instant('errors.timeout.body'),
+          handlers: [
+            {
+              text: this.translateService.instant('Ok'),
+              color: '#ffbe00',
+              action: async () => {
+                this.alertService.close();
+              }
+            }
+          ]
+        });
+        console.log(err)
+      }
+    )
+  }
+  
+  async getInvoicePreview(){
+    const token = await localStorage.getItem("token")
+    window.open( `${environment.URL_BASE}/invoice/get_preview_consignment/${this.orderId}/?token=${token}`, '_blank')
+  }
+
 }
 

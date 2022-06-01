@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, SimpleChanges, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
 @Component({
   selector: 'app-driver-status-card',
   templateUrl: './driver-status-card.component.html',
@@ -9,15 +10,19 @@ export class DriverStatusCardComponent implements OnInit {
 
   @Input() orderData: any = {};
   @Input() title: string = '';
+
+  @Output() editOrder = new EventEmitter<void>();
   
   public orderCreated: boolean = false;
   public orderAccepted: boolean = false;
   public pickupStarted: boolean = false;
   public eta: number = 0;
-  public calculateETA: number = 0;
+  public calculateETA: Date;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private webService: AuthService
+
   ) { }
 
   ngOnInit(): void {
@@ -27,13 +32,31 @@ export class DriverStatusCardComponent implements OnInit {
 
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if(changes.orderData){
       if(this.orderData) {
-        console.log('Order data is: ', this.orderData);
-        this.eta = this.orderData.ETA;
-        this.calculateETA = new Date().getTime();
-        this.calculateETA += this.eta;
+        const {pickup, dropoff} = this.orderData;
+        if(pickup && dropoff){
+
+          const payload = {
+            pickup: {
+              lat: pickup.lat,
+              lng: pickup.lng
+            },
+            dropoff:{
+              lat: dropoff.lat,
+              lng: dropoff.lng
+            }
+          };
+
+
+        (await this.webService.apiRest(JSON.stringify(payload), 'orders/calculate_ETA')).subscribe(({result})=>{
+          this.calculateETA= pickup.startDate + result.ETA;
+
+        });
+        }
+
+
       }    
     }
   }

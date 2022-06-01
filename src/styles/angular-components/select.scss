@@ -56,7 +56,8 @@
 }
 
 //color of options in select
-.mat-select-panel .mat-option-text, .mat-select .mat-select-min-line {
+.mat-select-panel .mat-option-text,
+.mat-select:not(.disable-custom-format) .mat-select-min-line {
     color: white;
     font-family: Avenir;
     font-style: normal;

@@ -1,0 +1,171 @@
+<div class="container">
+  <h1 style="margin-bottom: 2rem; font-size: 20px">
+    {{ "invoice.email-factura.title" | translate }}
+  </h1>
+
+  <p
+    style="
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      font-size: 15px;
+      color: #70757b;
+    "
+  >
+    {{ "invoice.email-factura.body" | translate }}
+  </p>
+
+  <mat-form-field
+    appearance="outline"
+    class="brand-field-1"
+    style="align-self: stretch"
+  >
+    <mat-label>{{
+      vm.form?.subject
+        ? ("invoice.email-factura.asunto" | translate)
+        : ("invoice.email-factura.asunto-placeholder" | translate)
+    }}</mat-label>
+    <input
+      matInput
+      name="subject"
+      [ngModel]="vm.form?.subject"
+      (ngModelChange)="vm.form.subject = $event"
+    />
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    class="brand-field-1"
+    style="align-self: stretch"
+  >
+    <mat-label>{{
+      vm.form?.to?.length
+        ? ("invoice.email-factura.para" | translate)
+        : ("invoice.email-factura.para-placeholder" | translate)
+    }}</mat-label>
+    <mat-chip-list #emailList aria-label="to">
+      <mat-chip
+        *ngFor="let email of vm.form?.to"
+        (removed)="vm.form?.to.splice(vm.form?.to.indexOf(email), 1)"
+      >
+        {{ email }}
+        <mat-icon style="padding-bottom: 0; padding-right: 0" matChipRemove>
+          cancel
+        </mat-icon>
+      </mat-chip>
+      <input
+        [matChipInputFor]="emailList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="
+          $event.value && vm.form.to.push($event.value.trim());
+          $event.input.value = ''
+        "
+      />
+    </mat-chip-list>
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    class="brand-field-1"
+    style="align-self: stretch"
+  >
+    <mat-label>{{
+      vm.form?.cc
+        ? ("invoice.email-factura.cc" | translate)
+        : ("invoice.email-factura.cc-placeholder" | translate)
+    }}</mat-label>
+    <input
+      matInput
+      name="cc"
+      [ngModel]="vm.form?.cc"
+      (ngModelChange)="vm.form.cc = $event"
+    />
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    class="brand-field-1"
+    style="align-self: stretch"
+  >
+    <mat-label>{{
+      vm.form?.message
+        ? ("invoice.email-factura.mensaje" | translate)
+        : ("invoice.email-factura.mensaje-placeholder" | translate)
+    }}</mat-label>
+    <textarea
+      matInput
+      name="message"
+      [ngModel]="vm.form?.message"
+      (ngModelChange)="vm.form.message = $event"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="2"
+      cdkAutosizeMaxRows="3"
+    >
+    </textarea>
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    class="brand-field-1"
+    style="align-self: stretch"
+  >
+    <mat-label>{{
+      vm.form?.reply_to
+        ? ("invoice.email-factura.reply" | translate)
+        : ("invoice.email-factura.reply-placeholder" | translate)
+    }}</mat-label>
+    <input
+      matInput
+      name="reply_to"
+      [ngModel]="vm.form?.reply_to"
+      (ngModelChange)="vm.form.reply_to = $event"
+    />
+  </mat-form-field>
+
+  <button
+    mat-flat-button
+    [ngClass]="[
+      'radius-s',
+      vm.formSuccess === false ? 'brand-btn-error' : 'brand-btn-2'
+    ]"
+    [style.pointer-events]="vm.formLoading || vm.formSuccess ? 'none' : 'all'"
+    [disabled]="!vm.form?.subject || !vm.form?.to?.length"
+    style="
+      min-width: 155px;
+      min-height: 40px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    "
+    (click)="formEmitter.next(['submit', vm.form])"
+  >
+    <mat-spinner
+      [style.display]="vm.formLoading ? 'block' : 'none'"
+      class="brand-spinner-1"
+      [diameter]="20"
+      [strokeWidth]="4"
+      style="margin: 0 auto"
+    ></mat-spinner>
+    <mat-icon
+      [style.display]="vm.formSuccess ? 'inline-block' : 'none'"
+      style="margin-right: 4px"
+      >check</mat-icon
+    >
+    <span [style.display]="!vm.formLoading ? 'inline-block' : 'none'"
+      >{{
+        vm.formError
+          ? ("invoice.email-factura.btn-send-retry" | translate)
+          : vm.formSuccess
+          ? ("invoice.email-factura.btn-send-success" | translate)
+          : ("invoice.email-factura.btn-send" | translate)
+      }}
+    </span>
+    <mat-icon
+      [style.display]="
+        !vm.formLoading && vm.formSuccess == null ? 'inline-block' : 'none'
+      "
+      style="margin-right: -8px"
+      >keyboard_arrow_right</mat-icon
+    >
+  </button>
+</div>

@@ -1,0 +1,174 @@
+<div class="app-factura-filters">
+  <div class="filters" style="margin-bottom: 1.5rem">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.filters.fechas" | translate }}</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input
+          matInput
+          matStartDate
+          [placeholder]="'invoice.filters.inicio' | translate"
+          [ngModel]="vm.params?.fec_inicial"
+          (ngModelChange)="vm.params.fec_inicial = $event"
+        />
+        <input
+          matInput
+          matEndDate
+          [placeholder]="'invoice.filters.final' | translate"
+          [ngModel]="vm.params?.fec_final"
+          (ngModelChange)="vm.params.fec_final = $event"
+        />
+      </mat-date-range-input>
+      <div matSuffix>
+        <button
+          [style.display]="
+            vm.params?.fec_inicial || vm.params?.fec_final
+              ? 'inline-flex'
+              : 'none'
+          "
+          mat-icon-button
+          (click)="
+            vm.params.fec_inicial = null;
+            vm.params.fec_final = null;
+            $event.stopPropagation()
+          "
+        >
+          <mat-icon style="color: #ededed">close</mat-icon>
+        </button>
+        <mat-datepicker-toggle
+          [for]="picker"
+          (click)="log('open')"
+        ></mat-datepicker-toggle>
+      </div>
+      <mat-date-range-picker
+        #picker
+        (stateChanges)="log('picker', $event)"
+      ></mat-date-range-picker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.filters.emisor" | translate }}</mat-label>
+      <input
+        matInput
+        aria-label="Emisor"
+        name="emisor"
+        [ngModel]="vm.params?.emisor"
+        (ngModelChange)="vm.params.emisor = $event"
+        [placeholder]="'invoice.filters.emisor-placeholder' | translate"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.filters.receptor" | translate }}</mat-label>
+      <input
+        matInput
+        aria-label="Receptor"
+        name="receptor"
+        [ngModel]="vm.params?.receptor"
+        (ngModelChange)="vm.params.receptor = $event"
+        [placeholder]="'invoice.filters.receptor-placeholder' | translate"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.filters.tipo-comprobante" | translate
+      }}</mat-label>
+      <mat-select
+        name="tipo_de_comprobante"
+        [ngModel]="vm.params?.tipo_de_comprobante"
+        (ngModelChange)="vm.params.tipo_de_comprobante = $event"
+        [placeholder]="
+          'invoice.filters.tipo-comprobante-placeholder' | translate
+        "
+        class="disable-custom-format"
+      >
+        <ng-container *ngFor="let tipo of vm.tiposComprobante">
+          <mat-option
+            *ngIf="tipo.enabled"
+            [value]="tipo.clave"
+            class="brand-option-1"
+          >
+            {{ tipo.clave }} - {{ tipo.descripcion }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+
+      <button
+        [style.display]="vm.params?.tipo_de_comprobante ? 'block' : 'none'"
+        mat-icon-button
+        matSuffix
+        (click)="vm.params.tipo_de_comprobante = ''; $event.stopPropagation()"
+      >
+        <mat-icon style="color: #ededed">close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>UUID</mat-label>
+      <input
+        matInput
+        aria-label="UUID"
+        name="uuid"
+        [ngModel]="vm.params?.uuid"
+        (ngModelChange)="vm.params.uuid = $event"
+        [placeholder]="'invoice.filters.uuid-placeholder' | translate"
+      />
+    </mat-form-field>
+  </div>
+
+  <div style="display: flex; justify-content: space-between">
+    <div
+      *ngFor="let group of vm.facturaStatus"
+      style="display: flex; flex-direction: column; gap: 0.6rem"
+    >
+      <ng-container *ngFor="let tipo of group">
+        <mat-radio-group
+          [value]="
+            parseNumbers(vm.params?.status)?.includes(tipo.clave)
+              ? tipo.clave
+              : ''
+          "
+        >
+          <mat-radio-button
+            [value]="tipo.clave"
+            (click)="
+              parseNumbers(vm.params?.status)?.includes(tipo.clave) &&
+                deselectRadio($event);
+              vm.params.status = !parseNumbers(vm.params?.status)?.includes(
+                tipo.clave
+              )
+                ? parseNumbers(vm.params?.status).concat(tipo.clave).join(',')
+                : parseNumbers(vm.params?.status)
+                    .filter(filterClave(tipo.clave))
+                    .join(',')
+            "
+            >{{ tipo.nombre }}
+          </mat-radio-button>
+          <mat-radio-button value="" style="display: none" class="empty-radio">
+          </mat-radio-button>
+        </mat-radio-group>
+      </ng-container>
+    </div>
+
+    <div
+      style="
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        min-height: 100px;
+        margin-right: -24px;
+        margin-bottom: -32px;
+      "
+    >
+      <button
+        mat-flat-button
+        class="brand-btn-2 radius-s"
+        (click)="apply()"
+        style="min-width: 110px"
+      >
+        {{ "invoice.filters.apply" | translate }}
+        <mat-icon style="margin-right: -8px">keyboard_arrow_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

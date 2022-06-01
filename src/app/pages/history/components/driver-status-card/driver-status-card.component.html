@@ -1,111 +1,130 @@
 <div class="order-info-row-driver" *ngIf="orderData">
-  <div class="info-driver-container">
-    <!-- <img src="../../../../../assets/images/history/user-profile.svg" alt=""> -->
-    <i class="icon icon-user-profile"></i>
-    <p class="driver-name">{{orderData['driver']?.nickname}}</p>
 
-    <div class="truck-trailer-container">
-
-      <div class="truck section" *ngIf="orderData.truck">
-        <div class="title">
-          {{ 'history.history_detail.truck' | translate}}
-        </div>
-        <div class="value">
-          {{orderData.truck.attributes.plates}}
-        </div>
-      </div>
-
-      <div class="trailer section" *ngIf="orderData.trailer">
-        <div class="title">
-          {{ 'history.history_detail.trailer' | translate}}
-        </div>
-        <div class="value">
-          {{ orderData.trailer.attributes.plates }}
-        </div>
-
-      </div>
+  <div class="edit-btn-wrapper">
+    <div
+      *ngIf="orderData.status < 2"
+      (click)="editOrder.emit()"
+      class="edit-order-btn"
+    >
+      {{ 'history.history_detail.edit_order' | translate }}
     </div>
-    
-    <p *ngIf="orderData.status == 2 || orderData == 4" class="estimated-info">
-      {{title == 'pickup' ? ('history.order-status.estimated-pickup-time' | translate) : ('history.order-status.estimated-dropoff-time' | translate)}} 
-    </p>
+  </div>
+  <div class="status-card">
+    <div class="info-driver-container">
+      <div class="avatar-wrapper">
+        <app-simple-avatar 
+          [picture]="orderData.driver?.thumbnail">
+        </app-simple-avatar>
+      </div>
+      <p class="driver-name">{{orderData['driver']?.nickname}}</p>
 
-    <p *ngIf="orderData.status == 2 || orderData == 4" class="date-info">
-      <span *ngIf=" title == 'pickup'">
-        {{ orderData.pickup.startDate | date : 'shortTime'}}
+      <span *ngIf="orderData.status == 4">
+        <p class="estimated-info">
+          {{'history.order-status.estimated-dropoff-time' | translate}}
+        </p>
+        <div>
+          {{calculateETA | date: 'dd/MM/YYY HH:mm'}}
+        </div>
       </span>
-      <span *ngIf=" title == 'dropoff'">
-        {{ orderData.dropoff.startDate | date : 'shortTime'}}
-      </span>
-    </p>
+
+    </div>
+
+    <!-- pickup timeline -->
+    <div *ngIf=" title == 'pickup'" class="info-order-status-container">
+      <p class="order-status">
+        <span [ngClass]="orderData.status >= -3 ? '' : 'no-active'">
+          <img *ngIf="orderData.status < -3" src="../../../../../assets/images/history/location-point.svg" alt="">
+          <i *ngIf="orderData.status >= -3" class="icon icon-check"></i>
+        </span>
+        {{ 'history.order-status.order-created' | translate }}
+      </p>
+      <p class="order-status">
+        <span [ngClass]="orderData.status >= 1 ? '' : 'no-active'">
+          <img *ngIf="orderData.status < 1" src="../../../../../assets/images/history/location-point.svg" alt="">
+          <i *ngIf="orderData.status >= 1" class="icon icon-check"></i>
+        </span>
+        {{ 'history.order-status.order-accepted' | translate }}
+      </p>
+      <p class="order-status">
+        <span [ngClass]="orderData.status >= 2 ? '' : 'no-active'">
+          <img *ngIf="orderData.status < 2" src="../../../../../assets/images/history/location-point.svg" alt="">
+          <i *ngIf="orderData.status >= 2" class="icon icon-check"></i>
+        </span>
+        {{title == 'pickup' ? ('history.order-status.pickup' | translate) : ('history.order-status.dropoff' | translate)}}
+        {{'history.order-status.started-by' | translate}}
+        {{orderData['driver']?.nickname}}
+      </p>
+      <p class="order-status">
+        <span [ngClass]="orderData.status >= 3 ? '' : 'no-active'">
+          <img *ngIf="orderData.status < 3" src="../../../../../assets/images/history/location-point.svg" alt="">
+          <i *ngIf="orderData.status >= 3" class="icon icon-check"></i>
+        </span>
+        {{title == 'pickup' ? ('history.order-status.pickup' | translate) : ('history.order-status.dropoff' | translate)}}
+        {{ 'history.order-status.completed' | translate }}
+      </p>
+    </div>
+
+    <!-- dropoff timeline -->
+    <div *ngIf=" title != 'pickup' " class="info-order-status-container">
+      <p class="order-status">
+        <span [ngClass]="orderData.status >= 4 ? '' : 'no-active'">
+          <img *ngIf="orderData.status < 4" src="../../../../../assets/images/history/location-point.svg" alt="">
+          <i *ngIf="orderData.status >= 4 " class="icon icon-check"></i>
+        </span>
+        {{ 'history.order-status.delivery-started' | translate }}
+      </p>
+      <p class="order-status">
+        <span [ngClass]="orderData.status >= 5 ? '' : 'no-active'">
+          <img *ngIf="orderData.status < 5" src="../../../../../assets/images/history/location-point.svg" alt="">
+          <i *ngIf="orderData.status >= 5" class="icon icon-check"></i>
+        </span>
+        {{ 'history.order-status.delivery-completed' | translate }}
+      </p>
+      <p class="order-status">
+        <span [ngClass]="orderData.status >= 6 ? '' : 'no-active'">
+          <img *ngIf="orderData.status < 6" src="../../../../../assets/images/history/location-point.svg" alt="">
+          <i *ngIf="orderData.status >= 6" class="icon icon-check"></i>
+        </span>
+        {{title == 'pickup' ? ('history.order-status.pickup' | translate) : ('history.order-status.dropoff' | translate)}}
+        {{'history.order-status.order-completed' | translate}}
+        {{orderData['driver']?.nickname}}
+      </p>
+
+    </div>
   </div>
 
-  <!-- pickup timeline -->
-  <div *ngIf=" title == 'pickup'" class="info-order-status-container">
-    <p class="order-status">
-      <span [ngClass]="orderData.status >= -3 ? '' : 'no-active'">
-        <img *ngIf="orderData.status < -3" src="../../../../../assets/images/history/location-point.svg" alt="">
-        <i *ngIf="orderData.status >= -3" class="icon icon-check"></i>
+  <div class="truck-trailer-info" [ngClass]="{'border-bottom': (! (orderData.status == 2 && title == 'pickup') || (orderData.status !== 4 && title!=='pickup')) && orderData.status <6}">
+    <div class="truck-info" *ngIf="orderData.truck">
+      <i class="icon icon-fleet"></i>
+      <span class="label">
+        {{ 'history.history_detail.truck' | translate}}
+        <span class="dash">-</span>
       </span>
-      {{ 'history.order-status.order-created' | translate }}
-    </p>
-    <p class="order-status">
-      <span [ngClass]="orderData.status >= 1 ? '' : 'no-active'">
-        <img *ngIf="orderData.status < 1" src="../../../../../assets/images/history/location-point.svg" alt="">
-        <i *ngIf="orderData.status >= 1" class="icon icon-check"></i>
+      {{orderData.truck.attributes.plates}}
+    </div>
+    <div class="trailer-info" *ngIf="orderData.trailer">
+      <i class="icon icon-trailer"></i>
+      <span class="label">
+        {{ 'history.history_detail.trailer' | translate}}
+        <span class="dash">-</span>
       </span>
-      {{ 'history.order-status.order-accepted' | translate }}
-    </p>
-    <p class="order-status">
-      <span [ngClass]="orderData.status >= 2 ? '' : 'no-active'">
-        <img *ngIf="orderData.status < 2" src="../../../../../assets/images/history/location-point.svg" alt="">
-        <i *ngIf="orderData.status >= 2" class="icon icon-check"></i>
-      </span>
-      {{title == 'pickup' ? ('history.order-status.pickup' | translate) : ('history.order-status.dropoff' | translate)}} 
-      {{'history.order-status.started-by' | translate}}
-      {{orderData['driver']?.nickname}}
-    </p>
-    <p class="order-status">
-      <span [ngClass]="orderData.status >= 3 ? '' : 'no-active'">
-        <img *ngIf="orderData.status < 3" src="../../../../../assets/images/history/location-point.svg" alt="">
-        <i *ngIf="orderData.status >= 3" class="icon icon-check"></i>
-      </span>
-      {{title == 'pickup' ? ('history.order-status.pickup' | translate) : ('history.order-status.dropoff' | translate)}} 
-      {{ 'history.order-status.completed' | translate }}
-    </p>
+      {{ orderData.trailer.attributes.plates }}
+    </div>
   </div>
+  <span *ngIf="orderData.status < 6">
+    <!--pickup track btn-->
+    <div class="track-button-container" *ngIf="title=='pickup' ">
+      <button class="track-button" [disabled]="!(orderData.status >= 2 && orderData.status < 3)" (click)="sendIdForTrackingOrder()">
+        {{ 'history.history_detail.btn_track' | translate }}
+      </button>
+    </div>
 
-  <!-- dropoff timeline -->
-  <div *ngIf=" title != 'pickup' " class="info-order-status-container">
-    <p class="order-status">
-      <span [ngClass]="orderData.status >= 4 ? '' : 'no-active'">
-        <img *ngIf="orderData.status < 4" src="../../../../../assets/images/history/location-point.svg" alt="">
-        <i *ngIf="orderData.status >= 4 " class="icon icon-check"></i>
-      </span>
-      {{ 'history.order-status.delivery-started' | translate }}
-    </p>
-    <p class="order-status">
-      <span [ngClass]="orderData.status >= 5 ? '' : 'no-active'">
-        <img *ngIf="orderData.status < 5" src="../../../../../assets/images/history/location-point.svg" alt="">
-        <i *ngIf="orderData.status >= 5" class="icon icon-check"></i>
-      </span>
-      {{ 'history.order-status.delivery-completed' | translate }}
-    </p>
-    <p class="order-status">
-      <span [ngClass]="orderData.status >= 6 ? '' : 'no-active'">
-        <img *ngIf="orderData.status < 6" src="../../../../../assets/images/history/location-point.svg" alt="">
-        <i *ngIf="orderData.status >= 6" class="icon icon-check"></i>
-      </span>
-      {{title == 'pickup' ? ('history.order-status.pickup' | translate) : ('history.order-status.dropoff' | translate)}} 
-      {{'history.order-status.order-completed' | translate}}
-      {{orderData['driver']?.nickname}}
-    </p>
+    <!--dropoff track btn-->
+    <div class="track-button-container" *ngIf="title!=='pickup' ">
+      <button class="track-button" [disabled]="!(orderData.status >= 4 && orderData.status < 5)" (click)="sendIdForTrackingOrder()">
+        {{ 'history.history_detail.btn_track' | translate }}
+      </button>
+    </div>
 
-  </div>
-
-  <div class="track-button-container">
-    <button class="track-button" (click)="sendIdForTrackingOrder()">
-      {{ 'history.history_detail.btn_track' | translate }}
-    </button>
-  </div>
+  </span>
 </div>

@@ -1,0 +1,204 @@
+<form [formGroup]="domicilioForm">
+  <h6>{{ "invoice.location.domicilio" | translate }}</h6>
+  <div class="grid">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-pais" | translate }}</mat-label>
+      <mat-select
+        class="disable-custom-format"
+        formControlName="pais"
+        name="País"
+      >
+        <mat-option
+          (click)="clearDependentInputs()"
+          *ngFor="let option of paisCatalogue"
+          [value]="option.code"
+        >
+          {{ option.code }} - {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-estado" | translate }}</mat-label>
+      <input
+        formControlName="estado"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="estadosCatalogueRef"
+      />
+      <mat-autocomplete
+        #estadosCatalogueRef="matAutocomplete"
+        [displayWith]="getLocationText.bind(this, 'estados')"
+      >
+        <span *ngIf="domicilioForm.value.pais">
+          <mat-option
+            (click)="domicilioForm.patchValue({ municipio: '', localidad: '' })"
+            *ngFor="let option of filteredEstados"
+            [value]="option.clave"
+          >
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </span>
+        <mat-option *ngIf="!domicilioForm.value.pais">
+          {{ "invoice.location.addr-estado-nocountry" | translate }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-cp" | translate }}</mat-label>
+      <input
+        matInput
+        (blur)="getColonias($event)"
+        formControlName="codigo_postal"
+        name="Código Postal"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-calle" | translate }}</mat-label>
+      <input matInput formControlName="calle" name="Calle" />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="brand-field-1"
+      *ngIf="domicilioForm.value.pais == 'MEX'"
+    >
+      <mat-label>{{ "invoice.edit.addr-municipio" | translate }}</mat-label>
+      <input
+        formControlName="municipio"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="municipiosCatalogueRef"
+      />
+      <mat-autocomplete
+        #municipiosCatalogueRef="matAutocomplete"
+        [displayWith]="getLocationText.bind(this, 'municipios')"
+      >
+        <span *ngIf="domicilioForm.value.estado">
+          <mat-option
+            *ngFor="let option of filteredMunicipios"
+            [value]="option.clave"
+          >
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </span>
+        <mat-option *ngIf="!domicilioForm.value.estado">
+          {{ "invoice.location.addr-municipio-noestado" | translate }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field
+      appearance="outline"
+      class="brand-field-1"
+      *ngIf="domicilioForm.value.pais !== 'MEX'"
+    >
+      <mat-label>{{ "invoice.edit.addr-municipio" | translate }}</mat-label>
+      <input
+        formControlName="municipio"
+        autocomplete="off"
+        type="search"
+        matInput
+      />
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="brand-field-1"
+      *ngIf="domicilioForm.value.pais == 'MEX'"
+    >
+      <mat-label>{{ "invoice.edit.addr-localidad" | translate }}</mat-label>
+      <input
+        formControlName="localidad"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="localidadesCatalogueRef"
+      />
+      <mat-autocomplete
+        #localidadesCatalogueRef="matAutocomplete"
+        [displayWith]="getLocationText.bind(this, 'localidades')"
+      >
+        <span *ngIf="domicilioForm.value.estado">
+          <mat-option
+            *ngFor="let option of filteredLocalidades"
+            [value]="option.clave"
+          >
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </span>
+        <mat-option *ngIf="!domicilioForm.value.estado">
+          {{ "invoice.location.addr-municipio-noestado" | translate }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field
+      appearance="outline"
+      class="brand-field-1"
+      *ngIf="domicilioForm.value.pais !== 'MEX'"
+    >
+      <mat-label>{{ "invoice.edit.addr-localidad" | translate }}</mat-label>
+      <input
+        formControlName="localidad"
+        autocomplete="nope"
+        type="search"
+        matInput
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-no-ext" | translate }}</mat-label>
+      <input
+        matInput
+        formControlName="numero_exterior"
+        name="Número Exterior"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-no-int" | translate }}</mat-label>
+      <input
+        matInput
+        formControlName="numero_interior"
+        name="Número Interior"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ "invoice.edit.addr-colonia" | translate }}</mat-label>
+      <input
+        formControlName="colonia"
+        autocomplete="off"
+        type="search"
+        matInput
+        [matAutocomplete]="coloniasCatalogueRef"
+      />
+      <mat-autocomplete
+        #coloniasCatalogueRef="matAutocomplete"
+        [displayWith]="getLocationText.bind(this, 'colonias')"
+      >
+        <span *ngIf="domicilioForm.value.codigo_postal">
+          <mat-option
+            *ngFor="let option of filteredColonias"
+            [value]="option.clave"
+          >
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </span>
+        <mat-option *ngIf="!domicilioForm.value.codigo_postal">
+          {{ "invoice.location.addr-colonia-nocp" | translate }}
+        </mat-option>
+        <mat-option
+          *ngIf="domicilioForm.value.codigo_postal && colonias.length == 0"
+        >
+          {{ "invoice.edit.addr-colonia-noresults" | translate }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{
+        "invoice.location.addr-referencia" | translate
+      }}</mat-label>
+      <input matInput formControlName="referencia" name="Referencia" />
+    </mat-form-field>
+  </div>
+</form>

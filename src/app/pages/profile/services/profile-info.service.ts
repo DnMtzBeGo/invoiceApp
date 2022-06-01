@@ -23,7 +23,7 @@ export class ProfileInfoService {
   }
 
   async getProfileInfo(){
-    (await this.webService.apiRest('', 'shippers/select_attributes'))
+    (await this.webService.apiRest('', 'carriers/select_attributes'))
     .subscribe(
       (res) => {
         console.log('select attributes : ', res.result);

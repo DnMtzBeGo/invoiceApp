@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="28 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>6FAD784F-1278-461C-A804-C2A0562B7B94</title>
+    <defs>
+        <linearGradient x1="88.2256394%" y1="68.7440786%" x2="58.9518079%" y2="54.3882937%" id="linearGradient-1">
+            <stop stop-color="#97AAAA" offset="0%"></stop>
+            <stop stop-color="#E8EFEE" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="55.8206949%" y1="52.2388674%" x2="92.830638%" y2="66.4844582%" id="linearGradient-2">
+            <stop stop-color="#1ACEB8" offset="0%"></stop>
+            <stop stop-color="#0BBFBA" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="56.1199449%" y1="52.3540525%" x2="92.830638%" y2="66.4844582%" id="linearGradient-3">
+            <stop stop-color="#FFC700" offset="0%"></stop>
+            <stop stop-color="#D3A201" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#FFD200" offset="0%"></stop>
+            <stop stop-color="#FFBE00" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50.0017994%" y1="25.1927533%" x2="50.0017994%" y2="-3.4273386%" id="linearGradient-5">
+            <stop stop-color="#D4A301" stop-opacity="0" offset="0.01%"></stop>
+            <stop stop-color="#D2A100" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="82.369299%" y1="88.1309665%" x2="17.1532742%" y2="47.7322973%" id="linearGradient-6">
+            <stop stop-color="#FFC000" stop-opacity="0" offset="0.01%"></stop>
+            <stop stop-color="#D4A300" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="73.7871594%" y1="55.7548563%" x2="26.966487%" y2="44.4766982%" id="linearGradient-7">
+            <stop stop-color="#C2CECE" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#AFBCBC" stop-opacity="0.179" offset="17.9%"></stop>
+            <stop stop-color="#5B6A6A" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="27.2713283%" y1="26.0796781%" x2="77.4902713%" y2="78.9197295%" id="linearGradient-8">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E8EFEE" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="86.2608185%" y1="88.1414752%" x2="36.0469535%" y2="35.3067667%" id="linearGradient-9">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#E1E7EB" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="User" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="PICK-UP-FTL-1.1" transform="translate(-337.000000, -188.000000)" fill-rule="nonzero">
+            <g id="switch-copy" transform="translate(364.000000, 201.000000) scale(-1, 1) translate(-364.000000, -201.000000) translate(337.000000, 188.000000)">
+                <ellipse id="Oval" fill="url(#linearGradient-8)" cx="12.6734694" cy="13" rx="12.6734694" ry="13"></ellipse>
+                <ellipse id="Oval" fill="url(#linearGradient-9)" cx="12.6734694" cy="13" rx="6.06122449" ry="6.2173913"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>

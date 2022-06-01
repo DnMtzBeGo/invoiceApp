@@ -1,0 +1,15 @@
+.app-factura-manage-direcciones {
+  max-width: 700px;
+  min-width: 700px;
+  color: #ededed;
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+}

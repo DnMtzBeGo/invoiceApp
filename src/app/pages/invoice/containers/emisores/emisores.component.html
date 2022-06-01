@@ -1,0 +1,18 @@
+<div>
+  <div class="page-header" role="heading">
+    <h1>{{ "invoice.emisores.emisores" | translate }}</h1>
+    <div class="toolbar-right">
+      <button mat-flat-button class="brand-btn-2" (click)="newEmisor()">
+        {{ "invoice.emisores.new" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <app-emisores-table
+      [emisoresTableData]="dataSource"
+      (refresh)="getEmisores()"
+    >
+    </app-emisores-table>
+  </div>
+</div>

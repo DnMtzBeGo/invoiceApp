@@ -92,19 +92,22 @@
     "checkout": {
         "title-checkout": "Checkout",
         "txt-reference": "Referencia",
+        "title-emitter": "Informacion del Emisor",
         "txt-order": "Orden",
         "txt-pickup": "Recolección",
         "txt-dropoff": "Entrega",
-        "txt-inovice": "Factura",
-        "title-inovice": "Información de facturación",
+        "txt-invoice": "Factura",
+        "title-invoice": "Información de Receptor",
         "placeholder-fullname": "Nombre completo",
         "placeholder-email": "Email",
         "placeholder-phonenumber": "Teléfono Móvil",
         "placeholder-address": "Dirección",
-        "placeholder-company": "Compañía (nombre legal)",
+        "placeholder-company": "Razon social",
         "placeholder-rfc": "RFC",
         "placeholder-cfdi": "Uso de CFDI",
+        "placeholder-tax_regime": "Regimen Fiscal",
         "select-cfdi":"Selecciona un CFDI",
+        "select-tax":"Selecciona un Regimen Fiscal",
         "edit": "Editar",
         "unit": "Unidad",
         "tons": "tons",
@@ -128,8 +131,15 @@
         "total-price": "Total",
         "placeholder-cargo": "Descripción del cargo",
         "placeholder-notes": "Notas Extra",
+        "placeholder-file_cer": "Selecciona tu certificado (CSD)",
+        "placeholder-file_key": "Selecciona tu llave",
+        "btn-file_cer": "Certificado de cello digital (.cer)",
+        "btn-file_key": "LLave de cello digital (.key)",
+        "placeholder-password": "Contraseña del Certificado",
         "btn-continue": "Continuar",
+        "btn-retry": "Reintentar",
         "btn-submit": "Crear Orden",
+        "upload": "Subir",
         "txt-reference-payment": "Referencia",
         "txt-account-payment": "Clabe Interbancaria",
         "txt-company-payment": "Razón Social",
@@ -139,7 +149,6 @@
         "title-valid-route": "Nota",
         "txt-valid-route": "Esta orden será operada por uno de nuestros representantes, te contactaremos cuando esté lista.",
         "txt-save":"Guardar",
-        "title-invoice": "Información de factura",
         "to-define":"Por definir",
         "payment-method":"Método de pago",
         "transfer":"Transferencia",
@@ -156,19 +165,29 @@
             "txt-valid-invoice": "Favor de completar los campos de tu factura.",
             "verify-user-title": "Antes de completar la orden debemos verificar tu cuenta",
             "verify-user-body": "Completa la documentación en la página de perfil", 
-            "error-orderid": "El ID de la Orden no es válido"
+            "error-orderid": "El ID de la Orden no es válido",
+            "error-something": "Algo a salido mal: ",
+            "error-missing-orderId": "No se encuentra el order Id",
+            "fileSize": "el archivo es demasiado pesado",
+            "fileType": "el tipo de archivo debe ser .cer o .key",
+            "emitter-validated": "Emisor Creado",
+            "emitter-validated-fail": "Emisor no validado",
+            "emitter-create": "Para crear el emisor: ",
+            "emitter-tax_regime": "Falta el régimen fiscal del emisor",
+            "receiver-stamp": "Para generar carta porte:",
+            "receiver-address": "Falta la dirección del receptor",
+            "receiver-company": "Falta la razón social del receptor",
+            "receiver-rfc": "Falta el RFC del receptor",
+            "receiver-cfdi": "Falta el CFDI del receptor",
+            "receiver-tax_regime": "Falta el régimen fiscal del receptor"
         },
         "insurance-modal": {
-            "title-insurance": "¿Seguro para tu carga?",
-            "txt-insurance": "Agrega el valor de la carga y agregalo a tu carro de compras",
-            "btn-accept": "Agregar seguro de carga",
-            "btn-deny": "Continuar sin seguro",
-            "title-cargo": "¿Y ahora que lo tienes?",
-            "btn-add": "Agrega",
-            "btn-quit": "Remover",
-            "txt-cargo": "¿Cuál es el valor de tu carga?",
-            "btn-cargo": "Agregar Seguro",
-            "txt-total": "El importe total del seguro es"
+            "title-insurance": "Total",
+            "txt-insurance": "Escribe el precio total del servicio",
+            "txt-insurance-taxes": "(Antes de impuestos)",
+            "deferred-PUE": "Pago en una sola exhibición",
+            "deferred-PPD": "Pago en parcialidades",
+            "btn": "Siguiente"
         },
         "agent-modal": {
             "title-agent": "¿Quieres Agente y Cruce?",
@@ -179,20 +198,26 @@
             "txt-agent-prices": "(Precios en USD)"
         },
         "stepper-btns":{
-            "continue-to-invoice": "Continuar a la factura",
-            "continue-to-payment": "Continuar al pago",
-            "submit": "Crear Orden"
+            "continue-to-emitter": "Continuar a Receptor",
+            "continue-to-invoice": "Continuar a el Resumen",
+            "summary": "Crear Orden"
         },
         "skip": "Omitir",
         "next": "Siguiente",
         "label-total-price": "Total:",
         "summary": "Resumen",
-        "invoice": "Factura",
-        "payment": "Pago"
+        "invoice": "Receptor",
+        "emitter": "Emisor",
+        "invalid_rfc": "RFC invalido",
+        "preview": "Factura",
+        "invoice-preview": "previo de Factura",
+        "merchandise_type": "Tipo de Mercancia",
+        "file_size_error": "El archivo es demasiado pesado"
     },
     "history": {
         "title": "Historial de viajes",
         "search": "Buscar por dirección...",
+        "total_earnings": "Ganancias totales", 
         "no-comments":"Sin Comentarios",
         "upcoming_detail_title":"Próximo",
         "completed_detail_title":"Completado",
@@ -224,6 +249,7 @@
         "btn_start_driving": "Comenzar",
         "history_detail": {
             "reference": "Referencia",
+            "edit_order": "Editar",
             "order": "Orden",
             "pickup_info_tab": "Datos de recolección",
             "dropoff_info_tab": "Datos de entrega",
@@ -245,7 +271,8 @@
             "truck":"Unidad",
             "trailer":"Carga",
             "subtotal":"Subtotal",
-            "total_price": "Precio Total"
+            "total_price": "Precio Total",
+            "select":"Seleccionar"
         },
         "driver_assignment": {
             "title": "Asignado a",
@@ -258,12 +285,15 @@
             "btn_confirm": "Confirmar"
         },
         "overview": {
-            "title": "Assignado a",
-            "edit": "Editar",
-            "driver": "Conductor",
-            "vehicle": "Vehículo",
-            "btn_confirm": "Confirmar"
-        },
+            "title": "Asignado a",
+            "title_order-assigment": "Asignado a",
+            "label_driver": "Conductor",
+            "label_vehicle": "Unidad",
+            "label_trailer": "Caja",
+            "btn-edit": "Editar",
+            "btn-submit": "Enviar",
+            "btn-confirm": "Confirmar"
+         },
         "tracking": {
             "title": "Ubicación de la carga",
             "distance": "Distancia",
@@ -311,7 +341,22 @@
             "stand-by":"Pendiente",
             "in-progress":"En curso",
             "completed":"Completado"
-        }
+      },
+      "consignment_note": {
+        "edit_consignment_note": "Editar carta porte",
+        "order": "Orden",
+        "pickup": "Recolección",
+        "dropoff": "Entrega",
+        "save_changes": "Guardar cambios",
+        "info_updated": "La información para la carta porte fue actualizada",
+        "cannot_edit": "Aún no puedes editar",
+        "complete_invoice": "Completar factura",
+        "price": "Precio",
+        "stamp": "Timbrar",
+        "stamp_request": "Se solicitó la creación de la carta porte",
+        "invoice": "Factura",
+        "invoice_preview": "Previo de factura"
+      }
     },
     "fiscal-documents": {
         "cards-instructions":"Arrastra un archivo en cada tarjeta o haz clic en ellas para elegir un archivo.",
@@ -591,6 +636,7 @@
         "home":"Inicio",
         "drafts":"Borradores",
         "history":"Historial",
+        "invoice":"Facturas",
         "support":"Soporte",
         "faq":"FAQs",
         "terms-conditions":"T & C",
@@ -602,5 +648,571 @@
             "body": "Favor de continuar más tarde",
             "ok": "ok"
         }
+    },
+    "invoice": {
+        "invoices": {
+            "filters": "Filtros",
+            "series": "Series",
+            "emisor-btn": "Emisores",
+            "new-invoice": "Nueva Factura",
+            "template-placeholder": "Buscar Template",
+            "template-open": "Abrir Template",
+            "template-new": "Nuevo Template",
+
+            "noemisor-title": "Atención",
+            "noemisor-message": "Se debe dar de alta a un Emisor antes de comenzar a Facturar",
+            "noemisor-confirm": "Crear ahora"
+        },
+        "invoice-table": {
+            "emision": "Emisión",
+            "emisor": "Emisor",
+            "receptor": "Receptor",
+            "serie": "Serie",
+            "tipo": "Tipo",
+            "status": "Status",
+            "subtotal": "Subtotal",
+            "total": "Total",
+            "items-per-page": "Resultados por Página",
+            "showing": "Mostrar",
+            "of": "de",
+            "prev": "atrás",
+            "next": "siguiente",
+            "edit-invoice": "Editar Factura",
+            "view-details": "Ver detalles",
+            "carta-porte": "Carta Porte",
+            "duplicate": "Duplicar",
+            "preview": "Vista Previa",
+            "download-pdf": "Descargar PDF",
+            "download-xml": "Descargar XML",
+            "download-acuse": "Descargar Acuse",
+            "send-by-email": "Enviar por Correo",
+            "cancel-invoice": "Cancelar Factura",
+            "delete-invoice": "Eliminar Factura",
+
+            "preview-error": "Error al generar vista previa",
+
+            "delete-title": "Atención",
+            "delete-message": "¿Estas seguro que deseas eliminar esta Factura? Esta acción no se puede deshacer.",
+            "delete-success": "Factura borrada!",
+            "delete-error": "Error borrando Factura"
+        },
+        "filters": {
+            "apply": "Aplicar",
+            "fechas": "Fechas",
+            "inicio": "Inicio",
+            "final": "Final",
+            "emisor": "Emisor",
+            "emisor-placeholder": "Buscar por Nombre o RFC",
+            "receptor": "Receptor",
+            "receptor-placeholder": "Buscar por Nombre o RFC",
+            "tipo-comprobante": "Tipo de Comprobante",
+            "tipo-comprobante-placeholder": "Todos",
+            "uuid-placeholder": "Buscar por UUID"
+        },
+        "edit": {
+            "receptor": "Receptor",
+
+            "rfc": "RFC",
+            "rfc-placeholder": "Ingresa el RFC de tu cliente",
+            "no-results": "No se encontraron resultados",
+
+            "nombre": "Nombre o Razón social",
+            "nombre-placeholder": "Ingresa la Razón Social de tu cliente",
+
+            "usocfdi": "Uso de CFDI",
+            "usocfdi-placeholder": "Selecciona el uso del CFDI",
+            "usocfdi-placeholder-2": "Ingresa un RFC de cliente válido",
+            "type-to-search": "Escribe para buscar..",
+
+            "direccion": "Dirección",
+            "direccion-placeholder": "Seleciona una dirección",
+            "direccion-placeholder-2": "Ingresa un receptor válido",
+            "direccion-placeholder-3": "No se encontraron direcciones guardadas",
+            "direccion-new": "Nueva dirección",
+            "direccion-edit": "Editar direcciones",
+            "loading": "Cargando...",
+
+            "addr-nombre": "Nombre Sucursal",
+            "addr-nombre-placeholder": "Ingresa el nombre de la Sucursal",
+
+            "addr-calle": "Calle",
+            "addr-no-ext": "No. Exterior",
+            "addr-no-int": "No. Interior",
+            "addr-pais": "País",
+            "addr-estado": "Estado",
+            "addr-municipio": "Municipio",
+            "addr-localidad": "Localidad",
+            "addr-cp": "Código Postal",
+            "addr-colonia": "Colonia",
+            "addr-colonia-placeholder-2": "Ingresa un código postal válido",
+            "addr-email": "Correo electrónico",
+
+            "emisor": "Emisor",
+            "emisor-btn-new": "Nuevo Emisor",
+
+            "rfc-emisor": "RFC",
+            "rfc-emisor-placeholder": "Ingresa el RFC emisor",
+            "rfc-emisor-new": "Registrar Emisor",
+            "rfc-parent": "RFC Padre",
+
+            "nombre-emisor": "Nombre o Razón social",
+            "nombre-emisor-placeholder": "Ingresa la Razón Social del emisor",
+
+            "lugar-expedicion": "Lugar de Expedición (Matriz o Sucursal)",
+            "lugar-expedicion-placeholder": "Selecciona el Lugar de Expedición",
+            "lugar-expedicion-placeholder-2": "Selecciona un emisor válido",
+            "lugar-expedicion-placeholder-3": "No se encontraron lugares de expedición guardados",
+            "emisor-direccion-new": "Nueva sucursal",
+            "emisor-direccion-edit": "Editar sucursales",
+
+            "regimen": "Régimen fiscal",
+            "regimen-placeholder": "Selecciona un Régimen fiscal",
+            "regimen-placeholder-2": "Ingresa un RFC emisor válido",
+            "regimen-placeholder-3": "Ingresa un RFC de cliente válido",
+
+            "tipo-comprobante": "Tipo de comprobante",
+            "moneda": "Moneda",
+            "tipo-de-cambio": "Tipo de cambio",
+            "metodo-pago": "Método de pago",
+            "forma-pago": "Forma de pago",
+
+            "info": "Información Extra",
+            "info-placeholder": "Información Extra (máx 5000 caractéres)",
+
+            "conceptos": "Conceptos",
+            "conceptos-edit": "Productos/Servicios",
+
+            "concepto-nombre": "Producto o servicio",
+            "concepto-nombre-placeholder": "Ingresa tu producto o servicio",
+            "concepto-cve_sat": "Descripción SAT",
+            "concepto-unidad-medida": "Unidad de medida",
+            "concepto-precio": "Precio unitario",
+            "concepto-cantidad": "Cantidad",
+            "concepto-descuento": "Descuento",
+            "concepto-descripcion": "Descripción del producto o servicio",
+            "concepto-importe": "Importe",
+            "concepto-total": "Total concepto",
+            "concepto-agregar": "Agregar concepto",
+
+            "impuestos": "Impuestos",
+            "impuesto": "Impuesto",
+            "impuesto-placeholder": "Selecciona una opción",
+
+            "impuesto-tasa": "Tasa (%)",
+            "impuesto-tasa-placeholder-2": "Entre :1% y :2%",
+            "impuesto-agregar": "Agregar impuesto",
+
+            "impuesto-tasa-cuota": "Tasa o Cuota",
+            "opciones": "Opciones",
+
+            "concepto-unidad": "Unidad",
+            "concepto-concepto-desc": "Concepto y descripción",
+            "concepto-precio": "Precio",
+            "concepto-edit": "Editar",
+            "concepto-eliminar": "Eliminar",
+            "concepto-subtotal": "Subtotal",
+            "concepto-total-table": "Total",
+
+            "doc-rel": "Documentos Relacionados",
+            "doc-rel-tipo": "Tipo de relación",
+            "doc-rel-uuid": "UUID",
+            "doc-rel-add": "Agregar",
+
+            "complementos": "Complementos",
+
+            "carta-porte": "Carta Porte",
+            "carta-porte-placeholder-2": "Selecciona un tipo de comprobante",
+
+            "serie": "Serie",
+            "serie-placeholder": "Selecciona una serie",
+            "serie-placeholder-2": "Serie (Selecciona un tipo de comprobante)",
+            "serie-placeholder-3": "Serie (Selecciona un emisor válido)",
+            "serie-placeholder-4": "Serie (No hay series guardadas)",
+            "serie-folio": "Folio",
+            "serie-edit": "Editar serie",
+            "serie-new": "Nueva serie",
+
+            "btn-generar": "Generar",
+            "btn-generar-success": "Enviada a generar",
+            "btn-generar-retry": "Reintentar",
+
+            "btn-eliminar": "Eliminar Factura",
+            "btn-eliminar-tpl": "Eliminar Template",
+
+            "btn-preview": "Vista Previa",
+            "btn-duplicar": "Duplicar",
+            "btn-pdf": "Descargar PDF",
+            "btn-xml": "Descargar XML",
+            "btn-acuse": "Descargar Acuse",
+            "btn-send-email": "Enviar por Correo",
+            "btn-cancel": "Cancelar factura",
+
+            "btn-save-update": "Guardar cambios",
+            "btn-save-update-success": "Cambios guardados",
+            "btn-save-retry": "Reintentar",
+            "btn-save-save": "Guardar",
+            "btn-save-save-success": "Factura guardada",
+            "btn-save-save-success-tpl": "Template guardado",
+
+            "preview-error": "Error al generar vista previa",
+
+           "template-delete-title": "Atención",
+           "template-delete-message": "¿Estas seguro que deseas eliminar este Template? Esta acción no se puede deshacer.",
+           "template-delete-success": "Template borrado",
+           "template-delete-error": "Error borrando el Template"
+        },
+        "manage-dir": {
+            "emisor": {
+                "title": "Sucursales emisor",
+                "subtitle": "(Añade, edita, elimina sucursales)"
+            },
+            "receptor": {
+                "title": "Direcciones receptor",
+                "subtitle": "(Añade, edita, elimina direcciones)"
+            },
+            "direccion": "Dirección",
+            "direccion-placeholder": "Seleciona una dirección",
+            "direccion-placeholder-1": "No se encontraron resultados",
+
+            "btn-save-retry": "Reintentar",
+            "btn-save-update": "Actualizar",
+            "btn-save-update-success": "Dirección actualizada",
+            "btn-save-save": "Guardar",
+            "btn-save-save-success": "Dirección guardada",
+            "btn-save-new": "Nueva Dirección",
+
+            "btn-delete-retry": "Reintentar",
+            "btn-delete": "Eliminar",
+            "btn-delete-success": "Dirección eliminada",
+
+            "btn-cancel": "Cancelar"
+        },
+        "emisor-concep": {
+            "title": "Productos o Servicios",
+            "subtitle": "(Añade, edita, elimina productos o servicios)",
+
+            "btn-cancel": "Cancelar",
+
+            "btn-delete-retry": "Reintentar",
+            "btn-delete": "Eliminar",
+            "btn-delete-success": "Concepto eliminado",
+
+            "btn-import-retry": "Reintentar",
+            "btn-import": "Importar Productos",
+            "btn-import-success": "Importación exitosa",
+
+            "nombre" : "Nombre",
+            "descripcion": "Descripción",
+            "opciones": "Opciones",
+
+            "editar": "Editar",
+            "eliminar": "Eliminar",
+
+            "no-products": "No se encontraron productos o servicios",
+
+            "btn-save-retry": "Reintentar",
+            "btn-save-update": "Actualizar",
+            "btn-save-update-success": "Concepto actualizado",
+            "btn-save-save": "Guardar",
+            "btn-save-save-success": "Concepto guardado",
+            "btn-save-new": "Nuevo Producto o Servicio"
+        },
+        "serie-new": {
+            "title": "Series y logos",
+
+            "tipo-comprobante": "* Tipo de comprobante",
+
+            "serie": "* Serie",
+            "serie-placeholder": "* Nombre de la serie",
+
+            "folio": "* Folio",
+            "color": "Color (opcional)",
+
+            "image": "Imagen (opcional)",
+            "image-placeholder": "Seleccionar imagen (opcional)",
+
+            "btn-save": "Guardar",
+
+            "close-update-success": "Serie actualizada con éxito!",
+            "close-create-success": "Serie creada con éxito!",
+            "close-error": "Ocurrió un error"
+        },
+        "email-factura": {
+            "title": "Enviar por Correo",
+            "body": "Ingrese la siguiente información para enviar su comprobante por correo electrónico.",
+
+            "asunto": "Asunto",
+            "asunto-placeholder": "Ingresa el asunto con el que se enviará el correo",
+            "asunto-initial": "Tu comprobante Fiscal Digital",
+
+            "para": "Para",
+            "para-placeholder": "Ingresa el/los correo(s) del cliente",
+
+            "cc": "CC",
+            "cc-placeholder": "Ingresa el correo donde se enviará una copia (CC)",
+
+            "mensaje": "Mensaje",
+            "mensaje-placeholder": "Ingresa el mensaje que quieres que se añada al correo",
+
+            "reply": "Responder a",
+            "reply-placeholder": "Ingresa el correo donde te podrá contactar el cliente",
+
+            "btn-send": "Enviar Correo",
+            "btn-send-success": "Correo Enviado",
+            "btn-send-retry": "Reintentar"
+        },
+        "cancelar-factura": {
+            "title": "Cancelar Comprobante",
+            "body": "Ingresa el motivo de cancelación del comprobante.",
+
+            "motivo": "Motivo",
+            "motivo-placeholder": "Selecciona el motivo de cancelación del comprobante.",
+
+            "uuid": "Folio Sustitución",
+            "uuid-placeholder": "Ingresa el folio fiscal del CFDI a sustituir",
+
+            "btn-send": "Confirmar",
+            "btn-send-success": "Factura cancelada",
+            "btn-send-retry": "Reintentar"
+        },
+        "confirm": {
+            "cancel": "Cancelar",
+            "confirm": "Confirmar"
+        },
+        "emisores": {
+            "emisores": "Emisores",
+            "new": "Registrar Emisor"
+        },
+        "emisor-table": {
+            "rfc-emisor": "RFC Emisor",
+            "razon-social": "Razón Social",
+            "regimen": "Régimen Fiscal",
+            "correo-notificacion": "Correo de Notificación",
+            "validacion": "Validación",
+
+            "view-series": "Series",
+            "new-invoice": "Nueva Factura",
+            "edit-emisor": "Editar",
+            "set-default": "Establecer Principal",
+            "delete-emisor": "Eliminar Emisor",
+
+            "delete-success": "Emisor Borrado",
+            "delete-error": "No se pudo borrar el Emisor",
+
+            "set-default-success": "Cambio exitoso",
+            "set-default-error": "No se pudo establecer como principal"
+        },
+        "emisor-edit": {
+            "emisor": "Emisor",
+
+            "email": "Correo Para Notificar",
+            "email-placeholder": "Escribir Correo Electrónico",
+            "regimen": "Régimen Fiscal",
+            "regimen-placeholder": "Selecciona un Régimen Fiscal",
+            "cer": "Archivo CER",
+            "key": "Archivo Key",
+            "key-password": "Archivo Key Contraseña",
+            "key-password-placeholder": "Escribir Archivo Key Contraseña",
+
+            "btn-save": "Guardar",
+
+            "create-success": "Emisor guardado",
+            "update-success": "Cambio exitoso"
+        },
+        "series": {
+            "series": "Series",
+            "new": "Nueva Serie"
+        },
+        "serie-table": {
+            "serie": "Serie",
+            "tipo-comprobante": "Tipo de Comprobante",
+            "folio": "Folio",
+            "color": "Color",
+            "logo": "Logo",
+
+            "editar": "Editar",
+            "borrar": "Borrar",
+
+            "save-success": "Serie guardada",
+            "save-error": "Serie borrada"
+        },
+        "cp-page": {
+            "carta-porte": "Carta Porte 2.0",
+            "btn-save": "Guardar",
+
+            "transporte": "Transporte",
+            "ubicaciones": "Ubicaciones",
+            "mercancias": "Mercancías",
+            "figura-transporte": "Figura del Transporte",
+
+            "success-title": "Carta porte",
+            "success-message": "La carta porte se ha guardado de manera satisfactoria",
+
+            "error-title": "La información es invalida",
+
+            "readonly-title": "Esta carta porte ya no puede ser editada",
+            "siguiente": "Siguiente",
+            "anterior": "Anterior"
+        },
+        "transporte": {
+            "transporte-internacional": "Transporte Internacional",
+
+            "pais-origen-destino": "País origen destino",
+            "movimiento-mercancia": "Movimiento de Mercancía",
+            "movimiento-mercancia-entrada": "Entrada",
+            "movimiento-mercancia-salida": "Salida",
+            "via-entrada": "Via Ingreso o Salida del País",
+
+            "siguiente": "Siguiente"
+        },
+        "autotransporte": {
+            "permiso-sct": "* Permiso SCT",
+            "num-permiso-sct": "* Número de Permiso SCT",
+
+            "seguros": "Seguros",
+
+            "nombre-civil": "* Nombre Aseguradora Responsabilidad Civil",
+            "numero-civil": "* Número Poliza Seguro Responsabilidad Civil",
+            "nombre-ambiental": "Nombre Aseguradora Ambiental (Opcional)",
+            "numero-ambiental": "Número Poliza Seguro Ambiental (Opcional)",
+            "nombre-carga": "Nombre Aseguradora Carga (Opcional)",
+            "numero-carga": "Número Poliza Seguro Carga (Opcional)",
+            "prima-seguro": "Prima Seguro (Opcional)",
+
+            "identificacion": "Identificación Vehicular",
+
+            "configuracion": "* Configuración",
+            "placa": "* Placa",
+            "año-modelo": "* Año y Modelo",
+            "año-modelo-error": "El año debe de ser mayor a 1900 y menor a 2099",
+
+            "remolques": "Remolques"
+        },
+        "ubicaciones": {
+            "siguiente": "Siguiente"
+        },
+        "ubicacion": {
+            "origen-destino": "Orígen / Destino",
+
+            "tipo": "* Tipo",
+            "choose-a-date": "Elige una fecha",
+            "id-ubicacion": "ID Ubicación (Opcional)",
+            "id-ubicacion-error": "El id debe de iniciar con 'OR' o 'DE' seguido de 6 dígitos",
+            "nombre-destinatario": "Nombre (Opcional)",
+            "rfc": "RFC",
+            "residencia-fiscal": "* Residencia Fiscal",
+            "reg-tributario": "Registro Tributario",
+            "distancia-recorrida": "Distancia Recorrida",
+
+            "origin-already-title": "Ya existe una ubicación con origen",
+            "origin-already-message": "Sólo puede existir un origen en cada carta porte"
+        },
+        "location": {
+            "domicilio": "Domicilio",
+
+            "addr-estado-nocountry": "Selecciona un país primero",
+            "addr-municipio-noestado": " Selecciona un estado primero",
+            "addr-colonia-nocp": "Escribe un código postal primero",
+            "addr-referencia": "Referencia"
+        },
+        "mercancias": {
+            "peso-bruto": "Peso Bruto Total",
+            "unidad-peso": "Unidad Peso",
+            "siguiente": "Siguiente"
+        },
+        "commodity": {
+            "bienes-transportados": "Bienes Transportados",
+            "clave-unidad": "Clave Unidad",
+            "cantidad": "Cantidad",
+            "dimensiones": "Dimensiones",
+            "dimensiones-error": "Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o plg. Ejemplo: 10/10/10cm",
+            "peso": "Peso (Kg)",
+            "valor-mercancia": "Valor Mercancía",
+            "moneda": "Moneda",
+
+            "material-peligroso": "Material Peligroso",
+
+            "clave-material-peligroso": "Clave Material Peligroso",
+            "embalaje": "Embalaje",
+
+            "pedimentos": "Pedimentos",
+
+            "pedimento": "Pedimento",
+
+            "table-pedimento": "Pedimento"
+        },
+        "figura": {
+            "figura-transporte": "Figura del transporte",
+            "tipo-figura": "Tipo de Figura",
+            "rfc-figura": "RFC",
+            "residencia-figura": "Residencia Fiscal",
+            "registro-trib-figura": "Registro Tributario",
+            "nombre-figura": "Nombre",
+            "num-licencia": "Num. Licencia",
+
+            "partes-transporte": "Partes del transporte",
+            "parte-transporte": "Parte transporte",
+
+            "table-parte-transporte": "Parte transporte"
+        },
+        "tooltips": {
+            "receptor": {
+                "rfc":"RFC\nIndica el Registro Federal del Contribuyente de tu cliente.",
+                "nombre":"Nombre o Razón social\nExpresa el nombre, denominación o Razón Social de tu cliente.",
+                "uso_cfdi":"Uso de CFDI\nSelecciona el uso que le dará tu cliente al CFDI.",
+                "regimen_fiscal": "Régimen fiscal\nIncorpora la clave del régimen fiscal del contribuyente receptor al que aplicará el efecto fiscal de este comprobante.",
+                "direccion":"Dirección\nPrecisa el domicilio fiscal del receptor, si tiene un sólo domicilio se expresa como \"Principal\". En caso de requerir agregar sucursales para el receptor, se identificarán con la información de \"Nombre Dirección\"."
+            },
+            "emisor": {
+                "rfc":"RFC\nIndica el Registro Federal del Contribuyente del emisor.",
+                "nombre":"Nombre o Razón social\nExpresa el nombre, denominación o Razón Social del emisor.",
+                "regimen_fiscal":"Régimen fiscal\nIncorpora la clave del régimen fiscal del contribuyente emisor al que aplicará el efecto fiscal de este comprobante."
+            },
+            "lugar_de_expedicion":"Lugar de Expedición\nExpresa el C.P. del lugar en donde se emite el CFDI.",
+            "tipo_de_comprobante":"Tipo de comprobante\nSelecciona el tipo de comprobante según sea la transacción comercial que se está realizando. Ingreso = Factura, Honorarios, Nota de Cargo, Donativos, Arrendamiento. Egreso = Nota de Crédito, Nota de devolución. Traslado = carta porte.",
+            "moneda":"Moneda\nIdentifica la clave de la moneda utilizada para expresar los montos del CFDI, cuando se usa moneda nacional se registra MXN. Conforme con la especificación ISO 4217.",
+            "tipo_de_cambio":"Tipo de Cambio\nExpresa el tipo de cambio de acuerdo a la moneda seleccionada para el CFDI. El valor debe ser equivalente a una unidad de la divisa señalada en el campo \"Moneda\".",
+            "metodo_de_pago":"Método de pago\nClave del método de pago que aplica para el CFDI, conforme al Artículo 29-A fracción VII incisos a y b del CFF.",
+            "forma_de_pago":"Forma de pago\nExpresa la clave de la forma de pago de los bienes o servicios amparados por el CFDI.",
+            "info_extra":"Información Extra\nExpresa información que se desea incluir en el PDF, puede incluirse información comercial o administrativa que ayude internamente.",
+            "conceptos":"Conceptos\nEn éste apartado agregarás la información de los productos o servicios que se incluirán en el CFDI.",
+            "concepto": {
+                "nombre":"Producto o Servicio\nNombre del producto o servicio a incluir en el CFDI",
+                "cve_sat":"Descripción SAT\nIndica la descripción de tu producto, se desplegarán las posibles opciones del catálogo del SAT. Selecciona la opción que más se apegue a tu producto.",
+                "unidad_de_medida":"Unidad de medida\nUnidad de medida del producto o servicio que se esta incluyendo en el CFDI.",
+                "valor_unitario":"Precio unitario\nExpresa la cantidad monetaria que expresa el valor del producto o servicio antes de los impuestos. Sin comas, sólo indica después del punto los decimales. Ej. 1568.40",
+                "cantidad":"Cantidad\nIndica el número de productos o servicios que se incluyen dentro del CFDI.",
+                "descuento":"Descuento\nExpresa la cantidad monetaria a disminuir el precio unitario del producto o servicio que se incluye en el CFDI. Sin comas, sólo indica despues del punto los decimales. Ej. 1200.50",
+                "descripcion":"Descripción\nIndica el detalle del producto o servicio que se está incluyendo en el CFDI.",
+                "importe":"Importe\nExpresa el importe del producto o servicio. Resultado de la multiplicación de la cantidad por el precio unitario. Sin comas, sólo indica después del punto los decimales. Ej. 1568.40",
+                "total":"Total concepto\nExpresa el valor neto del producto o servicio, incluyendo impuestos y/o descuento."
+            },
+            "impuesto": {
+                "impuesto":"Impuesto\nExpresa el impuesto a incluir en el producto o servicio.",
+                "tasa_cuota":"Tasa\nSelecciona el porcentaje de la tasa que corresponda al impuesto seleccionado. El porcentaje se  calcula con base al importe del producto o servicio. Ej. Si el importe es $100 y la tasa 16%,  el monto del impuesto será igual a $16.00. 8% sólo aplica para emisores autorizados por el SAT en zona fronteriza."
+            },
+            "documentos_relacionados":"Documentos relacionados\nExpresa la información de los CFDI relacionados al comprobante que se está emitiendo.",
+            "documentos_relacionado": {
+                "tipo_de_relacion":"Tipo de relación\nIndica la relación que existe entre el CFDI que se está generando y el/los CFDI previo(s).",
+                "uuid":"UUID\nFolio fiscal del CFDI. Ejemplo: 1335D8A8-1D90-445C-A20D-3371CCDE6006"
+            },
+            "complementos":"Complementos\nInformación adicional regulada por el SAT, se incluye en el XML. Puede incluir información para un sector o actividad específica.",
+            "serie":"Serie\nExpresa letra o conjunto de letras para tener un control interno de los CFDI."
+        }
+    },
+    "fleet":{
+        "colors": {
+            "red": "Rojo",
+            "orange": "Naranja",
+            "yellow": "Amarillo",
+            "green": "Verde",
+            "blue": "Azul",
+            "purple": "Morado",
+            "pink": "Rosa",
+            "white": "Blanco",
+            "black": "Negro",
+            "gray": "Gris",
+            "grey": "Gris"
+          }
     }
 }

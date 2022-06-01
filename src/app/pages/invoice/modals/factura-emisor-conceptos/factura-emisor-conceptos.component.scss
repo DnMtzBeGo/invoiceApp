@@ -1,0 +1,137 @@
+.app-factura-emisor-conceptos {
+  max-width: 700px;
+  min-width: 700px;
+  padding-bottom: 0.5rem;
+  color: #ededed;
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .impuestos-table,
+  .facturas-table {
+    width: 100%;
+
+    th {
+      font-weight: 500;
+      text-align: left;
+
+      &.center {
+        text-align: center;
+      }
+
+      &.right {
+        text-align: right;
+      }
+    }
+
+    td {
+      padding: 3px 0;
+      text-align: left;
+
+      &.center {
+        text-align: center;
+      }
+
+      &.right {
+        text-align: right;
+      }
+    }
+  }
+
+  .impuestos-table {
+    thead th {
+      font-family: "Avenir";
+      font-style: normal;
+      font-weight: 800;
+      font-size: 15px;
+      line-height: 20px;
+      color: #5c5f64;
+    }
+
+    tbody td {
+      font-size: 15px;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+      color: #ededed;
+    }
+  }
+
+  .facturas-table {
+    thead th {
+      font-family: "Avenir";
+      font-style: normal;
+      font-weight: 800;
+      font-size: 14px;
+      line-height: 19px;
+      color: #ffffff;
+    }
+
+    tbody td {
+      font-family: "Avenir";
+      font-style: normal;
+      font-weight: 300;
+      font-size: 14px;
+      color: #ededed;
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem 2rem;
+  }
+
+  .grid-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem 2rem;
+  }
+
+  .grid-2-2-1 {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: 1rem 2rem;
+  }
+
+  section {
+    margin-bottom: 2rem;
+
+    > h6 {
+      font-family: "Avenir";
+      font-style: normal;
+      font-size: 20px;
+      color: #ededed;
+    }
+
+    > div {
+      padding-top: 1.5rem;
+
+      > div {
+        label {
+          display: block;
+          margin-bottom: 4px;
+          color: rgba(0, 0, 0, 0.6);
+        }
+      }
+    }
+  }
+
+  mat-form-field {
+    .textarea {
+      .mat-form-field-wrapper {
+        padding-bottom: unset;
+      }
+    }
+
+    mat-progress-bar {
+      bottom: 0px;
+      position: absolute;
+      width: calc(100% + 16px);
+      height: 2px;
+      left: -9px;
+    }
+  }
+}

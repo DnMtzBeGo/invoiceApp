@@ -1,8 +1,8 @@
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { initializeApp } from 'firebase/app';
-import { of, from, Subject, pipe, merge, Observable } from 'rxjs';
+import { CdkTextareaAutosize } from "@angular/cdk/text-field";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { initializeApp } from "firebase/app";
+import { of, from, Subject, pipe, merge, Observable } from "rxjs";
 import {
   map,
   pluck,
@@ -14,26 +14,27 @@ import {
   tap,
   withLatestFrom,
   exhaustMap,
-  mapTo
-} from 'rxjs/operators';
-import { getDatabase, ref, onValue, set } from 'firebase/database';
-import { fromRef, ListenEvent } from 'rxfire/database';
-import * as moment from 'moment';
-import { ofType } from 'src/app/shared/utils/operators.rx';
-import { consecutiveEquals } from 'src/app/shared/utils/array';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { ChatMsg } from 'src/app/shared/components/chat-message/chat-message.model';
+  mapTo,
+} from "rxjs/operators";
+import { getDatabase, ref, onValue, set } from "firebase/database";
+import { fromRef, ListenEvent } from "rxfire/database";
+import { Query } from "firebase/database";
+import * as moment from "moment";
+import { ofType } from "src/app/shared/utils/operators.rx";
+import { consecutiveEquals } from "src/app/shared/utils/array";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { ChatMsg } from "src/app/shared/components/chat-message/chat-message.model";
 
 @Component({
-  selector: 'app-contact-support',
-  templateUrl: './contact-support.component.html',
-  styleUrls: ['./contact-support.component.scss']
+  selector: "app-contact-support",
+  templateUrl: "./contact-support.component.html",
+  styleUrls: ["./contact-support.component.scss"],
 })
 export class ContactSupportComponent implements OnInit {
   chatEmmiter = new Subject();
   profilePicture: SafeUrl =
-    localStorage.getItem('profilePicture') ?? '/assets/images/user-outline.svg';
-  message = '';
+    localStorage.getItem("profilePicture") ?? "/assets/images/user-outline.svg";
+  message = "";
   attachment?: File;
   attachmentPreview?: SafeUrl;
   isDragging = false;
@@ -42,29 +43,30 @@ export class ContactSupportComponent implements OnInit {
 
   moment = moment;
 
-  @ViewChild('chatWrapper') chatWrapper: any;
-  @ViewChild('autosize') autosize: any;
-  @ViewChild('attachmentInput') attachmentInput: any;
+  @ViewChild("chatWrapper") chatWrapper: any;
+  @ViewChild("autosize") autosize: any;
+  @ViewChild("attachmentInput") attachmentInput: any;
 
   constructor(private auth: AuthService, private sanitizer: DomSanitizer) {
     const app = initializeApp({
-      apiKey: 'AIzaSyADYKcsLUlwvMCwYQeasfJmPg-BiKYPqUU',
-      databaseURL: 'https://bego-push-notifications-default-rtdb.firebaseio.com'
+      apiKey: "AIzaSyADYKcsLUlwvMCwYQeasfJmPg-BiKYPqUU",
+      databaseURL:
+        "https://bego-push-notifications-default-rtdb.firebaseio.com",
     });
     const firedb = getDatabase(app);
     const refPath = ref.bind(null, firedb);
 
     const conversationInfo$ = this.getConversation();
 
-    const dbRef$ = conversationInfo$.pipe(pluck('db_ref'), map(refPath));
+    const dbRef$ = conversationInfo$.pipe(pluck("db_ref"), map(refPath));
 
     this.messages$ = dbRef$.pipe(
-      switchMap((dbRef) => fromRef(dbRef, ListenEvent.value)),
-      pluck('snapshot'),
+      switchMap((dbRef: Query) => fromRef(dbRef, ListenEvent.value)),
+      pluck("snapshot"),
       map(snapshotToArray),
       withLatestFrom(conversationInfo$),
       map(([allMessages, { base_url }]) => {
-        const clientTypes = new Set(['carriers', 'shippers']);
+        const clientTypes = new Set(["carriers", "shippers"]);
 
         const consecutiveTypeMessages = consecutiveEquals(
           allMessages.map((message) => message.type)
@@ -82,19 +84,19 @@ export class ContactSupportComponent implements OnInit {
             ...message,
             avatar: clientTypes.has(message.type)
               ? this.profilePicture
-              : '/assets/images/avatar-support.svg',
+              : "/assets/images/avatar-support.svg",
             messages: allMessages
               .slice(from, to)
               .map(({ message, key, content, mimetype, file_name }) => ({
                 message,
-                stampStr: moment(Number(key)).format('MMM DD, YYYY HH:mm'),
+                stampStr: moment(Number(key)).format("MMM DD, YYYY HH:mm"),
                 file:
-                  content === 'attachment' ? [base_url, key].join('/') : void 0,
+                  content === "attachment" ? [base_url, key].join("/") : void 0,
                 mimetype,
-                file_name
+                file_name,
               })),
             stamp: Number(message.key),
-            status: 'received'
+            status: "received",
           };
         });
       }),
@@ -102,16 +104,16 @@ export class ContactSupportComponent implements OnInit {
         window.requestAnimationFrame(() =>
           this.chatWrapper.nativeElement.scrollTo({
             top: this.chatWrapper.nativeElement.scrollHeight,
-            behavior: 'smooth'
+            behavior: "smooth",
           })
         );
       })
     );
 
     const sendMessageAction$ = this.chatEmmiter.pipe(
-      ofType('send_message'),
+      ofType("send_message"),
       filter(
-        ({ message, attachment }) => message !== '' || attachment != void 0
+        ({ message, attachment }) => message !== "" || attachment != void 0
       )
     );
 
@@ -124,28 +126,28 @@ export class ContactSupportComponent implements OnInit {
               JSON.stringify({
                 message,
                 conversation_id,
-                type: 'shippers'
+                type: "carriers",
               }),
-              'chat/send_message'
+              "chat/send_message"
             );
           }
 
           const formData = new FormData();
-          formData.append('file', attachment);
-          formData.append('message', message);
-          formData.append('conversation_id', conversation_id);
-          formData.append('type', 'shippers');
+          formData.append("file", attachment);
+          formData.append("message", message);
+          formData.append("conversation_id", conversation_id);
+          formData.append("type", "carriers");
 
           return this.auth.uploadFilesSerivce(
             formData,
-            'chat/send_attachment'
+            "chat/send_attachment"
             // { reportProgress : true, observe: 'events' },
           );
         }
       ),
       mergeAll(),
       tap(() => {
-        this.message = '';
+        this.message = "";
         this.resetAttachment();
       })
     );
@@ -162,30 +164,30 @@ export class ContactSupportComponent implements OnInit {
   getConversation(): Observable<any> {
     return from(
       this.auth.apiRest(
-        JSON.stringify({ type: 'shippers' }),
-        'chat/enter_conversation'
+        JSON.stringify({ type: "carriers" }),
+        "chat/enter_conversation"
       )
-    ).pipe(mergeAll(), pluck('result'), share());
+    ).pipe(mergeAll(), pluck("result"), share());
   }
 
   sendMessage(event: Event): void {
     event.preventDefault();
 
     this.chatEmmiter.next([
-      'send_message',
-      { message: this.message, attachment: this.attachment }
+      "send_message",
+      { message: this.message, attachment: this.attachment },
     ]);
   }
 
   addLn() {
-    this.message += '\n';
+    this.message += "\n";
   }
 
   selectAttachment(event: any): void {
     if (event.target?.files?.[0] == void 0) return;
 
     this.attachment = event.target?.files?.[0];
-    this.attachmentPreview = /image\/.+$/i.test(this.attachment?.type ?? '')
+    this.attachmentPreview = /image\/.+$/i.test(this.attachment?.type ?? "")
       ? this.sanitizer.bypassSecurityTrustUrl(
           window.URL.createObjectURL(this.attachment)
         )
@@ -195,11 +197,11 @@ export class ContactSupportComponent implements OnInit {
   resetAttachment(): void {
     this.attachment = void 0;
     this.attachmentPreview = void 0;
-    this.attachmentInput.nativeElement.value = '';
+    this.attachmentInput.nativeElement.value = "";
   }
 
   attachmentDelete(event: Event): void {
-    if (!(event.target as Element)?.closest('.mat-badge-content')) return;
+    if (!(event.target as Element)?.closest(".mat-badge-content")) return;
 
     this.resetAttachment();
   }
@@ -220,8 +222,8 @@ export class ContactSupportComponent implements OnInit {
 
     this.selectAttachment({
       target: {
-        files: event.dataTransfer.files
-      }
+        files: event.dataTransfer.files,
+      },
     });
   }
 }

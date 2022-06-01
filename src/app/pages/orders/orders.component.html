@@ -1,55 +1,92 @@
 <div class="new-order-container" #ordersRef>
-  <div class="new-order-wrapper" [ngClass]="cardIsOpen ? 'card-open' : '' ">
+  <div class="new-order-wrapper" [ngClass]="cardIsOpen ? 'card-open' : ''">
     <div class="steps-body">
-
-      <div class="order-header"> 
+      <div class="order-header">
         <!-- (click)="jumpStepTitle()" -->
-        <h1 (click)="jumpStepTitle()">{{typeOrder}}<img  src="../../../assets/orders/exchange.svg"></h1>
+        <h1 (click)="jumpStepTitle()">
+          {{ typeOrder }}<img src="../../../assets/orders/exchange.svg" />
+        </h1>
       </div>
 
       <div class="order-stepper-wrapper">
         <app-stepper
-          style="margin-top: 50px;"
+          style="margin-top: 50px"
           [(selectedSlide)]="currentStepIndex"
           (selectedSlideChange)="calculateProgress()"
           [progress]="checkoutProgress"
           [steps]="ordersSteps"
-          >
+        >
         </app-stepper>
       </div>
 
       <mat-tab-group [(selectedIndex)]="currentStepIndex">
-
         <mat-tab>
-          <app-step1 [locations]="locations" (step1FormData)="getStep1FormData($event)" (validFormStep1)="validStep1($event)" [draftData]="draftData"></app-step1>
+          <div class="toggle-bill-container">
+            <div class="bill-question">
+              <img src="/assets/orders/question.svg" class="question-mark" />
+              <p>¿Factura y carta porte ?</p>
+            </div>
+            <div class="slide">
+              <mat-slide-toggle
+                (change)="toogleOrderWithCP()"
+                [checked]="isOrderWithCP"
+              ></mat-slide-toggle>
+            </div>
+          </div>
+          <app-step1
+            [locations]="locations"
+            (step1FormData)="getStep1FormData($event)"
+            (validFormStep1)="validStep1($event)"
+            [draftData]="draftData"
+            [orderWithCP]="isOrderWithCP"
+          ></app-step1>
         </mat-tab>
 
         <mat-tab>
-          <app-step2 [creationTime]="creationTime" (step2FormData)="getStep2FormData($event)" (validFormStep2)="validStep2($event)" [draftData]="draftData"></app-step2>
+          <app-step2
+            [creationTime]="creationTime"
+            (step2FormData)="getStep2FormData($event)"
+            (validFormStep2)="validStep2($event)"
+            [draftData]="draftData"
+            [orderWithCP]="isOrderWithCP"
+          ></app-step2>
         </mat-tab>
 
         <mat-tab>
-          <app-step3 [locations]="locations" (step3FormData)="getStep3FormData($event)" (validFormStep3)="validStep3($event)" [draftData]="draftData"></app-step3>
+          <app-step3
+            [locations]="locations"
+            (step3FormData)="getStep3FormData($event)"
+            (validFormStep3)="validStep3($event)"
+            [draftData]="draftData"
+            [orderWithCP]="isOrderWithCP"
+          ></app-step3>
         </mat-tab>
 
         <mat-tab>
-          <app-step4 [timeETA]="minDropoff" (step4FormData)="getStep4FormData($event)" (validFormStep4)="validStep4($event)" [draftData]="draftData"></app-step4>
+          <app-step4
+            [timeETA]="minDropoff"
+            (step4FormData)="getStep4FormData($event)"
+            (validFormStep4)="validStep4($event)"
+            [draftData]="draftData"
+          ></app-step4>
         </mat-tab>
-
       </mat-tab-group>
 
       <div class="footer">
-          
         <button (click)="prevSlide()" mat-buttona class="bego-btn gray">
           <i class="icon icon-arrow-left back-arrow-icon"></i>
-          {{ 'orders.back' | translate}}
+          {{ "orders.back" | translate }}
         </button>
 
-        <button (click)="nextSlide()" mat-raised-button class="bego-btn yellow medium-size" [disabled]="btnStatusNext">
+        <button
+          (click)="nextSlide()"
+          mat-raised-button
+          class="bego-btn yellow medium-size"
+          [disabled]="btnStatusNext"
+        >
           {{ ordersSteps[currentStepIndex].nextBtnTxt }}
         </button>
       </div>
     </div>
   </div>
 </div>
-
