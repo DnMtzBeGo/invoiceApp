@@ -134,19 +134,25 @@ export class CheckoutComponent implements OnInit {
 
       (res: any) => {
         this.invoiceData = res.result;
-        if(!this.invoiceData.cer && !this.invoiceData.key) {
-          this.checkoutSteps.unshift({
-            text: this.translateService.instant('checkout.emitter'),
-            nextBtnTxt: this.translateService.instant('checkout.stepper-btns.continue-to-emitter'),
-            step: 'emitter'
-          })
-      }
         console.log('Receiving select attributes : ', this.invoiceData);
       },
       (err: any) => {
         console.error('An error ocurred', err);
       }
       );
+
+      
+    (await this.webService.apiRest('','profile/get_emitter_files')).subscribe(
+      (res: any) => {},
+      (err: any) => {
+        this.checkoutSteps.unshift({
+          text: this.translateService.instant('checkout.emitter'),
+          nextBtnTxt: this.translateService.instant('checkout.stepper-btns.continue-to-emitter'),
+          step: 'emitter'
+        })
+      }
+      );
+
 
       (await this.webService.apiRest('','orders/get_customs_cruce')).subscribe(
         (res: any) => {
@@ -438,7 +444,7 @@ export class CheckoutComponent implements OnInit {
       });
    }
    else{
-     this.nextStep();
+     this.updateInvoiceData();
    }
   }
 
