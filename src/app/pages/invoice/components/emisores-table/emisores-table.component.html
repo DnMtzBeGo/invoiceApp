@@ -91,6 +91,7 @@
           *matHeaderCellDef
           class="factura-table__table-header"
           mat-sort-header
+          style="width: 320px"
         >
           {{ "invoice.emisor-table.regimen" | translate }}
         </th>
@@ -99,7 +100,7 @@
           *matCellDef="let element"
           class="factura-table__table-body"
         >
-          {{ element.regimen_fiscal }}
+          {{ element.regimen_fiscal }} - {{ element.regimen_fiscal_desc }}
         </td>
       </ng-container>
 
