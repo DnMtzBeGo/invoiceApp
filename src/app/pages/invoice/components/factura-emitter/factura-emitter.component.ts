@@ -110,15 +110,15 @@ export class FacturaEmitterComponent implements OnInit {
           message,
           data: {
             _id: res.result?._id,
-            rfc: this.emitterAttributesForm.get("rfc").value,
-            nombre: this.emitterAttributesForm.get("nombre").value,
+            rfc: res.result?.rfc,
+            nombre: res.result?.razon_social,
             regimen_fiscal:
               this.emitterAttributesForm.get("regimen_fiscal").value,
           },
         });
       },
       (err) => {
-        console.log(err);
+        // console.log(err);
         this.isLoading = false;
 
         const message =
