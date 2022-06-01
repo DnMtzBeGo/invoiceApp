@@ -524,6 +524,7 @@
         },
         "history_detail": {
             "reference": "Reference",
+            "edit_order":"edit",
             "order": "Order",
             "pickup_info_tab": "Pickup information",
             "dropoff_info_tab": "Dropoff information",
@@ -545,7 +546,8 @@
             "truck":"Truck",
             "trailer":"Trailer",
             "subtotal":"Subtotal",
-            "total_price": "Total price"
+            "total_price": "Total price",
+            "select":"Select"
         },
         "driver_assignment": {
             "title": "Assigned to",
@@ -559,10 +561,12 @@
         },
         "overview": {
             "title": "Order Assignment",
-            "edit": "Edit",
-            "driver": "Driver",
-            "vehicle": "vehicle",
-            "btn_confirm": "Confirm"
+            "label_driver": "Driver",
+            "label_vehicle": "Truck",
+            "label_trailer": "Trailer",
+            "btn-edit": "Edit",
+            "btn-submit": "Submit",
+            "btn-confirm": "Confirm"
         },
         "tracking": {
             "title": "Track order",
@@ -729,5 +733,20 @@
             "tipo-comprobante-placeholder": "All",
             "uuid-placeholder": "Search by UUID"
         }
+    },
+    "fleet": {
+        "colors": {
+            "red": "Red",
+            "orange": "Orange",
+            "yellow": "Yellow",
+            "green": "Green",
+            "blue": "Blue",
+            "purple": "Purple",
+            "pink": "Pink",
+            "white": "White",
+            "black": "Black",
+            "gray": "Gray",
+            "grey": "Gray"
+          }
     }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, SimpleChanges, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 @Component({
@@ -10,6 +10,8 @@ export class DriverStatusCardComponent implements OnInit {
 
   @Input() orderData: any = {};
   @Input() title: string = '';
+
+  @Output() editOrder = new EventEmitter<void>();
   
   public orderCreated: boolean = false;
   public orderAccepted: boolean = false;
