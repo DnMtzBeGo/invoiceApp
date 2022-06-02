@@ -88,7 +88,7 @@ export class FiguraComponent implements OnInit {
   public paisCatalogue: any[];
 
   public hideResidenciaRegistro: boolean = false;
-  
+
   constructor(
     public cataloguesListService: CataloguesListService,
     public cartaPorteInfoService: CartaPorteInfoService
@@ -106,28 +106,41 @@ export class FiguraComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-
-    this.figuraTransporteForm.get("rfc_figura").statusChanges.subscribe((val) => {
-      if (val === 'VALID') {
-        if(!this.figuraTransporteForm.get('rfc_figura')) this.figuraTransporteForm.addControl('rfc_figura', new FormControl(
-          '',
-          Validators.compose([
-            Validators.pattern(
-              /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d&]{2}(?:[A\d]))?$/
-            ),
-            Validators.required,
-          ])
-        ));
-        this.figuraTransporteForm.removeControl('residencia_fiscal_figura');
-        this.figuraTransporteForm.removeControl('num_reg_id_trib_figura');
-        this.hideResidenciaRegistro = true;
-      } else {
-        this.figuraTransporteForm.removeControl('rfc_figura');
-        if(!this.figuraTransporteForm.get('residencia_fiscal_figura')) this.figuraTransporteForm.addControl('residencia_fiscal_figura', new FormControl('', Validators.required));
-        if(!this.figuraTransporteForm.get('num_reg_id_trib_figura')) this.figuraTransporteForm.addControl('num_reg_id_trib_figura', new FormControl('', Validators.required));
-        this.hideResidenciaRegistro = false;
-      }
-    });
+    this.figuraTransporteForm
+      .get("rfc_figura")
+      .statusChanges.subscribe((val) => {
+        if (val === "VALID") {
+          if (!this.figuraTransporteForm.get("rfc_figura"))
+            this.figuraTransporteForm.addControl(
+              "rfc_figura",
+              new FormControl(
+                "",
+                Validators.compose([
+                  Validators.pattern(
+                    /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d&]{2}(?:[A\d]))?$/
+                  ),
+                  Validators.required,
+                ])
+              )
+            );
+          this.figuraTransporteForm.removeControl("residencia_fiscal_figura");
+          this.figuraTransporteForm.removeControl("num_reg_id_trib_figura");
+          this.hideResidenciaRegistro = true;
+        } else {
+          this.figuraTransporteForm.removeControl("rfc_figura");
+          if (!this.figuraTransporteForm.get("residencia_fiscal_figura"))
+            this.figuraTransporteForm.addControl(
+              "residencia_fiscal_figura",
+              new FormControl("", Validators.required)
+            );
+          if (!this.figuraTransporteForm.get("num_reg_id_trib_figura"))
+            this.figuraTransporteForm.addControl(
+              "num_reg_id_trib_figura",
+              new FormControl("", Validators.required)
+            );
+          this.hideResidenciaRegistro = false;
+        }
+      });
 
     this.figuraTransporteForm.controls.parteTransporte.valueChanges.subscribe(
       (inputValue) => {
@@ -279,6 +292,7 @@ export class FiguraComponent implements OnInit {
 
   removeData(id) {
     this.dataSource = this.dataSource.filter((item, index) => index !== id);
+    this.figuraInfo.partes_transporte.splice(id, 1);
     this.table.renderRows();
   }
 
