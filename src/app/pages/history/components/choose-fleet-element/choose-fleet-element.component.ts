@@ -32,13 +32,15 @@ export class ChooseFleetElementComponent implements OnInit {
     trailer_id: "",
   };
 
+  public filteredTrailers: any[];
+
   private titleTransLations = {
     driver: this.translateService.instant("history.overview.label_driver"),
     truck: this.translateService.instant("history.overview.label_vehicle"),
     trailer: this.translateService.instant("history.overview.label_trailer"),
   };
 
-  private fleetInfo: string;
+  private fleetInfo: any;
   private payload: any;
 
   @Input() orderInfo: any;
@@ -83,6 +85,8 @@ export class ChooseFleetElementComponent implements OnInit {
       )
     ).subscribe(({ result }) => {
       this.fleetInfo = result;
+      this.filteredTrailers = this.fleetInfo.trailers.filter((trailer)=>trailer.type == this.orderInfo.cargo['53_48']);
+
     });
   }
 
@@ -125,10 +129,8 @@ export class ChooseFleetElementComponent implements OnInit {
   private updateDisableSelectBtn(): boolean {
     const keys = { driver: 'carrier_id', truck: 'truck_id', trailers: 'trailer_id'};
 
-    const originalValue =  this.orderInfo[this.elementToChoose]._id;
+    const originalValue =  this.orderInfo[this.elementToChoose]?._id;
     const selectedValue = this.selectedFleetElements[keys[this.elementToChoose]];
-
-    console.log('Original value is: ', originalValue, selectedValue);
 
     this.disableSelectBtn = originalValue == selectedValue;
     return this.disableSelectBtn;

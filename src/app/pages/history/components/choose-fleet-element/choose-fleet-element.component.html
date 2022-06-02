@@ -51,7 +51,7 @@
 
     <!-- Trailers cards-->
     <div class="cards-container" *ngIf="elementToChoose == 'trailer'">
-      <div class="card truck-info" *ngFor="let trailer of fleetInfo.trailers">
+      <div class="card truck-info" *ngFor="let trailer of filteredTrailers">
         <app-fleet-asset-card (click)="setFleetElement({trailer_id: trailer._id})" [props]="{ type: 'trucks', picture: trailer?.photo}">
           <div class="card-asset-container">
             <div class="info">
