@@ -211,6 +211,7 @@ export class FacturaEditPageComponent implements OnInit {
         es_retencion: boolean;
         tasa_cuota: number;
       }[];
+      _edit?: number;
     };
     conceptos?: unknown[];
     uuid?: string;
@@ -657,7 +658,10 @@ export class FacturaEditPageComponent implements OnInit {
             ofType("conceptos:edit"),
             observeOn(animationFrameScheduler),
             pluck("1"),
-            map((concepto) => () => concepto),
+            map((concepto: any) => () => ({
+              _edit: 1,
+              ...concepto,
+            })),
             tap(() => {
               window.scrollTo({
                 top:
@@ -699,7 +703,11 @@ export class FacturaEditPageComponent implements OnInit {
             // required for reset controls
             observeOn(asapScheduler),
             ofType("conceptos:add"),
-            map((concepto) => (state) => [...state, clone(concepto)]),
+            map((concepto: any) => (state) => {
+              concepto = clone(concepto);
+              delete concepto._edit;
+              return [...state, concepto];
+            }),
             tap(() => {
               // reset concepto controls
               this.resetConceptoControls();

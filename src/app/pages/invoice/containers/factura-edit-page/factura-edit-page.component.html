@@ -1951,32 +1951,6 @@
             </div>
           </div>
         </div>
-
-        <!-- second section -->
-
-        <div style="margin-bottom: 3rem; padding-top: 0">
-          <button
-            mat-flat-button
-            class="brand-btn-2"
-            (click)="formEmitter.next(['conceptos:add', vm.concepto])"
-            [disabled]="
-              !vm.concepto ||
-              !(
-                vm.concepto.nombre &&
-                vm.concepto.cve_sat &&
-                vm.concepto.unidad_de_medida &&
-                vm.concepto.cantidad &&
-                vm.concepto.valor_unitario
-              ) ||
-              v.valor_unitario(valor_unitario, vm.concepto?.valor_unitario) !==
-                '' ||
-              v.cantidad(cantidad, vm.concepto?.cantidad) !== '' ||
-              v.descuento(descuento, vm.concepto?.descuento, vm.concepto) !== ''
-            "
-          >
-            {{ "invoice.edit.concepto-agregar" | translate }}
-          </button>
-        </div>
       </section>
 
       <section
@@ -1991,7 +1965,7 @@
         [attr.expanded]="vm.concepto?.impuestos.length > 0"
       >
         <h6>{{ "invoice.edit.impuestos" | translate }}</h6>
-        <div class="grid-2-2-1" style="padding-bottom: 0.5rem">
+        <div class="grid-2-2-1">
           <mat-form-field class="brand-field-1" appearance="outline">
             <mat-label>{{
               vm.impuesto
@@ -2198,6 +2172,41 @@
           </tbody>
         </table>
       </section>
+
+      <div
+        [style.display]="
+          !vm.readonly && !vm.form?.order && vm.tab === 'conceptos'
+            ? 'block'
+            : 'none'
+        "
+        style="margin-bottom: 3rem; text-align: center"
+      >
+        <button
+          mat-flat-button
+          class="brand-btn-2"
+          (click)="formEmitter.next(['conceptos:add', vm.concepto])"
+          [disabled]="
+            !vm.concepto ||
+            !(
+              vm.concepto.nombre &&
+              vm.concepto.cve_sat &&
+              vm.concepto.unidad_de_medida &&
+              vm.concepto.cantidad &&
+              vm.concepto.valor_unitario
+            ) ||
+            v.valor_unitario(valor_unitario, vm.concepto?.valor_unitario) !==
+              '' ||
+            v.cantidad(cantidad, vm.concepto?.cantidad) !== '' ||
+            v.descuento(descuento, vm.concepto?.descuento, vm.concepto) !== ''
+          "
+        >
+          {{
+            vm.concepto?._edit
+              ? ("invoice.edit.concepto-guardar" | translate)
+              : ("invoice.edit.concepto-agregar" | translate)
+          }}
+        </button>
+      </div>
 
       <div
         [id]="vm.readonly ? 'conceptos' : null"
@@ -2522,7 +2531,11 @@
 
           <div *ngIf="!vm.readonly" style="padding-top: 9px">
             <button
-              *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc) && !vm.form?.serie"
+              *ngIf="
+                vm.form?.emisor?._id &&
+                validRFC(vm.form?.emisor?.rfc) &&
+                !vm.form?.serie
+              "
               mat-flat-button
               class="brand-btn-2"
               (click)="
