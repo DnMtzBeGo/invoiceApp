@@ -1,1 +1,1 @@
-export type FleetElementType = 'drivers'| 'trucks' | 'trailers';
+export type FleetElementType = 'driver'| 'truck' | 'trailer';

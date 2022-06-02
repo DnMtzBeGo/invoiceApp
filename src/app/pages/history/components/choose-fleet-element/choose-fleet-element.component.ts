@@ -24,14 +24,18 @@ export class ChooseFleetElementComponent implements OnInit {
   public elementToChoose: FleetElementType;
   public title: string;
 
-  public selectedDriverId: string;
-  public selectedTruckId: string;
-  public selectedTrailerId: string;
+  public disableSelectBtn: boolean = true;
+
+  public selectedFleetElements = {
+    carrier_id: "",
+    truck_id: "",
+    trailer_id: "",
+  };
 
   private titleTransLations = {
-    drivers: this.translateService.instant("history.overview.label_driver"),
-    trucks: this.translateService.instant("history.overview.label_vehicle"),
-    trailers: this.translateService.instant("history.overview.label_trailer"),
+    driver: this.translateService.instant("history.overview.label_driver"),
+    truck: this.translateService.instant("history.overview.label_vehicle"),
+    trailer: this.translateService.instant("history.overview.label_trailer"),
   };
 
   private fleetInfo: string;
@@ -53,10 +57,14 @@ export class ChooseFleetElementComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.orderInfo && Object.keys(this.orderInfo).length) {
-      this.selectedDriverId = this.orderInfo?.driver?._id;
-      this.selectedTruckId = this.orderInfo?.truck?._id;
-      this.selectedTrailerId = this.orderInfo?.trailer?._id;
+      this.selectedFleetElements = {
+        carrier_id: this.orderInfo?.driver?._id,
+        truck_id: this.orderInfo?.truck?._id,
+        trailer_id: this.orderInfo?.trailer?._id,
+      };
+
       this.updateFleetInfo();
+      this.updateDisableSelectBtn();
     }
   }
 
@@ -108,27 +116,22 @@ export class ChooseFleetElementComponent implements OnInit {
     );
   }
 
-  setDriver(driver_id: string): void {
-    this.selectedDriverId = driver_id;
-    this.payload = {
-      order_id: this.orderInfo._id,
-      carrier_id: driver_id,
-    };
+  setFleetElement(values) {
+    this.selectedFleetElements = { ...this.selectedFleetElements, ...values };
+    this.payload = { order_id: this.orderInfo._id, ...values };
+    this.updateDisableSelectBtn();
   }
 
-  setTruck(truck_id): void {
-    this.selectedTruckId = truck_id;
-    this.payload = {
-      order_id: this.orderInfo._id,
-      truck_id: truck_id,
-    };
+  private updateDisableSelectBtn(): boolean {
+    const keys = { driver: 'carrier_id', truck: 'truck_id', trailers: 'trailer_id'};
+
+    const originalValue =  this.orderInfo[this.elementToChoose]._id;
+    const selectedValue = this.selectedFleetElements[keys[this.elementToChoose]];
+
+    console.log('Original value is: ', originalValue, selectedValue);
+
+    this.disableSelectBtn = originalValue == selectedValue;
+    return this.disableSelectBtn;
   }
 
-  setTrailer(trailer_id): void {
-    this.selectedTrailerId = trailer_id;
-    this.payload = {
-      order_id: this.orderInfo._id,
-      trailer_id: trailer_id,
-    };
-  }
 }
