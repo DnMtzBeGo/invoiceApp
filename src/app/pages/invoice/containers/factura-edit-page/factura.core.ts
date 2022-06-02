@@ -235,6 +235,7 @@ export const facturaPermissions = (factura) => {
     cartaporte:
       factura?.tipo_de_comprobante &&
       ["I", "T"].includes(factura.tipo_de_comprobante),
+    showError: factura?.status && factura.status !== 3,
   };
 };
 

@@ -149,6 +149,10 @@
           mat-cell
           *matCellDef="let element"
           [style.color]="facturaStatus('color', element.status)"
+          [matTooltip]="(p(element).showError && showError(element)) || ''"
+          matTooltipPosition="right"
+          matTooltipHideDelay="100"
+          matTooltipClass="brand-tooltip-2"
         >
           {{ element.status_ }}
         </td>

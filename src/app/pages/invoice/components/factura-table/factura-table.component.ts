@@ -234,4 +234,12 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
         );
       });
   };
+
+  showError = (error: any) => {
+    error = error?.message || error?.error;
+
+    return Array.isArray(error)
+      ? error.map((e) => e.error ?? e.message).join("\n")
+      : error;
+  };
 }
