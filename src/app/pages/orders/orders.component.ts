@@ -41,6 +41,7 @@ export class OrdersComponent implements OnInit {
     dropoffPostalCode: 0,
   };
   @Input() datepickup: number;
+  @Input() datedropoff: number;
   @Input() imageFromGoogle: any;
   screenshotOrderMap: any;
   requestScreenshotOrderMap: FormData = new FormData();
@@ -191,6 +192,7 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log("ORDER DATA:", this.orderData);
     if (this.imageFromGoogle && !this.sendMap) {
       this.screenshotOrderMap = new File(this.imageFromGoogle, "image");
       this.requestScreenshotOrderMap.append("map", this.screenshotOrderMap);
@@ -227,6 +229,10 @@ export class OrdersComponent implements OnInit {
 
     if (changes.datepickup && changes.datepickup.currentValue) {
       this.orderData.pickup.startDate = this.datepickup;
+    }
+    if (changes.datedropoff && changes.datedropoff.currentValue) {
+      this.orderData.dropoff.startDate = this.datedropoff;
+      this.orderData.dropoff.endDate = this.datedropoff;
     }
   }
 
@@ -375,15 +381,14 @@ export class OrdersComponent implements OnInit {
   }
 
   getStep4FormData(data: any) {
-    console.log("step4 data:", data);
-    this.orderData.dropoff.startDate = this.convertDateMs(
-      data.datedropoff,
-      data.timestartdropoff
-    );
-    this.orderData.dropoff.endDate = this.convertDateMs(
-      data.datedropoff,
-      data.timeenddropoff
-    );
+    // this.orderData.dropoff.startDate = this.convertDateMs(
+    //   data.datedropoff,
+    //   data.timestartdropoff
+    // );
+    // this.orderData.dropoff.endDate = this.convertDateMs(
+    //   data.datedropoff,
+    //   data.timeenddropoff
+    // );
     this.orderData.dropoff.extra_notes = data.notes;
     if (this.stepsValidate.includes(false) && this.currentStepIndex > 2) {
       // console.log("COOOOOOOLLLLLLLLLLLLL");

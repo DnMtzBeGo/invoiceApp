@@ -218,11 +218,6 @@ export class Step2Component implements OnInit {
     // }
 
     if (changes.creationdatepickup && changes.creationdatepickup.currentValue) {
-      console.log(
-        "PICKUP DATE",
-        changes.creationdatepickup.currentValue,
-        new Date(changes.creationdatepickup.currentValue)
-      );
       const date = changes.creationdatepickup.currentValue;
       this.step2Form.value.datepickup = date;
       this.creationDatePickupLabel = moment(new Date(date), "MM-DD-YYYY").format(

@@ -65,6 +65,7 @@
 
         <mat-tab>
           <app-step4
+            [dropoffETA]="datedropoff"
             [timeETA]="minDropoff"
             (step4FormData)="getStep4FormData($event)"
             (validFormStep4)="validStep4($event)"

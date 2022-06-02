@@ -15,6 +15,7 @@
         [draftData]="draftData"
         [locations]="locations"
         [datepickup]="datepickup"
+        [datedropoff]="datedropoff"
         [imageFromGoogle]="imageFromGoogle"
       >
       </app-orders>
@@ -26,6 +27,7 @@
         (showNewOrderCard)="showNewOrderCard()"
         (updateLocations)="updateLocations($event)"
         (updateDatepickup)="updateDatepickup($event)"
+        (updateDropOffDate)="updateDropOffDate($event)"
         [typeMap]="typeMap"
         [savedPlaces]="savedPlaces$ | async"
         (inputPlace)="placesService.emitter.next($event)"

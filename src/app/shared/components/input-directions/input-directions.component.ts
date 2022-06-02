@@ -45,6 +45,7 @@ export class InputDirectionsComponent implements OnInit {
   @Output("showNewOrderCard") showNewOrderCard = new EventEmitter<void>();
   @Output("updateLocations") updateLocations = new EventEmitter<GoogleLocation>();
   @Output("updateDatepickup") updateDatepickup = new EventEmitter<number>();
+  @Output("updateDropOffDate") updateDropOffDate = new EventEmitter<number>();
   @Output("inputPlace") inputPlaceEmmiter = new EventEmitter<
     ["add" | "delete", string]
   >();
@@ -431,6 +432,7 @@ export class InputDirectionsComponent implements OnInit {
         let eta = res.result.ETA / 3600000;
         this.toDate = this.fromDate + res.result.ETA;
         this.aproxETA = Math.round(eta);
+        this.updateDropOffDate.emit(this.toDate)
         this.getFleetListDetails();
       },
       (error) => {

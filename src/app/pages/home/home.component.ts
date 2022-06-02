@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit {
     dropoffPostalCode: 0,
   };
   datepickup: number;
+  datedropoff: number;
   draftData: any;
   headerTransparent: boolean = true;
   showOrderDetails: boolean = false;
@@ -61,7 +62,6 @@ export class HomeComponent implements OnInit {
         if (res instanceof NavigationEnd && res.url === "/home") {
           let data = this.router.getCurrentNavigation()?.extras.state;
           if (data && data.hasOwnProperty("draft")) {
-            console.log("DRAFT: ", data);
             this.draftData = data.draft;
             this.locations.pickup = data.draft.pickup.address;
             this.locations.dropoff = data.draft.dropoff.address;
@@ -102,6 +102,10 @@ export class HomeComponent implements OnInit {
 
   updateDatepickup(data: number) {
     this.datepickup = data;
+  }
+
+  updateDropOffDate(data: number) {
+    this.datedropoff = data;
   }
 
   async getThumbnail() {

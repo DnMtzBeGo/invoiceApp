@@ -1,68 +1,78 @@
 <div class="steps">
-    <form [formGroup]="step4Form">
-        <div class="steps-container">
-            <!-- cargo information -->
-            <div class="section">
-
-                <div class="section-title">
-                    <span class="asterisk">*</span>
-                    {{ 'orders.title-date-time' | translate }}
-                </div>
-
-            </div>
-            <div class="section section-padding">
-                <mat-form-field class="input-calendar" appearance="fill">
-                    <input matInput formControlName="datedropoff" [matDatepicker]="picker" (dateChange)="addEvent('change', $event)" [min]="timeETA">
-                    <mat-datepicker #picker></mat-datepicker>
-                    <div class="btn-input-calendar" (click)="picker.open()"><i class="icon icon-calendar"></i> {{ events }} <i class="icon icon-down"></i></div>
-                </mat-form-field>
-            </div>
-
-
-            <!-- select units -->
-            <div class="section section-padding">
-
-                <span>{{ 'orders.label-from' | translate }}</span>
-                    
-                <div class="input-timer">
-                    <i class="icon icon-timer"></i>
-                    <!-- <ngx-timepicker-field [controlOnly]="true" (timeChanged)="timeStartChange($event)" formControlName="timestartdropoff"></ngx-timepicker-field> -->
-                    <timepicker
-                    [formControlName]="'timestartdropoff'"
-                    class="timepicker"
-                    (isValid)="timepickerValidStart($event)"
-                    [hourStep]="1"
-                    [minuteStep]="1"
-                    *ngIf="!destroyPickerStart"
-                    ></timepicker>
-                </div>
-
-                <span>{{ 'orders.label-to' | translate }}</span>
-                    
-                <div class="input-timer">
-                    <i class="icon icon-timer"></i>
-                    <!-- <ngx-timepicker-field [controlOnly]="true" (timeChanged)="timeEndChange($event)" formControlName="timeenddropoff"></ngx-timepicker-field> -->
-                    <timepicker
-                    [formControlName]="'timeenddropoff'"
-                    class="timepicker"
-                    (isValid)="timepickerValidEnd($event)"
-                    [hourStep]="1"
-                    [minuteStep]="1"
-                    *ngIf="!destroyPickerEnd"
-                    ></timepicker>
-                </div>
-            </div>
-
-            <div class="section section-padding">
-                <mat-form-field class="input-textarea" appearance="fill">
-                    <textarea 
-                        matInput 
-                        formControlName="notes" 
-                        class="comments"
-                        rows="5" [placeholder]="'orders.placeholder-notes' | translate">
-                    </textarea>
-                </mat-form-field>
-            </div>
+  <form [formGroup]="step4Form">
+    <div class="steps-container">
+      <!-- cargo information -->
+      <div class="section">
+        <div class="section-title">
+          <span class="asterisk">*</span>
+          {{ "orders.title-date-time" | translate }}
         </div>
-    </form>
+      </div>
+      <div class="section section-padding">
+        <mat-form-field class="input-calendar" appearance="fill">
+          <input
+            matInput
+            formControlName="datedropoff"
+            [matDatepicker]="picker"
+            (dateChange)="addEvent('change', $event)"
+            [min]="timeETA"
+            disabled
+          />
+          <mat-datepicker #picker></mat-datepicker>
+          <div class="btn-input-calendar" (click)="picker.open()">
+            <i class="icon icon-calendar"></i> {{ deliverDatePickupLabel }}
+            <i class="icon icon-down"></i>
+          </div>
+        </mat-form-field>
+      </div>
+
+      <!-- select units -->
+      <div class="section section-padding">
+        <span>{{ "orders.label-from" | translate }}</span>
+
+        <div class="input-timer">
+          <i class="icon icon-timer"></i>
+          <!-- <ngx-timepicker-field [controlOnly]="true" (timeChanged)="timeStartChange($event)" formControlName="timestartdropoff"></ngx-timepicker-field> -->
+          <timepicker
+            [formControlName]="'timestartdropoff'"
+            class="timepicker"
+            (isValid)="timepickerValidStart($event)"
+            [hourStep]="1"
+            [minuteStep]="1"
+            *ngIf="!destroyPickerStart"
+            disabled="true"
+          ></timepicker>
+        </div>
+
+        <span>{{ "orders.label-to" | translate }}</span>
+
+        <div class="input-timer">
+          <i class="icon icon-timer"></i>
+          <!-- <ngx-timepicker-field [controlOnly]="true" (timeChanged)="timeEndChange($event)" formControlName="timeenddropoff"></ngx-timepicker-field> -->
+          <timepicker
+            [formControlName]="'timeenddropoff'"
+            class="timepicker"
+            (isValid)="timepickerValidEnd($event)"
+            [hourStep]="1"
+            [minuteStep]="1"
+            *ngIf="!destroyPickerEnd"
+            disabled="true"
+          ></timepicker>
+        </div>
+      </div>
+
+      <div class="section section-padding">
+        <mat-form-field class="input-textarea" appearance="fill">
+          <textarea
+            matInput
+            formControlName="notes"
+            class="comments"
+            rows="5"
+            [placeholder]="'orders.placeholder-notes' | translate"
+          >
+          </textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
 </div>
