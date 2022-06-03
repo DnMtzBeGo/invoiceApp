@@ -80,7 +80,7 @@ export class Step2Component implements OnInit {
   // });
   step2Form = new FormGroup({
     cargo_goods: new FormControl(""),
-    datepickup: new FormControl(this.events, Validators.required),
+    // datepickup: new FormControl(this.events, Validators.required),
     timepickup: new FormControl("", Validators.required),
     // timepickup: new FormControl(new Date(), [Validators.required, this.hourValidator]),
     unitType: new FormControl("", Validators.required),

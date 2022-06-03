@@ -37,7 +37,7 @@ export class Step4Component implements OnInit {
   lastTimeEnd: any;
 
   step4Form: FormGroup = this.formBuilder.group({
-    datedropoff: [this.events, Validators.required],
+    // datedropoff: [this.events, Validators.required],
     timestartdropoff: ["", Validators.required],
     timeenddropoff: ["", Validators.required],
     notes: [""],
@@ -91,13 +91,14 @@ export class Step4Component implements OnInit {
 
     if (changes.dropoffETA && changes.dropoffETA.currentValue) {
       const date = changes.dropoffETA.currentValue;
-      this.step4Form.value.datedropoff = date;
+      // this.step4Form.value.datedropoff = date;
       this.deliverDatePickupLabel = moment(new Date(date), "MM-DD-YYYY").format(
         "MMMM DD YYYY"
       );
       this.step4Form.get("timestartdropoff").setValue(new Date(date));
       this.step4Form.get("timeenddropoff").setValue(new Date(date));
     }
+    console.log("step4FormValid:", this.step4Form.valid);
     this.validFormStep4.emit(this.step4Form.valid);
   }
 
