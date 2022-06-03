@@ -127,7 +127,7 @@ export class FiguraComponent implements OnInit {
           this.figuraTransporteForm.removeControl("num_reg_id_trib_figura");
           this.hideResidenciaRegistro = true;
         } else {
-          this.figuraTransporteForm.removeControl("rfc_figura");
+          // this.figuraTransporteForm.removeControl("rfc_figura");
           if (!this.figuraTransporteForm.get("residencia_fiscal_figura"))
             this.figuraTransporteForm.addControl(
               "residencia_fiscal_figura",
