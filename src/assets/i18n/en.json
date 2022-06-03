@@ -748,5 +748,13 @@
             "gray": "Gray",
             "grey": "Gray"
           }
+    },
+    "home":{
+        "manager":{
+            "member-assignment":{
+                "no-license-translate": "This driver requires to provide a license number. License number is required."
+            }
+        }
     }
+
 }

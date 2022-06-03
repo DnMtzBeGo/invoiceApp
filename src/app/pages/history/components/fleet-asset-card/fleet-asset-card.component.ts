@@ -3,7 +3,8 @@ import { FleetElementType } from '../../../../shared/interfaces/FleetElement.typ
 
 interface FleetAssetCardProps {
   type: FleetElementType,
-  picture: string
+  picture: string,
+  notAvailable?: boolean
 }
 
 @Component({

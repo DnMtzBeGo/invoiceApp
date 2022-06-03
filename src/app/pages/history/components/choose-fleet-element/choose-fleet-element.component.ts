@@ -14,6 +14,13 @@ import { FleetElementType } from "src/app/shared/interfaces/FleetElement.type";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { HistoryComponent } from "../../history.component";
 import { NotificationsService } from "src/app/shared/services/notifications.service";
+import { AlertService } from "src/app/shared/services/alert.service";
+
+interface SelectedFleetElements {
+  carrier_id?: string
+  truck_id?: string
+  trailer_id?: string
+}
 
 @Component({
   selector: "app-choose-fleet-element",
@@ -26,11 +33,7 @@ export class ChooseFleetElementComponent implements OnInit {
 
   public disableSelectBtn: boolean = true;
 
-  public selectedFleetElements = {
-    carrier_id: "",
-    truck_id: "",
-    trailer_id: "",
-  };
+  public selectedFleetElements: SelectedFleetElements;
 
   public filteredTrailers: any[];
 
@@ -52,18 +55,16 @@ export class ChooseFleetElementComponent implements OnInit {
     private webservice: AuthService,
     @Inject(forwardRef(() => HistoryComponent))
     private historyComponent: HistoryComponent,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.orderInfo && Object.keys(this.orderInfo).length) {
-      this.selectedFleetElements = {
-        carrier_id: this.orderInfo?.driver?._id,
-        truck_id: this.orderInfo?.truck?._id,
-        trailer_id: this.orderInfo?.trailer?._id,
-      };
+
+      this.setOriginalValues();
 
       this.updateFleetInfo();
       this.updateDisableSelectBtn();
@@ -71,6 +72,9 @@ export class ChooseFleetElementComponent implements OnInit {
   }
 
   async updateFleetInfo(): Promise<void> {
+
+    this.setOriginalValues();
+
     const { pickup, dropoff } = this.orderInfo;
     const payload = {
       fromDate: pickup.startDate,
@@ -120,20 +124,136 @@ export class ChooseFleetElementComponent implements OnInit {
     );
   }
 
-  setFleetElement(values) {
-    this.selectedFleetElements = { ...this.selectedFleetElements, ...values };
-    this.payload = { order_id: this.orderInfo._id, ...values };
-    this.updateDisableSelectBtn();
+  setDriver({_id, availability, has_license}){
+
+    const setChanges = () => {
+      this.selectedFleetElements = {...this.selectedFleetElements, carrier_id:  _id };
+      this.payload = { order_id: this.orderInfo._id,carrier_id:  _id };
+      this.updateDisableSelectBtn();  
+    }
+
+    if(!has_license && this.orderInfo.stamp){
+      this.notificationsService.showInfoToastr(this.translateService.instant('home.manager.member-assignment.no-license-translate'));
+      return;
+    }
+    
+    if(availability == 'not-available' && _id !== this.orderInfo.driver._id){
+      this.alertService.create({
+        title: this.translateService.instant('history.alerts.driver_unavailable.title'),
+        body: this.translateService.instant('history.alerts.driver_unavailable.message'),
+        handlers: [
+          {
+            text: this.translateService.instant('Ok'),
+            color: '#ffbe00',
+            action: async () => {
+              setChanges();
+              this.alertService.close();
+            }
+          },
+          {
+            text: this.translateService.instant('orders.btn-cancel'),
+            color: '#ffbe00',
+            action: async () => {
+              this.alertService.close();
+            }
+          }
+        ]
+      });
+      return;
+    }
+
+    setChanges();
+  }
+
+  setTruck({availability,_id}){
+    const setChanges = () => {
+      this.selectedFleetElements = { ...this.selectedFleetElements, truck_id:  _id };
+      this.payload = { order_id: this.orderInfo._id,truck_id:  _id};
+      this.updateDisableSelectBtn();  
+    }
+
+    
+    if(availability == 'not-available' && _id !== this.orderInfo.truck._id){
+      this.alertService.create({
+        title: this.translateService.instant('history.alerts.trailer_unavailable.title'),
+        body: this.translateService.instant('history.alerts.truck_unavailable.message'),
+        handlers: [
+          {
+            text: this.translateService.instant('Ok'),
+            color: '#ffbe00',
+            action: async () => {
+              setChanges();
+              this.alertService.close();
+            }
+          },
+          {
+            text: this.translateService.instant('orders.btn-cancel'),
+            color: '#ffbe00',
+            action: async () => {
+              this.alertService.close();
+            }
+          }
+        ]
+      });
+      return;
+    }
+
+    setChanges();
+  }
+
+  setTrailer({_id, availability}){
+
+    const setChanges = () => {
+      this.selectedFleetElements = {...this.selectedFleetElements, trailer_id:  _id };
+      this.payload = { order_id: this.orderInfo._id, trailer_id:  _id};
+      this.updateDisableSelectBtn();  
+    }
+
+    
+    if(availability == 'not-available' && _id !== this.orderInfo.trailer._id){
+      this.alertService.create({
+        title: this.translateService.instant('history.alerts.trailer_unavailable.title'),
+        body: this.translateService.instant('history.alerts.trailer_unavailable.message'),
+        handlers: [
+          {
+            text: this.translateService.instant('Ok'),
+            color: '#ffbe00',
+            action: async () => {
+              setChanges();
+              this.alertService.close();
+            }
+          },
+          {
+            text: this.translateService.instant('orders.btn-cancel'),
+            color: '#ffbe00',
+            action: async () => {
+              this.alertService.close();
+            }
+          }
+        ]
+      });
+      return;
+    }
+
+    setChanges();
   }
 
   private updateDisableSelectBtn(): boolean {
-    const keys = { driver: 'carrier_id', truck: 'truck_id', trailers: 'trailer_id'};
+    const keys = { driver: 'carrier_id', truck: 'truck_id', trailer: 'trailer_id'};
 
     const originalValue =  this.orderInfo[this.elementToChoose]?._id;
     const selectedValue = this.selectedFleetElements[keys[this.elementToChoose]];
 
     this.disableSelectBtn = originalValue == selectedValue;
     return this.disableSelectBtn;
+  }
+
+  setOriginalValues(){
+    this.selectedFleetElements = {
+      carrier_id: this.orderInfo?.driver?._id,
+      truck_id: this.orderInfo?.truck?._id,
+      trailer_id: this.orderInfo?.trailer?._id,
+    };
   }
 
 }

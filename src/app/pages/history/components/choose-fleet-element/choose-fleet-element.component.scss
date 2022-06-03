@@ -42,7 +42,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      cursor: pointer;
   
       .label{
         color: #C1C7D0;
@@ -89,6 +88,17 @@
         }
       }
       
+    }
+  }
+
+  ::ng-deep{
+    app-fleet-asset-card{
+      cursor: pointer;
+
+      &.no-license{
+        filter: grayscale(1);
+        cursor: unset;      
+      }
     }
   }
 

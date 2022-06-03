@@ -45,6 +45,10 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     if(this.statusOrder > 3){
       this.changePickupDropoff('dropoff');
     }
+    const {orderInfo} = changes;
+    if(orderInfo.currentValue._id !== orderInfo.previousValue._id){
+      this.slider.scrollTo(0);
+    }
   }
 
   public changePickupDropoff(row: string): void {
