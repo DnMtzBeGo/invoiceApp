@@ -17,7 +17,6 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   public sliderIndex: number = 0;
   public onSlideSelect = ()=>{
     this.sliderIndex = this.slider.selectedScrollSnap();
-    console.log('Current slide is: ', this.sliderIndex);
   }
 
   constructor() { }

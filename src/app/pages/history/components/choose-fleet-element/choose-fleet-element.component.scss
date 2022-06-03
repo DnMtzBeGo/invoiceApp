@@ -95,7 +95,7 @@
     app-fleet-asset-card{
       cursor: pointer;
 
-      &.no-license{
+      &.disabled{
         filter: grayscale(1);
         cursor: unset;      
       }
