@@ -68,7 +68,7 @@
     <div class="embla__container">
       
       <!-- Order status slide -->
-      <div class="embla__slide">
+      <div class="embla__slide" [ngClass]="{current: sliderIndex == 0}">
         <div class="embla__slide__inner">
           <div class="investor-slide">
             <div>
@@ -83,7 +83,7 @@
       </div>
 
       <!-- Edit order info slide  -->
-      <div class="embla__slide">
+      <div class="embla__slide"  [ngClass]="{current: sliderIndex == 1}">
         <div class="embla__slide__inner">
           <div class="investor-slide">
             <app-edit-order-fleet
@@ -97,7 +97,7 @@
       </div>
 
       <!-- Change fleet element goes here  -->
-      <div class="embla__slide">
+      <div class="embla__slide"  [ngClass]="{current: sliderIndex == 2}">
         <div class="embla__slide__inner">
           <div class="investor-slide"> 
             <app-choose-fleet-element 
