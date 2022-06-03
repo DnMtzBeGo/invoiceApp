@@ -8,6 +8,7 @@ phases:
       - echo Installing angular cli...
       - npm install -g @angular/cli
       - yarn add @angular-devkit/build-angular@12.2.16 --dev
+      - rm package-lock.json
   build:
     commands:
       - echo Starting build...
