@@ -554,6 +554,14 @@
             "search": "Search...",
             "btn_confirm": "Confirm"
         },
+        "truck_unavailable": {
+            "title": "Warning",
+            "message": "You are selecting a truck that is unavailable"
+          },
+          "trailer_unavailable": {
+            "title": "Warning",
+            "message": "You are selecting a trailer that is unavailable"
+          },
         "truck_assignment": {
             "title": "Asigned truck",
             "search": "Search...",
