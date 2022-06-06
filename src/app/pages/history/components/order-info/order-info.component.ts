@@ -12,7 +12,12 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   public language: any = '';
   public statusOrder: number = 1;
   public selectedRow: string = 'pickup';
+
   public slider: any;
+  public sliderIndex: number = 0;
+  public onSlideSelect = ()=>{
+    this.sliderIndex = this.slider.selectedScrollSnap();
+  }
 
   constructor() { }
 
@@ -37,6 +42,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     const viewPort = this.viewPort.nativeElement;
     const embla = EmblaCarousel(viewPort, options);
     this.slider = embla;
+    this.slider.on('select',this.onSlideSelect)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -45,6 +51,14 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     if(this.statusOrder > 3){
       this.changePickupDropoff('dropoff');
     }
+    const {orderInfo} = changes;
+    if(orderInfo.currentValue?._id !== orderInfo.previousValue?._id){
+      this.slider.scrollTo(0);
+    }
+  }
+
+  ngOnDestroy(){
+    this.slider.off('select', this.onSlideSelect);
   }
 
   public changePickupDropoff(row: string): void {

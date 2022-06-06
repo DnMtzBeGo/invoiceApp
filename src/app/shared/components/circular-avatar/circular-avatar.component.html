@@ -7,8 +7,10 @@
       <div class="circular-avatar-photo-container">
         <img [src]="data?.photo ? data.photo : fallbackImage" alt="">
       </div>
-      <div class="selected-dot"></div>
-      <i class="icon icon-check show-check-icon" *ngIf="data?.isSelected"></i>
+      <span *ngIf="radioButton">
+        <div class="selected-dot"></div>
+        <i class="icon icon-check show-check-icon" *ngIf="data?.isSelected"></i>
+      </span>
     </div>
   </div>
 </div>
