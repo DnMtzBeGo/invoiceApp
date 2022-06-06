@@ -24,8 +24,8 @@
             matInput
             formControlName="datepickup"
             [matDatepicker]="picker"
-            (dateChange)="addEvent('change', $event)"
             [min]="calendar"
+            disabled
           />
           <mat-datepicker #picker></mat-datepicker>
           <div class="btn-input-calendar">

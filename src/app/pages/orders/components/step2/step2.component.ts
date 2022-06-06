@@ -80,7 +80,7 @@ export class Step2Component implements OnInit {
   // });
   step2Form = new FormGroup({
     cargo_goods: new FormControl(""),
-    // datepickup: new FormControl(this.events, Validators.required),
+    datepickup: new FormControl(""),
     timepickup: new FormControl("", Validators.required),
     // timepickup: new FormControl(new Date(), [Validators.required, this.hourValidator]),
     unitType: new FormControl("", Validators.required),
@@ -224,6 +224,8 @@ export class Step2Component implements OnInit {
         "MMMM DD YYYY"
       );
       this.step2Form.get("timepickup").setValue(new Date(date));
+      console.log("cambio la fecha");
+      console.log(this.step2Form);
     }
 
     this.validFormStep2.emit(this.step2Form.valid);
