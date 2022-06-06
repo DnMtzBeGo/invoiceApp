@@ -17,7 +17,10 @@
         {{ "header.btn-es" | translate }}
       </div>
     </div>
-    <div class="avatar" routerLink="/profile">
+    <!-- <div class="avatar" routerLink="/profile">
+      <img [src]="profilePic" (error)="profilePicError()" alt="" />
+    </div> -->
+    <div class="avatar">
       <img [src]="profilePic" (error)="profilePicError()" alt="" />
     </div>
     <app-web-menu-button [menuOpened]="menuOpened" (click)="toggleMenu()"></app-web-menu-button>
