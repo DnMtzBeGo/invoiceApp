@@ -65,7 +65,7 @@ const routes: Routes = [
         (m) => m.ContactSupportModule
       ),
   },
-  { path: "", redirectTo: "home", pathMatch: "full" },
+  { path: "", redirectTo: "invoice", pathMatch: "full" },
   {
     path: "history",
     loadChildren: () =>

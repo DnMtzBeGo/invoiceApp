@@ -10,8 +10,8 @@ phases:
       - yarn add @angular-devkit/build-angular@12.2.16 --dev
   build:
     commands:
-      - echo Starting build...
-      - ng build --verbose
+      - echo Starting production build...
+      - ng build --configuration production
 artifacts:
   files:
     - "**/*"
