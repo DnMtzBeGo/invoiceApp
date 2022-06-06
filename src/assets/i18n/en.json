@@ -758,6 +758,14 @@
                 "no-license-translate": "This driver requires to provide a license number. License number is required."
             }
         }
+    },
+    "small-display-modal":{
+        "small-display-modal-title":"Resolution display too small for the application",
+        "small-display-modal-body":"For a better experience, download our app from the App Store or the Play Store"
+    },
+    "incompatible-browser-modal":{
+        "incompatible-browser-modal-title":"This browser is not compatible app",
+        "incompatible-browser-modal-body":"For a better experience, use another browser"
     }
 
 }
