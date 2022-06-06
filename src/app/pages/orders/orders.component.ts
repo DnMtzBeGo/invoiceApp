@@ -126,6 +126,15 @@ export class OrdersComponent implements OnInit {
   private subscription: Subscription;
 
   public isOrderWithCP: boolean;
+  public orderWithCPFields = {
+    pickupRFC: false,
+    cargo_goods: false,
+    dropoffRFC: false,
+  };
+  public hazardousCPFields = {
+    packaging: false,
+    hazardous_material: false,
+  };
 
   constructor(
     private translateService: TranslateService,
@@ -339,10 +348,14 @@ export class OrdersComponent implements OnInit {
     this.orderData.pickup.contact_info.country_code = data.country_code;
     if (this.isOrderWithCP) {
       this.orderData.pickup.contact_info["rfc"] = data.rfc;
+      if (this.validateRFC(data.rfc)) {
+        this.orderWithCPFields.pickupRFC = true;
+      }
     }
   }
 
   getStep2FormData(data: any) {
+    console.log("STEP 2 DATA", data);
     this.orderData.cargo["53_48"] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoUnits;
@@ -352,13 +365,19 @@ export class OrdersComponent implements OnInit {
     }
     if (this.isOrderWithCP) {
       this.orderData.cargo["cargo_goods"] = data.cargo_goods;
+      this.orderWithCPFields.cargo_goods = true;
       if (data.cargoType && data.cargoType === "hazardous") {
         this.orderData.cargo["hazardous_material"] = data.hazardous_material;
+        data.hazardous_material !== ""
+          ? (this.hazardousCPFields.hazardous_material = true)
+          : (this.hazardousCPFields.hazardous_material = false);
         this.orderData.cargo["packaging"] = data.packaging;
+        data.packaging !== ""
+          ? (this.hazardousCPFields.packaging = true)
+          : (this.hazardousCPFields.packaging = false);
       }
     }
     this.orderData.cargo.weigth = data.cargoWeight;
-    // console.log("STP2 ORDER DATA:", this.orderData);
   }
 
   getStep3FormData(data: any) {
@@ -372,6 +391,7 @@ export class OrdersComponent implements OnInit {
     if (this.isOrderWithCP) {
       this.orderData.dropoff.contact_info["rfc"] = data.rfc;
     }
+    console.log("STEP 3 DATA", data);
   }
 
   getStep4FormData(data: any) {
@@ -387,6 +407,7 @@ export class OrdersComponent implements OnInit {
     if (this.stepsValidate.includes(false) && this.currentStepIndex > 2) {
       // console.log("COOOOOOOLLLLLLLLLLLLL");
     }
+    console.log("STEP 4 DATA", data);
   }
 
   validStep1(valid: any) {
@@ -554,5 +575,12 @@ export class OrdersComponent implements OnInit {
 
   public toogleOrderWithCP() {
     this.isOrderWithCP = !this.isOrderWithCP;
+  }
+
+  public validateRFC(rfc: string) {
+    const rfcRegex =
+      /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/;
+    const result = rfcRegex.test(rfc);
+    return result;
   }
 }
