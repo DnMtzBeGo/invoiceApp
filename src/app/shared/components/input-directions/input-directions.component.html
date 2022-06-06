@@ -2,7 +2,7 @@
 
   <div
     class="input-directions-component"
-    [ngClass]="[parent.showOrderDetails ? 'show-map' : '', hideMap ? 'hide-map' : '', showScroll ? 'input-directions-scroll' : '' ]"
+    [ngClass]="[parent.showOrderDetails && !changeLocations ? 'show-map' : '', hideMap ? 'hide-map' : '', showScroll ? 'input-directions-scroll' : '' ]"
     >
     <div>
       <div class="directions" [ngClass]=" hideMap ? 'hide-line' : ''">
@@ -10,25 +10,23 @@
             <label>{{'location.label_pickup' | translate}}</label>
             <input
                 #pickup
-                type="search"
+                type="text"
                 [(ngModel)]="autocompletePickup.input"
-                (search)="ClearAutocompletePickup()"
-                (focusout)="focusOutInputPickup()"
                 (keyup)="UpdateSearchResultsPickup($event)"
                 [placeholder]="'location.placeholder' | translate"
             >
+            <i class="icon icon-close" (click)="ClearAutocompletePickup()" *ngIf="autocompletePickup.input.length > 0"></i>
         </div>
         <div class="input-container" [ngClass]="hideType === 'pickup' ? 'hide-input' : ''">
             <label>{{'location.label_dropoff' | translate}}</label>
             <input
                 #dropoff
-                type="search"
+                type="text"
                 [(ngModel)]="autocompleteDropoff.input"
-                (search)="ClearAutocompleteDropoff()"
-                (focusout)="focusOutInputDropoff()"
                 (keyup)="UpdateSearchResultsDropoff($event)"
                 [placeholder]="'location.placeholder' | translate"
             >
+            <i class="icon icon-close" (click)="ClearAutocompleteDropoff()" *ngIf="autocompleteDropoff.input.length > 0"></i>
         </div>
       </div>
       <!-- <div class="saved-locations">
@@ -156,15 +154,17 @@
             <mat-form-field class="input-calendar" appearance="fill">
               <mat-datepicker #picker></mat-datepicker>
               <div class="btn-input-calendar" (click)="picker.open()">
-                <input type="radio" name="" id="">
+                <div class="radio" [ngClass]="isDatesSelected ? 'active' : ''"></div>
+                <!-- <input type="radio" name="" id=""> -->
                 <p>Schedule to:</p>
-                <input class="date-input" matInput formControlName="datepickup" [matDatepicker]="picker" (dateChange)="addEvent('change', $event)" [min]="calendar" placeholder="MM/DD/YY">
+                <input class="date-input" [ngClass]="isDatesSelected ? 'date-input-selected' : ''" matInput formControlName="datepickup" [matDatepicker]="picker" (dateChange)="addEvent('change', $event)" [min]="calendar" placeholder="MM/DD/YY">
                 <mat-datepicker #picker></mat-datepicker>
               </div>
             </mat-form-field>
 
             <div class="input-timer">
                 <timepicker
+                  [disabled]="monthSelected"
                   [formControlName]="'timepickup'"
                   class="timepicker"
                   (isValid)="timepickerValid($event)"
@@ -179,6 +179,13 @@
               <p>Aprox Time Load</p>
               <p>{{aproxETA}} hrs</p>
             </div>
+
+            <div class="cp-toggle-container">
+              <p>¿Factura y carta porte?</p>
+              <mat-slide-toggle
+              (change)="orderWithCP()"  >
+              </mat-slide-toggle>
+            </div>
           </form>
         </div>
       </div>
@@ -190,9 +197,10 @@
             <ng-container *ngFor="let driver of drivers; let i = index">
               <app-circular-avatar
                 [data]="driver"
+                [userWantCP]="userWantCP"
                 title="drivers"
                 *ngIf="i < 4"
-                (click)="selectMembersForOrder(driver, 'drivers', i)">
+                (click)="selectMembersForOrder(driver, 'drivers')">
               </app-circular-avatar>
             </ng-container>
             <div 
@@ -212,7 +220,7 @@
                 [data]="truck"
                 title="trucks"
                 *ngIf="i < 4"
-                (click)="selectMembersForOrder(truck, 'trucks', i)">
+                (click)="selectMembersForOrder(truck, 'trucks')">
               </app-circular-avatar>
             </ng-container>
             <div 
@@ -232,7 +240,7 @@
                 [data]="trailer"
                 title="trailers"
                 *ngIf="i < 4"
-                (click)="selectMembersForOrder(trailer, 'trailers', i)">
+                (click)="selectMembersForOrder(trailer, 'trailers')">
               </app-circular-avatar>
             </ng-container>
             <div class="rest-of-members" *ngIf="trailers.length > 4" (click)="showFleetContainer('trailers')">
@@ -260,20 +268,10 @@
      <bego-button
         *ngIf="hideMap"
         (click)="cancelChangeLocations()"
-        class="btn-yellow"
+        class="btn-yellow cancel-locations"
         [text]="'orders.btn-cancel' | translate">
       </bego-button>
   
-    </div>
-  
-    <div class="map-preview" *ngIf="!showFleetMembersContainer && canGoToSteps">
-
-      <bego-button
-        (click)="openNewOrderMenu()"
-        class="btn-yellow"
-        [text]="'location.btn-order' | translate"
-      >
-      </bego-button>
     </div>
 
     <div class="map-preview">
@@ -292,6 +290,7 @@
     </ng-container>
 
     <bego-button 
+      *ngIf="showFleetMembersContainer"
       class="btn-yellow select-fleet-members"
       text="Seleccionar"
       (click)="closeFleetMembers(titleFleetMembers)" >

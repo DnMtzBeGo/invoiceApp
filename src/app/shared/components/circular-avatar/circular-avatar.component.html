@@ -1,4 +1,4 @@
-<div class="circular-avatar-container">
+<div class="circular-avatar-container" [ngClass]="userWantCP && !data?.can_stamp ? 'not-available' : ''">
   <div class="circular-avatar-middle-container">
     <div class="circular-avatar-int-container">
       <div class="available-dot">
