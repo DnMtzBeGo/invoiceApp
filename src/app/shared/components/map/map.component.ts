@@ -277,7 +277,7 @@ export class MapComponent implements OnInit {
     if(this.typeMap === 'draft') {
       this.map.fitBounds(bounds, { bottom: 0, top: 0, left: 0, right: 0 });
     } else {
-      this.map.fitBounds(bounds, { bottom: 0, top: 0, left: 0, right: 0 });
+      this.map.fitBounds(bounds, { bottom: 49, top: 0, left: 0, right: 0 });
     }
   }
 

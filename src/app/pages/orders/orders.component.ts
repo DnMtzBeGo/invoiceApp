@@ -41,6 +41,8 @@ export class OrdersComponent implements OnInit {
     dropoffPostalCode: 0,
   };
   @Input() imageFromGoogle: any;
+  @Input() membersToAssigned: any;
+  @Input() userWantCP: boolean = false;
   screenshotOrderMap: any;
   requestScreenshotOrderMap: FormData = new FormData();
 
@@ -78,6 +80,7 @@ export class OrdersComponent implements OnInit {
       required_units: 1,
       description: "",
       weigth: [1],
+      hazardous_type: ''
     },
     pickup: {
       lat: 0,
@@ -123,7 +126,7 @@ export class OrdersComponent implements OnInit {
 
   private subscription: Subscription;
 
-  public isOrderWithCP: boolean;
+  public isOrderWithCP: boolean = false;
 
   constructor(
     private translateService: TranslateService,
@@ -211,18 +214,9 @@ export class OrdersComponent implements OnInit {
     if (changes.draftData && changes.draftData.currentValue) {
       this.getHazardous(changes.draftData.currentValue._id);
     }
-    // this.locations = {
-    //   dropoff: "Perif. Blvd. Manuel Ávila Camacho 3130, Valle Dorado, 54020 Tlalnepantla de Baz, Méx., Mexico",
-    //   dropoffLat: '19.5475331',
-    //   dropoffLng: '-99.2110099',
-    //   dropoffPostalCode: 54020,
-    //   pickup: "Mariano Matamoros, Sector Centro, 88000 Nuevo Laredo, Tamps., Mexico",
-    //   pickupLat: '27.4955923',
-    //   pickupLng: '-99.5077369',
-    //   pickupPostalCode: 88000,
-    // }
-    // this.getETA(this.locations);
-    // this.getCreationTime();
+    if(changes.hasOwnProperty('userWantCP')) {
+      this.isOrderWithCP = this.userWantCP;
+    }
   }
 
   toggleCard() {
@@ -300,6 +294,7 @@ export class OrdersComponent implements OnInit {
   }
 
   prevSlide() {
+    if(this.currentStepIndex === 0) return;
     if (this.currentStepIndex > 0) this.currentStepIndex = this.currentStepIndex - 1;
     else this.cardIsOpenChange.emit(false);
 
@@ -466,7 +461,6 @@ export class OrdersComponent implements OnInit {
       await this.auth.apiRest(JSON.stringify(dataRequest), "orders/get_hazardous")
     ).subscribe(
       async ({ result }) => {
-        console.log(result);
       },
       async (res) => {
         console.log(res);
@@ -503,10 +497,15 @@ export class OrdersComponent implements OnInit {
     this.porcentageComplete(this.orderData.dropoff.endDate);
 
     this.orderData.completion_percentage = this.progress;
+    this.orderData['driver'] = this.membersToAssigned['drivers']._id;
+    this.orderData['truck'] = this.membersToAssigned['trucks']._id;
+    this.orderData['trailer'] = this.membersToAssigned['trailers']._id;
+    this.orderData['stamp'] = this.isOrderWithCP;
 
     const requestJson = JSON.stringify(this.orderData);
-    (await this.auth.apiRest(requestJson, "orders/create")).subscribe(
+    (await this.auth.apiRest(requestJson, 'carriers/create_order')).subscribe(
       async ({ result }) => {
+        this.uploadScreenShotOrderMap(result._id);
         this.validateRoute = result.bego_order;
         if (this.hazardousFile) {
           const formData = new FormData();
