@@ -104,7 +104,7 @@
         <div class="selectableHazard" *ngIf="cargoType == 'hazardous'">
           <div
             class="input-selectable-container"
-            (click)="showInputSelectorCP('emba')"
+            (click)="showInputSelectorCP('pack')"
             *ngIf="orderWithCP"
           >
             <p class="value-selected" *ngIf="!packModalSelected">
@@ -129,7 +129,10 @@
         </div>
         <div class="hazardous-container" *ngIf="cargoType == 'hazardous'">
           <div class="hazardous-input">
-            <mat-select formControlName="hazardousType" [(value)]="hazardousType">
+            <mat-select
+              formControlName="hazardous_material"
+              [(value)]="hazardous_material"
+            >
               <mat-option value="select-catergory" [disabled]="true">
                 {{ "orders.choose-category" | translate }}
               </mat-option>

@@ -19,6 +19,12 @@ export class InputSelectableComponent implements OnInit {
 
   selected: Option;
   urlType: string;
+  urlSelector = {
+    merc: "sat_cp_claves_productos_servicios",
+    pack: "sat_cp_tipos_de_embalaje",
+    hzrd: "sat_cp_material_peligroso",
+  };
+  catalogFetch: Option[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -26,12 +32,12 @@ export class InputSelectableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("Modal INIT Data:", this.data);
     if (this.data.data && this.data.data.value && this.data.data.viewValue) {
       this.selected = this.data.data;
       this.selectOptions.push(this.selected);
     }
     this.urlType = this.data.type;
+    this.getCatalog();
   }
 
   @ViewChild("mySelect") mySelect;
@@ -42,62 +48,61 @@ export class InputSelectableComponent implements OnInit {
   }
 
   // TODO: ENDPOINT FOR PACKAGING TYPE
-  async changeDataText(search) {
-    console.log("changeDataText:", search);
-    if (this.urlType === "merc") {
-      await (
-        await this.apiRestService.apiRestGet(
-          `invoice/catalogs/productos-y-servicios?term=${search}&limit=20&page=1`
-        )
-      ).subscribe(
-        ({ result }) => {
-          console.log("get results:");
-          const filteredList = [];
-          const optionsList = result.productos_servicios;
-          optionsList.map((option) => {
-            filteredList.push({
-              viewValue: option.description,
-              value: option.code,
-            });
-          });
-          this.selectOptions = filteredList;
-          this.mySelect.open();
+  async getCatalog() {
+    const requestJson = {
+      catalogs: [
+        {
+          name: this.urlSelector[this.urlType],
+          version: "0",
         },
-        (err) => {
-          console.log(err);
+      ],
+    };
+    await (
+      await this.apiRestService.apiRest(
+        JSON.stringify(requestJson),
+        "invoice/catalogs/fetch"
+      )
+    ).subscribe(
+      ({ result }) => {
+        const optionsList = result.catalogs[0].documents.map((item) => {
+          const filteredItem = {
+            value: item.code,
+            viewValue: item.description,
+          };
+          return filteredItem;
+        });
+        this.catalogFetch = optionsList;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  changeDataText(search) {
+    const filteredArr = [];
+    if (this.catalogFetch.length > 0) {
+      this.catalogFetch.map((item) => {
+        if (
+          item.viewValue.toLocaleLowerCase().includes(search.toLocaleLowerCase()) &&
+          filteredArr.length < 20
+        ) {
+          filteredArr.push(item);
         }
-      );
-    } else if (this.urlType === "hzrd") {
-      const requestJson = {
-        term: search,
-        limit: 20,
-      };
-      await (
-        await this.apiRestService.apiRest(
-          JSON.stringify(requestJson),
-          "invoice/catalogs/consignment-note/material-peligroso"
-        )
-      ).subscribe(
-        ({ result }) => {
-          console.log(result);
-          const filteredList = [];
-          const optionsList = result;
-          optionsList.map((option) => {
-            console.log(option);
-            filteredList.push({
-              viewValue: option.descripcion,
-              value: option.clave,
-            });
-          });
-          this.selectOptions = filteredList;
-          this.mySelect.open();
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    } else {
-      return;
+      });
     }
+    this.selectOptions = filteredArr;
+    this.mySelect.open();
   }
 }
+
+// const filteredList = [];
+// const optionsList = result;
+// optionsList.map((option) => {
+//   console.log(option);
+//   filteredList.push({
+//     viewValue: option.descripcion,
+//     value: option.clave,
+//   });
+// });
+// this.selectOptions = filteredList;

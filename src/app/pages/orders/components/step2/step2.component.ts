@@ -234,7 +234,7 @@ export class Step2Component implements OnInit {
     if (cargoType === "hazardous") {
       const validators = [Validators.required];
       this.step2Form.addControl(
-        "hazardousType",
+        "hazardous_type",
         new FormControl(this.hazardousType, validators)
       );
       this.step2Form.addControl("hazardousUn", new FormControl("", validators));
@@ -247,7 +247,7 @@ export class Step2Component implements OnInit {
         this.step2Form.addControl("hazardous_material", new FormControl(""));
       }
     } else {
-      this.step2Form.removeControl("hazardousType");
+      this.step2Form.removeControl("hazardous_type");
       this.step2Form.removeControl("hazardousUn");
       this.step2Form.removeControl("hazardousFile");
       this.step2Form.removeControl("hazardous_material");
@@ -374,7 +374,7 @@ export class Step2Component implements OnInit {
     const modalData =
       type === "merc"
         ? this.mercModal
-        : type === "emba"
+        : type === "pack"
         ? this.packModal
         : this.hzrdModal;
     const dialogRef = this.dialog.open(InputSelectableComponent, {
@@ -386,14 +386,16 @@ export class Step2Component implements OnInit {
         if (type === "merc") {
           this.mercModal = res;
           this.mercModalSelected = true;
-        } else if (type === "emba") {
+          this.step2Form.get("cargo_goods")!.setValue(res.value);
+        } else if (type === "pack") {
           this.packModal = res;
           this.packModalSelected = true;
+          this.step2Form.get("packaging")!.setValue(res.value);
         } else {
           this.hzrdModal = res;
           this.hzrdModalSelected = true;
+          this.step2Form.get("hazardous_material")!.setValue(res.value);
         }
-        this.step2Form.get("cargo_goods")!.setValue(res.value);
       }
     });
   }

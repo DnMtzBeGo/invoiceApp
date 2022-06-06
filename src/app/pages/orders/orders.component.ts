@@ -192,7 +192,6 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("ORDER DATA:", this.orderData);
     if (this.imageFromGoogle && !this.sendMap) {
       this.screenshotOrderMap = new File(this.imageFromGoogle, "image");
       this.requestScreenshotOrderMap.append("map", this.screenshotOrderMap);
@@ -363,8 +362,14 @@ export class OrdersComponent implements OnInit {
     }
     if (this.isOrderWithCP) {
       this.orderData.cargo["cargo_goods"] = data.cargo_goods;
+      if (data.cargoType && data.cargoType === "hazardous") {
+        this.orderData.cargo["hazardous_material"] = data.hazardous_material;
+        this.orderData.cargo["packaging"] = data.packaging;
+      }
     }
     this.orderData.cargo.weigth = data.cargoWeight;
+    // console.log("dataaaaa:", data);
+    // console.log("STP2 ORDER DATA:", this.orderData);
   }
 
   getStep3FormData(data: any) {
