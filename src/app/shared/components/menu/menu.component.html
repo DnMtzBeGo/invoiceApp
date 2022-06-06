@@ -16,23 +16,23 @@
       {{ "menu.home" | translate }}
     </div>
 
-    <div
+    <!-- <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/calendar' }"
       (click)="goTo('calendar')"
     >
       <bego-button class="btn-menu icon icon-calendar1 icon-only"></bego-button>
       {{ "menu.calendar" | translate }}
-    </div>
+    </div> -->
 
-    <div
+    <!-- <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/drafts' }"
       (click)="goTo('drafts')"
     >
       <bego-button class="btn-menu icon icon-drafts icon-only"></bego-button>
       {{ "menu.drafts" | translate }}
-    </div>
+    </div> -->
     <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/history' }"
@@ -59,14 +59,14 @@
       {{ "menu.support" | translate }}
     </div>
     <div class="separator"></div>
-    <div
+    <!-- <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/faq' }"
       (click)="goTo('faq')"
     >
       <bego-button class="btn-menu icon icon-faqs icon-only"></bego-button>
       {{ "menu.faq" | translate }}
-    </div>
+    </div> -->
     <div class="menu-option" (click)="terms()">
       <bego-button class="btn-menu icon icon-terms icon-only"></bego-button>
       {{ "menu.terms-conditions" | translate }}
