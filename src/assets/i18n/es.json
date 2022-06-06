@@ -317,6 +317,14 @@
                 "title": "Importante",
                 "message": "Estás seleccionando a un operador que está ocupado durante este tiempo. ¿Deseas continuar?"
             },
+            "truck_unavailable": {
+                "title": "Importante",
+                "message": "Estás seleccionando un camión que está ocupado durante este tiempo. ¿Deseas continuar?"
+              },
+              "trailer_unavailable": {
+                "title": "Importante",
+                "message": "Estás seleccionando una caja que está ocupada durante este tiempo. ¿Deseas continuar?"
+              },
             "order_changed": {
                 "title": "Servicio modificado",
                 "message": "El servicio ha sido modificado"
@@ -1214,5 +1222,22 @@
             "gray": "Gris",
             "grey": "Gris"
           }
+    },
+    "home":{
+        "manager":{
+            "member-assignment":{
+                "cant-select":"No se puede seleccionar este elemento",
+                "info-missing":"Para poder seleccionarlo, agrega más información del elemento desde la página de editar datos de flotilla",
+                "no-license-translate": "Este driver require proporcionar un número de licencia. El número de licencia es requerido."
+            }
+        }
+    },
+    "small-display-modal":{
+        "small-display-modal-title":"La resolución de esta pantalla es muy pequeña para la aplicación",
+        "small-display-modal-body":"Para una mejor experiencia, descarga la app de la App Store o de la Play Store"
+    },
+    "incompatible-browser-modal":{
+        "incompatible-browser-modal-title":"Este navegador no es compatible con la app",
+        "incompatible-browser-modal-body":"Para una mejor experiencia, usa otro navegador"
     }
 }

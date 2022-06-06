@@ -12,7 +12,15 @@
   .orders-list-row {
     width: 100%;
     display: flex;
+    justify-content: space-between;
     margin-bottom: 51px;
+
+
+    @media only screen and (max-width: 1115px) {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
 
     .tabs-container{
 
@@ -93,7 +101,8 @@
       border: 3px solid #10161C;
       box-shadow: inset 3px 3px 8px 3px #111416;
       border-radius: 30.5px;
-      margin-left: 100px;
+      margin-left: 10px;
+      min-height: 43px;
 
       .icon-search {
         margin-left: 12px;

@@ -1,7 +1,18 @@
-.history-container {
+.history-wrapper{
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+
+  .container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1280px;
+    .orders-list{
+      flex-grow: 1;
+    }
+
+
+  }
 
   &.no-orders{
     //makes container be full-width

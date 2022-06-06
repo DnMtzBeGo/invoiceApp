@@ -48,6 +48,8 @@ import { CalendarComponent } from "./pages/calendar/calendar.component";
 import { CalendarModule } from "./pages/calendar/calendar.module";
 import { HorizontalCardComponent } from "./shared/components/horizontal-card/horizontal-card.component";
 import { SharedModule } from "./shared/shared.module";
+import { SmallResolutionModalComponent } from "./shared/components/small-resolution-modal/small-resolution-modal.component";
+import { IncompatibleBrowserModalComponent } from "./shared/components/incompatible-browser-modal/incompatible-browser-modal.component";
 
 export function playerFactory() {
   return player;
@@ -77,6 +79,9 @@ export function createTranslateLoader(http: HttpClient) {
     FooterComponent,
     CalendarComponent,
     HorizontalCardComponent,
+    SmallResolutionModalComponent,
+    IncompatibleBrowserModalComponent,
+
   ],
   imports: [
     BrowserModule,
