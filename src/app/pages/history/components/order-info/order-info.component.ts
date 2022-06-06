@@ -52,7 +52,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       this.changePickupDropoff('dropoff');
     }
     const {orderInfo} = changes;
-    if(orderInfo.currentValue._id !== orderInfo.previousValue._id){
+    if(orderInfo.currentValue?._id !== orderInfo.previousValue?._id){
       this.slider.scrollTo(0);
     }
   }

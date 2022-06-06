@@ -124,7 +124,7 @@ export class ChooseFleetElementComponent implements OnInit {
     );
   }
 
-  setDriver({_id, availability, has_license}){
+  setDriver({_id, availability, can_stamp}){
 
     const setChanges = () => {
       this.selectedFleetElements = {...this.selectedFleetElements, carrier_id:  _id };
@@ -132,9 +132,9 @@ export class ChooseFleetElementComponent implements OnInit {
       this.updateDisableSelectBtn();  
     }
 
-    if(!has_license && this.orderInfo.stamp){
-      this.notificationsService.showInfoToastr(this.translateService.instant('home.manager.member-assignment.no-license-translate'));
-      return;
+    if(!can_stamp && this.orderInfo.stamp){
+      this.showCantSelectElementToast();
+      return
     }
     
     if(availability == 'not-available' && _id !== this.orderInfo.driver._id){
@@ -165,12 +165,18 @@ export class ChooseFleetElementComponent implements OnInit {
     setChanges();
   }
 
-  setTruck({availability,_id}){
+  setTruck({availability,_id, can_stamp}){
     const setChanges = () => {
       this.selectedFleetElements = { ...this.selectedFleetElements, truck_id:  _id };
       this.payload = { order_id: this.orderInfo._id,truck_id:  _id};
       this.updateDisableSelectBtn();  
     }
+
+    if(!can_stamp && this.orderInfo.stamp){
+      this.showCantSelectElementToast();
+      return
+    }
+
 
     
     if(availability == 'not-available' && _id !== this.orderInfo.truck._id){
@@ -201,13 +207,19 @@ export class ChooseFleetElementComponent implements OnInit {
     setChanges();
   }
 
-  setTrailer({_id, availability}){
+  setTrailer({_id, availability,can_stamp}){
 
     const setChanges = () => {
       this.selectedFleetElements = {...this.selectedFleetElements, trailer_id:  _id };
       this.payload = { order_id: this.orderInfo._id, trailer_id:  _id};
       this.updateDisableSelectBtn();  
     }
+
+    if(!can_stamp && this.orderInfo.stamp){
+      this.showCantSelectElementToast();
+      return
+    }
+
 
     
     if(availability == 'not-available' && _id !== this.orderInfo.trailer._id){
@@ -254,6 +266,22 @@ export class ChooseFleetElementComponent implements OnInit {
       truck_id: this.orderInfo?.truck?._id,
       trailer_id: this.orderInfo?.trailer?._id,
     };
+  }
+
+  private showCantSelectElementToast(){
+    this.alertService.create({
+      title: this.translateService.instant('home.manager.member-assignment.cant-select'),
+      body: this.translateService.instant('home.manager.member-assignment.info-missing'),
+      handlers: [
+        {
+          text: this.translateService.instant('Ok'),
+          color: '#ffbe00',
+          action: async () => {
+            this.alertService.close();
+          }
+        }
+      ]
+    });
   }
 
 }

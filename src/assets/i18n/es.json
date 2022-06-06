@@ -1226,6 +1226,8 @@
     "home":{
         "manager":{
             "member-assignment":{
+                "cant-select":"No se puede seleccionar este elemento",
+                "info-missing":"Para poder seleccionarlo, agrega más información del elemento desde la página de editar datos de flotilla",
                 "no-license-translate": "Este driver require proporcionar un número de licencia. El número de licencia es requerido."
             }
         }

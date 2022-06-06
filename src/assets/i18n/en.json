@@ -752,6 +752,9 @@
     "home":{
         "manager":{
             "member-assignment":{
+                "cant-select":"You cannot select this element",
+                "info-missing":"In order to select it, add more information to the element from the edit fleet info page",
+
                 "no-license-translate": "This driver requires to provide a license number. License number is required."
             }
         }
