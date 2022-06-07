@@ -53,7 +53,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     }
     const {orderInfo} = changes;
     if(orderInfo.currentValue?._id !== orderInfo.previousValue?._id){
-      this.slider.scrollTo(0);
+      this.slider?.scrollTo(0);
     }
   }
 
