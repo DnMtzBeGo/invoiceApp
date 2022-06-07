@@ -353,6 +353,8 @@ export class OrdersComponent implements OnInit {
       this.orderData.pickup.contact_info["rfc"] = data.rfc;
       if (this.validateRFC(data.rfc)) {
         this.orderWithCPFields.pickupRFC = true;
+      } else {
+        this.orderWithCPFields.pickupRFC = false;
       }
     }
   }
@@ -394,6 +396,11 @@ export class OrdersComponent implements OnInit {
     this.orderData.dropoff.contact_info.country_code = data.country_code;
     if (this.isOrderWithCP) {
       this.orderData.dropoff.contact_info["rfc"] = data.rfc;
+      if (this.validateRFC(data.rfc)) {
+        this.orderWithCPFields.dropoffRFC = true;
+      } else {
+        this.orderWithCPFields.dropoffRFC = false;
+      }
     }
   }
 
