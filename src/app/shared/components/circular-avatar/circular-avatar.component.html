@@ -1,7 +1,7 @@
-<div class="circular-avatar-container" [ngClass]="userWantCP && !data?.can_stamp ? 'not-available' : ''">
+<div class="circular-avatar-container" [ngClass]="[userWantCP && !data?.can_stamp ? 'not-available-cp' : '', !data?.availability ? 'not-available': '']">
   <div class="circular-avatar-middle-container">
     <div class="circular-avatar-int-container">
-      <div class="available-dot">
+      <div class="available-dot" [ngClass]="!data?.availability ? 'not-available-dot' : ''">
         <i class="icon icon-dot"></i>
       </div>
       <div class="circular-avatar-photo-container">

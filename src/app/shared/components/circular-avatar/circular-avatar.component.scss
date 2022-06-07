@@ -108,6 +108,12 @@
   font-size: 8px;
 }
 
-.not-available {
+.not-available-dot {
+  > i {
+    color: red;
+  }
+}
+
+.not-available-cp {
   filter: grayscale(1);
 }
