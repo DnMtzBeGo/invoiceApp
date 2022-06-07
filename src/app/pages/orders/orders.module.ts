@@ -40,6 +40,7 @@ import { GoogleAddressModule } from "src/app/shared/pipes/google-address/google-
 import { TimepickerModule } from "ngx-bootstrap/timepicker";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { InputSelectableComponent } from './components/input-selectable/input-selectable.component';
+import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -63,6 +64,7 @@ export const MY_FORMATS = {
     MomentDatePipe,
     CargoWeightComponent,
     InputSelectableComponent,
+    ContinueModalComponent,
   ],
   imports: [
     CommonModule,

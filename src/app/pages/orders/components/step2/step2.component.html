@@ -10,13 +10,13 @@
       </div>
       <div
         class="input-selectable-container"
-        (click)="showInputSelectorCP()"
+        (click)="showInputSelectorCP('merc')"
         *ngIf="orderWithCP"
       >
-        <p class="value-selected" *ngIf="!modalSelected">
-          <i class="icon icon-search"></i>SELECTOR
+        <p class="value-selected" *ngIf="!mercModalSelected">
+          <i class="icon icon-search"></i>Selecciona el tipo de mercancía
         </p>
-        <p class="value-selected" *ngIf="modalSelected">{{ modalOption.viewValue }}</p>
+        <p class="value-selected" *ngIf="mercModalSelected">{{ mercModal.viewValue }}</p>
       </div>
       <div class="section section-padding">
         <mat-form-field class="input-calendar" appearance="fill">
@@ -24,12 +24,13 @@
             matInput
             formControlName="datepickup"
             [matDatepicker]="picker"
-            (dateChange)="addEvent('change', $event)"
             [min]="calendar"
+            disabled
           />
           <mat-datepicker #picker></mat-datepicker>
-          <div class="btn-input-calendar" (click)="picker.open()">
-            <i class="icon icon-calendar"></i> {{ events }} <i class="icon icon-down"></i>
+          <div class="btn-input-calendar">
+            <i class="icon icon-calendar"></i> {{ creationDatePickupLabel }}
+            <i class="icon icon-down"></i>
           </div>
         </mat-form-field>
 
@@ -43,7 +44,7 @@
             [hourStep]="1"
             [minuteStep]="1"
             [min]="minTime"
-            *ngIf="!destroyPicker"
+            disabled="true"
           ></timepicker>
         </div>
       </div>
@@ -99,10 +100,36 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" style="flex-direction: column">
+        <div class="selectableHazard" *ngIf="cargoType == 'hazardous'">
+          <div
+            class="input-selectable-container"
+            (click)="showInputSelectorCP('pack')"
+            *ngIf="orderWithCP"
+          >
+            <p class="value-selected" *ngIf="!packModalSelected">
+              <i class="icon icon-search"></i>Selecciona tu embalaje
+            </p>
+            <p class="value-selected" *ngIf="packModalSelected">
+              {{ packModal.viewValue }}
+            </p>
+          </div>
+          <div
+            class="input-selectable-container"
+            (click)="showInputSelectorCP('hzrd')"
+            *ngIf="orderWithCP"
+          >
+            <p class="value-selected" *ngIf="!hzrdModalSelected">
+              <i class="icon icon-search"></i>Selecciona el tipo de carga peligrosa
+            </p>
+            <p class="value-selected" *ngIf="hzrdModalSelected">
+              {{ hzrdModal.viewValue }}
+            </p>
+          </div>
+        </div>
         <div class="hazardous-container" *ngIf="cargoType == 'hazardous'">
           <div class="hazardous-input">
-            <mat-select formControlName="hazardousType" [(value)]="hazardousType">
+            <mat-select formControlName="hazardous_type" [(value)]="hazardous_type">
               <mat-option value="select-catergory" [disabled]="true">
                 {{ "orders.choose-category" | translate }}
               </mat-option>
