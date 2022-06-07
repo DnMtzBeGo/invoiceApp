@@ -137,7 +137,7 @@ export class ChooseFleetElementComponent implements OnInit {
       return
     }
     
-    if(availability == 'not-available' && _id !== this.orderInfo.driver._id){
+    if(!availability  && _id !== this.orderInfo.driver._id){
       this.alertService.create({
         title: this.translateService.instant('history.alerts.driver_unavailable.title'),
         body: this.translateService.instant('history.alerts.driver_unavailable.message'),
@@ -179,7 +179,7 @@ export class ChooseFleetElementComponent implements OnInit {
 
 
     
-    if(availability == 'not-available' && _id !== this.orderInfo.truck._id){
+    if(!availability  && _id !== this.orderInfo.truck._id){
       this.alertService.create({
         title: this.translateService.instant('history.alerts.trailer_unavailable.title'),
         body: this.translateService.instant('history.alerts.truck_unavailable.message'),
@@ -222,7 +222,7 @@ export class ChooseFleetElementComponent implements OnInit {
 
 
     
-    if(availability == 'not-available' && _id !== this.orderInfo.trailer._id){
+    if(!availability && _id !== this.orderInfo.trailer._id){
       this.alertService.create({
         title: this.translateService.instant('history.alerts.trailer_unavailable.title'),
         body: this.translateService.instant('history.alerts.trailer_unavailable.message'),

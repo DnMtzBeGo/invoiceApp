@@ -15,7 +15,7 @@
     <div class="cards-container" *ngIf="elementToChoose == 'driver'">
       <div class="card driver-info" *ngFor="let driver of fleetInfo.drivers">
         <app-fleet-asset-card [ngClass]="{'disabled' :  !driver.can_stamp && orderInfo.stamp}" (click)="setDriver(driver)"
-          [props]="{ type: 'drivers', picture: driver?.photo, notAvailable: driver.availability == 'not-available'}">
+          type="driver" [data]="driver">
           <div class="card-asset-container">
             <div class="title">
               {{driver?.nickname}}
@@ -32,7 +32,7 @@
     <div class="cards-container" *ngIf="elementToChoose == 'truck'">
       <div class="card truck-info" *ngFor="let truck of fleetInfo.trucks">
         <app-fleet-asset-card [ngClass]="{'disabled' :  !truck.can_stamp && orderInfo.stamp}" (click)="setTruck(truck)"
-          [props]="{ type: 'trucks', picture: truck?.photo, notAvailable: truck.availability == 'not-available'}">
+          type="truck" [data]="truck">
           <div class="card-asset-container">
             <div class="info">
               <div class="title">
@@ -55,7 +55,7 @@
     <div class="cards-container" *ngIf="elementToChoose == 'trailer'">
       <div class="card truck-info" *ngFor="let trailer of filteredTrailers">
         <app-fleet-asset-card [ngClass]="{'disabled' :  !trailer.can_stamp && orderInfo.stamp}" (click)="setTrailer(trailer)"
-          [props]="{ type: 'trucks', picture: trailer?.photo, notAvailable: trailer.availability == 'not-available' }">
+          type="trailer" [data]="trailer">
           <div class="card-asset-container">
             <div class="info">
               <div class="title">

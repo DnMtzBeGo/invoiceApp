@@ -1,11 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FleetElementType } from '../../../../shared/interfaces/FleetElement.type';
 
-interface FleetAssetCardProps {
-  type: FleetElementType,
-  picture: string,
-  notAvailable?: boolean
-}
 
 @Component({
   selector: 'app-fleet-asset-card',
@@ -14,7 +9,9 @@ interface FleetAssetCardProps {
 })
 export class FleetAssetCardComponent implements OnInit {
 
-  @Input() props: FleetAssetCardProps;
+  @Input() type: FleetElementType;
+  @Input() data: any;
+
   constructor() { }
 
   ngOnInit(): void {

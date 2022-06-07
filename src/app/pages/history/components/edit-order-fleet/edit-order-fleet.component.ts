@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FleetElementType } from 'src/app/shared/interfaces/FleetElement.type';
 
 @Component({
@@ -15,6 +15,19 @@ export class EditOrderFleetComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+d
+  public driverData: any;
+  public truckData: any;
+  public trailerData: any;
+
+  ngOnChanges(changes: SimpleChanges): void{
+    const {driver, truck, trailer} = this.orderData;
+    if(changes.orderData){
+      this.driverData = {...driver, availability: false, photo: driver.thumbnail};
+      this.truckData = {...truck, availability: false, photo: truck.thumbnail};
+      this.trailerData = {...trailer, availability: false, photo: trailer.thumbnail};
+    }
   }
 
 }
