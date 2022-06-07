@@ -4,8 +4,8 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AuthService } from "src/app/shared/services/auth.service";
 
 interface Option {
-  value: string;
-  viewValue: string;
+  value?: string;
+  viewValue?: string;
 }
 
 @Component({
@@ -18,6 +18,13 @@ export class InputSelectableComponent implements OnInit {
   selectOptions: Option[] = [];
 
   selected: Option;
+  urlType: string;
+  urlSelector = {
+    merc: "sat_cp_claves_productos_servicios",
+    pack: "sat_cp_tipos_de_embalaje",
+    hzrd: "sat_cp_material_peligroso",
+  };
+  catalogFetch: Option[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -25,10 +32,12 @@ export class InputSelectableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.data && this.data.value && this.data.viewValue) {
-      this.selected = this.data;
+    if (this.data.data && this.data.data.value && this.data.data.viewValue) {
+      this.selected = this.data.data;
       this.selectOptions.push(this.selected);
     }
+    this.urlType = this.data.type;
+    this.getCatalog();
   }
 
   @ViewChild("mySelect") mySelect;
@@ -38,27 +47,62 @@ export class InputSelectableComponent implements OnInit {
     this.changeDataText(searchableValue);
   }
 
-  async changeDataText(search) {
+  // TODO: ENDPOINT FOR PACKAGING TYPE
+  async getCatalog() {
+    const requestJson = {
+      catalogs: [
+        {
+          name: this.urlSelector[this.urlType],
+          version: "0",
+        },
+      ],
+    };
     await (
-      await this.apiRestService.apiRestGet(
-        `invoice/catalogs/productos-y-servicios?term=${search}&limit=20&page=1`
+      await this.apiRestService.apiRest(
+        JSON.stringify(requestJson),
+        "invoice/catalogs/fetch"
       )
     ).subscribe(
       ({ result }) => {
-        const filteredList = [];
-        const optionsList = result.productos_servicios;
-        optionsList.map((option) => {
-          filteredList.push({
-            viewValue: option.description,
-            value: option.code,
-          });
+        const optionsList = result.catalogs[0].documents.map((item) => {
+          const filteredItem = {
+            value: item.code,
+            viewValue: item.description,
+          };
+          return filteredItem;
         });
-        this.selectOptions = filteredList;
-        this.mySelect.open();
+        this.catalogFetch = optionsList;
       },
       (err) => {
         console.log(err);
       }
     );
   }
+
+  changeDataText(search) {
+    const filteredArr = [];
+    if (this.catalogFetch.length > 0) {
+      this.catalogFetch.map((item) => {
+        if (
+          item.viewValue.toLocaleLowerCase().includes(search.toLocaleLowerCase()) &&
+          filteredArr.length < 20
+        ) {
+          filteredArr.push(item);
+        }
+      });
+    }
+    this.selectOptions = filteredArr;
+    this.mySelect.open();
+  }
 }
+
+// const filteredList = [];
+// const optionsList = result;
+// optionsList.map((option) => {
+//   console.log(option);
+//   filteredList.push({
+//     viewValue: option.descripcion,
+//     value: option.clave,
+//   });
+// });
+// this.selectOptions = filteredList;
