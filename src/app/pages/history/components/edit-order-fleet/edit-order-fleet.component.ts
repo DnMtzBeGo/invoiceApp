@@ -16,7 +16,7 @@ export class EditOrderFleetComponent implements OnInit {
 
   ngOnInit(): void {
   }
-d
+
   public driverData: any;
   public truckData: any;
   public trailerData: any;
