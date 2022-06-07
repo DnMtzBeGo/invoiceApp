@@ -224,8 +224,6 @@ export class Step2Component implements OnInit {
         "MMMM DD YYYY"
       );
       this.step2Form.get("timepickup").setValue(new Date(date));
-      console.log("cambio la fecha");
-      console.log(this.step2Form);
     }
 
     this.validFormStep2.emit(this.step2Form.valid);

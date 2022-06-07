@@ -98,7 +98,6 @@ export class Step4Component implements OnInit {
       this.step4Form.get("timestartdropoff").setValue(new Date(date));
       this.step4Form.get("timeenddropoff").setValue(new Date(date));
     }
-    console.log("step4FormValid:", this.step4Form.valid);
     this.validFormStep4.emit(this.step4Form.valid);
   }
 

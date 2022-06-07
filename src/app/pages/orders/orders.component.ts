@@ -20,6 +20,8 @@ import { GoogleMapsService } from "src/app/shared/services/google-maps/google-ma
 import { Router } from "@angular/router";
 import { AlertService } from "src/app/shared/services/alert.service";
 import { Subscription } from "rxjs";
+import { MatDialog } from "@angular/material/dialog";
+import { ContinueModalComponent } from "./components/continue-modal/continue-modal.component";
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
@@ -142,7 +144,8 @@ export class OrdersComponent implements OnInit {
     private auth: AuthService,
     private googlemaps: GoogleMapsService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private dialog: MatDialog
   ) {
     this.subscription = this.translateService.onLangChange.subscribe(
       (langChangeEvent: LangChangeEvent) => {
@@ -300,21 +303,21 @@ export class OrdersComponent implements OnInit {
   }
 
   nextSlide() {
-    if (this.currentStepIndex < 3) {
-      this.currentStepIndex = this.currentStepIndex + 1;
-      if (this.currentStepIndex > 2) {
-        this.btnStatusNext = !this.validateForm();
-      }
-    }
-
     if (
       this.stepsValidate[0] &&
       this.stepsValidate[1] &&
       this.stepsValidate[2] &&
       this.stepsValidate[3] &&
-      this.currentStepIndex > 2
+      this.currentStepIndex === 3
     ) {
-      this.sendOrders("orders");
+      this.checkCPFields();
+    }
+
+    if (this.currentStepIndex < 3) {
+      this.currentStepIndex = this.currentStepIndex + 1;
+      if (this.currentStepIndex > 2) {
+        this.btnStatusNext = !this.validateForm();
+      }
     }
   }
 
@@ -355,7 +358,6 @@ export class OrdersComponent implements OnInit {
   }
 
   getStep2FormData(data: any) {
-    console.log("STEP 2 DATA", data);
     this.orderData.cargo["53_48"] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoUnits;
@@ -365,7 +367,9 @@ export class OrdersComponent implements OnInit {
     }
     if (this.isOrderWithCP) {
       this.orderData.cargo["cargo_goods"] = data.cargo_goods;
-      this.orderWithCPFields.cargo_goods = true;
+      data.cargo_goods !== ""
+        ? (this.orderWithCPFields.cargo_goods = true)
+        : (this.orderWithCPFields.cargo_goods = false);
       if (data.cargoType && data.cargoType === "hazardous") {
         this.orderData.cargo["hazardous_material"] = data.hazardous_material;
         data.hazardous_material !== ""
@@ -391,7 +395,6 @@ export class OrdersComponent implements OnInit {
     if (this.isOrderWithCP) {
       this.orderData.dropoff.contact_info["rfc"] = data.rfc;
     }
-    console.log("STEP 3 DATA", data);
   }
 
   getStep4FormData(data: any) {
@@ -407,7 +410,6 @@ export class OrdersComponent implements OnInit {
     if (this.stepsValidate.includes(false) && this.currentStepIndex > 2) {
       // console.log("COOOOOOOLLLLLLLLLLLLL");
     }
-    console.log("STEP 4 DATA", data);
   }
 
   validStep1(valid: any) {
@@ -582,5 +584,33 @@ export class OrdersComponent implements OnInit {
       /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/;
     const result = rfcRegex.test(rfc);
     return result;
+  }
+
+  public checkCPFields() {
+    const leftList = [];
+    for (const item in this.orderWithCPFields) {
+      this.orderWithCPFields[item] === false && leftList.push(item);
+    }
+    if (this.orderData.cargo.type === "hazardous") {
+      for (const item in this.hazardousCPFields) {
+        this.hazardousCPFields[item] === false && leftList.push(item);
+      }
+    }
+    if (leftList.length > 0) {
+      this.showModal(leftList);
+    }
+  }
+
+  public showModal(leftList) {
+    const modalData = {
+      title: "Para generar carta porte:",
+      list: leftList,
+    };
+    const dialogRef = this.dialog.open(ContinueModalComponent, {
+      data: modalData,
+    });
+    dialogRef.afterClosed().subscribe(async (res) => {
+      res ? this.sendOrders("orders") : (this.currentStepIndex = 0);
+    });
   }
 }
