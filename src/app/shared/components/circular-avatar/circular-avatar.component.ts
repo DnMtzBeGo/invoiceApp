@@ -8,7 +8,10 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/cor
 export class CircularAvatarComponent implements OnInit, OnChanges {
 
   @Input() data: any;
+  @Input() userWantCP: boolean = false;
   @Input() title: string = '';
+  @Input() radioButton: boolean= true;
+  @Input() notAvailable: boolean = false;
 
   public fallbackImage: string = '';
 

@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      - echo Installing angular cli...
+      - npm install -g @angular/cli@12.2.16
+      - yarn add @angular-devkit/build-angular@12.2.16 --dev
+  build:
+    commands:
+      - echo Starting production build...
+      - ng build --configuration production
+artifacts:
+  files:
+    - "**/*"
+  discard-paths: no
+  base-directory: dist/carriersDashboard

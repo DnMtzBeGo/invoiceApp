@@ -1,0 +1,17 @@
+.fleet-asset-container{
+  display: flex;
+  align-items: center;
+  background-color: #091016 !important;
+  padding: 12px 20px;
+  box-shadow: inset -2px -2px 4px 0 #040b11, inset 2px 2px 4px 0 #1c232a, 0 13px 9px 0 #000000 !important;
+
+  .content{
+    flex-grow: 1;
+  }
+
+  ::ng-deep{
+    .circular-avatar-container{
+      margin-right: 20px;
+    }
+  }
+}

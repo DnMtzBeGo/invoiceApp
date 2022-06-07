@@ -12,6 +12,7 @@ import {
   Subject,
   combineLatest,
   asapScheduler,
+  of,
 } from "rxjs";
 import {
   mapTo,
@@ -63,6 +64,11 @@ const filterParams = new Set([
   "status",
 ]);
 
+const status2observe = new Set([2, 4]);
+const observeTime = 5000;
+const shouldObserve = (facturas) =>
+  facturas.some((factura) => status2observe.has(factura.status));
+
 @Component({
   selector: "app-facturas-page",
   templateUrl: "./facturas-page.component.html",
@@ -90,6 +96,7 @@ export class FacturasPageComponent implements OnInit {
     };
     facturas?: unknown[];
     facturasLoading?: boolean;
+    refreshTimer?: number;
     defaultEmisor?: unknown[];
     template?: string;
     searchAction?: {
@@ -196,6 +203,17 @@ export class FacturasPageComponent implements OnInit {
       facturas$.pipe(mapTo(false))
     );
 
+    const refreshTimer$ = facturas$.pipe(
+      switchMap((facturas) =>
+        shouldObserve(facturas)
+          ? timer(observeTime).pipe(
+              mapTo(1),
+              tap(() => this.facturasEmitter.next(["refresh"]))
+            )
+          : of(0)
+      )
+    );
+
     // EMISORES
     const defaultEmisor$ = this.fetchEmisores().pipe(
       repeatWhen(() =>
@@ -258,6 +276,7 @@ export class FacturasPageComponent implements OnInit {
       params: params$,
       facturas: facturas$,
       facturasLoading: facturasLoading$,
+      refreshTimer: refreshTimer$,
       defaultEmisor: defaultEmisor$,
       template: template$,
       searchAction: searchAction$,
@@ -422,19 +441,8 @@ export class FacturasPageComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result?) => {
-      console.log("result", result);
-      if (result != void 0) {
-        if (result.success === true) {
-          this.notificationsService.showSuccessToastr(
-            this.translateService.instant("invoice.emisores.create-success")
-          );
-
-          this.facturasEmitter.next(["refresh:defaultEmisor"]);
-        } else if (result.success === false) {
-          this.notificationsService.showErrorToastr(
-            this.translateService.instant("invoice.emisores.create-error")
-          );
-        }
+      if (result?.success === true) {
+        this.facturasEmitter.next(["refresh:defaultEmisor"]);
       }
     });
   }
@@ -452,9 +460,8 @@ export class FacturasPageComponent implements OnInit {
     return new Date(strDate);
   };
 
-  filtersCount = (params = {}) => {
-    return Object.keys(params).filter(
+  filtersCount = (params = {}) =>
+    Object.keys(params).filter(
       (filterName) => filterParams.has(filterName) && params[filterName]
     ).length || null;
-  };
 }

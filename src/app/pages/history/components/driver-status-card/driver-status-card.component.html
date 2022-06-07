@@ -1,4 +1,14 @@
 <div class="order-info-row-driver" *ngIf="orderData">
+
+  <div class="edit-btn-wrapper">
+    <div
+      *ngIf="orderData.status < 2"
+      (click)="editOrder.emit()"
+      class="edit-order-btn"
+    >
+      {{ 'history.history_detail.edit_order' | translate }}
+    </div>
+  </div>
   <div class="status-card">
     <div class="info-driver-container">
       <div class="avatar-wrapper">

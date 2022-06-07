@@ -524,6 +524,7 @@
         },
         "history_detail": {
             "reference": "Reference",
+            "edit_order":"edit",
             "order": "Order",
             "pickup_info_tab": "Pickup information",
             "dropoff_info_tab": "Dropoff information",
@@ -545,13 +546,22 @@
             "truck":"Truck",
             "trailer":"Trailer",
             "subtotal":"Subtotal",
-            "total_price": "Total price"
+            "total_price": "Total price",
+            "select":"Select"
         },
         "driver_assignment": {
             "title": "Assigned to",
             "search": "Search...",
             "btn_confirm": "Confirm"
         },
+        "truck_unavailable": {
+            "title": "Warning",
+            "message": "You are selecting a truck that is unavailable"
+          },
+          "trailer_unavailable": {
+            "title": "Warning",
+            "message": "You are selecting a trailer that is unavailable"
+          },
         "truck_assignment": {
             "title": "Asigned truck",
             "search": "Search...",
@@ -559,10 +569,12 @@
         },
         "overview": {
             "title": "Order Assignment",
-            "edit": "Edit",
-            "driver": "Driver",
-            "vehicle": "vehicle",
-            "btn_confirm": "Confirm"
+            "label_driver": "Driver",
+            "label_vehicle": "Truck",
+            "label_trailer": "Trailer",
+            "btn-edit": "Edit",
+            "btn-submit": "Submit",
+            "btn-confirm": "Confirm"
         },
         "tracking": {
             "title": "Track order",
@@ -729,5 +741,39 @@
             "tipo-comprobante-placeholder": "All",
             "uuid-placeholder": "Search by UUID"
         }
+    },
+    "fleet": {
+        "colors": {
+            "red": "Red",
+            "orange": "Orange",
+            "yellow": "Yellow",
+            "green": "Green",
+            "blue": "Blue",
+            "purple": "Purple",
+            "pink": "Pink",
+            "white": "White",
+            "black": "Black",
+            "gray": "Gray",
+            "grey": "Gray"
+          }
+    },
+    "home":{
+        "manager":{
+            "member-assignment":{
+                "cant-select":"You cannot select this element",
+                "info-missing":"In order to select it, add more information to the element from the edit fleet info page",
+
+                "no-license-translate": "This driver requires to provide a license number. License number is required."
+            }
+        }
+    },
+    "small-display-modal":{
+        "small-display-modal-title":"Resolution display too small for the application",
+        "small-display-modal-body":"For a better experience, download our app from the App Store or the Play Store"
+    },
+    "incompatible-browser-modal":{
+        "incompatible-browser-modal-title":"This browser is not compatible app",
+        "incompatible-browser-modal-body":"For a better experience, use another browser"
     }
+
 }

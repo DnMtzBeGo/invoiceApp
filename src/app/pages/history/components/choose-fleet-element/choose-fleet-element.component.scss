@@ -1,0 +1,132 @@
+@import '../../../../shared/styles/icomoon.scss';
+.choose-fleet-element-wrapper{
+  display: flex;
+  flex-direction: column;
+  .header{
+    display: flex;
+    align-items: center;
+    // font-size: 2rem;
+    padding: 15px;
+  
+    .title{
+      flex-grow: 1;
+      text-align: center;
+      font-size: 1.25rem;
+    }
+  
+    .icon-back{
+      cursor: pointer;
+      padding: 5px;
+    }
+  }
+
+  .body{
+    max-height: calc(80vh);
+    overflow-y: scroll;
+    position: relative;
+    padding-bottom: 50px;
+    flex-grow: 1;
+  }
+  
+  
+  
+  .cards-container{
+    margin: 20px 30px 0px;
+    
+    .card{
+      margin-bottom: 20px;
+    }
+  
+    .card-asset-container{
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  
+      .label{
+        color: #C1C7D0;
+        font-size: 14px;
+        font-weight: 100;
+      }
+  
+      .title{
+        color: #ededed;
+        font-size: 16px;
+        font-weight: 500;
+      }
+  
+      .subtitle{
+        color: #ededed;
+        font-size: 14px ;
+        font-weight: 100;
+      }
+  
+      .selected-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #0A0F14;
+        border: 1px dashed #C1C7D0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
+        &.active{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(180deg, #FFD200 0%, #FFBE00 100%);
+          box-shadow: inset 0px -2px 4px #A27900, inset 2px 2px 4px #FED869;
+          border-radius: 50%;
+  
+          &::after{
+            content: $icon-check;
+            font-family: $icomoon-font-family;
+            color: black;
+            font-size: 8px;  
+          }
+        }
+      }
+      
+    }
+  }
+
+  ::ng-deep{
+    app-fleet-asset-card{
+      cursor: pointer;
+
+      &.disabled{
+        filter: grayscale(1);
+        cursor: unset;      
+      }
+    }
+  }
+
+}
+
+.select-btn{
+  width: 100%;
+  height: 56px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  bottom: 0;
+  border-radius: 0 0 8px 8px;
+
+  background-color: #ffbe00 !important;
+  color: #040B11;
+  border: none;
+
+  cursor: pointer;
+
+  &[disabled]{
+    background: #10161C!important;
+    color: #313336;
+    pointer-events: none;
+  }
+}

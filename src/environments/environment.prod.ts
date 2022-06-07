@@ -1,4 +1,6 @@
 export const environment = {
-  production: true,
+  production: false,
+  version: 'v1.0.0',
+  URL_BASE: 'https://bego-prod.herokuapp.com/v1.0/',
   website_url: 'https://bego.ai/'
 };

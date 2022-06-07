@@ -249,6 +249,7 @@
         "btn_start_driving": "Comenzar",
         "history_detail": {
             "reference": "Referencia",
+            "edit_order": "Editar",
             "order": "Orden",
             "pickup_info_tab": "Datos de recolección",
             "dropoff_info_tab": "Datos de entrega",
@@ -270,7 +271,8 @@
             "truck":"Unidad",
             "trailer":"Carga",
             "subtotal":"Subtotal",
-            "total_price": "Precio Total"
+            "total_price": "Precio Total",
+            "select":"Seleccionar"
         },
         "driver_assignment": {
             "title": "Asignado a",
@@ -283,12 +285,15 @@
             "btn_confirm": "Confirmar"
         },
         "overview": {
-            "title": "Assignado a",
-            "edit": "Editar",
-            "driver": "Conductor",
-            "vehicle": "Vehículo",
-            "btn_confirm": "Confirmar"
-        },
+            "title": "Asignado a",
+            "title_order-assigment": "Asignado a",
+            "label_driver": "Conductor",
+            "label_vehicle": "Unidad",
+            "label_trailer": "Caja",
+            "btn-edit": "Editar",
+            "btn-submit": "Enviar",
+            "btn-confirm": "Confirmar"
+         },
         "tracking": {
             "title": "Ubicación de la carga",
             "distance": "Distancia",
@@ -312,6 +317,14 @@
                 "title": "Importante",
                 "message": "Estás seleccionando a un operador que está ocupado durante este tiempo. ¿Deseas continuar?"
             },
+            "truck_unavailable": {
+                "title": "Importante",
+                "message": "Estás seleccionando un camión que está ocupado durante este tiempo. ¿Deseas continuar?"
+              },
+              "trailer_unavailable": {
+                "title": "Importante",
+                "message": "Estás seleccionando una caja que está ocupada durante este tiempo. ¿Deseas continuar?"
+              },
             "order_changed": {
                 "title": "Servicio modificado",
                 "message": "El servicio ha sido modificado"
@@ -976,26 +989,20 @@
         },
         "emisores": {
             "emisores": "Emisores",
-            "new": "Registrar Emisor",
-
-            "create-success": "Emisor creado",
-            "create-error": "No se pudo crear el Emisor"
+            "new": "Registrar Emisor"
         },
         "emisor-table": {
-            "rfc-empresa": "RFC Empresa",
             "rfc-emisor": "RFC Emisor",
             "razon-social": "Razón Social",
             "regimen": "Régimen Fiscal",
             "correo-notificacion": "Correo de Notificación",
             "validacion": "Validación",
 
-            "edit-emisor": "Editar",
             "view-series": "Series",
-            "delete-emisor": "Eliminar Emisor",
+            "new-invoice": "Nueva Factura",
+            "edit-emisor": "Editar",
             "set-default": "Establecer Principal",
-
-            "edit-success": "Cambio exitoso",
-            "edit-error": "No se pudo editar el Emisor",
+            "delete-emisor": "Eliminar Emisor",
 
             "delete-success": "Emisor Borrado",
             "delete-error": "No se pudo borrar el Emisor",
@@ -1006,10 +1013,6 @@
         "emisor-edit": {
             "emisor": "Emisor",
 
-            "rfc-parent": "RFC Empresa",
-            "rfc-parent-placeholder": "Escribir RFC de la Empresa",
-            "rfc": "RFC Emisor",
-            "razon-social": "Razón Social",
             "email": "Correo Para Notificar",
             "email-placeholder": "Escribir Correo Electrónico",
             "regimen": "Régimen Fiscal",
@@ -1021,7 +1024,8 @@
 
             "btn-save": "Guardar",
 
-            "save-success": "Emisor guardado"
+            "create-success": "Emisor guardado",
+            "update-success": "Cambio exitoso"
         },
         "series": {
             "series": "Series",
@@ -1203,5 +1207,37 @@
             "complementos":"Complementos\nInformación adicional regulada por el SAT, se incluye en el XML. Puede incluir información para un sector o actividad específica.",
             "serie":"Serie\nExpresa letra o conjunto de letras para tener un control interno de los CFDI."
         }
+    },
+    "fleet":{
+        "colors": {
+            "red": "Rojo",
+            "orange": "Naranja",
+            "yellow": "Amarillo",
+            "green": "Verde",
+            "blue": "Azul",
+            "purple": "Morado",
+            "pink": "Rosa",
+            "white": "Blanco",
+            "black": "Negro",
+            "gray": "Gris",
+            "grey": "Gris"
+          }
+    },
+    "home":{
+        "manager":{
+            "member-assignment":{
+                "cant-select":"No se puede seleccionar este elemento",
+                "info-missing":"Para poder seleccionarlo, agrega más información del elemento desde la página de editar datos de flotilla",
+                "no-license-translate": "Este driver require proporcionar un número de licencia. El número de licencia es requerido."
+            }
+        }
+    },
+    "small-display-modal":{
+        "small-display-modal-title":"La resolución de esta pantalla es muy pequeña para la aplicación",
+        "small-display-modal-body":"Para una mejor experiencia, descarga la app de la App Store o de la Play Store"
+    },
+    "incompatible-browser-modal":{
+        "incompatible-browser-modal-title":"Este navegador no es compatible con la app",
+        "incompatible-browser-modal-body":"Para una mejor experiencia, usa otro navegador"
     }
 }

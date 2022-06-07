@@ -11,6 +11,7 @@ import { Remolques } from "src/app/pages/invoice/models/invoice/carta-porte/remo
 import { SubtiposRemolques } from "src/app/pages/invoice/models/invoice/carta-porte/subtipos-remolques";
 import { CataloguesListService } from "../services/catalogues-list.service";
 import { CartaPorteInfoService } from "../services/carta-porte-info.service";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 const REMOLQUES_DATA: Remolques[] = [];
 
@@ -24,11 +25,14 @@ export class AutotransporteComponent implements OnInit {
   @Input() subtiposRemolques: SubtiposRemolques[];
   @Input() info: any;
 
-  displayedColumns: string[] = ["value", "value", "action"];
+  displayedColumns: string[] = ['conf', 'plate', 'action'];
   remolquesSource = [...REMOLQUES_DATA];
 
   public permisosSCT: any[] = [];
   public filteredPermisosSCT: any[];
+
+  validRemolquesConfig = false;
+  validRemolquesPlates = false;
 
   public identificacionVehicular: any[] = [];
   public filteredIdentificacionVehicular: any[];
@@ -49,7 +53,10 @@ export class AutotransporteComponent implements OnInit {
     remolquesConfig: new FormControl(""),
     remolquesPlates: new FormControl(""),
     identificacionVehicularConfig: new FormControl(""),
-    truckPlates: new FormControl(""),
+    truckPlates: new FormControl(
+      '',
+      Validators.compose([Validators.pattern(/^[a-zA-Z0-9]{5,7}$/)])
+    ),
     truckModel: new FormControl(
       "",
       Validators.compose([Validators.pattern(/^19\d{2}$|20\d{2}$/)])
@@ -194,15 +201,17 @@ export class AutotransporteComponent implements OnInit {
     }
   }
 
-  addRemolque(valueRemolques) {
-    this.remolquesSource.push({
-      id: REMOLQUES_DATA.length + 1,
-      configuracion: valueRemolques,
-      placa: "sda",
-    });
-    this.table.renderRows();
-    // this.mercanciasForm.reset();
-    // this.mercanciasForm.get('pedimento').reset();
+  addRemolque() {
+    if(this.autotransporteForm.get('remolquesConfig').value && this.autotransporteForm.get('remolquesPlates').value) {
+      this.remolquesSource.push({
+        configuracion: this.autotransporteForm.get('remolquesConfig').value,
+        placa: this.autotransporteForm.get('remolquesPlates').value,
+      });
+      this.table?.renderRows();
+      this.autotransporteForm.get('remolquesConfig').reset();
+      this.autotransporteForm.get('remolquesPlates').reset();
+      this.filteredRemolquesConfig = this.remolquesConfig;
+    }
   }
 
   addData() {
@@ -211,6 +220,13 @@ export class AutotransporteComponent implements OnInit {
     );
     this.remolquesSource.push(REMOLQUES_DATA[randomElementIndex]);
     this.table.renderRows();
+  }
+
+  omitSpecialChar(event)
+  {
+    var k;  
+    k = event.charCode;
+    return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
   }
 
   removeRemolque(id) {

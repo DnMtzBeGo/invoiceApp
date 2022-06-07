@@ -918,11 +918,10 @@ export class FacturaEditPageComponent implements OnInit {
     return pais == void 0 || pais === ""
       ? of([])
       : from(
-          this.apiRestService.apiRest(
-            JSON.stringify({ pais }),
-            "invoice/catalogs/states",
-            { loader: "false" }
-          )
+          this.apiRestService.apiRestGet("invoice/catalogs/states", {
+            loader: "false",
+            pais,
+          })
         ).pipe(mergeAll(), pluck("result"), startWith(null));
   };
 
@@ -930,11 +929,10 @@ export class FacturaEditPageComponent implements OnInit {
     return estado == void 0 || estado === ""
       ? of([])
       : from(
-          this.apiRestService.apiRest(
-            JSON.stringify({ estado }),
-            "invoice/catalogs/municipalities",
-            { loader: "false" }
-          )
+          this.apiRestService.apiRestGet("invoice/catalogs/municipalities", {
+            loader: "false",
+            estado,
+          })
         ).pipe(mergeAll(), pluck("result"), startWith(null));
   };
 
@@ -942,11 +940,10 @@ export class FacturaEditPageComponent implements OnInit {
     return cp == void 0 || cp.trim() === "" || cp.length < 5
       ? of([])
       : from(
-          this.apiRestService.apiRest(
-            JSON.stringify({ cp }),
-            "invoice/catalogs/suburbs",
-            { loader: "false" }
-          )
+          this.apiRestService.apiRestGet("invoice/catalogs/suburbs", {
+            loader: "false",
+            cp,
+          })
         ).pipe(mergeAll(), pluck("result"), startWith(null));
   };
 
@@ -1223,22 +1220,11 @@ export class FacturaEditPageComponent implements OnInit {
       backdropClass: ["brand-dialog-1"],
     });
     dialogRef.afterClosed().subscribe((result?) => {
-      // console.log(result);
-      if (result != void 0) {
-        if (result.success === true) {
-          this.notificationsService.showSuccessToastr(
-            this.translateService.instant("invoice.emisores.create-success")
-          );
-
-          // console.log("newEmisor", result.data);
-          this.vm.form.emisor = result.data;
-          this.formEmitter.next(["rfcEmisor:set", result.data]);
-          this.formEmitter.next(["autocomplete:cancel", ""]);
-        } else if (result.success === false) {
-          this.notificationsService.showErrorToastr(
-            this.translateService.instant("invoice.emisores.create-error")
-          );
-        }
+      if (result?.success === true) {
+        // console.log("newEmisor", result.data);
+        this.vm.form.emisor = result.data;
+        this.formEmitter.next(["rfcEmisor:set", result.data]);
+        this.formEmitter.next(["autocomplete:cancel", ""]);
       }
     });
   }

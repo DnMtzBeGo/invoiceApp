@@ -43,6 +43,8 @@ export class HomeComponent implements OnInit {
   public orderId: string = "";
   public typeMap: string = "home";
   public imageFromGoogle: any;
+  public membersToAssigned: object = {};
+  public userWantCP: boolean = false;
 
   savedPlaces$ = this.placesService.places$;
 
@@ -114,9 +116,7 @@ export class HomeComponent implements OnInit {
     };
 
     (await this.webService.apiRest(requestThumbnail, "profile/get_thumbnail")).subscribe(
-      (res) => {
-        console.log("CON EL THUMBNAIL", res);
-      },
+      (res) => {},
       (error) => {
         console.log("Error", error);
       }
@@ -126,4 +126,12 @@ export class HomeComponent implements OnInit {
   getGoogleImageMap(data: any) {
     this.imageFromGoogle = data;
   }
+
+  public getMembersToAssignedOrder(event: Event) {
+    this.membersToAssigned = {...event};
+  }
+
+  public getUserWantCP(event: boolean) {
+    this.userWantCP = event;
+  } 
 }

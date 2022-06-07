@@ -18,8 +18,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { DownloadInvoicesComponent } from './components/download-invoices/download-invoices.component';
 import { MatIconModule } from '@angular/material/icon';
 import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.component';
+import { EditOrderFleetComponent } from './components/edit-order-fleet/edit-order-fleet.component';
+import { FleetAssetCardComponent } from './components/fleet-asset-card/fleet-asset-card.component';
+import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/circular-avatar.module';
 import { SimpleAvatarModule } from 'src/app/shared/components/simple-avatar/simple-avatar.module';
-
+import { ChooseFleetElementComponent } from './components/choose-fleet-element/choose-fleet-element.component';
+import { ButtonModule } from 'src/app/shared/components/button/button.module';
 @NgModule({
   declarations: [
     HistoryComponent,
@@ -32,6 +36,9 @@ import { SimpleAvatarModule } from 'src/app/shared/components/simple-avatar/simp
     NoOrdersYetComponent,
     DownloadInvoicesComponent,
     EditCnBtnComponent,
+    EditOrderFleetComponent,
+    FleetAssetCardComponent,
+    ChooseFleetElementComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +50,9 @@ import { SimpleAvatarModule } from 'src/app/shared/components/simple-avatar/simp
     MatTabsModule,
     MatButtonModule,
     MatIconModule,
-    SimpleAvatarModule
+    CircularAvatarModule,
+    SimpleAvatarModule,
+    ButtonModule,
   ]
 })
 export class HistoryModule { }

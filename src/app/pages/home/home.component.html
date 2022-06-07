@@ -17,12 +17,15 @@
         [datepickup]="datepickup"
         [datedropoff]="datedropoff"
         [imageFromGoogle]="imageFromGoogle"
+        [membersToAssigned]="membersToAssigned"
+        [userWantCP]="userWantCP"
       >
       </app-orders>
     </div>
 
     <div class="input-directions">
       <app-input-directions
+        (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
         [showMapPreview]="showOrderDetails"
         (showNewOrderCard)="showNewOrderCard()"
         (updateLocations)="updateLocations($event)"
@@ -31,6 +34,7 @@
         [typeMap]="typeMap"
         [savedPlaces]="savedPlaces$ | async"
         (inputPlace)="placesService.emitter.next($event)"
+        (sendUserWantCP)="getUserWantCP($event)"
       >
       </app-input-directions>
     </div>

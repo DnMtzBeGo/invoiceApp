@@ -45,6 +45,8 @@ export class OrdersComponent implements OnInit {
   @Input() datepickup: number;
   @Input() datedropoff: number;
   @Input() imageFromGoogle: any;
+  @Input() membersToAssigned: any;
+  @Input() userWantCP: boolean = false;
   screenshotOrderMap: any;
   requestScreenshotOrderMap: FormData = new FormData();
 
@@ -82,6 +84,7 @@ export class OrdersComponent implements OnInit {
       required_units: 1,
       description: "",
       weigth: [1],
+      hazardous_type: ''
     },
     pickup: {
       lat: 0,
@@ -127,7 +130,7 @@ export class OrdersComponent implements OnInit {
 
   private subscription: Subscription;
 
-  public isOrderWithCP: boolean;
+  public isOrderWithCP: boolean = false;
   public orderWithCPFields = {
     pickupRFC: false,
     cargo_goods: false,
@@ -244,6 +247,8 @@ export class OrdersComponent implements OnInit {
     if (changes.datedropoff && changes.datedropoff.currentValue) {
       this.orderData.dropoff.startDate = this.datedropoff;
       this.orderData.dropoff.endDate = this.datedropoff;
+    if(changes.hasOwnProperty('userWantCP')) {
+      this.isOrderWithCP = this.userWantCP;
     }
   }
 
@@ -322,6 +327,7 @@ export class OrdersComponent implements OnInit {
   }
 
   prevSlide() {
+    if(this.currentStepIndex === 0) return;
     if (this.currentStepIndex > 0) this.currentStepIndex = this.currentStepIndex - 1;
     else this.cardIsOpenChange.emit(false);
 
@@ -501,7 +507,6 @@ export class OrdersComponent implements OnInit {
       await this.auth.apiRest(JSON.stringify(dataRequest), "orders/get_hazardous")
     ).subscribe(
       async ({ result }) => {
-        console.log(result);
       },
       async (res) => {
         console.log(res);
@@ -538,10 +543,15 @@ export class OrdersComponent implements OnInit {
     this.porcentageComplete(this.orderData.dropoff.endDate);
 
     this.orderData.completion_percentage = this.progress;
+    this.orderData['driver'] = this.membersToAssigned['drivers']._id;
+    this.orderData['truck'] = this.membersToAssigned['trucks']._id;
+    this.orderData['trailer'] = this.membersToAssigned['trailers']._id;
+    this.orderData['stamp'] = this.isOrderWithCP;
 
     const requestJson = JSON.stringify(this.orderData);
-    (await this.auth.apiRest(requestJson, "orders/create")).subscribe(
+    (await this.auth.apiRest(requestJson, 'carriers/create_order')).subscribe(
       async ({ result }) => {
+        this.uploadScreenShotOrderMap(result._id);
         this.validateRoute = result.bego_order;
         if (this.hazardousFile) {
           const formData = new FormData();

@@ -24,11 +24,11 @@ export class AuthInterceptor implements HttpInterceptor {
       window.localStorage.getItem('token') ??
       '';
 
-    /* if (!token)
+    if (!token)
       window.setTimeout(
         () => (window.location.href = environment.website_url),
         1000
-      ); */
+      );
 
     window.localStorage.setItem('token', token);
   }

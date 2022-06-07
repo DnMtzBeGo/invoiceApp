@@ -10,23 +10,18 @@ import {
   Inject,
   SimpleChanges,
   Renderer2,
-  ChangeDetectorRef,
-} from "@angular/core";
-import { GoogleLocation } from "src/app/shared/interfaces/google-location";
-import { AuthService } from "../../services/auth.service";
-import { googleAutocompleted } from "../../interfaces/google-autocomplete";
-import { GoogleMapsService } from "../../services/google-maps/google-maps.service";
-import { HomeComponent } from "../../../pages/home/home.component";
-import { Subscription } from "rxjs";
-import { MatDatepickerInputEvent } from "@angular/material/datepicker";
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
-import * as moment from "moment";
+  ChangeDetectorRef
+} from '@angular/core';
+import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
+import { AuthService } from '../../services/auth.service';
+import { googleAutocompleted } from '../../interfaces/google-autocomplete';
+import { GoogleMapsService } from '../../services/google-maps/google-maps.service';
+import { HomeComponent } from '../../../pages/home/home.component';
+import { Subscription } from 'rxjs';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
 declare var google: any;
 
 @Component({
@@ -49,6 +44,8 @@ export class InputDirectionsComponent implements OnInit {
   @Output("inputPlace") inputPlaceEmmiter = new EventEmitter<
     ["add" | "delete", string]
   >();
+  @Output() sendAssignedMermbers = new EventEmitter<any>();
+  @Output() sendUserWantCP = new EventEmitter<any>();
 
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
@@ -73,6 +70,11 @@ export class InputDirectionsComponent implements OnInit {
   titleFleetMembers: any = "";
   fromDate: number = 0;
   toDate: number = 0;
+  public monthSelected: boolean = true;
+  public changeLocations: boolean = false;
+  public provisionalPickupLocation: string = '';
+  public provisionalDropoffLocation: string = '';
+  public userWantCP: boolean = false;
 
   orderForm = new FormGroup({
     datepickup: new FormControl(this.events, Validators.required),
@@ -146,6 +148,7 @@ export class InputDirectionsComponent implements OnInit {
     public render: Renderer2,
     private googlemaps: GoogleMapsService,
     private cdr: ChangeDetectorRef,
+    private alertservice: AlertService,
     @Inject(HomeComponent) public parent: HomeComponent
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -153,7 +156,11 @@ export class InputDirectionsComponent implements OnInit {
       if (data) {
         this.hideType = data;
         this.hideMap = true;
+        this.isDatesSelected = false;
+        this.pickupSelected = false;
       }
+
+      if(data === 'pickup' || data === 'dropoff') this.changeLocations = true;
     });
   }
 
@@ -169,19 +176,16 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-    if (
-      changes.hasOwnProperty("showMapPreview") &&
-      !changes.showMapPreview.currentValue &&
-      changes.showMapPreview.previousValue
-    ) {
+    if(changes.hasOwnProperty('showMapPreview') && !changes.showMapPreview.currentValue && changes.showMapPreview.previousValue) {
       this.showScroll = true;
     }
   }
 
-  async selectSearchResultPickup(item: any) {
+  selectSearchResultPickup = async (item: any) => {
+    
     if (this.parent.showOrderDetails) {
       this.showMapPreview = true;
+      this.dropoffSelected = true;
     }
 
     const placeId = item.place_id;
@@ -217,7 +221,11 @@ export class InputDirectionsComponent implements OnInit {
     );
   }
 
-  async selectSearchResultDropoff(item: any) {
+  selectSearchResultDropoff = async (item: any) => {
+    if (this.parent.showOrderDetails) {
+      this.showMapPreview = true;
+      this.pickupSelected = true;
+    }
     const placeId = item.place_id;
     (
       await this.auth.apiRest(`{ "place_id" : "${placeId}" }`, "orders/place_details")
@@ -249,8 +257,6 @@ export class InputDirectionsComponent implements OnInit {
         console.log("Fetch Error", res.error);
       }
     );
-
-    this.showMapPreview = true;
   }
 
   focusOutInputPickup() {
@@ -272,11 +278,15 @@ export class InputDirectionsComponent implements OnInit {
   ClearAutocompleteDropoff() {
     this.autocompleteItemsDropoff = [];
     this.invalidAddressDropoff = false;
+    this.provisionalDropoffLocation = this.autocompleteDropoff.input;
+    this.autocompleteDropoff.input = '';
   }
 
   ClearAutocompletePickup() {
     this.autocompleteItemsPickup = [];
     this.invalidAddressPickup = false;
+    this.provisionalPickupLocation = this.autocompletePickup.input;
+    this.autocompletePickup.input = '';
   }
 
   closeAutoCompletePickup() {
@@ -315,7 +325,6 @@ export class InputDirectionsComponent implements OnInit {
             predictions.forEach((prediction: any) => {
               this.autocompleteItemsDropoff.push(prediction);
               this.invalidAddressDropoff = false;
-              // console.log(this.autocompleteItemsDropoff)
             });
           }
         });
@@ -346,7 +355,6 @@ export class InputDirectionsComponent implements OnInit {
             predictions.forEach((prediction: any) => {
               this.autocompleteItemsPickup.push(prediction);
               this.invalidAddressPickup = false;
-              // console.log(this.autocompleteItemsPickup)
             });
           }
         });
@@ -366,6 +374,10 @@ export class InputDirectionsComponent implements OnInit {
     this.showNewOrderCard.emit();
     this.showMapPreview = true;
     this.showScroll = false;
+    if(this.changeLocations) {
+      this.changeLocations = false;
+      this.hideType = '';
+    }
   }
 
   togglePlace(placeId: string, event: MouseEvent): void {
@@ -382,13 +394,25 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   cancelChangeLocations() {
+    if(this.provisionalPickupLocation.length > 0 && this.autocompletePickup.input.length === 0) {
+      this.autocompletePickup.input = this.provisionalPickupLocation;
+    }
+
+    if(this.provisionalDropoffLocation.length > 0 && this.autocompleteDropoff.input.length === 0) {
+      this.autocompleteDropoff.input = this.provisionalDropoffLocation;
+    }
+    if(this.changeLocations) {
+      this.changeLocations = false;
+      this.hideType = '';
+    }
     this.hideMap = false;
+    this.isDatesSelected = true;
   }
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-    if (event.value) this.minTime = new Date(event.value);
-    let result = event.value;
-    this.events = moment(new Date(`${event.value}`), "MM-DD-YYYY").format("MMMM DD YYYY");
+    if(event.value) this.minTime = new Date(event.value);
+    this.events = moment(new Date(`${event.value}`), 'MM-DD-YYYY').format('MMMM DD YYYY');
+    this.monthSelected = false;
   }
 
   timepickerValid(data: any) {
@@ -466,11 +490,14 @@ export class InputDirectionsComponent implements OnInit {
     );
   }
 
-  public selectMembersForOrder(member: any, typeMember: keyof this, index: number) {
+  public selectMembersForOrder(member: any, typeMember: keyof this) {
     let obj = this[typeMember] as any;
-    member["isSelected"] = true;
+    if(this.userWantCP && !member.can_stamp) {
+      return this.showAlert('No puedes seleccionar este miembro hasta que completes su información para carta porte.')
+    }
+    member['isSelected'] = true;
     this.selectMembersToAssign[typeMember] = member;
-
+    this.sendAssignedMermbers.emit({...this.selectMembersToAssign});
     for (const [i, iterator] of obj.entries()) {
       if (iterator._id != member._id) {
         iterator["isSelected"] = false;
@@ -492,7 +519,8 @@ export class InputDirectionsComponent implements OnInit {
   }
   // quitar el indesd de esta function
   public getMemberSelected(event: any) {
-    this.selectMembersForOrder(event["member"], event["memberType"], 9);
+    this.selectMembersForOrder(event['member'], event['memberType']);
+    this.sendAssignedMermbers.emit({...this.selectMembersForOrder});
   }
 
   public closeFleetMembers(titleKey: keyof this): boolean {
@@ -517,5 +545,50 @@ export class InputDirectionsComponent implements OnInit {
       }
     }
     return (this.showFleetMembersContainer = false);
+  }
+
+  public orderWithCP() {
+    this.userWantCP = !this.userWantCP;
+    this.sendUserWantCP.emit(this.userWantCP);
+    if(this.userWantCP) {
+      for (const iterator of this.drivers) {
+        if(iterator['isSelected'] && !iterator['can_stamp']) {
+          iterator['isSelected'] = false;
+          this.canGoToSteps = false;
+          delete this.selectMembersToAssign.drivers;
+        }
+      }
+
+      for (const iterator of this.trucks) {
+        if(iterator['isSelected'] && !iterator['can_stamp']) {
+          iterator['isSelected'] = false;
+          this.canGoToSteps = false;
+          delete this.selectMembersToAssign.trucks;
+        }
+      }
+
+      for (const iterator of this.trailers) {
+        if(iterator['isSelected'] && !iterator['can_stamp']) {
+          iterator['isSelected'] = false;
+          this.canGoToSteps = false;
+          delete this.selectMembersToAssign.trailers;
+        }
+      }
+    }
+  }
+
+  public showAlert(message: string) {
+    this.alertservice.create({
+      body: message,
+      handlers: [
+        {
+          text: 'Ok',
+          color: '#ffbe00',
+          action: async () => {
+            this.alertservice.close();
+          }
+        }
+      ]
+    })
   }
 }
