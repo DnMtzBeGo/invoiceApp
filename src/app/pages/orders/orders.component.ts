@@ -247,9 +247,9 @@ export class OrdersComponent implements OnInit {
     if (changes.datedropoff && changes.datedropoff.currentValue) {
       this.orderData.dropoff.startDate = this.datedropoff;
       this.orderData.dropoff.endDate = this.datedropoff;
-      if(changes.hasOwnProperty('userWantCP')) {
-        this.isOrderWithCP = this.userWantCP;
-      }
+    }
+    if(changes.hasOwnProperty('userWantCP')) {
+      this.isOrderWithCP = this.userWantCP;
     }
   }
   toggleCard() {
