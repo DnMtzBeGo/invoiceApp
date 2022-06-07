@@ -57,14 +57,13 @@ export class Step1Component implements OnInit {
     this.step1Form.get("orderWithCP").valueChanges.subscribe((value) => {
       const rfc = this.step1Form.get("rfc");
       if (this.orderWithCP) {
-        rfc.setValidators([
-          Validators.required,
+        rfc.setValidators(
           Validators.compose([
             Validators.pattern(
               /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/
             ),
-          ]),
-        ]);
+          ])
+        );
       } else {
         rfc.clearValidators();
       }
