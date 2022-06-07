@@ -44,7 +44,6 @@
 
         <mat-tab>
           <app-step2
-            [creationdatepickup]="datepickup"
             [creationTime]="creationTime"
             (step2FormData)="getStep2FormData($event)"
             (validFormStep2)="validStep2($event)"
@@ -65,7 +64,6 @@
 
         <mat-tab>
           <app-step4
-            [dropoffETA]="datedropoff"
             [timeETA]="minDropoff"
             (step4FormData)="getStep4FormData($event)"
             (validFormStep4)="validStep4($event)"

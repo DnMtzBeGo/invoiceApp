@@ -20,8 +20,6 @@ import { GoogleMapsService } from "src/app/shared/services/google-maps/google-ma
 import { Router } from "@angular/router";
 import { AlertService } from "src/app/shared/services/alert.service";
 import { Subscription } from "rxjs";
-import { MatDialog } from "@angular/material/dialog";
-import { ContinueModalComponent } from "./components/continue-modal/continue-modal.component";
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
@@ -42,8 +40,6 @@ export class OrdersComponent implements OnInit {
     pickupPostalCode: 0,
     dropoffPostalCode: 0,
   };
-  @Input() datepickup: number;
-  @Input() datedropoff: number;
   @Input() imageFromGoogle: any;
   @Input() membersToAssigned: any;
   @Input() userWantCP: boolean = false;
@@ -131,15 +127,6 @@ export class OrdersComponent implements OnInit {
   private subscription: Subscription;
 
   public isOrderWithCP: boolean = false;
-  public orderWithCPFields = {
-    pickupRFC: false,
-    cargo_goods: false,
-    dropoffRFC: false,
-  };
-  public hazardousCPFields = {
-    packaging: false,
-    hazardous_material: false,
-  };
 
   constructor(
     private translateService: TranslateService,
@@ -147,8 +134,7 @@ export class OrdersComponent implements OnInit {
     private auth: AuthService,
     private googlemaps: GoogleMapsService,
     private router: Router,
-    private alertService: AlertService,
-    private dialog: MatDialog
+    private alertService: AlertService
   ) {
     this.subscription = this.translateService.onLangChange.subscribe(
       (langChangeEvent: LangChangeEvent) => {
@@ -228,25 +214,6 @@ export class OrdersComponent implements OnInit {
     if (changes.draftData && changes.draftData.currentValue) {
       this.getHazardous(changes.draftData.currentValue._id);
     }
-    // this.locations = {
-    //   dropoff: "Perif. Blvd. Manuel Ávila Camacho 3130, Valle Dorado, 54020 Tlalnepantla de Baz, Méx., Mexico",
-    //   dropoffLat: '19.5475331',
-    //   dropoffLng: '-99.2110099',
-    //   dropoffPostalCode: 54020,
-    //   pickup: "Mariano Matamoros, Sector Centro, 88000 Nuevo Laredo, Tamps., Mexico",
-    //   pickupLat: '27.4955923',
-    //   pickupLng: '-99.5077369',
-    //   pickupPostalCode: 88000,
-    // }
-    // this.getETA(this.locations);
-    // this.getCreationTime();
-
-    if (changes.datepickup && changes.datepickup.currentValue) {
-      this.orderData.pickup.startDate = this.datepickup;
-    }
-    if (changes.datedropoff && changes.datedropoff.currentValue) {
-      this.orderData.dropoff.startDate = this.datedropoff;
-      this.orderData.dropoff.endDate = this.datedropoff;
     if(changes.hasOwnProperty('userWantCP')) {
       this.isOrderWithCP = this.userWantCP;
     }
@@ -308,21 +275,21 @@ export class OrdersComponent implements OnInit {
   }
 
   nextSlide() {
-    if (
-      this.stepsValidate[0] &&
-      this.stepsValidate[1] &&
-      this.stepsValidate[2] &&
-      this.stepsValidate[3] &&
-      this.currentStepIndex === 3
-    ) {
-      this.checkCPFields();
-    }
-
     if (this.currentStepIndex < 3) {
       this.currentStepIndex = this.currentStepIndex + 1;
       if (this.currentStepIndex > 2) {
         this.btnStatusNext = !this.validateForm();
       }
+    }
+
+    if (
+      this.stepsValidate[0] &&
+      this.stepsValidate[1] &&
+      this.stepsValidate[2] &&
+      this.stepsValidate[3] &&
+      this.currentStepIndex > 2
+    ) {
+      this.sendOrders("orders");
     }
   }
 
@@ -357,15 +324,20 @@ export class OrdersComponent implements OnInit {
     this.orderData.pickup.contact_info.country_code = data.country_code;
     if (this.isOrderWithCP) {
       this.orderData.pickup.contact_info["rfc"] = data.rfc;
-      if (this.validateRFC(data.rfc)) {
-        this.orderWithCPFields.pickupRFC = true;
-      } else {
-        this.orderWithCPFields.pickupRFC = false;
-      }
     }
   }
 
   getStep2FormData(data: any) {
+    if (data.datepickup && data.timepickup !== "") {
+      this.orderData.pickup.startDate = this.convertDateMs(
+        data.datepickup,
+        data.timepickup
+      );
+      let sumETA = this.convertDateMs(data.datepickup, data.timepickup) + this.ETA;
+      this.minDropoff = new Date(sumETA);
+    } else {
+      this.orderData.pickup.startDate = 0;
+    }
     this.orderData.cargo["53_48"] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoUnits;
@@ -375,19 +347,6 @@ export class OrdersComponent implements OnInit {
     }
     if (this.isOrderWithCP) {
       this.orderData.cargo["cargo_goods"] = data.cargo_goods;
-      data.cargo_goods !== ""
-        ? (this.orderWithCPFields.cargo_goods = true)
-        : (this.orderWithCPFields.cargo_goods = false);
-      if (data.cargoType && data.cargoType === "hazardous") {
-        this.orderData.cargo["hazardous_material"] = data.hazardous_material;
-        data.hazardous_material !== ""
-          ? (this.hazardousCPFields.hazardous_material = true)
-          : (this.hazardousCPFields.hazardous_material = false);
-        this.orderData.cargo["packaging"] = data.packaging;
-        data.packaging !== ""
-          ? (this.hazardousCPFields.packaging = true)
-          : (this.hazardousCPFields.packaging = false);
-      }
     }
     this.orderData.cargo.weigth = data.cargoWeight;
   }
@@ -402,23 +361,18 @@ export class OrdersComponent implements OnInit {
     this.orderData.dropoff.contact_info.country_code = data.country_code;
     if (this.isOrderWithCP) {
       this.orderData.dropoff.contact_info["rfc"] = data.rfc;
-      if (this.validateRFC(data.rfc)) {
-        this.orderWithCPFields.dropoffRFC = true;
-      } else {
-        this.orderWithCPFields.dropoffRFC = false;
-      }
     }
   }
 
   getStep4FormData(data: any) {
-    // this.orderData.dropoff.startDate = this.convertDateMs(
-    //   data.datedropoff,
-    //   data.timestartdropoff
-    // );
-    // this.orderData.dropoff.endDate = this.convertDateMs(
-    //   data.datedropoff,
-    //   data.timeenddropoff
-    // );
+    this.orderData.dropoff.startDate = this.convertDateMs(
+      data.datedropoff,
+      data.timestartdropoff
+    );
+    this.orderData.dropoff.endDate = this.convertDateMs(
+      data.datedropoff,
+      data.timeenddropoff
+    );
     this.orderData.dropoff.extra_notes = data.notes;
     if (this.stepsValidate.includes(false) && this.currentStepIndex > 2) {
       // console.log("COOOOOOOLLLLLLLLLLLLL");
@@ -563,7 +517,7 @@ export class OrdersComponent implements OnInit {
             // console.log(await data);
           });
         }
-        this.router.navigate(["pricing"], {
+        this.router.navigate(['pricing'], {
           state: {
             orderId: result._id,
           },
@@ -594,40 +548,5 @@ export class OrdersComponent implements OnInit {
 
   public toogleOrderWithCP() {
     this.isOrderWithCP = !this.isOrderWithCP;
-  }
-
-  public validateRFC(rfc: string) {
-    const rfcRegex =
-      /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/;
-    const result = rfcRegex.test(rfc);
-    return result;
-  }
-
-  public checkCPFields() {
-    const leftList = [];
-    for (const item in this.orderWithCPFields) {
-      this.orderWithCPFields[item] === false && leftList.push(item);
-    }
-    if (this.orderData.cargo.type === "hazardous") {
-      for (const item in this.hazardousCPFields) {
-        this.hazardousCPFields[item] === false && leftList.push(item);
-      }
-    }
-    if (leftList.length > 0) {
-      this.showModal(leftList);
-    }
-  }
-
-  public showModal(leftList) {
-    const modalData = {
-      title: "Para generar carta porte:",
-      list: leftList,
-    };
-    const dialogRef = this.dialog.open(ContinueModalComponent, {
-      data: modalData,
-    });
-    dialogRef.afterClosed().subscribe(async (res) => {
-      res ? this.sendOrders("orders") : (this.currentStepIndex = 0);
-    });
   }
 }
