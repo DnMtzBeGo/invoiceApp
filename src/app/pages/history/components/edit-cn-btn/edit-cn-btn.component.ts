@@ -43,9 +43,7 @@ export class EditCnBtnComponent implements OnInit {
       this.webService.apiRest(requestFile, 'invoice/get_pdf_xml').then((subscriber) => {
         subscriber.subscribe(({ result }) => {
           //if pdf doesn't exist yet, it means that invoice has not been created
-          if (result.pdf.length == 0) {
-            this.showComponent = true;
-          }
+          this.showComponent = result.pdf.length == 0;
           setTimeout(() => {
             this.updateProgress();
           });

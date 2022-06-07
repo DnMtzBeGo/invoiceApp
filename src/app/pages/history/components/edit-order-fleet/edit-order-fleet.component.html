@@ -11,7 +11,7 @@
 
   <!-- Driver card-->
   <div class="card driver-info">
-    <app-fleet-asset-card [props]="{ type: 'drivers', picture: orderData.driver?.thumbnail, notAvailable: true}">
+    <app-fleet-asset-card type="driver" [data]="driverData">
       <div class="card-asset-container">
         <div class="info">
           <div class="label">
@@ -30,7 +30,7 @@
 
   <!-- Truck card -->
   <div class="card truck-info">
-    <app-fleet-asset-card [props]="{ type: 'trucks', picture: orderData.truck?.thumbnail, notAvailable: true}">
+    <app-fleet-asset-card type="truck" [data]="truckData">
       <div class="card-asset-container">
         <div class="info">
           <div class="label">
@@ -53,7 +53,7 @@
 
   <!-- Trailer card -->
   <div class="card trailer-info" >
-    <app-fleet-asset-card [props]="{ type: 'trailers', picture: orderData.trailer?.thumbnail, notAvailable: true}">
+    <app-fleet-asset-card type="trailer" [data]="trailerData">
       <div class="card-asset-container">
         <div class="info">
           <div class="label">
