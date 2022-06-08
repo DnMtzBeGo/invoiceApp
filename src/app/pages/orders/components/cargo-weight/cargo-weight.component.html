@@ -21,7 +21,7 @@
             formControlName="units"
             onkeydown="return event.keyCode !== 69"
             min="1"
-            max="20"
+            max="20000"
             pattern="[0-9]*"
             (change)="saverange($event,i)"
             oninput="(!validity.rangeOverflow||(value=20)) && (!validity.rangeUnderflow||(value=1)) &&

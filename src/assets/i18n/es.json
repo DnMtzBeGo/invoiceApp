@@ -29,7 +29,7 @@
         "phone_text":"Teléfono",
         "cargo-weight": {
             "title": "Define el peso por caja",
-            "subtitule": "(por regulación máximo 20 tons por caja)",
+            "subtitule": "(por regulación máximo 20000 Kg por caja)",
             "unit": "Unidad",
             "btn-save": "Guardar"
         },
