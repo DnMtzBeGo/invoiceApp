@@ -23,6 +23,7 @@ import { InputSelectableComponent } from "../input-selectable/input-selectable.c
 import { CargoWeightComponent } from "../cargo-weight/cargo-weight.component";
 import * as moment from "moment";
 import { isObject } from "../../../../shared/utils/object";
+import { UnitDetailsModalComponent } from "../unit-details-modal/unit-details-modal.component";
 
 type CargoType = "general" | "hazardous";
 
@@ -277,7 +278,7 @@ export class Step2Component implements OnInit {
 
   selectedUnits(unit: MatButtonToggleChange): void {
     this.step2Form.get("unitType")!.setValue(unit.value);
-    const dialogRef = this.dialog.open(CargoWeightComponent, {
+    const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
       width: "312px",
       minHeight: "496px",
       panelClass: "modal",
@@ -397,6 +398,19 @@ export class Step2Component implements OnInit {
           this.step2Form.get("hazardous_material")!.setValue(res.value);
         }
       }
+    });
+  }
+
+  showUnitDetailsModal() {
+    const modalData = {};
+    const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
+      width: "600px",
+      minHeight: "496px",
+      panelClass: "modal",
+      data: modalData,
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      console.log(res);
     });
   }
 }

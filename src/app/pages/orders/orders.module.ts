@@ -41,6 +41,7 @@ import { TimepickerModule } from "ngx-bootstrap/timepicker";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { InputSelectableComponent } from './components/input-selectable/input-selectable.component';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
+import { UnitDetailsModalComponent } from './components/unit-details-modal/unit-details-modal.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -65,6 +66,7 @@ export const MY_FORMATS = {
     CargoWeightComponent,
     InputSelectableComponent,
     ContinueModalComponent,
+    UnitDetailsModalComponent,
   ],
   imports: [
     CommonModule,
