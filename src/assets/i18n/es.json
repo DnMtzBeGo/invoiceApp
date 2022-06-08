@@ -1010,7 +1010,7 @@
             "email-placeholder": "Escribir Correo Electrónico",
             "regimen": "Régimen Fiscal",
             "regimen-placeholder": "Selecciona un Régimen Fiscal",
-            "cer": "Archivo CER",
+            "cer": "Archivo CER (CSD)",
             "key": "Archivo Key",
             "key-password": "Archivo Key Contraseña",
             "key-password-placeholder": "Escribir Archivo Key Contraseña",

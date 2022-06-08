@@ -233,6 +233,12 @@ export class FacturaManageDireccionesComponent implements OnInit {
       form.identificador = nombre;
     }
 
+    if (mode === "delete") {
+      form = {
+        _id: form._id,
+      };
+    }
+
     return from(
       this.apiRestService.apiRest(
         JSON.stringify(form),

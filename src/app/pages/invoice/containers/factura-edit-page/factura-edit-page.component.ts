@@ -979,6 +979,7 @@ export class FacturaEditPageComponent implements OnInit {
           loader: "false",
           [keys[search.type]]: search.search,
           limit: 10,
+          only_enabled: 1,
         })
       ).pipe(mergeAll(), pluck("result", "documents"));
     }
