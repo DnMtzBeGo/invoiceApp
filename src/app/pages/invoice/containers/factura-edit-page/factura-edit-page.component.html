@@ -3071,6 +3071,16 @@
             {{ "invoice.edit.btn-pdf" | translate }}
           </a>
         </div>
+        <div *ngIf="p(vm.form).pdf_driver && vm.form?.files?.pdf_driver">
+          <a
+            mat-flat-button
+            class="brand-btn-1"
+            [href]="vm.form?.files?.pdf_driver"
+            download=""
+          >
+            {{ "invoice.edit.btn-pdf-driver" | translate }}
+          </a>
+        </div>
 
         <div *ngIf="p(vm.form).pdf_cancelado">
           <a

@@ -224,6 +224,7 @@ export const facturaPermissions = (factura) => {
     readonly: !edit,
     vistaprevia: !factura?.status || [1, 9].includes(factura.status),
     pdf: factura?.status && [3, 4, 5].includes(factura.status),
+    pdf_driver: factura?.status && [3, 4, 5].includes(factura.status),
     xml: factura?.status && [3, 4, 5].includes(factura.status),
     pdf_cancelado: factura?.status && [6, 7, 8].includes(factura.status),
     xml_acuse: factura?.status && [6, 7, 8].includes(factura.status),

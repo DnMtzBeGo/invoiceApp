@@ -280,6 +280,17 @@
               }}</span>
             </a>
             <a
+              *ngIf="p(element).pdf_driver && element.files?.pdf_driver"
+              mat-menu-item
+              [href]="element.files?.pdf_driver"
+              download=""
+            >
+              <mat-icon>download</mat-icon>
+              <span>{{
+                "invoice.invoice-table.download-pdf-driver" | translate
+              }}</span>
+            </a>
+            <a
               *ngIf="p(element).pdf_cancelado"
               mat-menu-item
               [href]="element.files?.pdf_cancelado"
