@@ -73,6 +73,7 @@ import {
   validators,
   facturaStatus,
   optimizeInvoiceCatalog,
+  minimumRequiredFields,
 } from "./factura.core";
 import {
   ActionSendEmailFacturaComponent,
@@ -1293,6 +1294,10 @@ export class FacturaEditPageComponent implements OnInit {
   Boolean = Boolean;
 
   JSON = window.JSON;
+
+  minimumRequiredFields = minimumRequiredFields;
+
+  toFactura = toFactura;
 
   resolveUrl = (commands: any[]) => {
     return this.router.serializeUrl(this.router.createUrlTree(commands));

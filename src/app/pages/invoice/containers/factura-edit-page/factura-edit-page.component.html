@@ -2912,7 +2912,9 @@
             [class]="
               vm.formMode === 'stamp' && vm.formSuccess === false
                 ? 'brand-btn-error'
-                : 'brand-btn-2'
+                : minimumRequiredFields(toFactura(vm.form || {}))
+                ? 'brand-btn-2'
+                : 'brand-btn-1'
             "
             (click)="formEmitter.next(['submit', [mode, 'stamp', vm.form]])"
             [style.pointer-events]="
@@ -2924,7 +2926,11 @@
               [style.display]="
                 vm.formMode === 'stamp' && vm.formLoading ? 'block' : 'none'
               "
-              class="brand-spinner-1"
+              [class]="
+                minimumRequiredFields(toFactura(vm.form || {}))
+                  ? 'brand-spinner-1'
+                  : 'brand-spinner-2'
+              "
               [diameter]="20"
               [strokeWidth]="4"
               style="margin: 0 auto"
