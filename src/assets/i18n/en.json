@@ -27,7 +27,7 @@
         "proceed-checkout":"Proceed to checkout",
         "cargo-weight": {
             "title": "Add your cargo weight",
-            "subtitule": "Weight (max 20 tons):",
+            "subtitule": "Weight (max 20000 Kg):",
             "unit": "Unit",
             "btn-save": "Save"
         },
