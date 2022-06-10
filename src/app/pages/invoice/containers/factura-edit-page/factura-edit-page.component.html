@@ -1468,14 +1468,6 @@
           !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
         "
         [id]="!vm.readonly ? 'conceptos' : null"
-        #tooltip="matTooltip"
-        [matTooltip]="
-          !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
-            ? ('invoice.edit.regimen-placeholder-2' | translate)
-            : ''
-        "
-        matTooltipPosition="above"
-        matTooltipHideDelay="100"
       >
         <h6 style="margin-bottom: 1rem; align-items: center">
           {{ "invoice.edit.conceptos" | translate }}
@@ -2843,41 +2835,50 @@
           #cartaporteCmp
         ></app-carta-porte-page>
       </section>
+
+      <div *ngIf="!vm.readonly" id="form-footer">
+        <span
+          id="back"
+          (click)="
+            formEmitter.next([
+              'tab',
+              (sliderDotsOpts.value === 0
+                ? tabs.length - 1
+                : sliderDotsOpts.value - 1
+              ).toString()
+            ])
+          "
+          >{{ "invoice.edit.back" | translate }}</span
+        >
+
+        <bego-slider-dots
+          [opts]="sliderDotsOpts"
+          style="width: 100%; max-width: 200px"
+        >
+        </bego-slider-dots>
+
+        <button
+          mat-flat-button
+          [class]="'brand-btn-2 radius-30'"
+          (click)="
+            formEmitter.next([
+              'tab',
+              ((sliderDotsOpts.value + 1) % tabs.length).toString()
+            ])
+          "
+        >
+          {{ "invoice.edit.next" | translate }}
+        </button>
+      </div>
     </div>
 
     <!-- sidebar -->
     <div id="sidebar">
       <nav id="menu">
         <li
-          *ngFor="
-            let tab of [
-              'receptor',
-              'emisor',
-              'conceptos',
-              'serie',
-              'complementos'
-            ]
-          "
+          *ngFor="let tab of tabs"
           [class.selected]="vm.tab === tab"
-          [class.disabled]="
-            ['conceptos', 'serie'].includes(tab) &&
-            (!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc))
-          "
-          (click)="
-            !(
-              ['conceptos', 'serie'].includes(tab) &&
-              (!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc))
-            ) && formEmitter.next(['tab', tab])
-          "
-          #tooltip="matTooltip"
-          [matTooltip]="
-            ['conceptos', 'serie'].includes(tab) &&
-            (!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc))
-              ? ('invoice.edit.lugar-expedicion-placeholder-2' | translate)
-              : ''
-          "
-          matTooltipPosition="above"
-          matTooltipHideDelay="100"
+          (click)="formEmitter.next(['tab', tab])"
         >
           <span>{{ "invoice.edit." + tab | translate }}</span>
         </li>

@@ -84,6 +84,7 @@ import {
 } from "../../modals";
 import { FacturaEmitterComponent } from "../../components/factura-emitter/factura-emitter.component";
 import { SeriesNewComponent } from "../../components/series-new/series-new.component";
+import { BegoSliderDotsOpts } from "src/app/shared/components/bego-slider-dots/bego-slider-dots.component";
 
 @Component({
   selector: "app-factura-edit-page",
@@ -96,6 +97,7 @@ export class FacturaEditPageComponent implements OnInit {
   public routes: typeof routes = routes;
   public URL_BASE = environment.URL_BASE;
   public token = localStorage.getItem("token") || "";
+  public tabs = ["receptor", "emisor", "conceptos", "serie", "complementos"];
 
   $rx = reactiveComponent(this);
 
@@ -262,6 +264,14 @@ export class FacturaEditPageComponent implements OnInit {
   id;
   mode: "create" | "update";
   model: "factura" | "template" = this.route.snapshot?.data.model;
+  sliderDotsOpts: BegoSliderDotsOpts = {
+    totalElements: this.tabs.length,
+    value: 0,
+    // valueChange: (slideIndex: number): void => {
+    //   this.sliderDotsOpts.value = slideIndex;
+    //   this.formEmitter.next(["tab", this.tabs[slideIndex]]);
+    // },
+  };
 
   // FORM CONTORLS
   valor_unitario = new FormControl(null);
@@ -285,12 +295,20 @@ export class FacturaEditPageComponent implements OnInit {
       of("receptor"),
       (this.formEmitter.pipe(ofType("tab")) as Observable<string>).pipe(
         distinctUntilChanged(),
-        tap((id) => {
+        map((tab) => {
+          const tabIndex = isNaN(parseInt(tab))
+            ? this.tabs.indexOf(tab)
+            : Number(tab);
+          tab = isNaN(parseInt(tab)) ? tab : this.tabs[tabIndex];
+
+          this.sliderDotsOpts.value = tabIndex;
           this.vm.readonly &&
             window.scrollTo({
-              top: 112 + window.document.getElementById(id)?.offsetTop - 16,
+              top: 112 + window.document.getElementById(tab)?.offsetTop - 16,
               behavior: "smooth",
             });
+
+          return tab;
         })
       )
     );

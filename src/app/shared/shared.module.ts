@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { TranslateModule } from "@ngx-translate/core";
 
 //MATERIAL MODULES
-import { MatBadgeModule } from '@angular/material/badge';
+import { MatBadgeModule } from "@angular/material/badge";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
@@ -48,6 +48,7 @@ import {
 } from "src/app/pages/invoice/modals";
 import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components";
 import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/carta-porte/services/carta-porte-info.service";
+import { BegoSliderDotsComponent } from "src/app/shared/components/bego-slider-dots/bego-slider-dots.component";
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/
     FacturaManageDireccionesComponent,
     InfoModalComponent,
     FacturaDireccionInputComponent,
+    BegoSliderDotsComponent,
   ],
   imports: [
     CommonModule,
@@ -137,6 +139,7 @@ import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/
     FacturaManageDireccionesComponent,
     InfoModalComponent,
     FacturaDireccionInputComponent,
+    BegoSliderDotsComponent,
   ],
   providers: [CartaPorteInfoService],
 })
