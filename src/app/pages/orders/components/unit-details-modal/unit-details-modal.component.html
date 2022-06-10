@@ -1,43 +1,46 @@
-<div mat-dialog-title class="cargo-form-header">
-  <h1>este es mi titulo</h1>
-  <h2>{{ "orders.cargo-weight.subtitule" | translate }}</h2>
-  <div class="input-increment">
-    <i class="icon icon-minus" (click)="decrement()"></i>
-    <div>{{ quantityunits }}</div>
-    <i class="icon icon-plus" (click)="increment()"></i>
-  </div>
+<div mat-dialog-title class="unit-details-header">
+  <h1>Detalle de la carga</h1>
+  <h2>Déjanos saber más acerca de tu carga</h2>
 </div>
 <mat-dialog-content>
-  <form class="cargo-form" [formGroup]="form">
-    <div
-      formArrayName="cargo"
-      class="item-cargo"
-      *ngFor="let items of getControls(); let i = index"
-    >
-      <ng-container [formGroupName]="i">
-        <p>{{ "orders.cargo-weight.unit" | translate }} {{ i + 1 }}</p>
-        <button matRipple (click)="decreament(i)" [disabled]="btnDecrement[i]">
-          <i class="icon icon-minus"></i>
-        </button>
-        <mat-form-field appearance="standard">
-          <input
-            matInput
-            type="number"
-            name="units"
-            formControlName="units"
-            onkeydown="return event.keyCode !== 69"
-            min="1"
-            max="20"
-            pattern="[0-9]*"
-            (change)="saverange($event, i)"
-            oninput="(!validity.rangeOverflow||(value=20)) && (!validity.rangeUnderflow||(value=1)) &&
-            (!validity.stepMismatch||(value=parseInt(this.value)));"
-          />
-        </mat-form-field>
-        <button matRipple (click)="increament(i)" [disabled]="btnIncrement[i]">
-          <i class="icon icon-plus"></i>
-        </button>
-      </ng-container>
+  <input
+    class="inputSearch"
+    type="text"
+    placeholder="Selecciona el tipo de Unidad"
+    (keyup)="handleInput($event)"
+  />
+  <mat-select #mySelect [(value)]="selected" panelOpen="true">
+    <mat-option *ngFor="let option of selectOptions" [value]="option">
+      {{ option.viewValue }}
+    </mat-option>
+  </mat-select>
+  <form [formGroup]="unitForm">
+    <div>
+      <p>Cantidad</p>
+      <button (click)="decreament()"><i class="icon icon-minus"></i></button>
+      <mat-form-field appearance="standard">
+        <input
+          matInput
+          formControlName="qty"
+          type="number"
+          name="units"
+          min="1"
+          max="20"
+          pattern="[0-9]*"
+        />
+      </mat-form-field>
+      <button (click)="increament()"><i class="icon icon-plus"></i></button>
+    </div>
+    <div>
+      <p>Descripcion</p>
+      <mat-form-field>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Escribe aquí ...."
+          touched="touchedFN($event)"
+        ></textarea>
+      </mat-form-field>
     </div>
   </form>
 </mat-dialog-content>

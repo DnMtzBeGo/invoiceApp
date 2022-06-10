@@ -98,6 +98,8 @@ export class Step2Component implements OnInit {
   hzrdModal: Option;
   hzrdModalSelected: boolean = false;
 
+  satUnitData: Option;
+
   constructor(
     translateService: TranslateService,
     private formBuilder: FormBuilder,
@@ -401,16 +403,34 @@ export class Step2Component implements OnInit {
     });
   }
 
+  addUnitDetailsFields() {
+    console.log("se crearon campos");
+    this.step2Form.addControl("commodityQuantity", new FormControl(""));
+    this.step2Form.addControl("satUnitType", new FormControl(""));
+  }
+
   showUnitDetailsModal() {
-    const modalData = {};
+    if (!this.satUnitData) {
+      this.addUnitDetailsFields();
+    }
+    const modalData = {
+      qty: this.step2Form.value.commodityQuantity,
+      satUnit: this.satUnitData,
+      description: this.step2Form.value.description,
+    };
     const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
       width: "600px",
       minHeight: "496px",
       panelClass: "modal",
       data: modalData,
     });
-    dialogRef.afterClosed().subscribe((res) => {
-      console.log(res);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.step2Form.get("description")!.setValue(result.description);
+        this.step2Form.get("commodityQuantity")!.setValue(result.qty);
+        this.step2Form.get("satUnitType")!.setValue(result.value);
+        this.satUnitData = { value: result.value, viewValue: result.viewValue };
+      }
     });
   }
 }

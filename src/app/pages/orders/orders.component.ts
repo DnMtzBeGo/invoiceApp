@@ -388,8 +388,10 @@ export class OrdersComponent implements OnInit {
           ? (this.hazardousCPFields.packaging = true)
           : (this.hazardousCPFields.packaging = false);
       }
+      this.orderData.cargo["unit_type"] = data.satUnitType;
     }
     this.orderData.cargo.weigth = data.cargoWeight;
+    // console.log("ORDERRRRR DATA:", this.orderData);
   }
 
   getStep3FormData(data: any) {
