@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, ViewChild } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { TranslateService } from "@ngx-translate/core";
 
 interface Option {
   value?: string;
@@ -29,11 +30,17 @@ export class UnitDetailsModalComponent implements OnInit {
   selectOptions: Option[] = [];
   catalogFetch: Option[] = [];
 
+  translateList = {};
+
   constructor(
+    translateService: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: UnitDetailsModalData,
     private apiRestService: AuthService,
     public dialogRef: MatDialogRef<UnitDetailsModalComponent>
-  ) {}
+  ) {
+    this.translateList = translateService.instant("orders.unit-details-list");
+    console.log("TRADUCCION:", this.translateList);
+  }
 
   ngOnInit(): void {
     this.getCatalog();

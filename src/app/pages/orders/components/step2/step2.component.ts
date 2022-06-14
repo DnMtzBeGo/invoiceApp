@@ -381,7 +381,7 @@ export class Step2Component implements OnInit {
         ? this.packModal
         : this.hzrdModal;
     const dialogRef = this.dialog.open(InputSelectableComponent, {
-      panelClass: "app-full-bleed-dialog",
+      panelClass: "modal",
       data: { data: modalData, type },
     });
     dialogRef.afterClosed().subscribe(async (res) => {

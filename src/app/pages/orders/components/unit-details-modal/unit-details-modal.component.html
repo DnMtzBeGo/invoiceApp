@@ -1,13 +1,13 @@
 <div class="container">
   <div mat-dialog-title class="unit-details-header">
-    <h1>Detalle de la carga</h1>
-    <h2>Déjanos saber más acerca de tu carga</h2>
+    <h1>{{ "orders.unit-details-list.title" | translate }}</h1>
+    <h2>{{ "orders.unit-details-list.sub-title" | translate }}</h2>
   </div>
   <mat-dialog-content>
     <input
       class="inputSearch"
       type="text"
-      placeholder="Selecciona el tipo de Unidad"
+      placeholder="{{ 'orders.unit-details-list.slct-unit' | translate }}"
       (keyup)="handleInput($event)"
     />
     <mat-select #mySelect [(value)]="selected" panelOpen="true">
@@ -16,7 +16,7 @@
       </mat-option>
     </mat-select>
     <form [formGroup]="unitForm" class="cargo-form">
-      <div class="text">Cantidad</div>
+      <div class="text">{{ "orders.unit-details-list.qty" | translate }}</div>
       <div class="item-cargo">
         <button matRipple (click)="decreament()"><i class="icon icon-minus"></i></button>
         <mat-form-field appearance="standard">
@@ -32,13 +32,13 @@
         </mat-form-field>
         <button matRipple (click)="increament()"><i class="icon icon-plus"></i></button>
       </div>
-      <div class="text">Descripcion</div>
+      <div class="text">{{ "orders.unit-details-list.description" | translate }}</div>
       <div class="description-cargo">
         <mat-form-field class="input-textarea" appearance="fill">
           <textarea
             matInput
             formControlName="description"
-            placeholder="Escribe aquí ...."
+            placeholder="{{ 'orders.unit-details-list.placeholder' | translate }}"
             rows="4"
             touched="touchedFN($event)"
           ></textarea>
