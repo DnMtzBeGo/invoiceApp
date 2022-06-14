@@ -280,7 +280,7 @@ export class Step2Component implements OnInit {
 
   selectedUnits(unit: MatButtonToggleChange): void {
     this.step2Form.get("unitType")!.setValue(unit.value);
-    const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
+    const dialogRef = this.dialog.open(CargoWeightComponent, {
       width: "312px",
       minHeight: "496px",
       panelClass: "modal",
@@ -419,9 +419,8 @@ export class Step2Component implements OnInit {
       description: this.step2Form.value.description,
     };
     const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
-      width: "600px",
-      minHeight: "496px",
       panelClass: "modal",
+      disableClose: true,
       data: modalData,
     });
     dialogRef.afterClosed().subscribe((result) => {

@@ -1,49 +1,52 @@
-<div mat-dialog-title class="unit-details-header">
-  <h1>Detalle de la carga</h1>
-  <h2>Déjanos saber más acerca de tu carga</h2>
+<div class="container">
+  <div mat-dialog-title class="unit-details-header">
+    <h1>Detalle de la carga</h1>
+    <h2>Déjanos saber más acerca de tu carga</h2>
+  </div>
+  <mat-dialog-content>
+    <input
+      class="inputSearch"
+      type="text"
+      placeholder="Selecciona el tipo de Unidad"
+      (keyup)="handleInput($event)"
+    />
+    <mat-select #mySelect [(value)]="selected" panelOpen="true">
+      <mat-option *ngFor="let option of selectOptions" [value]="option">
+        {{ option.viewValue }}
+      </mat-option>
+    </mat-select>
+    <form [formGroup]="unitForm" class="cargo-form">
+      <div class="text">Cantidad</div>
+      <div class="item-cargo">
+        <button matRipple (click)="decreament()"><i class="icon icon-minus"></i></button>
+        <mat-form-field appearance="standard">
+          <input
+            matInput
+            formControlName="qty"
+            type="number"
+            name="units"
+            min="1"
+            max="20"
+            pattern="[0-9]*"
+          />
+        </mat-form-field>
+        <button matRipple (click)="increament()"><i class="icon icon-plus"></i></button>
+      </div>
+      <div class="text">Descripcion</div>
+      <div class="description-cargo">
+        <mat-form-field class="input-textarea" appearance="fill">
+          <textarea
+            matInput
+            formControlName="description"
+            placeholder="Escribe aquí ...."
+            rows="4"
+            touched="touchedFN($event)"
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="save()">Save</button>
+  </mat-dialog-actions>
 </div>
-<mat-dialog-content>
-  <input
-    class="inputSearch"
-    type="text"
-    placeholder="Selecciona el tipo de Unidad"
-    (keyup)="handleInput($event)"
-  />
-  <mat-select #mySelect [(value)]="selected" panelOpen="true">
-    <mat-option *ngFor="let option of selectOptions" [value]="option">
-      {{ option.viewValue }}
-    </mat-option>
-  </mat-select>
-  <form [formGroup]="unitForm">
-    <div>
-      <p>Cantidad</p>
-      <button (click)="decreament()"><i class="icon icon-minus"></i></button>
-      <mat-form-field appearance="standard">
-        <input
-          matInput
-          formControlName="qty"
-          type="number"
-          name="units"
-          min="1"
-          max="20"
-          pattern="[0-9]*"
-        />
-      </mat-form-field>
-      <button (click)="increament()"><i class="icon icon-plus"></i></button>
-    </div>
-    <div>
-      <p>Descripcion</p>
-      <mat-form-field>
-        <textarea
-          matInput
-          formControlName="description"
-          placeholder="Escribe aquí ...."
-          touched="touchedFN($event)"
-        ></textarea>
-      </mat-form-field>
-    </div>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="save()">Save</button>
-</mat-dialog-actions>
