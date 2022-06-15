@@ -174,7 +174,7 @@ export class OrdersComponent implements OnInit {
           case 3:
             this.typeOrder = this.translateService.instant("orders.title-dropoff");
             this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-              this.translateService.instant("orders.proceed-checkout");
+              this.userWantCP ? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order");
             break;
         }
       }
@@ -254,6 +254,8 @@ export class OrdersComponent implements OnInit {
     if (changes.hasOwnProperty("userWantCP")) {
       this.isOrderWithCP = this.userWantCP;
     }
+
+    this.ordersSteps[3].nextBtnTxt = this.userWantCP? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order"); 
   }
   toggleCard() {
     this.cardIsOpen = !this.cardIsOpen;
