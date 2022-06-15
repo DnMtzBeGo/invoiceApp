@@ -24,7 +24,7 @@
     "back": "Atrás",
     "next-step": "Siguiente paso",
     "continue-to-dropoff": "Continuar a Dropoff",
-    "proceed-checkout": "Proceder a checkout",
+    "proceed-checkout": "Asignación de Precio",
     "phone_text": "Teléfono",
     "cargo-weight": {
       "title": "Define el peso por caja",
@@ -98,7 +98,8 @@
       "slct-unit": "Selecciona el tipo de Unidad",
       "qty": "Cantidad",
       "description": "Descripcion",
-      "placeholder": "Escribe aquí ...."
+      "placeholder": "Escribe aquí ....",
+      "save": "Guardar"
     },
     "continue-modal-list": {
       "cp-title": "Para generar carta porte:",
@@ -106,7 +107,10 @@
       "hazardous_material": "Falta tipo de carga peligrosa",
       "packaging": "Falta tipo de embalaje",
       "pickupRFC": "Falta RFC del origen",
-      "dropoffRFC": "Falta RFC del destino"
+      "dropoffRFC": "Falta RFC del destino",
+      "unit_type": "Falta tipo de unidad",
+      "cp-cancel": "Cancelar",
+      "cp-confirm": "Confirmar"
     }
   },
   "checkout": {
