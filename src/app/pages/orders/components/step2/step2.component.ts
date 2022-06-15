@@ -43,8 +43,10 @@ export class Step2Component implements OnInit {
   @Input() draftData: any;
   @Input() orderWithCP: boolean;
   @Input() creationdatepickup: number;
+  @Input() editCargoWeightNow: boolean;
   @Output() step2FormData: EventEmitter<any> = new EventEmitter();
   @Output() validFormStep2: EventEmitter<boolean> = new EventEmitter();
+  @Output() cargoWeightEdited: EventEmitter<void> = new EventEmitter();
 
   events: string = "DD / MM / YY";
   editWeight: boolean = false;
@@ -229,6 +231,10 @@ export class Step2Component implements OnInit {
       this.step2Form.get("timepickup").setValue(new Date(date));
     }
 
+    if (changes.editCargoWeightNow && changes.editCargoWeightNow.currentValue) {
+      this.editUnits();
+    }
+
     this.validFormStep2.emit(this.step2Form.valid);
   }
 
@@ -300,6 +306,7 @@ export class Step2Component implements OnInit {
         this.step2Form.get("cargoWeight")!.setValue(result.weight);
         this.quantityunits = result.units;
         this.editWeight = true;
+        this.cargoWeightEdited.emit();
       }
     });
   }
@@ -387,7 +394,7 @@ export class Step2Component implements OnInit {
 
   addUnitDetailsFields() {
     console.log("se crearon campos");
-    this.step2Form.addControl("commodityQuantity", new FormControl(""));
+    this.step2Form.addControl("commodity_quantity", new FormControl(""));
     this.step2Form.addControl("satUnitType", new FormControl(""));
   }
 
@@ -396,7 +403,7 @@ export class Step2Component implements OnInit {
       this.addUnitDetailsFields();
     }
     const modalData = {
-      qty: this.step2Form.value.commodityQuantity,
+      qty: this.step2Form.value.commodity_quantity,
       satUnit: this.satUnitData,
       description: this.step2Form.value.description,
     };
@@ -408,7 +415,7 @@ export class Step2Component implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.step2Form.get("description")!.setValue(result.description);
-        this.step2Form.get("commodityQuantity")!.setValue(result.qty);
+        this.step2Form.get("commodity_quantity")!.setValue(result.qty);
         this.step2Form.get("satUnitType")!.setValue(result.value);
         this.satUnitData = { value: result.value, viewValue: result.viewValue };
       }

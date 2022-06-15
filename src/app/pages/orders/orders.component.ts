@@ -135,11 +135,14 @@ export class OrdersComponent implements OnInit {
     pickupRFC: false,
     cargo_goods: false,
     dropoffRFC: false,
+    unit_type: false,
   };
   public hazardousCPFields = {
     packaging: false,
     hazardous_material: false,
   };
+  public editCargoWeightNow: boolean = false;
+  public hasEditedCargoWeight: boolean = false;
 
   constructor(
     private translateService: TranslateService,
@@ -315,7 +318,11 @@ export class OrdersComponent implements OnInit {
       this.stepsValidate[3] &&
       this.currentStepIndex === 3
     ) {
-      this.checkCPFields();
+      this.isOrderWithCP ? this.checkCPFields() : this.sendOrders("orders");
+    }
+
+    if (this.currentStepIndex === 1 && !this.hasEditedCargoWeight) {
+      this.editCargoWeightNow = true;
     }
 
     if (this.currentStepIndex < 3) {
@@ -389,6 +396,10 @@ export class OrdersComponent implements OnInit {
           : (this.hazardousCPFields.packaging = false);
       }
       this.orderData.cargo["unit_type"] = data.satUnitType;
+      data.satUnitType !== ""
+        ? (this.orderWithCPFields.unit_type = true)
+        : (this.orderWithCPFields.unit_type = false);
+      this.orderData.cargo["commodity_quantity"] = data.commodity_quantity;
     }
     this.orderData.cargo.weigth = data.cargoWeight;
     // console.log("ORDERRRRR DATA:", this.orderData);
@@ -605,17 +616,22 @@ export class OrdersComponent implements OnInit {
   }
 
   public checkCPFields() {
-    const leftList = [];
-    for (const item in this.orderWithCPFields) {
-      this.orderWithCPFields[item] === false && leftList.push(item);
-    }
-    if (this.orderData.cargo.type === "hazardous") {
-      for (const item in this.hazardousCPFields) {
-        this.hazardousCPFields[item] === false && leftList.push(item);
+    if (this.isOrderWithCP) {
+      const leftList = [];
+      console.log("CHECK CP FIELDS:", this.orderWithCPFields);
+      for (const item in this.orderWithCPFields) {
+        this.orderWithCPFields[item] === false && leftList.push(item);
       }
-    }
-    if (leftList.length > 0) {
-      this.showModal(leftList);
+      if (this.orderData.cargo.type === "hazardous") {
+        for (const item in this.hazardousCPFields) {
+          this.hazardousCPFields[item] === false && leftList.push(item);
+        }
+      }
+      if (leftList.length > 0) {
+        this.showModal(leftList);
+      } else {
+        this.sendOrders("orders");
+      }
     } else {
       this.sendOrders("orders");
     }
@@ -633,5 +649,9 @@ export class OrdersComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async (res) => {
       res ? this.sendOrders("orders") : (this.currentStepIndex = 0);
     });
+  }
+
+  public cargoWeightEdited() {
+    this.hasEditedCargoWeight = true;
   }
 }

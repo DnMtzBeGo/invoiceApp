@@ -19,6 +19,7 @@ export class ContinueModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.title = this.data.title;
+    console.log("CONTINUE:", this.data.list);
     if (this.data.list.length > 0) {
       for (const field of this.data.list) {
         this.items.push(this.translateList[field]);
