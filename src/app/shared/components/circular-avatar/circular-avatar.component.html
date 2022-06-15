@@ -1,4 +1,10 @@
-<div class="circular-avatar-container" [ngClass]="[userWantCP && !data?.can_stamp ? 'not-available-cp' : '', !data?.availability ? 'not-available': '']">
+<div class="brand-icon-help"
+  [matTooltip]="fleetMember === 'drivers' ? data?.nickname : data?.model"
+  matTooltipPosition="right"
+  matTooltipHideDelay="100"
+  matTooltipClass="brand-tooltip-1" 
+  class="circular-avatar-container" 
+  [ngClass]="[userWantCP && !data?.can_stamp ? 'not-available-cp' : '', !data?.availability ? 'not-available': '']">
   <div class="circular-avatar-middle-container">
     <div class="circular-avatar-int-container">
       <div class="available-dot" [ngClass]="!data?.availability ? 'not-available-dot' : ''">

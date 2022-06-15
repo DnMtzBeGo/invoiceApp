@@ -198,7 +198,7 @@
               <app-circular-avatar
                 [data]="driver"
                 [userWantCP]="userWantCP"
-                title="drivers"
+                fleetMember="drivers"
                 *ngIf="i < 4"
                 (click)="selectMembersForOrder(driver, 'drivers')">
               </app-circular-avatar>
@@ -218,7 +218,7 @@
             <ng-container *ngFor="let truck of trucks; let i = index">
               <app-circular-avatar 
                 [data]="truck"
-                title="trucks"
+                fleetMember="trucks"
                 *ngIf="i < 4"
                 (click)="selectMembersForOrder(truck, 'trucks')">
               </app-circular-avatar>
@@ -238,7 +238,7 @@
             <ng-container *ngFor="let trailer of trailers; let i = index">
               <app-circular-avatar
                 [data]="trailer"
-                title="trailers"
+                fleetMember="trailers"
                 *ngIf="i < 4"
                 (click)="selectMembersForOrder(trailer, 'trailers')">
               </app-circular-avatar>
