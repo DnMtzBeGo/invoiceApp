@@ -1468,14 +1468,6 @@
           !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
         "
         [id]="!vm.readonly ? 'conceptos' : null"
-        #tooltip="matTooltip"
-        [matTooltip]="
-          !vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc)
-            ? ('invoice.edit.regimen-placeholder-2' | translate)
-            : ''
-        "
-        matTooltipPosition="above"
-        matTooltipHideDelay="100"
       >
         <h6 style="margin-bottom: 1rem; align-items: center">
           {{ "invoice.edit.conceptos" | translate }}
@@ -1951,32 +1943,6 @@
             </div>
           </div>
         </div>
-
-        <!-- second section -->
-
-        <div style="margin-bottom: 3rem; padding-top: 0">
-          <button
-            mat-flat-button
-            class="brand-btn-2"
-            (click)="formEmitter.next(['conceptos:add', vm.concepto])"
-            [disabled]="
-              !vm.concepto ||
-              !(
-                vm.concepto.nombre &&
-                vm.concepto.cve_sat &&
-                vm.concepto.unidad_de_medida &&
-                vm.concepto.cantidad &&
-                vm.concepto.valor_unitario
-              ) ||
-              v.valor_unitario(valor_unitario, vm.concepto?.valor_unitario) !==
-                '' ||
-              v.cantidad(cantidad, vm.concepto?.cantidad) !== '' ||
-              v.descuento(descuento, vm.concepto?.descuento, vm.concepto) !== ''
-            "
-          >
-            {{ "invoice.edit.concepto-agregar" | translate }}
-          </button>
-        </div>
       </section>
 
       <section
@@ -1991,7 +1957,7 @@
         [attr.expanded]="vm.concepto?.impuestos.length > 0"
       >
         <h6>{{ "invoice.edit.impuestos" | translate }}</h6>
-        <div class="grid-2-2-1" style="padding-bottom: 0.5rem">
+        <div class="grid-2-2-1">
           <mat-form-field class="brand-field-1" appearance="outline">
             <mat-label>{{
               vm.impuesto
@@ -2198,6 +2164,41 @@
           </tbody>
         </table>
       </section>
+
+      <div
+        [style.display]="
+          !vm.readonly && !vm.form?.order && vm.tab === 'conceptos'
+            ? 'block'
+            : 'none'
+        "
+        style="margin-bottom: 3rem; text-align: center"
+      >
+        <button
+          mat-flat-button
+          class="brand-btn-2"
+          (click)="formEmitter.next(['conceptos:add', vm.concepto])"
+          [disabled]="
+            !vm.concepto ||
+            !(
+              vm.concepto.nombre &&
+              vm.concepto.cve_sat &&
+              vm.concepto.unidad_de_medida &&
+              vm.concepto.cantidad &&
+              vm.concepto.valor_unitario
+            ) ||
+            v.valor_unitario(valor_unitario, vm.concepto?.valor_unitario) !==
+              '' ||
+            v.cantidad(cantidad, vm.concepto?.cantidad) !== '' ||
+            v.descuento(descuento, vm.concepto?.descuento, vm.concepto) !== ''
+          "
+        >
+          {{
+            vm.concepto?._edit
+              ? ("invoice.edit.concepto-guardar" | translate)
+              : ("invoice.edit.concepto-agregar" | translate)
+          }}
+        </button>
+      </div>
 
       <div
         [id]="vm.readonly ? 'conceptos' : null"
@@ -2522,7 +2523,11 @@
 
           <div *ngIf="!vm.readonly" style="padding-top: 9px">
             <button
-              *ngIf="vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc) && !vm.form?.serie"
+              *ngIf="
+                vm.form?.emisor?._id &&
+                validRFC(vm.form?.emisor?.rfc) &&
+                !vm.form?.serie
+              "
               mat-flat-button
               class="brand-btn-2"
               (click)="
@@ -2713,158 +2718,55 @@
           vm.readonly || vm.tab === 'complementos' ? 'block' : 'none'
         "
       >
-        <!-- <h6>
-          {{ "invoice.edit.complementos" | translate }}
-          <span
-            *ngIf="!vm.readonly"
-            class="brand-icon-help"
-            [matTooltip]="vm.helpTooltips?.complementos"
-            matTooltipPosition="right"
-            matTooltipHideDelay="100"
-            matTooltipClass="brand-tooltip-1"
-            style="margin-left: 2px"
-          >
-            <mat-icon
-              ><img
-                src="./assets/images/invoice/help.png"
-                style="width: inherit"
-            /></mat-icon>
-          </span>
-
-          <div
-            *ngIf="!vm.readonly && !vm.form?._id"
-            style="
-              margin-left: 12px;
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              flex-direction: column;
-            "
-            [style.opacity]="!p(vm.form).cartaporte ? '0.4' : '1'"
-          >
-            <button
-              mat-flat-button
-              class="brand-btn-2"
-              (click)="
-                p(vm.form).cartaporte &&
-                  formEmitter.next([
-                    'submit',
-                    [mode, 'save', vm.form, 'cartaporte']
-                  ])
-              "
-              #tooltip="matTooltip"
-              [matTooltip]="
-                !vm.tipo_de_comprobante
-                  ? ('invoice.edit.carta-porte-placeholder-2' | translate)
-                  : ''
-              "
-              matTooltipPosition="right"
-              matTooltipHideDelay="100"
-            >
-              <img src="./assets/images/invoice/ico_cartaporte20.png" />
-            </button>
-            <div
-              style="
-                margin-top: 2px;
-                font-size: 11px;
-                font-weight: 500;
-                opacity: 0.8;
-              "
-            >
-              {{ "invoice.edit.carta-porte" | translate }}
-            </div>
-          </div>
-
-          <div
-            *ngIf="!vm.readonly && vm.form?._id"
-            style="
-              margin-left: 12px;
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              flex-direction: column;
-            "
-            [style.opacity]="!p(vm.form).cartaporte ? '0.4' : '1'"
-          >
-            <button
-              mat-flat-button
-              class="brand-btn-2"
-              [routerLink]="
-                p(vm.form).cartaporte && [
-                  routes.CARTA_PORTE,
-                  {
-                    id: vm.form?._id,
-                    redirectTo: resolveUrl([
-                      routes.EDIT_FACTURA,
-                      { id: vm.form?._id }
-                    ])
-                  }
-                ]
-              "
-              #tooltip="matTooltip"
-              [matTooltip]="
-                !vm.tipo_de_comprobante
-                  ? ('invoice.edit.carta-porte-placeholder-2' | translate)
-                  : ''
-              "
-              matTooltipPosition="right"
-              matTooltipHideDelay="1000"
-            >
-              <img src="./assets/images/invoice/ico_cartaporte20.png" />
-            </button>
-            <div
-              style="
-                margin-top: 2px;
-                font-size: 11px;
-                font-weight: 500;
-                opacity: 0.8;
-              "
-            >
-              {{ "invoice.edit.carta-porte" | translate }}
-            </div>
-          </div>
-        </h6> -->
-
         <app-carta-porte-page
           [facturaInfo]="vm.form"
           #cartaporteCmp
         ></app-carta-porte-page>
       </section>
+
+      <div *ngIf="!vm.readonly" id="form-footer">
+        <span
+          id="back"
+          (click)="
+            formEmitter.next([
+              'tab',
+              (sliderDotsOpts.value === 0
+                ? tabs.length - 1
+                : sliderDotsOpts.value - 1
+              ).toString()
+            ])
+          "
+          >{{ "invoice.edit.back" | translate }}</span
+        >
+
+        <bego-slider-dots
+          [opts]="sliderDotsOpts"
+          style="width: 100%; max-width: 200px"
+        >
+        </bego-slider-dots>
+
+        <button
+          mat-flat-button
+          [class]="'brand-btn-2 radius-30'"
+          (click)="
+            formEmitter.next([
+              'tab',
+              ((sliderDotsOpts.value + 1) % tabs.length).toString()
+            ])
+          "
+        >
+          {{ "invoice.edit.next" | translate }}
+        </button>
+      </div>
     </div>
 
     <!-- sidebar -->
     <div id="sidebar">
       <nav id="menu">
         <li
-          *ngFor="
-            let tab of [
-              'receptor',
-              'emisor',
-              'conceptos',
-              'serie',
-              'complementos'
-            ]
-          "
+          *ngFor="let tab of tabs"
           [class.selected]="vm.tab === tab"
-          [class.disabled]="
-            ['conceptos', 'serie'].includes(tab) &&
-            (!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc))
-          "
-          (click)="
-            !(
-              ['conceptos', 'serie'].includes(tab) &&
-              (!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc))
-            ) && formEmitter.next(['tab', tab])
-          "
-          #tooltip="matTooltip"
-          [matTooltip]="
-            ['conceptos', 'serie'].includes(tab) &&
-            (!vm.form?.emisor?._id || !validRFC(vm.form?.emisor?.rfc))
-              ? ('invoice.edit.lugar-expedicion-placeholder-2' | translate)
-              : ''
-          "
-          matTooltipPosition="above"
-          matTooltipHideDelay="100"
+          (click)="formEmitter.next(['tab', tab])"
         >
           <span>{{ "invoice.edit." + tab | translate }}</span>
         </li>
@@ -2899,7 +2801,9 @@
             [class]="
               vm.formMode === 'stamp' && vm.formSuccess === false
                 ? 'brand-btn-error'
-                : 'brand-btn-2'
+                : minimumRequiredFields(toFactura(vm.form || {}))
+                ? 'brand-btn-2'
+                : 'brand-btn-1'
             "
             (click)="formEmitter.next(['submit', [mode, 'stamp', vm.form]])"
             [style.pointer-events]="
@@ -2911,7 +2815,11 @@
               [style.display]="
                 vm.formMode === 'stamp' && vm.formLoading ? 'block' : 'none'
               "
-              class="brand-spinner-1"
+              [class]="
+                minimumRequiredFields(toFactura(vm.form || {}))
+                  ? 'brand-spinner-1'
+                  : 'brand-spinner-2'
+              "
               [diameter]="20"
               [strokeWidth]="4"
               style="margin: 0 auto"
@@ -3050,6 +2958,16 @@
             download=""
           >
             {{ "invoice.edit.btn-pdf" | translate }}
+          </a>
+        </div>
+        <div *ngIf="p(vm.form).pdf_driver && vm.form?.files?.pdf_driver">
+          <a
+            mat-flat-button
+            class="brand-btn-1"
+            [href]="vm.form?.files?.pdf_driver"
+            download=""
+          >
+            {{ "invoice.edit.btn-pdf-driver" | translate }}
           </a>
         </div>
 

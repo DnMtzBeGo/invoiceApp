@@ -9,6 +9,7 @@ import {
   //   AssignDriverPageComponent,
   FacturasPageComponent,
   FacturaEditPageComponent,
+  FacturaOrderEditPageComponent,
   //   InvoicePageComponent,
   EmisoresComponent,
   SeriesPageComponent,
@@ -44,6 +45,10 @@ const routes: Routes = [
     data: {
       model: "template",
     },
+  },
+  {
+    path: "edit-order",
+    component: FacturaOrderEditPageComponent,
   },
   { path: "carta-porte", component: CartaPortePageComponent },
   {

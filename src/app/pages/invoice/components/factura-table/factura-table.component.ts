@@ -22,7 +22,6 @@ import {
   facturaPermissions,
   previewFactura,
   facturaStatus,
-  toFactura,
 } from "../../containers/factura-edit-page/factura.core";
 import { clone } from "../../../../shared/utils/object";
 import {
@@ -212,7 +211,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
           "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
           Authorization: `Bearer ${this.token}`,
         },
-        body: JSON.stringify(previewFactura(toFactura(clone(factura)))),
+        body: JSON.stringify(previewFactura(clone(factura))),
       })
       .then((responseData) => responseData.arrayBuffer())
       .then((buffer) => {
@@ -234,5 +233,13 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
           this.translateService.instant("invoice.invoice-table.preview-error")
         );
       });
+  };
+
+  showError = (error: any) => {
+    error = error?.message || error?.error;
+
+    return Array.isArray(error)
+      ? error.map((e) => e.error ?? e.message).join("\n")
+      : error;
   };
 }

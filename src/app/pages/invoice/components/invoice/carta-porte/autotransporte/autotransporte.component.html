@@ -19,6 +19,7 @@
         <mat-option
           *ngFor="let option of filteredPermisosSCT"
           [value]="option.clave"
+          class="brand-option-1"
         >
           {{ option.clave }} - {{ option.descripcion }}
         </mat-option>
@@ -130,6 +131,7 @@
         <mat-option
           *ngFor="let option of filteredIdentificacionVehicular"
           [value]="option.clave"
+          class="brand-option-1"
         >
           {{ option.clave }} - {{ option.descripcion }}
         </mat-option>
@@ -195,6 +197,7 @@
           <mat-option
             *ngFor="let option of filteredRemolquesConfig"
             [value]="option.clave"
+            class="brand-option-1"
           >
             {{ option.clave }} - {{ option.descripcion }}
           </mat-option>

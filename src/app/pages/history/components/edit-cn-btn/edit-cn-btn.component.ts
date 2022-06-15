@@ -74,15 +74,13 @@ export class EditCnBtnComponent implements OnInit {
         });
 
       } else {
-        (await this.webService.apiRestGet(`/invoice?order=${this.orderId}`)).subscribe(
-          ({result})=>{
-            const {_id } = result.invoices[0];
-            this.router.navigate([routes.EDIT_FACTURA,{id: _id} ]);
-          }, 
-          (err)=>{
-            console.error('Error: ', err);
-          }
-        );
+        this.router.navigate([routes.EDIT_ORDER_FACTURA, {
+          id: this.orderId,
+          redirectTo: this.resolveUrl([
+              '/history',
+              { order: this.orderId },
+            ])
+        }]);
       }
     });
   }
@@ -93,4 +91,10 @@ export class EditCnBtnComponent implements OnInit {
 
     }
   }
+
+  // UTILS
+
+  resolveUrl = (commands: any[]) => {
+    return this.router.serializeUrl(this.router.createUrlTree(commands));
+  };
 }

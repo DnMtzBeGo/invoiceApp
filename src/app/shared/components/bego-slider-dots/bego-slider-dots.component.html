@@ -1,0 +1,11 @@
+<div class="slider-dots-wrapper">
+  <div class="slider-dots">
+    <div
+      *ngFor="let slide of slidesInfo"
+      (click)="changeIndex(slide.index)"
+      class="dot"
+      [ngClass]="{ active: slide.index == opts?.value }"
+      [style.cursor]="opts?.valueChange != null ? 'pointer' : 'unset'"
+    ></div>
+  </div>
+</div>

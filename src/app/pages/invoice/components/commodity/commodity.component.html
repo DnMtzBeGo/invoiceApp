@@ -18,6 +18,7 @@
         <mat-option
           *ngFor="let option of filteredBienesTransportados"
           [value]="option.code"
+          class="brand-option-1"
         >
           {{ option.code }} - {{ option.description }}
         </mat-option>
@@ -50,6 +51,7 @@
         <mat-option
           *ngFor="let option of filteredClaveUnidad"
           [value]="option.clave"
+          class="brand-option-1"
         >
           {{ option.clave }} - {{ option.nombre }}
         </mat-option>
@@ -140,6 +142,7 @@
         <mat-option
           *ngFor="let option of filteredMaterialPeligroso"
           [value]="option.clave"
+          class="brand-option-1"
         >
           {{ option.clave }} - {{ option.descripcion }}
         </mat-option>

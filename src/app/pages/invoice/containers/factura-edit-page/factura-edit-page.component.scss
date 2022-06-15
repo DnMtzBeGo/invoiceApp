@@ -14,6 +14,23 @@
       padding: 1rem 48px 0 56px;
       background-color: #0a0f14;
       z-index: 2;
+
+      #form-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2.5rem;
+
+        #back {
+          padding: 4px;
+          color: #ededed;
+          font-family: "Avenir";
+          font-weight: 600;
+          font-size: 16px;
+          cursor: pointer;
+          user-select: none;
+        }
+      }
     }
 
     #sidebar {
@@ -30,7 +47,8 @@
           font-family: "Avenir";
           font-style: normal;
           font-weight: 500;
-          font-size: 18px;
+          font-size: 19px;
+          user-select: none;
 
           span {
             display: inline-block;
@@ -49,7 +67,7 @@
             padding: 14px 24px 14px 28px;
             margin: 8px 0;
             font-weight: 600;
-            font-size: 20px;
+            font-size: 22px;
             color: #ededed;
             background: linear-gradient(270deg, #090d12 5.77%, #0a0f14 100%);
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.7),

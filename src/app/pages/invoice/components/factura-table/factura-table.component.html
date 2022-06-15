@@ -149,6 +149,10 @@
           mat-cell
           *matCellDef="let element"
           [style.color]="facturaStatus('color', element.status)"
+          [matTooltip]="(p(element).showError && showError(element)) || ''"
+          matTooltipPosition="right"
+          matTooltipHideDelay="100"
+          matTooltipClass="brand-tooltip-2"
         >
           {{ element.status_ }}
         </td>
@@ -230,12 +234,16 @@
             <button
               *ngIf="p(element).edit"
               mat-menu-item
-              [routerLink]="[
-                routes.EDIT_FACTURA,
-                p(element).edit
-                  ? { id: element._id }
-                  : { id: element._id, status: element.status }
-              ]"
+              [routerLink]="
+                !!element.order
+                  ? [routes.EDIT_ORDER_FACTURA, { id: element.order }]
+                  : [
+                      routes.EDIT_FACTURA,
+                      p(element).edit
+                        ? { id: element._id }
+                        : { id: element._id, status: element.status }
+                    ]
+              "
             >
               <mat-icon>find_in_page</mat-icon>
               <span>{{
@@ -273,6 +281,17 @@
               <mat-icon>download</mat-icon>
               <span>{{
                 "invoice.invoice-table.download-pdf" | translate
+              }}</span>
+            </a>
+            <a
+              *ngIf="p(element).pdf_driver && element.files?.pdf_driver"
+              mat-menu-item
+              [href]="element.files?.pdf_driver"
+              download=""
+            >
+              <mat-icon>download</mat-icon>
+              <span>{{
+                "invoice.invoice-table.download-pdf-driver" | translate
               }}</span>
             </a>
             <a
