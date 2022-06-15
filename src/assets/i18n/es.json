@@ -23,6 +23,7 @@
   "orders": {
     "back": "Atrás",
     "next-step": "Siguiente paso",
+    "create": "Orden creada exitosamente",
     "continue-to-dropoff": "Continuar a Dropoff",
     "proceed-checkout": "Asignación de Precio",
     "phone_text": "Teléfono",

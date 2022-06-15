@@ -575,12 +575,29 @@ export class OrdersComponent implements OnInit {
             // console.log(await data);
           });
         }
-        this.router.navigate(["pricing"], {
-          state: {
-            orderId: result._id,
-          },
-        });
-        this.uploadScreenShotOrderMap(result._id);
+        if(this.userWantCP){
+          this.router.navigate(["pricing"], {
+            state: {
+              orderId: result._id,
+            },
+          });
+          this.uploadScreenShotOrderMap(result._id);
+        }
+        else{
+          this.alertService.create({
+            body: this.translateService.instant('orders.create'),
+            handlers: [
+              {
+                text: this.translateService.instant('checkout.btn-continue'),
+                color: '#ffbe00',
+                action: async () => {
+                  this.alertService.close();
+                  location.reload();
+                }
+              }
+            ]
+          });
+        }
       },
       async (res) => {
         // this.errorAlert(res.error.error[this.lang]);
