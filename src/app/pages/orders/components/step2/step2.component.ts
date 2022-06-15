@@ -280,25 +280,6 @@ export class Step2Component implements OnInit {
 
   selectedUnits(unit: MatButtonToggleChange): void {
     this.step2Form.get("unitType")!.setValue(unit.value);
-    const dialogRef = this.dialog.open(CargoWeightComponent, {
-      width: "312px",
-      minHeight: "496px",
-      panelClass: "modal",
-      backdropClass: "backdrop",
-      data: {
-        units: this.step2Form.get("cargoUnits")!.value,
-        weight: this.step2Form.get("cargoWeight")!.value,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.editWeight = true;
-        this.step2Form.get("cargoUnits")!.setValue(result.units);
-        this.step2Form.get("cargoWeight")!.setValue(result.weight);
-        this.quantityunits = result.units;
-      }
-    });
   }
 
   editUnits(): void {
@@ -318,6 +299,7 @@ export class Step2Component implements OnInit {
         this.step2Form.get("cargoUnits")!.setValue(result.units);
         this.step2Form.get("cargoWeight")!.setValue(result.weight);
         this.quantityunits = result.units;
+        this.editWeight = true;
       }
     });
   }

@@ -1,11 +1,6 @@
 <div mat-dialog-title class="cargo-form-header">
   <h1>{{ 'orders.cargo-weight.title' | translate }}</h1>
   <h2>{{ 'orders.cargo-weight.subtitule' | translate }}</h2>
-  <div class="input-increment">
-    <i class="icon icon-minus" (click)="decrement()"></i>
-    <div>{{quantityunits}}</div>
-    <i class="icon icon-plus" (click)="increment()"></i>
-  </div>
 </div>
 <mat-dialog-content>
   <form class="cargo-form" [formGroup]="form">

@@ -57,6 +57,7 @@ export class Step3Component implements OnInit {
       if (this.orderWithCP) {
         rfc.setValidators(
           Validators.compose([
+            Validators.minLength(12),
             Validators.pattern(
               /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/
             ),

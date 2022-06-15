@@ -495,6 +495,8 @@ export class InputDirectionsComponent implements OnInit {
     if(this.userWantCP && !member.can_stamp) {
       return this.showAlert('No puedes seleccionar este miembro hasta que completes su información para carta porte.')
     }
+
+    if(!member.availability) this.showAlert('Este miembro no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad.')
     member['isSelected'] = true;
     this.selectMembersToAssign[typeMember] = member;
     this.sendAssignedMermbers.emit({...this.selectMembersToAssign});
