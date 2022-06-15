@@ -31,6 +31,9 @@ export class UnitDetailsModalComponent implements OnInit {
   catalogFetch: Option[] = [];
 
   translateList = {};
+  waitInputLabel: string = "";
+
+  loading: boolean = false;
 
   constructor(
     translateService: TranslateService,
@@ -39,7 +42,7 @@ export class UnitDetailsModalComponent implements OnInit {
     public dialogRef: MatDialogRef<UnitDetailsModalComponent>
   ) {
     this.translateList = translateService.instant("orders.unit-details-list");
-    console.log("TRADUCCION:", this.translateList);
+    this.waitInputLabel = translateService.instant("orders.slct-input-wait");
   }
 
   ngOnInit(): void {
@@ -50,7 +53,6 @@ export class UnitDetailsModalComponent implements OnInit {
   @ViewChild("mySelect") mySelect;
 
   loadPrevData() {
-    console.log("PREV DATA:", this.data);
     this.data.qty && this.unitForm.get("qty")!.setValue(this.data.qty);
     this.data.description &&
       this.unitForm.get("description")!.setValue(this.data.description);
@@ -59,6 +61,7 @@ export class UnitDetailsModalComponent implements OnInit {
   }
 
   async getCatalog() {
+    this.loading = true;
     const requestJson = {
       catalogs: [
         {
@@ -82,6 +85,7 @@ export class UnitDetailsModalComponent implements OnInit {
           return filteredItem;
         });
         this.catalogFetch = optionsList;
+        this.loading = false;
       },
       (err) => {
         console.log(err);

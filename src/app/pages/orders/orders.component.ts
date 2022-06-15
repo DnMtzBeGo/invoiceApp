@@ -627,6 +627,7 @@ export class OrdersComponent implements OnInit {
       list: leftList,
     };
     const dialogRef = this.dialog.open(ContinueModalComponent, {
+      panelClass: "modal",
       data: modalData,
     });
     dialogRef.afterClosed().subscribe(async (res) => {

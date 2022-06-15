@@ -1,10 +1,10 @@
 <div mat-dialog-content class="alert-wrapper">
   <div class="alert-header">
-    <h2>
+    <h1>
       {{ title }}
-    </h2>
+    </h1>
   </div>
-  <div *ngFor="let item of items" class="body">Falta ingresar el {{ item }}</div>
+  <div *ngFor="let item of items">Falta ingresar el {{ item }}</div>
 
   <div class="alert-button-group">
     <button mat-raised-button [mat-dialog-close]="false" class="bego-btn gray">

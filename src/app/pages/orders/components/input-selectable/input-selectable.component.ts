@@ -15,7 +15,8 @@ interface Option {
   styleUrls: ["./input-selectable.component.scss"],
 })
 export class InputSelectableComponent implements OnInit {
-  // SELECTABLE OPTIONS
+  loading: boolean = false;
+
   selectOptions: Option[] = [];
 
   selected: Option;
@@ -28,6 +29,7 @@ export class InputSelectableComponent implements OnInit {
   catalogFetch: Option[];
 
   searchInputLabel: string = "";
+  waitInputLabel: string = "";
 
   constructor(
     translateService: TranslateService,
@@ -35,6 +37,7 @@ export class InputSelectableComponent implements OnInit {
     private apiRestService: AuthService
   ) {
     this.searchInputLabel = translateService.instant("orders.slct-input-search");
+    this.waitInputLabel = translateService.instant("orders.slct-input-wait");
   }
 
   ngOnInit(): void {
@@ -43,6 +46,7 @@ export class InputSelectableComponent implements OnInit {
       this.selectOptions.push(this.selected);
     }
     this.urlType = this.data.type;
+    this.loading = true;
     this.getCatalog();
   }
 
@@ -78,6 +82,7 @@ export class InputSelectableComponent implements OnInit {
           return filteredItem;
         });
         this.catalogFetch = optionsList;
+        this.loading = false;
       },
       (err) => {
         console.log(err);

@@ -7,8 +7,11 @@
     <input
       class="inputSearch"
       type="text"
-      placeholder="{{ 'orders.unit-details-list.slct-unit' | translate }}"
+      placeholder="{{
+        loading ? waitInputLabel : ('orders.unit-details-list.slct-unit' | translate)
+      }}"
       (keyup)="handleInput($event)"
+      [disabled]="loading"
     />
     <mat-select #mySelect [(value)]="selected" panelOpen="true">
       <mat-option *ngFor="let option of selectOptions" [value]="option">

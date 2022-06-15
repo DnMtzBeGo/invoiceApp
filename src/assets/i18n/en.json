@@ -89,6 +89,7 @@
     "slct-input-packaging": "Select your packaging",
     "slct-input-hzrd_material": "Select your hazardous material",
     "slct-input-search": "Search ...",
+    "slct-input-wait": "Loading Options ...",
     "unit-details-list": {
       "title": "Cargo Description",
       "sub-title": "Let Us Know More About Your Cargo",
