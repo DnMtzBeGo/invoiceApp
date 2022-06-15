@@ -747,6 +747,8 @@
             "addr-colonia": "Colonia",
             "addr-colonia-placeholder-2": "Ingresa un código postal válido",
             "addr-email": "Correo electrónico",
+            "addr-addr": "Dirección",
+            "addr-addr-placeholder": "Introduce tu destino",
 
             "emisor": "Emisor",
             "emisor-btn-new": "Nuevo Emisor",
@@ -779,6 +781,10 @@
 
             "info": "Información Extra",
             "info-placeholder": "Información Extra (máx 5000 caractéres)",
+
+            "precio": "Precio",
+
+            "subtotal": "Total",
 
             "conceptos": "Conceptos",
             "conceptos-edit": "Productos/Servicios",
@@ -819,6 +825,14 @@
             "doc-rel-tipo": "Tipo de relación",
             "doc-rel-uuid": "UUID",
             "doc-rel-add": "Agregar",
+
+            "orden": "Orden",
+
+            "pickup": "Recolección",
+            "cargo_goods": "Tipo de mercancía",
+            "commodity_quantity": "Cantidad",
+
+            "dropoff": "Entrega",
 
             "complementos": "Complementos",
 
@@ -1203,7 +1217,10 @@
                 "uuid":"UUID\nFolio fiscal del CFDI. Ejemplo: 1335D8A8-1D90-445C-A20D-3371CCDE6006"
             },
             "complementos":"Complementos\nInformación adicional regulada por el SAT, se incluye en el XML. Puede incluir información para un sector o actividad específica.",
-            "serie":"Serie\nExpresa letra o conjunto de letras para tener un control interno de los CFDI."
+            "serie":"Serie\nExpresa letra o conjunto de letras para tener un control interno de los CFDI.",
+            "precio": {
+                "subtotal": "Escribe el precio total del servicio (Antes de impuestos)."
+            }
         }
     },
     "fleet":{

@@ -23,6 +23,7 @@ import {
   //   AssignDriverPageComponent,
   FacturasPageComponent,
   FacturaEditPageComponent,
+  FacturaOrderEditPageComponent,
   CartaPortePageComponent,
   //   InvoicePageComponent,
 } from "./containers";
@@ -108,6 +109,7 @@ import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/toolti
     // RunAlgorithmComponent,
     FacturasPageComponent,
     FacturaEditPageComponent,
+    FacturaOrderEditPageComponent,
     FacturaTableComponent,
     FacturaEmitterComponent,
     EmisoresComponent,
