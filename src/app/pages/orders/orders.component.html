@@ -38,6 +38,8 @@
             (validFormStep2)="validStep2($event)"
             [draftData]="draftData"
             [orderWithCP]="isOrderWithCP"
+            [editCargoWeightNow]="editCargoWeightNow"
+            (cargoWeightEdited)="cargoWeightEdited()"
           ></app-step2>
         </mat-tab>
 

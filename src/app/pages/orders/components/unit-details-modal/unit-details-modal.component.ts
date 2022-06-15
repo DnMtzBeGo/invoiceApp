@@ -26,7 +26,7 @@ export class UnitDetailsModalComponent implements OnInit {
     description: new FormControl(""),
   });
 
-  selected: Option;
+  selected: Option = { value: "", viewValue: "" };
   selectOptions: Option[] = [];
   catalogFetch: Option[] = [];
 
