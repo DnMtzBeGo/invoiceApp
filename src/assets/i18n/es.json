@@ -106,7 +106,8 @@
       "hazardous_material": "Falta tipo de carga peligrosa",
       "packaging": "Falta tipo de embalaje",
       "pickupRFC": "Falta RFC del origen",
-      "dropoffRFC": "Falta RFC del destino"
+      "dropoffRFC": "Falta RFC del destino",
+      "unit-type": "Falta tipo de unidad"
     }
   },
   "checkout": {
