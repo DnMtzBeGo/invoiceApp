@@ -24,6 +24,7 @@
         "back": "Back",
         "next-step":"Next Step",
         "create": "order created successfully",
+        "create-order": "Create Order",
         "continue-to-dropoff":"Continue to Dropoff",
         "proceed-checkout":"Proceed to Pricing",
         "cargo-weight": {
