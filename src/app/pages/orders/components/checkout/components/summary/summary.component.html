@@ -41,6 +41,7 @@
           <div>
             <bego-phone-input
               design="inner-shadow"
+              [arrow]="false"
               [(phoneFlag)]="orderData?.[selectedCard].contact_info.country_code"
               [(phoneCode)]="orderData?.[selectedCard].contact_info.dialCode"
               [(phoneNumber)]="orderData?.[selectedCard].contact_info.barePhone"
