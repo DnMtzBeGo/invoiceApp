@@ -1,35 +1,110 @@
-{
-  "bego-select-component": {
-    "select": "Select",
-    "empty-select": "Select is empty"
-  },
-  "bego-phone-input": {
-    "phone-text": "Phone",
-    "introduce-valid-number": "Enter a valid number",
-    "phone": "Phone"
-  },
-  "faqs": {
-    "general questions": "general questions",
-    "you will find answers": "you will find answers",
-    "more questions": "more questions",
-    "about the order process": "about the order process"
-  },
-  "contact-support": {
-    "Type a message..": "Type a message..",
-    "Send": "Send",
-    "Support": "Support",
-    "Drag files in here": "Drag files in here"
-  },
-  "orders": {
-    "back": "Back",
-    "next-step": "Next Step",
-    "continue-to-dropoff": "Continue to Dropoff",
-    "proceed-checkout": "Proceed to checkout",
-    "cargo-weight": {
-      "title": "Add your cargo weight",
-      "subtitule": "Weight (max 20 tons):",
-      "unit": "Unit",
-      "btn-save": "Save"
+    "bego-select-component": {
+        "select":"Select",
+        "empty-select":"Select is empty"
+    },
+    "bego-phone-input": {
+        "phone-text":"Phone",
+        "introduce-valid-number":"Enter a valid number",
+        "phone":"Phone"
+    },
+    "faqs": {
+        "general questions": "general questions",
+        "you will find answers": "you will find answers",
+        "more questions": "more questions",
+        "about the order process": "about the order process"
+    },
+    "contact-support": {
+        "Type a message..": "Type a message..",
+        "Send": "Send",
+        "Support": "Support",
+        "Drag files in here": "Drag files in here"
+    },
+    "orders": {
+        "back": "Back",
+        "next-step":"Next Step",
+        "continue-to-dropoff":"Continue to Dropoff",
+        "proceed-checkout":"Proceed to checkout",
+        "cargo-weight": {
+            "title": "Add your cargo weight",
+            "subtitule": "Weight (max 20000 Kg):",
+            "unit": "Unit",
+            "btn-save": "Save"
+        },
+        "title-pickup": "Pickup Order",
+        "title-dropoff": "Dropoff Order",
+        "btn-step1": "Next Step",
+        "btn-step2": "Continue to Drop off",
+        "btn-step3": "Next Step",
+        "btn-step4": "Proceed to checkout",
+        "title-directions": "Where to?",
+        "btn-change-route-pickup": "Change Pickup Point",
+        "btn-change-route-dropoff": "Change Dropoff Point",
+        "title-personal-info": "Personal Information",
+        "placeholder-fullname": "Full name",
+        "placeholder-phone": "Phone number",
+        "placeholder-mail": "Email@gmail.com",
+        "placeholder-reference": "#Reference",
+        "title-cargo-info": "Cargo Information",
+        "placeholder-date": "No date selected",
+        "placeholder-time": "No time selected",
+        "btn-add-weight": "Add your Weight",
+        "btn-edit-weight": "Edit your Weight",
+        "placeholder-start": "Start",
+        "placeholder-end": "End",
+        "txt-select-units": "Select Units",
+        "txt-select-cargo": "Select Cargo",
+        "txt-select": "Select",
+        "btn-general": "General",
+        "btn-hazardous": "Hazardous",
+        "choose-category":"Choose Category...",
+        "placeholder-hazard": "Select hazard code",
+        "btn-file": "Browse your file",
+        "txt-cargo": "Cargo Description",
+        "placeholder-cargo": "Type here ....",
+        "title-date-time": "Set date and time",
+        "txt-time": "Set Time",
+        "label-from": "From",
+        "label-to": "to",
+        "placeholder-notes": "Aditional notes...",
+        "placeholder-un": "UN number",
+        "title-valid-route": "Note",
+        "txt-valid-route": "This route is not included on our pricing list, but you can create it and we will contact you as soon as possible with a quotation.",
+        "btn-cancel": "Cancel",
+        "btn-done": "Done",
+        "hazardous-list": {
+            "class-1": "CLASS 1 - Explosive substance and objects",
+            "class-2": "CLASS 2 - Gases",
+            "class-3": "CLASS 3 - Flammable liquids",
+            "class-4": "CLASS 4 - Flammable solids",
+            "class-5-1": "CLASS 5.1 - Oxidizing substances",
+            "class-5-2": "CLASS 5.2 - Organic Peroxides",
+            "class-6-1": "CLASS 6.1 - Toxic materials",
+            "class-6-2": "CLASS 6.2 - Infectious substance",
+            "class-7": "CLASS 7 - Radioactive materials",
+            "class-8": "CLASS 8 - Corrosive substance",
+            "class-9": "CLASS 9 - Diverse hazardous materials and objects"
+        }
+    },
+    "shippers": {
+        "customs-agent": {
+            "title": "Customs Agent",
+            "description": "Simplify your costs with our Customs Brokerage flat fee, and protect your cargo with insurance. Everything in the same place and under one invoice.",
+            "contact": "Contact us"
+        },
+        "description": {
+            "title-first-line": "A passionate team,",
+            "title-second-line": "rooted in digital",
+            "description": "We have the support of an extensive network of trusted truck owners and operators, specialized in cross border trade, CTPAT certified by CBP, that can transport your valuable goods in Mexico and into the US. Our team evaluates each member of our network to ensure their vehicles and processes operate at the highest standards of quality and safety to manage your cargo."
+        },
+        "features": {
+            "title": "Be Everywhere",
+            "first-list": "Be Everywhere, with our real time tracker, follow your cargo from pickup to delivery.",
+            "second-list": "Save time and keep your team in the loop, by sharing real time information of each service with your network (operations, customer).",
+            "third-list": "Get notified on every step of the way through our app and SMS.",
+            "fourth-list": "Reduce costs and inefficiencies related to truck's availability, and plan your operations around your needs."
+        },
+        "title": "Shippers",
+        "description-shippers": "We value your time. Use our app to quote and book FTL 48 / 53 ft instantly."
     },
     "title-pickup": "Pickup Order",
     "title-dropoff": "Dropoff Order",
