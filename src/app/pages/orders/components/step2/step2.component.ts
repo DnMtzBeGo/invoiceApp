@@ -23,6 +23,7 @@ import { InputSelectableComponent } from "../input-selectable/input-selectable.c
 import { CargoWeightComponent } from "../cargo-weight/cargo-weight.component";
 import * as moment from "moment";
 import { isObject } from "../../../../shared/utils/object";
+import { UnitDetailsModalComponent } from "../unit-details-modal/unit-details-modal.component";
 
 type CargoType = "general" | "hazardous";
 
@@ -96,6 +97,8 @@ export class Step2Component implements OnInit {
   packModalSelected: boolean = false;
   hzrdModal: Option;
   hzrdModalSelected: boolean = false;
+
+  satUnitData: Option;
 
   constructor(
     translateService: TranslateService,
@@ -378,7 +381,7 @@ export class Step2Component implements OnInit {
         ? this.packModal
         : this.hzrdModal;
     const dialogRef = this.dialog.open(InputSelectableComponent, {
-      panelClass: "app-full-bleed-dialog",
+      panelClass: "modal",
       data: { data: modalData, type },
     });
     dialogRef.afterClosed().subscribe(async (res) => {
@@ -396,6 +399,36 @@ export class Step2Component implements OnInit {
           this.hzrdModalSelected = true;
           this.step2Form.get("hazardous_material")!.setValue(res.value);
         }
+      }
+    });
+  }
+
+  addUnitDetailsFields() {
+    console.log("se crearon campos");
+    this.step2Form.addControl("commodityQuantity", new FormControl(""));
+    this.step2Form.addControl("satUnitType", new FormControl(""));
+  }
+
+  showUnitDetailsModal() {
+    if (!this.satUnitData) {
+      this.addUnitDetailsFields();
+    }
+    const modalData = {
+      qty: this.step2Form.value.commodityQuantity,
+      satUnit: this.satUnitData,
+      description: this.step2Form.value.description,
+    };
+    const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
+      panelClass: "modal",
+      disableClose: true,
+      data: modalData,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.step2Form.get("description")!.setValue(result.description);
+        this.step2Form.get("commodityQuantity")!.setValue(result.qty);
+        this.step2Form.get("satUnitType")!.setValue(result.value);
+        this.satUnitData = { value: result.value, viewValue: result.viewValue };
       }
     });
   }

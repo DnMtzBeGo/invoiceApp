@@ -14,7 +14,8 @@
         *ngIf="orderWithCP"
       >
         <p class="value-selected" *ngIf="!mercModalSelected">
-          <i class="icon icon-search"></i>Selecciona el tipo de mercancía
+          <i class="icon icon-search"></i
+          >{{ "orders.slct-input-cargo_goods" | translate }}
         </p>
         <p class="value-selected" *ngIf="mercModalSelected">{{ mercModal.viewValue }}</p>
       </div>
@@ -108,7 +109,8 @@
             *ngIf="orderWithCP"
           >
             <p class="value-selected" *ngIf="!packModalSelected">
-              <i class="icon icon-search"></i>Selecciona tu embalaje
+              <i class="icon icon-search"></i
+              >{{ "orders.slct-input-packaging" | translate }}
             </p>
             <p class="value-selected" *ngIf="packModalSelected">
               {{ packModal.viewValue }}
@@ -120,7 +122,8 @@
             *ngIf="orderWithCP"
           >
             <p class="value-selected" *ngIf="!hzrdModalSelected">
-              <i class="icon icon-search"></i>Selecciona el tipo de carga peligrosa
+              <i class="icon icon-search"></i
+              >{{ "orders.slct-input-hzrd_material" | translate }}
             </p>
             <p class="value-selected" *ngIf="hzrdModalSelected">
               {{ hzrdModal.viewValue }}
@@ -181,13 +184,14 @@
         </div>
       </div>
       <div class="section section-padding">
-        <mat-form-field class="input-textarea textarea" appearance="fill">
+        <mat-form-field class="input-textarea" appearance="fill">
           <textarea
             matInput
             class="comments"
             placeholder=""
             rows="4"
             formControlName="description"
+            (click)="orderWithCP && showUnitDetailsModal()"
           >
           </textarea>
         </mat-form-field>

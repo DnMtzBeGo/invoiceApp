@@ -1,0 +1,148 @@
+@import "../../../../../styles.scss";
+
+:host {
+  .container {
+    padding: 20px;
+    min-width: 600px;
+    width: auto;
+    font-family: "Avenir", Helvetica, sans-serif;
+
+    .unit-details-header {
+      text-align: center;
+
+      h1,
+      h2 {
+        font-weight: 800;
+        font-size: 16px;
+        padding: 0;
+        color: $lighter-color;
+        letter-spacing: 0.5px;
+        text-transform: capitalize;
+        line-height: 21.86px;
+      }
+
+      h2 {
+        font-size: 14px;
+        font-weight: normal;
+        color: $light-color;
+        line-height: 19.12px;
+      }
+    }
+
+    mat-dialog-content {
+      min-height: 400px;
+      margin: 20px 0 0;
+      padding: 0px;
+
+      .inputSearch {
+        width: 100%;
+        border: none;
+        border-radius: 30px;
+        background-color: #0b1117;
+        box-shadow: 0 1px 0 0 #494c50;
+        text-align: center;
+        padding: 6px 5px;
+        color: #494c50;
+        font-family: "Avenir", Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 19px;
+        margin-bottom: 10px;
+      }
+
+      .cargo-form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+
+        .text {
+          font-size: 14px;
+          font-weight: 500;
+          color: $light-color;
+          text-align: center;
+        }
+
+        .item-cargo {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          input {
+            text-align: center;
+            font-weight: 900;
+          }
+
+          button {
+            background: #10161c;
+            box-shadow: inset 2px 2px 4px #191e23, inset -2px -2px 4px #090d11;
+            border-radius: 8px;
+            height: 35px;
+            width: 35px;
+            color: $yellow-color;
+            font-size: 1.75rem;
+            font-family: Avenir;
+            font-weight: 300;
+            padding: 3px 0;
+            outline: none;
+            border: none;
+            position: relative;
+            cursor: pointer;
+
+            &:disabled {
+              color: $light-color;
+            }
+            .icon {
+              &::before {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+              }
+            }
+          }
+        }
+
+        .description-cargo {
+          .input-textarea {
+            width: 100%;
+
+            textarea {
+              resize: none;
+
+              &.mat-input-element {
+                border: 1px solid #1c232a;
+                border-radius: 8px;
+                caret-color: #ffffff;
+                padding: 10px;
+                font-family: "Avenir", Helvetica, sans-serif;
+
+                &::placeholder {
+                  font-family: "Avenir", Helvetica, sans-serif;
+                  color: #89898a;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .mat-dialog-actions {
+      padding-bottom: 0;
+      min-height: 40px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .mat-button {
+      width: 100%;
+      color: #040b11;
+      background: #ffbe00;
+      box-shadow: inset 4px 4px 4px #ffd354, inset -4px -4px 6px #d59e00;
+      border-radius: 0 0 8px 8px;
+    }
+  }
+}

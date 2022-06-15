@@ -2,8 +2,9 @@
   <input
     class="inputSearch"
     type="text"
-    placeholder="Buscar"
+    placeholder="{{ loading ? waitInputLabel : searchInputLabel }}"
     (keyup)="handleInput($event)"
+    [disabled]="loading"
   />
   <mat-select #mySelect [(value)]="selected" panelOpen="true">
     <mat-option *ngFor="let option of selectOptions" [value]="option">

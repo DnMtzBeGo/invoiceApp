@@ -21,18 +21,6 @@
 
       <mat-tab-group [(selectedIndex)]="currentStepIndex">
         <mat-tab>
-          <div class="toggle-bill-container">
-            <div class="bill-question">
-              <img src="/assets/orders/question.svg" class="question-mark" />
-              <p>¿Factura y carta porte ?</p>
-            </div>
-            <div class="slide">
-              <mat-slide-toggle
-                (change)="toogleOrderWithCP()"
-                [checked]="isOrderWithCP"
-              ></mat-slide-toggle>
-            </div>
-          </div>
           <app-step1
             [locations]="locations"
             (step1FormData)="getStep1FormData($event)"

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-continue-modal",
@@ -10,21 +11,17 @@ export class ContinueModalComponent implements OnInit {
   public title;
   public items: string[] = [];
 
-  public fieldNames = {
-    pickupRFC: "RFC del origen",
-    cargo_goods: "tipo de mercancía",
-    packaging: "tipo de embalaje",
-    hazardous_material: "tipo de carga peligrosa",
-    dropoffRFC: "RFC del destino",
-  };
+  public translateList = {};
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data, translateService: TranslateService) {
+    this.translateList = translateService.instant("orders.continue-modal-list");
+  }
 
   ngOnInit(): void {
     this.title = this.data.title;
     if (this.data.list.length > 0) {
       for (const field of this.data.list) {
-        this.items.push(this.fieldNames[field]);
+        this.items.push(this.translateList[field]);
       }
     }
   }

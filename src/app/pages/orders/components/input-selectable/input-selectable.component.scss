@@ -1,7 +1,10 @@
+@import "../../../../../styles.scss";
+
 .content {
   width: 600px;
   margin: 0;
-  padding: 0;
+  padding: 20px;
+  font-family: "Avenir", Helvetica, sans-serif;
 
   .inputSearch {
     width: 100%;
@@ -20,4 +23,7 @@
     line-height: 19px;
     margin-bottom: 10px;
   }
+}
+.mat-dialog-actions {
+  margin: 0 20px 10px;
 }

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { TranslateService } from "@ngx-translate/core";
 import { AuthService } from "src/app/shared/services/auth.service";
 
 interface Option {
@@ -14,7 +15,8 @@ interface Option {
   styleUrls: ["./input-selectable.component.scss"],
 })
 export class InputSelectableComponent implements OnInit {
-  // SELECTABLE OPTIONS
+  loading: boolean = false;
+
   selectOptions: Option[] = [];
 
   selected: Option;
@@ -26,10 +28,17 @@ export class InputSelectableComponent implements OnInit {
   };
   catalogFetch: Option[];
 
+  searchInputLabel: string = "";
+  waitInputLabel: string = "";
+
   constructor(
+    translateService: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data,
     private apiRestService: AuthService
-  ) {}
+  ) {
+    this.searchInputLabel = translateService.instant("orders.slct-input-search");
+    this.waitInputLabel = translateService.instant("orders.slct-input-wait");
+  }
 
   ngOnInit(): void {
     if (this.data.data && this.data.data.value && this.data.data.viewValue) {
@@ -37,6 +46,7 @@ export class InputSelectableComponent implements OnInit {
       this.selectOptions.push(this.selected);
     }
     this.urlType = this.data.type;
+    this.loading = true;
     this.getCatalog();
   }
 
@@ -72,6 +82,7 @@ export class InputSelectableComponent implements OnInit {
           return filteredItem;
         });
         this.catalogFetch = optionsList;
+        this.loading = false;
       },
       (err) => {
         console.log(err);
