@@ -97,6 +97,14 @@
       "qty": "Quantity",
       "description": "Description",
       "placeholder": "Type here ...."
+    },
+    "continue-modal-list": {
+      "cp-title": "To generate consignment note:",
+      "cargo_goods": "Type of commodity is missing",
+      "hazardous_material": "Missing to enter the type of hazardous material",
+      "packaging": "The type of packaging is missing",
+      "pickupRFC": "Missing to enter pickup RFC",
+      "dropoffRFC": "Missing to enter drop off RFC"
     }
   },
   "shippers": {

@@ -1,10 +1,10 @@
 <div mat-dialog-content class="alert-wrapper">
   <div class="alert-header">
     <h1>
-      {{ title }}
+      {{ "orders.continue-modal-list.cp-title" | translate }}
     </h1>
   </div>
-  <div *ngFor="let item of items">Falta ingresar el {{ item }}</div>
+  <div *ngFor="let item of items">{{ item }}</div>
 
   <div class="alert-button-group">
     <button mat-raised-button [mat-dialog-close]="false" class="bego-btn gray">

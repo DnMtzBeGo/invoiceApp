@@ -99,6 +99,14 @@
       "qty": "Cantidad",
       "description": "Descripcion",
       "placeholder": "Escribe aquí ...."
+    },
+    "continue-modal-list": {
+      "cp-title": "Para generar carta porte:",
+      "cargo_goods": "Falta tipo de mercancía",
+      "hazardous_material": "Falta tipo de carga peligrosa",
+      "packaging": "Falta tipo de embalaje",
+      "pickupRFC": "Falta RFC del origen",
+      "dropoffRFC": "Falta RFC del destino"
     }
   },
   "checkout": {
