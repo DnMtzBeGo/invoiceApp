@@ -1,9 +1,9 @@
 <div class="member-card-container" (click)="getFleetMember(data)">
   <div class="avatar-container">
-    <img [src]="data?.photo" alt="" (error)="onPicError(data)">
+    <img [src]="data?.photo" alt="" (error)="onPicError(data)" [ngClass]="!data?.availability ? 'not-available' : 'available'">
   </div>
   <div class="avatar-info">
-    <p>{{data?.model}}</p>
+    <p>{{titleFleetMembers === 'drivers' ? data?.nickname : data?.model}}</p>
   </div>
   <div class="avatar-radio-container">
     <div class="avatar-radio-button" [ngClass]=" data?.isSelected ? 'avatar-selected' : ''"></div>

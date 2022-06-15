@@ -55,23 +55,6 @@ export class CargoWeightComponent implements OnInit {
     return (this.form.get('cargo') as FormArray).controls;
   }
 
-  increment() {
-    if (this.quantityunits < 100) {
-      this.btnDecrement[this.quantityunits] = true;
-      this.quantityunits++;
-      this.form.get('cargoUnits')!.setValue(this.quantityunits);
-      this.addUnits(this.data.weight[this.quantityunits]);
-    }
-  }
-
-  decrement() {
-    if (this.quantityunits > 1) {
-      this.quantityunits--;
-      this.form.get('cargoUnits')!.setValue(this.quantityunits);
-      this.removeUnits(this.data.weight[this.quantityunits]);
-    }
-  }
-
   addUnits(values: any) {
     if (values == null) {
       values = this.incrementUnit;

@@ -58,9 +58,9 @@
 
         <div class="select-units-input">
           <div class="input-increment">
-            <i class="icon icon-minus" (click)="editUnits()"></i>
+            <i class="icon icon-minus" (click)="decrement()"></i>
             <div>{{ quantityunits }}</div>
-            <i class="icon icon-plus" (click)="editUnits()"></i>
+            <i class="icon icon-plus" (click)="increment()"></i>
           </div>
           <mat-button-toggle-group
             formControlName="unitType"
@@ -72,10 +72,10 @@
         </div>
       </div>
 
-      <div class="section section-padding right" *ngIf="editWeight">
+      <div class="section section-padding right" >
         <div class="btn-weight" (click)="editUnits()">
           <i class="icon icon-plus"></i
-          ><span>{{ "orders.btn-edit-weight" | translate }}</span>
+          ><span>{{ !editWeight ? ("orders.btn-add-weight" | translate) : ("orders.btn-edit-weight" | translate) }}</span>
         </div>
       </div>
 

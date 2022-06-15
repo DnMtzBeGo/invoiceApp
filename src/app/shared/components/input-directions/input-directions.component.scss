@@ -72,6 +72,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 
   .radio {
     width: 35px;
@@ -193,7 +194,7 @@
     margin-top: 20px !important;
     position: fixed;
     width: 400px;
-    bottom: 45px;
+    bottom: calc(7vh);
 }
 
 section {
@@ -225,7 +226,7 @@ section {
           > bego-button {
             width: 400px;
             position: fixed;
-            bottom: 64px;
+            bottom: calc(7vh)
           }
 
         }
