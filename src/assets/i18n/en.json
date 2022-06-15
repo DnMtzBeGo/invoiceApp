@@ -24,7 +24,7 @@
         "back": "Back",
         "next-step":"Next Step",
         "continue-to-dropoff":"Continue to Dropoff",
-        "proceed-checkout":"Proceed to checkout",
+        "proceed-checkout":"Proceed to Pricing",
         "cargo-weight": {
             "title": "Add your cargo weight",
             "subtitule": "Weight (max 20000 Kg):",
@@ -36,7 +36,7 @@
         "btn-step1": "Next Step",
         "btn-step2": "Continue to Drop off",
         "btn-step3": "Next Step",
-        "btn-step4": "Proceed to checkout",
+        "btn-step4": "Proceed to Pricing",
         "title-directions": "Where to?",
         "btn-change-route-pickup": "Change Pickup Point",
         "btn-change-route-dropoff": "Change Dropoff Point",

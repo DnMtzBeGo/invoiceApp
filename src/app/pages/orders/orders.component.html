@@ -63,7 +63,7 @@
       </mat-tab-group>
 
       <div class="footer">
-        <button (click)="prevSlide()" mat-buttona class="bego-btn gray">
+        <button (click)="prevSlide()" maat-button class="bego-btn gray" *ngIf="currentStepIndex">
           <i class="icon icon-arrow-left back-arrow-icon"></i>
           {{ "orders.back" | translate }}
         </button>
