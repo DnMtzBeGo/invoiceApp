@@ -613,6 +613,8 @@ export class FacturaOrderEditPageComponent implements OnInit {
 
   showError = (error: any) => {
     error = error?.message || error?.error;
+    // lang
+    error = error?.[this.translateService.currentLang]
 
     return Array.isArray(error)
       ? error.map((e) => e.error ?? e.message).join(",\n")

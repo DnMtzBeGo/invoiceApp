@@ -9,5 +9,6 @@ export enum routes {
   SERIES = "/invoice/emisor/serie",
   NEW_SERIES = "/invoice/emisor/serie/new",
   EDIT_TEMPLATE = "/invoice/edit-template",
+  EDIT_ORDER_FACTURA = "/invoice/edit-order",
   LOGIN = "/login",
 }

@@ -234,12 +234,16 @@
             <button
               *ngIf="p(element).edit"
               mat-menu-item
-              [routerLink]="[
-                routes.EDIT_FACTURA,
-                p(element).edit
-                  ? { id: element._id }
-                  : { id: element._id, status: element.status }
-              ]"
+              [routerLink]="
+                !!element.order
+                  ? [routes.EDIT_ORDER_FACTURA, { id: element.order }]
+                  : [
+                      routes.EDIT_FACTURA,
+                      p(element).edit
+                        ? { id: element._id }
+                        : { id: element._id, status: element.status }
+                    ]
+              "
             >
               <mat-icon>find_in_page</mat-icon>
               <span>{{
