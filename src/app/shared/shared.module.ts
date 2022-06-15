@@ -56,7 +56,7 @@ import { BegoSliderDotsComponent } from "src/app/shared/components/bego-slider-d
     FacturaManageDireccionesComponent,
     InfoModalComponent,
     FacturaDireccionInputComponent,
-    BegoSliderDotsComponent,
+    BegoSliderDotsComponent
   ],
   imports: [
     CommonModule,
@@ -97,7 +97,7 @@ import { BegoSliderDotsComponent } from "src/app/shared/components/bego-slider-d
     NgxMatSelectSearchModule,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
-    NgxMatNativeDateModule,
+    NgxMatNativeDateModule
   ],
   exports: [
     MatBadgeModule,

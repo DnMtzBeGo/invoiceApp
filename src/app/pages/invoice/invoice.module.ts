@@ -79,6 +79,7 @@ import { LocationComponent } from "./components/location/location.component";
 import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { TwoDigitDecimaNumberDirective } from "../shared/directives/decimal.directive";
 import { UppercaseDirective } from "../shared/directives/uppercase.directive";
+import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/tooltip-help.module";
 
 @NgModule({
   declarations: [
@@ -152,6 +153,7 @@ import { UppercaseDirective } from "../shared/directives/uppercase.directive";
     TextMaskModule,
     NgxPaginationModule,
     NgxMatColorPickerModule,
+    TooltipHelpModule
   ],
   exports: [
     // MODALS

@@ -8,7 +8,6 @@ import { InfoModalComponent } from "../../modals/info-modal/info-modal.component
 import { CartaPorteInfoService } from "../../components/invoice/carta-porte/services/carta-porte-info.service";
 import { SubtiposRemolques } from "../../models/invoice/carta-porte/subtipos-remolques";
 import { facturaPermissions } from "../factura-edit-page/factura.core";
-
 @Component({
   selector: "app-carta-porte-page",
   templateUrl: "./carta-porte-page.component.html",
@@ -26,7 +25,7 @@ export class CartaPortePageComponent implements OnInit {
   public ubicacionesInfo: any;
   public mercanciasInfo: any;
   public figuraTransporteInfo: any;
-
+  public cartaPorteEnabled: boolean = false;
   isLinear = false;
   constructor(
     public cartaPorteInfoService: CartaPorteInfoService,
