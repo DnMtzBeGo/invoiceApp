@@ -98,7 +98,8 @@
       "slct-unit": "Selecciona el tipo de Unidad",
       "qty": "Cantidad",
       "description": "Descripcion",
-      "placeholder": "Escribe aquí ...."
+      "placeholder": "Escribe aquí ....",
+      "save": "Guardar"
     },
     "continue-modal-list": {
       "cp-title": "Para generar carta porte:",
@@ -107,7 +108,9 @@
       "packaging": "Falta tipo de embalaje",
       "pickupRFC": "Falta RFC del origen",
       "dropoffRFC": "Falta RFC del destino",
-      "unit-type": "Falta tipo de unidad"
+      "unit_type": "Falta tipo de unidad",
+      "cp-cancel": "Cancelar",
+      "cp-confirm": "Confirmar"
     }
   },
   "checkout": {

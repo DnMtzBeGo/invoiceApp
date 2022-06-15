@@ -98,7 +98,8 @@
           "slct-unit": "Select type of Unit",
           "qty": "Quantity",
           "description": "Description",
-          "placeholder": "Type here ...."
+          "placeholder": "Type here ....",
+          "save": "Save"
         },
         "continue-modal-list": {
           "cp-title": "To generate bill of lading:",
@@ -107,7 +108,9 @@
           "packaging": "The type of packaging is missing",
           "pickupRFC": "Pickup RFC is missing",
           "dropoffRFC": "Dropoff RFC is missing",
-          "unit-type": "Unit type is missing"
+          "unit_type": "Unit type is missing",
+          "cp-cancel": "Cancel",
+          "cp-confirm": "Confirm"
         }
     },
   "shippers": {
