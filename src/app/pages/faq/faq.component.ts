@@ -28,12 +28,12 @@ export class FaqComponent implements OnInit {
           )
 
         return {
-          [this.translateService.instant('faqs.general questions')]: {
-            label: this.translateService.instant('faqs.you will find answers'),
+          [this.translateService.instant('faqs.general-questions')]: {
+            label: this.translateService.instant('faqs.you-will-find-answers'),
             questions: allQuestions.filter(({ type }: any) => type === 'general'),
           },
-          [this.translateService.instant('faqs.more questions')]: {
-            label: this.translateService.instant('faqs.about the order process'),
+          [this.translateService.instant('faqs.more-questions')]: {
+            label: this.translateService.instant('faqs.about-the-order-process'),
             questions: allQuestions.filter(({ type }: any) => type === 'other'),
           },
         }
