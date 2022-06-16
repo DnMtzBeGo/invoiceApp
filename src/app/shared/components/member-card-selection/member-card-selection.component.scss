@@ -8,6 +8,7 @@
   align-items: center;
   justify-content: space-around;
   margin-bottom: 25px;
+  cursor: pointer;
 }
 
 .avatar-container {
@@ -63,4 +64,12 @@
   height: 26px;
   background: linear-gradient(180deg, #FFD200 0%, #FFBE00 100%);
   box-shadow: inset 0px -2px 4px #A27900, inset 2px 2px 4px #FED869;
+}
+
+.not-available {
+  border: 3px solid #de473c;
+}
+
+.available {
+  border: 3px solid #66da3d;
 }

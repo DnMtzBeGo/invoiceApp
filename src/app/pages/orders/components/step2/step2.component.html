@@ -10,13 +10,14 @@
       </div>
       <div
         class="input-selectable-container"
-        (click)="showInputSelectorCP()"
+        (click)="showInputSelectorCP('merc')"
         *ngIf="orderWithCP"
       >
-        <p class="value-selected" *ngIf="!modalSelected">
-          <i class="icon icon-search"></i>SELECTOR
+        <p class="value-selected" *ngIf="!mercModalSelected">
+          <i class="icon icon-search"></i
+          >{{ "orders.slct-input-cargo_goods" | translate }}
         </p>
-        <p class="value-selected" *ngIf="modalSelected">{{ modalOption.viewValue }}</p>
+        <p class="value-selected" *ngIf="mercModalSelected">{{ mercModal.viewValue }}</p>
       </div>
       <div class="section section-padding">
         <mat-form-field class="input-calendar" appearance="fill">
@@ -24,12 +25,13 @@
             matInput
             formControlName="datepickup"
             [matDatepicker]="picker"
-            (dateChange)="addEvent('change', $event)"
             [min]="calendar"
+            disabled
           />
           <mat-datepicker #picker></mat-datepicker>
-          <div class="btn-input-calendar" (click)="picker.open()">
-            <i class="icon icon-calendar"></i> {{ events }} <i class="icon icon-down"></i>
+          <div class="btn-input-calendar">
+            <i class="icon icon-calendar"></i> {{ creationDatePickupLabel }}
+            <i class="icon icon-down"></i>
           </div>
         </mat-form-field>
 
@@ -43,7 +45,7 @@
             [hourStep]="1"
             [minuteStep]="1"
             [min]="minTime"
-            *ngIf="!destroyPicker"
+            disabled="true"
           ></timepicker>
         </div>
       </div>
@@ -56,9 +58,9 @@
 
         <div class="select-units-input">
           <div class="input-increment">
-            <i class="icon icon-minus" (click)="editUnits()"></i>
+            <i class="icon icon-minus" (click)="decrement()"></i>
             <div>{{ quantityunits }}</div>
-            <i class="icon icon-plus" (click)="editUnits()"></i>
+            <i class="icon icon-plus" (click)="increment()"></i>
           </div>
           <mat-button-toggle-group
             formControlName="unitType"
@@ -70,10 +72,10 @@
         </div>
       </div>
 
-      <div class="section section-padding right" *ngIf="editWeight">
+      <div class="section section-padding right" >
         <div class="btn-weight" (click)="editUnits()">
           <i class="icon icon-plus"></i
-          ><span>{{ "orders.btn-edit-weight" | translate }}</span>
+          ><span>{{ !editWeight ? ("orders.btn-add-weight" | translate) : ("orders.btn-edit-weight" | translate) }}</span>
         </div>
       </div>
 
@@ -99,10 +101,38 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section" style="flex-direction: column">
+        <div class="selectableHazard" *ngIf="cargoType == 'hazardous'">
+          <div
+            class="input-selectable-container"
+            (click)="showInputSelectorCP('pack')"
+            *ngIf="orderWithCP"
+          >
+            <p class="value-selected" *ngIf="!packModalSelected">
+              <i class="icon icon-search"></i
+              >{{ "orders.slct-input-packaging" | translate }}
+            </p>
+            <p class="value-selected" *ngIf="packModalSelected">
+              {{ packModal.viewValue }}
+            </p>
+          </div>
+          <div
+            class="input-selectable-container"
+            (click)="showInputSelectorCP('hzrd')"
+            *ngIf="orderWithCP"
+          >
+            <p class="value-selected" *ngIf="!hzrdModalSelected">
+              <i class="icon icon-search"></i
+              >{{ "orders.slct-input-hzrd_material" | translate }}
+            </p>
+            <p class="value-selected" *ngIf="hzrdModalSelected">
+              {{ hzrdModal.viewValue }}
+            </p>
+          </div>
+        </div>
         <div class="hazardous-container" *ngIf="cargoType == 'hazardous'">
           <div class="hazardous-input">
-            <mat-select formControlName="hazardousType" [(value)]="hazardousType">
+            <mat-select formControlName="hazardous_type" [(value)]="hazardous_type">
               <mat-option value="select-catergory" [disabled]="true">
                 {{ "orders.choose-category" | translate }}
               </mat-option>
@@ -154,13 +184,14 @@
         </div>
       </div>
       <div class="section section-padding">
-        <mat-form-field class="input-textarea textarea" appearance="fill">
+        <mat-form-field class="input-textarea" appearance="fill">
           <textarea
             matInput
             class="comments"
             placeholder=""
             rows="4"
             formControlName="description"
+            (click)="orderWithCP && showUnitDetailsModal()"
           >
           </textarea>
         </mat-form-field>

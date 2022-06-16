@@ -1,5 +1,5 @@
 <form action="" [formGroup]="autocompleteForm" class="bego-direction-wrapper" >
-  <mat-form-field class="bego-address-autocomplete" >
+  <mat-form-field [ngClass]="formFieldClass" [appearance]="formFieldAppearance">
     <mat-label>
       {{ 'profile.account.txt_address' | translate }}
     </mat-label>
@@ -11,7 +11,8 @@
       value="queso"
       formControlName="address"
       (keyup)="searchGoogleDirections($event)"
-      [matAutocomplete]="auto">
+      [matAutocomplete]="auto"
+      [readonly]="readonly">
     <mat-autocomplete 
       #auto="matAutocomplete" 
       (optionSelected)="selectOption($event)"

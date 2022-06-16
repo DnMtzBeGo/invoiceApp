@@ -8,7 +8,9 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/cor
 export class CircularAvatarComponent implements OnInit, OnChanges {
 
   @Input() data: any;
-  @Input() title: string = '';
+  @Input() userWantCP: boolean = false;
+  @Input() fleetMember: string = '';
+  @Input() radioButton: boolean= true;
 
   public fallbackImage: string = '';
 
@@ -17,8 +19,8 @@ export class CircularAvatarComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.hasOwnProperty('title')) {
-      switch (this.title) {
+    if(changes.hasOwnProperty('fleetMember')) {
+      switch (this.fleetMember) {
         case 'drivers':
           this.fallbackImage = '../../../../assets/images/avatar-outline.svg';
           break;

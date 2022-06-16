@@ -1,14 +1,22 @@
-<div class="circular-avatar-container">
+<div class="brand-icon-help"
+  [matTooltip]="fleetMember === 'drivers' ? data?.nickname : data?.model"
+  matTooltipPosition="right"
+  matTooltipHideDelay="100"
+  matTooltipClass="brand-tooltip-1" 
+  class="circular-avatar-container" 
+  [ngClass]="[userWantCP && !data?.can_stamp ? 'not-available-cp' : '', !data?.availability ? 'not-available': '']">
   <div class="circular-avatar-middle-container">
     <div class="circular-avatar-int-container">
-      <div class="available-dot">
+      <div class="available-dot" [ngClass]="!data?.availability ? 'not-available-dot' : ''">
         <i class="icon icon-dot"></i>
       </div>
       <div class="circular-avatar-photo-container">
         <img [src]="data?.photo ? data.photo : fallbackImage" alt="">
       </div>
-      <div class="selected-dot"></div>
-      <i class="icon icon-check show-check-icon" *ngIf="data?.isSelected"></i>
+      <span *ngIf="radioButton">
+        <div class="selected-dot"></div>
+        <i class="icon icon-check show-check-icon" *ngIf="data?.isSelected"></i>
+      </span>
     </div>
   </div>
 </div>

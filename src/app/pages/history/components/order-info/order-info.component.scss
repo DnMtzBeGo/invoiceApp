@@ -309,6 +309,14 @@ $dark1: #10161c;
   min-width: 100%;
   margin-right: 20px;
   overflow: hidden;
-  height: 100%;
+  opacity: 0;
+  max-height: 0px;
+  min-height: 415px;
+  transition: max-height 1.5s , opacity 1.5s;
+
+  &.current{
+    max-height: 1000px;
+    opacity: 1;
+  }
 }
 

@@ -1,5 +1,8 @@
 <div class="fleet-asset-container">
-  <app-circular-avatar [data]="{photo: props.picture}" [title]="props.type">
+  <app-circular-avatar 
+    [data]="data" 
+    [title]="type"
+    [radioButton]="false">
   </app-circular-avatar>
   <div class="content">
     <ng-content></ng-content>

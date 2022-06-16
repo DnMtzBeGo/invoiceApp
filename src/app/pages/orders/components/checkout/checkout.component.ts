@@ -240,7 +240,7 @@ export class CheckoutComponent implements OnInit {
       (await this.webService.apiRest(requestJson, 'orders/update')).subscribe(
         async (res) => {
           if(res.status === 200){
-            this.changeStatusOrder(0).then(()=>{
+            this.changeStatusOrder(1).then(()=>{
               localStorage.removeItem('checkoutOrderId');
             });
           }

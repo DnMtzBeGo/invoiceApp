@@ -14,6 +14,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/circular-avatar.module';
 import { FleetMembersModule } from 'src/app/shared/components/fleet-members/fleet-members.module';
 import { MemberCardSelectionModule } from 'src/app/shared/components/member-card-selection/member-card-selection.module';
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MemberCardSelectionModule } from 'src/app/shared/components/member-card
     MatInputModule,
     CircularAvatarModule,
     FleetMembersModule,
-    MemberCardSelectionModule
+    MemberCardSelectionModule,
+    MatSlideToggleModule
   ],
   exports: [
     InputDirectionsComponent

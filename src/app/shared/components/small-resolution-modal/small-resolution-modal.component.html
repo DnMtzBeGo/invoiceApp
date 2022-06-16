@@ -1,0 +1,39 @@
+<div class="small-resolution-modal-wrapper">
+  <div class="small-resolution-modal">
+    <div class="lottie-wrapper">
+      <ng-lottie
+        [options]="lottieOptions">
+      </ng-lottie>
+    </div>
+
+    <div class="title">
+      {{ 'small-display-modal.small-display-modal-title' | translate }}
+    </div>
+
+    <div class="body">
+      {{ 'small-display-modal.small-display-modal-body' | translate }}
+    </div>
+
+    <!-- download btns en -->
+    <div class="download-btns" *ngIf="currentLang=='en' ">
+      <div class="apple" (click)="downloadAppleApp()" >
+        <img src="/assets/images/small-resolution-modal/app-store-icon-en.svg">
+      </div>
+      <div class="android" (click)="downloadAndroidApp()">
+        <img src="/assets/images/small-resolution-modal/google-play-en.svg">
+      </div>
+    </div>
+
+    <!-- download btns es -->
+    <div class="download-btns" *ngIf="currentLang=='es' " >
+      <div class="apple" (click)="downloadAppleApp()">
+        <img src="/assets/images/small-resolution-modal/app-store-icon-es.svg" >
+      </div>
+      <div class="android" (click)="downloadAndroidApp()">
+        <img src="/assets/images/small-resolution-modal/google-play-es.svg">
+      </div>
+    </div>
+
+  </div>
+  
+</div>

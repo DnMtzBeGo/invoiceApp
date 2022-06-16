@@ -1,752 +1,1295 @@
-{
-    "bego-select-component": {
-        "select":"Select",
-        "empty-select":"Select is empty"
+ { 
+  "bego-phone-input": {
+      "phone-text":"Phone",
+      "introduce-valid-number":"Enter a valid number",
+      "phone":"Phone"
+  },
+  "bego-select-component": {
+    "select":"Select",
+    "empty-select":"Select is empty"
+  },
+  "faqs": {
+    "general-questions": "general questions",
+    "you-will-find-answers": "you will find answers",
+    "more-questions": "more questions",
+    "about-the-order-process": "about the order process"
+  },
+  "contact-support": {
+    "type-a-message": "Type a message..",
+    "send": "Send",
+    "support": "Support",
+    "drag-files-in-here": "Drag files in here"
+  },
+  "orders": {
+    "back": "Back",
+    "next-step":"Next Step",
+    "create": "Order created successfully",
+    "create-order": "Create Order",
+    "continue-to-dropoff":"Continue to Dropoff",
+    "proceed-checkout":"Proceed to checkout",
+    "phone_text": "Phone",
+    "cargo-weight": {
+      "title": "Add your cargo weight",
+      "subtitule": "Weight (max 20000 Kg):",
+      "unit": "Unit",
+      "btn-save": "Save"
     },
-    "bego-phone-input": {
-        "phone-text":"Phone",
-        "introduce-valid-number":"Enter a valid number",
-        "phone":"Phone"
+    "title-pickup": "Pickup Order",
+    "title-dropoff": "Dropoff Order",
+    "btn-step1": "Next Step",
+    "btn-step2": "Continue to Drop off",
+    "btn-step3": "Next Step",
+    "btn-step4": "Proceed to checkout",
+    "title-directions": "Where to?",
+    "btn-change-route-pickup": "Change Pickup Point",
+    "btn-change-route-dropoff": "Change Dropoff Point",
+    "title-personal-info": "Personal Information",
+    "placeholder-fullname": "Full name",
+    "placeholder-phone": "Phone number",
+    "placeholder-mail": "example@mail.com",
+    "placeholder-reference": "#Reference",
+    "title-cargo-info": "Cargo Information",
+    "placeholder-date": "No date selected",
+    "placeholder-time": "No time selected",
+    "btn-add-weight": "Add your Weight",
+    "btn-edit-weight": "Edit your Weight",
+    "placeholder-start": "Start",
+    "placeholder-end": "End",
+    "txt-select-units": "Select Units",
+    "txt-select-cargo": "Select Cargo",
+    "txt-select": "Select",
+    "btn-general": "General",
+    "btn-hazardous": "Hazardous",
+    "choose-category":"Choose Category...",
+    "placeholder-hazard": "Select hazard code",
+    "btn-file": "Browse your file",
+    "txt-cargo": "Cargo Description",
+    "placeholder-cargo": "Type here ....",
+    "title-date-time": "Set date and time",
+    "txt-time": "Set Time",
+    "label-from": "From",
+    "label-to": "to",
+    "placeholder-notes": "Aditional notes...",
+    "placeholder-un": "UN number",
+    "title-valid-route": "Note",
+    "txt-valid-route": "This route is not included on our pricing list, but you can create it and we will contact you as soon as possible with a quotation.",
+    "btn-cancel": "Cancel",
+    "btn-done": "Done",
+    "hazardous-list": {
+      "class-1": "CLASS 1 - Explosive substance and objects",
+      "class-2": "CLASS 2 - Gases",
+      "class-3": "CLASS 3 - Flammable liquids",
+      "class-4": "CLASS 4 - Flammable solids",
+      "class-5-1": "CLASS 5.1 - Oxidizing substances",
+      "class-5-2": "CLASS 5.2 - Organic Peroxides",
+      "class-6-1": "CLASS 6.1 - Toxic materials",
+      "class-6-2": "CLASS 6.2 - Infectious substance",
+      "class-7": "CLASS 7 - Radioactive materials",
+      "class-8": "CLASS 8 - Corrosive substance",
+      "class-9": "CLASS 9 - Diverse hazardous materials and objects"
     },
-    "faqs": {
-        "general questions": "general questions",
-        "you will find answers": "you will find answers",
-        "more questions": "more questions",
-        "about the order process": "about the order process"
+    "slct-input-cargo_goods": "Select your cargo goods",
+    "slct-input-packaging": "Select your packaging",
+    "slct-input-hzrd_material": "Select your hazardous material",
+    "slct-input-search": "Search ...",
+    "slct-input-wait": "Loading Options ...",
+    "unit-details-list": {
+      "title": "Cargo Description",
+      "sub-title": "Let Us Know More About Your Cargo",
+      "slct-unit": "Select type of Unit",
+      "qty": "Quantity",
+      "description": "Description",
+      "placeholder": "Type here ....",
+      "save": "Save"
     },
-    "contact-support": {
-        "Type a message..": "Type a message..",
-        "Send": "Send",
-        "Support": "Support",
-        "Drag files in here": "Drag files in here"
+    "continue-modal-list": {
+      "cp-title": "To generate consignment note:",
+      "cargo_goods": "Type of commodity is missing",
+      "hazardous_material": "Missing to enter the type of hazardous material",
+      "packaging": "The type of packaging is missing",
+      "pickupRFC": "Missing to enter pickup RFC",
+      "dropoffRFC": "Missing to enter drop off RFC",
+      "unit_type": "Unit type is missing",
+      "cp-cancel": "Cancel",
+      "cp-confirm": "Confirm"
+    }
+  },
+  "checkout": {
+    "title-checkout": "Checkout",
+    "txt-reference": "Reference",
+    "title-emitter": "Emitter Information",
+    "txt-order": "Order",
+    "txt-pickup": "Pickup",
+    "txt-dropoff": "Drop off",
+    "txt-inovice": "Inovice",
+    "title-invoice": "Receiver Information",
+    "placeholder-fullname": "Full Name",
+    "placeholder-email": "Email",
+    "placeholder-phonenumber": "Phone Number",
+    "placeholder-address": "Address",
+    "placeholder-company": "Company",
+    "placeholder-rfc": "RFC",
+    "placeholder-cfdi": "CFDI",
+    "placeholder-tax_regime": "Tax Regime",
+    "select-cfdi": "Select CFDI",
+    "select-tax": "Select Tax Regime",
+    "edit": "Edit",
+    "unit": "Unit",
+    "tons": "tons",
+    "units": "Units",
+    "txt-items": "Items",
+    "full-name": "Full name",
+    "phone": "Phone",
+    "email": "Email",
+    "reference": "# Reference",
+    "weight": "Weight",
+    "cargo-type": "Cargo Type",
+    "hazardous": "Hazardous",
+    "date": "Date",
+    "time": "Time",
+    "price-details": "Price details",
+    "insurance": "Insurance",
+    "costums": "Customs",
+    "cruce": "Cruce",
+    "subtotal": "Subtotal",
+    "taxes": "Taxes",
+    "total-price": "Total price",
+    "placeholder-cargo": "Cargo Description",
+    "placeholder-notes": "Extra Notes",
+    "placeholder-file_cer": "Select your Certificate",
+    "placeholder-file_key": "Select your Key",
+    "btn-file_cer": "SAT Certificate (.cer)",
+    "btn-file_key": "SAT Key (.key)",
+    "btn-retry": "Retry",
+    "placeholder-password": "Certificate Password",
+    "btn-continue": "Continue",
+    "btn-submit": "Submit Order",
+    "upload": "Upload",
+    "txt-reference-payment": "Reference",
+    "txt-account-payment": "Account number",
+    "txt-company-payment": "Company name",
+    "value-account-payment": "002180701648306493",
+    "txt-bank": "Bank",
+    "value-company-payment": "BSILIENCE SA DE CV",
+    "title-valid-route": "Note",
+    "txt-valid-route": "This order will be handled by a representative, we will contact you when it's ready.",
+    "txt-save": "Save",
+    "to-define": "TBD",
+    "payment-method": "Payment method",
+    "transfer": "Wire",
+    "alerts": {
+      "order-updated": "Order Updated.",
+      "title-cancel-order": "Warning",
+      "txt-cancel-order": "Are you sure you want cancel the order?",
+      "title-order-placed": "Order placed!",
+      "txt-order-placed": "The order has been created, you will be able to track your order.",
+      "btn-order-placed": "View Order",
+      "title-user-verified": "Notice",
+      "txt-user-verified": "Your documents have not been verified, your order has been saved as a draft. Please try again when you receive a confirmation message.",
+      "title-valid-invoice": "Incomplete data",
+      "txt-valid-invoice": "Please complete your invoice information.",
+      "verify-user-title": "We could not submit your order because your account is not verified",
+      "verify-user-body": "Complete the documentation in your profile",
+      "error-orderid": "Invalid Order Id",
+      "error-something": "Something went wrong: ",
+      "error-missing-orderId": "Missing Order Id",
+      "fileSize": "the file is too big",
+      "fileType": "file type must be .cer or .key",
+      "emitter-validated": "Emitter Created",
+      "emitter-validated-fail": "Invalid Emitter",
+      "emitter-create": "To create an emitter: ",
+      "emitter-tax_regime": "Emitter tax regime is missing",
+      "receiver-stamp": "To create consignment note:",
+      "receiver-address": "Receiver address is missing",
+      "receiver-company": "Receiver business name is missing",
+      "receiver-rfc": "Receiver RFC is missing",
+      "receiver-cfdi": "Receiver CFDI is missing",
+      "receiver-tax_regime": "Receiver tax regime is missing"
     },
-    "orders": {
-        "back": "Back",
-        "next-step":"Next Step",
-        "continue-to-dropoff":"Continue to Dropoff",
-        "proceed-checkout":"Proceed to checkout",
-        "cargo-weight": {
-            "title": "Add your cargo weight",
-            "subtitule": "Weight (max 20 tons):",
-            "unit": "Unit",
-            "btn-save": "Save"
-        },
-        "title-pickup": "Pickup Order",
-        "title-dropoff": "Dropoff Order",
-        "btn-step1": "Next Step",
-        "btn-step2": "Continue to Drop off",
-        "btn-step3": "Next Step",
-        "btn-step4": "Proceed to checkout",
-        "title-directions": "Where to?",
-        "btn-change-route-pickup": "Change Pickup Point",
-        "btn-change-route-dropoff": "Change Dropoff Point",
-        "title-personal-info": "Personal Information",
-        "placeholder-fullname": "Full name",
-        "placeholder-phone": "Phone number",
-        "placeholder-mail": "Email@gmail.com",
-        "placeholder-reference": "#Reference",
-        "title-cargo-info": "Cargo Information",
-        "placeholder-date": "No date selected",
-        "placeholder-time": "No time selected",
-        "btn-add-weight": "Add your Weight",
-        "btn-edit-weight": "Edit your Weight",
-        "placeholder-start": "Start",
-        "placeholder-end": "End",
-        "txt-select-units": "Select Units",
-        "txt-select-cargo": "Select Cargo",
-        "txt-select": "Select",
-        "btn-general": "General",
-        "btn-hazardous": "Hazardous",
-        "choose-category":"Choose Category...",
-        "placeholder-hazard": "Select hazard code",
-        "btn-file": "Browse your file",
-        "txt-cargo": "Cargo Description",
-        "placeholder-cargo": "Type here ....",
-        "title-date-time": "Set date and time",
-        "txt-time": "Set Time",
-        "label-from": "From",
-        "label-to": "to",
-        "placeholder-notes": "Aditional notes...",
-        "placeholder-un": "UN number",
-        "title-valid-route": "Note",
-        "txt-valid-route": "This route is not included on our pricing list, but you can create it and we will contact you as soon as possible with a quotation.",
-        "btn-cancel": "Cancel",
-        "btn-done": "Done",
-        "hazardous-list": {
-            "class-1": "CLASS 1 - Explosive substance and objects",
-            "class-2": "CLASS 2 - Gases",
-            "class-3": "CLASS 3 - Flammable liquids",
-            "class-4": "CLASS 4 - Flammable solids",
-            "class-5-1": "CLASS 5.1 - Oxidizing substances",
-            "class-5-2": "CLASS 5.2 - Organic Peroxides",
-            "class-6-1": "CLASS 6.1 - Toxic materials",
-            "class-6-2": "CLASS 6.2 - Infectious substance",
-            "class-7": "CLASS 7 - Radioactive materials",
-            "class-8": "CLASS 8 - Corrosive substance",
-            "class-9": "CLASS 9 - Diverse hazardous materials and objects"
-        }
+    "insurance-modal": {
+      "title-insurance": "Total",
+      "txt-insurance": "White the total price of the service",
+      "txt-insurance-taxes": "(Before taxes)",
+      "deferred-PUE": "Single payment",
+      "deferred-PPD": "Deferred payment",
+      "btn": "Next"
     },
-    "shippers": {
-        "customs-agent": {
-            "title": "Customs Agent",
-            "description": "Simplify your costs with our Customs Brokerage flat fee, and protect your cargo with insurance. Everything in the same place and under one invoice.",
-            "contact": "Contact us"
-        },
-        "description": {
-            "title-first-line": "A passionate team,",
-            "title-second-line": "rooted in digital",
-            "description": "We have the support of an extensive network of trusted truck owners and operators, specialized in cross border trade, CTPAT certified by CBP, that can transport your valuable goods in Mexico and into the US. Our team evaluates each member of our network to ensure their vehicles and processes operate at the highest standards of quality and safety to manage your cargo."
-        },
-        "features": {
-            "title": "Be Everywhere",
-            "first-list": "Be Everywhere, with our real time tracker, follow your cargo from pickup to delivery.",
-            "second-list": "Save time and keep your team in the loop, by sharing real time information of each service with your network (operations, customer).",
-            "third-list": "Get notified on every step of the way through our app and SMS.",
-            "fourth-list": "Reduce costs and inefficiencies related to truck's availability, and plan your operations around your needs."
-        },
-        "title": "Shippers",
-        "description-shippers": "We value your time. Use our app to quote and book FTL 48 / 53 ft instantly."
+    "agent-modal": {
+      "title-agent": "Customs & Agent?",
+      "txt-agent": "How would you like to continue?",
+      "btn-first": "Now i have it for $",
+      "btn-second": "Only with cruce $",
+      "btn-third": "Continue without both",
+      "txt-agent-prices": "(USD prices)"
+    },
+    "stepper-btns": {
+      "continue-to-emitter": "Continue to Receiver",
+      "continue-to-invoice": "Continue to Summary",
+      "summary": "Submit"
+    },
+    "skip": "Skip",
+    "next": "Next",
+    "label-total-price": "Total price:",
+    "summary": "Summary",
+    "invoice": "Receiver",
+    "emitter": "Emitter",
+    "invalid_rfc": "Invalid RFC",
+    "preview": "Invoice",
+    "invoice-preview": "Invoice Preview",
+    "merchandise_type": "Merchandise Type",
+    "file_size_error": "The file is too big"
+  },
+  "history": {
+    "title": "History",
+    "search": "Search by address...",
+    "total_earnings": "Total Earnings",
+    "no-comments": "No Comments",
+    "upcoming_detail_title": "Upcoming",
+    "completed_detail_title": "Complete",
+    "past_detail_tile": "Past",
+    "btn-report": "Report an issue with Order",
+    "to-define": "TBD",
+    "tabs": {
+      "upcoming": "Upcoming",
+      "completed": "Completed",
+      "past": "Past"
+    },
+    "btns": {
+      "prev": "PREV",
+      "next": "NEXT"
+    },
+    "order-status": {
+      "order-created": "Order Created",
+      "order-accepted": "Order Accepted",
+      "pickup": "Pickup",
+      "dropoff": "Dropoff",
+      "started-by": "Started By",
+      "completed": "Completed",
+      "estimated-pickup-time": "Estimated Pickup Time",
+      "estimated-dropoff-time": "Estimated Dropoff Time",
+      "delivery-started": "Delivery Started",
+      "delivery-completed": "Delivery Completed",
+      "order-completed": "Order Completed"
+    },
+    "btn_start_driving": "Start Driving",
+    "history_detail": {
+      "reference": "Reference",
+      "edit_order": "Edit",
+      "order": "Order",
+      "pickup_info_tab": "Pickup information",
+      "dropoff_info_tab": "Dropoff information",
+      "pickup": "Pickup",
+      "dropoff": "Dropoff ",
+      "btn_track": "Track order",
+      "order_info_tab": "Order Documentation",
+      "photos": "Photos",
+      "signature": "Signature",
+      "aditional_details": "Additional Details",
+      "insurance": "Insurance",
+      "unit": "Units",
+      "taxes": "Taxes",
+      "customs": "Customs Agent",
+      "cruce": "Cruce",
+      "extra": "Extra Expenses",
+      "hazardous_cargo": "Hazardous Cargo",
+      "general_cargo": "General Cargo",
+      "truck": "Truck",
+      "trailer": "Trailer",
+      "subtotal": "Subtotal",
+      "total_price": "Total price",
+      "select": "Select"
+    },
+    "driver_assignment": {
+      "title": "Assigned to",
+      "search": "Search...",
+      "btn_confirm": "Confirm"
+    },
+    "truck_assignment": {
+      "title": "Asigned truck",
+      "search": "Search...",
+      "btn_confirm": "Confirm"
+    },
+    "overview": {
+      "title": "Order Assignment",
+      "label_driver": "Driver",
+      "label_vehicle": "Truck",
+      "label_trailer": "Trailer",
+      "btn-edit": "Edit",
+      "btn-submit": "Submit",
+      "btn-confirm": "Confirm"
+    },
+    "tracking": {
+      "title": "Track order",
+      "distance": "Distance",
+      "pickup": "Pickup",
+      "dropoff": "Dropoff",
+      "time_pickup": "Time for pickup",
+      "time_dropoff": "Time for dropoff",
+      "share_tracking_message1": "For tracking, click ",
+      "share_tracking_message2": " .",
+      "share_tracking_button": "here"
+    },
+    "external_tracking": {
+      "title": "Tracking Invitation",
+      "txt_driver": "Name",
+      "txt_name": "Full Name",
+      "btn_send": "Send",
+      "toast_message": "Invitations sent successfully"
     },
     "alerts": {
-        "contact": {
-            "success-email": "Thanks! We will give you a response in the next 48 hours",
-            "fields-required": "All fields are required"
-        }
-    },
-    "links": {
-        "terms": "terms-and-conditions",
-        "privacy": "privacy-policy"
-    },
-    "carries": {
-        "drivers-features": {
-            "title-first-line": "Find new cargo,",
-            "title-second-line": "and reduce your",
-            "title-third-line": "empty returns.",
-            "description": "BeGo matches you and your fleet with the nearest available cargo, haggle free. Our technology finds the best cargo fit for you based on your future location and availability. So you do not have to travel empty."
-        },
-        "drivers-roles": {
-            "title": "Manage your fleet.",
-            "subtitle-driver": "Driver",
-            "txt-driver": "Join a fleet and receive services based on your location",
-            "subtitle-driver-manager": "Driver-Manager",
-            "txt-driver-manager": "Operate services and get visibility to your fleet. Manage all your services in the same place",
-            "subtitle-manager": "Manager",
-            "txt-manager": "Assign services based on location or workload. Track all drivers, services BOL, and proof of delivery in the same place"
-        },
-        "driver-screenshots": {
-            "title-phone-calls": "No phone calls",
-            "txt-phone-calls": "Receive and accept services 24 hours a day without phone calls.",
-            "title-paperwork": "No paperwork",
-            "txt-paperwork": "Track and receive all relevant information in one place. Always accesible.",
-            "title-quickpay": "BeGo QuickPay",
-            "txt-quickpay": "Create and share proof of delivery live, and get paid sooner.",
-            "txt-mood": "Choose your mood",
-            "title-assign": "Create and Assign",
-            "txt-assign": "Share the experience and technology with your drivers and existing customers. Track all your jobs in one app.",
-            "title-analytics": "Get Analytics Reports",
-            "txt-analytics": "Increase visibility to your fleet's performance, and optimize costs.",
-            "title-services": "BeGo Services",
-            "txt-services": "Receive new cargo and assign them with one click."
-        },
-        "title": "Carriers",
-        "description": "Increase revenues and reduce empty miles by finding cargo near your location, haggle free."
-    },
-    "about": {
-        "grid": {
-            "title": "Change the Status Quo, where",
-            "txt-top-first": "Trucks spend",
-            "txt-middle-first": "of miles",
-            "txt-bottom-first": "driving empty",
-            "txt-top-second": "Shippers pay",
-            "txt-bottom-second": "more due to inefficiencies",
-            "txt-bottom-third": "on average to find available truck",
-            "txt-top-fourth": "Cover",
-            "txt-bottom-fourth": "routes and growing",
-            "txt-top-fifth": "Same",
-            "txt-middle-fifth": "day",
-            "txt-bottom-fifth": "pay suppliers"
-        },
-        "investors": {
-            "title-first-line": "People",
-            "title-second-line": "that trust us"
-        },
-        "who-are-we": {
-            "txt-contact": "CONTACT US",
-            "title": "A passionate team, rooted in digital",
-            "first-description": "Our Vision is to use technology to inspire and elevate the everyday life of people in trade.",
-            "second-description": "Founded in Silicon Valley California. BeGo combines 15 years of experience in logistics with artificial intelligence algorithms to match available cargo with available truckers more efficiently than anyone else today."
-        }
-    },
-    "contact": {
-        "title-first-line": "We'd Love to",
-        "title-second-line": "Hear",
-        "title-third-line": "More About You",
-        "txt-location": "HOW DO I GET THERE?",
-        "btn-location": "Click here",
-        "label-full-name": "Full Name",
-        "label-phone": "Phone Number",
-        "label-email": "Email",
-        "label-type-user": "Type of User",
-        "option-owner": "Carrier – Owner",
-        "option-driver": "Carrier – Driver",
-        "option-shipper": "Shipper looking for FTL carrier",
-        "label-message": "Message",
-        "btn-submit": "SUBMIT"
-    },
-    "footer": {
-        "header-first-line": "We'd Love to",
-        "header-second-line": "Hear More About You",
-        "btn-join": "JOIN US",
-        "terms": "Terms and Conditions",
-        "privacy": "Privacy Policy"
-    },
-    "fiscal-documents": {
-        "cards-instructions":"Drag a file over each card or click them to choose one file.",
-        "txt-required-inputs":"Cards with an '*' are mandatory",
-        "select-document":"Select document",
-
-        "txt-select-item-required":"Items with an '*' in the select are mandatory",
-        "request-verification":"Request Verification",
-        "txt1-delete-file1":"Are you sure you want to delete",
-        "txt1-delete-file2":"file?",
-        "drag-files":"Drag files in here or",
-        "browse":"browse",
-        "view-file":"View file",
-        "remove-file":"Remove file",
-        "cancel":"Cancel",
-        "delete-file-question":" Are you sure you want to delete ",
-        "file":"file",
-        "uploading":"Uploading",
-        "seconds-left":"segundos faltantes",
-        "upload-files": {
-            "txt_fiscal_documents": "Fiscal Documents",
-            "txt_browse": "Browse your file",
-            "btn_upload" : "Upload Files",
-            "txt_select": "Select your document",
-            "txt_certificate_inc": "Certificate of Incorporation",
-            "txt_power": "Power of Attorney",
-            "txt_note_power": "Power of attorney of the legal representative (in case your name is not registered in the act)",
-            "txt_id": "Identification",
-            "txt_note_id": "Valid Official Identification with photo and signature of the legal representative",
-            "txt_address": "Proof of Address",
-            "txt_note_address": "Proof of address no more than 3 months in the name of the legal person or natural person depends on the case / Up to 3 months old",
-            "txt_tax": "Tax certificate",
-            "txt_note_tax": "Proof of fiscal situation no more than 3 months",
-            "txt_compliance": "Compliance Opinion",
-            "txt_note_compliance": "Positive opinion of compliance with tax obligations no longer than three months",
-            "txt_sat_address": "SAT Address Verification",
-            "txt_note_sat_address": "Proof of address verification to SAT in case of not having another verification address",
-            "txt_license": "Driver's licenses",
-            "txt_note_license": "Driver's license for each operator (100% or 3, whichever is less)",
-            "txt_insurance": "Insurance policy",
-            "txt_note_insurance": "Units insurance policy (100% or 3, whichever is less)",
-            "txt_file_removed": "File Removed",
-            "txt_file_saved": "File uploaded",
-            "txt_max": "Max Size 5MB'",
-            "txt_cancel": "Cancel",
-            "txt_all_files_uploaded":"All files already uploaded",
-            "txt_finish":"Finish",
-            "documentation":"Documentation"
-        },
-        "required-verification-modal":{
-            "title":"Verification request sent",
-            "body":"Your account will be verified once we verify the documents we received"
-        }
-    },
-    "checkout": {
-        "title-checkout": "Checkout",
-        "title-payment": "Transfer",
-        "title-emitter": "Emitter Information",
-        "txt-reference": "Reference",
-        "txt-order": "Order",
-        "txt-pickup": "Pickup",
-        "txt-dropoff": "Drop off",
-        "txt-inovice": "Inovice",
-        "title-invoice": "Receiver Information",
-        "placeholder-fullname": "Full Name",
-        "placeholder-email": "Email",
-        "placeholder-phonenumber": "Phone Number",
-        "placeholder-address": "Address",
-        "placeholder-company": "Company",
-        "placeholder-rfc": "RFC",
-        "placeholder-cfdi": "CFDI",
-        "placeholder-tax_regime": "Tax Regime",
-        "select-cfdi":"Select CFDI",
-        "select-tax":"Select Tax Regime",
-        "edit": "Edit",
-        "unit": "Unit",
-        "tons": "tons",
-        "units": "Units",
-        "txt-items": "Items",
-        "full-name": "Full name",
-        "phone": "Phone",
-        "email": "Email",
-        "reference": "# Reference",
-        "weight": "Weight",
-        "cargo-type": "Cargo Type",
-        "hazardous": "Hazardous",
-        "date": "Date",
-        "time": "Time",
-        "price-details": "Price details",
-        "insurance": "Insurance",
-        "costums": "Customs",
-        "cruce": "Cruce",
-        "subtotal": "Subtotal",
-        "taxes": "Taxes",
-        "total-price": "Total price",
-        "placeholder-cargo": "Cargo Description",
-        "placeholder-notes": "Extra Notes",
-        "placeholder-file_cer": "Select your Certificate",
-        "placeholder-file_key": "Select your Key",
-        "btn-file_cer": "SAT Certificate (.cer)",
-        "btn-file_key": "SAT Key (.key)",
-        "btn-retry": "Retry",
-        "placeholder-password": "Certificate Password",
-        "btn-continue": "Continue",
-        "btn-submit": "Submit Order",
-        "upload": "Upload",
-        "txt-reference-payment": "Reference",
-        "txt-account-payment": "Account number",
-        "txt-company-payment": "Company name",
-        "value-account-payment": "002180701648306493",
-        "txt-bank":"Bank",
-        "value-company-payment": "BSILIENCE SA DE CV",
-        "title-valid-route": "Note",
-        "txt-valid-route": "This order will be handled by a representative, we will contact you when it's ready.",
-        "txt-save":"Save",
-        "to-define":"TBD",
-        "payment-method":"Payment method",
-        "transfer":"Wire",
-        "alerts": {
-            "order-updated": "Order Updated.",
-            "title-cancel-order": "Warning",
-            "txt-cancel-order": "Are you sure you want cancel the order?",
-            "title-order-placed": "Order placed!",
-            "txt-order-placed": "The order has been created, you will be able to track your order.",
-            "btn-order-placed": "View Order",
-            "title-user-verified": "Notice",
-            "txt-user-verified": "Your documents have not been verified, your order has been saved as a draft. Please try again when you receive a confirmation message.",
-            "title-valid-invoice": "Incomplete data",
-            "txt-valid-invoice": "Please complete your invoice information.",
-            "verify-user-title": "We could not submit your order because your account is not verified",
-            "verify-user-body": "Complete the documentation in your profile",
-            "error-orderid": "Invalid Order Id",
-            "error-something": "Something went wrong: ",
-            "error-missing-orderId": "Missing Order Id",
-            "fileSize": "the file is too big",
-            "fileType": "file type must be .cer or .key",
-            "emitter-validated": "Emitter Created",
-            "emitter-validated-fail": "Invalid Emitter",
-            "emitter-create": "To create an emitter: ",
-            "emitter-tax_regime": "Emitter tax regime is missing",
-            "receiver-stamp": "To create consignment note:",
-            "receiver-address": "Receiver address is missing",
-            "receiver-company": "Receiver business name is missing",
-            "receiver-rfc": "Receiver RFC is missing",
-            "receiver-cfdi": "Receiver CFDI is missing",
-            "receiver-tax_regime": "Receiver tax regime is missing"
-        },
-        "insurance-modal": {
-            "title-insurance": "Total",
-            "txt-insurance": "White the total price of the service",
-            "txt-insurance-taxes": "(Before taxes)",
-            "deferred-PUE": "Single payment",
-            "deferred-PPD": "Deferred payment",
-            "btn": "Next"
-        },
-        "agent-modal": {
-            "title-agent": "Customs & Agent?",
-            "txt-agent": "How would you like to continue?",
-            "btn-first": "Now i have it for $",
-            "btn-second": "Only with cruce $",
-            "btn-third": "Continue without both",
-            "txt-agent-prices": "(USD prices)"
-        },
-        "stepper-btns":{
-            "continue-to-emitter": "Continue to Receiver",
-            "continue-to-invoice": "Continue to Summary",
-            "summary": "Submit"
-        },
-        "skip": "skip",
-        "next": "next",
-        "label-total-price": "Total price:",
-        "summary": "Summary",
-        "invoice": "Receiver",
-        "emitter": "Emitter",
-        "invalid_rfc": "Invalid RFC",
-        "preview": "Invoice",
-        "invoice-preview": "Invoice Preview",
-        "merchandise_type": "Merchandise Type",
-        "file_size_error": "The file is too big"
+      "driver_unavailable": {
+        "title": "Warning",
+        "message": "You are selecting a driver that is unavailable"
       },
-      "profile": {
-        "account": {
-            "txt_orders": "Orders",
-            "txt_personal_details": "Personal Details",
-            "btn_edit": "EDIT",
-            "txt_fiscal_consistency": "Fiscal Consistency",
-            "txt_fiscal_documents": "Fiscal Documents",
-            "txt_files": "files",
-            "txt_address": "Address",
-            "txt_company": "Company",
-            "txt_picture": "Profile picture updated",
-            "txt_info_address": "Where do you live?",
-            "btn_picture": "Take a picture",
-            "btn_gallery": "From Gallery",
-            "btn_cancel": "Cancel",
-            "account":"Account",
-            "upload-btn":"Upload",
-            "delete-btn":"Delete",
-            "take-pic":"Take picture",
-            "profile-pic-less-5mb":"Profile picture must be less than 5 mb",
-            "pic-not-uploaded":"Profile picture was not uploaded",
-            "txt-delete-profile-pic":"Are you sure you want to delete your profile picture?",
-            "txt-delete-profile-pic-title":"Remove profile picture",
-            "delete-profile-pic-btn":"Ok",
-            "cancel-deletion-btn":"Cancel"
-        },
-        "edit": {
-            "txt_edit_profile": "Edit Profile",
-            "txt_name": "Full Name",
-            "txt_phone": "Phone Number",
-            "txt_email": "Email",
-            "txt_company": "Company",
-            "btn_save": "Save",
-            "txt_saved": "Your settings have been saved.",
-            "txt_address_not_found":"Address not found..."
-        },
-        "upload-files": {
-            "txt_fiscal_documents": "Fiscal Documents",
-            "txt_browse": "Browse your file",
-            "btn_upload" : "Upload Files",
-            "txt_select": "Select your document",
-            "txt_certificate_inc": "Certificate of Incorporation",
-            "txt_power": "Power of Attorney",
-            "txt_note_power": "Power of attorney of the legal representative (in case your name is not registered in the act)",
-            "txt_id": "Identification",
-            "txt_note_id": "Valid Official Identification with photo and signature of the legal representative",
-            "txt_address": "Proof of Address",
-            "txt_note_address": "Proof of address no more than 3 months in the name of the legal person or natural person depends on the case / Up to 3 months old",
-            "txt_tax": "Tax certificate",
-            "txt_note_tax": "Proof of fiscal situation no more than 3 months",
-            "txt_compliance": "Compliance Opinion",
-            "txt_note_compliance": "Positive opinion of compliance with tax obligations no longer than three months",
-            "txt_file_removed": "File Removed",
-            "txt_file_saved": "File uploaded",
-            "txt_max": "Max Size 5MB'",
-            "txt_cancel": "Cancel",
-            "txt_all_files_uploaded":"All files already uploaded",
-            "txt_finish":"Finish"
-        },
-        "verification": {
-            "txt_enter": "Enter your",
-            "txt_code": "Security Code",
-            "txt_we_sent": "We sent you a text message to your phone with a security code. Please enter it in the field below to verify your number.",
-            "txt_resend": "You can resend",
-            "txt_after": "the code after",
-            "btn_resend": "Resend security code",
-            "txt_verify": "Verify Now",
-            "txt_cancel":"Cancel"
-        }
+      "truck_unavailable": {
+        "title": "Warning",
+        "message": "You are selecting a truck that is unavailable"
+      },
+      "trailer_unavailable": {
+        "title": "Warning",
+        "message": "You are selecting a trailer that is unavailable"
+      },
+      "order_changed": {
+        "title": "Order changed",
+        "message": "The order has been changed"
+      }
     },
-      "history": {
-        "title": "History",
-        "search": "Search by address...",
-        "total_earnings": "Total Earnings",
-        "no-comments":"No Comments",
-        "upcoming_detail_title":"Upcoming",
-        "completed_detail_title":"Complete",
-        "past_detail_tile":"Past",
-        "btn-report": "Report an issue with Order",
-        "to-define":"TBD",
-        "tabs": {
-            "upcoming": "Upcoming",
-            "completed": "Completed",
-            "past": "Past"
-        },
-        "btns":{
-            "prev":"PREV",
-            "next":"NEXT"
-        },
-        "order-status":{
-            "order-created":"Order Created",
-            "order-accepted":"Order Accepted",
-            "pickup":"Pickup",
-            "dropoff":"Dropoff",
-            "started-by":"Started By",
-            "completed": "Completed",
-            "estimated-pickup-time":"Estimated Pickup Time",
-            "estimated-dropoff-time":"Estimated Dropoff Time",
-            "delivery-started":"Delivery Started",
-            "delivery-completed":"Delivery Completed",
-            "order-completed":"Order Completed"
-        },
-        "btn_start_driving": "Start Driving",
-        "upcoming_detail": {
-            "title": "Upcoming",
-            "reference": "Reference",
-            "order": "Order",
-            "btn_track": "Track order",
-            "pickup_info_tab": "Pickup Information",
-            "dropoff_info_tab": "Dropoff Information",
-            "photos": "Photos",
-            "signature": "Signature",
-            "aditional_details": "Aditional Details",
-            "insurance": "Insurance",
-            "unit": "Units",
-            "taxes": "Taxes",
-            "customs": "Customs Agent",
-            "cruce": "Cruce",
-            "extra": "Extra Expenses",
-            "pickup": "Pickup",
-            "dropoff": "Dropoff",
-            "total_price": "Total price"
-        },
-        "completed_detail": {
-            "title": "Complete",
-            "reference": "Reference",
-            "order": "Order",
-            "pickup_info_tab": "Pickup information",
-            "dropoff_info_tab": "Dropoff information",
-            "pickup": "Pickup",
-            "dropoff": "Dropoff ",
-            "order_info_tab": "Order Documentation",
-            "photos": "Photos",
-            "signature": "Signature",
-            "aditional_details": "Aditional Details",
-            "insurance": "Insurance",
-            "unit": "Units",
-            "taxes": "Taxes",
-            "customs": "Customs Agent",
-            "cruce": "Cruce",
-            "extra": "Extra Expenses",
-            "total_price": "Total price"
-        },
-        "history_detail": {
-            "reference": "Reference",
-            "edit_order":"edit",
-            "order": "Order",
-            "pickup_info_tab": "Pickup information",
-            "dropoff_info_tab": "Dropoff information",
-            "pickup": "Pickup",
-            "dropoff": "Dropoff ",
-            "btn_track": "Track order",
-            "order_info_tab": "Order Documentation",
-            "photos": "Photos",
-            "signature": "Signature",
-            "aditional_details": "Additional Details",
-            "insurance": "Insurance",
-            "unit": "Units",
-            "taxes": "Taxes",
-            "customs": "Customs Agent",
-            "cruce": "Cruce",
-            "extra": "Extra Expenses",
-            "hazardous_cargo":"Hazardous Cargo",
-            "general_cargo":"General Cargo",
-            "truck":"Truck",
-            "trailer":"Trailer",
-            "subtotal":"Subtotal",
-            "total_price": "Total price",
-            "select":"Select"
-        },
-        "driver_assignment": {
-            "title": "Assigned to",
-            "search": "Search...",
-            "btn_confirm": "Confirm"
-        },
-        "truck_assignment": {
-            "title": "Asigned truck",
-            "search": "Search...",
-            "btn_confirm": "Confirm"
-        },
-        "overview": {
-            "title": "Order Assignment",
-            "label_driver": "Driver",
-            "label_vehicle": "Truck",
-            "label_trailer": "Trailer",
-            "btn-edit": "Edit",
-            "btn-submit": "Submit",
-            "btn-confirm": "Confirm"
-        },
-        "tracking": {
-            "title": "Track order",
-            "distance": "Distance",
-            "pickup": "Pickup",
-            "dropoff": "Dropoff",
-            "time_pickup": "Time for pickup",
-            "time_dropoff": "Time for dropoff",
-            "share_tracking_message1": "For tracking, click ",
-            "share_tracking_message2": " .",
-            "share_tracking_button": "here"
-        },
-        "external_tracking": {
-            "title": "Tracking Invitation",
-            "txt_driver": "Name",
-            "txt_name": "Full Name",
-            "btn_send": "Send",
-            "toast_message": "Invitations sent successfully"
-        },
-        "alerts": {
-            "driver_unavailable": {
-                "title": "Warning",
-                "message": "You are selecting a driver that is unavailable"
-            },
-            "order_changed": {
-                "title": "Order changed",
-                "message": "The order has been changed"
-            }
-        },
-        "no-orders-yet":{
-            "upcoming":{
-                "title":"No Orders yet",
-                "body":"You haven´t placed any orders yet. When you do their status wil appear here."
-            },
-            "completed":{
-                "title":"No orders completed",
-                "body":"No orders have been completed yet. Completed orders will appear here."
-            },
-            "past":{
-                "title":"No past orders",
-                "body":"When orders have been completed for a while, they will appear here."
-            },
-            "call-to-action":" Order Now"
-        },
-        "status-badges" : {
-            "stand-by":"Stand by",
-            "in-progress":"In Progress",
-            "completed":"Completed"
-        },
-        "consignment_note": {
-          "edit_consignment_note": "Edit consignment note",
-          "order": "Order",
-          "pickup": "Pickup",
-          "dropoff": "Dropoff",
-          "save_changes": "Save changes",
-          "info_updated": "Information for consignment note was updated",
-          "cannot_edit": "You cannot edit yet",
-          "complete_invoice": "Complete invoice",
-          "price": "Price",
-          "stamp": "Stamp",
-          "stamp_request": "Creation for consignment note was requested",
-          "invoice": "Invoice",
-          "invoice_preview": "Invoice preview"
-        }
+    "no-orders-yet": {
+      "upcoming": {
+        "title": "No Orders yet",
+        "body": "You haven´t placed any orders yet. When you do their status wil appear here."
+      },
+      "completed": {
+        "title": "No orders completed",
+        "body": "No orders have been completed yet. Completed orders will appear here."
+      },
+      "past": {
+        "title": "No past orders",
+        "body": "When orders have been completed for a while, they will appear here."
+      },
+      "call-to-action": " Order Now"
     },
-    "header": {
-        "menu": {
-            "title": "Menu",
-            "shippers": "Shippers",
-            "carriers": "Carriers",
-            "about": "About us",
-            "contact": "Contact us"
-        },
-        "btn-en": "EN",
-        "btn-es": "SP"
+    "status-badges": {
+      "stand-by": "Stand by",
+      "in-progress": "In Progress",
+      "completed": "Completed"
+    },
+    "consignment_note": {
+      "edit_consignment_note": "Edit consignment note",
+      "order": "Order",
+      "pickup": "Pickup",
+      "dropoff": "Dropoff",
+      "save_changes": "Save changes",
+      "info_updated": "Information for consignment note was updated",
+      "cannot_edit": "You cannot edit yet",
+      "complete_invoice": "Complete invoice",
+      "price": "Price",
+      "stamp": "Stamp",
+      "stamp_request": "Creation for consignment note was requested",
+      "invoice": "Invoice",
+      "invoice_preview": "Invoice preview"
+    }
+  },
+  "fiscal-documents": {
+    "cards-instructions": "Drag a file over each card or click them to choose one file.",
+    "txt-required-inputs": "Cards with an '*' are mandatory",
+    "select-document": "Select document",
+
+    "txt-select-item-required": "Items with an '*' in the select are mandatory",
+    "request-verification": "Request Verification",
+    "txt1-delete-file1": "Are you sure you want to delete",
+    "txt1-delete-file2": "file?",
+    "drag-files": "Drag files in here or",
+    "browse": "browse",
+    "view-file": "View file",
+    "remove-file": "Remove file",
+    "cancel": "Cancel",
+    "delete-file-question": " Are you sure you want to delete ",
+    "file": "file",
+    "uploading": "Uploading",
+    "seconds-left": "segundos faltantes",
+    "upload-files": {
+      "txt_fiscal_documents": "Fiscal Documents",
+      "txt_browse": "Browse your file",
+      "btn_upload": "Upload Files",
+      "txt_select": "Select your document",
+      "txt_certificate_inc": "Certificate of Incorporation",
+      "txt_power": "Power of Attorney",
+      "txt_note_power": "Power of attorney of the legal representative (in case your name is not registered in the act)",
+      "txt_id": "Identification",
+      "txt_note_id": "Valid Official Identification with photo and signature of the legal representative",
+      "txt_address": "Proof of Address",
+      "txt_note_address": "Proof of address no more than 3 months in the name of the legal person or natural person depends on the case / Up to 3 months old",
+      "txt_tax": "Tax certificate",
+      "txt_note_tax": "Proof of fiscal situation no more than 3 months",
+      "txt_compliance": "Compliance Opinion",
+      "txt_note_compliance": "Positive opinion of compliance with tax obligations no longer than three months",
+      "txt_sat_address": "SAT Address Verification",
+      "txt_note_sat_address": "Proof of address verification to SAT in case of not having another verification address",
+      "txt_license": "Driver's licenses",
+      "txt_note_license": "Driver's license for each operator (100% or 3, whichever is less)",
+      "txt_insurance": "Insurance policy",
+      "txt_note_insurance": "Units insurance policy (100% or 3, whichever is less)",
+      "txt_file_removed": "File Removed",
+      "txt_file_saved": "File uploaded",
+      "txt_max": "Max Size 5MB'",
+      "txt_cancel": "Cancel",
+      "txt_all_files_uploaded": "All files already uploaded",
+      "txt_finish": "Finish",
+      "documentation": "Documentation"
+    },
+    "required-verification-modal": {
+      "title": "Verification request sent",
+      "body": "Your account will be verified once we verify the documents we received"
+    }
+  },
+  "profile": {
+    "account": {
+      "txt_orders": "Orders",
+      "txt_personal_details": "Personal Details",
+      "btn_edit": "EDIT",
+      "txt_fiscal_consistency": "Fiscal Consistency",
+      "txt_fiscal_documents": "Fiscal Documents",
+      "txt_files": "files",
+      "txt_address": "Address",
+      "txt_company": "Company",
+      "txt_picture": "Profile picture updated",
+      "txt_info_address": "Where do you live?",
+      "btn_picture": "Take a picture",
+      "btn_gallery": "From Gallery",
+      "btn_cancel": "Cancel",
+      "account": "Account",
+      "upload-btn": "Upload",
+      "delete-btn": "Delete",
+      "take-pic": "Take picture",
+      "profile-pic-less-5mb": "Profile picture must be less than 5 mb",
+      "pic-not-uploaded": "Profile picture was not uploaded",
+      "txt-delete-profile-pic": "Are you sure you want to delete your profile picture?",
+      "txt-delete-profile-pic-title": "Remove profile picture",
+      "delete-profile-pic-btn": "Ok",
+      "cancel-deletion-btn": "Cancel"
+    },
+    "edit": {
+      "txt_edit_profile": "Edit Profile",
+      "txt_name": "Full Name",
+      "txt_phone": "Phone Number",
+      "txt_email": "Email",
+      "txt_company": "Company",
+      "btn_save": "Save",
+      "txt_saved": "Your settings have been saved.",
+      "txt_address_not_found": "Address not found..."
+    },
+    "upload-files": {
+      "txt_fiscal_documents": "Fiscal Documents",
+      "txt_browse": "Browse your file",
+      "btn_upload": "Upload Files",
+      "txt_select": "Select your document",
+      "txt_certificate_inc": "Certificate of Incorporation",
+      "txt_power": "Power of Attorney",
+      "txt_note_power": "Power of attorney of the legal representative (in case your name is not registered in the act)",
+      "txt_id": "Identification",
+      "txt_note_id": "Valid Official Identification with photo and signature of the legal representative",
+      "txt_address": "Proof of Address",
+      "txt_note_address": "Proof of address no more than 3 months in the name of the legal person or natural person depends on the case / Up to 3 months old",
+      "txt_tax": "Tax certificate",
+      "txt_note_tax": "Proof of fiscal situation no more than 3 months",
+      "txt_compliance": "Compliance Opinion",
+      "txt_note_compliance": "Positive opinion of compliance with tax obligations no longer than three months",
+      "txt_file_removed": "File Removed",
+      "txt_file_saved": "File uploaded",
+      "txt_max": "Max Size 5MB'",
+      "txt_cancel": "Cancel",
+      "txt_all_files_uploaded": "All files already uploaded",
+      "txt_finish": "Finish"
+    },
+    "verification": {
+      "txt_enter": "Enter your",
+      "txt_code": "Security Code",
+      "txt_we_sent": "We sent you a text message to your phone with a security code. Please enter it in the field below to verify your number.",
+      "txt_resend": "You can resend",
+      "txt_after": "the code after",
+      "btn_resend": "Resend security code",
+      "txt_verify": "Verify Now",
+      "txt_cancel": "Cancel"
+    }
+  },
+  "header": {
+    "menu": {
+      "title": "Menu",
+      "shippers": "Shippers",
+      "carriers": "Carriers",
+      "about": "About us",
+      "contact": "Contact us"
+    },
+    "btn-en": "EN",
+    "btn-es": "SP"
+  },
+  "location": {
+    "label_pickup": "pickup",
+    "label_dropoff": "dropoff",
+    "label_pin": "Set location on map",
+    "btn-home": "Home",
+    "btn-work": "Work",
+    "txt_invalidDriection": "Please be more specific on your address.",
+    "placeholder": "Enter destination",
+    "location-not-enabled": "Location is not enabled",
+    "txt-address-not-found": "No se encontró la dirección",
+    "btn-order": "Make an Order"
+  },
+  "alerts": {
+    "contact": {
+      "success-email": "Thanks! We will give you a response in the next 48 hours",
+      "fields-required": "All fields are required"
+    }
+  },
+  "links": {
+    "terms": "terms-and-conditions",
+    "privacy": "privacy-policy"
+  },
+  "shippers": {
+    "customs-agent": {
+      "title": "Customs Agent",
+      "description": "Simplify your costs with our Customs Brokerage flat fee, and protect your cargo with insurance. Everything in the same place and under one invoice.",
+      "contact": "Contact us"
+    },
+    "description": {
+      "title-first-line": "A passionate team,",
+      "title-second-line": "rooted in digital",
+      "description": "We have the support of an extensive network of trusted truck owners and operators, specialized in cross border trade, CTPAT certified by CBP, that can transport your valuable goods in Mexico and into the US. Our team evaluates each member of our network to ensure their vehicles and processes operate at the highest standards of quality and safety to manage your cargo."
+    },
+    "features": {
+      "title": "Be Everywhere",
+      "first-list": "Be Everywhere, with our real time tracker, follow your cargo from pickup to delivery.",
+      "second-list": "Save time and keep your team in the loop, by sharing real time information of each service with your network (operations, customer).",
+      "third-list": "Get notified on every step of the way through our app and SMS.",
+      "fourth-list": "Reduce costs and inefficiencies related to truck's availability, and plan your operations around your needs."
+    },
+    "title": "Shippers",
+    "description-shippers": "We value your time. Use our app to quote and book FTL 48 / 53 ft instantly."
+  },
+  "carries": {
+    "drivers-features": {
+      "title-first-line": "Find new cargo,",
+      "title-second-line": "and reduce your",
+      "title-third-line": "empty returns.",
+      "description": "BeGo matches you and your fleet with the nearest available cargo, haggle free. Our technology finds the best cargo fit for you based on your future location and availability. So you do not have to travel empty."
+    },
+    "drivers-roles": {
+      "title": "Manage your fleet.",
+      "subtitle-driver": "Driver",
+      "txt-driver": "Join a fleet and receive services based on your location",
+      "subtitle-driver-manager": "Driver-Manager",
+      "txt-driver-manager": "Operate services and get visibility to your fleet. Manage all your services in the same place",
+      "subtitle-manager": "Manager",
+      "txt-manager": "Assign services based on location or workload. Track all drivers, services BOL, and proof of delivery in the same place"
+    },
+    "driver-screenshots": {
+      "title-phone-calls": "No phone calls",
+      "txt-phone-calls": "Receive and accept services 24 hours a day without phone calls.",
+      "title-paperwork": "No paperwork",
+      "txt-paperwork": "Track and receive all relevant information in one place. Always accesible.",
+      "title-quickpay": "BeGo QuickPay",
+      "txt-quickpay": "Create and share proof of delivery live, and get paid sooner.",
+      "txt-mood": "Choose your mood",
+      "title-assign": "Create and Assign",
+      "txt-assign": "Share the experience and technology with your drivers and existing customers. Track all your jobs in one app.",
+      "title-analytics": "Get Analytics Reports",
+      "txt-analytics": "Increase visibility to your fleet's performance, and optimize costs.",
+      "title-services": "BeGo Services",
+      "txt-services": "Receive new cargo and assign them with one click."
+    },
+    "title": "Carriers",
+    "description": "Increase revenues and reduce empty miles by finding cargo near your location, haggle free."
+  },
+  "about": {
+    "grid": {
+      "title": "Change the Status Quo, where",
+      "txt-top-first": "Trucks spend",
+      "txt-middle-first": "of miles",
+      "txt-bottom-first": "driving empty",
+      "txt-top-second": "Shippers pay",
+      "txt-bottom-second": "more due to inefficiencies",
+      "txt-bottom-third": "on average to find available truck",
+      "txt-top-fourth": "Cover",
+      "txt-bottom-fourth": "routes and growing",
+      "txt-top-fifth": "Same",
+      "txt-middle-fifth": "day",
+      "txt-bottom-fifth": "pay suppliers"
+    },
+    "investors": {
+      "title-first-line": "People",
+      "title-second-line": "that trust us"
+    },
+    "who-are-we": {
+      "txt-contact": "CONTACT US",
+      "title": "A passionate team, rooted in digital",
+      "first-description": "Our Vision is to use technology to inspire and elevate the everyday life of people in trade.",
+      "second-description": "Founded in Silicon Valley California. BeGo combines 15 years of experience in logistics with artificial intelligence algorithms to match available cargo with available truckers more efficiently than anyone else today."
+    }
+  },
+  "contact": {
+    "title-first-line": "We'd Love to",
+    "title-second-line": "Hear",
+    "title-third-line": "More About You",
+    "txt-location": "HOW DO I GET THERE?",
+    "btn-location": "Click here",
+    "label-full-name": "Full Name",
+    "label-phone": "Phone Number",
+    "label-email": "Email",
+    "label-type-user": "Type of User",
+    "option-owner": "Carrier – Owner",
+    "option-driver": "Carrier – Driver",
+    "option-shipper": "Shipper looking for FTL carrier",
+    "label-message": "Message",
+    "btn-submit": "SUBMIT"
+  },
+  "footer": {
+    "header-first-line": "We'd Love to",
+    "header-second-line": "Hear More About You",
+    "btn-join": "JOIN US",
+    "terms": "Terms and Conditions",
+    "privacy": "Privacy Policy"
+  },
+  "draft": {
+    "title": "Drafts",
+    "title-delete": "Delete draft",
+    "txt-delete": "Are you sure you want to proceed? This action is permanent",
+    "btn-cancel": "Cancel",
+    "txt-search": "Search",
+    "txt-filter": "Filter",
+    "label_pickup": "pickup",
+    "label_dropoff": "dropoff",
+    "btn-order": "Continue Order",
+    "no-drafts-title": "No Drafts",
+    "no-drafts-txt": "You haven´t placed any completed drafts yet. When you do their status will appear here."
+  },
+  "menu": {
+    "home": "Home",
+    "drafts": "  Drafts",
+    "history": "History",
+    "invoice": "Invoice",
+    "support": "Support",
+    "faq": "FAQs",
+    "terms-conditions": "T & C",
+    "log-out": "Log out"
+  },
+  "errors": {
+    "timeout": {
+      "title": "Error code: timeout",
+      "body": "Please try again later",
+      "ok": "ok"
+    }
+  },
+  "invoice": {
+    "invoices": {
+      "filters": "Filters",
+      "series": "Series",
+      "emisor-btn": "Emisores",
+      "new-invoice": "New Invoice",
+      "template-placeholder": "Search Template",
+      "template-open": "Open Template",
+      "template-new": "New Template",
+      "noemisor-title": "Atención",
+      "noemisor-message": "Se debe dar de alta a un Emisor antes de comenzar a Facturar",
+      "noemisor-confirm": "Crear ahora"
+    },
+    "invoice-table": {
+      "emision": "Emisión",
+      "emisor": "Emisor",
+      "receptor": "Receptor",
+      "serie": "Serie",
+      "tipo": "Tipo",
+      "status": "Status",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "items-per-page": "Items per Page",
+      "showing": "Showing",
+      "of": "of",
+      "prev": "prev",
+      "next": "next",
+      "edit-invoice": "Edit Invoice",
+      "view-details": "View details",
+      "carta-porte": "Carta Porte",
+      "duplicate": "Duplicate",
+      "preview": "Preview",
+      "download-pdf": "Download PDF",
+      "download-pdf-driver": "Descargar PDF Driver",
+      "download-xml": "Download XML",
+      "download-acuse": "Download Acuse",
+      "send-by-email": "Send by Email",
+      "cancel-invoice": "Cancel Invoice",
+      "delete-invoice": "Delete Invoice",
+      "preview-error": "Error al generar vista previa",
+      "delete-title": "Atención",
+      "delete-message": "¿Estas seguro que deseas eliminar esta Factura? Esta acción no se puede deshacer.",
+      "delete-success": "Factura borrada!",
+      "delete-error": "Error borrando Factura"
+    },
+    "filters": {
+      "apply": "Aplicar",
+      "fechas": "Dates",
+      "inicio": "Start",
+      "final": "End",
+      "emisor": "Emisor",
+      "emisor-placeholder": "Search by Name or RFC",
+      "receptor": "Receptor",
+      "receptor-placeholder": "Buscar por Nombre o RFC",
+      "tipo-comprobante": "Tipo de Comprobante",
+      "tipo-comprobante-placeholder": "All",
+      "uuid-placeholder": "Search by UUID"
+    },
+    "edit": {
+      "receptor": "Receptor",
+
+      "rfc": "RFC",
+      "rfc-placeholder": "Ingresa el RFC de tu cliente",
+      "no-results": "No se encontraron resultados",
+
+      "nombre": "Nombre o Razón social",
+      "nombre-placeholder": "Ingresa la Razón Social de tu cliente",
+
+      "usocfdi": "Uso de CFDI",
+      "usocfdi-placeholder": "Selecciona el uso del CFDI",
+      "usocfdi-placeholder-2": "Ingresa un RFC de cliente válido",
+      "type-to-search": "Escribe para buscar..",
+
+      "direccion": "Dirección",
+      "direccion-placeholder": "Seleciona una dirección",
+      "direccion-placeholder-2": "Ingresa un receptor válido",
+      "direccion-placeholder-3": "No se encontraron direcciones guardadas",
+      "direccion-new": "Nueva dirección",
+      "direccion-edit": "Editar direcciones",
+      "loading": "Cargando...",
+
+      "addr-nombre": "Nombre Sucursal",
+      "addr-nombre-placeholder": "Ingresa el nombre de la Sucursal",
+
+      "addr-calle": "Calle",
+      "addr-no-ext": "No. Exterior",
+      "addr-no-int": "No. Interior",
+      "addr-pais": "País",
+      "addr-estado": "Estado",
+      "addr-municipio": "Municipio",
+      "addr-localidad": "Localidad",
+      "addr-cp": "Código Postal",
+      "addr-colonia": "Colonia",
+      "addr-colonia-placeholder-2": "Ingresa un código postal válido",
+      "addr-email": "Correo electrónico",
+      "addr-addr": "Dirección",
+      "addr-addr-placeholder": "Introduce tu destino",
+
+      "emisor": "Emisor",
+      "emisor-btn-new": "Nuevo Emisor",
+
+      "rfc-emisor": "RFC",
+      "rfc-emisor-placeholder": "Ingresa el RFC emisor",
+      "rfc-emisor-new": "Registrar Emisor",
+      "rfc-parent": "RFC Padre",
+
+      "nombre-emisor": "Nombre o Razón social",
+      "nombre-emisor-placeholder": "Ingresa la Razón Social del emisor",
+
+      "lugar-expedicion": "Lugar de Expedición (Matriz o Sucursal)",
+      "lugar-expedicion-placeholder": "Selecciona el Lugar de Expedición",
+      "lugar-expedicion-placeholder-2": "Selecciona un emisor válido",
+      "lugar-expedicion-placeholder-3": "No se encontraron lugares de expedición guardados",
+      "emisor-direccion-new": "Nueva sucursal",
+      "emisor-direccion-edit": "Editar sucursales",
+
+      "regimen": "Régimen fiscal",
+      "regimen-placeholder": "Selecciona un Régimen fiscal",
+      "regimen-placeholder-2": "Ingresa un RFC emisor válido",
+      "regimen-placeholder-3": "Ingresa un RFC de cliente válido",
+
+      "tipo-comprobante": "Tipo de comprobante",
+      "moneda": "Moneda",
+      "tipo-de-cambio": "Tipo de cambio",
+      "metodo-pago": "Método de pago",
+      "forma-pago": "Forma de pago",
+
+      "info": "Información Extra",
+      "info-placeholder": "Información Extra (máx 5000 caractéres)",
+
+      "precio": "Precio",
+
+      "subtotal": "Total",
+
+      "conceptos": "Conceptos",
+      "conceptos-edit": "Productos/Servicios",
+
+      "concepto-nombre": "Producto o servicio",
+      "concepto-nombre-placeholder": "Ingresa tu producto o servicio",
+      "concepto-cve_sat": "Descripción SAT",
+      "concepto-unidad-medida": "Unidad de medida",
+      "concepto-precio": "Precio unitario",
+      "concepto-cantidad": "Cantidad",
+      "concepto-descuento": "Descuento",
+      "concepto-descripcion": "Descripción del producto o servicio",
+      "concepto-importe": "Importe",
+      "concepto-total": "Total concepto",
+      "concepto-agregar": "Agregar concepto",
+      "concepto-guardar": "Guardar concepto",
+
+      "impuestos": "Impuestos",
+      "impuesto": "Impuesto",
+      "impuesto-placeholder": "Selecciona una opción",
+
+      "impuesto-tasa": "Tasa (%)",
+      "impuesto-tasa-placeholder-2": "Entre :1% y :2%",
+      "impuesto-agregar": "Agregar impuesto",
+
+      "impuesto-tasa-cuota": "Tasa o Cuota",
+      "opciones": "Opciones",
+
+      "concepto-unidad": "Unidad",
+      "concepto-concepto-desc": "Concepto y descripción",
+      "concepto-precio-table": "Precio",
+      "concepto-edit": "Editar",
+      "concepto-eliminar": "Eliminar",
+      "concepto-subtotal": "Subtotal",
+      "concepto-total-table": "Total",
+
+      "doc-rel": "Documentos Relacionados",
+      "doc-rel-tipo": "Tipo de relación",
+      "doc-rel-uuid": "UUID",
+      "doc-rel-add": "Agregar",
+
+      "orden": "Orden",
+
+      "pickup": "Recolección",
+      "cargo_goods": "Tipo de mercancía",
+      "commodity_quantity": "Cantidad",
+
+      "dropoff": "Entrega",
+
+      "complementos": "Complementos",
+
+      "carta-porte": "Carta Porte",
+      "carta-porte-placeholder-2": "Selecciona un tipo de comprobante",
+
+      "serie": "Serie",
+      "serie-placeholder": "Selecciona una serie",
+      "serie-placeholder-2": "Serie (Selecciona un tipo de comprobante)",
+      "serie-placeholder-3": "Serie (Selecciona un emisor válido)",
+      "serie-placeholder-4": "Serie (No hay series guardadas)",
+      "serie-folio": "Folio",
+      "serie-edit": "Editar serie",
+      "serie-new": "Nueva serie",
+
+      "back": "Atrás",
+      "next": "Siguiente",
+
+      "btn-generar": "Generar Timbrado",
+      "btn-generar-success": "Enviada a generar",
+      "btn-generar-retry": "Reintentar",
+
+      "btn-eliminar": "Eliminar Factura",
+      "btn-eliminar-tpl": "Eliminar Template",
+
+      "btn-preview": "Vista Previa",
+      "btn-duplicar": "Duplicar",
+      "btn-pdf": "Descargar PDF",
+      "btn-pdf-driver": "Descargar PDF Driver",
+      "btn-xml": "Descargar XML",
+      "btn-acuse": "Descargar Acuse",
+      "btn-send-email": "Enviar por Correo",
+      "btn-cancel": "Cancelar factura",
+
+      "btn-save-update": "Guardar cambios",
+      "btn-save-update-success": "Cambios guardados",
+      "btn-save-retry": "Reintentar",
+      "btn-save-save": "Guardar",
+      "btn-save-save-success": "Factura guardada",
+      "btn-save-save-success-tpl": "Template guardado",
+
+      "preview-error": "Error al generar vista previa",
+
+     "template-delete-title": "Atención",
+     "template-delete-message": "¿Estas seguro que deseas eliminar este Template? Esta acción no se puede deshacer.",
+     "template-delete-success": "Template borrado",
+     "template-delete-error": "Error borrando el Template"
+    },
+    "manage-dir": {
+      "emisor": {
+          "title": "Sucursales emisor",
+          "subtitle": "(Añade, edita, elimina sucursales)"
+      },
+      "receptor": {
+          "title": "Direcciones receptor",
+          "subtitle": "(Añade, edita, elimina direcciones)"
+      },
+      "direccion": "Dirección",
+      "direccion-placeholder": "Seleciona una dirección",
+      "direccion-placeholder-1": "No se encontraron resultados",
+
+      "btn-save-retry": "Reintentar",
+      "btn-save-update": "Actualizar",
+      "btn-save-update-success": "Dirección actualizada",
+      "btn-save-save": "Guardar",
+      "btn-save-save-success": "Dirección guardada",
+      "btn-save-new": "Nueva Dirección",
+
+      "btn-delete-retry": "Reintentar",
+      "btn-delete": "Eliminar",
+      "btn-delete-success": "Dirección eliminada",
+
+      "btn-cancel": "Cancelar"
+    },
+    "emisor-concep": {
+        "title": "Productos o Servicios",
+        "subtitle": "(Añade, edita, elimina productos o servicios)",
+
+        "btn-cancel": "Cancelar",
+
+        "btn-delete-retry": "Reintentar",
+        "btn-delete": "Eliminar",
+        "btn-delete-success": "Concepto eliminado",
+
+        "btn-import-retry": "Reintentar",
+        "btn-import": "Importar Productos",
+        "btn-import-success": "Importación exitosa",
+
+        "nombre" : "Nombre",
+        "descripcion": "Descripción",
+        "opciones": "Opciones",
+
+        "editar": "Editar",
+        "eliminar": "Eliminar",
+
+        "no-products": "No se encontraron productos o servicios",
+
+        "btn-save-retry": "Reintentar",
+        "btn-save-update": "Actualizar",
+        "btn-save-update-success": "Concepto actualizado",
+        "btn-save-save": "Guardar",
+        "btn-save-save-success": "Concepto guardado",
+        "btn-save-new": "Nuevo Producto o Servicio"
+    },
+    "serie-new": {
+        "title": "Series y logos",
+
+        "tipo-comprobante": "* Tipo de comprobante",
+
+        "serie": "* Serie",
+        "serie-placeholder": "* Nombre de la serie",
+
+        "folio": "* Folio",
+        "color": "Color (opcional)",
+
+        "image": "Imagen (opcional)",
+        "image-placeholder": "Seleccionar imagen (opcional)",
+
+        "btn-save": "Guardar",
+
+        "close-update-success": "Serie actualizada con éxito!",
+        "close-create-success": "Serie creada con éxito!",
+        "close-error": "Ocurrió un error"
+    },
+    "email-factura": {
+        "title": "Enviar por Correo",
+        "body": "Ingrese la siguiente información para enviar su comprobante por correo electrónico.",
+
+        "asunto": "Asunto",
+        "asunto-placeholder": "Ingresa el asunto con el que se enviará el correo",
+        "asunto-initial": "Tu comprobante Fiscal Digital",
+
+        "para": "Para",
+        "para-placeholder": "Ingresa el/los correo(s) del cliente",
+
+        "cc": "CC",
+        "cc-placeholder": "Ingresa el correo donde se enviará una copia (CC)",
+
+        "mensaje": "Mensaje",
+        "mensaje-placeholder": "Ingresa el mensaje que quieres que se añada al correo",
+
+        "reply": "Responder a",
+        "reply-placeholder": "Ingresa el correo donde te podrá contactar el cliente",
+
+        "btn-send": "Enviar Correo",
+        "btn-send-success": "Correo Enviado",
+        "btn-send-retry": "Reintentar"
+    },
+    "cancelar-factura": {
+        "title": "Cancelar Comprobante",
+        "body": "Ingresa el motivo de cancelación del comprobante.",
+
+        "motivo": "Motivo",
+        "motivo-placeholder": "Selecciona el motivo de cancelación del comprobante.",
+
+        "uuid": "Folio Sustitución",
+        "uuid-placeholder": "Ingresa el folio fiscal del CFDI a sustituir",
+
+        "btn-send": "Confirmar",
+        "btn-send-success": "Factura cancelada",
+        "btn-send-retry": "Reintentar"
+    },
+    "confirm": {
+        "cancel": "Cancelar",
+        "confirm": "Confirmar"
+    },
+    "emisores": {
+        "emisores": "Emisores",
+        "new": "Registrar Emisor"
+    },
+    "emisor-table": {
+        "rfc-emisor": "RFC Emisor",
+        "razon-social": "Razón Social",
+        "regimen": "Régimen Fiscal",
+        "correo-notificacion": "Correo de Notificación",
+        "validacion": "Validación",
+
+        "view-series": "Series",
+        "new-invoice": "Nueva Factura",
+        "edit-emisor": "Editar",
+        "set-default": "Establecer Principal",
+        "delete-emisor": "Eliminar Emisor",
+
+        "delete-success": "Emisor Borrado",
+        "delete-error": "No se pudo borrar el Emisor",
+
+        "set-default-success": "Cambio exitoso",
+        "set-default-error": "No se pudo establecer como principal"
+    },
+    "emisor-edit": {
+        "emisor": "Emisor",
+
+        "email": "Correo Para Notificar",
+        "email-placeholder": "Escribir Correo Electrónico",
+        "regimen": "Régimen Fiscal",
+        "regimen-placeholder": "Selecciona un Régimen Fiscal",
+        "cer": "Archivo CER (CSD)",
+        "key": "Archivo Key",
+        "key-password": "Archivo Key Contraseña",
+        "key-password-placeholder": "Escribir Archivo Key Contraseña",
+
+        "btn-save": "Guardar",
+
+        "create-success": "Emisor guardado",
+        "update-success": "Cambio exitoso"
+    },
+    "series": {
+        "series": "Series",
+        "new": "Nueva Serie"
+    },
+    "serie-table": {
+        "serie": "Serie",
+        "tipo-comprobante": "Tipo de Comprobante",
+        "folio": "Folio",
+        "color": "Color",
+        "logo": "Logo",
+
+        "editar": "Editar",
+        "borrar": "Borrar",
+
+        "save-success": "Serie guardada",
+        "save-error": "Serie borrada"
+    },
+    "cp-page": {
+        "carta-porte": "Carta Porte 2.0",
+        "btn-save": "Guardar",
+
+        "transporte": "Transporte",
+        "ubicaciones": "Ubicaciones",
+        "mercancias": "Mercancías",
+        "figura-transporte": "Figura del Transporte",
+
+        "success-title": "Carta porte",
+        "success-message": "La carta porte se ha guardado de manera satisfactoria",
+
+        "error-title": "La información es invalida",
+
+        "readonly-title": "Esta carta porte ya no puede ser editada",
+        "siguiente": "Siguiente",
+        "anterior": "Anterior"
+    },
+    "transporte": {
+        "transporte-internacional": "Transporte Internacional",
+
+        "pais-origen-destino": "País origen destino",
+        "movimiento-mercancia": "Movimiento de Mercancía",
+        "movimiento-mercancia-entrada": "Entrada",
+        "movimiento-mercancia-salida": "Salida",
+        "via-entrada": "Via Ingreso o Salida del País",
+
+        "siguiente": "Siguiente"
+    },
+    "autotransporte": {
+        "permiso-sct": "* Permiso SCT",
+        "num-permiso-sct": "* Número de Permiso SCT",
+
+        "seguros": "Seguros",
+
+        "nombre-civil": "* Nombre Aseguradora Responsabilidad Civil",
+        "numero-civil": "* Número Poliza Seguro Responsabilidad Civil",
+        "nombre-ambiental": "Nombre Aseguradora Ambiental (Opcional)",
+        "numero-ambiental": "Número Poliza Seguro Ambiental (Opcional)",
+        "nombre-carga": "Nombre Aseguradora Carga (Opcional)",
+        "numero-carga": "Número Poliza Seguro Carga (Opcional)",
+        "prima-seguro": "Prima Seguro (Opcional)",
+
+        "identificacion": "Identificación Vehicular",
+
+        "configuracion": "* Configuración",
+        "placa": "* Placa",
+        "año-modelo": "* Año y Modelo",
+        "año-modelo-error": "El año debe de ser mayor a 1900 y menor a 2099",
+
+        "remolques": "Remolques"
+    },
+    "ubicaciones": {
+        "siguiente": "Siguiente"
+    },
+    "ubicacion": {
+        "origen-destino": "Orígen / Destino",
+
+        "tipo": "* Tipo",
+        "choose-a-date": "Elige una fecha",
+        "id-ubicacion": "ID Ubicación (Opcional)",
+        "id-ubicacion-error": "El id debe de iniciar con 'OR' o 'DE' seguido de 6 dígitos",
+        "nombre-destinatario": "Nombre (Opcional)",
+        "rfc": "RFC",
+        "residencia-fiscal": "* Residencia Fiscal",
+        "reg-tributario": "Registro Tributario",
+        "distancia-recorrida": "Distancia Recorrida",
+
+        "origin-already-title": "Ya existe una ubicación con origen",
+        "origin-already-message": "Sólo puede existir un origen en cada carta porte"
     },
     "location": {
-        "label_pickup": "pickup",
-        "label_dropoff": "dropoff",
-        "label_pin": "Set location on map",
-        "btn-home": "Home",
-        "btn-work": "Work",
-        "txt_invalidDriection": "Please be more specific on your address.",
-        "placeholder": "Enter destination",
-        "location-not-enabled":"Location is not enabled",
-        "txt-address-not-found": "No se encontró la dirección",
-        "btn-order": "Make an Order"
+        "domicilio": "Domicilio",
+
+        "addr-estado-nocountry": "Selecciona un país primero",
+        "addr-municipio-noestado": " Selecciona un estado primero",
+        "addr-colonia-nocp": "Escribe un código postal primero",
+        "addr-referencia": "Referencia"
     },
-    "draft": {
-        "title": "Drafts",
-        "title-delete": "Delete draft",
-        "txt-delete": "Are you sure you want to proceed? This action is permanent",
-        "btn-cancel": "Cancel",
-        "txt-search": "Search",
-        "txt-filter": "Filter",
-        "label_pickup": "pickup",
-        "label_dropoff": "dropoff",
-        "btn-order": "Continue Order",
-        "no-drafts-title":"No Drafts",
-        "no-drafts-txt":"You haven´t placed any completed drafts yet. When you do their status will appear here."
+    "mercancias": {
+        "peso-bruto": "Peso Bruto Total",
+        "unidad-peso": "Unidad Peso",
+        "siguiente": "Siguiente"
     },
-    "menu":{
-        "home":"Home",
-        "drafts":"  Drafts",
-        "history":"History",
-        "invoice":"Invoice",
-        "support":"Support",
-        "faq":"FAQs",
-        "terms-conditions":"T & C",
-        "log-out":"Log out"
+    "commodity": {
+        "bienes-transportados": "Bienes Transportados",
+        "clave-unidad": "Clave Unidad",
+        "cantidad": "Cantidad",
+        "dimensiones": "Dimensiones",
+        "dimensiones-error": "Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o plg. Ejemplo: 10/10/10cm",
+        "peso": "Peso (Kg)",
+        "valor-mercancia": "Valor Mercancía",
+        "moneda": "Moneda",
+
+        "material-peligroso": "Material Peligroso",
+
+        "clave-material-peligroso": "Clave Material Peligroso",
+        "embalaje": "Embalaje",
+
+        "pedimentos": "Pedimentos",
+
+        "pedimento": "Pedimento",
+
+        "table-pedimento": "Pedimento"
     },
-    "errors": {
-        "timeout": {
-            "title": "Error code: timeout",
-            "body": "Please try again later",
-            "ok": "ok"
-        }
+    "figura": {
+        "figura-transporte": "Figura del transporte",
+        "tipo-figura": "Tipo de Figura",
+        "rfc-figura": "RFC",
+        "residencia-figura": "Residencia Fiscal",
+        "registro-trib-figura": "Registro Tributario",
+        "nombre-figura": "Nombre",
+        "num-licencia": "Num. Licencia",
+
+        "partes-transporte": "Partes del transporte",
+        "parte-transporte": "Parte transporte",
+
+        "table-parte-transporte": "Parte transporte"
     },
-    "invoice": {
-        "invoices": {
-            "filters": "Filters",
-            "emisor-btn": "Emisores",
-            "new-invoice": "New Invoice",
-            "template-placeholder": "Search Template",
-            "template-open": "Open Template",
-            "template-new": "New Template"
+    "tooltips": {
+        "receptor": {
+            "rfc":"RFC\nIndica el Registro Federal del Contribuyente de tu cliente.",
+            "nombre":"Nombre o Razón social\nExpresa el nombre, denominación o Razón Social de tu cliente.",
+            "uso_cfdi":"Uso de CFDI\nSelecciona el uso que le dará tu cliente al CFDI.",
+            "regimen_fiscal": "Régimen fiscal\nIncorpora la clave del régimen fiscal del contribuyente receptor al que aplicará el efecto fiscal de este comprobante.",
+            "direccion":"Dirección\nPrecisa el domicilio fiscal del receptor, si tiene un sólo domicilio se expresa como \"Principal\". En caso de requerir agregar sucursales para el receptor, se identificarán con la información de \"Nombre Dirección\"."
         },
-        "invoice-table": {
-            "emision": "Emisión",
-            "emisor": "Emisor",
-            "receptor": "Receptor",
-            "serie": "Serie",
-            "tipo": "Tipo",
-            "status": "Status",
-            "subtotal": "Subtotal",
-            "total": "Total",
-            "items-per-page": "Items per Page",
-            "showing": "Showing",
-            "of": "of",
-            "prev": "prev",
-            "next": "next",
-            "edit-invoice": "Edit Invoice",
-            "view-details": "View details",
-            "carta-porte": "Carta Porte",
-            "duplicate": "Duplicate",
-            "preview": "Preview",
-            "download-pdf": "Download PDF",
-            "download-xml": "Download XML",
-            "download-acuse": "Download Acuse",
-            "send-by-email": "Send by Email",
-            "cancel-invoice": "Cancel Invoice",
-            "delete-invoice": "Delete Invoice"
+        "emisor": {
+            "rfc":"RFC\nIndica el Registro Federal del Contribuyente del emisor.",
+            "nombre":"Nombre o Razón social\nExpresa el nombre, denominación o Razón Social del emisor.",
+            "regimen_fiscal":"Régimen fiscal\nIncorpora la clave del régimen fiscal del contribuyente emisor al que aplicará el efecto fiscal de este comprobante."
         },
-        "filters": {
-            "apply": "Aplicar",
-            "fechas": "Dates",
-            "inicio": "Start",
-            "final": "End",
-            "emisor": "Emisor",
-            "emisor-placeholder": "Search by Name or RFC",
-            "receptor": "Receptor",
-            "receptor-placeholder": "Buscar por Nombre o RFC",
-            "tipo-comprobante": "Tipo de Comprobante",
-            "tipo-comprobante-placeholder": "All",
-            "uuid-placeholder": "Search by UUID"
+        "lugar_de_expedicion":"Lugar de Expedición\nExpresa el C.P. del lugar en donde se emite el CFDI.",
+        "tipo_de_comprobante":"Tipo de comprobante\nSelecciona el tipo de comprobante según sea la transacción comercial que se está realizando. Ingreso = Factura, Honorarios, Nota de Cargo, Donativos, Arrendamiento. Egreso = Nota de Crédito, Nota de devolución. Traslado = carta porte.",
+        "moneda":"Moneda\nIdentifica la clave de la moneda utilizada para expresar los montos del CFDI, cuando se usa moneda nacional se registra MXN. Conforme con la especificación ISO 4217.",
+        "tipo_de_cambio":"Tipo de Cambio\nExpresa el tipo de cambio de acuerdo a la moneda seleccionada para el CFDI. El valor debe ser equivalente a una unidad de la divisa señalada en el campo \"Moneda\".",
+        "metodo_de_pago":"Método de pago\nClave del método de pago que aplica para el CFDI, conforme al Artículo 29-A fracción VII incisos a y b del CFF.",
+        "forma_de_pago":"Forma de pago\nExpresa la clave de la forma de pago de los bienes o servicios amparados por el CFDI.",
+        "info_extra":"Información Extra\nExpresa información que se desea incluir en el PDF, puede incluirse información comercial o administrativa que ayude internamente.",
+        "conceptos":"Conceptos\nEn éste apartado agregarás la información de los productos o servicios que se incluirán en el CFDI.",
+        "concepto": {
+            "nombre":"Producto o Servicio\nNombre del producto o servicio a incluir en el CFDI",
+            "cve_sat":"Descripción SAT\nIndica la descripción de tu producto, se desplegarán las posibles opciones del catálogo del SAT. Selecciona la opción que más se apegue a tu producto.",
+            "unidad_de_medida":"Unidad de medida\nUnidad de medida del producto o servicio que se esta incluyendo en el CFDI.",
+            "valor_unitario":"Precio unitario\nExpresa la cantidad monetaria que expresa el valor del producto o servicio antes de los impuestos. Sin comas, sólo indica después del punto los decimales. Ej. 1568.40",
+            "cantidad":"Cantidad\nIndica el número de productos o servicios que se incluyen dentro del CFDI.",
+            "descuento":"Descuento\nExpresa la cantidad monetaria a disminuir el precio unitario del producto o servicio que se incluye en el CFDI. Sin comas, sólo indica despues del punto los decimales. Ej. 1200.50",
+            "descripcion":"Descripción\nIndica el detalle del producto o servicio que se está incluyendo en el CFDI.",
+            "importe":"Importe\nExpresa el importe del producto o servicio. Resultado de la multiplicación de la cantidad por el precio unitario. Sin comas, sólo indica después del punto los decimales. Ej. 1568.40",
+            "total":"Total concepto\nExpresa el valor neto del producto o servicio, incluyendo impuestos y/o descuento."
+        },
+        "impuesto": {
+            "impuesto":"Impuesto\nExpresa el impuesto a incluir en el producto o servicio.",
+            "tasa_cuota":"Tasa\nSelecciona el porcentaje de la tasa que corresponda al impuesto seleccionado. El porcentaje se  calcula con base al importe del producto o servicio. Ej. Si el importe es $100 y la tasa 16%,  el monto del impuesto será igual a $16.00. 8% sólo aplica para emisores autorizados por el SAT en zona fronteriza."
+        },
+        "documentos_relacionados":"Documentos relacionados\nExpresa la información de los CFDI relacionados al comprobante que se está emitiendo.",
+        "documentos_relacionado": {
+            "tipo_de_relacion":"Tipo de relación\nIndica la relación que existe entre el CFDI que se está generando y el/los CFDI previo(s).",
+            "uuid":"UUID\nFolio fiscal del CFDI. Ejemplo: 1335D8A8-1D90-445C-A20D-3371CCDE6006"
+        },
+        "complementos":"Complementos\nInformación adicional regulada por el SAT, se incluye en el XML. Puede incluir información para un sector o actividad específica.",
+        "serie":"Serie\nExpresa letra o conjunto de letras para tener un control interno de los CFDI.",
+        "precio": {
+            "subtotal": "Escribe el precio total del servicio (Antes de impuestos)."
         }
-    },
-    "fleet": {
-        "colors": {
-            "red": "Red",
-            "orange": "Orange",
-            "yellow": "Yellow",
-            "green": "Green",
-            "blue": "Blue",
-            "purple": "Purple",
-            "pink": "Pink",
-            "white": "White",
-            "black": "Black",
-            "gray": "Gray",
-            "grey": "Gray"
-          }
     }
+  },
+  "fleet": {
+    "colors": {
+      "red": "Red",
+      "orange": "Orange",
+      "yellow": "Yellow",
+      "green": "Green",
+      "blue": "Blue",
+      "purple": "Purple",
+      "pink": "Pink",
+      "white": "White",
+      "black": "Black",
+      "gray": "Gray",
+      "grey": "Gray"
+    }
+  },
+  "home": {
+    "manager": {
+      "member-assignment": {
+        "cant-select": "You cannot select this element",
+        "info-missing": "In order to select it, add more information to the element from the edit fleet info page",
+        "no-license-translate": "This driver requires to provide a license number. License number is required."
+      }
+    },
+    "fleet-assignment": {
+      "time-date": "Assigned time & date",
+      "schedule": "Schedule to:",
+      "aprox-time": "Aprox Time Load",
+      "cp-order": "Bill of lading (BOL)",
+      "available-drivers": "Available drivers",
+      "available-trucks": "Available trucks",
+      "available-trailers": "Available trailers"
+    }
+  },
+  "small-display-modal": {
+    "small-display-modal-title": "Resolution display too small for the application",
+    "small-display-modal-body": "For a better experience, download our app from the App Store or the Play Store"
+  },
+  "incompatible-browser-modal": {
+    "incompatible-browser-modal-title": "This browser is not compatible app",
+    "incompatible-browser-modal-body": "For a better experience, use another browser"
+  }
 }

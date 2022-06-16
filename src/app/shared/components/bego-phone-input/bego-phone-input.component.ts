@@ -38,6 +38,7 @@ export class BegoPhoneInputComponent implements OnInit {
   @Input() design: string = '';
   @Input() disabled: boolean = false;
   @Input() hidePhoneIcon: boolean = false;
+  @Input() arrow: boolean = true;
   @Input() deleteInputOnPhoneCodeChange: boolean = false;
 
   @Output() blur = new EventEmitter<any>();

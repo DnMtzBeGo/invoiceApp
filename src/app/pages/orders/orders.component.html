@@ -21,18 +21,6 @@
 
       <mat-tab-group [(selectedIndex)]="currentStepIndex">
         <mat-tab>
-          <div class="toggle-bill-container">
-            <div class="bill-question">
-              <img src="/assets/orders/question.svg" class="question-mark" />
-              <p>¿Factura y carta porte ?</p>
-            </div>
-            <div class="slide">
-              <mat-slide-toggle
-                (change)="toogleOrderWithCP()"
-                [checked]="isOrderWithCP"
-              ></mat-slide-toggle>
-            </div>
-          </div>
           <app-step1
             [locations]="locations"
             (step1FormData)="getStep1FormData($event)"
@@ -44,11 +32,14 @@
 
         <mat-tab>
           <app-step2
+            [creationdatepickup]="datepickup"
             [creationTime]="creationTime"
             (step2FormData)="getStep2FormData($event)"
             (validFormStep2)="validStep2($event)"
             [draftData]="draftData"
             [orderWithCP]="isOrderWithCP"
+            [editCargoWeightNow]="editCargoWeightNow"
+            (cargoWeightEdited)="cargoWeightEdited()"
           ></app-step2>
         </mat-tab>
 
@@ -64,6 +55,7 @@
 
         <mat-tab>
           <app-step4
+            [dropoffETA]="datedropoff"
             [timeETA]="minDropoff"
             (step4FormData)="getStep4FormData($event)"
             (validFormStep4)="validStep4($event)"
@@ -73,7 +65,7 @@
       </mat-tab-group>
 
       <div class="footer">
-        <button (click)="prevSlide()" mat-buttona class="bego-btn gray">
+        <button (click)="prevSlide()" maat-button class="bego-btn gray" *ngIf="currentStepIndex">
           <i class="icon icon-arrow-left back-arrow-icon"></i>
           {{ "orders.back" | translate }}
         </button>

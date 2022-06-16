@@ -1,4 +1,4 @@
-import { addObjectKeys } from "../../../../shared/utils/object";
+import { addObjectKeys, prop } from "../../../../shared/utils/object";
 
 const add = (x, y) => x + y;
 
@@ -224,6 +224,7 @@ export const facturaPermissions = (factura) => {
     readonly: !edit,
     vistaprevia: !factura?.status || [1, 9].includes(factura.status),
     pdf: factura?.status && [3, 4, 5].includes(factura.status),
+    pdf_driver: factura?.status && [3, 4, 5].includes(factura.status),
     xml: factura?.status && [3, 4, 5].includes(factura.status),
     pdf_cancelado: factura?.status && [6, 7, 8].includes(factura.status),
     xml_acuse: factura?.status && [6, 7, 8].includes(factura.status),
@@ -235,6 +236,7 @@ export const facturaPermissions = (factura) => {
     cartaporte:
       factura?.tipo_de_comprobante &&
       ["I", "T"].includes(factura.tipo_de_comprobante),
+    showError: factura?.status && factura.status !== 3,
   };
 };
 
@@ -354,4 +356,33 @@ export const optimizeInvoiceCatalog = (catalog?) => {
   //   };
 
   return catalog;
+};
+
+const requiredPathsFactura = [
+  "receptor.rfc",
+  "receptor.nombre",
+  "receptor.uso_cfdi",
+  "receptor.direccion.cp",
+  "condiciones_de_pago",
+  "emisor._id",
+  "emisor.rfc",
+  "emisor.nombre",
+  "emisor.regimen_fiscal",
+  "lugar_de_expedicion.cp",
+  "tipo_de_comprobante",
+  "metodo_de_pago",
+  "forma_de_pago",
+  "conceptos.0.nombre",
+  "conceptos.0.cve_sat",
+  "conceptos.0.unidad_de_medida",
+  "conceptos.0.valor_unitario",
+  "conceptos.0.cantidad",
+  "conceptos.0.descripcion",
+];
+
+const requiredFieldF = (object) => (path) =>
+  ![void 0, ""].includes(prop(object, path.split(".")));
+
+export const minimumRequiredFields = (factura) => {
+  return requiredPathsFactura.every(requiredFieldF(factura));
 };

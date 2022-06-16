@@ -35,3 +35,15 @@ export const arrayToObject = (key, keyValue) => (array) =>
   Object.fromEntries(array.map((item) => [item[key], item[keyValue]]));
 
 export const object_compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+export const prop = (obj, props) => {
+  if (obj == void 0) return void 0;
+
+  props = props.reverse();
+  for (let i = props.length - 1; i >= 0; --i) {
+    if (obj[props[i]] == void 0) return void 0;
+    obj = obj[props[i]];
+  }
+
+  return obj;
+};

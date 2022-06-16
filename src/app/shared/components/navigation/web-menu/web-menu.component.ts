@@ -9,7 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
-
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-web-menu',
   templateUrl: './web-menu.component.html',
@@ -54,7 +54,7 @@ export class WebMenuComponent implements OnInit {
     this.menuOpened = false;
     this.menuEmitter.emit(false);
     // TODO: open link in new tab
-    this.router.navigate([url]);
+    location.replace(environment.website_url + url);
   }
 
   mapCreated(animationItem: AnimationItem): void {}

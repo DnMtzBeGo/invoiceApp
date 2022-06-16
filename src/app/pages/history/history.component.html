@@ -1,20 +1,14 @@
-<div class="history-container" [ngClass]="{'no-orders': noOrders }">
-  <app-orders-list 
-    (idEvent)="receiveId($event)"
-    (noOrders)="noOrdersAction($event)"
-    [statusListData]="statusList">
-  </app-orders-list>
-
-  <app-order-info
-    *ngIf="!noOrders"
-    [orderInfo]="orderInfo" 
-    [statusListData]="statusList">
-  </app-order-info>
-
-  <app-no-orders-yet
-    *ngIf="noOrders"
-    [translations]=" ('history.no-orders-yet.' + currentTab) |  translate ">
+<div class="history-wrapper" [ngClass]="{'no-orders': noOrders }">
+  <div class="container">
+    <div class="orders-list">
+      <app-orders-list (idEvent)="receiveId($event)" (noOrders)="noOrdersAction($event)" [statusListData]="statusList">
+      </app-orders-list>
+    </div>
+    <div class="order-detail">
+      <app-order-info *ngIf="!noOrders" [orderInfo]="orderInfo" [statusListData]="statusList">
+      </app-order-info>
+    </div>
+  </div>
+  <app-no-orders-yet *ngIf="noOrders" [translations]=" ('history.no-orders-yet.' + currentTab) |  translate ">
   </app-no-orders-yet>
-
-
 </div>

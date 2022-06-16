@@ -23,12 +23,13 @@ import { InputSelectableComponent } from "../input-selectable/input-selectable.c
 import { CargoWeightComponent } from "../cargo-weight/cargo-weight.component";
 import * as moment from "moment";
 import { isObject } from "../../../../shared/utils/object";
+import { UnitDetailsModalComponent } from "../unit-details-modal/unit-details-modal.component";
 
 type CargoType = "general" | "hazardous";
 
 interface Option {
-  value: string;
-  viewValue: string;
+  value?: string;
+  viewValue?: string;
 }
 
 @Component({
@@ -41,8 +42,11 @@ export class Step2Component implements OnInit {
   @Input() creationTime: any;
   @Input() draftData: any;
   @Input() orderWithCP: boolean;
+  @Input() creationdatepickup: number;
+  @Input() editCargoWeightNow: boolean;
   @Output() step2FormData: EventEmitter<any> = new EventEmitter();
   @Output() validFormStep2: EventEmitter<boolean> = new EventEmitter();
+  @Output() cargoWeightEdited: EventEmitter<void> = new EventEmitter();
 
   events: string = "DD / MM / YY";
   editWeight: boolean = false;
@@ -52,6 +56,7 @@ export class Step2Component implements OnInit {
   draftDate: number = 0;
   minTime: Date = new Date();
   maxTime: Date = new Date();
+  creationDatePickupLabel: string;
 
   cargoType: CargoType = "general";
   hazardousList: Array<any> = [];
@@ -77,9 +82,9 @@ export class Step2Component implements OnInit {
   //   file: ['valid', Validators.required],
   // });
   step2Form = new FormGroup({
-    cargo_goods: new FormControl(),
-    datepickup: new FormControl(this.events, Validators.required),
-    timepickup: new FormControl(new Date(), Validators.required),
+    cargo_goods: new FormControl(""),
+    datepickup: new FormControl(""),
+    timepickup: new FormControl("", Validators.required),
     // timepickup: new FormControl(new Date(), [Validators.required, this.hourValidator]),
     unitType: new FormControl("", Validators.required),
     cargoUnits: new FormControl(1, Validators.required),
@@ -88,8 +93,14 @@ export class Step2Component implements OnInit {
     description: new FormControl("", Validators.required),
   });
 
-  modalOption: Option;
-  modalSelected: boolean = false;
+  mercModal: Option;
+  mercModalSelected: boolean = false;
+  packModal: Option;
+  packModalSelected: boolean = false;
+  hzrdModal: Option;
+  hzrdModalSelected: boolean = false;
+
+  satUnitData: Option;
 
   constructor(
     translateService: TranslateService,
@@ -126,19 +137,19 @@ export class Step2Component implements OnInit {
       this.handleCargoTypeChange();
     });
 
-    this.step2Form.get("datepickup")!.valueChanges.subscribe((val) => {
-      let oldDate = moment(this.calendar, "MM-DD-YYYY").format("MMMM DD YYYY");
-      let newDate = moment(val, "MM-DD-YYYY").format("MMMM DD YYYY");
-      if (oldDate !== newDate) {
-        // this.minTime.setHours(0);
-        // this.minTime.setMinutes(0);
-        // this.minTime.setSeconds(0);
-        this.minTime = this.creationTime;
-        this.step2Form.controls.timepickup.setValue(void 0);
-      } else {
-        this.minTime = this.creationTime;
-      }
-    });
+    // this.step2Form.get("datepickup")!.valueChanges.subscribe((val) => {
+    //   let oldDate = moment(this.calendar, "MM-DD-YYYY").format("MMMM DD YYYY");
+    //   let newDate = moment(val, "MM-DD-YYYY").format("MMMM DD YYYY");
+    //   if (oldDate !== newDate) {
+    //     // this.minTime.setHours(0);
+    //     // this.minTime.setMinutes(0);
+    //     // this.minTime.setSeconds(0);
+    //     this.minTime = this.creationTime;
+    //     this.step2Form.controls.timepickup.setValue(void 0);
+    //   } else {
+    //     this.minTime = this.creationTime;
+    //   }
+    // });
 
     this.step2Form.get("timepickup")!.valueChanges.subscribe((val) => {
       // if(val===null) {
@@ -152,15 +163,15 @@ export class Step2Component implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.orderWithCP) {
-      const cargo_good = this.step2Form.get("cargo_goods");
-      cargo_good.setValidators(Validators.required);
-      cargo_good.updateValueAndValidity();
-    } else {
-      const cargo_good = this.step2Form.get("cargo_goods");
-      cargo_good.clearValidators();
-      cargo_good.updateValueAndValidity();
-    }
+    // if (this.orderWithCP) {
+    //   const cargo_good = this.step2Form.get("cargo_goods");
+    //   cargo_good.setValidators(Validators.required);
+    //   cargo_good.updateValueAndValidity();
+    // } else {
+    //   const cargo_good = this.step2Form.get("cargo_goods");
+    //   cargo_good.clearValidators();
+    //   cargo_good.updateValueAndValidity();
+    // }
 
     if (
       changes.draftData &&
@@ -190,25 +201,38 @@ export class Step2Component implements OnInit {
         .get("description")!
         .setValue(changes.draftData.currentValue.cargo.description);
     }
-    if (changes.creationTime && changes.creationTime.currentValue) {
-      this.calendar = changes.creationTime.currentValue;
-      if (this.draftDate > 0 && moment(this.calendar).valueOf() > this.draftDate) {
-        // this.step2Form.get('datepickup')!.setValue('');
-        // // this.ordersService.resetDropoffDate(true);")
-        this.step2Form.get("datepickup")!.setValue(new Date(this.draftDate));
-        this.events = moment(new Date(this.draftDate), "MM-DD-YYYY").format(
-          "MMMM DD YYYY"
-        );
-        this.step2Form.get("timepickup")!.setValue(new Date(this.draftDate));
-      } else {
-        this.step2Form.get("datepickup")!.setValue(this.calendar);
-        this.events = moment(
-          new Date(moment(this.calendar).valueOf()),
-          "MM-DD-YYYY"
-        ).format("MMMM DD YYYY");
-        this.step2Form.get("timepickup")!.setValue(this.calendar);
-        this.minTime = this.calendar;
-      }
+    // if (changes.creationTime && changes.creationTime.currentValue) {
+    //   this.calendar = changes.creationTime.currentValue;
+    //   if (this.draftDate > 0 && moment(this.calendar).valueOf() > this.draftDate) {
+    //     // this.step2Form.get('datepickup')!.setValue('');
+    //     // // this.ordersService.resetDropoffDate(true);")
+    //     this.step2Form.get("datepickup")!.setValue(new Date(this.draftDate));
+    //     this.events = moment(new Date(this.draftDate), "MM-DD-YYYY").format(
+    //       "MMMM DD YYYY"
+    //     );
+    //     this.step2Form.get("timepickup")!.setValue(new Date(this.draftDate));
+    //   } else {
+    //     this.step2Form.get("datepickup")!.setValue(this.calendar);
+    //     this.events = moment(
+    //       new Date(moment(this.calendar).valueOf()),
+    //       "MM-DD-YYYY"
+    //     ).format("MMMM DD YYYY");
+    //     this.step2Form.get("timepickup")!.setValue(this.calendar);
+    //     this.minTime = this.calendar;
+    //   }
+    // }
+
+    if (changes.creationdatepickup && changes.creationdatepickup.currentValue) {
+      const date = changes.creationdatepickup.currentValue;
+      this.step2Form.value.datepickup = date;
+      this.creationDatePickupLabel = moment(new Date(date), "MM-DD-YYYY").format(
+        "MMMM DD YYYY"
+      );
+      this.step2Form.get("timepickup").setValue(new Date(date));
+    }
+
+    if (changes.editCargoWeightNow && changes.editCargoWeightNow.currentValue) {
+      this.editUnits();
     }
 
     this.validFormStep2.emit(this.step2Form.valid);
@@ -219,7 +243,7 @@ export class Step2Component implements OnInit {
     if (cargoType === "hazardous") {
       const validators = [Validators.required];
       this.step2Form.addControl(
-        "hazardousType",
+        "hazardous_type",
         new FormControl(this.hazardousType, validators)
       );
       this.step2Form.addControl("hazardousUn", new FormControl("", validators));
@@ -227,10 +251,16 @@ export class Step2Component implements OnInit {
         "hazardousFile",
         new FormControl(this.hazardousFile, validators)
       );
+      if (this.orderWithCP) {
+        this.step2Form.addControl("packaging", new FormControl(""));
+        this.step2Form.addControl("hazardous_material", new FormControl(""));
+      }
     } else {
-      this.step2Form.removeControl("hazardousType");
+      this.step2Form.removeControl("hazardous_type");
       this.step2Form.removeControl("hazardousUn");
       this.step2Form.removeControl("hazardousFile");
+      this.step2Form.removeControl("hazardous_material");
+      this.step2Form.removeControl("packaging");
     }
   }
 
@@ -256,25 +286,6 @@ export class Step2Component implements OnInit {
 
   selectedUnits(unit: MatButtonToggleChange): void {
     this.step2Form.get("unitType")!.setValue(unit.value);
-    const dialogRef = this.dialog.open(CargoWeightComponent, {
-      width: "312px",
-      minHeight: "496px",
-      panelClass: "modal",
-      backdropClass: "backdrop",
-      data: {
-        units: this.step2Form.get("cargoUnits")!.value,
-        weight: this.step2Form.get("cargoWeight")!.value,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.editWeight = true;
-        this.step2Form.get("cargoUnits")!.setValue(result.units);
-        this.step2Form.get("cargoWeight")!.setValue(result.weight);
-        this.quantityunits = result.units;
-      }
-    });
   }
 
   editUnits(): void {
@@ -294,6 +305,8 @@ export class Step2Component implements OnInit {
         this.step2Form.get("cargoUnits")!.setValue(result.units);
         this.step2Form.get("cargoWeight")!.setValue(result.weight);
         this.quantityunits = result.units;
+        this.editWeight = true;
+        this.cargoWeightEdited.emit();
       }
     });
   }
@@ -305,6 +318,9 @@ export class Step2Component implements OnInit {
   setCargoType(value: MatButtonToggleChange): void {
     this.step2Form.get("cargoType")!.setValue(value.value);
     this.cargoType = value.value;
+    if (value.value === "hazardous") {
+      this.step2Form.get("file");
+    }
   }
 
   clickFileInputElement() {}
@@ -346,16 +362,62 @@ export class Step2Component implements OnInit {
     this.firstLoad = false;
   }
 
-  showInputSelectorCP() {
+  showInputSelectorCP(type) {
+    const modalData =
+      type === "merc"
+        ? this.mercModal
+        : type === "pack"
+        ? this.packModal
+        : this.hzrdModal;
     const dialogRef = this.dialog.open(InputSelectableComponent, {
-      panelClass: "app-full-bleed-dialog",
-      data: this.modalOption,
+      panelClass: "modal",
+      data: { data: modalData, type },
     });
     dialogRef.afterClosed().subscribe(async (res) => {
       if (typeof res === "object") {
-        this.modalOption = res;
-        this.step2Form.get("cargo_goods")!.setValue(res.value);
-        this.modalSelected = true;
+        if (type === "merc") {
+          this.mercModal = res;
+          this.mercModalSelected = true;
+          this.step2Form.get("cargo_goods")!.setValue(res.value);
+        } else if (type === "pack") {
+          this.packModal = res;
+          this.packModalSelected = true;
+          this.step2Form.get("packaging")!.setValue(res.value);
+        } else {
+          this.hzrdModal = res;
+          this.hzrdModalSelected = true;
+          this.step2Form.get("hazardous_material")!.setValue(res.value);
+        }
+      }
+    });
+  }
+
+  addUnitDetailsFields() {
+    console.log("se crearon campos");
+    this.step2Form.addControl("commodity_quantity", new FormControl(""));
+    this.step2Form.addControl("satUnitType", new FormControl(""));
+  }
+
+  showUnitDetailsModal() {
+    if (!this.satUnitData) {
+      this.addUnitDetailsFields();
+    }
+    const modalData = {
+      qty: this.step2Form.value.commodity_quantity,
+      satUnit: this.satUnitData,
+      description: this.step2Form.value.description,
+    };
+    const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
+      panelClass: "modal",
+      disableClose: true,
+      data: modalData,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.step2Form.get("description")!.setValue(result.description);
+        this.step2Form.get("commodity_quantity")!.setValue(result.qty);
+        this.step2Form.get("satUnitType")!.setValue(result.value);
+        this.satUnitData = { value: result.value, viewValue: result.viewValue };
       }
     });
   }

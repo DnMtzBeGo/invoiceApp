@@ -11,7 +11,7 @@
 
   <!-- Driver card-->
   <div class="card driver-info">
-    <app-fleet-asset-card [props]="{ type: 'drivers', picture: orderData.driver?.thumbnail}">
+    <app-fleet-asset-card type="driver" [data]="driverData">
       <div class="card-asset-container">
         <div class="info">
           <div class="label">
@@ -21,7 +21,7 @@
             {{orderData.driver?.nickname}}
           </div>
         </div>
-        <div class="edit-btn" (click)="edit.emit('drivers')">
+        <div class="edit-btn" (click)="edit.emit('driver')">
           <div class="edit-order-btn">{{'history.overview.btn-edit'|translate}}</div>
         </div>
       </div>
@@ -30,7 +30,7 @@
 
   <!-- Truck card -->
   <div class="card truck-info">
-    <app-fleet-asset-card [props]="{ type: 'trucks', picture: orderData.truck?.thumbnail}">
+    <app-fleet-asset-card type="truck" [data]="truckData">
       <div class="card-asset-container">
         <div class="info">
           <div class="label">
@@ -44,7 +44,7 @@
           </div>
 
         </div>
-        <div class="edit-btn" (click)="edit.emit('trucks')">
+        <div class="edit-btn" (click)="edit.emit('truck')">
           <div class="edit-order-btn">{{'history.overview.btn-edit'|translate}}</div>
         </div>
       </div>    
@@ -53,7 +53,7 @@
 
   <!-- Trailer card -->
   <div class="card trailer-info" >
-    <app-fleet-asset-card [props]="{ type: 'trailers', picture: orderData.trailer?.thumbnail}">
+    <app-fleet-asset-card type="trailer" [data]="trailerData">
       <div class="card-asset-container">
         <div class="info">
           <div class="label">
@@ -66,7 +66,7 @@
             {{orderData.trailer?.attributes.trailer_number}}
           </div>
         </div>
-        <div class="edit-btn" (click)="edit.emit('trailers')">
+        <div class="edit-btn" (click)="edit.emit('trailer')">
           <div class="edit-order-btn">{{'history.overview.btn-edit'|translate}}</div>
         </div>
       </div>    

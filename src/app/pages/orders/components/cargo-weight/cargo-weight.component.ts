@@ -14,7 +14,8 @@ export class CargoWeightComponent implements OnInit {
   btnIncrement = [] as Array<boolean>;
   btnDecrement = [] as Array<boolean>;
   minUnits = 1;
-  maxUnits = 20;
+  maxUnits = 20000;
+  incrementUnit = 1000;
 
   public quantityunits: number = 1;
 
@@ -44,7 +45,7 @@ export class CargoWeightComponent implements OnInit {
       }
     } else {
       for (var i = 0; i < this.data.units; i++) {
-        this.addUnits(1);
+        this.addUnits(this.incrementUnit);
         this.btnDecrement[i] = true;
       }
     }
@@ -54,26 +55,9 @@ export class CargoWeightComponent implements OnInit {
     return (this.form.get('cargo') as FormArray).controls;
   }
 
-  increment() {
-    if (this.quantityunits < 100) {
-      this.btnDecrement[this.quantityunits] = true;
-      this.quantityunits++;
-      this.form.get('cargoUnits')!.setValue(this.quantityunits);
-      this.addUnits(this.data.weight[this.quantityunits]);
-    }
-  }
-
-  decrement() {
-    if (this.quantityunits > 1) {
-      this.quantityunits--;
-      this.form.get('cargoUnits')!.setValue(this.quantityunits);
-      this.removeUnits(this.data.weight[this.quantityunits]);
-    }
-  }
-
   addUnits(values: any) {
     if (values == null) {
-      values = 1;
+      values = this.incrementUnit;
     }
     const items = this.form.controls.cargo as FormArray;
     items.push(
@@ -100,7 +84,7 @@ export class CargoWeightComponent implements OnInit {
   saverange($event: any, i: number) {
     // console.log($event.target.value);
     if ($event.target.value == '') {
-      ((this.form.get('cargo') as FormArray).at(i) as FormGroup).get('units')!.patchValue(1);
+      ((this.form.get('cargo') as FormArray).at(i) as FormGroup).get('units')!.patchValue(this.incrementUnit);
       this.btnDecrement[i] = true;('units')
     } else if ($event.target.value < this.maxUnits && $event.target.value > this.minUnits) {
       this.btnIncrement[i] = false;
@@ -119,7 +103,8 @@ export class CargoWeightComponent implements OnInit {
     if (val < this.maxUnits) {
       this.btnIncrement[i] = false;
       this.btnDecrement[i] = false;
-      ((this.form.get('cargo') as FormArray).at(i) as FormGroup).get('units')!.patchValue(val + 1);
+      ((this.form.get('cargo') as FormArray).at(i) as FormGroup).get('units')
+      .patchValue(val + this.incrementUnit >= this.maxUnits ? this.maxUnits : val + this.incrementUnit);
       let num = (this.form.get('cargo') as FormArray).at(i).get('units')!.value;
       if (num === this.maxUnits) {
         this.btnIncrement[i] = true;
@@ -136,7 +121,8 @@ export class CargoWeightComponent implements OnInit {
     if (val > this.minUnits) {
       this.btnIncrement[i] = false;
       this.btnDecrement[i] = false;
-      ((this.form.get('cargo') as FormArray).at(i) as FormGroup).get('units')!.patchValue(val - 1);
+      ((this.form.get('cargo') as FormArray).at(i) as FormGroup).get('units')
+      .patchValue(val - this.incrementUnit <= 0 ? this.minUnits : val - this.incrementUnit);
       let num = (this.form.get('cargo') as FormArray).at(i).get('units')!.value;
       if (num === this.minUnits) {
         this.btnDecrement[i] = true;

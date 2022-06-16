@@ -21,7 +21,7 @@
         autofocus
         matInput
         [(ngModel)]="message"
-        [placeholder]="'contact-support.Type a message..' | translate"
+        [placeholder]="'contact-support.type-a-message' | translate"
         cdkTextareaAutosize
         #autosize="cdkTextareaAutosize"
         cdkAutosizeMinRows="1"
@@ -75,7 +75,7 @@
       (click)="sendMessage($event)"
       [disabled]="sendMessageLoading$ | async"
     >
-      {{ 'contact-support.Send' | translate }}
+      {{ 'contact-support.send' | translate }}
       <i class="icon icon-paper-plane"></i>
     </button>
   </div>
@@ -85,7 +85,7 @@
     [ngClass]="{ isDragging }"
     (dragleave)="dragleave($event)"
   >
-    {{ 'contact-support.Drag files in here' | translate }}
+    {{ 'contact-support.drag-files-in-here' | translate }}
   </div>
 </div>
 
@@ -94,7 +94,7 @@
 
   <p>
     <span id="title">BeGo</span>
-    <span id="subtitle">{{ 'contact-support.Support' | translate }}</span>
+    <span id="subtitle">{{ 'contact-support.support' | translate }}</span>
   </p>
 
   <div id="links">

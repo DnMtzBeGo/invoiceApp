@@ -35,6 +35,7 @@
             (click)="domicilioForm.patchValue({ municipio: '', localidad: '' })"
             *ngFor="let option of filteredEstados"
             [value]="option.clave"
+            class="brand-option-1"
           >
             {{ option.clave }} - {{ option.nombre }}
           </mat-option>
@@ -79,6 +80,7 @@
           <mat-option
             *ngFor="let option of filteredMunicipios"
             [value]="option.clave"
+            class="brand-option-1"
           >
             {{ option.clave }} - {{ option.nombre }}
           </mat-option>
@@ -123,6 +125,7 @@
           <mat-option
             *ngFor="let option of filteredLocalidades"
             [value]="option.clave"
+            class="brand-option-1"
           >
             {{ option.clave }} - {{ option.nombre }}
           </mat-option>
@@ -179,6 +182,7 @@
           <mat-option
             *ngFor="let option of filteredColonias"
             [value]="option.clave"
+            class="brand-option-1"
           >
             {{ option.clave }} - {{ option.nombre }}
           </mat-option>

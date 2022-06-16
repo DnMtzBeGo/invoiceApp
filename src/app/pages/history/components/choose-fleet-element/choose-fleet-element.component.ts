@@ -14,6 +14,13 @@ import { FleetElementType } from "src/app/shared/interfaces/FleetElement.type";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { HistoryComponent } from "../../history.component";
 import { NotificationsService } from "src/app/shared/services/notifications.service";
+import { AlertService } from "src/app/shared/services/alert.service";
+
+interface SelectedFleetElements {
+  carrier_id?: string
+  truck_id?: string
+  trailer_id?: string
+}
 
 @Component({
   selector: "app-choose-fleet-element",
@@ -24,17 +31,19 @@ export class ChooseFleetElementComponent implements OnInit {
   public elementToChoose: FleetElementType;
   public title: string;
 
-  public selectedDriverId: string;
-  public selectedTruckId: string;
-  public selectedTrailerId: string;
+  public disableSelectBtn: boolean = true;
+
+  public selectedFleetElements: SelectedFleetElements;
+
+  public filteredTrailers: any[];
 
   private titleTransLations = {
-    drivers: this.translateService.instant("history.overview.label_driver"),
-    trucks: this.translateService.instant("history.overview.label_vehicle"),
-    trailers: this.translateService.instant("history.overview.label_trailer"),
+    driver: this.translateService.instant("history.overview.label_driver"),
+    truck: this.translateService.instant("history.overview.label_vehicle"),
+    trailer: this.translateService.instant("history.overview.label_trailer"),
   };
 
-  private fleetInfo: string;
+  private fleetInfo: any;
   private payload: any;
 
   @Input() orderInfo: any;
@@ -46,21 +55,26 @@ export class ChooseFleetElementComponent implements OnInit {
     private webservice: AuthService,
     @Inject(forwardRef(() => HistoryComponent))
     private historyComponent: HistoryComponent,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.orderInfo && Object.keys(this.orderInfo).length) {
-      this.selectedDriverId = this.orderInfo?.driver?._id;
-      this.selectedTruckId = this.orderInfo?.truck?._id;
-      this.selectedTrailerId = this.orderInfo?.trailer?._id;
+
+      this.setOriginalValues();
+
       this.updateFleetInfo();
+      this.updateDisableSelectBtn();
     }
   }
 
   async updateFleetInfo(): Promise<void> {
+
+    this.setOriginalValues();
+
     const { pickup, dropoff } = this.orderInfo;
     const payload = {
       fromDate: pickup.startDate,
@@ -75,6 +89,8 @@ export class ChooseFleetElementComponent implements OnInit {
       )
     ).subscribe(({ result }) => {
       this.fleetInfo = result;
+      this.filteredTrailers = this.fleetInfo.trailers.filter((trailer)=>trailer.type == this.orderInfo.cargo['53_48']);
+
     });
   }
 
@@ -108,27 +124,164 @@ export class ChooseFleetElementComponent implements OnInit {
     );
   }
 
-  setDriver(driver_id: string): void {
-    this.selectedDriverId = driver_id;
-    this.payload = {
-      order_id: this.orderInfo._id,
-      carrier_id: driver_id,
+  setDriver({_id, availability, can_stamp}){
+
+    const setChanges = () => {
+      this.selectedFleetElements = {...this.selectedFleetElements, carrier_id:  _id };
+      this.payload = { order_id: this.orderInfo._id,carrier_id:  _id };
+      this.updateDisableSelectBtn();  
+    }
+
+    if(!can_stamp && this.orderInfo.stamp){
+      this.showCantSelectElementToast();
+      return
+    }
+    
+    if(!availability  && _id !== this.orderInfo.driver._id){
+      this.alertService.create({
+        title: this.translateService.instant('history.alerts.driver_unavailable.title'),
+        body: this.translateService.instant('history.alerts.driver_unavailable.message'),
+        handlers: [
+          {
+            text: this.translateService.instant('Ok'),
+            color: '#ffbe00',
+            action: async () => {
+              setChanges();
+              this.alertService.close();
+            }
+          },
+          {
+            text: this.translateService.instant('orders.btn-cancel'),
+            color: '#ffbe00',
+            action: async () => {
+              this.alertService.close();
+            }
+          }
+        ]
+      });
+      return;
+    }
+
+    setChanges();
+  }
+
+  setTruck({availability,_id, can_stamp}){
+    const setChanges = () => {
+      this.selectedFleetElements = { ...this.selectedFleetElements, truck_id:  _id };
+      this.payload = { order_id: this.orderInfo._id,truck_id:  _id};
+      this.updateDisableSelectBtn();  
+    }
+
+    if(!can_stamp && this.orderInfo.stamp){
+      this.showCantSelectElementToast();
+      return
+    }
+
+
+    
+    if(!availability  && _id !== this.orderInfo.truck._id){
+      this.alertService.create({
+        title: this.translateService.instant('history.alerts.trailer_unavailable.title'),
+        body: this.translateService.instant('history.alerts.truck_unavailable.message'),
+        handlers: [
+          {
+            text: this.translateService.instant('Ok'),
+            color: '#ffbe00',
+            action: async () => {
+              setChanges();
+              this.alertService.close();
+            }
+          },
+          {
+            text: this.translateService.instant('orders.btn-cancel'),
+            color: '#ffbe00',
+            action: async () => {
+              this.alertService.close();
+            }
+          }
+        ]
+      });
+      return;
+    }
+
+    setChanges();
+  }
+
+  setTrailer({_id, availability,can_stamp}){
+
+    const setChanges = () => {
+      this.selectedFleetElements = {...this.selectedFleetElements, trailer_id:  _id };
+      this.payload = { order_id: this.orderInfo._id, trailer_id:  _id};
+      this.updateDisableSelectBtn();  
+    }
+
+    if(!can_stamp && this.orderInfo.stamp){
+      this.showCantSelectElementToast();
+      return
+    }
+
+
+    
+    if(!availability && _id !== this.orderInfo.trailer._id){
+      this.alertService.create({
+        title: this.translateService.instant('history.alerts.trailer_unavailable.title'),
+        body: this.translateService.instant('history.alerts.trailer_unavailable.message'),
+        handlers: [
+          {
+            text: this.translateService.instant('Ok'),
+            color: '#ffbe00',
+            action: async () => {
+              setChanges();
+              this.alertService.close();
+            }
+          },
+          {
+            text: this.translateService.instant('orders.btn-cancel'),
+            color: '#ffbe00',
+            action: async () => {
+              this.alertService.close();
+            }
+          }
+        ]
+      });
+      return;
+    }
+
+    setChanges();
+  }
+
+  private updateDisableSelectBtn(): boolean {
+    const keys = { driver: 'carrier_id', truck: 'truck_id', trailer: 'trailer_id'};
+
+    const originalValue =  this.orderInfo[this.elementToChoose]?._id;
+    const selectedValue = this.selectedFleetElements[keys[this.elementToChoose]];
+
+    this.disableSelectBtn = originalValue == selectedValue;
+    return this.disableSelectBtn;
+  }
+
+  setOriginalValues(){
+    this.selectedFleetElements = {
+      carrier_id: this.orderInfo?.driver?._id,
+      truck_id: this.orderInfo?.truck?._id,
+      trailer_id: this.orderInfo?.trailer?._id,
     };
   }
 
-  setTruck(truck_id): void {
-    this.selectedTruckId = truck_id;
-    this.payload = {
-      order_id: this.orderInfo._id,
-      truck_id: truck_id,
-    };
+  private showCantSelectElementToast(){
+    this.alertService.create({
+      title: this.translateService.instant('home.manager.member-assignment.cant-select'),
+      body: this.translateService.instant('home.manager.member-assignment.info-missing'),
+      handlers: [
+        {
+          text: this.translateService.instant('Ok'),
+          color: '#ffbe00',
+          action: async () => {
+            this.alertService.close();
+          }
+        }
+      ]
+    });
   }
 
-  setTrailer(trailer_id): void {
-    this.selectedTrailerId = trailer_id;
-    this.payload = {
-      order_id: this.orderInfo._id,
-      trailer_id: trailer_id,
-    };
-  }
 }

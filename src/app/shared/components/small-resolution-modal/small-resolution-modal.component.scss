@@ -1,0 +1,71 @@
+@import '/src/styles.scss';
+
+.small-resolution-modal-wrapper{
+  position: fixed;
+  top: 0; bottom: 0; left: 0; right: 0;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  .small-resolution-modal{
+
+    @include fluid('padding', 365px,1024px, 20px, 50px );
+
+
+    background: #0B1117;
+    box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+    border-radius: 8px;
+    margin: 20px;
+    text-align: center;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .title{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .body{
+    font-size: 16px;
+    color: #ededed;
+    font-weight: 100;
+  }
+
+  .lottie-wrapper{
+    @include fluid('width', 365px,1024px, 300px, 400px );
+  }
+
+  .download-btns{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 50px;
+
+    >div{
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: middle;
+      height: 55px;
+
+      img{
+        object-fit: contain;
+        cursor: pointer;
+      }
+    }
+
+    .apple, .android{
+      padding: 7px;
+    }
+
+  }
+}

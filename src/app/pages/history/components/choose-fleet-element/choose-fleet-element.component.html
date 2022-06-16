@@ -12,14 +12,15 @@
   <div class="body">
 
     <!-- Drivers cards-->
-    <div class="cards-container" *ngIf="elementToChoose == 'drivers'">
+    <div class="cards-container" *ngIf="elementToChoose == 'driver'">
       <div class="card driver-info" *ngFor="let driver of fleetInfo.drivers">
-        <app-fleet-asset-card (click)="setDriver(driver._id)" [props]="{ type: 'drivers', picture: driver?.photo}">
+        <app-fleet-asset-card [ngClass]="{'disabled' :  !driver.can_stamp && orderInfo.stamp}" (click)="setDriver(driver)"
+          type="driver" [data]="driver">
           <div class="card-asset-container">
             <div class="title">
               {{driver?.nickname}}
             </div>
-            <div class="selected-dot" [ngClass]="{active: driver._id == selectedDriverId}"></div>
+            <div class="selected-dot" [ngClass]="{active: driver._id == selectedFleetElements.carrier_id}"></div>
 
           </div>
 
@@ -28,31 +29,33 @@
     </div>
 
     <!-- Trucks cards -->
-    <div class="cards-container" *ngIf="elementToChoose == 'trucks'">
+    <div class="cards-container" *ngIf="elementToChoose == 'truck'">
       <div class="card truck-info" *ngFor="let truck of fleetInfo.trucks">
-        <app-fleet-asset-card (click)="setTruck(truck._id)" [props]="{ type: 'trucks', picture: truck?.photo}">
+        <app-fleet-asset-card [ngClass]="{'disabled' :  !truck.can_stamp && orderInfo.stamp}" (click)="setTruck(truck)"
+          type="truck" [data]="truck">
           <div class="card-asset-container">
             <div class="info">
               <div class="title">
                 {{truck?.name}}
               </div>
               <div class="subtitle">
-                {{truck?.plates}}{{ truck?.color ? ' - ' + ('fleet.colors.'+ truck?.color | translate )  : ''}}
+                {{truck?.plates}}{{ truck?.color ? ' - ' + ('fleet.colors.'+ truck?.colorName | translate )  : ''}}
               </div>
               <div class="label">
                 {{truck?.year}}
               </div>
             </div>
-            <div class="selected-dot" [ngClass]="{ active: truck._id == selectedTruckId }"></div>
+            <div class="selected-dot" [ngClass]="{ active: truck._id == selectedFleetElements.truck_id }"></div>
           </div>
         </app-fleet-asset-card>
       </div>
     </div>
 
     <!-- Trailers cards-->
-    <div class="cards-container" *ngIf="elementToChoose == 'trailers'">
-      <div class="card truck-info" *ngFor="let trailer of fleetInfo.trailers">
-        <app-fleet-asset-card (click)="setTrailer(trailer._id)" [props]="{ type: 'trucks', picture: trailer?.photo}">
+    <div class="cards-container" *ngIf="elementToChoose == 'trailer'">
+      <div class="card truck-info" *ngFor="let trailer of filteredTrailers">
+        <app-fleet-asset-card [ngClass]="{'disabled' :  !trailer.can_stamp && orderInfo.stamp}" (click)="setTrailer(trailer)"
+          type="trailer" [data]="trailer">
           <div class="card-asset-container">
             <div class="info">
               <div class="title">
@@ -62,7 +65,7 @@
                 {{trailer?.trailer_number}}
               </div>
             </div>
-            <div class="selected-dot" [ngClass]="{active: trailer._id == selectedTrailerId }"></div>
+            <div class="selected-dot" [ngClass]="{active: trailer._id == selectedFleetElements.trailer_id }"></div>
           </div>
         </app-fleet-asset-card>
       </div>
@@ -70,10 +73,9 @@
 
   </div>
 
+    <button class="select-btn"  (click)="setChanges()" [disabled]="disableSelectBtn">
+      {{ 'history.history_detail.select' | translate}}
+    </button>
 
-  <bego-button (click)="setChanges()" [disabled]="true" 
-    class="btn-yellow select-fleet-members" 
-    [text]=" 'history.history_detail.select' | translate">
-  </bego-button>
 
 </div>
