@@ -319,10 +319,10 @@ export class FacturaOrderEditPageComponent implements OnInit {
         ofType("rfc:search"),
         map((search: string) => ({ type: "rfc" as const, search })),
         tap(() => {
-          this.vm.form.invoice.receiver.company = "";
-          this.vm.form.invoice.receiver.cfdi = "";
-          this.vm.form.invoice.receiver.tax_regime = "";
-          this.vm.form.invoice.receiver.address = {};
+          // this.vm.form.invoice.receiver.company = "";
+          // this.vm.form.invoice.receiver.cfdi = "";
+          // this.vm.form.invoice.receiver.tax_regime = "";
+          // this.vm.form.invoice.receiver.address = {};
         })
       ),
       this.formEmitter.pipe(
@@ -421,9 +421,11 @@ export class FacturaOrderEditPageComponent implements OnInit {
       fetch: this.submitFactura,
       afterSuccess: (data) => {},
       afterSuccessDelay: (data) => {
-        this.route.snapshot.paramMap.get("redirectTo")
-          && this.router.navigateByUrl(this.route.snapshot.paramMap.get("redirectTo"))
-          || this.router.navigate([routes.FACTURAS]);
+        (this.route.snapshot.paramMap.get("redirectTo") &&
+          this.router.navigateByUrl(
+            this.route.snapshot.paramMap.get("redirectTo")
+          )) ||
+          this.router.navigate([routes.FACTURAS]);
       },
       afterError: () => {
         // window.scrollTo({
@@ -614,7 +616,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
   showError = (error: any) => {
     error = error?.message || error?.error;
     // lang
-    error = error?.[this.translateService.currentLang]
+    error = error?.[this.translateService.currentLang];
 
     return Array.isArray(error)
       ? error.map((e) => e.error ?? e.message).join(",\n")
@@ -675,11 +677,13 @@ const fromOrder = (order) => {
   };
 
   // create keys if null
-  if (!order.invoice?.receiver?.address)
-    order.invoice.receiver.address = {
-      address: '',
-      place_id: '',
-    }
+  if (!newOrder.invoice?.receiver) newOrder.invoice.receiver = {};
+
+  if (!newOrder.invoice?.receiver?.address)
+    newOrder.invoice.receiver.address = {
+      address: "",
+      place_id: "",
+    };
 
   return newOrder;
 };
