@@ -81,7 +81,7 @@ import { BegoSliderDotsOpts } from "src/app/shared/components/bego-slider-dots/b
   templateUrl: "./factura-order-edit-page.component.html",
   styleUrls: ["./factura-edit-page.component.scss"],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FacturaOrderEditPageComponent implements OnInit {
   public routes: typeof routes = routes;
