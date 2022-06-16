@@ -1273,6 +1273,15 @@
         "info-missing": "In order to select it, add more information to the element from the edit fleet info page",
         "no-license-translate": "This driver requires to provide a license number. License number is required."
       }
+    },
+    "fleet-assignment": {
+      "time-date": "Assigned time & date",
+      "schedule": "Schedule to:",
+      "aprox-time": "Aprox Time Load",
+      "cp-order": "Bill of lading (BOL)",
+      "available-drivers": "Available drivers",
+      "available-trucks": "Available trucks",
+      "available-trailers": "Available trailers"
     }
   },
   "small-display-modal": {

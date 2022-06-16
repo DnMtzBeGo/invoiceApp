@@ -1273,6 +1273,15 @@
         "info-missing": "Para poder seleccionarlo, agrega más información del elemento desde la página de editar datos de flotilla",
         "no-license-translate": "Este driver require proporcionar un número de licencia. El número de licencia es requerido."
       }
+    },
+    "fleet-assignment": {
+      "time-date": "Hora y fecha asignadas",
+      "schedule": "Programar para:",
+      "aprox-time": "Tiempo de carga aproximado",
+      "cp-order": "¿Factura y carta porte?",
+      "available-drivers": "Conductores disponibles",
+      "available-trucks": "Camiones disponibles",
+      "available-trailers": "Cajas disponibles"
     }
   },
   "small-display-modal": {
