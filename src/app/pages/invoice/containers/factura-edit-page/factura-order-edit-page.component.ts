@@ -674,6 +674,13 @@ const fromOrder = (order) => {
     metodo_de_pago: order.pricing?.deferred_payment ? "PPD" : "PUE",
   };
 
+  // create keys if null
+  if (!order.invoice?.receiver?.address)
+    order.invoice.receiver.address = {
+      address: '',
+      place_id: '',
+    }
+
   return newOrder;
 };
 
