@@ -150,13 +150,13 @@
 
         <div class="assigned-date-time-row">
           <form [formGroup]="orderForm">
-            <p class="assigned-time-title">Assigned time & date</p>
+            <p class="assigned-time-title">{{ 'home.fleet-assignment.time-date' | translate }}</p>
             <mat-form-field class="input-calendar" appearance="fill">
               <mat-datepicker #picker></mat-datepicker>
               <div class="btn-input-calendar" (click)="picker.open()">
                 <div class="radio" [ngClass]="isDatesSelected ? 'active' : ''"></div>
                 <!-- <input type="radio" name="" id=""> -->
-                <p>Schedule to:</p>
+                <p>{{ 'home.fleet-assignment.schedule' | translate }}</p>
                 <input class="date-input" [ngClass]="isDatesSelected ? 'date-input-selected' : ''" matInput formControlName="datepickup" [matDatepicker]="picker" (dateChange)="addEvent('change', $event)" [min]="calendar" placeholder="MM/DD/YY">
                 <mat-datepicker #picker></mat-datepicker>
               </div>
@@ -176,12 +176,12 @@
             </div>
 
             <div class="eta-container">
-              <p>Aprox Time Load</p>
+              <p>{{ 'home.fleet-assignment.aprox-time' | translate }}</p>
               <p>{{aproxETA}} hrs</p>
             </div>
 
             <div class="cp-toggle-container">
-              <p>¿Factura y carta porte?</p>
+              <p>{{ 'home.fleet-assignment.cp-order' | translate }}</p>
               <mat-slide-toggle
                 (change)="orderWithCP()"
                 [checked]="userWantCP"
@@ -194,7 +194,7 @@
 
       <div class="fleet-info-container" *ngIf="isDatesSelected">
         <div class="fleet-drivers-row">
-          <p>Available drivers</p>
+          <p>{{ 'home.fleet-assignment.available-drivers' | translate }}</p>
           <div class="drivers-container">
             <ng-container *ngFor="let driver of drivers; let i = index">
               <app-circular-avatar
@@ -215,7 +215,7 @@
         </div>
 
         <div class="fleet-trucks-row">
-          <p>Trucks</p>
+          <p>{{ 'home.fleet-assignment.available-trucks' | translate }}</p>
           <div class="trucks-container">
             <ng-container *ngFor="let truck of trucks; let i = index">
               <app-circular-avatar 
@@ -235,7 +235,7 @@
         </div>
 
         <div class="fleet-trailers-row">
-          <p>Trailers</p>
+          <p>{{ 'home.fleet-assignment.available-trailers' | translate }}</p>
           <div class="trailers-container">
             <ng-container *ngFor="let trailer of trailers; let i = index">
               <app-circular-avatar
