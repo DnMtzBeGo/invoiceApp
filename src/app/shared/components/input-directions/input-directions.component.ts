@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 declare var google: any;
 
@@ -149,6 +150,7 @@ export class InputDirectionsComponent implements OnInit {
     private googlemaps: GoogleMapsService,
     private cdr: ChangeDetectorRef,
     private alertservice: AlertService,
+    private translateService: TranslateService,
     @Inject(HomeComponent) public parent: HomeComponent
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -374,6 +376,7 @@ export class InputDirectionsComponent implements OnInit {
     this.showNewOrderCard.emit();
     this.showMapPreview = true;
     this.showScroll = false;
+    this.canGoToSteps = false;
     if(this.changeLocations) {
       this.changeLocations = false;
       this.hideType = '';
@@ -493,10 +496,10 @@ export class InputDirectionsComponent implements OnInit {
   public selectMembersForOrder(member: any, typeMember: keyof this) {
     let obj = this[typeMember] as any;
     if(this.userWantCP && !member.can_stamp) {
-      return this.showAlert('No puedes seleccionar este miembro hasta que completes su información para carta porte.')
+      return this.showAlert(this.translateService.instant(`home.alerts.cant-cp-${String(typeMember)}`));
     }
 
-    if(!member.availability) this.showAlert('Este miembro no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad.')
+    if(!member.availability) this.showAlert(this.translateService.instant(`home.alerts.not-available-${String(typeMember)}`));
     member['isSelected'] = true;
     this.selectMembersToAssign[typeMember] = member;
     this.sendAssignedMermbers.emit({...this.selectMembersToAssign});
