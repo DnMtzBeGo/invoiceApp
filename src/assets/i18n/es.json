@@ -1282,6 +1282,14 @@
       "available-drivers": "Conductores disponibles",
       "available-trucks": "Camiones disponibles",
       "available-trailers": "Cajas disponibles"
+    },
+    "alerts": {
+      "cant-cp-drivers": "No puedes seleccionar este operador hasta que completes su información para carta porte.",
+      "cant-cp-trucks": "No puedes seleccionar este camión hasta que completes su información para carta porte.",
+      "cant-cp-trailers": "No puedes seleccionar esta caja hasta que completes su información para carta porte.",
+      "not-available-drivers": "Este operador no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad.",
+      "not-available-trucks": "Este camión no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad.",
+      "not-available-trailers": "Esta caja no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad."
     }
   },
   "small-display-modal": {
