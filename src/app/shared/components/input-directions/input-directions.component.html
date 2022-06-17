@@ -220,6 +220,7 @@
             <ng-container *ngFor="let truck of trucks; let i = index">
               <app-circular-avatar 
                 [data]="truck"
+                [userWantCP]="userWantCP"
                 fleetMember="trucks"
                 *ngIf="i < 4"
                 (click)="selectMembersForOrder(truck, 'trucks')">
@@ -240,6 +241,7 @@
             <ng-container *ngFor="let trailer of trailers; let i = index">
               <app-circular-avatar
                 [data]="trailer"
+                [userWantCP]="userWantCP"
                 fleetMember="trailers"
                 *ngIf="i < 4"
                 (click)="selectMembersForOrder(trailer, 'trailers')">
