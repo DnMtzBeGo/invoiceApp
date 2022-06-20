@@ -6,6 +6,7 @@
     class="chat-message--avatar"
     alt="Avatar"
     [title]="msg?.nickname"
+    (error)="onPicError(msg)"
   />
 
   <ul>

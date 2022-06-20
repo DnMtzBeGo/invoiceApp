@@ -8,13 +8,13 @@
   height: calc(100vh - 152px);
   display: flex;
   gap: 3em;
-
+  width: 100%;
   #chat {
     position: relative;
     display: grid;
     grid-template-rows: 1fr auto;
     inline-size:auto;
-
+    flex-grow: 1;
     &--messages {
       // overflow-y: scroll;
       // overflow-x: hidden;

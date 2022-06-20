@@ -14,4 +14,8 @@ export class ChatMessageComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  onPicError(event: any) {
+    event.avatar = '../../../../assets/images/avatar-outline.svg';
+  }
 }
