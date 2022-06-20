@@ -15,6 +15,10 @@
     justify-content: space-between;
     margin-bottom: 51px;
 
+    @media screen  and (min-width: 1280px){
+      min-width: 646px;
+    } 
+
 
     @media only screen and (max-width: 1115px) {
         flex-direction: column;

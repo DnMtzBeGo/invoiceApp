@@ -1,15 +1,14 @@
-<div class="history-wrapper" [ngClass]="{'no-orders': noOrders }">
-  <div class="container">
-    <div class="orders-list">
-      <app-orders-list (idEvent)="receiveId($event)" (noOrders)="noOrdersAction($event)" [statusListData]="statusList">
-      </app-orders-list>
+<bego-body [ngClass]="{'no-orders': noOrders }" >
+    <div class="container">
+      <div class="orders-list">
+        <app-orders-list (idEvent)="receiveId($event)" (noOrders)="noOrdersAction($event)" [statusListData]="statusList">
+        </app-orders-list>
+      </div>
+      <div class="order-detail">
+        <app-order-info [orderInfo]="orderInfo" [statusListData]="statusList">
+        </app-order-info>
+      </div>
+        <app-no-orders-yet [translations]=" ('history.no-orders-yet.' + currentTab) |  translate ">
+        </app-no-orders-yet>
     </div>
-    <div class="order-detail">
-      <app-order-info [orderInfo]="orderInfo" [statusListData]="statusList">
-      </app-order-info>
-    </div>
-      <app-no-orders-yet [translations]=" ('history.no-orders-yet.' + currentTab) |  translate ">
-      </app-no-orders-yet>
-  </div>
-
-</div>
+</bego-body>
