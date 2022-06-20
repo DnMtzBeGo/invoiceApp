@@ -6,9 +6,6 @@ export const environment = {
   production: false,
   version: 'v1.0.0',
   URL_BASE: 'https://begomx-develop.herokuapp.com/v1.0/',
-  // URL_BASE:"https://begomx-qa.herokuapp.com/v1.0/",
-  URL_DASHBOARD: "https://begomx-develop.herokuapp.com/v1.0/",
-  // URL_DASHBOARD: 'https://begomx-dashboard-dev.herokuapp.com/',
   website_url: 'https://bego.ai/'
 };
 
