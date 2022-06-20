@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChatMessageModule } from 'src/app/shared/components/chat-message/chat-message.module';
+import { BegoBodyModule } from 'src/app/shared/components/bego-body/bego-body.module';
 
 @NgModule({
   declarations: [ContactSupportComponent],
@@ -24,6 +25,7 @@ import { ChatMessageModule } from 'src/app/shared/components/chat-message/chat-m
     MatBadgeModule,
     MatTooltipModule,
     ChatMessageModule,
+    BegoBodyModule
   ],
 })
 export class ContactSupportModule {}
