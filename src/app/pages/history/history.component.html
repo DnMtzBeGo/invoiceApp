@@ -5,10 +5,11 @@
       </app-orders-list>
     </div>
     <div class="order-detail">
-      <app-order-info *ngIf="!noOrders" [orderInfo]="orderInfo" [statusListData]="statusList">
+      <app-order-info [orderInfo]="orderInfo" [statusListData]="statusList">
       </app-order-info>
     </div>
+      <app-no-orders-yet [translations]=" ('history.no-orders-yet.' + currentTab) |  translate ">
+      </app-no-orders-yet>
   </div>
-  <app-no-orders-yet *ngIf="noOrders" [translations]=" ('history.no-orders-yet.' + currentTab) |  translate ">
-  </app-no-orders-yet>
+
 </div>

@@ -519,9 +519,8 @@
       color: #494C50;
     }
   }
-}
 
-
-::ng-deep .mat-tab-header {
-  display: none!important;
+  ::ng-deep .mat-tab-header {
+    display: none!important;
+  }
 }
