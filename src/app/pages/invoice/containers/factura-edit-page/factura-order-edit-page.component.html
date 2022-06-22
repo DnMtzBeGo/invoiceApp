@@ -372,6 +372,7 @@
         <div class="grid" style="padding-top: 1rem">
           <bego-address-autocomplete
             [address]="vm.form?.invoice?.receiver?.address?.address"
+            [placeId]="vm.form?.invoice?.receiver?.address?.place_id"
             (addressChange)="vm.form.invoice.receiver.address.address = $event"
             (placeIdChange)="vm.form.invoice.receiver.address.place_id = $event"
             formFieldClass="bego-address-autocomplete brand-field-1"

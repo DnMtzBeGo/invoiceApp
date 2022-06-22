@@ -340,6 +340,25 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 }
 
+.cdk-overlay-backdrop.brand-dialog-map {
+  &.cdk-overlay-backdrop-showing {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+  }
+
+  & + * {
+    .mat-dialog-container {
+      padding: 0;
+      overflow: hidden;
+      background: #0a0f14;
+      box-shadow: inset 4px 4px 5px #1a1e24, inset -4px -4px 4px #050d14;
+      border-radius: 8px;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5))
+        drop-shadow(0px -8px 8px rgba(0, 0, 0, 0.5));
+    }
+  }
+}
+
 .brand-table-1 {
   width: 100%;
   box-shadow: none;

@@ -1299,5 +1299,18 @@
   "incompatible-browser-modal": {
     "incompatible-browser-modal-title": "Este navegador no es compatible con la app",
     "incompatible-browser-modal-body": "Para una mejor experiencia, usa otro navegador"
+  },
+  "pin": {
+    "title": "Confirmar dirección",
+    "btn": "Confirmar",
+    "placeholder": "Destino, Destino",
+    "address": {
+      "title": "Editar dirección",
+      "txt-address": "Dirección",
+      "placeholder-address": "Introduce destino",
+      "txt-pin": "Fijar la ubicación en el mapa",
+      "txt_invalidDriection": "Se más específico en su dirección.",
+      "txt-address-not-found": "No se encontró la dirección"
+    }
   }
 }

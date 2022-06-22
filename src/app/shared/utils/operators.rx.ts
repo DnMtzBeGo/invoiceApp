@@ -2,6 +2,8 @@ import {
   pipe,
   of,
   combineLatest as combineLatestRxjs,
+  EMPTY,
+  NEVER,
   asapScheduler,
 } from "rxjs";
 import {
@@ -11,6 +13,7 @@ import {
   map,
   startWith,
   tap,
+  catchError,
   observeOn,
   debounceTime,
 } from "rxjs/operators";
@@ -59,4 +62,13 @@ export const simpleFilters = (searchAction$) => (source$) => {
       );
     })
   );
+};
+
+export const or = (...observables) => {
+  if (observables.length === 0) return NEVER;
+  if (observables.length === 1) return observables[0];
+
+  return observables.reduce((obs, nextObs) => {
+    return obs.pipe(catchError(() => nextObs));
+  });
 };

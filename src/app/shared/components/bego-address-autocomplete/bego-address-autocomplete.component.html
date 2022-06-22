@@ -1,32 +1,44 @@
-<form action="" [formGroup]="autocompleteForm" class="bego-direction-wrapper" >
+<form action="" [formGroup]="autocompleteForm" class="bego-direction-wrapper">
   <mat-form-field [ngClass]="formFieldClass" [appearance]="formFieldAppearance">
     <mat-label>
-      {{ 'profile.account.txt_address' | translate }}
+      {{ "profile.account.txt_address" | translate }}
     </mat-label>
-    <input 
+    <input
       type="text"
       matInput
       #input
       spellcheck="false"
       value="queso"
       formControlName="address"
-      (keyup)="searchGoogleDirections($event)"
+      (input)="searchGoogleDirections($event)"
       [matAutocomplete]="auto"
-      [readonly]="readonly">
-    <mat-autocomplete 
-      #auto="matAutocomplete" 
+      [readonly]="readonly"
+    />
+    <mat-autocomplete
+      #auto="matAutocomplete"
       (optionSelected)="selectOption($event)"
-      (closed)="closeAutocomplete()">
-        <mat-option 
-          *ngFor="let prediction of predictions "
-          [value]="prediction.description">
-            {{ prediction.description }}
-        </mat-option>
+      (closed)="closeAutocomplete()"
+    >
+      <mat-option
+        value=""
+        class="bego-address-autocomplete-option-pin"
+        disabled
+        (click)="setLocationPin(placeId)"
+      >
+        <img src="./../../../assets/images/maps/pin.svg" alt="Pin Icon" />
+        {{ "pin.address.txt-pin" | translate }}
+      </mat-option>
 
-        <mat-option *ngIf="!predictions" [disabled]="true">
-          {{ 'profile.edit.txt_address_not_found' | translate }}
-        </mat-option>
+      <mat-option
+        *ngFor="let prediction of predictions"
+        [value]="prediction.description"
+      >
+        {{ prediction.description }}
+      </mat-option>
+
+      <mat-option *ngIf="!predictions" [disabled]="true">
+        {{ "profile.edit.txt_address_not_found" | translate }}
+      </mat-option>
     </mat-autocomplete>
   </mat-form-field>
 </form>
-

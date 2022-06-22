@@ -1,0 +1,141 @@
+.app-map-pin {
+  width: 70vw;
+  max-width: 900px;
+  height: 60vh;
+  max-height: 700px;
+  // overflow: hidden;
+  transition: filter 0.7s ease-in-out;
+  background: url("../../../../assets/images/maps/map-background-horizontal.png")
+    center/cover;
+  filter: blur(4px) opacity(0.9);
+
+  &.loaded {
+    filter: blur(0) opacity(1);
+  }
+
+  .pin-map {
+    height: 100%;
+    visibility: hidden;
+    transition: all 0.7s ease-in-out;
+
+    &.loaded {
+      visibility: visible;
+    }
+  }
+
+  #pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 17px;
+    height: 40px;
+    transform: translate(-50%, -40px);
+    background: url("../../../../assets/images/maps/pin.svg") no-repeat center
+      center;
+    background-size: 17px 40px;
+    z-index: 1;
+    pointer-events: none;
+    transition: transform 0.03s ease-in-out;
+
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      opacity: 0;
+      width: 3px;
+      height: 3px;
+      margin-left: -1px;
+      margin-bottom: 1px;
+      border-radius: 50%;
+      background-color: #ffbe00;
+    }
+
+    &.pin-up {
+      transform: translate(-50%, -70px) !important;
+      &:before {
+        margin-bottom: -31px !important;
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  #reset {
+    position: absolute;
+    bottom: -150px;
+    right: 32px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+
+    i {
+      font-size: 2rem;
+      color: #ededed;
+    }
+
+    &.reset-up {
+      bottom: 32px;
+    }
+  }
+
+  .map-footer-container {
+    position: absolute;
+    bottom: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: #0a0f14;
+    box-shadow: inset 4px 4px 5px #1a1e24, inset -4px -4px 4px #050d14;
+    border-radius: 8px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5))
+      drop-shadow(0px -8px 8px rgba(0, 0, 0, 0.5));
+    transition: all 0.5s ease-in-out;
+
+    .map-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      // margin: 21px 0 33px;
+
+      div {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        img {
+          &:first-child {
+            margin-right: 9px;
+          }
+          &:last-child {
+            margin-left: 9px;
+          }
+        }
+        p {
+          font-size: 0.813em;
+          color: #c1c7d0;
+          font-weight: 500;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          margin: 0;
+          max-width: 270px;
+
+          span {
+            display: block;
+            color: #89898a;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 270px;
+          }
+        }
+      }
+    }
+
+    &.map-footer-up {
+      bottom: 32px;
+    }
+  }
+}
