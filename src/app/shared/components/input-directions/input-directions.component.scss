@@ -391,6 +391,21 @@ section {
         align-items: center;
         padding: 15px 0;
         cursor: pointer;
+
+        .list-icon-pin {
+          font-size: 22px;
+          height: 18px;
+          width: 25px;
+          background: url('./../../../../assets/images/maps/pin.svg') 50% 50% / contain no-repeat;
+          margin-right: 16px;
+        }
+
+        .list-map {
+            font-family: Avenir;
+            font-weight: 500;
+            font-size: 14px;
+            color: $color-font-grey;
+          }
     }
 
     .list-icon-address {

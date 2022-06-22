@@ -1299,5 +1299,18 @@
   "incompatible-browser-modal": {
     "incompatible-browser-modal-title": "This browser is not compatible app",
     "incompatible-browser-modal-body": "For a better experience, use another browser"
+  },
+  "pin": {
+    "title": "Confirm your address",
+    "btn": "Set Destination",
+    "placeholder": "Destination, Destination",
+    "address": {
+      "title": "Edit Address",
+      "txt-address": "Address",
+      "placeholder-address": "Enter destination",
+      "txt-pin": "Set location on map",
+      "txt_invalidDriection": "Please be more specific on your address.",
+      "txt-address-not-found": "No address found"
+    }
   }
 }

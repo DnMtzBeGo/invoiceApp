@@ -578,7 +578,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
   submitFactura = ([mode, saveMode, factura]) => {
     factura = clone(factura);
 
-    const data = { orderInfo: omitEmpty(toOrder(factura)) };
+    const data = { orderInfo: toOrder(factura) };
 
     return from(
       this.apiRestService.apiRest(
