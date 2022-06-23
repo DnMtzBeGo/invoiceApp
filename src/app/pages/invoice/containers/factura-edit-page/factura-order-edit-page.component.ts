@@ -3,27 +3,12 @@ import {
   OnInit,
   ViewEncapsulation,
   ChangeDetectionStrategy,
-  ViewChild,
 } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { of, timer, Subject, merge, from, Observable, forkJoin } from "rxjs";
 import {
-  of,
-  timer,
-  Subject,
-  merge,
-  from,
-  combineLatest,
-  NEVER,
-  Observable,
-  asapScheduler,
-  animationFrameScheduler,
-} from "rxjs";
-import {
-  observeOn,
   mapTo,
   tap,
   filter,
-  debounceTime,
   switchMap,
   share,
   map,
@@ -33,47 +18,17 @@ import {
   startWith,
   pluck,
   distinctUntilChanged,
-  take,
-  scan,
-  catchError,
   repeatWhen,
 } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, ActivatedRoute } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
-import { environment } from "src/environments/environment";
-import omitEmpty from "omit-empty";
 import { AuthService } from "src/app/shared/services/auth.service";
-import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, simpleFilters, oof } from "src/app/shared/utils/operators.rx";
 import { makeRequestStream } from "src/app/shared/utils/http.rx";
-import {
-  clone,
-  arrayToObject,
-  object_compare,
-} from "src/app/shared/utils/object";
+import { clone } from "src/app/shared/utils/object";
 import { routes } from "../../consts";
-import {
-  calcImporte,
-  calcConcepto,
-  calcSubtotal,
-  calcDescuentos,
-  calcTotal,
-  resolveImpuesto,
-  resolveImpuestoLabel,
-  resolveImpuestosGroup,
-  fromFactura,
-  toFactura,
-  fromFacturaCopy,
-  validRFC,
-  getImpuestoDescripcion,
-  previewFactura,
-  validators,
-  facturaStatus,
-  optimizeInvoiceCatalog,
-} from "./factura.core";
-import { ActionConfirmationComponent } from "../../modals";
 import { BegoSliderDotsOpts } from "src/app/shared/components/bego-slider-dots/bego-slider-dots.component";
 
 @Component({
@@ -85,8 +40,6 @@ import { BegoSliderDotsOpts } from "src/app/shared/components/bego-slider-dots/b
 })
 export class FacturaOrderEditPageComponent implements OnInit {
   public routes: typeof routes = routes;
-  public URL_BASE = environment.URL_BASE;
-  public token = localStorage.getItem("token") || "";
 
   $rx = reactiveComponent(this);
 
@@ -145,11 +98,12 @@ export class FacturaOrderEditPageComponent implements OnInit {
       tipos_de_comprobante?: unknown[];
       tipos_de_relacion?: unknown[];
       usos_cfdi?: unknown[];
+      // carta porte
+      tipos_de_embalaje?: unknown[];
     };
     helpTooltips?: any;
-    facturaStatus?: unknown;
     searchAction?: {
-      type: "rfc" | "nombre" | "cve_sat";
+      type: "rfc" | "nombre" | "cve_sat" | "cve_material";
       search: string;
       rfc?: string;
     };
@@ -157,11 +111,10 @@ export class FacturaOrderEditPageComponent implements OnInit {
       rfc?: unknown[];
       nombre?: unknown[];
       cve_sat?: unknown[];
+      cve_material?: unknown[];
     };
     tipoPersona?: "fisica" | "moral";
     searchLoading?: boolean;
-    direcciones?: unknown[];
-    direccion?: any;
     estados?: unknown[];
     municipios?: unknown[];
     colonias?: unknown[];
@@ -202,8 +155,6 @@ export class FacturaOrderEditPageComponent implements OnInit {
         | "autocomplete:cancel"
         | "rfc:set"
         | "catalogos:search"
-        | "direcciones:reload"
-        | "direccion:select"
         | "pais:select"
         | "estado:select"
         | "cp:input"
@@ -235,15 +186,9 @@ export class FacturaOrderEditPageComponent implements OnInit {
     // },
   };
 
-  // FORM CONTORLS
-  valor_unitario = new FormControl(null);
-  cantidad = new FormControl(null);
-  descuento = new FormControl(null);
-
   constructor(
     private router: Router,
     private apiRestService: AuthService,
-    private notificationsService: NotificationsService,
     private route: ActivatedRoute,
     private matDialog: MatDialog,
     private translateService: TranslateService
@@ -252,7 +197,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
   ngOnInit(): void {
     //TAB
     const tab$ = merge(
-      of("receptor"),
+      of(this.route.snapshot.queryParams.tab ?? "receptor"),
       (this.formEmitter.pipe(ofType("tab")) as Observable<string>).pipe(
         distinctUntilChanged(),
         map((tab) => {
@@ -332,6 +277,10 @@ export class FacturaOrderEditPageComponent implements OnInit {
       this.formEmitter.pipe(
         ofType("conceptos:search_cve"),
         map((search: string) => ({ type: "cve_sat" as const, search }))
+      ),
+      this.formEmitter.pipe(
+        ofType("cargo:search_material"),
+        map((search: string) => ({ type: "cve_material" as const, search }))
       )
     ).pipe(share());
 
@@ -382,33 +331,6 @@ export class FacturaOrderEditPageComponent implements OnInit {
       map(getTipoPersona)
     );
 
-    //DIRECCION
-    const direcciones$ = receptorRFC$.pipe(
-      // tap((rfc) => {
-      //   this.manageDirecciones({
-      //     model: "receptor",
-      //     rfc,
-      //   });
-      // }),
-      switchMap((rfc) =>
-        this.fetchDirecciones(rfc).pipe(
-          repeatWhen(() => this.formEmitter.pipe(ofType("direcciones:reload")))
-        )
-      ),
-      share()
-    );
-
-    const direccion$ = merge(
-      form$.pipe(pluck("invoice", "receiver", "address")),
-      this.formEmitter.pipe(
-        ofType("direccion:select"),
-        map(
-          (direccion: object) =>
-            (this.vm.form.invoice.receiver.address = clone(direccion))
-        )
-      )
-    );
-
     //FORM SUBMIT
     const formMode$ = this.formEmitter.pipe(ofType("submit"), pluck("1"));
 
@@ -445,8 +367,6 @@ export class FacturaOrderEditPageComponent implements OnInit {
       receptorSearch: receptorSearch$,
       tipoPersona: tipoPersona$,
       searchLoading: searchLoading$,
-      direcciones: direcciones$,
-      direccion: direccion$,
       formMode: formMode$,
       formLoading: formLoading$,
       formError: formError$,
@@ -509,43 +429,35 @@ export class FacturaOrderEditPageComponent implements OnInit {
   }
 
   fetchCatalogosSAT() {
-    // h7xma29J$
-    // AUZM911206E49
-    return from(
-      this.apiRestService.apiRestGet("invoice/catalogs/invoice")
-    ).pipe(mergeAll(), pluck("result"), map(optimizeInvoiceCatalog));
+    return forkJoin(
+      // facturación
+      from(this.apiRestService.apiRestGet("invoice/catalogs/invoice")).pipe(
+        mergeAll(),
+        pluck("result")
+      ),
+      // carta porte
+      from(
+        this.apiRestService.apiRestGet("invoice/catalogs/consignment-note")
+      ).pipe(mergeAll(), pluck("result"))
+    ).pipe(map((catalogs) => Object.assign.apply(null, catalogs)));
   }
 
   fetchHelpTooltips() {
     return oof(this.translateService.instant("invoice.tooltips"));
   }
 
-  fetchLugaresExpedicion = (rfc: string) => {
-    return rfc == void 0 || rfc === "" || !validRFC(rfc)
-      ? of([])
-      : from(
-          this.apiRestService.apiRest(
-            JSON.stringify({
-              rfc,
-            }),
-            "invoice/expedition-places",
-            {
-              loader: "false",
-            }
-          )
-        ).pipe(mergeAll(), pluck("result"), startWith(null));
-  };
-
   searchReceptor(search) {
     const endpoints = {
       rfc: "invoice/receivers",
       nombre: "invoice/receivers/by-name",
       cve_sat: "invoice/catalogs/consignment-note/productos-y-servicios",
+      cve_material: "invoice/catalogs/consignment-note/material-peligroso",
     };
     const keys = {
       rfc: "rfc",
       nombre: "name",
       cve_sat: "term",
+      cve_material: "term",
     };
 
     return from(
@@ -560,20 +472,6 @@ export class FacturaOrderEditPageComponent implements OnInit {
       )
     ).pipe(mergeAll(), pluck("result"));
   }
-
-  fetchDirecciones = (rfc?) => {
-    return rfc == void 0 || rfc === "" || !validRFC(rfc)
-      ? of([])
-      : from(
-          this.apiRestService.apiRest(
-            JSON.stringify({
-              rfc,
-            }),
-            "invoice/branch-offices",
-            { loader: "false" }
-          )
-        ).pipe(mergeAll(), pluck("result"), startWith(null));
-  };
 
   submitFactura = ([mode, saveMode, factura]) => {
     factura = clone(factura);
@@ -600,14 +498,9 @@ export class FacturaOrderEditPageComponent implements OnInit {
   // MODALS
 
   // FORMS
-  resetConceptoControls() {
-    this.valor_unitario.reset();
-    this.cantidad.reset();
-    this.descuento.reset();
-  }
 
   // UTILS
-  clone = clone;
+  p = orderPermissions;
 
   log = (...args) => {
     console.log(...args);
@@ -622,52 +515,6 @@ export class FacturaOrderEditPageComponent implements OnInit {
       ? error.map((e) => e.error ?? e.message).join(",\n")
       : error;
   };
-
-  compareImpuesto = (a, b) => {
-    return a != void 0 && b != void 0 && a.descripcion === b.descripcion;
-  };
-
-  compareId = (a, b) => {
-    return a != void 0 && b != void 0 && a._id === b._id;
-  };
-
-  validRFC = validRFC;
-
-  getImpuestoDescripcion = getImpuestoDescripcion;
-
-  calcImporte = calcImporte;
-
-  calcConcepto = calcConcepto;
-
-  calcSubtotal = calcSubtotal;
-
-  calcDescuentos = calcDescuentos;
-
-  calcTotal = calcTotal;
-
-  resolveImpuesto = resolveImpuesto;
-
-  resolveImpuestoLabel = resolveImpuestoLabel;
-
-  resolveImpuestosGroup = resolveImpuestosGroup;
-
-  p = orderPermissions;
-
-  Boolean = Boolean;
-
-  JSON = window.JSON;
-
-  toFactura = toFactura;
-
-  resolveUrl = (commands: any[]) => {
-    return this.router.serializeUrl(this.router.createUrlTree(commands));
-  };
-
-  findById = (_id: string) => (item) => item._id === _id;
-
-  v = validators;
-
-  facturaStatus = facturaStatus;
 }
 
 const fromOrder = (order) => {
@@ -706,5 +553,6 @@ const orderPermissions = (order) => {
   return {
     edit,
     readonly: !edit,
+    hazardous: order?.cargo?.type === "hazardous",
   };
 };
