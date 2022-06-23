@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     // this.showNewOrderCard();
-    this.profileinfoService.getProfilePic();
+    // this.profileinfoService.getProfilePic();
   }
 
   ngOnDestroy(): void {
