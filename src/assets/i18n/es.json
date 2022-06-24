@@ -1248,6 +1248,10 @@
         "serie":"Serie\nExpresa letra o conjunto de letras para tener un control interno de los CFDI.",
         "precio": {
             "subtotal": "Escribe el precio total del servicio (Antes de impuestos)."
+        },
+        "commodity": {
+          "cve_material_peligroso": "Clave Material Peligroso\nIndica la clave del tipo de material peligroso que se transporta.",
+          "embalaje": "Embalaje\nIndica la clave del tipo de embalaje que se requiere para transportar el material o residuo peligroso."
         }
     }
   },

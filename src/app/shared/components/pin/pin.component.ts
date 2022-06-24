@@ -7,33 +7,23 @@ import {
   ViewEncapsulation,
   ChangeDetectionStrategy,
 } from "@angular/core";
-import { FormControl } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { TranslateService } from "@ngx-translate/core";
 import {
-  Observable,
   from,
   of,
-  throwError,
   combineLatest,
   merge,
   timer,
-  concat,
   fromEvent,
   Subject,
   NEVER,
-  EMPTY,
-  asapScheduler,
 } from "rxjs";
 import {
   mergeAll,
-  pluck,
   catchError,
-  distinctUntilChanged,
-  skip,
   delay,
   throttleTime,
-  debounceTime,
   share,
   switchMap,
   tap,
@@ -41,30 +31,22 @@ import {
   mapTo,
   filter,
   first,
-  takeUntil,
   withLatestFrom,
-  skipUntil,
-  ignoreElements,
-  scan,
   exhaustMap,
   startWith,
   shareReplay,
-  endWith,
-  observeOn,
 } from "rxjs/operators";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
-import { ofType, oof, or } from "src/app/shared/utils/operators.rx";
-import { object_compare, clone } from "src/app/shared/utils/object";
+import { ofType, or } from "src/app/shared/utils/operators.rx";
+import { clone } from "src/app/shared/utils/object";
 import { makeRequestStream } from "src/app/shared/utils/http.rx";
 import {
   fromGpsPosition,
   fromMapEvent as fromMapEvent1,
   matchGeocodes,
-  fromGpsPermissions,
   fromGpsWatchPermissions,
 } from "src/app/shared/utils/maps.rx";
 import { AuthService } from "src/app/shared/services/auth.service";
-import { NotificationsService } from "src/app/shared/services/notifications.service";
 
 declare var google;
 
@@ -109,7 +91,6 @@ export class PinComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private dialogRef: MatDialogRef<PinComponent>,
-    private notificationsService: NotificationsService,
     private apiRestService: AuthService,
     private translateService: TranslateService
   ) {}
@@ -401,10 +382,4 @@ export class PinComponent implements OnInit {
 
   splitGoogleAddressSecond = (val) =>
     val == void 0 || val === "" ? "—" : val.substring(val.indexOf(",") + 1);
-
-  showError = (error: any) => {
-    error = error?.message || error?.error;
-
-    return Array.isArray(error) ? error.map((e) => e.error).join(",\n") : error;
-  };
 }

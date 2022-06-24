@@ -292,7 +292,7 @@ export class FacturaEditPageComponent implements OnInit {
   ngOnInit(): void {
     //TAB
     const tab$ = merge(
-      of("receptor"),
+      of(this.route.snapshot.queryParams.tab ?? "receptor"),
       (this.formEmitter.pipe(ofType("tab")) as Observable<string>).pipe(
         distinctUntilChanged(),
         map((tab) => {
