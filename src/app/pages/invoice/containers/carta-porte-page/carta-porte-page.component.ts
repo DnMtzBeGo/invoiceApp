@@ -8,6 +8,7 @@ import { InfoModalComponent } from "../../modals/info-modal/info-modal.component
 import { CartaPorteInfoService } from "../../components/invoice/carta-porte/services/carta-porte-info.service";
 import { SubtiposRemolques } from "../../models/invoice/carta-porte/subtipos-remolques";
 import { facturaPermissions } from "../factura-edit-page/factura.core";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 @Component({
   selector: "app-carta-porte-page",
   templateUrl: "./carta-porte-page.component.html",
@@ -25,7 +26,7 @@ export class CartaPortePageComponent implements OnInit {
   public ubicacionesInfo: any;
   public mercanciasInfo: any;
   public figuraTransporteInfo: any;
-  public cartaPorteEnabled: boolean = false;
+  public cartaPorteEnabled = [];
   isLinear = false;
   constructor(
     public cartaPorteInfoService: CartaPorteInfoService,
@@ -61,6 +62,8 @@ export class CartaPortePageComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.facturaInfo?.currentValue?.carta_porte) {
+      this.cartaPorteEnabled.push('carta_porte');
+      this.facturaInfo.complementos = this.cartaPorteEnabled;
       this.facturaInfo = changes.facturaInfo?.currentValue;
       const { carta_porte } = this.facturaInfo;
       this.transporteInfo = carta_porte;
@@ -69,6 +72,14 @@ export class CartaPortePageComponent implements OnInit {
       this.mercanciasInfo = carta_porte.mercancias;
     }
 
+  }
+
+  public cartaPorteStatus(event: MatSlideToggleChange) {
+    if(event.checked)
+      this.cartaPorteEnabled.push('carta_porte');
+    else
+      this.cartaPorteEnabled = [];
+    this.facturaInfo.complementos = this.cartaPorteEnabled;
   }
 
   async gatherInfo(): Promise<void> {
