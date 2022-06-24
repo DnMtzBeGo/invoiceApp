@@ -18,7 +18,6 @@ import {
   startWith,
   pluck,
   distinctUntilChanged,
-  repeatWhen,
 } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -115,30 +114,6 @@ export class FacturaOrderEditPageComponent implements OnInit {
     };
     tipoPersona?: "fisica" | "moral";
     searchLoading?: boolean;
-    estados?: unknown[];
-    municipios?: unknown[];
-    colonias?: unknown[];
-    tipo_de_comprobante?: any;
-    impuesto?: any;
-    concepto?: {
-      clave: string;
-      nombre: string;
-      cve_sat: string;
-      unidad_de_medida: string;
-      cantidad: number;
-      valor_unitario: number;
-      descuento: number;
-      descripcion: string;
-      impuestos: {
-        cve_sat: string;
-        tipo_factor: string;
-        es_retencion: boolean;
-        tasa_cuota: number;
-      }[];
-      _edit?: number;
-    };
-    conceptos?: unknown[];
-    uuid?: string;
     formMode?: any;
     formLoading?: boolean;
     formError?: any;
@@ -154,19 +129,8 @@ export class FacturaOrderEditPageComponent implements OnInit {
         | "nombre:search"
         | "autocomplete:cancel"
         | "rfc:set"
-        | "catalogos:search"
-        | "pais:select"
-        | "estado:select"
-        | "cp:input"
-        | "tipo_de_comprobante:select"
-        | "impuestos:add"
-        | "impuestos:remove"
         | "conceptos:search_cve"
-        | "conceptos:add"
-        | "conceptos:edit"
-        | "concepto:set"
-        | "conceptos:remove"
-        | "openCartaporte"
+        | "cargo:search_material"
         | "submit"
       ),
       unknown

@@ -3,7 +3,6 @@ import {
   of,
   combineLatest as combineLatestRxjs,
   EMPTY,
-  NEVER,
   asapScheduler,
 } from "rxjs";
 import {
@@ -65,8 +64,7 @@ export const simpleFilters = (searchAction$) => (source$) => {
 };
 
 export const or = (...observables) => {
-  if (observables.length === 0) return NEVER;
-  if (observables.length === 1) return observables[0];
+  if (observables.length === 0) return EMPTY;
 
   return observables.reduce((obs, nextObs) => {
     return obs.pipe(catchError(() => nextObs));
