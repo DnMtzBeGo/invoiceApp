@@ -274,11 +274,8 @@ export class MapComponent implements OnInit {
     bounds.extend(origin);
     bounds.extend(destination);
     bounds.extend(routeCenter);
-    if(this.typeMap === 'draft') {
-      this.map.fitBounds(bounds, { bottom: 0, top: 0, left: 0, right: 0 });
-    } else {
-      this.map.fitBounds(bounds, { bottom: 60, top: 0, left: 0, right: 0 });
-    }
+
+    this.map.fitBounds(bounds, { bottom: 50, top: 0, left: 0, right: 0 });
   }
 
   displayRoute(startMarker: any, endMarker: any) {

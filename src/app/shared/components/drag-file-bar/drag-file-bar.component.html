@@ -4,6 +4,7 @@
   class="upload-file-bar"
   [ngClass]="!displayFileLoaded || !this.fileInfo ? '' : 'hidden'"
   style="cursor: pointer"
+  *ngIf="!awsFile"
 >
   <div #elementContent>
     <ng-content></ng-content>
@@ -21,18 +22,18 @@
   </ng-container>
 </div>
 
-<div *ngIf="displayFileLoaded && this.fileInfo" class="file-loaded">
+<div *ngIf="(displayFileLoaded && this.fileInfo) || awsFile" class="file-loaded">
   <div class="icon icon-close close-btn" (click)="removeFile()"></div>
   <div>
     <div class="doc-icon">
-      {{ fileInfo?.extension }}
+      {{ fileInfo ? fileInfo?.extension : awsFileExtension }}
     </div>
   </div>
   <div class="file-details">
     <div class="file-name">
-      {{ fileInfo?.text }}
+      {{ fileInfo ? fileInfo?.text : awsFileName }}
     </div>
-    <div class="subtitle">{{ formattedDateUpdated }} | {{ fileInfo.formattedSize }}</div>
+   <!--  <div class="subtitle">{{ formattedDateUpdated }} | {{ fileInfo.formattedSize }}</div> -->
   </div>
 </div>
 

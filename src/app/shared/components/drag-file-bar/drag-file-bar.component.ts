@@ -28,7 +28,7 @@ export class DragFileBarComponent implements OnInit {
   @Output() deleteFile = new EventEmitter<void>();
 
   @Input() disabled?: boolean;
-
+  @Input() fileFromAWS: object = {};
   //used to know if to show loaded file once it's loaded
   @Input() displayFileLoaded: boolean = false;
 
@@ -36,7 +36,9 @@ export class DragFileBarComponent implements OnInit {
   file?: File;
   fileInfo?: FileInfo;
   formattedDateUpdated?: string;
-
+  awsFile: boolean = false;
+  awsFileName: string = '';
+  awsFileExtension: string = '';
   dragListeners = {
     dragOverEvent: this.dragOverEvent.bind(this),
     dragLeaveEvent: this.dragLeaveEvent.bind(this),
@@ -50,7 +52,15 @@ export class DragFileBarComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('DESDE LOS CHANGES DE DRAG FILES', changes);
     this.onChanges.next(changes);
+    if(changes.fileFromAWS.currentValue.hasOwnProperty('url')) {
+      this.awsFile = true;
+      let result = this.fileFromAWS['url'].split('/');
+      this.awsFileName = result[result.length - 1];
+      let resExt = this.fileFromAWS['url'].split('.');
+      this.awsFileExtension = resExt[resExt.length - 1];
+    }
   }
 
   clickFileInputElement() {

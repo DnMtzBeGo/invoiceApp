@@ -80,9 +80,9 @@ export class Step4Component implements OnInit {
         this.events = moment(changes.draftData.currentValue.dropoff.startDate).format(
           "MMMM DD YYYY"
         );
-        this.step4Form
+        /* this.step4Form
           .get("extraNotes")!
-          .setValue(changes.draftData.currentValue.dropoff.extra_notes);
+          .setValue(changes.draftData.currentValue.dropoff.extra_notes); */
       } else {
         this.step4Form.controls.timestartdropoff.setValue("");
         this.step4Form.controls.timeenddropoff.setValue("");

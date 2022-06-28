@@ -33,11 +33,11 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pages/faq/faq.module").then((m) => m.FaqModule),
   },
-  /* {
+  {
     path: 'drafts',
     loadChildren: () =>
       import('./pages/drafts/drafts.module').then((m) => m.DraftsModule)
-  }, */
+  },
   {
     path: "profile",
     loadChildren: () =>

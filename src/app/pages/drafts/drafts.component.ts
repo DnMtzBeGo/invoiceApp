@@ -45,8 +45,14 @@ export class DraftsComponent implements OnInit {
   }
 
   async getDrafts() {
+    let searchOptions: any = {
+      pagination: {
+          page: 1,
+          limit: 2000
+      }
+    };
     this.loader = true;
-    (await this.auth.apiRest('', 'orders/get_drafts')).subscribe(
+    (await this.auth.apiRest(JSON.stringify(searchOptions), 'orders/get_drafts')).subscribe(
       async (res) => {
         console.log(res.result)
         if(res.result.length > 0) {

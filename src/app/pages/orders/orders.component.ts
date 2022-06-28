@@ -73,6 +73,8 @@ export class OrdersComponent implements OnInit {
   validateRoute: boolean = false;
   progress: number = 0;
   hazardousFile?: File;
+  hazardousFileAWS: object = {};
+  catalogsDescription: object = {};
 
   public orderData: Order = {
     reference_number: "",
@@ -230,6 +232,9 @@ export class OrdersComponent implements OnInit {
     }
     if (changes.draftData && changes.draftData.currentValue) {
       this.getHazardous(changes.draftData.currentValue._id);
+      if(changes.draftData.currentValue.hasOwnProperty('stamp') && changes.draftData.currentValue.stamp) {
+        this.getCatalogsDescription(changes.draftData.currentValue._id);
+      }
     }
     // this.locations = {
     //   dropoff: "Perif. Blvd. Manuel Ávila Camacho 3130, Valle Dorado, 54020 Tlalnepantla de Baz, Méx., Mexico",
@@ -521,11 +526,25 @@ export class OrdersComponent implements OnInit {
     (
       await this.auth.apiRest(JSON.stringify(dataRequest), "orders/get_hazardous")
     ).subscribe(
-      async ({ result }) => {},
+      async ({ result }) => {
+        this.hazardousFileAWS = result;
+      },
       async (res) => {
         console.log(res);
       }
     );
+  }
+
+  private async getCatalogsDescription(id) {
+    let requestCatalogsDescription = {
+      order_id: id
+    };
+
+    (await this.auth.apiRest(JSON.stringify(requestCatalogsDescription), 'orders/get_order_catalogs')).subscribe( res => {
+      this.catalogsDescription = res.result.cargo;
+    }, error => {
+      console.log('Something went wrong', error.error);
+    })
   }
 
   convertDateMs(date: Date, time: Date) {
@@ -570,7 +589,7 @@ export class OrdersComponent implements OnInit {
         if (this.hazardousFile) {
           const formData = new FormData();
           formData.append("order_id", result._id);
-          // formData.append('file', this.hazardousFile[0]);
+          formData.append('file', this.hazardousFile[0]);
           (
             await this.auth.uploadFilesSerivce(formData, "orders/upload_hazardous")
           ).subscribe(async (data) => {

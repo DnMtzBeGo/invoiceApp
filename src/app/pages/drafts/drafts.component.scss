@@ -21,6 +21,14 @@ section {
         width: 100%;
         height: calc(100vh - 106px);
         position: relative;
+
+        bego-button {
+					position: absolute;
+					bottom: 15px;
+					width: 50%;
+					display: flex;
+					right: calc(10vw);
+        }
     }
 
     .no-draft-container {

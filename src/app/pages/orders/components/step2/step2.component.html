@@ -91,10 +91,14 @@
             formControlName="cargoType"
             (change)="setCargoType($event)"
           >
-            <mat-button-toggle value="general">
+            <mat-button-toggle 
+              [checked]="cargoType === 'general'"
+              value="general">
               {{ "orders.btn-general" | translate }}
             </mat-button-toggle>
-            <mat-button-toggle value="hazardous">
+            <mat-button-toggle 
+              [checked]="cargoType === 'hazardous'"
+              value="hazardous">
               {{ "orders.btn-hazardous" | translate }}
             </mat-button-toggle>
           </mat-button-toggle-group>
@@ -142,7 +146,7 @@
               </mat-option>
             </mat-select>
 
-            <mat-form-field class="input-textarea" appearance="fill">
+            <!-- <mat-form-field class="input-textarea" appearance="fill">
               <textarea
                 matInput
                 rows="1"
@@ -150,7 +154,7 @@
                 [placeholder]="'orders.placeholder-un' | translate"
               >
               </textarea>
-            </mat-form-field>
+            </mat-form-field> -->
           </div>
 
           <div>
@@ -160,6 +164,7 @@
               (deleteFile)="dropHazardousFile()"
               [disabled]="hazardousType == 'select-catergory'"
               [displayFileLoaded]="true"
+              [fileFromAWS]="hazardousFileAWS"
             >
               <div class="hazardous-drag-file-container">
                 {{ "fiscal-documents.drag-files" | translate }}

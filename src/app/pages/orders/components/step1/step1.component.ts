@@ -114,6 +114,14 @@ export class Step1Component implements OnInit {
       this.step1Form.get("phoneCode")!.setValue(telephoneCode);
 
       this.validFormStep1.emit(this.step1Form.valid);
+
+      if(changes.draftData.currentValue.hasOwnProperty('stamp') && changes.draftData.currentValue.stamp) {
+        if(changes.draftData.currentValue.pickup.contact_info.rfc.length > 0) {
+          this.step1Form
+            .get("rfc")
+            .setValue(changes.draftData.currentValue.pickup.contact_info.rfc);
+        }
+      }
     }
   }
 

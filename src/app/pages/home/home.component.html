@@ -35,6 +35,7 @@
         [savedPlaces]="savedPlaces$ | async"
         (inputPlace)="placesService.emitter.next($event)"
         (sendUserWantCP)="getUserWantCP($event)"
+        [drafts]="draftData"
       >
       </app-input-directions>
     </div>

@@ -20,7 +20,7 @@
 
     <div class="map-container" [@enterAnimation] [ngClass]="{'hidden' : showDraftList }">
         <bego-map [typeMap]="'draft'"></bego-map>
-        <bego-button class="btn-yellow btn-draft rounded active" *ngIf="!showDraftList" [text]="'draft.btn-order' | translate" (click)="continueOrder()"></bego-button>
+        <bego-button class="btn-yellow rounded active" *ngIf="!showDraftList" [text]="'draft.btn-order' | translate" (click)="continueOrder()"></bego-button>
     </div>
     
     <div class="no-draft-container" *ngIf="showDraftList" [@enterAnimation]>

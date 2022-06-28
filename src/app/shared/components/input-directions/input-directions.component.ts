@@ -46,6 +46,7 @@ export class InputDirectionsComponent implements OnInit {
 
   @Input("typeMap") public typeMap?: string;
   @Input("savedPlaces") savedPlaces: Set<string> | null = new Set();
+  @Input() drafts: Array<object> = [];
 
   @Output("showNewOrderCard") showNewOrderCard = new EventEmitter<void>();
   @Output("updateLocations") updateLocations =
@@ -200,6 +201,22 @@ export class InputDirectionsComponent implements OnInit {
       changes.showMapPreview.previousValue
     ) {
       this.showScroll = true;
+    }
+
+    if(changes.hasOwnProperty('drafts') && changes.drafts.currentValue) {
+      console.log('CON EL DRAFT ADECUADO', changes.drafts)
+      this.locations.pickupLat = changes.drafts.currentValue.pickup.lat;
+      this.locations.pickupLng = changes.drafts.currentValue.pickup.lng;
+      this.locations.dropoffLat = changes.drafts.currentValue.dropoff.lat;
+      this.locations.dropoffLng = changes.drafts.currentValue.dropoff.lng;
+      this.autocompletePickup.input = changes.drafts.currentValue.pickup.address;
+      this.autocompleteDropoff.input = changes.drafts.currentValue.dropoff.address;
+      this.pickupSelected = true;
+      this.dropoffSelected = true;
+      if(changes.drafts.currentValue.hasOwnProperty('stamp') && changes.drafts.currentValue.stamp) {
+        this.userWantCP = true;
+        this.sendUserWantCP.emit(true);
+      }
     }
   }
 

@@ -11,7 +11,6 @@ import {
   merge,
   from,
 } from "rxjs";
-import { mapTo, tap, mergeAll } from "rxjs/operators";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { PlacesService } from "src/app/shared/services/places.service";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
@@ -45,6 +44,7 @@ export class HomeComponent implements OnInit {
   public imageFromGoogle: any;
   public membersToAssigned: object = {};
   public userWantCP: boolean = false;
+  public drafts: Array<object> = [];
 
   savedPlaces$ = this.placesService.places$;
 
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
             window.requestAnimationFrame(() =>
               this.googlemaps.updateDataLocations(this.locations)
             );
-            this.showNewOrderCard();
+            /* this.showNewOrderCard(); */
           }
         }
       })
@@ -133,5 +133,5 @@ export class HomeComponent implements OnInit {
 
   public getUserWantCP(event: boolean) {
     this.userWantCP = event;
-  } 
+  }
 }
