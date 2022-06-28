@@ -1252,6 +1252,11 @@
         "commodity": {
           "cve_material_peligroso": "Clave Material Peligroso\nIndica la clave del tipo de material peligroso que se transporta.",
           "embalaje": "Embalaje\nIndica la clave del tipo de embalaje que se requiere para transportar el material o residuo peligroso."
+        },
+        "invoice_source": {
+          "factura": "Factura no relacionada con una orden.",
+          "ordenes": "Factura generada por la creación de una orden desde el dashboard.",
+          "drivers": "Factura generada por la creación de una orden desde la APP de Drivers."
         }
     }
   },

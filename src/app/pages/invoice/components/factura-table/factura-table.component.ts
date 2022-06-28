@@ -44,6 +44,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
   //Table data
   @Input() orderTableData: TableFactura[];
   public displayedColumns: string[] = [
+    "plataforma",
     "fecha_emision",
     "emisor",
     "receptor",
