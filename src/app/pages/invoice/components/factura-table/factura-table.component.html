@@ -28,6 +28,33 @@
       [dataSource]="dataSource"
     >
       <!-- Time Column -->
+
+      <ng-container matColumnDef="plataforma">
+        <th
+          class="factura-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 40px"
+        >
+        </th>
+        <td
+          class="factura-table__table-body"
+          mat-cell
+          *matCellDef="let element"
+        >
+          <div 
+            class="icon"
+            [ngClass]="element.source == 'orden' ? 'icon-invoice-driver' : element.source == 'factura' ? 'icon-invoice-cfdi' : 'icon-invoice-order'"
+            [matTooltip]="element.source == 'orden' ? ('invoice.tooltips.invoice_source.drivers' | translate) : element.source == 'factura' ?  ('invoice.tooltips.invoice_source.factura' | translate) : ('invoice.tooltips.invoice_source.ordenes' | translate)"
+            matTooltipPosition="right"
+            matTooltipHideDelay="100"
+            matTooltipClass="brand-tooltip-1"
+          >
+          </div>
+        </td>
+      </ng-container> 
+
       <ng-container matColumnDef="fecha_emision">
         <th
           class="factura-table__table-header"
