@@ -926,16 +926,9 @@
             flex: 1;
             text-align: right;
           "
-          [style.white-space]="
-            vm.form?.error?.length > 0 ? 'pre-line' : 'initial'
-          "
+          [style.white-space]="'pre-line'"
         >
-          {{
-            showError(vm.formError) ||
-              (vm.form?.error?.length > 0 && !vm.readonly
-                ? showError(vm.form)
-                : "")
-          }}
+          {{ showError(vm.formError) || "" }}
         </div>
 
         <div style="grid-column: span 2">
@@ -985,9 +978,7 @@
                     ? ("invoice.edit.btn-save-update-success" | translate)
                     : ("invoice.edit.btn-save-update" | translate)
                   : vm.formMode === "save" && vm.formSuccess
-                  ? model === "factura"
-                    ? ("invoice.edit.btn-save-save-success" | translate)
-                    : ("invoice.edit.btn-save-save-success-tpl" | translate)
+                  ? ("invoice.edit.btn-save-save-success" | translate)
                   : ("invoice.edit.btn-save-save" | translate)
               }}
             </span>

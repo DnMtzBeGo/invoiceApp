@@ -18,7 +18,7 @@
     {{ "invoice.emisor-concep.subtitle" | translate }}
   </h5>
 
-  <div class="actions" style="margin-bottom: 2rem">
+  <div class="actions" style="margin-bottom: 1rem">
     <button
       *ngIf="config.mode === 'edit'"
       mat-stroked-button
@@ -122,112 +122,203 @@
     />
   </div>
 
-  <!-- Loader -->
-  <div style="height: 2px">
-    <mat-progress-bar
-      [style.display]="vm.conceptosLoading ? 'block' : 'none'"
-      style="height: 2px"
-      class="brand-progress-bar-1"
-      mode="indeterminate"
-    ></mat-progress-bar>
-  </div>
-
   <!-- Table conceptos -->
-  <table
-    *ngIf="config.mode === 'index' && vm.conceptos?.length > 0"
-    class="facturas-table"
-    style="max-height: 500px; overflow-y: scroll; margin-bottom: 2.5rem"
-  >
-    <thead>
-      <tr>
-        <th style="width: 45%">
-          {{ "invoice.emisor-concep.nombre" | translate }}
-        </th>
-        <th style="width: 45%">
-          {{ "invoice.emisor-concep.descripcion" | translate }}
-        </th>
-        <th style="width: 10%" class="center">
-          {{ "invoice.emisor-concep.opciones" | translate }}
-        </th>
-      </tr>
-    </thead>
-    <tbody [style.opacity]="vm.conceptosLoading ? '0.6' : '1'">
-      <tr *ngFor="let concepto of vm.conceptos; index as index">
-        <td>
-          {{ concepto.nombre }}
-        </td>
-        <td>
-          {{ concepto.descripcion || "- -" }}
-        </td>
-        <td class="center">
-          <button
-            mat-icon-button
-            [matMenuTriggerFor]="menu"
-            [disabled]="vm.formLoading || vm.formSuccess"
-            style="color: #ededed"
+  <mat-card *ngIf="config.mode === 'index'" class="concepto-table-wrapper">
+    <mat-card-content class="concepto-table__content">
+      <mat-progress-bar
+        [style.display]="vm.conceptosLoading ? 'block' : 'none'"
+        style="position: absolute; top: 54px; height: 2px"
+        class="brand-progress-bar-1"
+        mode="indeterminate"
+      ></mat-progress-bar>
+
+      <table
+        mat-table
+        matSort
+        class="brand-table-1"
+        matSortStart="desc"
+        [dataSource]="vm.conceptos"
+        #myTable
+      >
+        <!-- Nombre Column -->
+        <ng-container matColumnDef="nombre">
+          <th
+            class="concepto-table__table-header"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            style="width: 200px"
           >
-            <mat-spinner
-              [style.display]="
-                vm.formLoading && vm.formId === concepto._id
-                  ? 'inline-block'
-                  : 'none'
-              "
-              class="brand-spinner-2"
-              [diameter]="20"
-              [strokeWidth]="3"
-              style="
-                margin: 0 auto;
-                width: 24px;
-                height: 24px;
-                margin-left: 6px;
-                padding-bottom: 5px;
-                line-height: 24px;
-              "
-            ></mat-spinner>
-            <mat-icon
-              [style.display]="
-                vm.formSuccess && vm.formId === concepto._id
-                  ? 'inline-block'
-                  : 'none'
-              "
-            >
-              check
-            </mat-icon>
-            <mat-icon
-              [style.display]="
-                !(
-                  (vm.formLoading || vm.formSuccess) &&
-                  vm.formId === concepto._id
-                )
-                  ? 'inline-block'
-                  : 'none'
-              "
-              >more_vert</mat-icon
-            >
-          </button>
-          <mat-menu #menu="matMenu" class="brand-menu-1">
+            Nombre
+          </th>
+          <td
+            class="concepto-table__table-body"
+            mat-cell
+            *matCellDef="let element"
+          >
+            {{ element.nombre }}
+          </td>
+        </ng-container>
+
+        <!-- Descripcion Column -->
+        <ng-container matColumnDef="descripcion">
+          <th
+            class="concepto-table__table-header"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            style="width: 200px"
+          >
+            Descripción
+          </th>
+          <td
+            class="concepto-table__table-body"
+            mat-cell
+            *matCellDef="let element"
+          >
+            {{ element.descripcion }}
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th
+            class="concepto-table__table-header"
+            mat-header-cell
+            *matHeaderCellDef
+            style="width: 50px"
+          >
+            Opciones
+          </th>
+          <td
+            class="concepto-table__table-body"
+            mat-cell
+            *matCellDef="let concepto"
+          >
             <button
-              mat-menu-item
-              (click)="conceptoEmitter.next(['concepto:set', concepto])"
+              mat-icon-button
+              [matMenuTriggerFor]="menu"
+              [disabled]="vm.formLoading || vm.formSuccess"
+              style="color: #ededed"
             >
-              <span>{{ "invoice.emisor-concep.editar" | translate }}</span>
+              <mat-spinner
+                [style.display]="
+                  vm.formLoading && vm.formId === concepto._id
+                    ? 'inline-block'
+                    : 'none'
+                "
+                class="brand-spinner-2"
+                [diameter]="20"
+                [strokeWidth]="3"
+                style="
+                  margin: 0 auto;
+                  width: 24px;
+                  height: 24px;
+                  margin-left: 6px;
+                  padding-bottom: 5px;
+                  line-height: 24px;
+                "
+              ></mat-spinner>
+              <mat-icon
+                [style.display]="
+                  vm.formSuccess && vm.formId === concepto._id
+                    ? 'inline-block'
+                    : 'none'
+                "
+              >
+                check
+              </mat-icon>
+              <mat-icon
+                [style.display]="
+                  !(
+                    (vm.formLoading || vm.formSuccess) &&
+                    vm.formId === concepto._id
+                  )
+                    ? 'inline-block'
+                    : 'none'
+                "
+                >more_vert</mat-icon
+              >
             </button>
-            <button
-              mat-menu-item
-              (click)="
-                conceptoEmitter.next([
-                  'submit',
-                  ['delete', concepto._id, concepto]
-                ])
-              "
+            <mat-menu #menu="matMenu" class="brand-menu-1">
+              <button
+                mat-menu-item
+                (click)="conceptoEmitter.next(['concepto:set', concepto])"
+              >
+                <span>{{ "invoice.emisor-concep.editar" | translate }}</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="
+                  conceptoEmitter.next([
+                    'submit',
+                    ['delete', concepto._id, concepto]
+                  ])
+                "
+              >
+                <span>{{ "invoice.emisor-concep.eliminar" | translate }}</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+        <tr
+          mat-row
+          *matRowDef="
+            let row;
+            columns: displayedColumns
+              | paginate
+                : {
+                    id: 'active',
+                    itemsPerPage: paginator.pageSize,
+                    currentPage: paginator.pageIndex,
+                    totalItems: paginator.total
+                  }
+          "
+        ></tr>
+      </table>
+    </mat-card-content>
+
+    <div class="concepto-table__paginator">
+      <div class="total">
+        {{ "invoice.invoice-table.showing" | translate }}
+        {{ paginator.pageSize }}
+        {{ "invoice.invoice-table.of" | translate }}
+        {{ paginator.total }}
+      </div>
+      <pagination-controls
+        id="active"
+        (pageChange)="pagination($event)"
+        previousLabel=""
+        nextLabel=""
+      ></pagination-controls>
+      <div>
+        <mat-label>{{
+          "invoice.invoice-table.items-per-page" | translate
+        }}</mat-label>
+        <mat-form-field
+          appearance="outline"
+          floatLabel="always"
+          class="brand-field-1"
+        >
+          <mat-select
+            [(value)]="paginator.pageSize"
+            (selectionChange)="pageChangeEmiter()"
+            class="disable-custom-format"
+          >
+            <mat-option
+              [value]="sizeOption"
+              *ngFor="let sizeOption of sizeOptions"
+              class="brand-option-1"
+              >{{ sizeOption }}</mat-option
             >
-              <span>{{ "invoice.emisor-concep.eliminar" | translate }}</span>
-            </button>
-          </mat-menu>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card>
 
   <div
     *ngIf="

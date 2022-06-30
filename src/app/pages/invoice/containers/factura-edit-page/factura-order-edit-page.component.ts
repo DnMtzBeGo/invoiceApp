@@ -128,6 +128,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
         | "rfc:search"
         | "nombre:search"
         | "autocomplete:cancel"
+        | "catalogos:search"
         | "rfc:set"
         | "conceptos:search_cve"
         | "cargo:search_material"
