@@ -260,6 +260,17 @@ section {
             transition: opacity 1s;
             pointer-events: none;
         }
+
+        .cant-create-orders {
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          padding: 0 40px;
+          > p {
+            margin-top: 10px;
+            text-align: center;
+          }
+        }
     }
 
     &.order-details-open{
@@ -464,6 +475,7 @@ bego-button {
 }
 
 app-fleet-members {
+  width: 100%;
 	transition: all .3s ease-in-out;
 	background-color: #10161C;
 	height: 80vh;
@@ -500,4 +512,13 @@ app-member-card-selection:nth-last-of-type(1) {
   top: 19px;
   right: -15px;
   cursor: pointer;
+}
+
+.show-drafts {
+  transition: all .3s ease-in-out;
+	top: 0px;
+}
+
+.prueba {
+  width: 100%;
 }

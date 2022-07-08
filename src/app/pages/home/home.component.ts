@@ -11,7 +11,6 @@ import {
   merge,
   from,
 } from "rxjs";
-import { mapTo, tap, mergeAll } from "rxjs/operators";
 import { AuthService } from "src/app/shared/services/auth.service";
 import { PlacesService } from "src/app/shared/services/places.service";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
@@ -45,6 +44,9 @@ export class HomeComponent implements OnInit {
   public imageFromGoogle: any;
   public membersToAssigned: object = {};
   public userWantCP: boolean = false;
+  public drafts: Array<object> = [];
+  public haveNotFleetMembers: boolean = false;
+  public haveFleetMembersErrors: Array<string> = [];
 
   savedPlaces$ = this.placesService.places$;
 
@@ -73,11 +75,13 @@ export class HomeComponent implements OnInit {
             this.locations.dropoffLng = data.draft.dropoff.lng;
             this.locations.pickupPostalCode = data.draft.pickup.zip_code;
             this.locations.dropoffPostalCode = data.draft.dropoff.zip_code;
+            this.locations.place_id_pickup = data.draft.pickup.place_id_pickup;
+            this.locations.place_id_dropoff = data.draft.dropoff.place_id_dropoff;
             this.typeMap = "draft";
             window.requestAnimationFrame(() =>
               this.googlemaps.updateDataLocations(this.locations)
             );
-            this.showNewOrderCard();
+            /* this.showNewOrderCard(); */
           }
         }
       })
@@ -85,6 +89,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getFleetDetails();
     // this.showNewOrderCard();
     // this.profileinfoService.getProfilePic();
   }
@@ -133,5 +138,22 @@ export class HomeComponent implements OnInit {
 
   public getUserWantCP(event: boolean) {
     this.userWantCP = event;
-  } 
+  }
+
+  private async getFleetDetails() {
+    (await this.webService.apiRest('', 'carriers/home')).subscribe( res => {
+       if(!res.result.trailers || !res.result.trucks) {
+        this.haveNotFleetMembers = true;
+       } else {
+        this.haveNotFleetMembers = false;
+       }
+
+       if(res.result.hasOwnProperty('errors') && res.result.errors.length > 0) {
+        this.haveFleetMembersErrors = res.result.errors;
+       }
+
+    }, error => {
+      console.log('Something went wrong', error.error);
+    })
+  }
 }

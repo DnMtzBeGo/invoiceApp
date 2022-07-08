@@ -46,6 +46,9 @@ export class InputDirectionsComponent implements OnInit {
 
   @Input("typeMap") public typeMap?: string;
   @Input("savedPlaces") savedPlaces: Set<string> | null = new Set();
+  @Input() drafts: Array<object> = [];
+  @Input() haveFleetMembers: boolean = false;
+  @Input() haveFleetMembersErrors: Array <string> = [];
 
   @Output("showNewOrderCard") showNewOrderCard = new EventEmitter<void>();
   @Output("updateLocations") updateLocations =
@@ -101,6 +104,8 @@ export class InputDirectionsComponent implements OnInit {
     dropoffLng: "",
     pickupPostalCode: 0,
     dropoffPostalCode: 0,
+    place_id_pickup: '',
+    place_id_dropoff: ''
   };
 
   subscription: Subscription;
@@ -123,6 +128,7 @@ export class InputDirectionsComponent implements OnInit {
   selectedDropoff: boolean = false;
   invalidAddressPickup: boolean = false;
   invalidAddressDropoff: boolean = false;
+  userCanCreateOrders: boolean = false;
 
   startMarker: any = {};
   endMarker: any = {};
@@ -182,11 +188,8 @@ export class InputDirectionsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
-    // Set a default Pickup for development
-    // this.UpdateSearchResultsPickup({ target: { value: 'City Shops' } });
+  ngOnInit(): void {
+    this.canCreateOrders();
   }
 
   ngOnDestroy(): void {
@@ -198,8 +201,29 @@ export class InputDirectionsComponent implements OnInit {
       changes.hasOwnProperty("showMapPreview") &&
       !changes.showMapPreview.currentValue &&
       changes.showMapPreview.previousValue
-    ) {
-      this.showScroll = true;
+      ) {
+        this.showScroll = true;
+      }
+      
+      if(changes.hasOwnProperty('drafts') && changes.drafts.currentValue) {
+      this.locations.pickup = changes.drafts.currentValue.pickup.address;
+      this.locations.pickupLat = changes.drafts.currentValue.pickup.lat;
+      this.locations.pickupLng = changes.drafts.currentValue.pickup.lng;
+      this.locations.place_id_pickup = changes.drafts.currentValue.pickup.place_id_pickup;
+      this.locations.pickupPostalCode = changes.drafts.currentValue.pickup.zip_code;
+      this.locations.dropoff = changes.drafts.currentValue.dropoff.address;
+      this.locations.dropoffLat = changes.drafts.currentValue.dropoff.lat;
+      this.locations.dropoffLng = changes.drafts.currentValue.dropoff.lng;
+      this.locations.place_id_dropoff = changes.drafts.currentValue.dropoff.place_id_dropoff;
+      this.locations.dropoffPostalCode = changes.drafts.currentValue.dropoff.zip_code;
+      this.autocompletePickup.input = changes.drafts.currentValue.pickup.address;
+      this.autocompleteDropoff.input = changes.drafts.currentValue.dropoff.address;
+      this.pickupSelected = true;
+      this.dropoffSelected = true;
+      if(changes.drafts.currentValue.hasOwnProperty('stamp') && changes.drafts.currentValue.stamp) {
+        this.userWantCP = true;
+        this.sendUserWantCP.emit(true);
+      }
     }
   }
 
@@ -216,9 +240,8 @@ export class InputDirectionsComponent implements OnInit {
         "orders/place_details"
       )
     ).subscribe(
-      async (res) => {
+      async (res) => { 
         this.pickupSelected = true;
-        // console.log(res);
         this.autocompletePickup.input = res.result.address;
         this.locations.pickup = res.result.address;
         this.locations.pickupLat = res.result.location.lat;
@@ -229,6 +252,7 @@ export class InputDirectionsComponent implements OnInit {
           this.locations.pickupLat,
           this.locations.pickupLng
         );
+        this.locations.place_id_pickup = placeId;
         this.selectedPickup = true;
         if (this.autocompleteDropoff.input !== "") {
           this.googlemaps.updateDataLocations(this.locations);
@@ -270,6 +294,7 @@ export class InputDirectionsComponent implements OnInit {
           this.locations.dropoffLat,
           this.locations.dropoffLng
         );
+        this.locations.place_id_dropoff = placeId;
         this.selectedDropoff = true;
         if (this.autocompletePickup.input !== "") {
           this.googlemaps.updateDataLocations(this.locations);
@@ -283,7 +308,7 @@ export class InputDirectionsComponent implements OnInit {
         this.ClearAutocompleteDropoff();
         console.log("Fetch Error", res.error);
       }
-    );
+      );
   };
 
   focusOutInputPickup() {
@@ -538,6 +563,15 @@ export class InputDirectionsComponent implements OnInit {
         console.log("Something went wrong", error.error);
       }
     );
+  }
+
+  private async canCreateOrders() {
+    (await this.auth.apiRest('', 'carriers/can_create_orders')).subscribe( res => {
+      this.userCanCreateOrders = true;
+    }, error => {
+      this.userCanCreateOrders = false;
+      console.log('Something went wrong', error.error);
+    })
   }
 
   public selectMembersForOrder(member: any, typeMember: keyof this) {

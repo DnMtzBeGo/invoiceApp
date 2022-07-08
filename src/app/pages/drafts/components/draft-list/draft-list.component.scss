@@ -221,3 +221,7 @@ section {
         }
     }
 }
+
+.draft-item:nth-last-of-type(1) {
+    padding-bottom: 40px;
+}

@@ -107,6 +107,12 @@ export class Step3Component implements OnInit {
         .get("country_code")!
         .setValue(changes.draftData.currentValue.dropoff.contact_info.country_code);
       this.step3Form.get("phoneCode")!.setValue(telephoneCode);
+
+      if(changes.draftData.currentValue.dropoff.contact_info.hasOwnProperty('rfc') && changes.draftData.currentValue.dropoff.contact_info.rfc.length > 0) {
+        this.step3Form
+          .get("rfc")
+          .setValue(changes.draftData.currentValue.dropoff.contact_info.rfc);
+      }
     }
     this.validFormStep3.emit(this.step3Form.valid);
   }

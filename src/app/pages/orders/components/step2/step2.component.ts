@@ -22,7 +22,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dial
 import { InputSelectableComponent } from "../input-selectable/input-selectable.component";
 import { CargoWeightComponent } from "../cargo-weight/cargo-weight.component";
 import * as moment from "moment";
-import { isObject } from "../../../../shared/utils/object";
 import { UnitDetailsModalComponent } from "../unit-details-modal/unit-details-modal.component";
 
 type CargoType = "general" | "hazardous";
@@ -41,6 +40,8 @@ export class Step2Component implements OnInit {
   @ViewChild("fileBar") fileBar!: ElementRef;
   @Input() creationTime: any;
   @Input() draftData: any;
+  @Input() hazardousFileAWS: object = {};
+  @Input() catalogsDescription: object = {};
   @Input() orderWithCP: boolean;
   @Input() creationdatepickup: number;
   @Input() editCargoWeightNow: boolean;
@@ -82,25 +83,44 @@ export class Step2Component implements OnInit {
   //   file: ['valid', Validators.required],
   // });
   step2Form = new FormGroup({
+    hazardous_material: new FormControl(""),
+    packaging: new FormControl(""),
+    hazardous_type: new FormControl(""),
+    hazardousUn: new FormControl(""),
     cargo_goods: new FormControl(""),
     datepickup: new FormControl(""),
     timepickup: new FormControl("", Validators.required),
-    // timepickup: new FormControl(new Date(), [Validators.required, this.hourValidator]),
     unitType: new FormControl("", Validators.required),
     cargoUnits: new FormControl(1, Validators.required),
-    cargoWeight: new FormControl(1),
+    cargoWeight: new FormControl([1]),
     cargoType: new FormControl(this.cargoType, Validators.required),
     description: new FormControl("", Validators.required),
   });
 
-  mercModal: Option;
+  mercModal: Option = {
+    value: '',
+    viewValue: ''
+  };
   mercModalSelected: boolean = false;
-  packModal: Option;
+  packModal: Option = {
+    value: '',
+    viewValue: ''
+  };
   packModalSelected: boolean = false;
-  hzrdModal: Option;
+  hzrdModal: Option = {
+    value: '',
+    viewValue: ''
+  };
   hzrdModalSelected: boolean = false;
 
-  satUnitData: Option;
+  satUnitData: Option = {
+    value: '',
+    viewValue: ''
+  };
+
+  public screenshotCanvas: any;
+  public thumbnailMap: Array<any> = [];
+  public thumbnailMapFile: Array<any> = [];
 
   constructor(
     translateService: TranslateService,
@@ -163,15 +183,29 @@ export class Step2Component implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // if (this.orderWithCP) {
-    //   const cargo_good = this.step2Form.get("cargo_goods");
-    //   cargo_good.setValidators(Validators.required);
-    //   cargo_good.updateValueAndValidity();
-    // } else {
-    //   const cargo_good = this.step2Form.get("cargo_goods");
-    //   cargo_good.clearValidators();
-    //   cargo_good.updateValueAndValidity();
-    // }
+    if(changes.hasOwnProperty('hazardousFileAWS') && changes.hazardousFileAWS.currentValue.hasOwnProperty('url')) {
+      this.generateScreenshot(changes.hazardousFileAWS.currentValue.url);
+    }
+
+    if(changes.hasOwnProperty('catalogsDescription') && changes.catalogsDescription.currentValue.hasOwnProperty('cargo_goods') && changes.catalogsDescription.currentValue.cargo_goods.length > 0) {
+      this.catalogsDescription = changes.catalogsDescription.currentValue;
+      this.mercModal.viewValue = changes.catalogsDescription.currentValue['cargo_goods'];
+      this.mercModalSelected = true;
+    }
+
+    if(changes.hasOwnProperty('catalogsDescription') && changes.catalogsDescription.currentValue.hasOwnProperty('packaging') && changes.catalogsDescription.currentValue.packaging.length > 0) {
+      this.packModal.viewValue = changes.catalogsDescription.currentValue['packaging'];
+      this.packModalSelected = true;
+    }
+
+    if(changes.hasOwnProperty('catalogsDescription') && changes.catalogsDescription.currentValue.hasOwnProperty('hazardous_material') && changes.catalogsDescription.currentValue.hazardous_material.length > 0) {
+      this.hzrdModal.viewValue = changes.catalogsDescription.currentValue['hazardous_material'];
+      this.hzrdModalSelected = true;
+    }
+
+    if(changes.hasOwnProperty('catalogsDescription') && changes.catalogsDescription.currentValue.hasOwnProperty('unit_type')) {
+      this.satUnitData['viewValue'] = changes.catalogsDescription.currentValue['unit_type'];
+    } 
 
     if (
       changes.draftData &&
@@ -179,10 +213,29 @@ export class Step2Component implements OnInit {
       changes.draftData.currentValue.pickup &&
       changes.draftData.currentValue.cargo
     ) {
+
+      if(changes.draftData.currentValue.cargo.type) {
+        this.cargoType = changes.draftData.currentValue.cargo.type;
+        this.step2Form.get("cargoType")!.setValue(changes.draftData.currentValue.cargo.type);
+        this.step2Form
+        .get("cargo_goods")
+        .setValue(changes.draftData.currentValue.cargo['cargo_goods']);
+        this.satUnitData.value = changes.draftData.currentValue.cargo.unit_type;
+        if(changes.draftData.currentValue.cargo.type === 'hazardous') {
+          this.step2Form.get("hazardous_type").setValue(changes.draftData.currentValue.cargo.hazardous_type);
+          this.step2Form
+          .get('packaging')
+          .setValue(changes.draftData.currentValue.cargo.packaging);
+          this.step2Form
+          .get('hazardous_material')
+          .setValue(changes.draftData.currentValue.cargo.hazardous_material);
+        }
+
+      }
+
       if (changes.draftData.currentValue.pickup.startDate !== null) {
         this.draftDate = changes.draftData.currentValue.pickup.startDate;
       }
-      this.step2Form.get("cargoType")!.setValue(changes.draftData);
       this.step2Form
         .get("unitType")!
         .setValue(changes.draftData.currentValue.cargo["53_48"]);
@@ -201,26 +254,6 @@ export class Step2Component implements OnInit {
         .get("description")!
         .setValue(changes.draftData.currentValue.cargo.description);
     }
-    // if (changes.creationTime && changes.creationTime.currentValue) {
-    //   this.calendar = changes.creationTime.currentValue;
-    //   if (this.draftDate > 0 && moment(this.calendar).valueOf() > this.draftDate) {
-    //     // this.step2Form.get('datepickup')!.setValue('');
-    //     // // this.ordersService.resetDropoffDate(true);")
-    //     this.step2Form.get("datepickup")!.setValue(new Date(this.draftDate));
-    //     this.events = moment(new Date(this.draftDate), "MM-DD-YYYY").format(
-    //       "MMMM DD YYYY"
-    //     );
-    //     this.step2Form.get("timepickup")!.setValue(new Date(this.draftDate));
-    //   } else {
-    //     this.step2Form.get("datepickup")!.setValue(this.calendar);
-    //     this.events = moment(
-    //       new Date(moment(this.calendar).valueOf()),
-    //       "MM-DD-YYYY"
-    //     ).format("MMMM DD YYYY");
-    //     this.step2Form.get("timepickup")!.setValue(this.calendar);
-    //     this.minTime = this.calendar;
-    //   }
-    // }
 
     if (changes.creationdatepickup && changes.creationdatepickup.currentValue) {
       const date = changes.creationdatepickup.currentValue;
@@ -246,7 +279,7 @@ export class Step2Component implements OnInit {
         "hazardous_type",
         new FormControl(this.hazardousType, validators)
       );
-      this.step2Form.addControl("hazardousUn", new FormControl("", validators));
+      /* this.step2Form.addControl("hazardousUn", new FormControl("", validators)); */
       this.step2Form.addControl(
         "hazardousFile",
         new FormControl(this.hazardousFile, validators)
@@ -255,13 +288,7 @@ export class Step2Component implements OnInit {
         this.step2Form.addControl("packaging", new FormControl(""));
         this.step2Form.addControl("hazardous_material", new FormControl(""));
       }
-    } else {
-      this.step2Form.removeControl("hazardous_type");
-      this.step2Form.removeControl("hazardousUn");
-      this.step2Form.removeControl("hazardousFile");
-      this.step2Form.removeControl("hazardous_material");
-      this.step2Form.removeControl("packaging");
-    }
+    } 
   }
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -333,22 +360,7 @@ export class Step2Component implements OnInit {
     // console.log("Here goes the logic to drop hazardous file");
   }
 
-  // hourValidator(c: AbstractControl): {} {
-  //   const value = c.value;
-
-  //   if (!value) {
-  //     return null as any;
-  //   }
-
-  //   const hours = value.getHours();
-
-  //   if (hours <  1 || hours > 12) {
-  //     return { outOfRange: true };
-  //   }
-
-  //   return null as any;
-  // }
-
+  
   timepickerValid(data: any) {
     this.lastTime = this.step2Form.controls["timepickup"].value || this.lastTime;
     if (!data && !this.firstLoad) {
@@ -420,5 +432,40 @@ export class Step2Component implements OnInit {
         this.satUnitData = { value: result.value, viewValue: result.viewValue };
       }
     });
+  }
+
+  public generateScreenshot(url: any) {
+    let img = new Image();
+    let elem = document.body;
+    this.screenshotCanvas = <HTMLCanvasElement> document.getElementById("canvas-edit");
+    let ctx = this.screenshotCanvas.getContext("2d");
+    let pixelRatio = window.devicePixelRatio;
+    const offsetWidth = elem.offsetWidth * pixelRatio;
+    const offsetHeight = elem.offsetHeight * pixelRatio;
+    const posX = (window.scrollX) * pixelRatio;
+    const posY = (window.scrollY) * pixelRatio;
+    this.screenshotCanvas.width = 512;
+    this.screenshotCanvas.height = 512;
+    img.crossOrigin = "anonymous";
+    img.src = url;
+    img.onload = () => {
+      ctx.drawImage(img, posX, posY, offsetWidth, offsetHeight, 0, 0, offsetWidth, offsetHeight);
+      let resultFinal = this.screenshotCanvas.toDataURL("image/png", 100);
+      this.transformToFile(resultFinal);
+    }
+  }
+
+  public transformToFile(data: any) {
+    let resultBase64 = data.split(',');
+    this.thumbnailMap.push(resultBase64[1]);
+    const rawData = atob(resultBase64[1]);
+    const bytes = new Array(rawData.length);
+    for(let i = 0; i < rawData.length; i++) {
+      bytes[i] = rawData.charCodeAt(i);
+    }
+    const arr = new Uint8Array(bytes);
+    const blob = new Blob([arr], { type: 'image/png '});
+    this.thumbnailMapFile.push(blob);
+    this.selectHazardousFile(this.thumbnailMapFile);
   }
 }
