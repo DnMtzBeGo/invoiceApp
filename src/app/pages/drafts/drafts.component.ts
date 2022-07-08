@@ -54,7 +54,6 @@ export class DraftsComponent implements OnInit {
     this.loader = true;
     (await this.auth.apiRest(JSON.stringify(searchOptions), 'orders/get_drafts')).subscribe(
       async (res) => {
-        console.log(res.result)
         if(res.result.length > 0) {
           console.log(this.showDraftList)
           this.draftData = res.result;

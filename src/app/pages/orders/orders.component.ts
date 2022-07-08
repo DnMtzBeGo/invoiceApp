@@ -100,6 +100,7 @@ export class OrdersComponent implements OnInit {
         email: "",
         country_code: "",
       },
+      place_id_pickup: ""
     },
     dropoff: {
       startDate: 0,
@@ -115,6 +116,7 @@ export class OrdersComponent implements OnInit {
         email: "",
         country_code: "",
       },
+      place_id_dropoff: ""
     },
   };
 
@@ -145,6 +147,15 @@ export class OrdersComponent implements OnInit {
   };
   public editCargoWeightNow: boolean = false;
   public hasEditedCargoWeight: boolean = false;
+
+  public resEncoder: any;
+  public pickupLat: any;
+  public pickupLng: any;
+  public dropoffLat: any;
+  public dropoffLng: any;
+  public screenshotCanvas: any;
+  public thumbnailMap: Array<any> = [];
+  public thumbnailMapFile: Array<any> = [];
 
   constructor(
     private translateService: TranslateService,
@@ -208,6 +219,9 @@ export class OrdersComponent implements OnInit {
   ngAfterViewInit(): void {}
 
   ngOnDestroy() {
+    if(this.membersToAssigned.hasOwnProperty('drivers') && this.membersToAssigned.hasOwnProperty('trucks') && this.membersToAssigned.hasOwnProperty('trailers')) {
+      this.sendOrders("drafts")
+    }
     this.subscription.unsubscribe();
   }
 
@@ -220,6 +234,9 @@ export class OrdersComponent implements OnInit {
 
     if (changes.locations && changes.locations.currentValue.pickupPostalCode > 0) {
       let locations = changes.locations.currentValue;
+
+      this.orderData.pickup.place_id_pickup = locations.place_id_pickup;
+      this.orderData.dropoff.place_id_dropoff = locations.place_id_dropoff;
       this.orderData.pickup.address = locations.pickup;
       this.orderData.pickup.lat = locations.pickupLat;
       this.orderData.pickup.lng = locations.pickupLng;
@@ -228,6 +245,11 @@ export class OrdersComponent implements OnInit {
       this.orderData.dropoff.lat = locations.dropoffLat;
       this.orderData.dropoff.lng = locations.dropoffLng;
       this.orderData.dropoff.zip_code = locations.dropoffPostalCode;
+      this.orderData.pickup;
+      this.pickupLat = locations.pickupLat;
+      this.pickupLng = locations.pickupLng;
+      this.dropoffLat = locations.dropoffLat;
+      this.dropoffLng = locations.dropoffLng;
       this.getETA(locations);
     }
     if (changes.draftData && changes.draftData.currentValue) {
@@ -236,18 +258,6 @@ export class OrdersComponent implements OnInit {
         this.getCatalogsDescription(changes.draftData.currentValue._id);
       }
     }
-    // this.locations = {
-    //   dropoff: "Perif. Blvd. Manuel Ávila Camacho 3130, Valle Dorado, 54020 Tlalnepantla de Baz, Méx., Mexico",
-    //   dropoffLat: '19.5475331',
-    //   dropoffLng: '-99.2110099',
-    //   dropoffPostalCode: 54020,
-    //   pickup: "Mariano Matamoros, Sector Centro, 88000 Nuevo Laredo, Tamps., Mexico",
-    //   pickupLat: '27.4955923',
-    //   pickupLng: '-99.5077369',
-    //   pickupPostalCode: 88000,
-    // }
-    // this.getETA(this.locations);
-    // this.getCreationTime();
 
     if (changes.datepickup && changes.datepickup.currentValue) {
       this.orderData.pickup.startDate = this.datepickup;
@@ -266,24 +276,6 @@ export class OrdersComponent implements OnInit {
     this.cardIsOpen = !this.cardIsOpen;
   }
 
-  /**
-   * @returns The percentage of completion to create a new order
-   */
-  // calculateProgress(): number {
-  //   let consecutivePositionValited = 0;
-
-  //   for(let index in this.ordersSteps){
-
-  //     if(this.ordersSteps[index].validated){
-  //       consecutivePositionValited = parseInt(index) + 1;
-  //     }
-  //     else{
-  //       break;
-  //     }
-  //   }
-
-  //   return consecutivePositionValited/(this.ordersSteps.length-1) *100;
-  // }
   calculateProgress(): number {
     this.checkoutProgress = (this.currentStepIndex / (this.ordersSteps.length - 1)) * 100;
 
@@ -384,8 +376,13 @@ export class OrdersComponent implements OnInit {
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoUnits;
     this.orderData.cargo.description = data.description;
-    if (data.hazardousType !== "select-catergory" && data.hazardousType) {
-      this.orderData.cargo["hazardous_type"] = data.hazardousType;
+
+    if(data.hazardousFile) {
+      this.hazardousFile = data.hazardousFile;
+    }
+
+    if (data.hazardous_type != "select-catergory" && data.hazardous_type) {
+      this.orderData.cargo["hazardous_type"] = data.hazardous_type;
     }
     if (this.isOrderWithCP) {
       this.orderData.cargo["cargo_goods"] = data.cargo_goods;
@@ -409,7 +406,6 @@ export class OrdersComponent implements OnInit {
       this.orderData.cargo["commodity_quantity"] = data.commodity_quantity;
     }
     this.orderData.cargo.weigth = data.cargoWeight;
-    // console.log("ORDERRRRR DATA:", this.orderData);
   }
 
   getStep3FormData(data: any) {
@@ -431,17 +427,8 @@ export class OrdersComponent implements OnInit {
   }
 
   getStep4FormData(data: any) {
-    // this.orderData.dropoff.startDate = this.convertDateMs(
-    //   data.datedropoff,
-    //   data.timestartdropoff
-    // );
-    // this.orderData.dropoff.endDate = this.convertDateMs(
-    //   data.datedropoff,
-    //   data.timeenddropoff
-    // );
     this.orderData.dropoff.extra_notes = data.notes;
     if (this.stepsValidate.includes(false) && this.currentStepIndex > 2) {
-      // console.log("COOOOOOOLLLLLLLLLLLLL");
     }
   }
 
@@ -510,7 +497,6 @@ export class OrdersComponent implements OnInit {
     (await this.auth.apiRest("", "orders/get_creation_time")).subscribe(
       async (res) => {
         this.creationTime = moment().add(res.result.creation_time, "ms").toDate();
-        // this.getETA(locations);
       },
       async (res) => {
         console.log(res);
@@ -527,7 +513,9 @@ export class OrdersComponent implements OnInit {
       await this.auth.apiRest(JSON.stringify(dataRequest), "orders/get_hazardous")
     ).subscribe(
       async ({ result }) => {
-        this.hazardousFileAWS = result;
+        if(result.url.length > 0) {
+          this.hazardousFileAWS = result;
+        }
       },
       async (res) => {
         console.log(res);
@@ -589,22 +577,20 @@ export class OrdersComponent implements OnInit {
         if (this.hazardousFile) {
           const formData = new FormData();
           formData.append("order_id", result._id);
-          formData.append('file', this.hazardousFile[0]);
+          formData.append('file', this.hazardousFile);
           (
             await this.auth.uploadFilesSerivce(formData, "orders/upload_hazardous")
           ).subscribe(async (data) => {
-            // console.log(await data);
           });
         }
-        if(this.userWantCP){
+        if(this.userWantCP && page != 'drafts'){
           this.router.navigate(["pricing"], {
             state: {
               orderId: result._id,
             },
           });
-          this.uploadScreenShotOrderMap(result._id);
         }
-        else{
+        else if(page != 'drafts') {
           this.alertService.create({
             body: this.translateService.instant('orders.create'),
             handlers: [
@@ -621,7 +607,7 @@ export class OrdersComponent implements OnInit {
         }
       },
       async (res) => {
-        // this.errorAlert(res.error.error[this.lang]);
+       console.log('Something went wrong', res.error)
       }
     );
   }
@@ -656,7 +642,6 @@ export class OrdersComponent implements OnInit {
   public checkCPFields() {
     if (this.isOrderWithCP) {
       const leftList = [];
-      console.log("CHECK CP FIELDS:", this.orderWithCPFields);
       for (const item in this.orderWithCPFields) {
         this.orderWithCPFields[item] === false && leftList.push(item);
       }

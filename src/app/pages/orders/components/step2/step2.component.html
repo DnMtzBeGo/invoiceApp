@@ -137,7 +137,7 @@
         <div class="hazardous-container" *ngIf="cargoType == 'hazardous'">
           <div class="hazardous-input">
             <mat-select formControlName="hazardous_type" [(value)]="hazardous_type">
-              <mat-option value="select-catergory" [disabled]="true">
+              <mat-option value="select-catergory">
                 {{ "orders.choose-category" | translate }}
               </mat-option>
 

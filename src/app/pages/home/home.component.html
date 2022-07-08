@@ -36,6 +36,8 @@
         (inputPlace)="placesService.emitter.next($event)"
         (sendUserWantCP)="getUserWantCP($event)"
         [drafts]="draftData"
+        [haveFleetMembers]="haveNotFleetMembers"
+        [haveFleetMembersErrors]="haveFleetMembersErrors"
       >
       </app-input-directions>
     </div>

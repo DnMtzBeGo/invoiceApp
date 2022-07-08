@@ -7,7 +7,7 @@
       showScroll ? 'input-directions-scroll' : ''
     ]"
   >
-    <div>
+    <div *ngIf="!haveFleetMembers">
       <div class="directions" [ngClass]="hideMap ? 'hide-line' : ''">
         <div
           class="input-container"
@@ -347,6 +347,13 @@
         [text]="'orders.btn-cancel' | translate"
       >
       </bego-button>
+    </div>
+
+    <div *ngIf="haveFleetMembers" class="cant-create-orders">
+      <img src="../../../../assets/images/drafts/no-orders-yet.svg" alt="">
+      <ng-container *ngFor="let error of haveFleetMembersErrors">
+        <p>{{error}}</p>
+      </ng-container>
     </div>
 
     <div class="map-preview">

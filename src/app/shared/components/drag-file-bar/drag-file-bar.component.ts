@@ -141,11 +141,13 @@ export class DragFileBarComponent implements OnInit {
 
     this.formattedDateUpdated = moment(file.lastModified).format("MMM dd YYYY");
 
-    console.log("FileInfo: ", this.fileInfo, this.formattedDateUpdated);
     this.fileOutput.emit(file);
   }
 
   removeFile(): void {
+    if(this.awsFile) {
+      this.awsFile = false;
+    }
     this.fileInfo = undefined;
     this.deleteFile.emit();
   }

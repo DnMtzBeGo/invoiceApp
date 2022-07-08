@@ -7,4 +7,6 @@ export interface GoogleLocation {
     dropoffLng: string;
     pickupPostalCode: number;
     dropoffPostalCode: number;
+    place_id_pickup?: '',
+    place_id_dropoff?: ''
 }

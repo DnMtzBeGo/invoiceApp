@@ -260,6 +260,17 @@ section {
             transition: opacity 1s;
             pointer-events: none;
         }
+
+        .cant-create-orders {
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          padding: 0 40px;
+          > p {
+            margin-top: 10px;
+            text-align: center;
+          }
+        }
     }
 
     &.order-details-open{
