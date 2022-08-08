@@ -1,0 +1,118 @@
+<div class="grid">
+  <ng-container *ngFor="let fiscalDoc of filesToUploadSatCertificate">
+    <div class="fiscal-document-card-wrapper">
+
+      <div [ngClass]="!showMenu ? 'hidden':''" [hidden]="!showMenu" class="options-menu-wrapper">
+        <div class="options-menu" style="z-index: 5;"  >
+          <div class="option"  (click)="openFile()">
+              <div class="icon icon-eye-open"></div>
+              {{ 'fiscal-documents.view-file' | translate }}
+          </div>
+            <div 
+              class="option" 
+              (click)="deleteAlertOpen = true">
+                <div class="icon icon-trash"></div>
+                {{ 'fiscal-documents.remove-file' | translate }}
+            </div>
+        </div>
+      </div>
+  
+      <div 
+          #fiscalDocument
+          class="fiscal-document-card"
+          (click)="onCardClicked()">
+          <div
+            *ngIf="fileInfo.fileIsSelected && !fileInfo.uploadFileStatus?.documentIsBeingUploaded"
+            (click)="showOptionsMenu($event)"
+            class="icon icon-vertical-ellipsis vertical-ellipsis-icon">
+          </div>
+          <div 
+            *ngIf="fileInfo.uploadFileStatus?.documentIsBeingUploaded && !showCheckmarkComponent"
+            class="cross-icon cancel-request"
+            (click)="cancelRequest()">
+          </div>
+          
+          <div class="icon-wrapper">
+              <div 
+                  class="plus-icon"
+                  [ngClass]="fileInfo.fileIsSelected || draggingToCard ? 'hidden':''"
+                  >
+                    +
+              </div>
+
+              <div class="lottie" [hidden]="!draggingToCard">
+                
+                <ng-lottie 
+                    [options]="dropLottie">
+                </ng-lottie>
+
+              </div>
+
+              <div [ngClass]=" !fileInfo.fileIsSelected  || draggingToCard || fileInfo.uploadFileStatus?.documentIsBeingUploaded ? 'hidden':'' ">
+                <div class="doc-icon">
+                    {{ fileInfo.extension}} 
+                </div>
+              </div>
+      
+              <svg 
+                  *ngIf="showCheckmarkComponent "
+                  class="checkmark" 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 52 52">
+                      <path 
+                          class="checkmark__check" 
+                          fill="none" 
+                          d="M14.1 27.2l7.1 7.2 16.7-16.8"/> 
+              </svg>
+                  
+              <div 
+                  class="circle-progress-wrapper" 
+                  *ngIf="fileInfo.uploadFileStatus?.documentIsBeingUploaded">
+                      <circle-progress
+                          [percent]="fileInfo.uploadFileStatus?.currentPercentage || 0"
+                          [showTitle]="!showCheckmarkComponent"
+                          [showUnits]="!showCheckmarkComponent">
+                      </circle-progress>
+              </div>
+          </div>
+      
+          <div class="info">
+            <div class="title" >
+              <span *ngIf="!fileInfo.fileIsOptional" >*</span>
+              {{ fileInfo.text | translate }}
+            </div>
+    
+            <div class="subtitle">
+                {{ fileInfo.formattedSize }}
+            </div>
+          </div>
+      
+      </div>
+  
+    </div>
+  
+    <form>
+      <input
+      #fileInput
+      (change)="fileInputChanged()"
+      hidden
+      type="file"
+      accept="image/*, .pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/plain, application/pdf">
+
+      <input type="text" formControlName="password">
+
+
+    </form>
+  
+    <!-- <bego-alert
+      *ngIf="deleteAlertOpen"
+      [title]=" 'fiscal-documents.remove-file'  | translate "
+      (close)="deleteAlertOpen = false"
+      [handlers]="deleteAlertHandlers">
+        {{ 'fiscal-documents.delete-file-question' | translate }}
+        '{{ fileInfo.text | translate }}' 
+        {{ 'fiscal-documents.file' | translate }}?
+    </bego-alert> -->
+  </ng-container>
+
+</div>

@@ -443,6 +443,11 @@
       "body": "Tu cuenta estará verificada una vez hayamos checado los documentos subidos"
     }
   },
+  "sat-certification": {
+    "order_tab_label": "SAT",
+    "label_cer": "Certificado del sello digital (.cer)",
+    "label_key": "Llave del sello digital (.key)"
+  },
   "profile": {
     "account": {
       "txt_orders": "Órdenes",

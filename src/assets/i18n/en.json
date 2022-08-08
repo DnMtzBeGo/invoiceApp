@@ -443,6 +443,11 @@
       "body": "Your account will be verified once we verify the documents we received"
     }
   },
+  "sat-certification": {
+    "order_tab_label": "SAT",
+    "label_cer": "Certificado del sello digital (.cer)",
+    "label_key": "Llave del sello digital (.key)"
+  },
   "profile": {
     "account": {
       "txt_orders": "Orders",

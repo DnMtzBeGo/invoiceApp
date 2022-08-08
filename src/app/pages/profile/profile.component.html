@@ -50,7 +50,18 @@
           <div class="order-label">
             {{ 'profile.account.txt_orders' | translate }}
           </div>
-      </div>
+        </div>
+
+        <div class="fleet-info">
+          <div class="name">
+            <h3>Rol</h3>
+            <p>Driver Manager</p>
+          </div>
+          <div class="name">
+            <h3>Flotilla</h3>
+            <p>Camioneros</p>
+          </div>
+        </div>
 
       </div>
 
@@ -84,19 +95,19 @@
             autoplay>
           </video>
           <canvas hidden #canvas ></canvas>
-
+        </div>
+        <div class="picture-actions">
+          <button mat-fab class="picture-btn" (click)="takePic()">
+            <div>
+              <img src="../../../assets/images/history/camera.svg" alt="camera button">          
+            </div>
+          </button>
+  
           <div 
             class="close-btn"
             (click)="closePicShoot()">
           </div>
         </div>
-
-        <button mat-fab class="picture-btn" (click)="takePic()">
-          <div>
-            <img src="../../../assets/images/history/camera.svg" alt="camera button">          
-          </div>
-        </button>
-
       </div>
     </div>
 

@@ -50,6 +50,11 @@ export class ProfileComponent implements OnInit {
           this.profileInfoService.getProfileInfo();
         }
       },
+      satCertificate: {
+        text: 'sat-certification.order_tab_label',
+        url: '/profile/sat-certificate',
+        key: 'satCertificate',
+      },
       documentation: {
         text: 'fiscal-documents.upload-files.documentation',
         url: '/profile/fiscal-documents',
@@ -116,7 +121,7 @@ export class ProfileComponent implements OnInit {
   async getOrderCount() {
     (await this.webService.apiRest('', 'orders/get')).subscribe(
       async (res) => {
-        this.ordersCount = res.result.length
+        this.ordersCount = res.result.length;
       },
       async (err) => {
         this.ordersCount = 0;
