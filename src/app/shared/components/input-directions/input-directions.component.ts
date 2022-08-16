@@ -311,6 +311,12 @@ export class InputDirectionsComponent implements OnInit {
       );
   };
 
+  selectFirstResult(event, selectFuncion, items) {
+    if (event.key != 'Enter' || !items?.[0]) return;
+    event.preventDefault();
+    selectFuncion.call(this, items[0]);
+  }
+
   focusOutInputPickup() {
     this.activeInput = "pickup";
     if (this.locations.pickupPostalCode < 1) {
