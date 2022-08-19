@@ -379,11 +379,15 @@ export class HomeComponent implements OnInit {
           this.dragCounter++;
         });
 
-        google.maps.event.addListener(this.map, 'zoom_changed', () => {
-          // console.log('- zoom_changed (' + this.zoom_changedCounter + ') -');
-          if (this.zoom_changedCounter > 0) this.isMapDirty = true;
-          this.zoom_changedCounter++;
-        });
+        this.mapRef.nativeElement
+          .addEventListener(
+            'mousewheel',
+            (event) => {
+              this.isMapDirty = true;
+              this.zoom_changedCounter++;
+            },
+            true
+          );
       });
     }
 
