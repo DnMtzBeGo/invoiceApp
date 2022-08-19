@@ -67,32 +67,25 @@
         background: #040b12;
         object-fit: cover;
       }
-    }
 
-    .btn-location {
-      position: absolute;
-      bottom: 150px;
-      font-size: 26px;
-      right: 46px;
-      color: #ededed;
-      width: 34px;
-      height: 34px;
-
-      &:before {
-        content: '';
-        height: 4px;
-        width: 4px;
+      #reset {
         position: absolute;
-        border: 2px solid #ededed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border-radius: 50%;
-      }
-    }
+        bottom: -150px;
+        right: calc(400px + 10px);
+        border: none;
+        cursor: pointer;
+        transition: all 0.5s ease-in-out;
+        pointer-events: all;
 
-    .btn-location-driver {
-      bottom: 40px !important;
+        i {
+          font-size: 2rem;
+          color: #ededed;
+        }
+
+        &.reset-up {
+          bottom: 10px;
+        }
+      }
     }
 }
 

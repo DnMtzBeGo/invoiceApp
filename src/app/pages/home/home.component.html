@@ -44,5 +44,15 @@
       >
       </app-input-directions>
     </div>
+
+    <button
+      id="reset"
+      (click)="mapEmitter.next(['center'])"
+      [ngClass]="{
+        'reset-up': userRole && showFleetMap && !showOrderDetails
+      }"
+    >
+      <i class="icon icon-gps"></i>
+    </button>
   </div>
 </div>
