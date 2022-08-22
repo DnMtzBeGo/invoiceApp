@@ -65,8 +65,6 @@ export class HomeComponent implements OnInit {
   map: any;
   googleMarkers: any[] = [];
   isMapDirty = false;
-  dragCounter = 0;
-  zoom_changedCounter = 0;
   bounds: any;
   start: any;
   end: any;
@@ -169,7 +167,6 @@ export class HomeComponent implements OnInit {
                     ofType('center'),
                     tap(() => {
                       this.isMapDirty = false
-                      this.zoom_changedCounter = 0
                     }),
                   )
                 )
@@ -374,17 +371,28 @@ export class HomeComponent implements OnInit {
     if (this.map == void 0) {
       window.requestAnimationFrame(() => {
         google.maps.event.addListener(this.map, 'drag', () => {
-          // console.log('- drag (' + this.dragCounter + ') -');
           this.isMapDirty = true;
-          this.dragCounter++;
+        });
+
+        google.maps.event.addListener(this.map, 'dblclick', () => {
+          if (this.map.getZoom() + 1 <= this.maxZoom) {
+            this.isMapDirty = true;
+          }
+          // console.log('zoom:', this.zoom);
         });
 
         this.mapRef.nativeElement
           .addEventListener(
             'mousewheel',
             (event) => {
-              this.isMapDirty = true;
-              this.zoom_changedCounter++;
+              // zoom in
+              if (this.map.getZoom() + 1 <= this.maxZoom && !(event.deltaY > 1)) {
+                this.isMapDirty = true;
+              }
+              // zoom out
+              else if (event.deltaY > 1) {
+                this.isMapDirty = true;
+              }
             },
             true
           );
@@ -396,7 +404,8 @@ export class HomeComponent implements OnInit {
       this.map != void 0 && !fromShowMap
         ? this.map
         : new google.maps.Map(this.mapRef.nativeElement, {
-            zoom: 15,
+            zoom: this.zoom,
+            maxZoom: this.maxZoom,
             mapId: "893ce2d924d01422",
             disableDefaultUI: true,
             backgroundColor: '#040b12',
@@ -406,7 +415,6 @@ export class HomeComponent implements OnInit {
               lng: this.markersFromService[0].position.lng
             }
           });
-    this.map.setOptions({ maxZoom: this.maxZoom });
 
     // clean bounds, googleMarkers
     this.bounds = new google.maps.LatLngBounds();
@@ -437,8 +445,8 @@ export class HomeComponent implements OnInit {
     }
 
     google.maps.event.addListenerOnce(this.map, 'bounds_changed', () => {
-      this.map.setOptions({ maxZoom: null });
-      // console.log('bounds_changed');
+      // this.map.setOptions({ maxZoom: null });
+      this.zoom = this.map.getZoom();
     });
 
     if (cleanRefresh === false || fromShowMap || this.isMapDirty === false)
