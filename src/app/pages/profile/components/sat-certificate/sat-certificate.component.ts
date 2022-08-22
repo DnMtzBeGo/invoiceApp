@@ -14,6 +14,7 @@ import { AnimationOptions } from 'ngx-lottie';
 import { BegoAlertHandler } from 'src/app/shared/components/bego-alert/BegoAlertHandlerInterface';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-sat-certificate',
@@ -46,6 +47,7 @@ export class SatCertificateComponent implements OnInit {
   public formSatCertificate: any = new FormGroup({
     password: new FormControl("", Validators.required),
   });
+
   // fileSize = '0KB';
   // draggingToCard: boolean = false;
   // dropLottie: AnimationOptions = {
@@ -89,7 +91,8 @@ export class SatCertificateComponent implements OnInit {
   // }
 
   constructor(
-    public injector: Injector
+    public injector: Injector,
+    private webService: AuthService,
   ) { 
     // this.sanitizer = this.injector.get(DomSanitizer);
     // this.fiscalDocumentsService = this.injector.get(FiscalDocumentsService);
@@ -112,10 +115,20 @@ export class SatCertificateComponent implements OnInit {
           
     //   },
     // ];
+    this.getSATDocs();  
   }
 
   ngOnInit(): void {
   }
+
+  async getSATDocs() {
+    (await this.webService.apiRest('', 'profile/get_emitter_files')).subscribe(async (data) => {
+      console.log(data.result);
+      // this.emitterFiles = data.result;
+    }, async (err) => {
+      console.log(err);
+    });
+  };
 
   refreshDocumentsToUpload():void{
 
@@ -173,14 +186,12 @@ export class SatCertificateComponent implements OnInit {
 
   // }
 
-  // onCardClicked(){
-  //   if(!this.fileInfo.fileIsSelected){
-  //     this.fileInput.nativeElement.click();
-  //   }
-  //   else if(!this.fileInfo.uploadFileStatus?.documentIsBeingUploaded){
-  //     this.openFile();
-  //   }
-  // } 
+  onCardClicked(){
+    // if(!this.fileInfo.fileIsSelected){
+    //   this.fileInput.nativeElement.click();
+    // }
+    this.fileInput.nativeElement.click();
+  }
 
 
   // afterFileUploaded = ():Promise<void> => {
@@ -315,10 +326,6 @@ export class SatCertificateComponent implements OnInit {
   //   });
   // }
 
-
-  // openFile(){
-  //   window.open(this.fileInfo.src?.toString());
-  // }
 
   // cancelRequest(){
   //   this.fileInfo.uploadFileStatus?.uploadRequest?.unsubscribe();

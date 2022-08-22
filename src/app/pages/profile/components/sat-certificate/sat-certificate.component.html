@@ -21,21 +21,25 @@
           #fiscalDocument
           class="fiscal-document-card"
           (click)="onCardClicked()">
-          <div
+          {{fileInfo}}
+          <!-- <div
             *ngIf="fileInfo.fileIsSelected && !fileInfo.uploadFileStatus?.documentIsBeingUploaded"
             (click)="showOptionsMenu($event)"
             class="icon icon-vertical-ellipsis vertical-ellipsis-icon">
-          </div>
-          <div 
+          </div> -->
+          <!-- <div 
             *ngIf="fileInfo.uploadFileStatus?.documentIsBeingUploaded && !showCheckmarkComponent"
             class="cross-icon cancel-request"
             (click)="cancelRequest()">
-          </div>
+          </div> -->
           
           <div class="icon-wrapper">
-              <div 
+              <!-- <div 
                   class="plus-icon"
                   [ngClass]="fileInfo.fileIsSelected || draggingToCard ? 'hidden':''"
+                  > -->
+                  <div 
+                  class="plus-icon"
                   >
                     +
               </div>
@@ -98,10 +102,17 @@
       hidden
       type="file"
       accept="image/*, .pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/plain, application/pdf">
-
-      <input type="text" formControlName="password">
-
-
+      <div class="personal-info">
+        <mat-form-field>
+          <mat-label>
+            dsadsad
+          </mat-label>
+          <input 
+            matInput
+            type="text"
+            formControlName="password">
+        </mat-form-field>
+      </div>
     </form>
   
     <!-- <bego-alert

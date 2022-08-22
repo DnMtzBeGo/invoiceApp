@@ -102,6 +102,7 @@ export class ProfileComponent implements OnInit {
 
     this.profileInfoService.data.subscribe(
       ( profileInfo: any) => {
+        console.log(profileInfo)
         this.profileInfo = profileInfo;
       });
     this.getOrderCount();

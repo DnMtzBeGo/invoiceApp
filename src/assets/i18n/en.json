@@ -472,7 +472,11 @@
       "txt-delete-profile-pic": "Are you sure you want to delete your profile picture?",
       "txt-delete-profile-pic-title": "Remove profile picture",
       "delete-profile-pic-btn": "Ok",
-      "cancel-deletion-btn": "Cancel"
+      "cancel-deletion-btn": "Cancel",
+      "txt-role": "Role",
+      "txt-fleet": "Fleet",
+      "txt-manager": "Manager",
+      "txt-driver-manager": "Driver Manager"
     },
     "edit": {
       "txt_edit_profile": "Edit Profile",

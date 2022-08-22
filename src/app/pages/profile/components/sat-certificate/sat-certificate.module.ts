@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 // import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-file-bar.module';
 import { SatCertificateComponent } from './sat-certificate.component';
-
+import { MatInputModule } from '@angular/material/input';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
@@ -27,6 +27,7 @@ export function playerFactory() {
     ButtonModule,
     BegoAlertModule,
     TranslateModule,
+    MatInputModule,
     // DragFileBarModule,
     MatSelectModule,
     NgCircleProgressModule.forRoot({
