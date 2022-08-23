@@ -20,8 +20,14 @@
     <!-- <div class="avatar" routerLink="/profile">
       <img [src]="profilePic" (error)="profilePicError()" alt="" />
     </div> -->
+    <div class="notifications">
+      <span class="notification-dot" *ngIf="this.notificationsBarService.hasNewNotifications">
+        *
+      </span>
+      <img (click)="toggleNotificationBar()" src="/assets/images/notifications/notifications.png" alt="Notificaciones" title="Notificaciones" />
+    </div>
     <div class="avatar">
-      <img [src]="profilePic" (error)="profilePicError()" alt="" />
+      <img [src]="profilePic" (error)="profilePicError()" alt="Perfil de usuario" title="Perfil de usuario"  />
     </div>
     <app-web-menu-button [menuOpened]="menuOpened" (click)="toggleMenu()"></app-web-menu-button>
   </div>

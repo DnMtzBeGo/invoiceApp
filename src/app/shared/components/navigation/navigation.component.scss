@@ -33,6 +33,13 @@
     }
   }
 
+  .notifications {
+    img {
+      display: block;
+      cursor: pointer;
+    }
+  }
+
   #languages {
     display: flex;
     align-items: center;

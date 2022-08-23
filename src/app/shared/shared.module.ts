@@ -50,6 +50,9 @@ import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components
 import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/carta-porte/services/carta-porte-info.service";
 import { BegoSliderDotsComponent } from "src/app/shared/components/bego-slider-dots/bego-slider-dots.component";
 import { BegoAddressAutocompleteModule } from "src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module";
+
+import { NotificationBarModule } from "src/app/shared/components/notification-bar/notification-bar.module";
+import { NotificationBarComponent } from "src/app/shared/components/notification-bar/notification-bar.component";
 @NgModule({
   declarations: [
     FacturaEmisorConceptosComponent,
@@ -57,6 +60,7 @@ import { BegoAddressAutocompleteModule } from "src/app/shared/components/bego-ad
     InfoModalComponent,
     FacturaDireccionInputComponent,
     BegoSliderDotsComponent,
+    NotificationBarComponent,
   ],
   imports: [
     CommonModule,
@@ -142,6 +146,8 @@ import { BegoAddressAutocompleteModule } from "src/app/shared/components/bego-ad
     FacturaDireccionInputComponent,
     BegoSliderDotsComponent,
     BegoAddressAutocompleteModule,
+    //    NotificationBarModule,
+    NotificationBarComponent,
   ],
   providers: [CartaPorteInfoService],
 })

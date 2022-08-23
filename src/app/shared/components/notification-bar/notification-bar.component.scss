@@ -1,6 +1,6 @@
 #notificationBar {
     transform: height;
-    transition: all .5s ease-in-out;
+    transition: all .5s ease-in;
 
     background: #010B10;
     // #050B1080;
@@ -9,6 +9,10 @@
     height: 100%;
     overflow: hidden;
 
+    & > div{
+        padding:5%;
+    }
+    
     &.hide{
         height:0%;
     }
@@ -18,23 +22,26 @@
     position: fixed;
     top: 0;
     right: 0;
-    padding: 1%;
 
     .avatar {
-        margin: 0px auto;
-        height: 94px;
-        width: 94px;
-        border-radius: 50%;
+        margin: 20px auto;
+        height: 120px;
+        width: 120px;
         background: #48556721;
+        border-radius: 50%;
+        padding: 10px;
 
         img {
+            height: 100px;
+            width: 100px;
+            border: 5px solid #1C232A;
             border-radius: 50%;
         }
     }
 
     h3 {
         text-align: center;
-        margin-bottom: 13px;
+        margin-bottom: 20px;
         font-family: 'Avenir';
         font-style: normal;
         font-weight: 800;
@@ -78,6 +85,7 @@
                 border-radius: 50%;
 
                 padding: 3.5%;
+                vertical-align: top;
 
                 img {
                     width: 24px;
@@ -93,14 +101,30 @@
 
                 .title {
                     font-weight: 800;
-                    width: 40%;
                 }
 
                 .body {
+                    transform: height;
+                    transition: all .5s linear;
+
                     font-weight: 400;
-                    width: 60%;
+                    max-height: 20px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    
+                    &.open{
+                        max-height: 300px;
+                        white-space:inherit;
+                    }
+                }
+
+                .more{
+                    cursor: pointer;
+                    color: #ffbe00;
                 }
             }
+
 
             .time {
                 color: #62666C;
@@ -148,5 +172,9 @@
 
     .text-right{
         text-align: right;
+    }
+
+    .hand{
+        cursor:pointer
     }
 }
