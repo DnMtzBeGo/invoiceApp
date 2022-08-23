@@ -4,9 +4,11 @@
 
 export const environment = {
   production: false,
-  version: 'v1.0.0',
-  URL_BASE: 'https://begomx-develop.herokuapp.com/v1.0/',
-  website_url: 'https://bego.ai/'
+  version: "v1.0.0",
+  //URL_BASE: 'https://begomx-develop.herokuapp.com/v1.0/',
+  URL_BASE: "http://localhost:3002/v1.0/",
+  SOCKET_URI: "http://localhost:3008",
+  website_url: "https://bego.ai/",
 };
 
 /*

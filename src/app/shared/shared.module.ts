@@ -50,14 +50,13 @@ import { FacturaDireccionInputComponent } from "src/app/pages/invoice/components
 import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/carta-porte/services/carta-porte-info.service";
 import { BegoSliderDotsComponent } from "src/app/shared/components/bego-slider-dots/bego-slider-dots.component";
 import { BegoAddressAutocompleteModule } from "src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module";
-
 @NgModule({
   declarations: [
     FacturaEmisorConceptosComponent,
     FacturaManageDireccionesComponent,
     InfoModalComponent,
     FacturaDireccionInputComponent,
-    BegoSliderDotsComponent
+    BegoSliderDotsComponent,
   ],
   imports: [
     CommonModule,

@@ -50,6 +50,8 @@ import { HorizontalCardComponent } from "./shared/components/horizontal-card/hor
 import { SharedModule } from "./shared/shared.module";
 import { SmallResolutionModalComponent } from "./shared/components/small-resolution-modal/small-resolution-modal.component";
 import { IncompatibleBrowserModalComponent } from "./shared/components/incompatible-browser-modal/incompatible-browser-modal.component";
+import { NotificationBarComponent } from "./shared/components/notification-bar/notification-bar.component";
+import { NotificationBarModule } from "./shared/components/notification-bar/notification-bar.module";
 
 export function playerFactory() {
   return player;
@@ -81,7 +83,7 @@ export function createTranslateLoader(http: HttpClient) {
     HorizontalCardComponent,
     SmallResolutionModalComponent,
     IncompatibleBrowserModalComponent,
-
+    NotificationBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -126,6 +128,7 @@ export function createTranslateLoader(http: HttpClient) {
     LottieModule.forRoot({ player: playerFactory }),
     CalendarModule,
     SharedModule,
+    NotificationBarModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
