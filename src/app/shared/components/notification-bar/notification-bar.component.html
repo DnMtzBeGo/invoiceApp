@@ -32,6 +32,9 @@
                             <img src="{{'/assets/images/notifications/' + n.image}}" />
                         </div>
                         <div class="content">
+                            <div class="times" title="Ocultar notificación" (click)="hideNotification(i)">
+                                <span class="icon icon-close"></span>
+                            </div>
                             <div class="title">{{n.title}}</div>
                             <div [class]="'body ' + (n.opened ? 'open': '')">{{n.body}}</div>
                             <div class="more" *ngIf="n.body.length > 30" (click)="toggleNotification(i)">

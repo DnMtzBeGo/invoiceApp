@@ -4,6 +4,7 @@ import { HeaderService } from "src/app/pages/home/services/header.service";
 import { ProfileInfoService } from "src/app/pages/profile/services/profile-info.service";
 import { LanguageService } from "src/app/shared/services/language.service";
 import { NotificationsBarService } from "src/app/services/notifications-bar.service";
+
 @Component({
   selector: "bego-navigation",
   templateUrl: "./navigation.component.html",

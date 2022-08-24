@@ -6,6 +6,7 @@ import { Injectable } from "@angular/core";
 export class NotificationsBarService {
   hasNewNotifications: boolean = false;
   isVisible: string = "";
+  ringBell: boolean = false;
 
   constructor() {}
 
@@ -16,5 +17,13 @@ export class NotificationsBarService {
   toggleNewNotifications(forceTo: boolean = true) {
     if (undefined != forceTo) this.hasNewNotifications = forceTo;
     else this.hasNewNotifications = !this.hasNewNotifications;
+  }
+
+  setRingBell() {
+    this.ringBell = false;
+    this.ringBell = true;
+    setTimeout(() => {
+      this.ringBell = false;
+    }, 1000);
   }
 }

@@ -1,3 +1,5 @@
+@import "../../styles/icomoon.scss";
+
 #notificationBar {
     transform: height;
     transition: all .5s ease-in;
@@ -68,6 +70,7 @@
         }
 
         li {
+            position:relative;
             margin-bottom: 32px;
 
             .image {
@@ -90,6 +93,17 @@
                 img {
                     width: 24px;
                     height: 24px;
+                }
+            }
+
+            .times{
+                position:absolute;
+                top:0px; 
+                right: 0px;
+                cursor:pointer;
+
+                .icon{
+                    font-size:8px;
                 }
             }
 

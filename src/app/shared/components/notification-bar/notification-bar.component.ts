@@ -3,6 +3,16 @@ import { io } from "socket.io-client";
 import { environment } from "src/environments/environment";
 import { NotificationsBarService } from "src/app/services/notifications-bar.service";
 import { ProfileInfoService } from "src/app/pages/profile/services/profile-info.service";
+import { AuthService } from "src/app/shared/services/auth.service";
+
+type CustomNotification = {
+  _id: string;
+  title: string;
+  body: string;
+  image?: string;
+  opened?: boolean;
+  hidden?: boolean;
+};
 @Component({
   selector: "app-notification-bar",
   templateUrl: "./notification-bar.component.html",
@@ -10,6 +20,7 @@ import { ProfileInfoService } from "src/app/pages/profile/services/profile-info.
 })
 export class NotificationBarComponent implements OnInit {
   constructor(
+    private auth: AuthService,
     public notificationsBarService: NotificationsBarService,
     private profileInfoService: ProfileInfoService
   ) {}
@@ -19,32 +30,15 @@ export class NotificationBarComponent implements OnInit {
   profilePic: string = "";
   profileName: string = "";
 
-  notifications = [
-    {
-      title: "mi notificacion",
-      body: "contenido de la notificacion y mas contenido para poder probar una notificacion grande.",
-      image: "ico_package.png",
-      opened: false,
-    },
-    {
-      title: "mi notificacion",
-      body: "contenido de la notificacion y mas contenido para poder probar una notificacion grande.",
-      image: "ico_package.png",
-      opened: false,
-    },
-    {
-      title: "mi notificacion",
-      body: "contenido de la notificacion y mas contenido para poder probar una notificacion grande.",
-      image: "ico_package.png",
-      opened: false,
-    },
-  ];
+  notifications: CustomNotification[] = [];
   counter = 1;
 
   ngOnInit(): void {
     const token = localStorage.getItem("token");
     this.getProfilePic();
     this.getUsername();
+
+    this.getPreviousNotifications();
 
     this.socket = io(`${environment.SOCKET_URI}`, {
       reconnectionDelayMax: 1000,
@@ -55,9 +49,11 @@ export class NotificationBarComponent implements OnInit {
     this.socket.on(
       `notifications:carriers:${localStorage.getItem("profileId")}`,
       (data) => {
-        data.image = "ico_package.png";
-        data.opened = false;
-        this.addNewNotification(data);
+        const n: CustomNotification = data;
+        n.image = "ico_package.png";
+        n.opened = false;
+        console.log(n);
+        this.addNewNotification(n);
       }
     );
   }
@@ -76,11 +72,10 @@ export class NotificationBarComponent implements OnInit {
     this.profilePic = "../../../../assets/images/user-outline.svg";
   }
 
-  addNewNotification(notification) {
+  addNewNotification(notification: CustomNotification) {
     this.notifications.unshift(notification);
     this.notificationsBarService.toggleNewNotifications(true);
-
-    console.log(JSON.stringify(this.notifications));
+    this.notificationsBarService.setRingBell();
   }
 
   toggleBar() {
@@ -90,5 +85,30 @@ export class NotificationBarComponent implements OnInit {
 
   toggleNotification(index: number) {
     this.notifications[index].opened = !this.notifications[index].opened;
+  }
+
+  async hideNotification(index: number) {
+    const { _id } = this.notifications[index];
+    (await this.auth.apiRest("", `notifications/hide/${_id}`)).subscribe(
+      async (res) => {
+        console.log("hide", res);
+        this.notifications.splice(index, 1);
+      }
+    );
+  }
+
+  async getPreviousNotifications() {
+    (await this.auth.apiRest("", "notifications/get_all")).subscribe(
+      async (res) => {
+        console.log(res.result);
+        if (res.result.length > 0) {
+          res.result.forEach((n: CustomNotification) => {
+            n.image = "ico_package.png";
+            n.opened = false;
+            this.notifications.unshift(n);
+          });
+        }
+      }
+    );
   }
 }
