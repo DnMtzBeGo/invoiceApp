@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
   styleUrls: ["./confirm-dialog.component.scss"],
 })
 export class ConfirmDialogComponent {
+  @Input() disabled: string = "";
   @Output() hideItems: EventEmitter<any> = new EventEmitter();
 
   constructor(public dialog: MatDialog) {}
@@ -15,8 +16,9 @@ export class ConfirmDialogComponent {
   openDialog(): void {
     this.dialog.open(ConfirmDialogDialogComponent, {
       width: "250px",
+      disableClose: true,
       data: {
-        hideItems: this,
+        hideItems: this.hideItems,
       },
     });
   }
@@ -25,6 +27,7 @@ export class ConfirmDialogComponent {
 @Component({
   selector: "app-confirm-dialog-dialog",
   templateUrl: "./confirm-dialog-dialog.component.html",
+  styleUrls: ["./confirm-dialog-dialog.component.scss"],
 })
 class ConfirmDialogDialogComponent {
   constructor(
@@ -35,7 +38,7 @@ class ConfirmDialogDialogComponent {
   ok() {
     const { hideItems } = this.data;
 
-    hideItems.hideItems.emit(true);
+    hideItems.emit(true);
     this.close();
   }
   close() {

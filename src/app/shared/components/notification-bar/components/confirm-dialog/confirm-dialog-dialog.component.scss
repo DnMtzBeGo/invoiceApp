@@ -1,0 +1,30 @@
+::ng-deep{
+    .mat-dialog-container{
+        background: lighten(#010B10, 25%);
+        color: #FFF;
+        h1{
+            font-size:18px;
+        }
+        div[mat-dialog-content]{
+            padding-top:15px;
+            padding-bottom:15px;
+        }
+        div[mat-dialog-actions]{
+            height:30px;
+
+            button{
+                background: lighten(#010B10, 10%);
+                color: #FFF;
+                padding:10px;
+                font-weight: bold;
+                border: 1px solid darken(#010B10, 5%);
+                border-radius: 5px;
+                cursor: pointer;
+
+                &:first-child{
+                    margin-right: 10px
+                }
+            }
+        }
+    }
+}

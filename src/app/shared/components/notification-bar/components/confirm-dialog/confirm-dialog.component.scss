@@ -1,0 +1,18 @@
+.hide-all-btn{
+    color: #333;
+    font-weight:800;
+    font-size: 11px;
+    padding:3px;
+    position: absolute;
+    right: 0px;
+    top: 3px;
+    min-width: 100px;
+    text-align: center;
+    cursor:pointer;
+
+    &:disabled{
+        
+        background: #444;
+        color:#777
+    }
+}

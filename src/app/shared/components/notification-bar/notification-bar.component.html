@@ -24,10 +24,10 @@
         </div>
 
         <div id="notificationsPanel">
-            <div class="hideAll">
-                <app-confirm-dialog (hideItems)="hideAll($event)"></app-confirm-dialog>
-            </div>
-            <h2>Notificaciones</h2>
+            <h2>
+                Notificaciones
+                <app-confirm-dialog class="dialog-container" (hideItems)="hideAll($event)" [disabled]="!this.notifications.length ? 'disabled': ''"></app-confirm-dialog>
+            </h2>
             <div class="notifications">
                 <ul>
                     <li *ngFor="let n of notifications index as i">
