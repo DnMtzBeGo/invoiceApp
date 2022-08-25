@@ -32,11 +32,9 @@ export class ProfileInfoService {
   }
 
   async getProfilePic(): Promise<string> {
-    console.log("New profile pic: ");
     return new Promise(async (resolve, reject) => {
       (await this.webService.apiRest("", "profile/get_picture")).subscribe(
         async ({ result }) => {
-          console.log("New profile pic result: ", result);
           if (result?.url) {
             localStorage.setItem("profilePicture", result.url);
             localStorage.setItem("profileId", result._id);

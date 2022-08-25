@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 })
 export class NotificationsBarService {
   hasNewNotifications: boolean = false;
-  isVisible: string = "";
+  isVisible: string = "hide";
   ringBell: boolean = false;
 
   constructor() {}

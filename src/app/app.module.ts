@@ -83,7 +83,6 @@ export function createTranslateLoader(http: HttpClient) {
     HorizontalCardComponent,
     SmallResolutionModalComponent,
     IncompatibleBrowserModalComponent,
-    //NotificationBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -128,7 +127,6 @@ export function createTranslateLoader(http: HttpClient) {
     LottieModule.forRoot({ player: playerFactory }),
     CalendarModule,
     SharedModule,
-    //NotificationBarModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },

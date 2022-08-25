@@ -24,6 +24,9 @@
         </div>
 
         <div id="notificationsPanel">
+            <div class="hideAll">
+                <app-confirm-dialog (hideItems)="hideAll($event)"></app-confirm-dialog>
+            </div>
             <h2>Notificaciones</h2>
             <div class="notifications">
                 <ul>
@@ -42,7 +45,7 @@
                             </div>
                         </div>
                         <p>
-                            <small class="time">Hace poco...</small>
+                            <small class="time">{{ getTimeElapsed(n.date_created, now ) }}...</small>
                         </p>
                     </li>
                 </ul>

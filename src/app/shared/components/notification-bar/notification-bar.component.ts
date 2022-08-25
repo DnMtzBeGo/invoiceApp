@@ -4,6 +4,7 @@ import { environment } from "src/environments/environment";
 import { NotificationsBarService } from "src/app/services/notifications-bar.service";
 import { ProfileInfoService } from "src/app/pages/profile/services/profile-info.service";
 import { AuthService } from "src/app/shared/services/auth.service";
+import moment from "moment";
 
 type CustomNotification = {
   _id: string;
@@ -12,6 +13,7 @@ type CustomNotification = {
   image?: string;
   opened?: boolean;
   hidden?: boolean;
+  date_created?: number;
 };
 @Component({
   selector: "app-notification-bar",
@@ -29,6 +31,7 @@ export class NotificationBarComponent implements OnInit {
   socket: any = null;
   profilePic: string = "";
   profileName: string = "";
+  now = 0;
 
   notifications: CustomNotification[] = [];
   counter = 1;
@@ -46,6 +49,7 @@ export class NotificationBarComponent implements OnInit {
         token,
       },
     });
+
     this.socket.on(
       `notifications:carriers:${localStorage.getItem("profileId")}`,
       (data) => {
@@ -56,6 +60,8 @@ export class NotificationBarComponent implements OnInit {
         this.addNewNotification(n);
       }
     );
+
+    this.updateTimeElapsed();
   }
 
   getUsername() {
@@ -98,16 +104,44 @@ export class NotificationBarComponent implements OnInit {
   }
 
   async getPreviousNotifications() {
-    (await this.auth.apiRest("", "notifications/get_all")).subscribe(
+    const request = {
+      pagination: {
+        date_sort: 1,
+      },
+    };
+
+    (
+      await this.auth.apiRest(JSON.stringify(request), "notifications/get_all")
+    ).subscribe(async (res) => {
+      console.log(res.result);
+      if (res.result.length > 0) {
+        res.result.forEach((n: CustomNotification) => {
+          n.image = "ico_package.png";
+          n.opened = false;
+          this.notifications.unshift(n);
+        });
+      }
+    });
+  }
+
+  getTimeElapsed(date_created: number, now: any) {
+    now = moment(now);
+    return "Hace " + moment.duration(now.diff(date_created)).humanize();
+  }
+
+  private updateTimeElapsed() {
+    this.now = Date.now();
+    setTimeout(() => {
+      this.updateTimeElapsed();
+    }, 1000);
+  }
+
+  async hideAll(send: boolean = false) {
+    console.log("ocultando todas", send);
+    (await this.auth.apiRest("", "notifications/hide_all")).subscribe(
       async (res) => {
-        console.log(res.result);
-        if (res.result.length > 0) {
-          res.result.forEach((n: CustomNotification) => {
-            n.image = "ico_package.png";
-            n.opened = false;
-            this.notifications.unshift(n);
-          });
-        }
+        console.log(res);
+        this.notifications = [];
       }
     );
   }

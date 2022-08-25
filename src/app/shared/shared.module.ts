@@ -103,6 +103,7 @@ import { NotificationBarComponent } from "src/app/shared/components/notification
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
     BegoAddressAutocompleteModule,
+    NotificationBarModule,
   ],
   exports: [
     MatBadgeModule,

@@ -1,11 +1,13 @@
 @import "../../styles/icomoon.scss";
 
+$nb-background: #010B10;
+
 #notificationBar {
     transform: height;
-    transition: all .5s ease-in;
+    transition: all .5s ease-out;
 
-    background: #010B10;
-    // #050B1080;
+    background: $nb-background;
+    border-left:1px solid lighten($nb-background, 5%);
     font-family: Avenir;
 
     height: 100%;
@@ -98,7 +100,7 @@
 
             .times{
                 position:absolute;
-                top:0px; 
+                top:-3px; 
                 right: 0px;
                 cursor:pointer;
 
