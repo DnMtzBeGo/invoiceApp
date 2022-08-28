@@ -5,6 +5,7 @@ import { NotificationsBarService } from "src/app/services/notifications-bar.serv
 import { ProfileInfoService } from "src/app/pages/profile/services/profile-info.service";
 import { AuthService } from "src/app/shared/services/auth.service";
 import moment from "moment";
+import { AlertService } from "src/app/shared/services/alert.service";
 
 type CustomNotification = {
   _id: string;
@@ -24,7 +25,8 @@ export class NotificationBarComponent implements OnInit {
   constructor(
     private auth: AuthService,
     public notificationsBarService: NotificationsBarService,
-    private profileInfoService: ProfileInfoService
+    private profileInfoService: ProfileInfoService,
+    private alertService: AlertService
   ) {}
 
   isVisible: string = this.notificationsBarService.isVisible ? "" : "hide";
@@ -136,13 +138,36 @@ export class NotificationBarComponent implements OnInit {
     }, 1000);
   }
 
-  async hideAll(send: boolean = false) {
-    console.log("ocultando todas", send);
+  private async hideAll() {
+    console.log("ocultando todas");
     (await this.auth.apiRest("", "notifications/hide_all")).subscribe(
       async (res) => {
         console.log(res);
         this.notifications = [];
       }
     );
+  }
+
+  openDialog(): void {
+    this.alertService.create({
+      body: "¿Quiere ocultar todas las notificaciones?",
+      handlers: [
+        {
+          text: "No",
+          color: "#ffbe00",
+          action: async () => {
+            this.alertService.close();
+          },
+        },
+        {
+          text: "Si",
+          color: "#ffbe00",
+          action: async () => {
+            this.hideAll();
+            this.alertService.close();
+          },
+        },
+      ],
+    });
   }
 }

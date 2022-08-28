@@ -194,4 +194,11 @@ $nb-background: #010B10;
     .hand{
         cursor:pointer
     }
+
+    .hide-all-btn{
+        min-width: 80px;
+        right:0px;
+        position: absolute;
+        cursor: pointer;
+    }
 }
