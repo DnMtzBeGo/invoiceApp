@@ -1,0 +1,104 @@
+.list-file {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    align-items: center;
+    padding: 15px 28px;
+
+    >div {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .doc-icon {
+        height: 21px;
+    }
+
+    .list-file-actions {
+        >div {
+            gap: 15px;
+
+            img {
+                width: 20px;
+            }
+        }
+
+        .clickable {
+            cursor: pointer;
+        }
+
+        .icon {
+            font-size: 18px;
+        }
+    }
+
+    .bar {
+
+        height: 10px;
+        background-color: gray;
+        position: relative;
+
+        .proggress {
+            background-color: green;
+            height: 100%;
+            width: 70%;
+            position: relative;
+        }
+    }
+
+}
+
+.list-file-updating {
+    border: 1px solid #1C232A;
+    border-radius: 8px;
+    margin: 10px 0px;
+    padding: 21px 74px 25px 45px;
+
+    .body {
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .title {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .subtitle {
+            font-weight: 300;
+            font-size: 13px;
+            color: #C1C7D0;
+
+            .separator-bullet {
+
+                margin: 0px 3px;
+
+                &:after {
+                    content: '\2022';
+                }
+            }
+        }
+
+
+    }
+
+    .bar {
+        height: 3px;
+        background-color: #1E242B;
+        position: relative;
+        border-radius: 3px;
+
+        .proggress {
+            background-color: #ffbe00;
+            height: 100%;
+            width: 0%;
+            position: relative;
+            border-radius: 3px;
+            transition: width 0.6s;
+        }
+    }
+
+}

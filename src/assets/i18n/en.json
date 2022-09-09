@@ -488,6 +488,10 @@
       "txt_saved": "Your settings have been saved.",
       "txt_address_not_found": "Address not found..."
     },
+    "sat": {
+      "save": "Send",
+      "select-tax-regime" : "Choose your tax regime"
+    },
     "upload-files": {
       "txt_fiscal_documents": "Fiscal Documents",
       "txt_browse": "Browse your file",

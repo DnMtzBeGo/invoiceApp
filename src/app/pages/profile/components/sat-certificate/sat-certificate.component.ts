@@ -1,338 +1,224 @@
-import { 
-  Component, 
-  OnInit, 
-  ViewChild,
-  ElementRef,
-  Injector
-} from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren, OnInit, Inject } from '@angular/core';
 import { FiscalDocumentsService } from './services/sat-certificate.service';
 import { FileInfo } from './interfaces/FileInfo';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HttpEventType } from '@angular/common/http';
 import { AnimationOptions } from 'ngx-lottie';
 import { BegoAlertHandler } from 'src/app/shared/components/bego-alert/BegoAlertHandlerInterface';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { FiscalDocumentItemComponent } from './components/fiscal-document-item/fiscal-document-item.component';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
+type FileInterfaceFormats = 'cards' | 'list';
 @Component({
   selector: 'app-sat-certificate',
   templateUrl: './sat-certificate.component.html',
   styleUrls: ['./sat-certificate.component.scss']
 })
 export class SatCertificateComponent implements OnInit {
-
-  sanitizer: DomSanitizer;
-  fiscalDocumentsService: FiscalDocumentsService;
-  deleteAlertOpen: boolean = false;
-  translateService: TranslateService;
-  deleteAlertHandlers!: BegoAlertHandler[];
+  selectedFormat: FileInterfaceFormats = 'cards';
   documentsToUpload!: FileInfo[];
+  userType: string = 'carriers';
+  fiscalDocSelected!: any;
+
+  form: FormGroup;
+  taxRegimes = [];
+
+  selectedTaxRegime: string = '';
+  password: string = '';
+
+  showImgTest: boolean = false;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
-  @ViewChild('fiscalDocument') fiscalDocument!: ElementRef;
+  @ViewChild('uploadFilesBar') uploadFilesBar!: ElementRef;
+  @ViewChild('fiscalDocsPage') fiscalDocsPage!: ElementRef;
+  @ViewChildren('fiscalItems')
+  fiscalItems!: QueryList<FiscalDocumentItemComponent>;
+  @ViewChildren('fiscalCards')
+  fiscalCards!: QueryList<FiscalDocumentItemComponent>;
 
-  filesToUploadSatCertificate: FileInfo[]  = [
-    {
-      text : 'Certificado del sello digital(.cer)',
-      key:"CSD",
-    },
-    {
-      text : 'Llave del sello digital(.key)',
-      key:"key",
-    }
-  ];
+  selectionchange;
 
-  public formSatCertificate: any = new FormGroup({
-    password: new FormControl("", Validators.required),
-  });
+  dropdownSelectedDoc!: FileInfo;
 
-  // fileSize = '0KB';
-  // draggingToCard: boolean = false;
-  // dropLottie: AnimationOptions = {
-  //   path:'/assets/images/fiscal-documents/folder.json',
-  // }
+  dropEventListenerAdded!: boolean;
+  missingFiles: Array<any> = [];
 
-  // showMenu: boolean = false;
-  // showCheckmarkComponent: boolean = false;
-
-  // addFileEventListeners =  {
-  //   dragOver: ( event: DragEvent ) => {
-  //     this.draggingToCard = true;
-  //     event.preventDefault();
-  //     this.fiscalDocument.nativeElement.classList.add('dragging-file');
-  //   },
-
-  //   dragLeave: ( event: DragEvent ) => {
-  //     event.preventDefault();
-  //     this.draggingToCard = false;
-  //     this.fiscalDocument.nativeElement.classList.remove('dragging-file');
-
-  //   },
-
-  //   drop: ( event: any ) => {
-  //     event.preventDefault();
-  //     this.removeDragFileEventListener();
-  //     const { files } = event.dataTransfer;
-  //     this.draggingToCard = false;
-  //     this.fiscalDocument.nativeElement.classList.remove('dragging-file');
-  //     this.uploadFile(files[0]);
-
-  //   }
-  // }
-
-  // fileUploadedEventListeners = {
-  //   dragOver: ( event: any ) => {
-  //     event.preventDefault();
-  //     event.dataTransfer.dropEffect = 'none';
-
-  //   }
-  // }
+  dropEvent(event: any) {
+    event.preventDefault();
+    console.log('drop prevented');
+  }
 
   constructor(
-    public injector: Injector,
-    private webService: AuthService,
-  ) { 
-    // this.sanitizer = this.injector.get(DomSanitizer);
-    // this.fiscalDocumentsService = this.injector.get(FiscalDocumentsService);
-    // this.translateService = this.injector.get(TranslateService);
-    // this.deleteAlertHandlers = [
-    //   {
-    //     text : this.translateService.instant('fiscal-documents.cancel'),
-    //     action: ()=> {
-    //       this.deleteAlertOpen = false;
-    //     }
-          
-    //   },
-    //   {
-    //     text : this.translateService.instant('fiscal-documents.remove-file'),
-    //     color: '#ffbe00',
-    //     action: async ()=> {
-    //       await this.deleteFile();
-    //       this.deleteAlertOpen = false;
-    //     }
-          
-    //   },
-    // ];
-    this.getSATDocs();  
+    @Inject(FiscalDocumentsService)
+    public fiscalDocumentsService: FiscalDocumentsService,
+    private sanitizer: DomSanitizer,
+    private alertService: AlertService,
+    private translateService: TranslateService,
+    public webService: AuthService,
+    private formBuilder: FormBuilder
+  ) {
+    this.refreshDocumentsToUpload();
+    this.fetchTaxRegimes();
   }
+
+  /**
+   * Function that helps refresh the list of files that
+   * have been uploaded in the server
+   */
+  refreshDocumentsToUpload(): void {
+    this.documentsToUpload = this.fiscalDocumentsService.getDocumentTypes();
+    this.updateMissingFiles();
+    this.updateFiscalDocSelected(this.missingFiles[0]?.key);
+    console.log('Documents to upload: ', this.documentsToUpload);
+  }
+
+  getSortedFilesList() {
+    if (this.documentsToUpload) {
+      return [...this.documentsToUpload].sort((a, b) => (b.hierarchy || -1) - (a.hierarchy || -1));
+    }
+    return [];
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.fiscalDocsPage && !this.dropEventListenerAdded) {
+      this.dropEventListenerAdded = true;
+
+      this.fiscalDocsPage.nativeElement.addEventListener('dragover', (event: any) => {
+        event.preventDefault();
+      });
+
+      this.fiscalDocsPage.nativeElement.addEventListener('dragleave', (event: any) => {
+        event.preventDefault();
+      });
+
+      this.fiscalDocsPage.nativeElement.addEventListener('drop', (event: any) => {
+        event.preventDefault();
+      });
+    }
+  }
+
+  ngAfterComponentInit(): void {
+    console.log('fiscal element ngAfterComponentInit : ', this.fiscalDocsPage.nativeElement);
+  }
+
+  filesUploaded() {
+    return this.documentsToUpload.filter((e) => e.fileIsSelected);
+  }
+
+  updateMissingFiles(): void {
+    this.missingFiles = this.documentsToUpload.filter((e) => {
+      return !e.fileIsSelected && !e.uploadFileStatus?.documentIsBeingUploaded;
+    });
+
+    this.updateFiscalDocSelected(this.missingFiles[0]?.key);
+  }
+
+  setSelectedFormat(format: FileInterfaceFormats): void {
+    this.selectedFormat = format;
+  }
+
+  dragFileBarChanged(file: any): void {
+    console.log('dragFileBarChanged');
+    const selectedItem = this.fiscalDocSelected;
+
+    this.fiscalItems.find((e: any) => selectedItem == e.fileInfo.key)?.uploadFile(file);
+
+    this.updateMissingFiles();
+  }
+
+  updateFiscalDocSelected(value: any): void {
+    if (value) {
+      this.fiscalDocSelected = value;
+    }
+  }
+
+  updateAttributes(values) {
+    const keys = Object.keys(values);
+
+    keys.forEach((k) => {
+      console.log('updating', k, values[k]);
+      this.fiscalDocumentsService.updateAttribute(k, values[k]);
+    });
+  }
+
+  async fetchTaxRegimes() {
+    const requestJson = {
+      catalogs: [
+        {
+          name: 'sat_regimen_fiscal',
+          version: '0'
+        }
+      ]
+    };
+    await (
+      await this.webService.apiRest(JSON.stringify(requestJson), 'invoice/catalogs/fetch')
+    ).subscribe(
+      ({ result }) => {
+        this.taxRegimes = result.catalogs[0].documents.map((item) => {
+          const filteredItem = {
+            text: item.code + ' - ' + item.description,
+            value: item.code,
+            fisica: item.fisica,
+            moral: item.moral
+          };
+          return filteredItem;
+        });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+  save() {
+    this.fiscalDocumentsService.sendFiles();
+    return false;
+  }
+
+  // /**
+  //  * Notifies to backend the user is ready for his documentation to be checked
+  //  */
+  // requestDocsVerification(): void {
+  //   this.fiscalDocumentsService.requestVerification(this.userType).then(() => {
+  //     this.alertService.create({
+  //       title: this.translateService.instant(
+  //         "fiscal-documents.required-verification-modal.title"
+  //       ),
+  //       body: this.translateService.instant(
+  //         "fiscal-documents.required-verification-modal.body"
+  //       ),
+  //       handlers: [
+  //         {
+  //           text: "OK",
+  //           color: "#ffbe00",
+  //           action: async () => {
+  //             this.alertService.close();
+  //           },
+  //         },
+  //       ],
+  //     });
+  //   });
+  // }
+
+  // verificationRequestAvailable(): boolean {
+  //   const resquestUnavailable = this.documentsToUpload
+  //     .map((e: FileInfo) => {
+  //       return e.fileIsSelected || e.fileIsOptional;
+  //     })
+  //     .some((e) => !e);
+
+  //   return !resquestUnavailable;
+  // }
 
   ngOnInit(): void {
-  }
-
-  async getSATDocs() {
-    (await this.webService.apiRest('', 'profile/get_emitter_files')).subscribe(async (data) => {
-      console.log(data.result);
-      // this.emitterFiles = data.result;
-    }, async (err) => {
-      console.log(err);
+    this.form = this.formBuilder.group({
+      tax_regime: [this.selectedTaxRegime],
+      password: [this.password]
     });
-  };
 
-  refreshDocumentsToUpload():void{
-
-    // const atLeastOneFileIsUpdating = this.fiscalCards?.filter( 
-    //   (e) => e.fileInfo.uploadFileStatus?.documentIsBeingUploaded == true ).length >= 1;
-    // this.fiscalDocumentsService.getFilesList(this.userType, this.documentsToUpload)
-    //   .then( ( result: FileInfo[] ) => {
-      
-    //     this.documentsToUpload = result;
-    //     console.log('Documents to upload: ', this.documentsToUpload);
-
-    //     this.updateMissingFiles();
-    //     this.updateFiscalDocSelected(this.missingFiles[0]?.key)
-    // });
+    this.form.valueChanges.subscribe((values) => {
+      this.updateAttributes(values);
+    });
   }
-
-  // addDragFileEventListener():void{
-
-  //   this.removeFileUploadedEventListeners();
-
-  //   const card = this.fiscalDocument.nativeElement;
-
-  //   card.addEventListener("dragover", this.addFileEventListeners.dragOver);
-  //   card.addEventListener('dragleave', this.addFileEventListeners.dragLeave);
-  //   card.addEventListener('drop', this.addFileEventListeners.drop);
-
-  // }
-
-  // removeDragFileEventListener():void{
-
-  //   this.addFileUploadedEventListeners();
-
-  //   const card = this.fiscalDocument.nativeElement;
-
-  //   card.removeEventListener("dragover", this.addFileEventListeners.dragOver);
-  //   card.removeEventListener('dragleave', this.addFileEventListeners.dragLeave);
-  //   card.removeEventListener('drop', this.addFileEventListeners.drop);
-
-  // }
-
-  // addFileUploadedEventListeners():void{
-
-  //   const card = this.fiscalDocument.nativeElement;
-
-  //   card.addEventListener('dragover', this.fileUploadedEventListeners.dragOver);
-
-
-  // }
-
-  // removeFileUploadedEventListeners():void{
-
-  //   const card = this.fiscalDocument.nativeElement;
-
-  //   card.removeEventListener('dragover', this.fileUploadedEventListeners.dragOver);
-
-  // }
-
-  onCardClicked(){
-    // if(!this.fileInfo.fileIsSelected){
-    //   this.fileInput.nativeElement.click();
-    // }
-    this.fileInput.nativeElement.click();
-  }
-
-
-  // afterFileUploaded = ():Promise<void> => {
-  //   this.showCheckmarkComponent = true;
-  //   return new Promise( ( resolve ) => {
-  //     setTimeout(() => {
-  //       console.log(' afterFileUploadedwaited 2 secs b4 moving on');
-  //       this.showCheckmarkComponent = false;
-  //       resolve();
-  //     },2000);
-  //   });
-  // }
-
-  // ngAfterViewInit():void{
-
-  //   if(!this.fileInfo.fileIsSelected){
-  //     this.addDragFileEventListener();
-  //   }else{
-  //     this.addFileUploadedEventListeners();
-  //   }
-
-  //   this.onFileDeleted.subscribe(() => {
-  //     this.addDragFileEventListener();
-  //   });
-    
-  // }
-
-
-  // showOptionsMenu(event: MouseEvent ):void{
-  //   event.stopPropagation();
-  //   this.showMenu = true;
-
-  //   document.addEventListener('click', () => {
-  //     this.showMenu = false;
-  //   },{
-  //     capture : true,
-  //     once: true,
-  //   });
-
-  // }
-
-  // fileInputChanged(){
-  //   const { files }   = this.fileInput.nativeElement;
-  //   this.uploadFile(files[0]);
-  // }
-
-  // showFileUploadedAnimation(){
-  //   this.showCheckmarkComponent = true;
-  // }
-
-  // uploadFile(file: File):void{
-
-  //     //copy of fileInfo
-  // let updateFileInfo = {...this.fileInfo};
-  // const extension = /[^.]+$/.exec(file.name)![0];
-  // const fileName = updateFileInfo.key + '.' + extension;
-
-  // const prevSrc = updateFileInfo.src;
-  // updateFileInfo.src = this.sanitizer.bypassSecurityTrustUrl( URL.createObjectURL(file) );
-  // updateFileInfo.file = file;
-  // updateFileInfo.extension = extension;
-  // updateFileInfo.fileName = fileName;
-
-  // if(!updateFileInfo.fileIsSelected){
-  //   updateFileInfo.fileIsSelected = true;
-  // }
-
-  // updateFileInfo.prevSrc = prevSrc;
-  // updateFileInfo.fileNeedsUpdate = true;
-
-  // //getting the biggest hierarchy and then assigning a that val + 1 to new hierarchy
-  // const hierarchies = this.filesUploaded.map(e => e.hierarchy || 0);
-  // updateFileInfo.hierarchy = hierarchies.reduce((a,b)=>  a > b ? a : b ,hierarchies[0]) + 1;
-
-  // Object.assign(this.fileInfo, updateFileInfo);
-
-
-  // this.fiscalDocumentsService.addFile(updateFileInfo)
-  // .then( ( progressObserver: any ) => {
-  //   // this.fileInfo.uploadFileStatus.uploadRequest
-  //   this.fileInfo.uploadFileStatus!.uploadRequest  = progressObserver.subscribe( ( resp: any )=> {
-
-  //     //if file was uploaded successfully
-  //     if (resp.type === HttpEventType.Response) {
-  //       setTimeout(async ()=>{
-  //         if(this.afterFileUploaded){
-  //           await this.afterFileUploaded();
-  //         }
-
-  //         this.fileInfo.uploadFileStatus!.documentIsBeingUploaded = false;
-  //         this.onFileUploaded.emit();
-
-  //       },600);
-  //     }
-
-  //     //if file upload is in progress
-  //     if (resp.type === HttpEventType.UploadProgress) {
-  //         this.fileInfo.uploadFileStatus!.documentIsBeingUploaded = true;
-
-  //         //File upload just started
-  //         if(!this.fileInfo.uploadFileStatus?.firstTime){
-  //           this.fileInfo.uploadFileStatus!.firstTime = performance.now();
-  //           this.fileInfo.uploadFileStatus!.currentPercentage = 0;
-
-  //           this.updateMissingFiles.emit();
-
-  //         } 
-  //         this.fileInfo.uploadFileStatus!.currentTime = performance.now();
-  //         this.fileInfo.uploadFileStatus!.lastPercentage = this.fileInfo.uploadFileStatus?.currentPercentage;
-  //         this.fileInfo.uploadFileStatus!.currentPercentage = Math.round(100 * resp.loaded / resp.total);
-
-  //         const timeElapsed = (this.fileInfo.uploadFileStatus!.currentTime - this.fileInfo.uploadFileStatus!.firstTime)/1000;
-
-  //         this.fileInfo.uploadFileStatus!.missingSecs = Math.round((100- this.fileInfo.uploadFileStatus!.currentPercentage) * timeElapsed / this.fileInfo.uploadFileStatus!.currentPercentage );
-
-  //     } 
-  //   });
-
-
-  // })
-  // .catch( (e) => {
-  //   console.log('An error ocurred uploading new file', e.message );
-  // });
-  // }
-
-  // async deleteFile(){
-  //   const  fileName  = this.fileInfo.fileName || '';
-  //   this.fiscalDocumentsService.deleteFile( fileName  ).then(( ) => {
-  //     const {key,text } = this.fileInfo;
-  //     this.fileInfo = {key, text,uploadFileStatus : {}};
-  //     this.onFileDeleted.emit();
-  //   });
-  // }
-
-
-  // cancelRequest(){
-  //   this.fileInfo.uploadFileStatus?.uploadRequest?.unsubscribe();
-  //   this.fileInfo.fileIsSelected = false;
-  //   this.fileInfo.uploadFileStatus!.documentIsBeingUploaded = false;
-  //   this.onFileDeleted.emit();
-
-  //   this.updateMissingFiles.emit();
-  // }
 }

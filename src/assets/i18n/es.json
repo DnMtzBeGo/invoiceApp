@@ -488,6 +488,10 @@
       "txt_saved": "Tus cambios han sido guardados.",
       "txt_address_not_found": "Dirección no encontrada..."
     },
+    "sat": {
+      "save": "Enviar archivos",
+      "select-tax-regime" : "Seleccione el regimen fiscal"
+    },
     "upload-files": {
       "txt_fiscal_documents": "Documentos Fiscales",
       "txt_browse": "Buscar archivos",
