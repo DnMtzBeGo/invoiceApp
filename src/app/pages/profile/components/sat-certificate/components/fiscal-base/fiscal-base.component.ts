@@ -87,6 +87,8 @@ export class FiscalBaseComponent implements OnInit {
     updateFileInfo.hierarchy = hierarchies.reduce((a, b) => (a > b ? a : b), hierarchies[0]) + 1;
 
     Object.assign(this.fileInfo[this.fileIndex], updateFileInfo);
+
+    this.fiscalDocumentsService.addFile(this.fileInfo[this.fileIndex]);
   }
 
   uploadFile(file: File): void {
@@ -144,12 +146,10 @@ export class FiscalBaseComponent implements OnInit {
   }
 
   async deleteFile() {
-    const fileName = this.fileInfo[this.fileIndex].fileName || '';
-    this.fiscalDocumentsService.deleteFile(fileName).then(() => {
-      const { key, text } = this.fileInfo[this.fileIndex];
-      this.fileInfo[this.fileIndex] = { key, text, uploadFileStatus: {} };
-      this.onFileDeleted.emit();
-    });
+    const { key, text } = this.fileInfo[this.fileIndex];
+    this.fiscalDocumentsService.deleteFile(key);
+    this.fileInfo[this.fileIndex] = { key, text, uploadFileStatus: {} };
+    this.onFileDeleted.emit();
   }
 
   openFile() {

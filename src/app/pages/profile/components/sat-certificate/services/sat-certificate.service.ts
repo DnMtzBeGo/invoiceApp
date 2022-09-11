@@ -90,27 +90,30 @@ export class FiscalDocumentsService {
     });
   }
 
-  async deleteFile(file_name: string): Promise<void> {
-    return new Promise(async (resolve, reject) => {
-      const requestJson = JSON.stringify({ file_name });
-      (await this.webService.apiRest(requestJson, 'profile/remove_file')).subscribe(
-        (result) => {
-          resolve(result);
-        },
-        (err: Error) => {
-          reject(err);
-        }
-      );
-    });
+  async deleteFile(key: string): Promise<void> {
+    console.log('deleting file');
+    this.formData.delete(key);
+    // return new Promise(async (resolve, reject) => {
+    //   const requestJson = JSON.stringify({ file_name });
+    //   (await this.webService.apiRest(requestJson, 'profile/remove_file')).subscribe(
+    //     (result) => {
+    //       resolve(result);
+    //     },
+    //     (err: Error) => {
+    //       reject(err);
+    //     }
+    //   );
+    // });
   }
 
   updateAttribute(attr, value) {
-    this.formData.append(attr, value);
+    this.formData.set(attr, value);
   }
 
   addFile(fileInfo: FileInfo) {
+    console.log('addFile', fileInfo);
     if (fileInfo.file) {
-      this.formData.append(fileInfo.key, fileInfo.file, fileInfo.fileName);
+      this.formData.set(fileInfo.key, fileInfo.file, fileInfo.fileName);
     }
   }
 
@@ -124,7 +127,10 @@ export class FiscalDocumentsService {
       loader: 'false'
     };
 
-    return await this.webService.uploadFilesSerivce(this.formData, 'profile/validate_emitter', requestOptions, appBehaviourOptions);
+    const result = await this.webService.uploadFilesSerivce(this.formData, 'profile/validate_emitter', requestOptions, appBehaviourOptions);
+
+    console.log('sendFiles', result);
+    return result;
   }
 
   formatFileSize(size: number): string {

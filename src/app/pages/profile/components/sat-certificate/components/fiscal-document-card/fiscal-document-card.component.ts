@@ -94,11 +94,11 @@ export class FiscalDocumentCardComponent extends FiscalBaseComponent {
   }
 
   onCardClicked() {
-    if (!this.fileInfo[this.index]?.fileIsSelected) {
-      this.fileInput.nativeElement.click();
-    } else if (!this.fileInfo[this.index].uploadFileStatus?.documentIsBeingUploaded) {
-      this.openFile();
-    }
+    //if (!this.fileInfo[this.index]?.fileIsSelected) {
+    this.fileInput.nativeElement.click();
+    //} else if (!this.fileInfo[this.index].uploadFileStatus?.documentIsBeingUploaded) {
+    //this.openFile();
+    //}
   }
 
   afterFileUploaded = (): Promise<void> => {

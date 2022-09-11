@@ -7,8 +7,8 @@ import { BegoAlertHandler } from 'src/app/shared/components/bego-alert/BegoAlert
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { FiscalDocumentItemComponent } from './components/fiscal-document-item/fiscal-document-item.component';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FiscalDocumentCardComponent } from './components/fiscal-document-card/fiscal-document-card.component';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 type FileInterfaceFormats = 'cards' | 'list';
 @Component({
@@ -26,17 +26,15 @@ export class SatCertificateComponent implements OnInit {
   taxRegimes = [];
 
   selectedTaxRegime: string = '';
-  password: string = '';
+  archivo_key_pswd: string = '';
 
   showImgTest: boolean = false;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('uploadFilesBar') uploadFilesBar!: ElementRef;
   @ViewChild('fiscalDocsPage') fiscalDocsPage!: ElementRef;
-  @ViewChildren('fiscalItems')
-  fiscalItems!: QueryList<FiscalDocumentItemComponent>;
   @ViewChildren('fiscalCards')
-  fiscalCards!: QueryList<FiscalDocumentItemComponent>;
+  fiscalCards!: QueryList<FiscalDocumentCardComponent>;
 
   selectionchange;
 
@@ -123,7 +121,7 @@ export class SatCertificateComponent implements OnInit {
     console.log('dragFileBarChanged');
     const selectedItem = this.fiscalDocSelected;
 
-    this.fiscalItems.find((e: any) => selectedItem == e.fileInfo.key)?.uploadFile(file);
+    this.fiscalCards.find((e: any) => selectedItem == e.fileInfo.key)?.uploadFile(file);
 
     this.updateMissingFiles();
   }
@@ -135,6 +133,7 @@ export class SatCertificateComponent implements OnInit {
   }
 
   updateAttributes(values) {
+    values.email = localStorage.getItem('profileEmail');
     const keys = Object.keys(values);
 
     keys.forEach((k) => {
@@ -171,9 +170,28 @@ export class SatCertificateComponent implements OnInit {
       }
     );
   }
-  save() {
-    this.fiscalDocumentsService.sendFiles();
-    return false;
+  async save() {
+    console.log('saving....');
+
+    if (this.form.valid) {
+      const data = this.fiscalDocumentsService.formData;
+      const files = [data.get('archivo_cer'), data.get('archivo_key')];
+
+      if (files[0] && files[1]) {
+        const ob = await this.fiscalDocumentsService.sendFiles();
+
+        ob.subscribe((data: any) => {
+          console.log(data);
+        });
+      } else {
+        let error: string = '';
+        if (!files[0] && !files[1]) error = 'Agregue los archivos de su sello de facturación';
+        else if (!files[0]) error = 'Falta el archivo .cer';
+        else if (!files[1]) error = 'Falta el archivo .key';
+
+        alert(error);
+      }
+    }
   }
 
   // /**
@@ -213,8 +231,8 @@ export class SatCertificateComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      tax_regime: [this.selectedTaxRegime],
-      password: [this.password]
+      tax_regime: [new FormControl(this.selectedTaxRegime), Validators.required],
+      archivo_key_pswd: [new FormControl(this.archivo_key_pswd), Validators.required]
     });
 
     this.form.valueChanges.subscribe((values) => {

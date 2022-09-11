@@ -8,7 +8,6 @@ import { SatCertificateComponent } from './sat-certificate.component';
 import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-file-bar.module';
 
 import { FiscalDocumentCardComponent } from './components/fiscal-document-card/fiscal-document-card.component';
-import { FiscalDocumentItemComponent } from './components/fiscal-document-item/fiscal-document-item.component';
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { LottieModule } from 'ngx-lottie';
@@ -27,7 +26,7 @@ export function playerFactory() {
   return player;
 }
 @NgModule({
-  declarations: [SatCertificateComponent, FiscalDocumentCardComponent, FiscalDocumentItemComponent],
+  declarations: [SatCertificateComponent, FiscalDocumentCardComponent],
   imports: [
     CommonModule,
     SatCertificateRoutingModule,

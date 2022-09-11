@@ -1,10 +1,6 @@
 <div class="fiscal-document-card-wrapper">
   <div [ngClass]="!showMenu ? 'hidden' : ''" [hidden]="!showMenu" class="options-menu-wrapper">
     <div class="options-menu" style="z-index: 5">
-      <div class="option" (click)="openFile()">
-        <div class="icon icon-eye-open"></div>
-        {{ 'fiscal-documents.view-file' | translate }}
-      </div>
       <div class="option" (click)="deleteAlertOpen = true">
         <div class="icon icon-trash"></div>
         {{ 'fiscal-documents.remove-file' | translate }}
@@ -12,7 +8,7 @@
     </div>
   </div>
 
-  {{index + "---"}}
+  
   <div #fiscalDocument class="fiscal-document-card" title="Haga clic para cargar un documento" (click)="onCardClicked()">
     <div
       *ngIf="fileInfo[index]?.fileIsSelected && !fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded"

@@ -1,6 +1,6 @@
 <div class="grid">
 <ng-container>
-    <form [formGroup]="form" (ngsubmit)="save()">
+    <form [formGroup]="form">
     <div class="files-wrapper">
       <div class="cards-files">
         <div class="instructions">
@@ -50,12 +50,13 @@
         <input 
           type="password"
           matInput 
-          formControlName="password"
+          formControlName="archivo_key_pswd"
           >
       </mat-form-field>
 
       <div class="text-center">
         <button
+        (click)="save()"
         class="bego-btn yellow save-btn-wrapper" 
       >
       {{ 'profile.sat.save' | translate }}

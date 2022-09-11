@@ -6,10 +6,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   providedIn: 'root'
 })
 export class ProfileInfoService {
-
-  constructor(
-    private webService: AuthService,
-  ) { }
+  constructor(private webService: AuthService) {}
 
   public profileInfo: any;
   private profileInfoSubject: Subject<any> = new BehaviorSubject<any>({});
@@ -17,38 +14,38 @@ export class ProfileInfoService {
   data = this.profileInfoSubject.asObservable();
   profilePicUrl = this.profilePicSubject.asObservable();
 
-
-  updateDataSelection(data: any){
+  updateDataSelection(data: any) {
     this.profileInfoSubject.next(data);
   }
 
-  async getProfileInfo(){
-    (await this.webService.apiRest('', 'carriers/select_attributes'))
-    .subscribe(
+  async getProfileInfo() {
+    (await this.webService.apiRest('', 'carriers/select_attributes')).subscribe(
       (res) => {
         console.log('select attributes : ', res.result);
         this.profileInfo = res.result;
         this.updateDataSelection(this.profileInfo);
       },
-      ( err ) => {
-      }
-    )
+      (err) => {}
+    );
   }
 
   async getProfilePic(): Promise<string> {
-
     console.log('New profile pic: ');
-    return new Promise(async ( resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       (await this.webService.apiRest('', 'profile/get_picture')).subscribe(
         async ({ result }) => {
           console.log('New profile pic result: ', result);
-          if (result.url || result.url == '') {
-            localStorage.setItem('profilePicture', result.url);
-            this.profilePicSubject.next(result.url)
-            console.log('Profile pic: ', result.url);
-            resolve(result.url)
-  
-          } 
+
+          const { url, name, email } = result;
+
+          if (url || url == '') {
+            localStorage.setItem('profilePicture', url);
+            localStorage.setItem('profileName', name);
+            localStorage.setItem('profileEmail', email);
+            this.profilePicSubject.next(url);
+            console.log('Profile pic: ', url);
+            resolve(url);
+          }
         },
         (error) => {
           console.error('Error loading profile pic : ', error.message);
@@ -57,6 +54,4 @@ export class ProfileInfoService {
       );
     });
   }
-
-  
 }
