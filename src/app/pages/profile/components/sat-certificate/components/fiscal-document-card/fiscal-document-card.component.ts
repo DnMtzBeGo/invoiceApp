@@ -2,7 +2,8 @@ import { Component, Input, OnInit, ViewChild, ElementRef, Injector } from '@angu
 
 import { FiscalBaseComponent } from '../fiscal-base/fiscal-base.component';
 import { AnimationOptions } from 'ngx-lottie';
-
+import { FileInfo } from '../../interfaces/FileInfo';
+import { FiscalDocumentsService } from '../../services/sat-certificate.service';
 @Component({
   selector: 'app-fiscal-document-card',
   templateUrl: './fiscal-document-card.component.html',
@@ -55,6 +56,7 @@ export class FiscalDocumentCardComponent extends FiscalBaseComponent {
 
   constructor(injector: Injector) {
     super(injector);
+    this.fiscalDocumentsService = this.injector.get(FiscalDocumentsService);
   }
 
   ngOnInit(): void {
@@ -95,10 +97,10 @@ export class FiscalDocumentCardComponent extends FiscalBaseComponent {
 
   onCardClicked() {
     console.log(this);
-    //if (!this.fileInfo[this.index]?.fileIsSelected) {
+    //if (!this.fiscalDocumentsService.fileInfo[this.index]?.fileIsSelected) {
 
     this.fileInput.nativeElement.click();
-    //} else if (!this.fileInfo[this.index].uploadFileStatus?.documentIsBeingUploaded) {
+    //} else if (!this.fiscalDocumentsService.fileInfo[this.index].uploadFileStatus?.documentIsBeingUploaded) {
     //this.openFile();
     //}
   }
@@ -115,7 +117,7 @@ export class FiscalDocumentCardComponent extends FiscalBaseComponent {
   };
 
   ngAfterViewInit(): void {
-    if (!this.fileInfo[this.index].fileIsSelected) {
+    if (!this.fiscalDocumentsService.fileInfo[this.index].fileIsSelected) {
       this.addDragFileEventListener();
     } else {
       this.addFileUploadedEventListeners();

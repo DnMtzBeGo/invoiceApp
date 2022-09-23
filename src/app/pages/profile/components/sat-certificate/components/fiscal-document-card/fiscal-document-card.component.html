@@ -1,27 +1,36 @@
 <div class="fiscal-document-card-wrapper">
-  
   <div #fiscalDocument class="fiscal-document-card" title="Haga clic para cargar un documento">
-
-    <div *ngIf="fileInfo[index]?.fileIsSelected && !fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded"  >
+    <div
+      *ngIf="
+        fiscalDocumentsService.fileInfo[index]?.fileIsSelected &&
+        !fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded
+      ">
       <div class="icon icon-trash" [title]="'fiscal-documents.remove-file' | translate" (click)="deleteAlertOpen = true"></div>
     </div>
 
     <div
-      *ngIf="fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded && !showCheckmarkComponent"
+      *ngIf="fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded && !showCheckmarkComponent"
       class="cross-icon cancel-request"
       appClickStopPropagation
       (click)="cancelRequest()"></div>
 
     <div class="icon-wrapper" (click)="onCardClicked()">
-      <div class="plus-icon" [ngClass]="fileInfo[index]?.fileIsSelected || draggingToCard ? 'hidden' : ''">+</div>
+      <div class="plus-icon" [ngClass]="fiscalDocumentsService.fileInfo[index]?.fileIsSelected || draggingToCard ? 'hidden' : ''">+</div>
 
       <div class="lottie" [hidden]="!draggingToCard">
         <ng-lottie [options]="dropLottie"> </ng-lottie>
       </div>
 
-      <div [ngClass]="!fileInfo[index]?.fileIsSelected || draggingToCard || fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded ? 'hidden' : ''">
+      <div
+        [ngClass]="
+          !fiscalDocumentsService.fileInfo[index]?.fileIsSelected ||
+          draggingToCard ||
+          fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded
+            ? 'hidden'
+            : ''
+        ">
         <div class="doc-icon">
-          {{ fileInfo[index]?.extension }}
+          {{ fiscalDocumentsService.fileInfo[index]?.extension }}
         </div>
       </div>
 
@@ -29,9 +38,9 @@
         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
       </svg>
 
-      <div class="circle-progress-wrapper" *ngIf="fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded">
+      <div class="circle-progress-wrapper" *ngIf="fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded">
         <circle-progress
-          [percent]="fileInfo[index]?.uploadFileStatus?.currentPercentage || 0"
+          [percent]="fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.currentPercentage || 0"
           [showTitle]="!showCheckmarkComponent"
           [showUnits]="!showCheckmarkComponent">
         </circle-progress>
@@ -40,24 +49,19 @@
 
     <div class="info">
       <div class="title">
-        <span *ngIf="!fileInfo[index]?.fileIsOptional">*</span>
-        {{ fileInfo[index]?.text | translate }}
+        <span *ngIf="!fiscalDocumentsService.fileInfo[index]?.fileIsOptional">*</span>
+        {{ fiscalDocumentsService.fileInfo[index]?.text | translate }}
       </div>
 
       <div class="subtitle">
-        {{ fileInfo[index]?.formattedSize }}
+        {{ fiscalDocumentsService.fileInfo[index]?.formattedSize }}
       </div>
     </div>
   </div>
 </div>
 
 <form>
-  <input
-    #fileInput
-    (change)="fileInputChanged()"
-    hidden
-    type="file"
-    accept="*.cer, *.key" />
+  <input #fileInput (change)="fileInputChanged()" hidden type="file" accept="*.cer, *.key" />
 </form>
 
 <bego-alert

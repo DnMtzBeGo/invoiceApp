@@ -13,7 +13,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./fiscal-base.component.scss']
 })
 export class FiscalBaseComponent implements OnInit {
-  public fileInfo: FileInfo[];
   @Input() filesUploaded!: FileInfo[];
 
   @Output() onFileDeleted = new EventEmitter<any>();
@@ -35,13 +34,11 @@ export class FiscalBaseComponent implements OnInit {
   afterFileUploaded!: void | Function;
 
   constructor(public injector: Injector) {
-    console.log('this.fileInfo', this.fileInfo);
-
     this.sanitizer = this.injector.get(DomSanitizer);
     this.fiscalDocumentsService = this.injector.get(FiscalDocumentsService);
     this.translateService = this.injector.get(TranslateService);
 
-    this.fileInfo = this.fiscalDocumentsService.getDocumentTypes();
+    this.fiscalDocumentsService.fileInfo = this.fiscalDocumentsService.getDocumentTypes();
 
     this.deleteAlertHandlers = [
       {
@@ -66,7 +63,7 @@ export class FiscalBaseComponent implements OnInit {
   setSelectedFile(file: File): void {
     console.log('setSelectedFile', file);
 
-    let updateFileInfo = { ...this.fileInfo[this.fileIndex] };
+    let updateFileInfo = { ...this.fiscalDocumentsService.fileInfo[this.fileIndex] };
     const extension = /[^.]+$/.exec(file.name)![0];
     const fileName = updateFileInfo.key + '.' + extension;
 
@@ -86,9 +83,9 @@ export class FiscalBaseComponent implements OnInit {
     const hierarchies = this.filesUploaded.map((e) => e.hierarchy || 0);
     updateFileInfo.hierarchy = hierarchies.reduce((a, b) => (a > b ? a : b), hierarchies[0]) + 1;
 
-    Object.assign(this.fileInfo[this.fileIndex], updateFileInfo);
+    Object.assign(this.fiscalDocumentsService.fileInfo[this.fileIndex], updateFileInfo);
 
-    this.fiscalDocumentsService.addFile(this.fileInfo[this.fileIndex]);
+    this.fiscalDocumentsService.addFile(this.fiscalDocumentsService.fileInfo[this.fileIndex]);
   }
 
   uploadFile(file: File): void {
@@ -99,8 +96,8 @@ export class FiscalBaseComponent implements OnInit {
     this.fiscalDocumentsService
       .sendFiles()
       .then((progressObserver: any) => {
-        // this.fileInfo.uploadFileStatus.uploadRequest
-        this.fileInfo[this.fileIndex].uploadFileStatus!.uploadRequest = progressObserver.subscribe((resp: any) => {
+        // this.fiscalDocumentsService.fileInfo.uploadFileStatus.uploadRequest
+        this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.uploadRequest = progressObserver.subscribe((resp: any) => {
           //if file was uploaded successfully
           if (resp.type === HttpEventType.Response) {
             setTimeout(async () => {
@@ -108,34 +105,37 @@ export class FiscalBaseComponent implements OnInit {
                 await this.afterFileUploaded();
               }
 
-              this.fileInfo[this.fileIndex].uploadFileStatus!.documentIsBeingUploaded = false;
+              this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.documentIsBeingUploaded = false;
               this.onFileUploaded.emit();
             }, 600);
           }
 
           //if file upload is in progress
           if (resp.type === HttpEventType.UploadProgress) {
-            this.fileInfo[this.fileIndex].uploadFileStatus!.documentIsBeingUploaded = true;
+            this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.documentIsBeingUploaded = true;
 
             //File upload just started
-            if (!this.fileInfo[this.fileIndex].uploadFileStatus?.firstTime) {
-              this.fileInfo[this.fileIndex].uploadFileStatus!.firstTime = performance.now();
-              this.fileInfo[this.fileIndex].uploadFileStatus!.currentPercentage = 0;
+            if (!this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus?.firstTime) {
+              this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.firstTime = performance.now();
+              this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.currentPercentage = 0;
 
               this.updateMissingFiles.emit();
             }
-            this.fileInfo[this.fileIndex].uploadFileStatus!.currentTime = performance.now();
-            this.fileInfo[this.fileIndex].uploadFileStatus!.lastPercentage =
-              this.fileInfo[this.fileIndex].uploadFileStatus?.currentPercentage;
-            this.fileInfo[this.fileIndex].uploadFileStatus!.currentPercentage = Math.round((100 * resp.loaded) / resp.total);
+            this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.currentTime = performance.now();
+            this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.lastPercentage =
+              this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus?.currentPercentage;
+            this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.currentPercentage = Math.round(
+              (100 * resp.loaded) / resp.total
+            );
 
             const timeElapsed =
-              (this.fileInfo[this.fileIndex].uploadFileStatus!.currentTime - this.fileInfo[this.fileIndex].uploadFileStatus!.firstTime) /
+              (this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.currentTime -
+                this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.firstTime) /
               1000;
 
-            this.fileInfo[this.fileIndex].uploadFileStatus!.missingSecs = Math.round(
-              ((100 - this.fileInfo[this.fileIndex].uploadFileStatus!.currentPercentage) * timeElapsed) /
-                this.fileInfo[this.fileIndex].uploadFileStatus!.currentPercentage
+            this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.missingSecs = Math.round(
+              ((100 - this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.currentPercentage) * timeElapsed) /
+                this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.currentPercentage
             );
           }
         });
@@ -146,22 +146,26 @@ export class FiscalBaseComponent implements OnInit {
   }
 
   async deleteFile() {
-    const { key, text } = this.fileInfo[this.fileIndex];
+    const { key, text } = this.fiscalDocumentsService.fileInfo[this.fileIndex];
     this.fiscalDocumentsService.deleteFile(key);
-    this.fileInfo[this.fileIndex] = { key, text, uploadFileStatus: {} };
+    this.fiscalDocumentsService.fileInfo[this.fileIndex] = { key, text, uploadFileStatus: {} };
     this.onFileDeleted.emit();
   }
 
   openFile() {
-    window.open(this.fileInfo[this.fileIndex].src?.toString());
+    window.open(this.fiscalDocumentsService.fileInfo[this.fileIndex].src?.toString());
   }
 
   cancelRequest() {
-    this.fileInfo[this.fileIndex].uploadFileStatus?.uploadRequest?.unsubscribe();
-    this.fileInfo[this.fileIndex].fileIsSelected = false;
-    this.fileInfo[this.fileIndex].uploadFileStatus!.documentIsBeingUploaded = false;
+    this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus?.uploadRequest?.unsubscribe();
+    this.fiscalDocumentsService.fileInfo[this.fileIndex].fileIsSelected = false;
+    this.fiscalDocumentsService.fileInfo[this.fileIndex].uploadFileStatus!.documentIsBeingUploaded = false;
     this.onFileDeleted.emit();
 
     this.updateMissingFiles.emit();
+  }
+
+  emptySelectedFiles() {
+    this.fiscalDocumentsService.fileInfo = [];
   }
 }

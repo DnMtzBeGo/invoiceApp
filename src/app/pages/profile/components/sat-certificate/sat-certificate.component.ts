@@ -91,7 +91,6 @@ export class SatCertificateComponent implements OnInit {
     ).subscribe(
       ({ result }) => {
         this.mainEmitter = result;
-        console.log(result);
       },
       (err) => {
         console.log(err);
@@ -107,7 +106,7 @@ export class SatCertificateComponent implements OnInit {
     this.documentsToUpload = this.fiscalDocumentsService.getDocumentTypes();
     this.updateMissingFiles();
     this.updateFiscalDocSelected(this.missingFiles[0]?.key);
-    console.log('Documents to upload: ', this.documentsToUpload);
+    //console.log('Documents to upload: ', this.documentsToUpload);
   }
 
   getSortedFilesList() {
@@ -175,7 +174,7 @@ export class SatCertificateComponent implements OnInit {
     const keys = Object.keys(values);
 
     keys.forEach((k) => {
-      console.log('updating', k, values[k]);
+      //console.log('updating', k, values[k]);
       this.fiscalDocumentsService.updateAttribute(k, values[k]);
     });
   }
@@ -219,7 +218,17 @@ export class SatCertificateComponent implements OnInit {
         const ob = await this.fiscalDocumentsService.sendFiles();
 
         ob.subscribe((data: any) => {
-          console.log(data);
+          this.getUserMainEmitter();
+          this.updateAttributes({
+            archivo_key: null,
+            archivo_cer: null,
+            tax_regime: '',
+            password: null,
+            email: null
+          });
+          this.selectedTaxRegime = '';
+          this.archivo_key_pswd = '';
+          this.fiscalDocumentsService.emptyFiles();
         });
       } else {
         let error: string = '';
@@ -227,7 +236,18 @@ export class SatCertificateComponent implements OnInit {
         else if (!files[0]) error = 'Falta el archivo .cer';
         else if (!files[1]) error = 'Falta el archivo .key';
 
-        alert(error);
+        this.alertService.create({
+          body: error,
+          handlers: [
+            {
+              text: 'ok',
+              color: '#ffbe00',
+              action: async () => {
+                this.alertService.close();
+              }
+            }
+          ]
+        });
       }
     }
   }

@@ -8,12 +8,17 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root'
 })
 export class FiscalDocumentsService {
+  public fileInfo: FileInfo[];
   filesToUploadCarriersAndShippers: FileInfo[];
   filesToUploadShippersOnly!: FileInfo[];
 
   formData = new FormData();
 
   constructor(private http: HttpClient, private webService: AuthService, private translateService: TranslateService) {
+    this.initFileTypes();
+  }
+
+  initFileTypes() {
     const certfile: FileInfo = {
       text: this.translateService.instant('sat-certification.label_cer'),
       key: 'archivo_cer'
@@ -91,7 +96,7 @@ export class FiscalDocumentsService {
   }
 
   async deleteFile(key: string): Promise<void> {
-    console.log('deleting file');
+    console.log('deleting file', key);
     this.formData.delete(key);
     // return new Promise(async (resolve, reject) => {
     //   const requestJson = JSON.stringify({ file_name });
@@ -104,6 +109,11 @@ export class FiscalDocumentsService {
     //     }
     //   );
     // });
+  }
+
+  emptyFiles() {
+    this.initFileTypes();
+    this.fileInfo = this.getDocumentTypes();
   }
 
   updateAttribute(attr, value) {
