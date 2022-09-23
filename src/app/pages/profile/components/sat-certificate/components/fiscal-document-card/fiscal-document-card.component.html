@@ -1,19 +1,10 @@
 <div class="fiscal-document-card-wrapper">
-  <div [ngClass]="!showMenu ? 'hidden' : ''" [hidden]="!showMenu" class="options-menu-wrapper">
-    <div class="options-menu" style="z-index: 5">
-      <div class="option" (click)="deleteAlertOpen = true">
-        <div class="icon icon-trash"></div>
-        {{ 'fiscal-documents.remove-file' | translate }}
-      </div>
-    </div>
-  </div>
-
   
-  <div #fiscalDocument class="fiscal-document-card" title="Haga clic para cargar un documento" (click)="onCardClicked()">
-    <div
-      *ngIf="fileInfo[index]?.fileIsSelected && !fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded"
-      (click)="showOptionsMenu($event)"
-      class="icon icon-vertical-ellipsis vertical-ellipsis-icon"></div>
+  <div #fiscalDocument class="fiscal-document-card" title="Haga clic para cargar un documento">
+
+    <div *ngIf="fileInfo[index]?.fileIsSelected && !fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded"  >
+      <div class="icon icon-trash" [title]="'fiscal-documents.remove-file' | translate" (click)="deleteAlertOpen = true"></div>
+    </div>
 
     <div
       *ngIf="fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded && !showCheckmarkComponent"
@@ -21,7 +12,7 @@
       appClickStopPropagation
       (click)="cancelRequest()"></div>
 
-    <div class="icon-wrapper">
+    <div class="icon-wrapper" (click)="onCardClicked()">
       <div class="plus-icon" [ngClass]="fileInfo[index]?.fileIsSelected || draggingToCard ? 'hidden' : ''">+</div>
 
       <div class="lottie" [hidden]="!draggingToCard">
