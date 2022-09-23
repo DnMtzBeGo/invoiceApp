@@ -11,6 +11,15 @@ import { FiscalDocumentCardComponent } from './components/fiscal-document-card/f
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 type FileInterfaceFormats = 'cards' | 'list';
+
+interface mainEmitterType {
+  nombre: string;
+  archivo_key: string;
+  archivo_cer: string;
+  regimen_fiscal: string;
+  createdAt: string;
+}
+
 @Component({
   selector: 'app-sat-certificate',
   templateUrl: './sat-certificate.component.html',
@@ -21,6 +30,8 @@ export class SatCertificateComponent implements OnInit {
   documentsToUpload!: FileInfo[];
   userType: string = 'carriers';
   fiscalDocSelected!: any;
+
+  mainEmitter: mainEmitterType;
 
   form: FormGroup;
   taxRegimes = [];
@@ -59,6 +70,33 @@ export class SatCertificateComponent implements OnInit {
   ) {
     this.refreshDocumentsToUpload();
     this.fetchTaxRegimes();
+
+    this.getUserMainEmitter();
+  }
+
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      tax_regime: [new FormControl(this.selectedTaxRegime), Validators.required],
+      archivo_key_pswd: [new FormControl(this.archivo_key_pswd), Validators.required]
+    });
+
+    this.form.valueChanges.subscribe((values) => {
+      this.updateAttributes(values);
+    });
+  }
+
+  async getUserMainEmitter() {
+    await (
+      await this.webService.apiRest('', 'carriers/get_main_emitter')
+    ).subscribe(
+      ({ result }) => {
+        this.mainEmitter = result;
+        console.log(result);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   /**
@@ -228,15 +266,4 @@ export class SatCertificateComponent implements OnInit {
 
   //   return !resquestUnavailable;
   // }
-
-  ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      tax_regime: [new FormControl(this.selectedTaxRegime), Validators.required],
-      archivo_key_pswd: [new FormControl(this.archivo_key_pswd), Validators.required]
-    });
-
-    this.form.valueChanges.subscribe((values) => {
-      this.updateAttributes(values);
-    });
-  }
 }

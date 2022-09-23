@@ -1,5 +1,14 @@
 <div class="grid">
 <ng-container>
+  
+  <div *ngIf="mainEmitter?.archivo_cer" class="mainEmitter">
+    <p class="bold">Archivos cargados previamente:</p>
+    <p><strong>Razon social:</strong> {{mainEmitter.nombre}}</p>
+    <p><strong>Regimen Fiscal:</strong> {{mainEmitter.regimen_fiscal}}</p>
+    <p><strong>Cer:</strong> {{ mainEmitter.archivo_cer }}</p>
+    <p><strong>Key:</strong> {{ mainEmitter.archivo_key }}</p>
+  </div>
+
     <form [formGroup]="form">
     <div class="files-wrapper">
       <div class="cards-files">
