@@ -3,7 +3,7 @@ import { FiscalDocumentsService } from './services/sat-certificate.service';
 import { FileInfo } from './interfaces/FileInfo';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AnimationOptions } from 'ngx-lottie';
-import { BegoAlertHandler } from 'src/app/shared/components/bego-alert/BegoAlertHandlerInterface';
+//import { BegoAlertHandler } from 'src/app/shared/components/bego-alert/BegoAlertHandlerInterface';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
