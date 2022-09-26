@@ -8,7 +8,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FiscalDocumentCardComponent } from './components/fiscal-document-card/fiscal-document-card.component';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective } from '@angular/forms';
 
 type FileInterfaceFormats = 'cards' | 'list';
 
@@ -30,7 +30,7 @@ export class SatCertificateComponent implements OnInit {
   documentsToUpload!: FileInfo[];
   userType: string = 'carriers';
   fiscalDocSelected!: any;
-
+  loader: boolean = false;
   mainEmitter: mainEmitterType;
 
   form: FormGroup;
@@ -207,28 +207,61 @@ export class SatCertificateComponent implements OnInit {
       }
     );
   }
-  async save() {
+  async save(formDirective: FormGroupDirective) {
     console.log('saving....');
 
     if (this.form.valid) {
-      const data = this.fiscalDocumentsService.formData;
-      const files = [data.get('archivo_cer'), data.get('archivo_key')];
+      this.loader = true;
+
+      const formData = this.fiscalDocumentsService.formData;
+      const files = [formData.get('archivo_cer'), formData.get('archivo_key')];
 
       if (files[0] && files[1]) {
         const ob = await this.fiscalDocumentsService.sendFiles();
 
-        ob.subscribe((data: any) => {
-          this.getUserMainEmitter();
-          this.updateAttributes({
-            archivo_key: null,
-            archivo_cer: null,
-            tax_regime: '',
-            password: null,
-            email: null
-          });
-          this.selectedTaxRegime = '';
-          this.archivo_key_pswd = '';
-          this.fiscalDocumentsService.emptyFiles();
+        ob.subscribe({
+          complete: () => {
+            this.updateAttributes({
+              archivo_key: null,
+              archivo_cer: null,
+              tax_regime: '',
+              password: null,
+              email: null
+            });
+            this.fiscalDocumentsService.emptyFiles();
+            formDirective.resetForm();
+            //this.form.reset();
+
+            this.alertService.create({
+              body: 'Archivos cargados correctamente',
+              handlers: [
+                {
+                  text: 'ok',
+                  color: '#ffbe00',
+                  action: async () => {
+                    this.alertService.close();
+                  }
+                }
+              ]
+            });
+            this.getUserMainEmitter();
+            this.loader = false;
+          },
+          error: (msg) => {
+            this.alertService.create({
+              body: msg.error.error[0].error,
+              handlers: [
+                {
+                  text: 'ok',
+                  color: '#ffbe00',
+                  action: async () => {
+                    this.alertService.close();
+                  }
+                }
+              ]
+            });
+            this.loader = false;
+          }
         });
       } else {
         let error: string = '';

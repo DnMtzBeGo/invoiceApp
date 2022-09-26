@@ -8,7 +8,7 @@
       <p><strong>Key:</strong> {{ mainEmitter.archivo_key }}</p>
     </div>
 
-    <form [formGroup]="form">
+    <form [formGroup]="form" #formDirective="ngForm" (ngSubmit)="save(formDirective)">
       <div class="files-wrapper">
         <div class="cards-files">
           <div class="instructions">
@@ -52,11 +52,18 @@
         </mat-form-field>
 
         <div class="text-center">
-          <button (click)="save()" class="bego-btn yellow save-btn-wrapper">
+          <button type="submit" class="bego-btn yellow save-btn-wrapper">
             {{ 'profile.sat.save' | translate }}
           </button>
         </div>
       </div>
     </form>
+
+    <div class="lds-ellipsis" *ngIf="loader">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </ng-container>
 </div>
