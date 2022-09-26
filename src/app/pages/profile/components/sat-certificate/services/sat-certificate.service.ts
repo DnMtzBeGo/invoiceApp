@@ -13,6 +13,7 @@ export class FiscalDocumentsService {
   filesToUploadShippersOnly!: FileInfo[];
 
   formData = new FormData();
+  fileInputs: any = [];
 
   constructor(private http: HttpClient, private webService: AuthService, private translateService: TranslateService) {
     this.initFileTypes();
@@ -112,8 +113,13 @@ export class FiscalDocumentsService {
   }
 
   emptyFiles() {
-    this.initFileTypes();
-    this.fileInfo = this.getDocumentTypes();
+    this.fileInfo[0].fileIsSelected = false;
+    this.fileInfo[1].fileIsSelected = false;
+    this.formData.set('archivo_cer', null);
+    this.formData.set('archivo_key', null);
+    this.fileInputs.forEach((el) => {
+      el.value = '';
+    });
   }
 
   updateAttribute(attr, value) {

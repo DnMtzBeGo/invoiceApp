@@ -60,38 +60,40 @@ export class FiscalBaseComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  setSelectedFile(file: File): void {
-    console.log('setSelectedFile', file);
+  setSelectedFile(file: File, input?: any): void {
+    if (file) {
+      let updateFileInfo = { ...this.fiscalDocumentsService.fileInfo[this.fileIndex] };
+      const extension = /[^.]+$/.exec(file.name)![0];
+      const fileName = updateFileInfo.key + '.' + extension;
 
-    let updateFileInfo = { ...this.fiscalDocumentsService.fileInfo[this.fileIndex] };
-    const extension = /[^.]+$/.exec(file.name)![0];
-    const fileName = updateFileInfo.key + '.' + extension;
+      const prevSrc = updateFileInfo.src;
 
-    const prevSrc = updateFileInfo.src;
-    updateFileInfo.src = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file));
-    updateFileInfo.file = file;
-    updateFileInfo.extension = extension;
-    updateFileInfo.fileName = fileName;
+      updateFileInfo = {
+        ...updateFileInfo,
+        src: this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file)),
+        file,
+        extension,
+        fileName,
+        fileIsSelected: !updateFileInfo.fileIsSelected ? true : false,
+        prevSrc,
+        fileNeedsUpdate: true
+      };
 
-    if (!updateFileInfo.fileIsSelected) {
-      updateFileInfo.fileIsSelected = true;
+      if (input) this.fiscalDocumentsService.fileInputs[this.fileIndex] = input;
+
+      const hierarchies = this.filesUploaded.map((e) => e.hierarchy || 0);
+      updateFileInfo.hierarchy = hierarchies.reduce((a, b) => (a > b ? a : b), hierarchies[0]) + 1;
+
+      Object.assign(this.fiscalDocumentsService.fileInfo[this.fileIndex], updateFileInfo);
+
+      this.fiscalDocumentsService.addFile(this.fiscalDocumentsService.fileInfo[this.fileIndex]);
     }
-
-    updateFileInfo.prevSrc = prevSrc;
-    updateFileInfo.fileNeedsUpdate = true;
-
-    const hierarchies = this.filesUploaded.map((e) => e.hierarchy || 0);
-    updateFileInfo.hierarchy = hierarchies.reduce((a, b) => (a > b ? a : b), hierarchies[0]) + 1;
-
-    Object.assign(this.fiscalDocumentsService.fileInfo[this.fileIndex], updateFileInfo);
-
-    this.fiscalDocumentsService.addFile(this.fiscalDocumentsService.fileInfo[this.fileIndex]);
   }
 
-  uploadFile(file: File): void {
+  uploadFile(file: File, input?: any): void {
     //copy of fileInfo
 
-    this.setSelectedFile(file);
+    this.setSelectedFile(file, input);
 
     this.fiscalDocumentsService
       .sendFiles()

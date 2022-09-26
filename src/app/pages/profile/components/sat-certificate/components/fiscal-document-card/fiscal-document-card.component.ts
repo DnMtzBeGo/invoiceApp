@@ -148,7 +148,7 @@ export class FiscalDocumentCardComponent extends FiscalBaseComponent {
     console.log('fileInputChanged');
     const { files } = this.fileInput.nativeElement;
     //this.uploadFile(files[0]);
-    this.setSelectedFile(files[0]);
+    this.setSelectedFile(files[0], this.fileInput.nativeElement);
   }
 
   showFileUploadedAnimation() {

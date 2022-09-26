@@ -230,7 +230,7 @@ export class SatCertificateComponent implements OnInit {
             });
             this.fiscalDocumentsService.emptyFiles();
             formDirective.resetForm();
-            //this.form.reset();
+            this.form.reset();
 
             this.alertService.create({
               body: 'Archivos cargados correctamente',
