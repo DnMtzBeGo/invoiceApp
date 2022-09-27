@@ -13,7 +13,7 @@ import { BegoAlertHandler } from 'src/app/shared/components/bego-alert/BegoAlert
 export class PersonalInfoComponent implements OnInit {
 
   CFDIs: any;
-
+  originalCFDI: Array<any>;
   personalInfo: any;
 
   showPhoneVerificationModal: boolean = false;
@@ -44,10 +44,6 @@ export class PersonalInfoComponent implements OnInit {
     private translateService: TranslateService,
   ) { 
     
-    this.getCFDIvalues();
-    this.translateService.onLangChange.subscribe(() => {
-      this.getCFDIvalues();
-    });
   }
 
 
@@ -58,59 +54,54 @@ export class PersonalInfoComponent implements OnInit {
     phoneCode: ['', Validators.required],
     phoneNumber: ['', { validators: [Validators.required], updateOn: 'blur' }],
     companyName: ['', Validators.required],
-    RFC: ['', Validators.required],
+    RFC: [
+      '',
+      [
+        Validators.minLength(12),
+        Validators.compose([Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/)])
+      ]
+    ],
     CFDI: ['', Validators.required],
     address: ['', Validators.required],
+    license: ['', [Validators.compose([Validators.pattern(/^[A-Za-z0-9]{6,16}$/)])]],
+    taxRegime: ['']
   });
 
   ngOnInit(): void {
-
-
-
-   this.profileInfoService.data.subscribe( (data: any) => {
-    this.personalInfo = data;
-    if(Object.keys(data).length){
-      let phoneNumber = data.raw_telephone.split(' ')
-      const dialCode = phoneNumber.shift();
-      phoneNumber = phoneNumber.join(' ');
-  
-      this.personalInfoForm.patchValue({
-        fullname: data?.nickname,
-        email: data?.email,
-        phoneFlag: data.country_code ,
-        phoneCode: dialCode,
-        phoneNumber: phoneNumber,
-        companyName: data?.attributes?.companyName,
-        RFC: data?.attributes?.RFC,
-        CFDI: data?.attributes?.CFDI,
-        address: data?.attributes?.address || '',
-      });
-
-      this.originalPhoneValues = {
-        phoneFlag: data.country_code ,
-        phoneCode: dialCode,
-        phoneNumber: phoneNumber,
-      }
-  
-    }
+    this.profileInfoService.data.subscribe( (data: any) => {
+      this.personalInfo = data;
+      if(Object.keys(data).length){
+        let phoneNumber = data.raw_telephone.split(' ')
+        const dialCode = phoneNumber.shift();
+        phoneNumber = phoneNumber.join(' ');
     
-  });
+        this.personalInfoForm.patchValue({
+          fullname: data?.nickname,
+          email: data?.email,
+          phoneFlag: data.country_code ,
+          phoneCode: dialCode,
+          phoneNumber: phoneNumber,
+          companyName: data?.attributes?.companyName,
+          RFC: data?.attributes?.RFC,
+          CFDI: data?.attributes?.CFDI,
+          address: data?.attributes?.address || '',
+          license: data?.attributes?.license
+        });
+
+        this.originalPhoneValues = {
+          phoneFlag: data.country_code ,
+          phoneCode: dialCode,
+          phoneNumber: phoneNumber,
+        }
+
+        this.originalCFDI = this.CFDIs;
+
+
+      }
+    });
+    this.getCatalog();
   }
 
-  getCFDIvalues(){
-
-    const lang = localStorage.getItem('lang');
-    if(lang == 'es'){
-      this.cfdiService.getCFDI_es().subscribe( ( result ) => {
-        this.CFDIs = result;
-      })
-    }else{
-      this.cfdiService.getCFDI_en().subscribe( ( result ) => {
-        this.CFDIs = result;
-      })
-    }
-
-  }
 
   mailValidator(c: AbstractControl)  {
    
@@ -346,6 +337,50 @@ export class PersonalInfoComponent implements OnInit {
       address: newAddress
     });
     this.updateAttribute('address');
+  }
+
+  async getCatalog() {
+    const requestJson = {
+      catalogs: [
+        {
+          name: "sat_regimen_fiscal",
+          version: "0",
+        },
+        {
+          name: "sat_usos_cfdi",
+          version: "0",
+        },
+      ],
+    };
+    await (
+      await this.webService.apiRest(
+        JSON.stringify(requestJson),
+        "invoice/catalogs/fetch"
+      )
+    ).subscribe(
+      ({ result }) => {
+        const regimen_fiscal = result.catalogs[0].documents.map((item) => {
+          const filteredItem = {
+            text: item.description,
+            rawText: item.rawDescription,
+            value: item.code
+          };
+          return filteredItem;
+        });
+        this.CFDIs = result.catalogs[1].documents.map((item) => {
+          const filteredItem = {
+            text: item.code + ' - ' + item.description,
+            value: item.code,
+            fisica: item.fisica,
+            moral: item.moral
+          };
+          return filteredItem;
+        });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
 

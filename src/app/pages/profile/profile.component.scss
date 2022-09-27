@@ -41,11 +41,11 @@
 
         text-align: center;
         .name{
-          @include fluid('margin-top',800px, 1920px, 30px, 70px);
+          @include fluid('margin-top',800px, 1920px, 20px, 30px);
           font-weight: 500;
           font-size: 25px;
           color: white;
-          margin-bottom: 35px;
+          margin-bottom: 10px;
         }
 
         .number-orders{
@@ -58,6 +58,24 @@
           font-weight: 100;
           font-size: 18px;
           color: #ededed;
+        }
+      }
+
+      .fleet-info {
+        text-align: center;
+        margin-top: 20px;
+
+        .name {
+          @include fluid('margin-top',800px, 1920px, 10px, 15px);
+
+          h3 {
+            font-size: 22px;
+            font-weight: 700;
+          }
+  
+          p {
+            font-weight: 100;
+          }
         }
       }
     }
@@ -83,7 +101,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 15px;
     min-width: 250px;
-    margin-top: 25px;
+    // margin-top: 25px;
 
   }
 
@@ -129,9 +147,9 @@
   .orders-list-type {
     display: grid;
     gap: 5px ;
-    grid-template-columns: 1fr 1fr;
-    max-width: 217px;
-    width: 217px;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 260px;
+    width: 260px;
     display: grid;
     align-items: center;
     justify-content: space-between;
@@ -184,7 +202,8 @@
 
   .picture-content{
     text-align: center;
-
+    display: flex;
+    flex-direction: column;
   }
 
   .picture-btn{
@@ -210,8 +229,8 @@
 
 .close-btn{
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 0;
+  right: 0;
   width: 30px;
   height: 30px;
   background-color: #ffbe00;
@@ -234,4 +253,18 @@
     box-shadow: none;
     position: relative;
   } 
+}
+
+.picture-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .close-btn {
+    position: relative;
+    top: auto;
+    right: auto;
+  }
 }

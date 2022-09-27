@@ -1,0 +1,74 @@
+<div class="fiscal-document-card-wrapper">
+  <div #fiscalDocument class="fiscal-document-card" title="Haga clic para cargar un documento">
+    <div
+      *ngIf="
+        fiscalDocumentsService.fileInfo[index]?.fileIsSelected &&
+        !fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded
+      ">
+      <div class="icon icon-trash" [title]="'fiscal-documents.remove-file' | translate" (click)="deleteAlertOpen = true"></div>
+    </div>
+
+    <div
+      *ngIf="fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded && !showCheckmarkComponent"
+      class="cross-icon cancel-request"
+      appClickStopPropagation
+      (click)="cancelRequest()"></div>
+
+    <div class="icon-wrapper" (click)="onCardClicked()">
+      <div class="plus-icon" [ngClass]="fiscalDocumentsService.fileInfo[index]?.fileIsSelected || draggingToCard ? 'hidden' : ''">+</div>
+
+      <div class="lottie" [hidden]="!draggingToCard">
+        <ng-lottie [options]="dropLottie"> </ng-lottie>
+      </div>
+
+      <div
+        [ngClass]="
+          !fiscalDocumentsService.fileInfo[index]?.fileIsSelected ||
+          draggingToCard ||
+          fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded
+            ? 'hidden'
+            : ''
+        ">
+        <div class="doc-icon">
+          {{ fiscalDocumentsService.fileInfo[index]?.extension }}
+        </div>
+      </div>
+
+      <svg *ngIf="showCheckmarkComponent" class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+      </svg>
+
+      <div class="circle-progress-wrapper" *ngIf="fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded">
+        <circle-progress
+          [percent]="fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.currentPercentage || 0"
+          [showTitle]="!showCheckmarkComponent"
+          [showUnits]="!showCheckmarkComponent">
+        </circle-progress>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="title">
+        <span *ngIf="!fiscalDocumentsService.fileInfo[index]?.fileIsOptional">*</span>
+        {{ fiscalDocumentsService.fileInfo[index]?.text | translate }}
+      </div>
+
+      <div class="subtitle">
+        {{ fiscalDocumentsService.fileInfo[index]?.formattedSize }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<form>
+  <input #fileInput (change)="fileInputChanged()" hidden type="file" accept="*.cer, *.key" />
+</form>
+
+<bego-alert
+  *ngIf="deleteAlertOpen"
+  [title]="'fiscal-documents.remove-file' | translate"
+  (close)="deleteAlertOpen = false"
+  [handlers]="deleteAlertHandlers">
+  {{ 'fiscal-documents.delete-file-question' | translate }}
+  {{ 'fiscal-documents.file' | translate }}?
+</bego-alert>

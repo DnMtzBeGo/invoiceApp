@@ -50,7 +50,19 @@
           <div class="order-label">
             {{ 'profile.account.txt_orders' | translate }}
           </div>
-      </div>
+        </div>
+
+        <div class="fleet-info">
+          <div class="name">
+            <h3>{{ 'profile.account.txt-role' | translate }}</h3>
+            <p *ngIf="profileInfo.role == 2">{{ 'profile.account.txt-driver-manager' | translate }}</p>
+            <p *ngIf="profileInfo.role == 3">{{ 'profile.account.txt-manager' | translate }}</p>
+          </div>
+          <div class="name">
+            <h3>{{ 'profile.account.txt-fleet' | translate }}</h3>
+            <p>{{ profileInfo?.fleet_name }}</p>
+          </div>
+        </div>
 
       </div>
 
@@ -84,19 +96,19 @@
             autoplay>
           </video>
           <canvas hidden #canvas ></canvas>
-
+        </div>
+        <div class="picture-actions">
+          <button mat-fab class="picture-btn" (click)="takePic()">
+            <div>
+              <img src="../../../assets/images/history/camera.svg" alt="camera button">          
+            </div>
+          </button>
+  
           <div 
             class="close-btn"
             (click)="closePicShoot()">
           </div>
         </div>
-
-        <button mat-fab class="picture-btn" (click)="takePic()">
-          <div>
-            <img src="../../../assets/images/history/camera.svg" alt="camera button">          
-          </div>
-        </button>
-
       </div>
     </div>
 

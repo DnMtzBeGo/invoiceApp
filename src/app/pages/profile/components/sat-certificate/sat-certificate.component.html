@@ -1,0 +1,69 @@
+<div class="grid">
+  <ng-container>
+    <div *ngIf="mainEmitter?.archivo_cer" class="mainEmitter">
+      <p class="bold">Archivos cargados previamente:</p>
+      <p><strong>Razon social:</strong> {{ mainEmitter.nombre }}</p>
+      <p><strong>Regimen Fiscal:</strong> {{ mainEmitter.regimen_fiscal }}</p>
+      <p><strong>Cer:</strong> {{ mainEmitter.archivo_cer }}</p>
+      <p><strong>Key:</strong> {{ mainEmitter.archivo_key }}</p>
+    </div>
+
+    <form [formGroup]="form" #formDirective="ngForm" (ngSubmit)="save(formDirective)">
+      <div class="files-wrapper">
+        <div class="cards-files">
+          <div class="instructions">
+            <div>
+              {{ 'fiscal-documents.cards-instructions' | translate }}
+            </div>
+
+            <div>
+              {{ 'fiscal-documents.txt-required-inputs' | translate }}
+            </div>
+          </div>
+          <div class="grid">
+            <app-fiscal-document-card
+              #fiscalCards
+              *ngFor="let fiscalDoc of documentsToUpload; let i = index"
+              [index]="i"
+              [filesUploaded]="filesUploaded()"
+              (onFileDeleted)="refreshDocumentsToUpload()"
+              (onFileUploaded)="refreshDocumentsToUpload()">
+            </app-fiscal-document-card>
+          </div>
+        </div>
+      </div>
+
+      <div class="sat-certificate-data">
+        <mat-form-field>
+          <mat-label> Regimen fiscal </mat-label>
+          <mat-select class="disable-custom-format" formControlName="tax_regime" [(ngModel)]="selectedTaxRegime">
+            <mat-option value="select-document" [disabled]="true">
+              {{ 'profile.sat.select-tax-regime' | translate }}
+            </mat-option>
+            <mat-option *ngFor="let option of taxRegimes" [value]="option.value">
+              {{ option.text }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="d-block">
+          <mat-label>Contraseña</mat-label>
+          <input type="password" matInput formControlName="archivo_key_pswd" [ngModel]="archivo_key_pswd" autocompleteOff />
+        </mat-form-field>
+
+        <div class="text-center">
+          <button type="submit" class="bego-btn yellow save-btn-wrapper">
+            {{ 'profile.sat.save' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="lds-ellipsis" *ngIf="loader">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </ng-container>
+</div>

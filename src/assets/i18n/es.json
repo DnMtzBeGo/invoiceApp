@@ -443,6 +443,11 @@
       "body": "Tu cuenta estará verificada una vez hayamos checado los documentos subidos"
     }
   },
+  "sat-certification": {
+    "order_tab_label": "SAT",
+    "label_cer": "Certificado del sello digital (.cer)",
+    "label_key": "Llave del sello digital (.key)"
+  },
   "profile": {
     "account": {
       "txt_orders": "Órdenes",
@@ -467,7 +472,11 @@
       "txt-delete-profile-pic": "¿Estás seguro que quieres eliminar tu foto de perfil?",
       "txt-delete-profile-pic-title": "Eliminar foto de perfil",
       "delete-profile-pic-btn": "Ok",
-      "cancel-deletion-btn": "Cancelar"
+      "cancel-deletion-btn": "Cancelar",
+      "txt-role": "Rol",
+      "txt-fleet": "Flota",
+      "txt-manager": "Manager",
+      "txt-driver-manager": "Driver Manager"
     },
     "edit": {
       "txt_edit_profile": "Editar Perfil",
@@ -478,6 +487,10 @@
       "btn_save": "Guardar",
       "txt_saved": "Tus cambios han sido guardados.",
       "txt_address_not_found": "Dirección no encontrada..."
+    },
+    "sat": {
+      "save": "Enviar archivos",
+      "select-tax-regime" : "Seleccione el regimen fiscal"
     },
     "upload-files": {
       "txt_fiscal_documents": "Documentos Fiscales",

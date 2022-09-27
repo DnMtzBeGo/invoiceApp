@@ -51,6 +51,7 @@ import { CartaPorteInfoService } from "src/app/pages/invoice/components/invoice/
 import { BegoSliderDotsComponent } from "src/app/shared/components/bego-slider-dots/bego-slider-dots.component";
 import { BegoAddressAutocompleteModule } from "src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module";
 import { PinComponent } from "src/app/shared/components/pin/pin.component";
+import { BegoInputFileComponent } from './components/bego-input-file/bego-input-file.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { PinComponent } from "src/app/shared/components/pin/pin.component";
     FacturaDireccionInputComponent,
     BegoSliderDotsComponent,
     PinComponent,
+    BegoInputFileComponent,
   ],
   imports: [
     CommonModule,

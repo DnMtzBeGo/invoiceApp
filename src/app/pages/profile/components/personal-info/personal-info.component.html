@@ -70,10 +70,19 @@
               </mat-option>
       
               <mat-option *ngFor="let option of CFDIs" [value]="option.code">
-                  {{ option.code }} - {{ option.description }}
+                  {{ option.text }}
               </mat-option>
       
           </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>
+            Licencia
+          </mat-label>
+          <input 
+            matInput 
+            formControlName="license"
+            (blur)="updateAttribute('license')">
         </mat-form-field>
       </div>
 
