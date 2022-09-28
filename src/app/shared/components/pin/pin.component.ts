@@ -84,7 +84,7 @@ export class PinComponent implements OnInit {
     effects?: any;
   };
 
-  mapEmitter = new Subject<["resetLocation", unknown]>();
+  mapEmitter = new Subject<["resetLocation", unknown?]>();
 
   @ViewChild("map", { read: ElementRef, static: false }) mapRef: ElementRef;
 

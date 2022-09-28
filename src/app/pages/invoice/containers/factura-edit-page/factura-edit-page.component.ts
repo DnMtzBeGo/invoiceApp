@@ -1013,6 +1013,20 @@ export class FacturaEditPageComponent implements OnInit {
       ).pipe(mergeAll(), pluck("result", "productos_servicios"));
     }
 
+    if (["concepto_nombre"].includes(search.type)) {
+      return from(
+        this.apiRestService.apiRest(
+          JSON.stringify({
+            [keys[search.type]]: search.search,
+            pagination: { limit: 15 },
+            ...(search.rfc != void 0 ? { rfc: search.rfc } : {}),
+          }),
+          endpoints[search.type],
+          { loader: "false" }
+        )
+      ).pipe(mergeAll(), pluck("result", "result"));
+    }
+
     return from(
       this.apiRestService.apiRest(
         JSON.stringify({
