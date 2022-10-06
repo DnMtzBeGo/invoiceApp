@@ -158,7 +158,7 @@ export class HomeComponent implements OnInit {
     this.subs.add(
       merge(
         this.mapEmitter.pipe(ofType('center'), mapTo(false)),
-        resumeApp$.pipe(mapTo(false)),
+        resumeApp$.pipe(filter(() => this.showFleetMap), mapTo(false)),
         this.mapEmitter.pipe(
           ofType('startReload'),
           exhaustMap(() =>
