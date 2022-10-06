@@ -92,6 +92,6 @@ export class AppComponent {
       (img.src = "/assets/images/invoice/logo-placeholder.png");
 
     (window as any).blank = (img) =>
-      (img.src = "/assets/images/invoice/blank.gif");
+      (img.src = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==");
   }
 }
