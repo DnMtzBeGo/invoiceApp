@@ -88,7 +88,7 @@ export class MapComponent implements OnInit {
   private zoom = 17;
   private anim = {
     index: 0,
-    id: null,
+    id: 0,
     pathCoords: [],
 
     mainFunc: (pathCoords: any) => {
@@ -377,7 +377,7 @@ export class MapComponent implements OnInit {
 
     if (this.anim.id) {
       window.cancelAnimationFrame(this.anim.id);
-      this.anim.id = null;
+      this.anim.id = 0;
     }
   }
 
