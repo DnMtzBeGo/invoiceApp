@@ -125,7 +125,12 @@ export class HomeComponent implements OnInit {
               this.googlemaps.updateDataLocations(this.locations)
             );
             /* this.showNewOrderCard(); */
+          } else {
+            window.requestAnimationFrame(() =>
+              this.mapEmitter.next(['center'])
+            );
           }
+
         }
       })
     );
@@ -152,8 +157,8 @@ export class HomeComponent implements OnInit {
 
     this.subs.add(
       merge(
-        this.mapEmitter.pipe(ofType('center'), mapTo(false), startWith(false)),
-        resumeApp$.pipe(mapTo(false)),
+        this.mapEmitter.pipe(ofType('center'), mapTo(false)),
+        resumeApp$.pipe(filter(() => this.showFleetMap), mapTo(false)),
         this.mapEmitter.pipe(
           ofType('startReload'),
           exhaustMap(() =>
@@ -451,20 +456,5 @@ export class HomeComponent implements OnInit {
 
     if (cleanRefresh === false || fromShowMap || this.isMapDirty === false)
       this.map.fitBounds(this.bounds, { bottom: 50, top: 50, left: 80, right: 50 + 400 + 50 });
-  }
-
-  private getFleetDetails_() {
-    return from(this.webService.apiRest('', 'carriers/home')).pipe(mergeAll(), tap((res: any) => {
-       if(!res.result.trailers || !res.result.trucks) {
-        this.haveNotFleetMembers = true;
-       } else {
-        this.haveNotFleetMembers = false;
-       }
-
-       if(res.result.hasOwnProperty('errors') && res.result.errors.length > 0) {
-        this.haveFleetMembersErrors = res.result.errors;
-       }
-
-    }))
   }
 }

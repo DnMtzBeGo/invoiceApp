@@ -92,16 +92,22 @@ export class Step1Component implements OnInit {
       changes.draftData.currentValue.pickup &&
       changes.draftData.currentValue.pickup.contact_info
     ) {
-      let [telephoneCode, ...telephone] =
-        changes.draftData.currentValue.pickup.contact_info.telephone.split(" ");
-      telephone = telephone.join(" ");
-      this.phoneCode = telephoneCode;
-      this.phoneFlag = changes.draftData.currentValue.pickup.contact_info.country_code;
-      this.phoneNumber = telephone;
+      const {pickup} = changes.draftData.currentValue;
+
+      if(pickup.contact_info.telephone){
+        let [telephoneCode, ...telephone] =
+          changes.draftData.currentValue.pickup.contact_info.telephone.split(" ");
+        telephone = telephone.join(" ");
+        this.phoneCode = telephoneCode;
+        this.phoneFlag = changes.draftData.currentValue.pickup.contact_info.country_code;
+        this.phoneNumber = telephone;
+        this.step1Form.get("phonenumber")!.setValue(telephone);
+        this.step1Form.get("phoneCode")!.setValue(telephoneCode);
+      }
+
       this.step1Form
         .get("fullname")!
         .setValue(changes.draftData.currentValue.pickup.contact_info.name);
-      this.step1Form.get("phonenumber")!.setValue(telephone);
       this.step1Form
         .get("email")!
         .setValue(changes.draftData.currentValue.pickup.contact_info.email);
@@ -111,17 +117,13 @@ export class Step1Component implements OnInit {
       this.step1Form
         .get("country_code")!
         .setValue(changes.draftData.currentValue.pickup.contact_info.country_code);
-      this.step1Form.get("phoneCode")!.setValue(telephoneCode);
 
       this.validFormStep1.emit(this.step1Form.valid);
 
-      if(changes.draftData.currentValue.hasOwnProperty('stamp') && changes.draftData.currentValue.stamp) {
-        if(changes.draftData.currentValue.pickup.contact_info.rfc.length > 0) {
-          this.step1Form
-            .get("rfc")
-            .setValue(changes.draftData.currentValue.pickup.contact_info.rfc);
-        }
+      if(this.draftData['stamp']){
+        this.step1Form.get('rfc').setValue(pickup.contact_info.rfc);
       }
+
     }
   }
 
