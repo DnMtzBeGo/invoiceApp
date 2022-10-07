@@ -14,6 +14,7 @@
     margin-left: calc(50px + #{$bego-menu-width});
     pointer-events: none;
     z-index: 2;
+    overflow: hidden;
 
     .new-order-details{
         flex-grow: 1;
