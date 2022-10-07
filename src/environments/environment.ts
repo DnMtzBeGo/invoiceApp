@@ -4,11 +4,12 @@
 
 export const environment = {
   production: false,
-  version: 'v1.0.0',
-  //URL_BASE: 'https://dev.bego.ai/v1.0/',
-  URL_BASE: 'http://localhost:3002/v1.0/',
-  //URL_BASE: 'https://begomx-develop.herokuapp.com/v1.0/',
-  website_url: 'https://bego.ai/'
+  version: "v1.0.0",
+  URL_BASE: "https://dev.bego.ai/v1.0/",
+  //URL_BASE: "http://localhost:3002/v1.0/",
+  //SOCKET_URI: "http://localhost:3008",
+  SOCKET_URI: "SocketLB-1911102184.us-east-1.elb.amazonaws.com",
+  website_url: "https://bego.ai/",
 };
 
 /*

@@ -1,0 +1,204 @@
+@import "../../styles/icomoon.scss";
+
+$nb-background: #010B10;
+
+#notificationBar {
+    transform: height;
+    transition: all .5s ease-out;
+
+    background: $nb-background;
+    border-left:1px solid lighten($nb-background, 5%);
+    font-family: Avenir;
+
+    height: 100%;
+    overflow: hidden;
+
+    & > div{
+        padding:5%;
+    }
+    
+    &.hide{
+        height:0%;
+    }
+
+    width: 300px;
+    z-index: 200;
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    .avatar {
+        margin: 20px auto;
+        height: 120px;
+        width: 120px;
+        background: #48556721;
+        border-radius: 50%;
+        padding: 10px;
+
+        img {
+            height: 100px;
+            width: 100px;
+            border: 5px solid #1C232A;
+            border-radius: 50%;
+        }
+    }
+
+    h3 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: 'Avenir';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 18px;
+        line-height: 25px;
+    }
+
+    h2 {
+        margin-top: 40px;
+        margin-bottom: 35px;
+        font-size: 20px;
+        position:relative;
+    }
+
+    .notifications {
+
+        height: 78%;
+        overflow-y: scroll;
+        position: relative;
+
+        ul {
+            list-style-type: none;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        li {
+            position:relative;
+            margin-bottom: 32px;
+
+            .image {
+                width: 18%;
+                margin-right: 5px;
+
+                display: inline-block;
+                box-sizing: border-box;
+                width: 44px;
+                height: 44px;
+
+                background: #040B11;
+                border: 1px solid #1C232A;
+                box-shadow: inset -4px -4px 4px #000000, inset 4px 4px 4px #10161C;
+                border-radius: 50%;
+
+                padding: 3.5%;
+                vertical-align: top;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+
+            .times{
+                position:absolute;
+                top:-3px; 
+                right: 0px;
+                cursor:pointer;
+
+                .icon{
+                    font-size:8px;
+                }
+            }
+
+            .content {
+                width: 80%;
+                font-size: 14px;
+
+                display: inline-block;
+
+                .title {
+                    font-weight: 800;
+                }
+
+                .body {
+                    transform: height;
+                    transition: all .5s linear;
+
+                    font-weight: 400;
+                    max-height: 20px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    
+                    &.open{
+                        max-height: 300px;
+                        white-space:inherit;
+                    }
+                }
+
+                .more{
+                    cursor: pointer;
+                    color: #ffbe00;
+                }
+            }
+
+
+            .time {
+                color: #62666C;
+                font-size: 12px;
+                padding-left: 49px;
+            }
+        }
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+
+    .mt-1 {
+        margin-top: 5px;
+    }
+
+    .mr {
+        margin-right: 25px;
+    }
+
+    .bego-btn {
+        height: 26px;
+        margin-bottom: 37px;
+    }
+
+    .gray-button {
+
+        width: 40px;
+        height: 38px;
+
+        background: linear-gradient(180deg, #181C1E 0%, #1B2020 58.93%);
+        box-shadow: inset 0px 11px 6px #040B11;
+        border:0px;
+        border-radius: 10px;
+
+        &.active {
+            background: linear-gradient(180deg, #181C1E 0%, #1B2020 58.93%);
+            box-shadow: inset 0px 11px 6px #040B11;
+            border-radius: 10px;
+            border-top:1px solid #CCC;
+        }
+    }
+
+    .text-right{
+        text-align: right;
+    }
+
+    .hand{
+        cursor:pointer
+    }
+
+    .hide-all-btn{
+        min-width: 80px;
+        right:0px;
+        position: absolute;
+        cursor: pointer;
+    }
+}

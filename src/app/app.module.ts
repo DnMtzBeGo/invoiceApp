@@ -81,7 +81,6 @@ export function createTranslateLoader(http: HttpClient) {
     HorizontalCardComponent,
     SmallResolutionModalComponent,
     IncompatibleBrowserModalComponent,
-
   ],
   imports: [
     BrowserModule,

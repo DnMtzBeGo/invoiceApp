@@ -54,6 +54,8 @@ import { BegoAddressAutocompleteModule } from "src/app/shared/components/bego-ad
 import { PinComponent } from "src/app/shared/components/pin/pin.component";
 import { BegoInputFileComponent } from './components/bego-input-file/bego-input-file.component';
 
+import { NotificationBarModule } from "src/app/shared/components/notification-bar/notification-bar.module";
+import { NotificationBarComponent } from "src/app/shared/components/notification-bar/notification-bar.component";
 @NgModule({
   declarations: [
     FacturaEmisorConceptosComponent,
@@ -61,6 +63,7 @@ import { BegoInputFileComponent } from './components/bego-input-file/bego-input-
     InfoModalComponent,
     FacturaDireccionInputComponent,
     BegoSliderDotsComponent,
+    NotificationBarComponent,
     PinComponent,
     BegoInputFileComponent,
   ],
@@ -106,6 +109,7 @@ import { BegoInputFileComponent } from './components/bego-input-file/bego-input-
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
     BegoAddressAutocompleteModule,
+    NotificationBarModule,
   ],
   exports: [
     MatBadgeModule,
@@ -149,6 +153,8 @@ import { BegoInputFileComponent } from './components/bego-input-file/bego-input-
     FacturaDireccionInputComponent,
     BegoSliderDotsComponent,
     BegoAddressAutocompleteModule,
+    //    NotificationBarModule,
+    NotificationBarComponent,
     PinComponent,
   ],
   providers: [CartaPorteInfoService],

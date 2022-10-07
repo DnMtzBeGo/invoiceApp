@@ -34,16 +34,13 @@ export class AppComponent {
   showSmallResolutionModal: boolean = false;
   incompatibleBrowsers: IncompatibleBrowserVersion[] = [
     {
-      navigator: 'msie',
-      minVersion: 11
-    }
+      navigator: "msie",
+      minVersion: 11,
+    },
   ];
   showIncompatibleBrowserModal: boolean = false;
 
   minWidthResolution = 1024;
-
-
-
 
   constructor(
     private languageService: LanguageService,
@@ -53,9 +50,8 @@ export class AppComponent {
     languageService.setInitialLanguage();
     profileInfoService.getProfilePic();
 
-
     this.showSmallResolutionModal = window.innerWidth < this.minWidthResolution;
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       this.showSmallResolutionModal =
         window.innerWidth < this.minWidthResolution;
     });
