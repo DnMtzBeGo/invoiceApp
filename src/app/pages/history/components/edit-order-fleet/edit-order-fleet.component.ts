@@ -10,7 +10,7 @@ export class EditOrderFleetComponent implements OnInit {
 
   @Output() goBack = new EventEmitter<void>();
   @Output() edit = new EventEmitter<FleetElementType>();
-  @Input() orderData: any;
+  @Input() orderData?: any;
 
   constructor() { }
 
@@ -23,7 +23,7 @@ export class EditOrderFleetComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void{
     const {driver, truck, trailer} = this.orderData;
-    if(changes.orderData){
+    if(changes.orderData && this.orderData?._id){
       this.driverData = {...driver, availability: false, photo: driver.thumbnail};
       this.truckData = {...truck, availability: false, photo: truck.thumbnail};
       this.trailerData = {...trailer, availability: false, photo: trailer.thumbnail};
