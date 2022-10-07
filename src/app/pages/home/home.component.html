@@ -1,4 +1,7 @@
-<div>
+<div class="map map-container">
+  <div #map [ngClass]="[!showFleetMap || showOrderDetails ? 'map-faded-out' : '']"
+     class="google-map transparent">
+  </div>
   <bego-map
     #begoMap
     [hide]="showOrderDetails"
@@ -35,8 +38,21 @@
         [savedPlaces]="savedPlaces$ | async"
         (inputPlace)="placesService.emitter.next($event)"
         (sendUserWantCP)="getUserWantCP($event)"
+        [drafts]="draftData"
+        [haveFleetMembers]="haveNotFleetMembers"
+        [haveFleetMembersErrors]="haveFleetMembersErrors"
       >
       </app-input-directions>
     </div>
+
+    <button
+      id="reset"
+      (click)="mapEmitter.next(['center'])"
+      [ngClass]="{
+        'reset-up': userRole && showFleetMap && !showOrderDetails
+      }"
+    >
+      <i class="icon icon-gps"></i>
+    </button>
   </div>
 </div>

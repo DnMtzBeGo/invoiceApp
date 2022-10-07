@@ -198,36 +198,43 @@ export class MapComponent implements OnInit {
     // }
   }
 
-  showMap() {
-    if (navigator.geolocation) {
+  async showMap() {
+    let perm = await navigator.permissions.query({ name: 'geolocation' });
+
+    if (perm.state === 'granted') {
       navigator.geolocation.getCurrentPosition(position => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
-        this.createMap(this.lat, this.lng)
-        this.map.panBy(200, 0);
-        
-        this.bounds = new google.maps.LatLngBounds();
-        // this.map.panToBounds( this.bounds)
-        // console.log(this.bounds)
-        this.map.addListener('dblclick', () => {
-          this.zoom += 1;
-          this.map.setZoom(this.zoom);
-        });
-
-        this.elementRef.nativeElement.querySelector('#map').addEventListener(
-          'mousewheel',
-          (event: any) => {
-            if (event.deltaY > 1) this.zoom += -1;
-            else this.zoom += 1;
-            this.map.setZoom(this.zoom);
-          },
-          true
-        );
-
-        this.makeMarker(this.start, this.iconLocation.start, 'yellow');
       });
-   } else {
-      console.log("User not allow")
+    } else {
+      console.log("User not allowing to access location");
+      this.lat = 19.432608;
+      this.lng = -99.133209;
+    }
+
+    this.createMap(this.lat, this.lng)
+    this.map.panBy(200, 0);
+
+    this.bounds = new google.maps.LatLngBounds();
+    // this.map.panToBounds( this.bounds)
+    // console.log(this.bounds)
+    this.map.addListener('dblclick', () => {
+      this.zoom += 1;
+      this.map.setZoom(this.zoom);
+    });
+
+    this.elementRef.nativeElement.querySelector('#map').addEventListener(
+      'mousewheel',
+      (event: any) => {
+        if (event.deltaY > 1) this.zoom += -1;
+        else this.zoom += 1;
+        this.map.setZoom(this.zoom);
+      },
+      true
+    );
+
+    if (perm.state === 'granted') {
+      this.makeMarker(this.start, this.iconLocation.start, 'yellow');
     }
   }
 
@@ -274,11 +281,8 @@ export class MapComponent implements OnInit {
     bounds.extend(origin);
     bounds.extend(destination);
     bounds.extend(routeCenter);
-    if(this.typeMap === 'draft') {
-      this.map.fitBounds(bounds, { bottom: 0, top: 0, left: 0, right: 0 });
-    } else {
-      this.map.fitBounds(bounds, { bottom: 60, top: 0, left: 0, right: 0 });
-    }
+
+    this.map.fitBounds(bounds, { bottom: 50, top: 0, left: 0, right: 0 });
   }
 
   displayRoute(startMarker: any, endMarker: any) {

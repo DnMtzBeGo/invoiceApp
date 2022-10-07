@@ -90,23 +90,32 @@ export class Step3Component implements OnInit {
       changes.draftData.currentValue.dropoff &&
       changes.draftData.currentValue.dropoff.contact_info
     ) {
-      let [telephoneCode, ...telephone] =
-        changes.draftData.currentValue.dropoff.contact_info.telephone.split(" ");
-      telephone = telephone.join(" ");
-      this.phoneCode = telephoneCode;
-      this.phoneFlag = changes.draftData.currentValue.dropoff.contact_info.country_code;
-      this.phoneNumber = telephone;
+      const {dropoff} = changes.draftData.currentValue;
+
+      if(dropoff.contact_info.telephone){
+        let [telephoneCode, ...telephone] =
+          changes.draftData.currentValue.dropoff.contact_info.telephone.split(" ");
+        telephone = telephone.join(" ");
+        this.phoneCode = telephoneCode;
+        this.phoneFlag = changes.draftData.currentValue.dropoff.contact_info.country_code;
+        this.phoneNumber = telephone;
+        this.step3Form.get("phonenumber")!.setValue(telephone);
+        this.step3Form.get("phoneCode")!.setValue(telephoneCode);
+      }
+
       this.step3Form
         .get("fullname")!
         .setValue(changes.draftData.currentValue.dropoff.contact_info.name);
-      this.step3Form.get("phonenumber")!.setValue(telephone);
       this.step3Form
         .get("email")!
         .setValue(changes.draftData.currentValue.dropoff.contact_info.email);
       this.step3Form
         .get("country_code")!
         .setValue(changes.draftData.currentValue.dropoff.contact_info.country_code);
-      this.step3Form.get("phoneCode")!.setValue(telephoneCode);
+
+      if(this.draftData['stamp']){
+        this.step3Form.get('rfc').setValue(dropoff.contact_info.rfc);
+      }
     }
     this.validFormStep3.emit(this.step3Form.valid);
   }

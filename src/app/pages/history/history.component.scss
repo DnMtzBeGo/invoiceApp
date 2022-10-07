@@ -1,21 +1,39 @@
-.history-wrapper{
-  display: flex;
-  justify-content: center;
+bego-body{
 
   .container{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     max-width: 1280px;
     .orders-list{
       flex-grow: 1;
     }
 
+    .order-detail{
+      z-index: 1;
+    }
+  }
 
+  app-no-orders-yet{
+    position: absolute;
+    margin-top: 10vh;
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: -1;
+  }
+
+  app-order-info{
+    opacity: 1;
+    transition: opacity 0.5s;
   }
 
   &.no-orders{
-    //makes container be full-width
-    display: block;
+    app-no-orders-yet{
+      opacity: 1;
+    }
+
+    app-order-info{
+      opacity: 0;
+    }
   }
 }

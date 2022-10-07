@@ -1,0 +1,57 @@
+<div
+  class="app-map-pin"
+  [ngClass]="{
+    loaded: vm.showUI
+  }"
+>
+  <div
+    #map
+    id="map"
+    class="pin-map"
+    [ngClass]="{
+      loaded: vm.showUI
+    }"
+  ></div>
+  <div
+    #pin
+    id="pin"
+    [ngClass]="{
+      'pin-up': vm.isDragging
+    }"
+  ></div>
+  <button
+    id="reset"
+    (click)="mapEmitter.next(['resetLocation'])"
+    [ngClass]="{
+      'reset-up': vm.showUI && !vm.gpsLocationError && !vm.centerOnGps
+    }"
+  >
+    <i class="icon icon-gps"></i>
+  </button>
+
+  <div
+    class="map-footer-container"
+    [ngClass]="{
+      'map-footer-up': vm.showUI
+    }"
+  >
+    <div class="map-footer">
+      <div [title]="vm.center?.formatted_address">
+        <img src="../../../../assets/images/maps/pickup.svg" />
+        <p>
+          {{ splitGoogleAddress(vm.center?.formatted_address) }}
+          <span>
+            {{ splitGoogleAddressSecond(vm.center?.formatted_address) }}
+          </span>
+        </p>
+      </div>
+      <button
+        mat-flat-button
+        class="brand-btn-2"
+        (click)="vm.center && sendAddress(vm.center)"
+      >
+        {{ "pin.btn" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

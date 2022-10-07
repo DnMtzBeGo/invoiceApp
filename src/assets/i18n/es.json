@@ -443,6 +443,11 @@
       "body": "Tu cuenta estará verificada una vez hayamos checado los documentos subidos"
     }
   },
+  "sat-certification": {
+    "order_tab_label": "SAT",
+    "label_cer": "Certificado del sello digital (.cer)",
+    "label_key": "Llave del sello digital (.key)"
+  },
   "profile": {
     "account": {
       "txt_orders": "Órdenes",
@@ -467,7 +472,11 @@
       "txt-delete-profile-pic": "¿Estás seguro que quieres eliminar tu foto de perfil?",
       "txt-delete-profile-pic-title": "Eliminar foto de perfil",
       "delete-profile-pic-btn": "Ok",
-      "cancel-deletion-btn": "Cancelar"
+      "cancel-deletion-btn": "Cancelar",
+      "txt-role": "Rol",
+      "txt-fleet": "Flota",
+      "txt-manager": "Manager",
+      "txt-driver-manager": "Driver Manager"
     },
     "edit": {
       "txt_edit_profile": "Editar Perfil",
@@ -478,6 +487,10 @@
       "btn_save": "Guardar",
       "txt_saved": "Tus cambios han sido guardados.",
       "txt_address_not_found": "Dirección no encontrada..."
+    },
+    "sat": {
+      "save": "Enviar archivos",
+      "select-tax-regime" : "Seleccione el regimen fiscal"
     },
     "upload-files": {
       "txt_fiscal_documents": "Documentos Fiscales",
@@ -1248,6 +1261,15 @@
         "serie":"Serie\nExpresa letra o conjunto de letras para tener un control interno de los CFDI.",
         "precio": {
             "subtotal": "Escribe el precio total del servicio (Antes de impuestos)."
+        },
+        "commodity": {
+          "cve_material_peligroso": "Clave Material Peligroso\nIndica la clave del tipo de material peligroso que se transporta.",
+          "embalaje": "Embalaje\nIndica la clave del tipo de embalaje que se requiere para transportar el material o residuo peligroso."
+        },
+        "invoice_source": {
+          "factura": "Factura no relacionada con una orden.",
+          "ordenes": "Factura generada por la creación de una orden desde el dashboard.",
+          "drivers": "Factura generada por la creación de una orden desde la APP de Drivers."
         }
     }
   },
@@ -1299,5 +1321,18 @@
   "incompatible-browser-modal": {
     "incompatible-browser-modal-title": "Este navegador no es compatible con la app",
     "incompatible-browser-modal-body": "Para una mejor experiencia, usa otro navegador"
+  },
+  "pin": {
+    "title": "Confirmar dirección",
+    "btn": "Confirmar",
+    "placeholder": "Destino, Destino",
+    "address": {
+      "title": "Editar dirección",
+      "txt-address": "Dirección",
+      "placeholder-address": "Introduce destino",
+      "txt-pin": "Fijar la ubicación en el mapa",
+      "txt_invalidDriection": "Se más específico en su dirección.",
+      "txt-address-not-found": "No se encontró la dirección"
+    }
   }
 }

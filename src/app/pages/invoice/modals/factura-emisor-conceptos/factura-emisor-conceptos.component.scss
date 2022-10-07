@@ -1,7 +1,11 @@
+@import "../../styles/colors";
+@import "../../styles/font";
+@import "../../styles/variables";
+
 .app-factura-emisor-conceptos {
   max-width: 700px;
   min-width: 700px;
-  padding-bottom: 0.5rem;
+  padding: 0 1rem 0.5rem;
   color: #ededed;
 
   .actions {
@@ -10,8 +14,237 @@
     gap: 1rem;
   }
 
-  .impuestos-table,
-  .facturas-table {
+  .concepto-table-wrapper {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 1rem;
+    background: #0a0f14;
+
+    &__header {
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      @media (max-width: $small) {
+        padding: 0 16px;
+      }
+    }
+
+    &__title {
+      margin: 0;
+    }
+
+    &__search {
+      display: flex;
+      align-items: center;
+    }
+
+    &__icon-wrapper {
+      height: 46px;
+      width: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__icon {
+      color: inherit;
+    }
+
+    &__search-input {
+      font-size: $fs-normal;
+      height: 32px;
+      border: 0;
+      border-bottom: 1px solid $grey;
+      outline: none;
+
+      @media (max-width: $small) {
+        width: 150px;
+      }
+
+      &:focus {
+        border-bottom: 2px solid $blue;
+      }
+    }
+
+    &__button {
+      box-shadow: none;
+      background-color: inherit;
+      width: 46px;
+      height: 46px;
+      color: $grey;
+
+      &:hover {
+        background-color: $black-08;
+        color: $blue;
+      }
+    }
+
+    .mat-table .mat-header-cell > div {
+      justify-content: unset;
+    }
+  }
+
+  .concepto-table {
+    &__content {
+      overflow-x: scroll;
+      position: relative;
+      margin-bottom: 0;
+    }
+
+    &__table {
+    }
+
+    &__table-checkbox {
+      width: 32px;
+      padding-left: 24px;
+    }
+
+    &__table-header {
+      font-size: $fs-small;
+      padding: 0 8px;
+    }
+
+    &__table-body {
+      font-size: $fs-small;
+      padding: 0 8px;
+      text-align: left;
+    }
+
+    &__content-badge {
+      width: fit-content;
+      border-radius: 32px;
+      color: $white;
+      text-align: center;
+      padding: 5px 10px;
+      font-size: 13px;
+      box-sizing: border-box;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: $fw-lighter;
+      line-height: 1.75;
+      letter-spacing: 0.457px;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    &__paginator {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .total {
+        font-family: "Avenir";
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        color: #ededed;
+      }
+
+      .ngx-pagination {
+        margin-bottom: 0;
+        padding-left: 0;
+
+        .pagination-previous,
+        .current,
+        a,
+        button,
+        .pagination-next {
+          font-family: "Avenir";
+          font-size: 12px;
+          font-weight: 500;
+          color: #ededed;
+          text-transform: uppercase;
+        }
+
+        .pagination-previous.disabled,
+        .pagination-next.disabled {
+          color: #494c50;
+        }
+
+        a:hover {
+          color: black;
+        }
+
+        li.current {
+          background: unset;
+          font-weight: 500;
+          text-decoration: underline;
+        }
+
+        .pagination-previous.disabled::before,
+        .pagination-previous a::before,
+        .pagination-next.disabled::after,
+        .pagination-next a::after {
+          font-family: "bego-icons" !important;
+          font-style: normal;
+          font-feature-settings: normal;
+          font-variant: normal;
+          text-transform: none;
+          line-height: 1;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          font-size: 14px;
+        }
+
+        .pagination-previous.disabled::before,
+        .pagination-previous a::before {
+          content: "" !important;
+          transform: translateY(1px);
+        }
+
+        .pagination-next.disabled::after,
+        .pagination-next a::after {
+          content: "";
+          transform: translateY(1px);
+        }
+      }
+
+      .mat-form-field-outline:first-child {
+        border: 1px solid #1c232a;
+        box-shadow: inset -2px -2px 4px #1c232a, inset 4px 4px 4px #02070b;
+        border-radius: 4px;
+      }
+
+      .mat-form-field-appearance-outline .mat-form-field-infix {
+        width: 3rem;
+        padding: 0.8rem 0 0.5rem;
+        border-top: unset;
+      }
+
+      .mat-form-field-wrapper {
+        padding-bottom: 0;
+      }
+
+      .mat-select-value {
+        color: #ededed;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        text-align: center;
+      }
+
+      .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
+        transform: unset;
+      }
+
+      .mat-select-arrow {
+        color: #ededed;
+      }
+
+      mat-label {
+        margin-right: 1em;
+        font-family: "Avenir";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        color: #ededed;
+      }
+    }
+  }
+
+  .impuestos-table {
     width: 100%;
 
     th {
@@ -55,25 +288,6 @@
       font-size: 15px;
       line-height: 20px;
       letter-spacing: 0.5px;
-      color: #ededed;
-    }
-  }
-
-  .facturas-table {
-    thead th {
-      font-family: "Avenir";
-      font-style: normal;
-      font-weight: 800;
-      font-size: 14px;
-      line-height: 19px;
-      color: #ffffff;
-    }
-
-    tbody td {
-      font-family: "Avenir";
-      font-style: normal;
-      font-weight: 300;
-      font-size: 14px;
       color: #ededed;
     }
   }

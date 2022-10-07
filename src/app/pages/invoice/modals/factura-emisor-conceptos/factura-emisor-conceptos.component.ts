@@ -4,9 +4,12 @@ import {
   Inject,
   ViewEncapsulation,
   ChangeDetectionStrategy,
+  ViewChild,
+  ElementRef,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MatTable } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import {
@@ -18,6 +21,7 @@ import {
   merge,
   timer,
   Subject,
+  BehaviorSubject,
   asapScheduler,
 } from "rxjs";
 import {
@@ -142,15 +146,27 @@ export class FacturaEmisorConceptosComponent implements OnInit {
         | "impuestos:add"
         | "impuestos:remove"
       ),
-      unknown
+      unknown?
     ]
   >();
 
+  @ViewChild("myTable") myTable: MatTable<any>;
+
   paginator: Paginator = {
     pageIndex: 1,
-    pageSize: 999,
+    pageSize: 10,
     pageTotal: 1,
     pageSearch: "",
+    total: 1,
+  };
+
+  public displayedColumns: string[] = ["nombre", "descripcion", "actions"];
+
+  public sizeOptions = [5, 10, 15, 20];
+
+  // emulated route
+  route = {
+    queryParams: new BehaviorSubject({}),
   };
 
   // FORM CONTORLS
@@ -167,13 +183,13 @@ export class FacturaEmisorConceptosComponent implements OnInit {
 
   ngOnInit(): void {
     const loadDataAction$ = merge(
-      oof(""),
+      this.$rx.afterViewInit$,
       this.conceptoEmitter.pipe(ofType("refresh"))
     );
 
     const params$ = merge(
-      oof({})
-      // this.route.queryParams.pipe(skip(1), debounceTime(500))
+      oof({}),
+      this.route.queryParams.pipe(skip(1), debounceTime(500))
     ).pipe(
       distinctUntilChanged(object_compare),
       map((params) => ({
@@ -196,17 +212,19 @@ export class FacturaEmisorConceptosComponent implements OnInit {
 
     const conceptos$ = combineLatest(
       conceptosRequest$.pipe(
-        switchMap(this.fetchConceptos)
-        // tap((result) => {
-        //   this.paginator.pageTotal = result.pages;
-        // }),
+        switchMap(this.fetchConceptos),
+        tap((result) => {
+          this.paginator.pageTotal = result.pages;
+          this.paginator.total = result.size;
+        }),
+        pluck("result")
       )
     ).pipe(
-      map(([conceptos]) =>
-        conceptos.map((concepto) => ({
-          ...concepto,
-        }))
-      ),
+      map(([conceptos]) => conceptos),
+      tap(() => {
+        this.myTable?.renderRows &&
+          requestAnimationFrame(() => this.myTable.renderRows());
+      }),
       share()
     );
 
@@ -416,10 +434,18 @@ export class FacturaEmisorConceptosComponent implements OnInit {
 
   //API calls
   fetchConceptos = (params) => {
+    params = clone(params);
+    const rfc = params.rfc;
+    delete params.rfc;
+
     return from(
-      this.apiRestService.apiRest(JSON.stringify(params), "invoice/concepts", {
-        loader: "false",
-      })
+      this.apiRestService.apiRest(
+        JSON.stringify({ rfc, pagination: params }),
+        "invoice/concepts",
+        {
+          loader: "false",
+        }
+      )
     ).pipe(mergeAll(), pluck("result"));
   };
 
@@ -490,6 +516,20 @@ export class FacturaEmisorConceptosComponent implements OnInit {
       )
     ).pipe(mergeAll());
   };
+
+  //Paginator
+  public pageChangeEmiter(page: number = 1) {
+    this.paginator.pageIndex = page;
+    this.route.queryParams.next({
+      ...this.route.queryParams.getValue(),
+      limit: this.paginator.pageSize,
+      page: this.paginator.pageIndex,
+    });
+  }
+
+  public pagination(page: number) {
+    this.pageChangeEmiter(page);
+  }
 
   // UTILS
   log = (...args) => {

@@ -22,6 +22,7 @@ export interface Order {
       email: string,
       country_code: string
     },
+    place_id_pickup: string
   },
   dropoff: {
     startDate: number,
@@ -37,5 +38,6 @@ export interface Order {
       email: string,
       country_code: string
     },
+    place_id_dropoff: string
   }
 }
