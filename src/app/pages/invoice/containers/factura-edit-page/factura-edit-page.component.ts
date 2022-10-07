@@ -127,7 +127,7 @@ export class FacturaEditPageComponent implements OnInit {
       lugar_de_expedicion: any;
       tipo_de_comprobante: string;
       moneda: string;
-      tipo_de_cambio?: number;
+      tipo_de_cambio?: string;
       metodo_de_pago: string;
       forma_de_pago: string;
       condiciones_de_pago: string;
@@ -836,7 +836,7 @@ export class FacturaEditPageComponent implements OnInit {
       tipo_de_comprobante: "",
       // moneda: "",
       moneda: "MXN",
-      tipo_de_cambio: null,
+      tipo_de_cambio: "",
       metodo_de_pago: "",
       forma_de_pago: "",
       condiciones_de_pago: "Contado",

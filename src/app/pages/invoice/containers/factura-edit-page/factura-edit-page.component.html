@@ -1265,7 +1265,7 @@
               name="moneda"
               [ngModel]="vm.form?.moneda"
               (ngModelChange)="
-                vm.form.moneda = $event; vm.form.tipo_de_cambio = null
+                vm.form.moneda = $event; vm.form.tipo_de_cambio = ''
               "
               class="disable-custom-format"
               [disabled]="vm.readonly || !!vm.form?.order"
@@ -1295,7 +1295,7 @@
           </mat-form-field>
 
           <mat-form-field
-            *ngIf="vm.form?.moneda !== 'MXN'"
+            *ngIf="vm.form?.moneda && vm.form?.moneda !== 'MXN'"
             class="brand-field-1"
             appearance="outline"
             [attr.readonly]="vm.readonly || !!vm.form?.order"
