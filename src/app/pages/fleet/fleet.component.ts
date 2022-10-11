@@ -15,46 +15,22 @@ import {
 } from "rxjs";
 import { mergeAll, tap, filter, startWith, mapTo, exhaustMap, takeUntil, catchError } from 'rxjs/operators'
 import { AuthService } from "src/app/shared/services/auth.service";
-import { PlacesService } from "src/app/shared/services/places.service";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
-import { HeaderService } from "./services/header.service";
+import { HeaderService } from "../home/services/header.service";
 import { ofType } from "src/app/shared/utils/operators.rx";
-import { CustomMarker } from './custom.marker';
+import { CustomMarker } from '../home/custom.marker';
 
 declare var google: any;
 // 10 seconds for refreshing map markers
 const markersRefreshTime = 1000 * 20;
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.scss"],
+  selector: "app-fleet",
+  templateUrl: "./fleet.component.html",
+  styleUrls: ["./fleet.component.scss"],
 })
-export class HomeComponent implements OnInit {
-  @Input() locations: GoogleLocation = {
-    pickup: "",
-    dropoff: "",
-    pickupLat: "",
-    pickupLng: "",
-    dropoffLat: "",
-    dropoffLng: "",
-    pickupPostalCode: 0,
-    dropoffPostalCode: 0,
-  };
-  datepickup: number;
-  datedropoff: number;
-  draftData: any;
-  headerTransparent: boolean = true;
+export class FleetComponent implements OnInit {
   showOrderDetails: boolean = false;
-
-  public typeMap: string = "home";
-  public imageFromGoogle: any;
-  public membersToAssigned: object = {};
-  public userWantCP: boolean = false;
-  public haveNotFleetMembers: boolean = false;
-  public haveFleetMembersErrors: Array<string> = [];
-
-  savedPlaces$ = this.placesService.places$;
 
   // members map logic
   geocoder = new google.maps.Geocoder();
@@ -94,46 +70,23 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private webService: AuthService,
-    public placesService: PlacesService,
     private googlemaps: GoogleMapsService,
     private headerStyle: HeaderService,
     private elementRef: ElementRef
   ) {
-    this.headerStyle.changeHeader(this.headerTransparent);
     this.subs.add(
       this.router.events.subscribe((res) => {
-        if (res instanceof NavigationEnd && res.url === "/home") {
-          let data = this.router.getCurrentNavigation()?.extras.state;
-          if (data && data.hasOwnProperty("draft")) {
-            this.draftData = data.draft;
-            this.locations.pickup = data.draft.pickup.address;
-            this.locations.dropoff = data.draft.dropoff.address;
-            this.locations.pickupLat = data.draft.pickup.lat;
-            this.locations.pickupLng = data.draft.pickup.lng;
-            this.locations.dropoffLat = data.draft.dropoff.lat;
-            this.locations.dropoffLng = data.draft.dropoff.lng;
-            this.locations.pickupPostalCode = data.draft.pickup.zip_code;
-            this.locations.dropoffPostalCode = data.draft.dropoff.zip_code;
-            this.locations.place_id_pickup = data.draft.pickup.place_id_pickup;
-            this.locations.place_id_dropoff = data.draft.dropoff.place_id_dropoff;
-            this.typeMap = "draft";
-            window.requestAnimationFrame(() =>
-              this.googlemaps.updateDataLocations(this.locations)
-            );
-            /* this.showNewOrderCard(); */
-          } else {
-            window.requestAnimationFrame(() =>
-              this.mapEmitter.next(['center'])
-            );
-          }
-
+        if (res instanceof NavigationEnd && res.url === "/fleet") {
+          window.requestAnimationFrame(() =>
+            this.mapEmitter.next(['center'])
+          );
         }
       })
     );
   }
 
   ngOnInit(): void {
-    // this.showNewOrderCard();
+    this.headerStyle.changeHeader(true);
 
     // Set the name of the hidden property and the change event for visibility
     let visibilityChange;
@@ -183,36 +136,6 @@ export class HomeComponent implements OnInit {
     this.subs.unsubscribe();
   }
 
-  showNewOrderCard() {
-    this.showOrderDetails = true;
-  }
-
-  updateLocations(data: GoogleLocation) {
-    this.locations = data;
-    this.showFleetMap = false;
-    this.mapEmitter.next(['hideFleetMap']);
-  }
-
-  updateDatepickup(data: number) {
-    this.datepickup = data;
-  }
-
-  updateDropOffDate(data: number) {
-    this.datedropoff = data;
-  }
-
-  getGoogleImageMap(data: any) {
-    this.imageFromGoogle = data;
-  }
-
-  public getMembersToAssignedOrder(event: Event) {
-    this.membersToAssigned = {...event};
-  }
-
-  public getUserWantCP(event: boolean) {
-    this.userWantCP = event;
-  }
-
   private async getFleetDetails(cleanRefresh: boolean) {
     (
       await this.webService.apiRest('', 'carriers/home', {
@@ -245,11 +168,7 @@ export class HomeComponent implements OnInit {
             }
           });
 
-          this.haveNotFleetMembers = !res.result.trailers || !res.result.trucks;
 
-          if (res.result.hasOwnProperty('errors') && res.result.errors.length > 0) {
-           this.haveFleetMembersErrors = res.result.errors;
-          }
         }
 
         // this.getDriverRole(cleanRefresh);

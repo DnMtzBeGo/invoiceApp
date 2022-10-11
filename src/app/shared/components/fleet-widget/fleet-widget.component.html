@@ -1,0 +1,92 @@
+<div class="fleet-container">
+  <div *ngIf="fleetDataLoaded" [@enterAnimation]>
+    <div class="fleet-title">
+      <h2>{{ 'fleet.txt_fleet' | translate }}</h2>
+      <h1>{{ fleetNameFromService }}</h1>
+    </div>
+
+    <div class="fleet-dashboard">
+      <div class="fleet-members">
+        <div class="fleet-header">
+          <div>
+            <h2>{{ 'fleet.txt_team' | translate }}</h2>
+            <span>{{ members?.length }}</span>
+          </div>
+          <div routerLink="/fleet/members">
+            {{ 'fleet.btn_view_all' | translate }}
+          </div>
+        </div>
+        <div class="fleet-bubbles">
+          <ng-container *ngFor="let member of members; index as i">
+            <div
+              [ngClass]="[
+                member.availability === 1
+                  ? 'available'
+                  : member.availability === -1
+                  ? 'not-available'
+                  : member.availability === 2
+                  ? 'not-available'
+                  : '',
+                !!!member.connected ? 'offline' : ''
+              ]"
+              *ngIf="i < 4"
+              routerLink="/fleet/members">
+              <img [src]="member.thumbnail || '../../../../assets/images/avatar-outline.svg'" />
+            </div>
+          </ng-container>
+          <div class="remaining-bubbles" *ngIf="members.length > 4" routerLink="/fleet/members">
+            <span>+{{ members?.length - 4 }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="fleet-trucks">
+        <div class="fleet-header">
+          <div>
+            <h2>{{ 'fleet.txt_trucks' | translate }}</h2>
+            <span>{{ trucks?.length }}</span>
+          </div>
+          <div routerLink="/fleet/trucks">
+            {{ 'fleet.btn_view_all' | translate }}
+          </div>
+        </div>
+        <div class="fleet-bubbles" *ngIf="hasChange">
+          <div *ngIf="trucks.length < 1" class="no-status" routerLink="/fleet/trucks" [state]="prevUrlTrucks">
+            <img class="no-cover" src="../../assets/orders/trailer.svg" />
+          </div>
+          <ng-container *ngFor="let truck of trucks; index as i">
+            <div class="no-status" *ngIf="i < 4" routerLink="/fleet/trucks">
+              <img [src]="truck.thumbnail ? truck.thumbnail + '?' + differentTruck : '../../../../assets/images/truck.svg'" />
+            </div>
+          </ng-container>
+          <div *ngIf="trucks.length > 4" class="remaining-bubbles" (click)="sendDatTrucks()" [state]="{ data: trucks }">
+            <span>+{{ trucks?.length - 4 }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="fleet-trailers">
+        <div class="fleet-header">
+          <div>
+            <h2>{{ 'fleet.txt_trailers' | translate }}</h2>
+            <span>{{ trailers?.length }}</span>
+          </div>
+          <div routerLink="/fleet/trailers">
+            {{ 'fleet.btn_view_all' | translate }}
+          </div>
+        </div>
+        <div class="fleet-bubbles" *ngIf="hasChange">
+          <div *ngIf="trailers.length < 1" class="no-status" routerLink="/fleet/trailers" [state]="prevUrlTrucks">
+            <img class="no-cover" src="../../assets/orders/trailer.svg" />
+          </div>
+          <ng-container *ngFor="let trailer of trailers; index as i">
+            <div class="no-status" *ngIf="i < 4" routerLink="/fleet/trailers">
+              <img [src]="trailer.thumbnail ? trailer.thumbnail + '?' + differentTruck : '../../../../assets/images/trailer.svg'" />
+            </div>
+          </ng-container>
+          <div *ngIf="trailers.length > 4" class="remaining-bubbles" (click)="sendDataTrailers(trailer)" [state]="{ data: trailers }">
+            <span>+{{ trailers?.length - 4 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

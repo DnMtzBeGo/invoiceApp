@@ -679,6 +679,7 @@
   "menu": {
     "home": "Home",
     "drafts": "  Drafts",
+    "fleet": "Fleet",
     "history": "History",
     "invoice": "Invoice",
     "support": "Support",
@@ -1282,7 +1283,16 @@
       "black": "Black",
       "gray": "Gray",
       "grey": "Gray"
-    }
+    },
+    "txt_fleet": "My Fleet",
+    "btn_order": "ORDER",
+    "btn_view_all": "VIEW ALL",
+    "txt_fleet_name": "Fleet Name",
+    "txt_team": "Your Team",
+    "txt_trucks": "Your Trucks",
+    "txt_trailers": "Your Trailers",
+    "txt_driver_truck": "Driver and truck required",
+    "txt_driver_truck_m": "You need at least one driver and one truck to create an order"
   },
   "home": {
     "manager": {

@@ -1276,3 +1276,42 @@ input[type="number"] {
     z-index: -1;
   }
 }
+
+// Copied from _status.scss
+/**********************/
+/******* Status *******/
+/**********************/
+
+// $color-yellow: #FFCC00;
+// $color-white: #ededed;
+// $color-green: #67c013;
+// $color-red: #de473c;
+
+/*****************************/
+/******* Driver Status *******/
+/*****************************/
+
+.available {
+  border: 2px solid #67c013;
+}
+
+.in-service {
+  border: 2px solid #de473c;
+}
+
+.not-available {
+  border: 2px solid #de473c;
+}
+
+//To be defined...
+.no-status {
+  border: 2px solid #C1C7D0;
+}
+
+.offline {
+  border: 2px solid gray;
+  
+  > img {
+    filter: grayscale(1);
+  }
+}
