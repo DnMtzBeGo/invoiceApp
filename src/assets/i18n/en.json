@@ -1315,7 +1315,10 @@
         "brand": "Brand"
       },
       "see_details": "See truck",
-      "btn_view": "View truck"
+      "btn_view": "View truck",
+      "truck_details":"Truck Details",
+      "truck_settings":"Truck Settings",
+      "truck_insurance":"Truck insurance"
     },
     "trailers": {
       "txt_header": "My Trailers",

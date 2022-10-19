@@ -1319,7 +1319,10 @@
         "brand": "Marca"
       },
       "see_details": "Ver unidad",
-      "btn_view": "Ver unidad"
+      "btn_view": "Ver unidad",
+      "truck_details":"Detalles del camión",
+      "truck_settings":"Ajustes del camión",
+      "truck_insurance":"Seguro del camión"
     },
     "trailers": {
       "txt_header": "Cajas",

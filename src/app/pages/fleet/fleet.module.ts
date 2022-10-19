@@ -9,9 +9,11 @@ import { SharedModule } from '../../shared/shared.module';
 import { FleetPageComponent, FleetBrowserComponent } from './containers';
 
 import { FleetWidgetComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent } from './components';
+import { FleetEditComponent } from './containers/fleet-edit/fleet-edit.component';
+import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.module';
 
 @NgModule({
-  declarations: [FleetWidgetComponent, FleetPageComponent, FleetBrowserComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent],
+  declarations: [FleetWidgetComponent, FleetPageComponent, FleetBrowserComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent, FleetEditComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -19,7 +21,8 @@ import { FleetWidgetComponent, MemberCardComponent, TruckCardComponent, TrailerC
     FormsModule,
     FleetRoutingModule,
     TranslateModule,
-    SharedModule
+    SharedModule,
+    BegoTabsModule
   ]
 })
 export class FleetModule {}

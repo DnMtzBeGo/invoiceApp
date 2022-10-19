@@ -1,0 +1,26 @@
+.app-fleet-browser {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    grid-gap: 3rem;
+
+    .main {
+
+
+    }
+
+    .sidebar {
+      padding: 40px 25px;
+      background: #0b1117;
+      box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
+      border-radius: 8px;
+      color: #ededed;
+      // min-width: 280px;
+    }
+  }
+}
