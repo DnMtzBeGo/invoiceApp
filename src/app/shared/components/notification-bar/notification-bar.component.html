@@ -1,7 +1,8 @@
 <div id="notificationBar" [class]="notificationsBarService.isVisible">
     <div>
         <div class="chevron text-right">
-            <img src="/assets/images/notifications/chevron.png" class="hand" (click)="toggleBar()" />
+            <i class="icon icon-up" (click)="toggleBar()" ></i>
+            <!-- <img src="/assets/images/notifications/chevron.png" class="hand" (click)="toggleBar()" /> -->
         </div>
 
         <div class="avatar text-center">
@@ -11,15 +12,17 @@
         <h3>{{ profileName }}</h3>
 
         <div class="text-center">
-            <button class="bego-btn yellow">Ver perfil</button>
+            <button class="bego-btn yellow" routerLink="/profile">Ver perfil</button>
         </div>
 
         <div class="text-center mt-1">
             <button class="gray-button mr">
-                <img src="/assets/images/notifications/messages.png" />
+                <i class="icon icon-chat"></i>
+                <!-- <img src="/assets/images/notifications/messages.png" /> -->
             </button>
             <button class="gray-button active">
-                <img src="/assets/images/notifications/notifications.png" />
+                <i class="icon icon-bell"></i>
+                <!-- <img src="/assets/images/notifications/notifications.png" /> -->
             </button>
         </div>
 
