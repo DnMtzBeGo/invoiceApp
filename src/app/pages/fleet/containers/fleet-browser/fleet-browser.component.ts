@@ -23,6 +23,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { routes } from '../../consts';
 import { Paginator } from '../../../invoice/models';
@@ -79,7 +80,7 @@ export class FleetBrowserComponent implements OnInit {
     };
   };
 
-  facturasEmitter = new Subject<['refresh' | 'template:search' | 'template:set' | 'refresh:defaultEmisor' | 'view:set', unknown?]>();
+  facturasEmitter = new Subject<['queryParams' | 'refresh' | 'template:search' | 'template:set' | 'refresh:defaultEmisor' | 'view:set', unknown?]>();
 
   paginator: Paginator = {
     pageIndex: +this.route.snapshot.queryParams.page || 1,
@@ -111,7 +112,8 @@ export class FleetBrowserComponent implements OnInit {
     private matDialog: MatDialog,
     private apiRestService: AuthService,
     private translateService: TranslateService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -132,7 +134,7 @@ export class FleetBrowserComponent implements OnInit {
 
     const facturaStatus$ = this.fetchFacturaStatus().pipe(share());
 
-    const params$ = merge(oof(this.route.snapshot.queryParams), this.route.queryParams.pipe(skip(1), debounceTime(500))).pipe(
+    const params$ = merge(oof(this.route.snapshot.queryParams), this.facturasEmitter.pipe(ofType('queryParams'), debounceTime(500))).pipe(
       distinctUntilChanged(object_compare),
       map((params: any) => ({
         ...params,
@@ -393,6 +395,28 @@ export class FleetBrowserComponent implements OnInit {
         this.facturasEmitter.next(['refresh:defaultEmisor']);
       }
     });
+  }
+
+  navigate(newParams) {
+    // Hacky solution
+
+    const urlTree = this.router.createUrlTree([], {
+      relativeTo: this.route,
+      queryParams: { ...this.vm?.params, ...newParams },
+      queryParamsHandling: 'merge'
+    });
+
+    this.location.go(urlTree.toString());
+    this.facturasEmitter.next(['queryParams', urlTree.queryParams]);
+
+    // Original solution
+
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParams,
+    //   queryParamsHandling: 'merge',
+    //   replaceUrl: true
+    // })
   }
 
   //UTILS
