@@ -1,35 +1,24 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { GoogleLocation } from "src/app/shared/interfaces/google-location";
-import { Router, NavigationEnd } from "@angular/router";
-import {
-  Subscription,
-  Observable,
-  of,
-  Subject,
-  BehaviorSubject,
-  timer,
-  merge,
-  from,
-  fromEvent,
-  interval
-} from "rxjs";
-import { mergeAll, tap, filter, startWith, mapTo, exhaustMap, takeUntil, catchError } from 'rxjs/operators'
-import { AuthService } from "src/app/shared/services/auth.service";
-import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
-import { HeaderService } from "../home/services/header.service";
-import { ofType } from "src/app/shared/utils/operators.rx";
-import { CustomMarker } from '../home/custom.marker';
+import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription, Observable, of, Subject, BehaviorSubject, timer, merge, from, fromEvent, interval } from 'rxjs';
+import { mergeAll, tap, filter, startWith, mapTo, exhaustMap, takeUntil, catchError } from 'rxjs/operators';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
+import { HeaderService } from 'src/app/pages/home/services/header.service';
+import { ofType } from 'src/app/shared/utils/operators.rx';
+import { CustomMarker } from 'src/app/pages/home/custom.marker';
 
 declare var google: any;
 // 10 seconds for refreshing map markers
 const markersRefreshTime = 1000 * 20;
 
 @Component({
-  selector: "app-fleet",
-  templateUrl: "./fleet.component.html",
-  styleUrls: ["./fleet.component.scss"],
+  selector: 'app-fleet-page',
+  templateUrl: './fleet-page.component.html',
+  styleUrls: ['./fleet-page.component.scss']
 })
-export class FleetComponent implements OnInit {
+export class FleetPageComponent implements OnInit {
   showOrderDetails: boolean = false;
 
   // members map logic
@@ -76,10 +65,8 @@ export class FleetComponent implements OnInit {
   ) {
     this.subs.add(
       this.router.events.subscribe((res) => {
-        if (res instanceof NavigationEnd && res.url === "/fleet") {
-          window.requestAnimationFrame(() =>
-            this.mapEmitter.next(['center'])
-          );
+        if (res instanceof NavigationEnd && res.url === '/fleet') {
+          window.requestAnimationFrame(() => this.mapEmitter.next(['center']));
         }
       })
     );
@@ -90,23 +77,25 @@ export class FleetComponent implements OnInit {
 
     // Set the name of the hidden property and the change event for visibility
     let visibilityChange;
-    if (typeof (document as any).hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
-      visibilityChange = "visibilitychange";
-    } else if (typeof (document as any).msHidden !== "undefined") {
-      visibilityChange = "msvisibilitychange";
-    } else if (typeof (document as any).webkitHidden !== "undefined") {
-      visibilityChange = "webkitvisibilitychange";
+    if (typeof (document as any).hidden !== 'undefined') {
+      // Opera 12.10 and Firefox 18 and later support
+      visibilityChange = 'visibilitychange';
+    } else if (typeof (document as any).msHidden !== 'undefined') {
+      visibilityChange = 'msvisibilitychange';
+    } else if (typeof (document as any).webkitHidden !== 'undefined') {
+      visibilityChange = 'webkitvisibilitychange';
     }
 
-    const pauseApp$ = fromEvent(document, visibilityChange)
-      .pipe(filter(() => document.visibilityState === "hidden"));
-    const resumeApp$ = fromEvent(document, visibilityChange)
-      .pipe(filter(() => document.visibilityState === "visible"));
+    const pauseApp$ = fromEvent(document, visibilityChange).pipe(filter(() => document.visibilityState === 'hidden'));
+    const resumeApp$ = fromEvent(document, visibilityChange).pipe(filter(() => document.visibilityState === 'visible'));
 
     this.subs.add(
       merge(
         this.mapEmitter.pipe(ofType('center'), mapTo(false)),
-        resumeApp$.pipe(filter(() => this.showFleetMap), mapTo(false)),
+        resumeApp$.pipe(
+          filter(() => this.showFleetMap),
+          mapTo(false)
+        ),
         this.mapEmitter.pipe(
           ofType('startReload'),
           exhaustMap(() =>
@@ -119,8 +108,8 @@ export class FleetComponent implements OnInit {
                   this.mapEmitter.pipe(
                     ofType('center'),
                     tap(() => {
-                      this.isMapDirty = false
-                    }),
+                      this.isMapDirty = false;
+                    })
                   )
                 )
               )
@@ -142,9 +131,8 @@ export class FleetComponent implements OnInit {
         loader: cleanRefresh ? 'false' : 'true'
       })
     )
-    .pipe(catchError(()=>of({})))
-    .subscribe(
-      (res) => {
+      .pipe(catchError(() => of({})))
+      .subscribe((res) => {
         if (res.status === 200 && res.result) {
           // When members exist on the fleet, it saves them on this array
           this.markersFromService = [];
@@ -167,8 +155,6 @@ export class FleetComponent implements OnInit {
               });
             }
           });
-
-
         }
 
         // this.getDriverRole(cleanRefresh);
@@ -183,15 +169,13 @@ export class FleetComponent implements OnInit {
         if (userRole && this.markersFromService.length > 0) {
           this.initMap(cleanRefresh);
           this.showFleetMap = true;
-        }
-        else {
+        } else {
           this.showFleetMap = false;
           // this.showMap(cleanRefresh);
         }
 
         if (userRole && userRole !== 1) this.mapEmitter.next(['startReload']);
-      }
-    );
+      });
   }
 
   // showMap(cleanRefresh: boolean) {
@@ -287,21 +271,20 @@ export class FleetComponent implements OnInit {
           // console.log('zoom:', this.zoom);
         });
 
-        this.mapRef.nativeElement
-          .addEventListener(
-            'mousewheel',
-            (event) => {
-              // zoom in
-              if (this.map.getZoom() + 1 <= this.maxZoom && !(event.deltaY > 1)) {
-                this.isMapDirty = true;
-              }
-              // zoom out
-              else if (event.deltaY > 1) {
-                this.isMapDirty = true;
-              }
-            },
-            true
-          );
+        this.mapRef.nativeElement.addEventListener(
+          'mousewheel',
+          (event) => {
+            // zoom in
+            if (this.map.getZoom() + 1 <= this.maxZoom && !(event.deltaY > 1)) {
+              this.isMapDirty = true;
+            }
+            // zoom out
+            else if (event.deltaY > 1) {
+              this.isMapDirty = true;
+            }
+          },
+          true
+        );
       });
     }
 
@@ -312,7 +295,7 @@ export class FleetComponent implements OnInit {
         : new google.maps.Map(this.mapRef.nativeElement, {
             zoom: this.zoom,
             maxZoom: this.maxZoom,
-            mapId: "893ce2d924d01422",
+            mapId: '893ce2d924d01422',
             disableDefaultUI: true,
             backgroundColor: '#040b12',
             keyboardShortcuts: false,
@@ -332,14 +315,10 @@ export class FleetComponent implements OnInit {
 
     for (var i = 0; i < this.markersFromService.length; i++) {
       let changePic = this.markersFromService[i].icon.split('');
-      if (changePic[changePic.length - 1] === '/')
-        this.markersFromService[i].icon = '../assets/images/user-outline.svg';
+      if (changePic[changePic.length - 1] === '/') this.markersFromService[i].icon = '../assets/images/user-outline.svg';
 
       const marker = new CustomMarker(
-        new google.maps.LatLng(
-          this.markersFromService[i].position.lat,
-          this.markersFromService[i].position.lng
-        ),
+        new google.maps.LatLng(this.markersFromService[i].position.lat, this.markersFromService[i].position.lng),
         this.map,
         this.markersFromService[i].icon,
         this.markersFromService[i].state,

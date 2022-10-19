@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FleetWidgetComponent } from './fleet-widget.component';
 import { ButtonModule } from '../button/button.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,14 +13,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/circular-avatar.module';
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
-  declarations: [
-    FleetWidgetComponent
-  ],
+  declarations: [FleetWidgetComponent],
   imports: [
     CommonModule,
+    RouterModule,
     ButtonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -34,8 +34,6 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
     CircularAvatarModule,
     MatSlideToggleModule
   ],
-  exports: [
-    FleetWidgetComponent
-  ]
+  exports: [FleetWidgetComponent]
 })
-export class FleetWidgetModule { }
+export class FleetWidgetModule {}

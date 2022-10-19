@@ -1,4 +1,4 @@
-<div class="fleet-container">
+<div class="fleet-container" [class]="['fleet-' + size]">
   <div *ngIf="fleetDataLoaded" [@enterAnimation]>
     <div class="fleet-title">
       <h2>{{ 'fleet.txt_fleet' | translate }}</h2>

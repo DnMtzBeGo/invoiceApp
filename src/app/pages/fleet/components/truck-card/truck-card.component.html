@@ -1,0 +1,35 @@
+<div class="app-truck-card">
+  <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger>
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu" class="brand-menu-1">
+    <button mat-menu-item [routerLink]="[routes.EDIT_TRUCK, { id: data._id }]">
+      <mat-icon class="icon icon-eye-open icon-only" style="font-size: 18px"></mat-icon>
+      <span>{{ 'fleet.trucks.see_details' | translate }}</span>
+    </button>
+  </mat-menu>
+
+  <div class="avatar">
+    <div class="avatar-1">
+      <img
+        [src]="data.thumbnails && data.thumbnails[0] && !data.thumbnails?.[0].endsWith('/') ? data.thumbnails[0] : '../../../../assets/images/truck.svg'" />
+      <div class="avatar-color" [style.background]="data.attributes.colorName || data.attributes.color"></div>
+    </div>
+  </div>
+
+  <p class="brand">
+    {{ data.attributes.brand }}
+  </p>
+
+  <div class="stats">
+    <span>{{ data.attributes.plates }}</span>
+    <span class="dot">•</span>
+    <span>{{ data.attributes.year }}</span>
+  </div>
+
+  <div class="actions">
+    <button mat-flat-button class="brand-btn-2" [routerLink]="[routes.EDIT_TRUCK, { id: data._id }]">
+      {{ 'fleet.trucks.btn_view' | translate }}
+    </button>
+  </div>
+</div>

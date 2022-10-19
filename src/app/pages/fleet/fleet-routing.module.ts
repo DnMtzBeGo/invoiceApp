@@ -1,11 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FleetComponent } from './fleet.component';
+import { FleetPageComponent, FleetBrowserComponent } from './containers';
 
 const routes: Routes = [
   {
     path: '',
-    component: FleetComponent
+    component: FleetPageComponent
+  },
+  {
+    path: 'members',
+    component: FleetBrowserComponent,
+    data: {
+      model: 'members'
+    }
+  },
+  {
+    path: 'trucks',
+    component: FleetBrowserComponent,
+    data: {
+      model: 'trucks'
+    }
+  },
+  {
+    path: 'trailers',
+    component: FleetBrowserComponent,
+    data: {
+      model: 'trailers'
+    }
   }
 ];
 
@@ -13,4 +34,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FleetRoutingModule { }
+export class FleetRoutingModule {}

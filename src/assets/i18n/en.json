@@ -1292,7 +1292,42 @@
     "txt_trucks": "Your Trucks",
     "txt_trailers": "Your Trailers",
     "txt_driver_truck": "Driver and truck required",
-    "txt_driver_truck_m": "You need at least one driver and one truck to create an order"
+    "txt_driver_truck_m": "You need at least one driver and one truck to create an order",
+    "txt_sort": "Sort by:",
+    "members": {
+      "txt_header": "Team",
+      "txt_search": "Search...",
+      "btn_add": "Add new",
+      "sort_by": {
+        "natural": "Creation date",
+        "nickname": "Name"
+      },
+      "incoming": "incoming",
+      "done": "done",
+      "see_details": "See profile"
+    },
+    "trucks": {
+      "txt_header": "My Trucks",
+      "txt_search": "Search truck...",
+      "btn_add": "Add new",
+      "sort_by": {
+        "natural": "Creation date",
+        "brand": "Brand"
+      },
+      "see_details": "See truck",
+      "btn_view": "View truck"
+    },
+    "trailers": {
+      "txt_header": "My Trailers",
+      "txt_search": "Search trailer...",
+      "btn_add": "Add new",
+      "sort_by": {
+        "natural": "Creation date",
+        "trailer_number": "Trailer"
+      },
+      "see_details": "See trailer",
+      "btn_view": "View trailer"
+    }
   },
   "home": {
     "manager": {

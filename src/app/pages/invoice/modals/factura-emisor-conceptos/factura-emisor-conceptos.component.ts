@@ -194,8 +194,8 @@ export class FacturaEmisorConceptosComponent implements OnInit {
       distinctUntilChanged(object_compare),
       map((params) => ({
         ...params,
-        limit: params.limit || this.paginator.pageSize,
-        page: params.page || this.paginator.pageIndex,
+        limit: +params.limit || this.paginator.pageSize,
+        page: +params.page || this.paginator.pageIndex,
         rfc: this.config.rfc,
       })),
       tap((params) => {

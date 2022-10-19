@@ -1296,7 +1296,42 @@
     "txt_trucks": "Unidades",
     "txt_trailers": "Cajas",
     "txt_driver_truck": "Operador y unidad requeridos.",
-    "txt_driver_truck_m": "Necesitas al menos un operador y una unidad para generar servicios."
+    "txt_driver_truck_m": "Necesitas al menos un operador y una unidad para generar servicios.",
+    "txt_sort": "Ordenar por:",
+    "members": {
+      "txt_header": "Equipo",
+      "txt_search": "Buscar...",
+      "btn_add": "Agregar",
+      "sort_by": {
+        "natural": "Fecha creación",
+        "nickname": "Nombre"
+      },
+      "incoming": "próximas",
+      "done": "completadas",
+      "see_details": "Ver perfil"
+    },
+    "trucks": {
+      "txt_header": "Unidades",
+      "txt_search": "Buscar unidad...",
+      "btn_add": "Agregar",
+      "sort_by": {
+        "natural": "Fecha creación",
+        "brand": "Marca"
+      },
+      "see_details": "Ver unidad",
+      "btn_view": "Ver unidad"
+    },
+    "trailers": {
+      "txt_header": "Cajas",
+      "txt_search": "Buscar caja...",
+      "btn_add": "Agregar",
+      "sort_by": {
+        "natural": "Fecha creación",
+        "trailer_number": "Número de caja"
+      },
+      "see_details": "Ver caja",
+      "btn_view": "Ver caja"
+    }
   },
   "home": {
     "manager": {

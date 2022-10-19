@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { trigger, style, animate, transition } from '@angular/animations';
@@ -11,6 +11,10 @@ import { TranslateService } from '@ngx-translate/core';
   animations: [trigger('enterAnimation', [transition(':enter', [style({ opacity: 0 }), animate('800ms', style({ opacity: 1 }))])])]
 })
 export class FleetWidgetComponent implements OnInit {
+  // sm | md
+  @Input()
+  size: string = 'md';
+
   fleetDetails: any;
   fleetNameFromService: string;
   fleetName: string;
@@ -88,7 +92,7 @@ export class FleetWidgetComponent implements OnInit {
   }
 
   async getFleetDetails() {
-    (await this.webService.apiRest('', 'fleet/overview')).subscribe(
+    (await this.webService.apiRest('', 'fleet/overview', { loader: 'false' })).subscribe(
       async (res) => {
         this.fleetDetails = res.result;
 
