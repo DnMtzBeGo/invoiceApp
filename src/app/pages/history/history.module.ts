@@ -25,6 +25,7 @@ import { SimpleAvatarModule } from 'src/app/shared/components/simple-avatar/simp
 import { ChooseFleetElementComponent } from './components/choose-fleet-element/choose-fleet-element.component';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { BegoBodyModule } from 'src/app/shared/components/bego-body/bego-body.module';
+import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.module';
 @NgModule({
   declarations: [
     HistoryComponent,
@@ -54,7 +55,8 @@ import { BegoBodyModule } from 'src/app/shared/components/bego-body/bego-body.mo
     CircularAvatarModule,
     SimpleAvatarModule,
     ButtonModule,
-    BegoBodyModule
+    BegoBodyModule,
+    BegoTabsModule
   ]
 })
 export class HistoryModule { }
