@@ -100,7 +100,7 @@ export class FleetBrowserComponent implements OnInit {
         label: `${this.translateService.instant(`fleet.${this._resolver.lang}.sort_by.${key}`)} ${
           sort.slice(0, 1).toUpperCase() + sort.slice(1)
         }`,
-        value: [key, sort].join('-')
+        value: [key, sort].join(':')
       }))
     )
   };
@@ -138,7 +138,7 @@ export class FleetBrowserComponent implements OnInit {
         ...params,
         limit: +params.limit || this.paginator.pageSize,
         page: +params.page || this.paginator.pageIndex,
-        sort: params.sort || this.resolver.sortInit.join('-'),
+        sort: params.sort || this.resolver.sortInit.join(':'),
         fec_inicial: params.fec_inicial ? this.decodeFecha(params.fec_inicial) : null,
         fec_final: params.fec_final ? this.decodeFecha(params.fec_final) : null
       })),
