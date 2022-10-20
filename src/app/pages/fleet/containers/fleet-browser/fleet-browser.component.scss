@@ -142,6 +142,7 @@
 app-fleet-browser {
   padding-left: 2rem;
   padding-right: 2rem;
+  padding-bottom: 2rem;
 
   .app-fleet-browser {
     width: 100%;
@@ -272,6 +273,7 @@ app-fleet-browser {
         }
 
         .content {
+          margin-bottom: 2rem;
           overflow: hidden;
           // max-width: 800px;
 
@@ -283,6 +285,124 @@ app-fleet-browser {
         }
 
         .footer {
+          display: flex;
+          justify-content: space-between;
+
+          .total {
+            font-family: 'Avenir';
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            color: #ededed;
+          }
+
+          .pagination {
+            display: flex;
+            align-items: center;
+            position: relative;
+            font-family: 'Avenir';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 16px;
+            color: #ededed;
+
+            .icon-back {
+              margin-right: 10px;
+              cursor: pointer;
+            }
+
+            .pagination-back {
+              padding-right: 8px;
+              border-right: 0.5px solid #ededed;
+              cursor: pointer;
+            }
+
+            .pagination-next {
+              padding-left: 8px;
+              border-left: 0.5px solid #ededed;
+              cursor: pointer;
+            }
+
+            .current-pagination {
+              display: flex;
+              align-items: center;
+              padding: 0 7px;
+              cursor: pointer;
+            }
+
+            .icon-triangle-down {
+              margin-left: 4px;
+              font-size: 8px;
+            }
+
+            .icon-next {
+              margin-left: 10px;
+              cursor: pointer;
+            }
+
+            .select-page {
+              position: absolute;
+              display: flex;
+              flex-direction: column;
+              background: black;
+              padding: 10px;
+              left: 65px;
+              cursor: pointer;
+              transition: 10s ease-in;
+
+              & p {
+                padding: 5px;
+              }
+            }
+
+            .desactivated {
+              pointer-events: none;
+              color: #494c50;
+            }
+          }
+
+          .limit {
+            .mat-form-field-outline:first-child {
+              border: 1px solid #1c232a;
+              box-shadow: inset -2px -2px 4px #1c232a, inset 4px 4px 4px #02070b;
+              border-radius: 4px;
+            }
+
+            .mat-form-field-appearance-outline .mat-form-field-infix {
+              width: 3rem;
+              padding: 0.8rem 0 0.5rem;
+              border-top: unset;
+            }
+
+            .mat-form-field-wrapper {
+              padding-bottom: 0;
+            }
+
+            .mat-select-value {
+              color: #ededed;
+              font-size: 14px;
+              letter-spacing: 0.5px;
+              text-align: center;
+            }
+
+            .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
+              transform: unset;
+            }
+
+            .mat-select-arrow {
+              color: #ededed;
+            }
+
+            mat-label {
+              margin-right: 1em;
+              font-family: 'Avenir';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              letter-spacing: 0.5px;
+              color: #ededed;
+            }
+          }
         }
       }
 

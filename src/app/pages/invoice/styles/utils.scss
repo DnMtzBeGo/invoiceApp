@@ -8,7 +8,7 @@
   font-weight: 600;
 
   &:not(.mat-button-disabled):hover {
-    outline: 1px solid #ffbe00;
+    outline: 1px solid #FFE000;
   }
 
   &.mat-button-disabled {
@@ -17,8 +17,9 @@
 }
 
 .mat-flat-button.brand-btn-2 {
-  background: #ffbe00;
-  box-shadow: inset 4px 4px 4px #ffd354, inset -4px -4px 6px #d59e00;
+  background: #FFE000;
+  border: 2px solid #FFE000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 4px 4px 4px #FFEA52, inset -4px -4px 4px #E1C600;
   border-radius: 8px;
   color: #040b11;
   font-size: 14px;
@@ -33,7 +34,7 @@
 }
 
 .mat-mini-fab.brand-btn-2 {
-  background: #ffbe00;
+  background: #FFE000;
   color: #040b11;
   display: inline-flex;
   align-items: center;
@@ -104,7 +105,7 @@
   }
 
   .mat-form-field-outline-thick {
-    color: #ffbe00cc;
+    color: #FFE000cc;
 
     .mat-form-field-outline-start,
     .mat-form-field-outline-end,
@@ -123,7 +124,7 @@
   }
 
   &.mat-form-field.mat-focused .mat-select-arrow {
-    color: #ffbe00;
+    color: #FFE000;
   }
 
   &.mat-form-field-disabled {
@@ -246,7 +247,7 @@
   }
 
   .mat-progress-bar-fill::after {
-    background-color: #ffbe00;
+    background-color: #FFE000;
   }
 }
 
@@ -258,7 +259,7 @@
 
 .mat-progress-spinner.brand-spinner-2 {
   circle {
-    stroke: #ffbe00;
+    stroke: #FFE000;
   }
 }
 
@@ -311,7 +312,7 @@ ngx-mat-select-search.brand-select-search-1 {
   &.mat-active,
   &.mat-active.mat-selected {
     background: rgba(255, 255, 255, 0.03);
-    border-left: 1px solid #ffbe00;
+    border-left: 1px solid #FFE000;
   }
 
   &[disabled] {
@@ -410,7 +411,7 @@ snack-bar-container.brand-snackbar-1 {
   box-shadow: inset 3px 3px 8px 3px #111416;
 
   .mat-simple-snackbar span {
-    color: #ffbe00;
+    color: #FFE000;
   }
 }
 

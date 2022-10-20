@@ -1298,12 +1298,14 @@
     "txt_driver_truck": "Operador y unidad requeridos.",
     "txt_driver_truck_m": "Necesitas al menos un operador y una unidad para generar servicios.",
     "txt_sort": "Ordenar por:",
+    "txt_showing": "Mostrando",
+    "txt_of": "de",
     "members": {
       "txt_header": "Equipo",
       "txt_search": "Buscar...",
       "btn_add": "Agregar",
       "sort_by": {
-        "natural": "Fecha creación",
+        "member_meta.date_created": "Fecha creación",
         "nickname": "Nombre"
       },
       "incoming": "próximas",

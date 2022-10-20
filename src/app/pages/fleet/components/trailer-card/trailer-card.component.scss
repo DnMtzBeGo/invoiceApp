@@ -74,11 +74,11 @@
     font-weight: 400;
     font-size: 16px;
     color: #e8e8e8;
-    display: flex;
-    justify-content: space-evenly;
+    text-align: center;
 
     .dot {
       font-weight: 700;
+      margin: 0 8px;
     }
   }
 

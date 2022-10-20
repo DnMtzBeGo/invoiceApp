@@ -4,15 +4,15 @@
     <defs>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
             <stop stop-color="#FFD200" offset="0%"></stop>
-            <stop stop-color="#FFBE00" offset="100%"></stop>
+            <stop stop-color="#FFE000" offset="100%"></stop>
         </linearGradient>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
             <stop stop-color="#FFD200" offset="0%"></stop>
-            <stop stop-color="#FFBE00" offset="100%"></stop>
+            <stop stop-color="#FFE000" offset="100%"></stop>
         </linearGradient>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
             <stop stop-color="#FFD200" offset="0%"></stop>
-            <stop stop-color="#FFBE00" offset="100%"></stop>
+            <stop stop-color="#FFE000" offset="100%"></stop>
         </linearGradient>
         <ellipse id="path-4" cx="18.5454547" cy="17.4687501" rx="3.3636365" ry="3.46875014"></ellipse>
         <filter x="-260.1%" y="-180.2%" width="620.3%" height="604.5%" filterUnits="objectBoundingBox" id="filter-5">
