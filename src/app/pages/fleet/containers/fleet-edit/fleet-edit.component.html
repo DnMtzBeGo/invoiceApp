@@ -1,8 +1,42 @@
-<div class="app-fleet-browser">
+<div class="edit-truck">
   <div class="wrapper">
     <div class="main">
       <bego-tabs [tabs]="fleetTabs"></bego-tabs>
-      <!-- <app-orders-list></app-orders-list> -->
+
+      <div class="pictures-wrapper">
+        <div class="pic1"><img src="https://picsum.photos/300" alt=""/></div>
+        <div class="pic2"><img src="https://picsum.photos/300" alt=""/></div>
+        <div class="pic3"><img src="https://picsum.photos/300" alt=""/></div>
+        <div class="more-btn">
+          <div>
+            <i class="icon icon-plus" style="color: white;"></i>
+          </div>
+           <p>{{'fleet.trucks.more' | translate}}</p>
+          </div>
+      </div>
+
+      <form  class="inputs" [formGroup]="truckDetailsForm">
+
+        <div class="truck-input">
+          <label for="Model">{{'fleet.trucks.model' | translate}}</label>
+          <input type="text" name="Model" formControlName="model">
+        </div>
+        
+        <div class="truck-input">
+          <label for="Model">{{'fleet.trucks.year' | translate}}</label>
+          <input type="text" name="Model" formControlName="model">
+        </div>
+
+        <div class="truck-input">
+          <label for="Model">{{'fleet.trucks.plates' | translate}}</label>
+          <input type="text" name="Model" formControlName="model">
+        </div>
+
+      </form>
+
+
+
+
     </div>
 
     <div class="sidebar">

@@ -1320,7 +1320,12 @@
       "btn_view": "View truck",
       "truck_details":"Truck Details",
       "truck_settings":"Truck Settings",
-      "truck_insurance":"Truck insurance"
+      "truck_insurance":"Truck insurance",
+      "model":"Model",
+      "year":"Year",
+      "plates":"Plates",
+      "color":"Color",
+      "more":"More"
     },
     "trailers": {
       "txt_header": "My Trailers",

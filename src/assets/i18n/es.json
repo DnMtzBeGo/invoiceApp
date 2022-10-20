@@ -1324,7 +1324,12 @@
       "btn_view": "Ver unidad",
       "truck_details":"Detalles del camión",
       "truck_settings":"Ajustes del camión",
-      "truck_insurance":"Seguro del camión"
+      "truck_insurance":"Seguro del camión",
+      "model":"Modelo",
+      "year":"Año",
+      "plates":"Placas",
+      "color":"Color",
+      "more":"Más"
     },
     "trailers": {
       "txt_header": "Cajas",
