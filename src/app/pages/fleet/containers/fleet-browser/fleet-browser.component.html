@@ -170,10 +170,7 @@
       <div class="controls">
         <div class="left">
           <mat-label>{{ 'fleet.txt_sort' | translate }}</mat-label>
-          <mat-select
-            [value]="vm.params?.sort"
-            (selectionChange)="navigate({ sort: $event.value, page: 1 })"
-            class="disable-custom-format">
+          <mat-select [value]="vm.params?.sort" (selectionChange)="navigate({ sort: $event.value, page: 1 })" class="disable-custom-format">
             <mat-option *ngFor="let option of resolver.sortBy" [value]="option.value" class="brand-option-1">{{ option.label }}</mat-option>
           </mat-select>
         </div>
@@ -208,7 +205,72 @@
         <div *ngIf="vm.view === 'list'">list</div>
       </div>
 
-      <div class="footer"></div>
+      <div class="footer">
+        <div class="total">
+          {{ 'fleet.txt_showing' | translate }} {{ paginator.pageIndex }}
+          {{ 'fleet.txt_of' | translate }}
+          {{ paginator.pageTotal }}
+        </div>
+
+        <!-- copied from orders-list.component.html -->
+        <div class="pagination">
+          <i class="icon icon-back" [ngClass]="{ desactivated: paginator.pageIndex == 1 }"></i>
+          <p
+            class="pagination-back"
+            [ngClass]="{ desactivated: paginator.pageIndex == 1 }"
+            (click)="
+              navigate({
+                page: paginator.pageIndex - 1
+              })
+            ">
+            {{ 'history.btns.prev' | translate }}
+          </p>
+          <div class="current-pagination" (click)="paginator.pageTotal > 1 && (showSelectPage = true)">
+            {{ paginator.pageIndex }} <i *ngIf="paginator.pageTotal > 1" class="icon icon-triangle-down"></i>
+          </div>
+          <div class="select-page" *ngIf="showSelectPage">
+            <p
+              *ngFor="let page of paginator.pageTotal"
+              (click)="
+                showSelectPage = false;
+                navigate({
+                  page: page
+                })
+              ">
+              {{ page }}
+            </p>
+          </div>
+          <p
+            class="pagination-next"
+            [ngClass]="{ desactivated: paginator.pageIndex >= paginator.pageTotal }"
+            (click)="
+              navigate({
+                page: paginator.pageIndex + 1
+              })
+            ">
+            {{ 'history.btns.next' | translate }}
+          </p>
+          <i class="icon icon-next" [ngClass]="{ desactivated: paginator.pageIndex >= paginator.pageTotal }"></i>
+        </div>
+
+        <div class="limit">
+          <mat-label>{{ 'invoice.invoice-table.items-per-page' | translate }}</mat-label>
+          <mat-form-field appearance="outline" floatLabel="always" class="brand-field-1">
+            <mat-select
+              [value]="paginator.pageSize"
+              (selectionChange)="
+                navigate({
+                  limit: $event.value
+                })
+              "
+              class="disable-custom-format">
+              <mat-option *ngFor="let sizeOption of paginatorDefaults[vm.view]?.sizeOptions" [value]="sizeOption" class="brand-option-1">{{
+                sizeOption
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
 
     <div class="sidebar">

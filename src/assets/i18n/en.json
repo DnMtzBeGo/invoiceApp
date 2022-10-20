@@ -1294,12 +1294,14 @@
     "txt_driver_truck": "Driver and truck required",
     "txt_driver_truck_m": "You need at least one driver and one truck to create an order",
     "txt_sort": "Sort by:",
+    "txt_showing": "Showing",
+    "txt_of": "of",
     "members": {
       "txt_header": "Team",
       "txt_search": "Search...",
       "btn_add": "Add new",
       "sort_by": {
-        "natural": "Creation date",
+        "member_meta.date_created": "Creation date",
         "nickname": "Name"
       },
       "incoming": "incoming",

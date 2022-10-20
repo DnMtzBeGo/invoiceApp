@@ -45,14 +45,17 @@ const filterParams = new Set(['search']);
 })
 export class FleetBrowserComponent implements OnInit {
   public routes: typeof routes = routes;
+
   $rx = reactiveComponent(this);
 
   private filtersDialogRef;
 
+  showSelectPage: boolean = false;
+
   vm!: {
     fleetId?: number;
     // list | grid
-    view?: unknown;
+    view?: any;
     tiposComprobante?: unknown;
     facturaStatus?: unknown;
     params?: {
@@ -80,16 +83,13 @@ export class FleetBrowserComponent implements OnInit {
     };
   };
 
-  facturasEmitter = new Subject<['queryParams' | 'refresh' | 'template:search' | 'template:set' | 'refresh:defaultEmisor' | 'view:set', unknown?]>();
-
-  paginator: Paginator = {
-    pageIndex: +this.route.snapshot.queryParams.page || 1,
-    pageSize: +this.route.snapshot.queryParams.limit || 10,
-    pageTotal: 1,
-    pageSearch: ''
-  };
+  facturasEmitter = new Subject<
+    ['queryParams' | 'refresh' | 'template:search' | 'template:set' | 'refresh:defaultEmisor' | 'view:set', unknown?]
+  >();
 
   model: 'members' | 'trucks' | 'trailers' = this.route.snapshot.data.model;
+
+  view = window.localStorage.getItem('app-fleet-browser-view') ?? 'grid';
 
   private _resolver = resolvers[this.route.snapshot.data.model];
   resolver = {
@@ -106,6 +106,19 @@ export class FleetBrowserComponent implements OnInit {
     )
   };
 
+  paginatorDefaults = {
+    grid: { sizeOptions: [6, 9, 12], default: 6 },
+    list: { sizeOptions: [10, 15, 20, 50, 100], default: 15 }
+  };
+
+  paginator: Paginator = {
+    pageIndex: +this.route.snapshot.queryParams.page || 1,
+    pageSize: +this.route.snapshot.queryParams.limit || this.paginatorDefaults[this.view].default || 10,
+    pageTotal: 1,
+    pageSearch: '',
+    total: 0
+  };
+
   constructor(
     public router: Router,
     public route: ActivatedRoute,
@@ -119,9 +132,8 @@ export class FleetBrowserComponent implements OnInit {
   ngOnInit(): void {
     const fleetId$ = this.fetchFleetId().pipe(share());
 
-    const view = window.localStorage.getItem('app-fleet-browser-view') ?? 'grid';
     const view$ = merge(
-      oof(view),
+      oof(this.view),
       this.facturasEmitter.pipe(
         ofType('view:set'),
         tap((view: string) => window.localStorage.setItem('app-fleet-browser-view', view))
@@ -260,8 +272,8 @@ export class FleetBrowserComponent implements OnInit {
       mergeAll(),
       pluck('result'),
       tap((result) => {
-        this.paginator.pageTotal = result.pages;
-        this.paginator.total = result.size;
+        this.paginator.pageTotal = result.pages ?? 1;
+        this.paginator.total = result.size ?? 0;
       }),
       this.resolver.pluck ? pluck(this.resolver.pluck) : identity
     );
@@ -441,8 +453,8 @@ const resolvers = {
     endpoint: 'fleet/members_details',
     pluck: 'members',
     lang: 'members',
-    sortBy: ['natural', 'nickname'],
-    sortInit: ['natural', 'desc']
+    sortBy: ['member_meta.date_created', 'nickname'],
+    sortInit: ['member_meta.date_created', 'desc']
   },
   trucks: {
     endpoint: 'trucks/get_trucks_details',
