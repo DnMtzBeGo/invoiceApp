@@ -154,14 +154,14 @@ export class NotificationBarComponent implements OnInit {
       handlers: [
         {
           text: "No",
-          color: "#ffbe00",
+          color: "#FFE000",
           action: async () => {
             this.alertService.close();
           },
         },
         {
           text: "Si",
-          color: "#ffbe00",
+          color: "#FFE000",
           action: async () => {
             this.hideAll();
             this.alertService.close();

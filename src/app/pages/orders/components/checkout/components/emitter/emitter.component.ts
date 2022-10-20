@@ -142,7 +142,7 @@ export class EmitterComponent implements OnInit {
         handlers:[
           {
             text: this.traslateService.instant('Ok'),
-              color: '#ffbe00',
+              color: '#FFE000',
             action: async () => {
             this.alerService.close();
           }

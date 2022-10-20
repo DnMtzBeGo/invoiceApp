@@ -136,7 +136,7 @@ export class UploadFiscalDocsComponent implements OnInit {
         handlers: [
           {
             text: 'OK',
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
             }

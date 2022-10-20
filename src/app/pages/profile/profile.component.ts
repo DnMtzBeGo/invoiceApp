@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
       },
       {
         text: this.translateService.instant('profile.account.delete-profile-pic-btn'),
-        color: '#ffbe00',
+        color: '#FFE000',
         action: async () => {
           await this.removeProfilePic();
           this.showDeleteProfilePicModal = false;

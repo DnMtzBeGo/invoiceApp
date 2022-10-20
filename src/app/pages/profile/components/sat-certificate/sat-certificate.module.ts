@@ -45,7 +45,7 @@ export function playerFactory() {
       space: -6,
       outerStrokeWidth: 6,
       innerStrokeWidth: 6,
-      outerStrokeColor: '#ffbe00',
+      outerStrokeColor: '#FFE000',
       innerStrokeColor: '#1e242b',
       showSubtitle: false,
       animation: true,

@@ -32,7 +32,7 @@ export class PersonalInfoComponent implements OnInit {
           this.showGeneralAlert = false;
           this.alertMsg = '';
         },
-        color: '#ffbe00'
+        color: '#FFE000'
       }
   ]
 

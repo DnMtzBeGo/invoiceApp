@@ -596,7 +596,7 @@ export class OrdersComponent implements OnInit {
             handlers: [
               {
                 text: this.translateService.instant('checkout.btn-continue'),
-                color: '#ffbe00',
+                color: '#FFE000',
                 action: async () => {
                   this.alertService.close();
                   location.reload();
