@@ -27,6 +27,10 @@ const routes: Routes = [
     component: FleetEditComponent
   },
   {
+    path: 'trucks/edit/:id',
+    component: FleetEditComponent
+  },
+  {
     path: 'trailers',
     component: FleetBrowserComponent,
     data: {
