@@ -50,7 +50,7 @@ export class TrackingComponent implements OnInit {
   directionsService = new google.maps.DirectionsService();
   directionsRenderer = new google.maps.DirectionsRenderer({
     polylineOptions: {
-      strokeColor: '#FFBE00',
+      strokeColor: '#FFE000',
       strokeWeight: 2
     },
     suppressMarkers: true
@@ -346,7 +346,7 @@ export class TrackingComponent implements OnInit {
           handlers: [
             {
               text: 'ok',
-              color: '#ffbe00',
+              color: '#FFE000',
               action: async () => {
                 this.alertService.close();
               }

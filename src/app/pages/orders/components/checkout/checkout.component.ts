@@ -75,7 +75,7 @@ export class CheckoutComponent implements OnInit {
               handlers: [
                 {
                   text: this.translateService.instant('OK'),
-                  color: '#ffbe00',
+                  color: '#FFE000',
                   action: async () => {
                     this.alertService.close();
                     this.router.navigate(['/home']);
@@ -280,7 +280,7 @@ export class CheckoutComponent implements OnInit {
       handlers: [
         {
           text: this.translateService.instant('OK'),
-          color: '#ffbe00',
+          color: '#FFE000',
           action: async () => {
             this.alertService.close();
             this.router.navigate(['history']);
@@ -297,7 +297,7 @@ export class CheckoutComponent implements OnInit {
       handlers: [
         {
           text: this.translateService.instant('OK'),
-          color: '#ffbe00',
+          color: '#FFE000',
           action: async () => {
             this.alertService.close();
             this.router.navigate(['/home']);
@@ -314,7 +314,7 @@ export class CheckoutComponent implements OnInit {
       handlers: [
         {
           text: this.translateService.instant('OK'),
-          color: '#ffbe00',
+          color: '#FFE000',
           action: async () => {
             this.alertService.close();
             this.router.navigate(['/home']);
@@ -346,7 +346,7 @@ export class CheckoutComponent implements OnInit {
             handlers: [
               {
                 text: this.translateService.instant('OK'),
-                color: '#ffbe00',
+                color: '#FFE000',
                 action: async () => {
                   this.alertService.close();
                 }
@@ -368,7 +368,7 @@ export class CheckoutComponent implements OnInit {
             handlers: [
               {
                 text: this.translateService.instant('OK'),
-                color: '#ffbe00',
+                color: '#FFE000',
                 action: async () => {
                   this.alertService.close();
                   this.nextStep();
@@ -386,14 +386,14 @@ export class CheckoutComponent implements OnInit {
             handlers: [
               {
                 text: this.translateService.instant('checkout.btn-retry'),
-                color: '#ffbe00',
+                color: '#FFE000',
                 action: async () => {
                   this.alertService.close();
                 }
               },
               {
                 text: this.translateService.instant('checkout.btn-continue'),
-                color: '#ffbe00',
+                color: '#FFE000',
                 action: async () => {
                   this.alertService.close();
                   this.nextStep();
@@ -427,14 +427,14 @@ export class CheckoutComponent implements OnInit {
         handlers: [
           {
             text: this.translateService.instant('profile.account.btn_cancel'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
             }
           },
           {
             text: this.translateService.instant('checkout.btn-continue'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
               this.updateInvoiceData();
@@ -475,7 +475,7 @@ export class CheckoutComponent implements OnInit {
           handlers: [
             {
               text: this.translateService.instant('Ok'),
-              color: '#ffbe00',
+              color: '#FFE000',
               action: async () => {
                 this.alertService.close();
               }

@@ -114,7 +114,7 @@ export class TimeoutInterceptor implements HttpInterceptor {
       handlers: [
         {
           text: 'ok',
-          color: '#ffbe00',
+          color: '#FFE000',
           action: async () => {
             this.alertService.close();
           }
@@ -136,7 +136,7 @@ export class TimeoutInterceptor implements HttpInterceptor {
       handlers: [
         {
           text: this.translateService.instant('errors.timeout.ok'),
-          color: '#ffbe00',
+          color: '#FFE000',
           action: async () => {
             this.alertService.close();
 

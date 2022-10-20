@@ -67,7 +67,7 @@ $carriersDashboard-theme: mat.define-light-theme(
 
   .swiper-button-next,
   .swiper-button-prev {
-    color: #ffbe00;
+    color: #FFE000;
   }
 
   .swiper-button-next:after,
@@ -86,7 +86,7 @@ $carriersDashboard-theme: mat.define-light-theme(
   }
 
   .swiper-pagination-bullet {
-    background: #ffbe00;
+    background: #FFE000;
     opacity: 0.3;
     position: relative;
     width: 12px;
@@ -94,7 +94,7 @@ $carriersDashboard-theme: mat.define-light-theme(
   }
 
   .swiper-pagination-bullet-active {
-    background: #ffbe00;
+    background: #FFE000;
     opacity: 1;
     &::after {
       content: "";
@@ -102,7 +102,7 @@ $carriersDashboard-theme: mat.define-light-theme(
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      border: 3px solid #ffbe00;
+      border: 3px solid #FFE000;
       width: 37px;
       height: 37px;
       border-radius: 50%;
@@ -135,7 +135,7 @@ $carriersDashboard-theme: mat.define-light-theme(
 $background-color: #040b11;
 $lighter-color: #ededed;
 $light-color: #c1c7d0;
-$yellow-color: #ffbe00;
+$yellow-color: #FFE000;
 $white: #ffffff;
 $color-font-grey: #c1c7d0;
 
@@ -770,7 +770,7 @@ input.mat-input-element {
 }
 
 // .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical), .cdk-keyboard-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical), .cdk-program-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
-//   background: #FFBE00;
+//   background: #FFE000;
 //   box-shadow: inset 2px 2px 4px #ffbe00, inset -2px -2px 4px #c69400;
 //   border-radius: 8px;
 //   font-weight: 800;
@@ -856,7 +856,7 @@ input.mat-input-element {
 }
 
 .mat-button-toggle-checked {
-  background-color: #ffbe00;
+  background-color: #FFE000;
   color: #040b11 !important;
   border-radius: 8px !important;
   min-width: 153px;
@@ -881,7 +881,7 @@ input.mat-input-element {
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: #ffbe00;
+  border-color: #FFE000;
 }
 
 .mat-ripple-element {
@@ -894,7 +894,7 @@ input.mat-input-element {
   .mat-ripple-element:not(.mat-radio-persistent-ripple),
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
 .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
-  background-color: #ffbe00;
+  background-color: #FFE000;
 }
 
 .mat-radio-outer-circle {
@@ -1046,7 +1046,7 @@ input.mat-input-element {
   padding: 0.75em 0 0 !important;
 }
 .browse-btn {
-  color: #ffbe00;
+  color: #FFE000;
   text-decoration: underline;
   cursor: pointer;
 
@@ -1063,7 +1063,7 @@ input.mat-input-element {
 }
 
 .yellow-dot {
-  color: #ffbe00;
+  color: #FFE000;
 }
 
 .grey-dot {
@@ -1075,7 +1075,7 @@ input.mat-input-element {
 }
 
 .yellow-dot-bg {
-  color: #ffbe00;
+  color: #FFE000;
 }
 
 .grey-dot-bg {
@@ -1253,7 +1253,7 @@ input[type="number"] {
 }
 
 .icon-invoice-user {
-  color: #FFBE00;
+  color: #FFE000;
 }
 
 .icon-invoice-driver {

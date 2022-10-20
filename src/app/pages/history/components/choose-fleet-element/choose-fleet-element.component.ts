@@ -144,7 +144,7 @@ export class ChooseFleetElementComponent implements OnInit {
         handlers: [
           {
             text: this.translateService.instant('Ok'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               setChanges();
               this.alertService.close();
@@ -152,7 +152,7 @@ export class ChooseFleetElementComponent implements OnInit {
           },
           {
             text: this.translateService.instant('orders.btn-cancel'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
             }
@@ -186,7 +186,7 @@ export class ChooseFleetElementComponent implements OnInit {
         handlers: [
           {
             text: this.translateService.instant('Ok'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               setChanges();
               this.alertService.close();
@@ -194,7 +194,7 @@ export class ChooseFleetElementComponent implements OnInit {
           },
           {
             text: this.translateService.instant('orders.btn-cancel'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
             }
@@ -229,7 +229,7 @@ export class ChooseFleetElementComponent implements OnInit {
         handlers: [
           {
             text: this.translateService.instant('Ok'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               setChanges();
               this.alertService.close();
@@ -237,7 +237,7 @@ export class ChooseFleetElementComponent implements OnInit {
           },
           {
             text: this.translateService.instant('orders.btn-cancel'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
             }
@@ -275,7 +275,7 @@ export class ChooseFleetElementComponent implements OnInit {
       handlers: [
         {
           text: this.translateService.instant('Ok'),
-          color: '#ffbe00',
+          color: '#FFE000',
           action: async () => {
             this.alertService.close();
           }

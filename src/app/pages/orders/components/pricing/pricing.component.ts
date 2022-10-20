@@ -42,7 +42,7 @@ export class PricingComponent implements OnInit {
             handlers: [
               {
                 text: this.translateService.instant('OK'),
-                color: '#ffbe00',
+                color: '#FFE000',
                 action: async () => {
                   this.alertService.close();
                   this.router.navigate(['/home']);

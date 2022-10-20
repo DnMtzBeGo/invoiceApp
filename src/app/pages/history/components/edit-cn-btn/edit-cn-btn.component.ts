@@ -65,7 +65,7 @@ export class EditCnBtnComponent implements OnInit {
           handlers: [
             {
               text: this.translateService.instant('Ok'),
-              color: '#ffbe00',
+              color: '#FFE000',
               action: async () => {
                 this.alertService.close();
               }
