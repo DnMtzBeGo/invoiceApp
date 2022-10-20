@@ -22,11 +22,11 @@
       .profile-pic{
         @include fluid('width', 800px, 1920px, 140px, 300px);
         @include fluid('height', 800px, 1920px, 140px, 300px);
-        @include fluid('margin-top', 800px, 1920px, 15px, 35px);
+        // @include fluid('margin-top', 800px, 1920px, 15px, 35px);
 
+        padding: 30px 40px 50px;
+        margin: 0;
         position: relative;
-
-
 
         img{
           width: 100%;
@@ -229,8 +229,8 @@
 
 .close-btn{
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 30px;
+  right: 30px;
   width: 30px;
   height: 30px;
   background-color: #ffbe00;

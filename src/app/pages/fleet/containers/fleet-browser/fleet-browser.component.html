@@ -153,18 +153,10 @@
           <div class="search">
             <i class="icon icon-search"></i>
             <input
-              matInput
               type="search"
               [placeholder]="'fleet.' + resolver.lang + '.txt_search' | translate"
-              [ngModel]="vm.params?.search"
-              (ngModelChange)="
-                router.navigate([], {
-                  relativeTo: route,
-                  queryParams: { search: $event, page: 1 },
-                  queryParamsHandling: 'merge',
-                  replaceUrl: true
-                })
-              " />
+              [value]="vm.params?.search || ''"
+              (input)="navigate({ search: $event.target.value, page: 1 })" />
           </div>
         </div>
 
@@ -180,14 +172,7 @@
           <mat-label>{{ 'fleet.txt_sort' | translate }}</mat-label>
           <mat-select
             [value]="vm.params?.sort"
-            (selectionChange)="
-              router.navigate([], {
-                relativeTo: route,
-                queryParams: { sort: $event.value, page: 1 },
-                queryParamsHandling: 'merge',
-                replaceUrl: true
-              })
-            "
+            (selectionChange)="navigate({ sort: $event.value, page: 1 })"
             class="disable-custom-format">
             <mat-option *ngFor="let option of resolver.sortBy" [value]="option.value" class="brand-option-1">{{ option.label }}</mat-option>
           </mat-select>

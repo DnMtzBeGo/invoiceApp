@@ -7,7 +7,7 @@
     </div> -->
     <div class="orders-search">
       <i class="icon icon-search"></i>
-      <input [(ngModel)]="inputSearch" (ngModelChange)="searchOrder($event)" type="text" placeholder="Search">
+      <input [(ngModel)]="inputSearch" (ngModelChange)="searchOrder($event)" type="text" [placeholder]="'draft.txt-search' | translate">
     </div>
   </div>
 

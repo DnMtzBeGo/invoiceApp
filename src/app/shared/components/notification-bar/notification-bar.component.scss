@@ -40,6 +40,7 @@ $nb-background: #010B10;
             width: 100px;
             border: 5px solid #1C232A;
             border-radius: 50%;
+            object-fit: cover;
         }
     }
 
@@ -96,6 +97,7 @@ $nb-background: #010B10;
                 img {
                     width: 24px;
                     height: 24px;
+                    object-fit: cover;
                 }
             }
 
@@ -167,6 +169,15 @@ $nb-background: #010B10;
     .bego-btn {
         height: 26px;
         margin-bottom: 37px;
+        border: none;
+        cursor: pointer;
+
+        &.yellow {
+            box-shadow: 0px 4px 4px rgb(0 0 0 / 25%), inset 4px 4px 4px #ffd14a, inset -4px -4px 4px #e1a801;
+            border-radius: 19px;
+            color: #040b11;
+        }
+
     }
 
     .gray-button {
@@ -178,13 +189,21 @@ $nb-background: #010B10;
         box-shadow: inset 0px 11px 6px #040B11;
         border:0px;
         border-radius: 10px;
+        cursor: auto;
+
+        .icon {
+            font-size: 23px;
+            color: #FAFAFA;
+        }
 
         &.active {
             background: linear-gradient(180deg, #181C1E 0%, #1B2020 58.93%);
             box-shadow: inset 0px 11px 6px #040B11;
             border-radius: 10px;
-            border-top:1px solid #CCC;
+            cursor: pointer;
         }
+
+        
     }
 
     .text-right{
@@ -200,5 +219,11 @@ $nb-background: #010B10;
         right:0px;
         position: absolute;
         cursor: pointer;
+    }
+
+    .chevron {
+        .icon {
+            cursor: pointer;
+        }
     }
 }

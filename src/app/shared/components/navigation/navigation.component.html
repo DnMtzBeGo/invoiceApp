@@ -25,12 +25,15 @@
     
     <div class="notifications" (click)="toggleNotificationBar();">
       <span class="dot" *ngIf="this.notificationsBarService.hasNewNotifications"></span>
-      <img [class]="this.notificationsBarService.ringBell ? 'ring-bell' : ''"  src="/assets/images/notifications/notifications.png" alt="Notificaciones" title="Notificaciones" />
+      <i class="icon icon-bell" [class]="this.notificationsBarService.ringBell ? 'ring-bell' : ''" ></i>
     </div>
 
-    <div class="avatar">
+    <div class="avatar" routerLink="/profile">
       <img [src]="profilePic" (error)="profilePicError()" alt="Perfil de usuario" title="Perfil de usuario"  />
+      <i class="icon icon-down"></i>
     </div>
+
+    <div class="divide"></div>
     <app-web-menu-button [menuOpened]="menuOpened" (click)="toggleMenu()"></app-web-menu-button>
   </div>
 </section>

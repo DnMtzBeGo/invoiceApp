@@ -92,7 +92,7 @@ export class InputDirectionsComponent implements OnInit {
 
   orderForm = new FormGroup({
     datepickup: new FormControl(this.events, Validators.required),
-    timepickup: new FormControl(this.events),
+    timepickup: new FormControl({value: this.events, disabled: true}),
   });
 
   locations: GoogleLocation = {
@@ -489,7 +489,8 @@ export class InputDirectionsComponent implements OnInit {
     this.events = moment(new Date(`${event.value}`), "MM-DD-YYYY").format(
       "MMMM DD YYYY"
     );
-    this.monthSelected = false;
+    // this.monthSelected = false;
+    this.orderForm.get("timepickup").disable();
   }
 
   timepickerValid(data: any) {

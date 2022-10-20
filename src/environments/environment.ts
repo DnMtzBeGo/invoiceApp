@@ -8,7 +8,7 @@ export const environment = {
   URL_BASE: "https://dev.bego.ai/v1.0/",
   //URL_BASE: "http://localhost:3002/v1.0/",
   //SOCKET_URI: "http://localhost:3008",
-  SOCKET_URI: "SocketLB-1911102184.us-east-1.elb.amazonaws.com",
+  SOCKET_URI: "https://slb.bego.ai",
   website_url: "https://bego.ai/",
 };
 
