@@ -9,7 +9,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { FleetPageComponent, FleetBrowserComponent } from './containers';
 
 import { FleetWidgetComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent } from './components';
-import { FleetEditComponent } from './containers/fleet-edit/fleet-edit.component';
+import { FleetEditComponent } from './containers/fleet-edit-truck/fleet-edit-truck.component';
 import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.module';
 import { ColorPickerModule } from 'src/app/shared/components/color-picker/color-picker.module';
 
