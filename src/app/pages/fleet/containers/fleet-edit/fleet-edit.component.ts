@@ -45,4 +45,7 @@ export class FleetEditComponent implements OnInit {
     
   }
 
+  updateTruckColor(color){
+  }
+
 }
