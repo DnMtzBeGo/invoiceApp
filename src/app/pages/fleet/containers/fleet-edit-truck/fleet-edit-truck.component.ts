@@ -6,10 +6,10 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-fleet-edit',
-  templateUrl: './fleet-edit.component.html',
-  styleUrls: ['./fleet-edit.component.scss']
+  templateUrl: './fleet-edit-truck.component.html',
+  styleUrls: ['./fleet-edit-truck.component.scss']
 })
-export class FleetEditComponent implements OnInit {
+export class FleetEditTruckComponent implements OnInit {
 
   constructor(private translateService: TranslateService, private formBuilder: FormBuilder, private route: ActivatedRoute, private authService: AuthService) { 
     this.route.params;
