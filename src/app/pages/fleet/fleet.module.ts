@@ -17,9 +17,10 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-file-bar.module';
 import { FleetEditTrailerComponent } from './containers/fleet-edit-trailer/fleet-edit-trailer.component';
 import { PicturesGridComponent } from './components/pictures-grid/pictures-grid.component';
+import { FleetInviteDriverComponent } from './containers/fleet-invite-driver/fleet-invite-driver.component';
 
 @NgModule({
-  declarations: [FleetWidgetComponent, FleetPageComponent, FleetBrowserComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent, FleetEditTruckComponent,FleetTableComponent, FleetEditTrailerComponent, PicturesGridComponent],
+  declarations: [FleetWidgetComponent, FleetPageComponent, FleetBrowserComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent, FleetEditTruckComponent,FleetTableComponent, FleetEditTrailerComponent, PicturesGridComponent, FleetInviteDriverComponent],
   imports: [
     CommonModule,
     RouterModule,

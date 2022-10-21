@@ -1,0 +1,107 @@
+@import "../../../../../styles.scss";
+
+.app-fleet-browser {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    grid-gap: 3rem;
+
+    .sidebar {
+      margin-top: 80px;
+      padding: 40px 25px;
+      background: #0b1117;
+      box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
+      border-radius: 8px;
+      color: #ededed;
+      // min-width: 280px;
+    }
+  }
+}
+
+
+.invitation-container {
+  padding: 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+
+
+  .invitations-grid{
+    display: grid;
+    grid-template-rows: 100px 1fr;
+    height: 100%;
+
+    .invitations-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      h1 {
+        font-size: 30px;
+        font-weight: 800;
+      }
+    }
+
+    .invitations-content {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+  } 
+
+  p {
+    color: $color-font-grey;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  .medium-invitation-title {
+    font-size: 20px;
+    color: $lighter-color;
+  }
+
+  .small-invitation-title {
+    font-size: 14px;
+    color: $lighter-color;
+  }
+
+  .invitations-block {
+    padding: 40px 25px;
+    background: #0b1117;
+    box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
+    border-radius: 8px;
+    width: 300px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      background: #1d242cf2;
+      transform: scale(1.1);
+    }
+  }
+
+}
+
+
+
+
+
+.invitation-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.invitation-row {
+  padding: 25px;
+  margin: 25px;
+  display: flex;
+  flex-direction: column;
+  background: #0B1117;
+  box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+  border-radius: 8px;
+}

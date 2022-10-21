@@ -1,0 +1,110 @@
+<div class="app-fleet-browser">
+  <div class="wrapper">
+    <div class="invitation-container">
+      <!-- <div class="invitations-grid">
+        <div class="invitations-title">
+          <h1>{{ 'fleet.choose-invitation.txt_choose' | translate }}</h1>
+        </div>
+        <div class="invitations-content"> 
+          <div class="invitations-block">
+            <div class="type-circle type-circle-padding">
+              <img src="../../../../../assets/images/fleet/botsibot_rol-01.svg"/>
+            </div>
+            <p class="medium-invitation-title">
+              {{ 'fleet.choose-invitation.txt_invite' | translate }}
+            </p>
+            <p class="small-invitation-title">
+              {{ 'fleet.choose-invitation.modal_manager_copy' | translate }}
+            </p>
+          </div>
+          <div class="invitations-block">
+            <div class="type-circle type-circle-padding">
+              <img src="../../../../../assets/images/fleet/botsibot_rol-02.svg"/>
+            </div>
+            <p class="medium-invitation-title">
+              {{ 'fleet.choose-invitation.txt_register' | translate }}
+            </p>
+            <p class="small-invitation-title">
+              {{ 'fleet.choose-invitation.modal_bego_copy' | translate }}
+            </p>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div>
+        <form [formGroup]="invitationForm">
+          <mat-form-field>
+            <i class="icon icon-user"></i>
+            <mat-label>{{ "orders.placeholder-fullname" | translate }}</mat-label>
+            <input matInput formControlName="fullname" />
+          </mat-form-field>
+    
+          <bego-phone-input
+            [phoneFlag]="phoneFlag"
+            [phoneCode]="phoneCode"
+            [phoneNumber]="phoneNumber"
+            (phoneFlagChange)="phoneFlagChangeValue($event)"
+            (phoneCodeChange)="phoneCodeChangeValue($event)"
+            (phoneNumberChange)="phoneNumberChangeValue($event)"
+          >
+          </bego-phone-input>
+    
+          <mat-form-field>
+            <i class="icon icon-email"></i>
+            <mat-label>{{ "orders.placeholder-mail" | translate }}</mat-label>
+            <input matInput formControlName="email" />
+          </mat-form-field>
+        </form>
+      </div> -->
+
+
+
+      <div class="invitation-form" [formGroup]="form">
+        <ng-container formArrayName="drivers">
+            <ng-container *ngFor="let driverForm of drivers.controls; let i = index">
+                <div class="invitation-row" [formGroup]="driverForm">
+                  <h3>{{ 'fleet.invite-driver.txt_driver' | translate }} {{i + 1}}</h3>
+                  <mat-form-field>
+                    <i class="icon icon-user"></i>
+                    <mat-label>{{ "orders.placeholder-fullname" | translate }}</mat-label>
+                    <input matInput formControlName="fullname" />
+                  </mat-form-field>
+                  <!-- <bego-phone-input
+                  [phoneFlag]="phoneFlag"
+                  [phoneCode]="phoneCode"
+                  [phoneNumber]="phoneNumber"
+                  (phoneFlagChange)="phoneFlagChangeValue($event)"
+                  (phoneCodeChange)="phoneCodeChangeValue($event)"
+                  (phoneNumberChange)="phoneNumberChangeValue($event)"
+                >
+                </bego-phone-input> -->
+                  <mat-form-field>
+                    <i class="icon icon-email"></i>
+                    <mat-label>{{ "orders.placeholder-mail" | translate }}</mat-label>
+                    <input matInput formControlName="email" />
+                  </mat-form-field>
+                  <mat-icon class="delete-btn" (click)="deleteDriver(i)">
+                      delete_forever</mat-icon>
+                </div>
+            </ng-container>
+        </ng-container>
+      
+        <button mat-mini-fab (click)="addDriver()">
+            <mat-icon class="add-course-btn">add</mat-icon>
+        </button>
+    
+    </div>
+
+
+
+
+
+      
+    </div>
+
+
+    <div class="sidebar">
+      <app-fleet-widget [size]="'sm'"></app-fleet-widget>
+    </div>
+  </div>
+</div>

@@ -1293,6 +1293,28 @@
       "grey": "Gris"
     },
     "only-imgs":"Sólo se aceptan imágenes",
+    "choose-invitation": {
+      "txt_choose": "Elige una opción",
+      "txt_invite": "Invitar",
+      "txt_register": "Registrar",
+      "btn_continue": "Continuar",
+      "modal_manager_title": "Invita",
+      "modal_bego_title": "Registra a todos",
+      "modal_manager_copy": "Ingresa correos e invita a operadores a unirse a tu flotilla",
+      "modal_bego_copy": "Descarga y envianos el formato anexo y lo hacemos por ti."
+    },
+    "invite-csv": {
+      "txt_register": "Registro",
+      "txt_download": "Descarga y completa el siguiente formato.",
+      "txt_instructions": "Una vez completado, por favor envíanos un correo con el archivo adjunto a la siguiente dirección. Nosotros te notificaremos cuando ya puedan accesar al app.",
+      "btn_download": "Descargar"
+    },
+    "invite-driver": {
+      "txt_invitation": "Invitación",
+      "txt_driver": "Operador",
+      "txt_name": "Nombre Completo",
+      "btn_send": "Enviar"
+    },
     "txt_fleet": "Flotilla",
     "btn_order": "ORDEN",
     "btn_view_all": "VER TODOS",

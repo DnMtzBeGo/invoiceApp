@@ -1289,6 +1289,28 @@
       "grey": "Gray"
     },
     "only-imgs":"Only images supported",
+    "choose-invitation": {
+      "txt_choose": "Choose one option",
+      "txt_invite": "Register Invitation",
+      "txt_register": "I register you",
+      "btn_continue": "Continue",
+      "modal_manager_title": "Register invitation",
+      "modal_bego_title": "I register you",
+      "modal_manager_copy": "Send invitation emails so your drivers can join your fleet",
+      "modal_bego_copy": "Send us a spreadsheet with your drivers' information and we'll add them to your fleet as soon as possible"
+    },
+    "invite-csv": {
+      "txt_register": "I Register you",
+      "txt_download": "Download the template and enter the corresponding data.",
+      "txt_instructions": "Once the file has been filled in, send it to the following e-mail. Once registered you will be notified along with their credentials so they can enter.",
+      "btn_download": "Download"
+    },
+    "invite-driver": {
+      "txt_invitation": "Register Invitation",
+      "txt_driver": "Driver",
+      "txt_name": "Full Name",
+      "btn_send": "Send"
+    },
     "txt_fleet": "My Fleet",
     "btn_order": "ORDER",
     "btn_view_all": "VIEW ALL",

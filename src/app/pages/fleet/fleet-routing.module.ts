@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FleetPageComponent, FleetBrowserComponent } from './containers';
+import { FleetPageComponent, FleetBrowserComponent, FleetInviteDriverComponent } from './containers';
 import { FleetEditTrailerComponent } from './containers/fleet-edit-trailer/fleet-edit-trailer.component';
 import { FleetEditTruckComponent } from './containers/fleet-edit-truck/fleet-edit-truck.component';
 
@@ -44,6 +44,13 @@ const routes: Routes = [
     component: FleetBrowserComponent,
     data: {
       model: 'trailers'
+    }
+  },
+  {
+    path: 'members/new',
+    component: FleetInviteDriverComponent,
+    data: {
+      model: 'members/new'
     }
   }
 ];
