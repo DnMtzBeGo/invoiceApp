@@ -8,18 +8,18 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { FleetPageComponent, FleetBrowserComponent } from './containers';
 
-import { FleetWidgetComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent } from './components';
+import { FleetWidgetComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent, FleetTableComponent } from './components';
 
 @NgModule({
-  declarations: [FleetWidgetComponent, FleetPageComponent, FleetBrowserComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent],
-  imports: [
-    CommonModule,
-    RouterModule,
-    ReactiveFormsModule,
-    FormsModule,
-    FleetRoutingModule,
-    TranslateModule,
-    SharedModule
-  ]
+  declarations: [
+    FleetWidgetComponent,
+    FleetPageComponent,
+    FleetBrowserComponent,
+    MemberCardComponent,
+    TruckCardComponent,
+    TrailerCardComponent,
+    FleetTableComponent
+  ],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, FleetRoutingModule, TranslateModule, SharedModule]
 })
 export class FleetModule {}

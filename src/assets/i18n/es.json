@@ -1321,7 +1321,14 @@
         "brand": "Marca"
       },
       "see_details": "Ver unidad",
-      "btn_view": "Ver unidad"
+      "btn_view": "Ver unidad",
+      "table": {
+        "brand": "Marca",
+        "year": "Año",
+        "plates": "Placas",
+        "color": "Color",
+        "operations": "Operaciones"
+      }
     },
     "trailers": {
       "txt_header": "Cajas",

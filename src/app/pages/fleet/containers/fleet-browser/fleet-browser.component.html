@@ -171,7 +171,10 @@
         <div class="left">
           <mat-label>{{ 'fleet.txt_sort' | translate }}</mat-label>
           <mat-select [value]="vm.params?.sort" (selectionChange)="navigate({ sort: $event.value, page: 1 })" class="disable-custom-format">
-            <mat-option *ngFor="let option of resolver.sortBy" [value]="option.value" class="brand-option-1">{{ option.label }}</mat-option>
+            <mat-option *ngFor="let option of resolver.sortBy" [value]="option.value" class="brand-option-1"
+              >{{ 'fleet.' + resolver.lang + '.sort_by.' + option.key | translate }}
+              {{ option.sort.slice(0, 1).toUpperCase() + option.sort.slice(1) }}
+            </mat-option>
           </mat-select>
         </div>
 
@@ -202,7 +205,9 @@
           </ng-container>
         </div>
 
-        <div *ngIf="vm.view === 'list'">list</div>
+        <div *ngIf="vm.view === 'list'" class="list">
+          <app-fleet-table [orderTableData]="vm.facturas" [model]="model"> </app-fleet-table>
+        </div>
       </div>
 
       <div class="footer">

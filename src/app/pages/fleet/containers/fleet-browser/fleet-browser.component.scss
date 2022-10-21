@@ -277,16 +277,21 @@ app-fleet-browser {
           overflow: hidden;
           // max-width: 800px;
 
-          .grid {
+          > .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             grid-gap: 2rem 3rem;
+          }
+
+          > .list {
+            margin-top: -16px;
           }
         }
 
         .footer {
           display: flex;
           justify-content: space-between;
+          align-items: center;
 
           .total {
             font-family: 'Avenir';

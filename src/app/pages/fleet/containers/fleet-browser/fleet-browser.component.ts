@@ -60,11 +60,8 @@ export class FleetBrowserComponent implements OnInit {
     facturaStatus?: unknown;
     params?: {
       uuid?: string;
-      fec_inicial?: Date;
-      fec_final?: Date;
       emisor?: string;
       receptor?: string;
-      tipo_de_comprobante?: string;
       status?: string;
       search?: string;
       sort?: string;
@@ -98,9 +95,6 @@ export class FleetBrowserComponent implements OnInit {
       ['desc', 'asc'].map((sort) => ({
         key,
         sort,
-        label: `${this.translateService.instant(`fleet.${this._resolver.lang}.sort_by.${key}`)} ${
-          sort.slice(0, 1).toUpperCase() + sort.slice(1)
-        }`,
         value: [key, sort].join(':')
       }))
     )
@@ -108,7 +102,7 @@ export class FleetBrowserComponent implements OnInit {
 
   paginatorDefaults = {
     grid: { sizeOptions: [6, 9, 12], default: 6 },
-    list: { sizeOptions: [10, 15, 20, 50, 100], default: 15 }
+    list: { sizeOptions: [5, 10, 20, 50, 100], default: 5 }
   };
 
   paginator: Paginator = {
@@ -124,7 +118,7 @@ export class FleetBrowserComponent implements OnInit {
     public route: ActivatedRoute,
     private matDialog: MatDialog,
     private apiRestService: AuthService,
-    private translateService: TranslateService,
+    public translateService: TranslateService,
     private notificationsService: NotificationsService,
     private location: Location
   ) {}
@@ -152,9 +146,7 @@ export class FleetBrowserComponent implements OnInit {
         ...params,
         limit: +params.limit || this.paginator.pageSize,
         page: +params.page || this.paginator.pageIndex,
-        sort: params.sort || this.resolver.sortInit.join(':'),
-        fec_inicial: params.fec_inicial ? this.decodeFecha(params.fec_inicial) : null,
-        fec_final: params.fec_final ? this.decodeFecha(params.fec_final) : null
+        sort: params.sort || this.resolver.sortInit.join(':')
       })),
       tap((params) => {
         this.paginator.pageSize = Number(params.limit);
@@ -171,17 +163,25 @@ export class FleetBrowserComponent implements OnInit {
       facturasRequest$.pipe(switchMap(this.fetchFacturas))
     ).pipe(
       map(([tiposComprobante, facturaStatus, facturas]: any) =>
-        facturas.map((factura: any) => ({
-          ...factura,
-          tipo_de_comprobante_: tiposComprobante[factura.tipo_de_comprobante] || factura.tipo_de_comprobante,
-          status: !factura.connected
-            ? 'inactive'
-            : factura.availability === 1
-            ? 'available'
-            : factura.availability === 2
-            ? 'unavailable'
-            : 'unavailable'
-        }))
+        facturas.map((factura: any) => {
+          if (this.model === 'members') {
+            const newFactura = {
+              ...factura.member,
+              ...factura.member_meta,
+              status: !factura.member.connected
+                ? 'inactive'
+                : factura.availability === 1
+                ? 'available'
+                : factura.availability === 2
+                ? 'unavailable'
+                : 'unavailable'
+            };
+
+            return newFactura;
+          }
+
+          return factura;
+        })
       ),
       share()
     );
@@ -259,21 +259,23 @@ export class FleetBrowserComponent implements OnInit {
   };
 
   fetchFacturas = (params: any) => {
-    const payload = JSON.stringify({
+    const payload = {
       id_fleet: this.vm.fleetId,
       ...params
-    });
+    };
 
     return from(
-      this.apiRestService.apiRest(payload, this.resolver.endpoint, {
+      this.apiRestService.apiRest(JSON.stringify(payload), this.resolver.endpoint, {
         loader: 'false'
+        // apiVersion: 'v1.1',
+        // ...payload
       })
     ).pipe(
       mergeAll(),
       pluck('result'),
       tap((result) => {
-        this.paginator.pageTotal = result.pages ?? 1;
-        this.paginator.total = result.size ?? 0;
+        this.paginator.pageTotal = result.pagination?.pages || 1;
+        this.paginator.total = result.pagination?.size ?? 0;
       }),
       this.resolver.pluck ? pluck(this.resolver.pluck) : identity
     );
@@ -440,23 +442,20 @@ export class FleetBrowserComponent implements OnInit {
     return encodeURIComponent(JSON.stringify(template));
   };
 
-  decodeFecha = (strDate: string) => {
-    return new Date(strDate);
-  };
-
   filtersCount = (params = {}) =>
     Object.keys(params).filter((filterName) => filterParams.has(filterName) && params[filterName]).length || null;
 }
 
 const resolvers = {
   members: {
-    endpoint: 'fleet/members_details',
+    endpoint: 'fleets/members',
     pluck: 'members',
     lang: 'members',
     sortBy: ['member_meta.date_created', 'nickname'],
     sortInit: ['member_meta.date_created', 'desc']
   },
   trucks: {
+    // endpoint: 'fleets/trucks',
     endpoint: 'trucks/get_trucks_details',
     pluck: null,
     lang: 'trucks',
@@ -464,7 +463,7 @@ const resolvers = {
     sortInit: ['natural', 'desc']
   },
   trailers: {
-    endpoint: 'trailers/get_trailers_details',
+    endpoint: 'fleets/trailers',
     pluck: null,
     lang: 'trailers',
     sortBy: ['natural', 'trailer_number'],

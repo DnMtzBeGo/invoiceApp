@@ -1317,7 +1317,14 @@
         "brand": "Brand"
       },
       "see_details": "See truck",
-      "btn_view": "View truck"
+      "btn_view": "View truck",
+      "table": {
+        "brand": "Brand",
+        "year": "Year",
+        "plates": "Plates",
+        "color": "Color",
+        "operations": "Operations"
+      }
     },
     "trailers": {
       "txt_header": "My Trailers",
