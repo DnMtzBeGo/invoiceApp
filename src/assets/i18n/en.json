@@ -1325,7 +1325,9 @@
       "year":"Year",
       "plates":"Plates",
       "color":"Color",
-      "more":"More"
+      "more":"More",
+      "txt-done":"Done",
+      "btn-other":"Other"
     },
     "trailers": {
       "txt_header": "My Trailers",

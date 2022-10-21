@@ -1,0 +1,23 @@
+<div class="colors-selector" *ngIf="!showPicker">
+  <div class="colors-container">
+    <div id="colorChild" class="truck-color-selected" *ngIf="colorNameSelected">
+      <div id="colorCircle" class="preview-color"></div>
+      <p id="colorName" class="preview-color-message">{{ 'fleet.colors.' + colorNameSelected | translate}}</p>
+    </div>
+    <div class="default-white-color" (click)="setColor('white')"></div>
+    <div class="default-blue-color" (click)="setColor('blue')"></div>
+    <div class="default-gray-color" (click)="setColor('gray')"></div>
+    <div class="default-red-color" (click)="setColor('red')"></div>
+    <div class="default-black-color" (click)="setColor('black')"></div>
+  </div>
+  <div class="other-button-container">
+    <button (click)="changeShowPicker()">{{ 'fleet.trucks.btn-other' | translate }}</button>
+  </div>
+</div>
+
+<!--CUSTOM COLOR PICKER-->
+<div [ngClass]="{hide: !showPicker}"  class="color-picker-container">
+  <div #selectedColor class="color-selected"></div>
+  <canvas class="bego-color-picker" id="colorCanvas" width="212" height="10"></canvas>
+  <button (click)="chooseColor()">{{btnDone}}</button>
+</div>

@@ -1329,7 +1329,9 @@
       "year":"Año",
       "plates":"Placas",
       "color":"Color",
-      "more":"Más"
+      "more":"Más",
+      "txt-done":"Hecho",
+      "btn-other":"Otro"
     },
     "trailers": {
       "txt_header": "Cajas",
