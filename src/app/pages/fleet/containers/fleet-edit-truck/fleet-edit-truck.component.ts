@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import EmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
 import { PickerSelectedColor } from 'src/app/shared/components/color-picker/color-picker.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -11,6 +12,9 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./fleet-edit-truck.component.scss']
 })
 export class FleetEditTruckComponent implements OnInit {
+
+  @ViewChild('sliderRef') sliderRef: ElementRef;
+  public slider: EmblaCarouselType;
 
   constructor(private translateService: TranslateService, private formBuilder: FormBuilder, private route: ActivatedRoute, private authService: AuthService) { 
     this.route.params;
@@ -46,6 +50,14 @@ export class FleetEditTruckComponent implements OnInit {
       this.selectedColor = {color, colorName};
     });
     
+  }
+
+  ngAfterViewInit(){
+    console.log('Fleet was just started', this.sliderRef.nativeElement)
+    var emblaNode = this.sliderRef.nativeElement
+    var options: EmblaOptionsType = { loop: false, draggable: false }
+  
+    this.slider = EmblaCarousel(emblaNode, options);
   }
 
   updateTruckColor(color){

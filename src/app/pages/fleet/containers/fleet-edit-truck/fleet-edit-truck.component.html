@@ -1,44 +1,57 @@
 <div class="edit-truck">
   <div class="wrapper">
     <div class="main">
-      <bego-tabs [tabs]="fleetTabs"></bego-tabs>
+      <bego-tabs [tabs]="fleetTabs" (onTabChange)="slider.scrollTo($event)"></bego-tabs>
 
-      <div class="pictures-wrapper">
-        <div class="pic1"><img [src]="pictures?.[0]" alt=""/></div>
-        <div class="pic2"><img [src]="pictures?.[1]" alt=""/></div>
-        <div class="pic3"><img [src]="pictures?.[2]" alt=""/></div>
-        <div class="more-btn">
-          <div>
-            <i class="icon icon-plus" style="color: white;"></i>
+      <div class="embla" #sliderRef>
+        <div class="embla__container">
+          <!-- Truck details tab-->
+          <div class="embla__slide">
+            <div class="pictures-wrapper">
+              <div class="pic1"><img [src]="pictures?.[0]" alt=""/></div>
+              <div class="pic2"><img [src]="pictures?.[1]" alt=""/></div>
+              <div class="pic3"><img [src]="pictures?.[2]" alt=""/></div>
+              <div class="more-btn">
+                <div>
+                  <i class="icon icon-plus" style="color: white;"></i>
+                </div>
+                 <p>{{'fleet.trucks.more' | translate}}</p>
+                </div>
+            </div>
+      
+            <form  class="inputs" [formGroup]="truckDetailsForm">
+      
+              <div class="truck-input">
+                <label for="Model">{{'fleet.trucks.model' | translate}}</label>
+                <input type="text" name="Model" formControlName="model">
+              </div>
+              
+              <div class="truck-input">
+                <label for="Model">{{'fleet.trucks.year' | translate}}</label>
+                <input type="text" name="Model" formControlName="year">
+              </div>
+      
+              <div class="truck-input">
+                <label for="Model">{{'fleet.trucks.plates' | translate}}</label>
+                <input type="text" name="Model" formControlName="plates">
+              </div>
+      
+              <app-color-picker
+                (changeColor)="updateTruckColor($event)"
+                [selectedColor]="selectedColor"
+                [btnDone]="'fleet.trucks.txt-done' | translate">
+              </app-color-picker>
+      
+            </form>
           </div>
-           <p>{{'fleet.trucks.more' | translate}}</p>
-          </div>
+          <div class="embla__slide">Slide 2</div>
+          <div class="embla__slide">Slide 3</div>
+        </div>
       </div>
 
-      <form  class="inputs" [formGroup]="truckDetailsForm">
 
-        <div class="truck-input">
-          <label for="Model">{{'fleet.trucks.model' | translate}}</label>
-          <input type="text" name="Model" formControlName="model">
-        </div>
-        
-        <div class="truck-input">
-          <label for="Model">{{'fleet.trucks.year' | translate}}</label>
-          <input type="text" name="Model" formControlName="year">
-        </div>
 
-        <div class="truck-input">
-          <label for="Model">{{'fleet.trucks.plates' | translate}}</label>
-          <input type="text" name="Model" formControlName="plates">
-        </div>
 
-        <app-color-picker
-          (changeColor)="updateTruckColor($event)"
-          [selectedColor]="selectedColor"
-          [btnDone]="'fleet.trucks.txt-done' | translate">
-        </app-color-picker>
-
-      </form>
 
 
 

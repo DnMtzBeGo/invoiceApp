@@ -35,7 +35,7 @@ export class ColorPickerComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    if(changes.selectedColor){
+    if(changes.selectedColor && this.selectedColor){
       const { color, colorName} = this.selectedColor;
       this.colorNameSelected = colorName;
       this.color = color;
