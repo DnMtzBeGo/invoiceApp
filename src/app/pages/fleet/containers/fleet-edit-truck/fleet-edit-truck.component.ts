@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { PickerSelectedColor } from 'src/app/shared/components/color-picker/color-picker.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class FleetEditTruckComponent implements OnInit {
 
   public truckDetailsForm: FormGroup;
   public pictures: string[];
+  public selectedColor: PickerSelectedColor;
 
   async ngOnInit(): Promise<void> {
     this.truckDetailsForm = this.formBuilder.group({
@@ -35,12 +37,13 @@ export class FleetEditTruckComponent implements OnInit {
       id_truck: this.route.snapshot.params.id
     };
     ( await this.authService.apiRest(JSON.stringify(payload),'/trucks/get_by_id')).subscribe(({result})=>{
-      const { brand, plates, year} = result.attributes;
+      const { brand, plates, year, color, colorName} = result.attributes;
       this.pictures = result.pictures
 
       this.truckDetailsForm.patchValue({
         model: brand, plates, year
       });
+      this.selectedColor = {color, colorName};
     });
     
   }

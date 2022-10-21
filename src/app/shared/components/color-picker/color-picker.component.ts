@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import colorsList from '../../../shared/utils/nameColors.json';
 
 export interface PickerSelectedColor {
@@ -32,6 +32,15 @@ export class ColorPickerComponent implements OnInit {
 
   ngOnInit() {
     this.initCanvas();
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if(changes.selectedColor){
+      const { color, colorName} = this.selectedColor;
+      this.colorNameSelected = colorName;
+      this.color = color;
+      this.setColor(this.color);
+    }
   }
 
   private changeColorPicker(color, shade1, shade2) {
