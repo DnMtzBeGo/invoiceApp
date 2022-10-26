@@ -8,10 +8,10 @@
           <!-- Truck details tab-->
           <div class="embla__slide">
             <div class="pictures-wrapper">
-              <div class="pic1"><img [src]="pictures?.[0]" alt=""/></div>
-              <div class="pic2"><img [src]="pictures?.[1]" alt=""/></div>
-              <div class="pic3"><img [src]="pictures?.[2]" alt=""/></div>
-              <div class="more-btn">
+              <div class="pic1"><img [src]="pictures?.[0].url" alt=""/></div>
+              <div class="pic2"><img [src]="pictures?.[1].url" alt=""/></div>
+              <div class="pic3"><img [src]="pictures?.[2].url" alt=""/></div>
+              <div class="more-btn" (click)="openFileEditor()">
                 <div>
                   <i class="icon icon-plus" style="color: white;"></i>
                 </div>

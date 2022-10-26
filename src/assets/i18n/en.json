@@ -1327,7 +1327,9 @@
       "color":"Color",
       "more":"More",
       "txt-done":"Done",
-      "btn-other":"Other"
+      "btn-other":"Other",
+      "finish":"Finish",
+      "uploading":"Uploading"
     },
     "trailers": {
       "txt_header": "My Trailers",

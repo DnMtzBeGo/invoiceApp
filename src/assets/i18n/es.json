@@ -1331,7 +1331,9 @@
       "color":"Color",
       "more":"Más",
       "txt-done":"Hecho",
-      "btn-other":"Otro"
+      "btn-other":"Otro",
+      "finish":"Finalizar",
+      "uploading":"Subiendo"
     },
     "trailers": {
       "txt_header": "Cajas",
