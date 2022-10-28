@@ -1329,7 +1329,9 @@
       "txt-done":"Done",
       "btn-other":"Other",
       "finish":"Finish",
-      "uploading":"Uploading"
+      "uploading":"Uploading",
+      "insurer-name":"Name of insurer",
+      "policy-number":"Policy number"
     },
     "trailers": {
       "txt_header": "My Trailers",

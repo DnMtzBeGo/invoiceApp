@@ -2,9 +2,10 @@
   <div class="wrapper">
     <div class="main">
       <bego-tabs [tabs]="fleetTabs" (onTabChange)="slider.scrollTo($event)"></bego-tabs>
-
+      <form  class="inputs" [formGroup]="truckDetailsForm">
       <div class="embla" #sliderRef>
         <div class="embla__container">
+
           <!-- Truck details tab-->
           <div class="embla__slide">
             <div class="pictures-wrapper">
@@ -23,7 +24,7 @@
       
               <div class="truck-input">
                 <label for="Model">{{'fleet.trucks.model' | translate}}</label>
-                <input type="text" name="Model" formControlName="model">
+                <input type="text" name="Model" formControlName="brand">
               </div>
               
               <div class="truck-input">
@@ -44,15 +45,119 @@
       
             </form>
           </div>
-          <div class="embla__slide">Slide 2</div>
-          <div class="embla__slide">Slide 3</div>
+
+          <!-- truck settings tab-->
+          <div class="embla__slide with-gap">
+
+            <!-- permiso sct input-->
+            <mat-form-field appearance="outline" class="brand-field-1">
+              <mat-label>{{
+                "invoice.autotransporte.permiso-sct" | translate
+              }}</mat-label>
+              <input
+                type="text"
+                formControlName="sct_permission"
+                aria-label="Number"
+                matInput
+                [matAutocomplete]="sctRef"
+              />
+        
+              <mat-autocomplete
+                #sctRef="matAutocomplete"
+                [displayWith]="setAutocompleteValue.bind(this, 'sat_cp_tipos_de_permiso')"
+                (optionSelected)="setOption($event,'sat_cp_tipos_de_permiso','sct_permission')">
+
+                <mat-option *ngFor="let option of filteredPermisosSCT"  [value]="option.code" class="brand-option-1"
+                >
+                  {{ option.code }} - {{ option.description }}
+                </mat-option>
+
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <!--  sct number input-->
+            <div class="truck-input wide-label">
+              <label for="sct_number">{{'invoice.autotransporte.num-permiso-sct' | translate}}</label>
+              <input type="text" name="sct_number" formControlName="sct_number">
+            </div>
+
+            <!--truck settings autocomplete-->
+            <mat-form-field appearance="outline" class="brand-field-1">
+              <mat-label>{{
+                "fleet.trucks.truck_settings" | translate
+              }}</mat-label>
+              <input
+                type="text"
+                formControlName="truck_settings"
+                aria-label="Number"
+                matInput
+                [matAutocomplete]="tsRef"
+              />
+        
+              <mat-autocomplete
+                #tsRef="matAutocomplete"
+                [displayWith]="setAutocompleteValue.bind(this, 'sat_cp_config_autotransporte')"
+                (optionSelected)="setOption($event,'sat_cp_config_autotransporte','truck_settings')">
+
+                <mat-option *ngFor="let option of filteredTruckSettings"  [value]="option.code" class="brand-option-1"
+                >
+                  {{ option.code }} - {{ option.description }}
+                </mat-option>
+
+              </mat-autocomplete>
+            </mat-form-field>
+            
+          </div>
+
+          <!-- truck insurance tab-->
+          <div class="embla__slide with-gap">
+
+            <div class="truck-input wide-label">
+              <label for="insurer">{{'fleet.trucks.insurer-name' | translate}}</label>
+              <input type="text" name="insurer" formControlName="insurer">
+            </div>
+            
+            <div class="truck-input wide-label">
+              <label for="policy_number">{{'fleet.trucks.policy-number' | translate}}</label>
+              <input type="text" name="policy_number" formControlName="policy_number">
+            </div>
+
+            <div class="truck-input wide-label">
+              <label for="">
+                <div>{{'fiscal-documents.upload-files.txt_insurance' | translate}}</div>
+                <div>(PDF, JPG, PNG)</div>
+              </label>
+              <bego-drag-file-bar *ngIf="!insuranceFile">
+                <div class="insurance-file-input" template>
+                  <i class="icon icon-plus"></i>
+                </div>
+              </bego-drag-file-bar>
+
+              <div *ngIf="insuranceFile" class="insurance-file-wrapper">
+                <div class="insurance-file">
+                  <div  class="file-type">
+                    <div class="type">{{insuranceFile.fileType | uppercase}}</div>
+                    <i class="icon icon-document"></i>
+                  </div>
+
+                  <div>
+                    <div class="title">{{insuranceFile.name}}</div>
+                    <div class="size">{{insuranceFile.size}}</div>
+                  </div>
+                </div>
+                <div><i class="icon icon-trash" (click)="deleteInsuranceFile()"></i></div>
+              </div>
+
+
+
+            </div>
+
+
+
+          </div>
         </div>
       </div>
-
-
-
-
-
+      </form>
 
 
 

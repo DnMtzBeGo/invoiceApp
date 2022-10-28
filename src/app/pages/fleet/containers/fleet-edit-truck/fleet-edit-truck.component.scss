@@ -13,7 +13,8 @@
 
     .main {
       .inputs{
-        margin-top:80px;
+        margin-top:45px;
+        max-width: 900px;
 
         display: flex;
         flex-direction: column;
@@ -47,17 +48,111 @@
 
           label{
             display: flex;
+            flex-direction: column;
             align-items: center;
             font-family: 'Avenir Next';
             font-style: normal;
             font-weight: 100;
             font-size: 20px;
           }
+
+          &.wide-label{
+            grid-template-columns: 2fr 5fr;
+          }
         }
 
         app-color-picker{
           align-self: center;
         }
+
+        .with-gap{
+          display: flex;
+          flex-direction: column;
+          gap: 80px;
+        }
+
+        .insurance-file-input{
+          border: 1.5px dashed #242A30;
+          color: #FFE000;
+          background-color: #040B11;
+          box-shadow: inset 4px 4px 4px 0 #000000, inset -4px -4px 4px 0 #10161C;
+          cursor: pointer;
+          // height: 100%;
+          min-height: 100px;
+          border-radius: 8px;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover, &.dragging-file{
+            opacity: 0.7;
+          }
+
+        }
+
+        .insurance-file-wrapper{
+          max-width: 100%;
+          display: flex;
+          border: 1px solid black;
+          justify-content: space-between;
+          align-items: center;
+          gap: 50px;
+          cursor: pointer;
+          padding: 30px;
+          overflow: hidden;
+          background: #0B1117;
+          box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+
+          .insurance-file{
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            .file-type{
+              position: relative;
+
+              >div{
+                position: absolute;
+              }
+
+              .icon{
+                font-size: 50px!important;
+              }
+
+              .type{
+                inset: 0;
+                display: flex;
+                justify-content: center;
+                font-size: 12px;
+                align-items: center;
+              }
+            }
+
+        
+        
+            .title{
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              max-width: 343px;
+              margin-bottom: 10px;
+            }
+
+            .size{
+              font-weight: 100;
+            }
+
+          }
+
+          .icon{
+            font-size: 25px!important;
+          }
+        
+        }
+
+
       }
 
     }
@@ -133,8 +228,12 @@
 }
 .embla__container {
   display: flex;
-  gap: 20px;
+  gap: 30px;
 }
 .embla__slide {
   flex: 0 0 100%;
+}
+
+mat-form-field{
+  display: block;
 }

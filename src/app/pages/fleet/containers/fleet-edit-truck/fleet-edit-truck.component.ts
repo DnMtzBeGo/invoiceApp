@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,7 +8,6 @@ import EmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carous
 import { PickerSelectedColor } from 'src/app/shared/components/color-picker/color-picker.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UploadFileInfo, UploadFilesComponent } from '../../components/upload-files/upload-files.component';
-
 @Component({
   selector: 'app-fleet-edit',
   templateUrl: './fleet-edit-truck.component.html',
@@ -31,27 +31,57 @@ export class FleetEditTruckComponent implements OnInit {
   public truckDetailsForm: FormGroup;
   public pictures: UploadFileInfo[];
   public selectedColor: PickerSelectedColor;
+  //the url to the insurance file
+  public insuranceFile: any;
+  public filteredPermisosSCT: any[];
+  public filteredTruckSettings: any[];
+  public catalogs: Record<string, any>;
 
   async ngOnInit(): Promise<void> {
     this.truckDetailsForm = this.formBuilder.group({
-      model: ['', Validators.required],
+      brand: ['', Validators.required],
       year: ['', Validators.required],
       plates: ['', Validators.required],
+      colorName: ['', Validators.required],
+      color: ['', Validators.required],
+      sct_permission: ['', Validators.required],
+      sct_permission_text: ['', Validators.required],
+      sct_number: ['', Validators.required],
+      truck_settings: ['', Validators.required],
+      truck_settings_text: ['', Validators.required],
+      insurer: ['', Validators.required],
+      policy_number: ['', Validators.required]
     });
 
-    const payload = {
-      id_truck: this.route.snapshot.params.id
-    };
-    ( await this.authService.apiRest(JSON.stringify(payload),'/trucks/get_by_id')).subscribe(({result})=>{
-      const { brand, plates, year, color, colorName} = result.attributes;
-      this.pictures = result.pictures.map(url=>({url: `${url}?${new Date()}`}));
+    await this.fillCataloguesFromDb();
 
-      this.truckDetailsForm.patchValue({
-        model: brand, plates, year
+    const { id} = this.route.snapshot.params;
+    await this.getTruckInfo({id});
+
+    await this.getInsuranceFile({id});
+    
+    const searchFunction = (options: any[], input: string)=>{
+      return options.filter((e: any)=>{
+        const currentValue = `${e.code} ${e.description}`.toLowerCase();
+        return currentValue.includes(input.toLowerCase())
       });
-      this.selectedColor = {color, colorName};
+    };
+
+    //handling input search for sct permissions
+    this.truckDetailsForm.get('sct_permission').valueChanges.subscribe((inputValue: string)=>{
+      this.filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'),inputValue); ;
+    });
+
+    //handling input search for truck settings 
+    this.truckDetailsForm.get('truck_settings').valueChanges.subscribe((inputValue: string)=>{
+      this.filteredTruckSettings = searchFunction(this.getCatalogue('sat_cp_config_autotransporte'),inputValue); ;
     });
     
+  }
+
+  setAutocompleteValue = (catalogueName: string, selectedCode: string): string=>{
+    const selectedValue = this.getCatalogue(catalogueName)?.find(e=>e.code == selectedCode) || {};
+    return `${selectedValue.code} - ${selectedValue.description}`;
   }
 
   ngAfterViewInit(){
@@ -59,6 +89,9 @@ export class FleetEditTruckComponent implements OnInit {
     var options: EmblaOptionsType = { loop: false, draggable: false }
   
     this.slider = EmblaCarousel(emblaNode, options);
+
+    //THIS LINE MUST BE DELETED
+    this.slider.canScrollNext();
   }
 
   updateTruckColor(color){
@@ -102,6 +135,74 @@ export class FleetEditTruckComponent implements OnInit {
       },
       backdropClass: ['brand-dialog-1','no-padding']
     });
+  }
+
+  async getTruckInfo({id}: {id: string}){
+    const payload = { id_truck: id};
+
+    const { result } = await (await this.authService.apiRest(JSON.stringify(payload),'/trucks/get_by_id')).toPromise();
+
+    const {color, colorName} = result.attributes;
+    this.pictures = result.pictures.map(url=>({url: `${url}?${new Date()}`}));
+
+    this.truckDetailsForm.patchValue(result.attributes);
+    this.selectedColor = {color, colorName};
+
+  }
+
+  async getInsuranceFile({id}: {id: string}){
+    const payload = { id_truck: id};
+
+    const { result } = await (await this.authService.apiRest(JSON.stringify(payload),'/trucks/get_files')).toPromise();
+    this.insuranceFile = result.files[0];
+    this.insuranceFile.size = (this.insuranceFile.size* 0.000001).toFixed(2) + 'MB';
+
+    const destructuredUrl = this.insuranceFile.url.split('/')
+    const fileName = destructuredUrl[destructuredUrl.length -1];
+    const splittedName = fileName.split('.');
+
+    this.insuranceFile.fileType = splittedName[splittedName.length -1];
+    this.insuranceFile.name = fileName;
+
+  }
+
+  getCatalogue(catalogueName: string){
+    return this.catalogs?.find(c=>c.name == catalogueName).documents;
+  }
+
+  setOption({option}: MatAutocompleteSelectedEvent, catalogueName: string, formControlName: string){
+    const selectedValue = this.getCatalogue(catalogueName).find(e=>e.code == option.value);
+
+    const values = {};
+    values[formControlName] = selectedValue.code;
+    values[formControlName + '_text'] = selectedValue.description;
+
+    this.truckDetailsForm.patchValue(values);
+  }
+
+  async fillCataloguesFromDb(): Promise<any>{
+    const payload = {
+      catalogs: [
+          {
+              name: 'sat_cp_tipos_de_permiso',
+              version: 0
+          },
+          {
+              name: 'sat_cp_config_autotransporte',
+              version: 0
+          },
+      ]
+    };
+
+    const {result} =  await (await this.webService.apiRest(JSON.stringify(payload),'invoice/catalogs/fetch')).toPromise();
+
+    this.catalogs = result.catalogs;
+    this.filteredPermisosSCT = this.getCatalogue('sat_cp_tipos_de_permiso');
+    this.filteredTruckSettings = this.getCatalogue('sat_cp_config_autotransporte');
+  }
+
+  deleteInsuranceFile(){
+    
   }
 
 }

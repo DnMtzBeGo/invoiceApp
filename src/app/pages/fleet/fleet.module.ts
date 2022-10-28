@@ -14,6 +14,7 @@ import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.mo
 import { ColorPickerModule } from 'src/app/shared/components/color-picker/color-picker.module';
 import { UploadFilesModule } from './components/upload-files/upload-files.module';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-file-bar.module';
 
 @NgModule({
   declarations: [FleetWidgetComponent, FleetPageComponent, FleetBrowserComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent, FleetEditTruckComponent],
@@ -28,7 +29,8 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
     BegoTabsModule,
     ColorPickerModule,
     UploadFilesModule,
-    ButtonModule
+    ButtonModule,
+    DragFileBarModule
   ]
 })
 export class FleetModule {}

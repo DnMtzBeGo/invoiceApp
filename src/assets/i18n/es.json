@@ -1333,7 +1333,9 @@
       "txt-done":"Hecho",
       "btn-other":"Otro",
       "finish":"Finalizar",
-      "uploading":"Subiendo"
+      "uploading":"Subiendo",
+      "insurer-name":"Aseguradora",
+      "policy-number":"Número de póliza"
     },
     "trailers": {
       "txt_header": "Cajas",
