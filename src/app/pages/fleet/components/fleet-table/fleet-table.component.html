@@ -5,154 +5,31 @@
       <ng-container matColumnDef="avatar">
         <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px"></th>
         <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          <div class="avatar">
+          <div class="avatar" [style]="'--avatar-rounded: ' + resolvers[model].avatarRounded + ';'">
             <div class="avatar-1">
-              <img
-                [src]="element.thumbnails && element.thumbnails[0] && !element.thumbnails?.[0].endsWith('/') ? element.thumbnails[0] : '../../../../assets/images/truck.svg'" />
+              <img [src]="element.thumbnail && !element.thumbnail.endsWith('/') ? element.thumbnail : resolvers[model].avatarFallback" />
             </div>
           </div>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="brand">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
-          {{ 'fleet.trucks.table.brand' | translate }}
-        </th>
-        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          {{ element.attributes.brand }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="year">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
-          {{ 'fleet.trucks.table.year' | translate }}
-        </th>
-        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          {{ element.attributes.year }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="plates">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
-          {{ 'fleet.trucks.table.plates' | translate }}
-        </th>
-        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          {{ element.attributes.plates }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="color">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
-          {{ 'fleet.trucks.table.color' | translate }}
-        </th>
-        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          <span class="rect-color" [style]="'--color: ' + element.attributes.color + ';'"></span>
         </td>
       </ng-container>
 
       <!-- Nickname Column -->
       <ng-container matColumnDef="nickname">
         <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 80px">
-          {{ 'invoice.invoice-table.emision' | translate }}
+          {{ 'fleet.members.table.nickname' | translate }}
         </th>
         <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          {{ element.fecha_emision | date: 'MMM d, yy' }}
+          {{ element.member.nickname }}
         </td>
       </ng-container>
 
-      <!-- Emisor Column -->
-      <ng-container matColumnDef="emisor">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 220px">
-          {{ 'invoice.invoice-table.emisor' | translate }}
-        </th>
-        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          <span style="font-weight: 300">{{ element.emisor?.nombre }}</span>
-          <span style="font-weight: 300; opacity: 0.7"> {{ element.emisor?.rfc }}</span>
-        </td>
-      </ng-container>
-
-      <!-- Receptor Column -->
-      <ng-container matColumnDef="receptor">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 220px">
-          {{ 'invoice.invoice-table.receptor' | translate }}
-        </th>
-        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          <span style="font-weight: 300">{{ element.receptor?.nombre }}</span>
-          <span style="font-weight: 300; opacity: 0.7"> {{ element.receptor?.rfc }}</span>
-        </td>
-      </ng-container>
-
-      <!-- Serie Column -->
-      <ng-container matColumnDef="serie">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 80px">
-          {{ 'invoice.invoice-table.serie' | translate }}
-        </th>
-        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          {{ element.serie_label || element.serie }}
-        </td>
-      </ng-container>
-
-      <!-- Tipo Column -->
-      <ng-container matColumnDef="tipo">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 80px">
-          {{ 'invoice.invoice-table.tipo' | translate }}
-        </th>
-        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          {{ element.tipo_de_comprobante_ }}
-        </td>
-      </ng-container>
-
-      <!-- Stamped Column -->
+      <!-- Status Column -->
       <ng-container matColumnDef="status">
         <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 90px">
-          {{ 'invoice.invoice-table.status' | translate }}
-        </th>
-        <td
-          class="fleet-table__table-body"
-          mat-cell
-          *matCellDef="let element"
-          [style.color]="facturaStatus('color', element.status)"
-          [matTooltip]="(p(element).showError && showError(element)) || ''"
-          matTooltipPosition="right"
-          matTooltipHideDelay="100"
-          matTooltipClass="brand-tooltip-2">
-          {{ element.status_ }}
-        </td>
-      </ng-container>
-
-      <!-- Subtotal Column -->
-      <ng-container matColumnDef="subtotal">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 80px">
-          {{ 'invoice.invoice-table.subtotal' | translate }}
+          {{ 'fleet.members.table.status' | translate }}
         </th>
         <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          {{
-            element.subtotal
-              ? '$' +
-                element.subtotal.toLocaleString('en-US', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })
-              : ''
-          }}
-        </td>
-      </ng-container>
-
-      <!-- Total Column -->
-      <ng-container matColumnDef="total">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 80px">
-          {{ 'invoice.invoice-table.total' | translate }}
-        </th>
-        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          {{
-            element.total
-              ? '$' +
-                element.total.toLocaleString('en-US', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })
-              : ''
-          }}
+          <span class="member-status" [class]="element.status">{{ element.status }}</span>
         </td>
       </ng-container>
 
@@ -232,6 +109,64 @@
               <span>{{ 'invoice.invoice-table.delete-invoice' | translate }}</span>
             </button>
           </mat-menu> -->
+        </td>
+      </ng-container>
+
+      <!-- Brand Column -->
+      <ng-container matColumnDef="brand">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
+          {{ 'fleet.trucks.table.brand' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.attributes.brand }}
+        </td>
+      </ng-container>
+
+      <!-- Year Column -->
+      <ng-container matColumnDef="year">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
+          {{ 'fleet.trucks.table.year' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.attributes.year }}
+        </td>
+      </ng-container>
+
+      <!-- Plates Column -->
+      <ng-container matColumnDef="plates">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
+          {{ 'fleet.trucks.table.plates' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.attributes.plates }}
+        </td>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="color">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
+          {{ 'fleet.trucks.table.color' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          <span class="rect-color" [style]="'--color: ' + element.attributes.color + ';'"></span>
+        </td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 220px">
+          {{ 'fleet.trailers.table.type' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">{{ element.attributes.type }}″</td>
+      </ng-container>
+
+      <!-- Trailer number Column -->
+      <ng-container matColumnDef="trailer_number">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 220px">
+          {{ 'fleet.trailers.table.trailer_number' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.attributes.trailer_number }}
         </td>
       </ng-container>
 

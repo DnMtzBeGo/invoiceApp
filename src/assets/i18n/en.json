@@ -1302,19 +1302,23 @@
       "btn_add": "Add new",
       "sort_by": {
         "member_meta.date_created": "Creation date",
-        "nickname": "Name"
+        "member.nickname": "Name"
       },
       "incoming": "incoming",
       "done": "done",
-      "see_details": "See profile"
+      "see_details": "See profile",
+      "table": {
+        "nickname": "Name",
+        "status": "Status"
+      }
     },
     "trucks": {
       "txt_header": "My Trucks",
       "txt_search": "Search truck...",
       "btn_add": "Add new",
       "sort_by": {
-        "natural": "Creation date",
-        "brand": "Brand"
+        "date_created": "Creation date",
+        "attributes.brand": "Brand"
       },
       "see_details": "See truck",
       "btn_view": "View truck",
@@ -1331,11 +1335,15 @@
       "txt_search": "Search trailer...",
       "btn_add": "Add new",
       "sort_by": {
-        "natural": "Creation date",
+        "date_created": "Creation date",
         "trailer_number": "Trailer"
       },
       "see_details": "See trailer",
-      "btn_view": "View trailer"
+      "btn_view": "View trailer",
+      "table": {
+        "type": "Type",
+        "trailer_number": "Trailer number"
+      }
     }
   },
   "home": {

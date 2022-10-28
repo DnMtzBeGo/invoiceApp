@@ -1306,19 +1306,23 @@
       "btn_add": "Agregar",
       "sort_by": {
         "member_meta.date_created": "Fecha creación",
-        "nickname": "Nombre"
+        "member.nickname": "Nombre"
       },
       "incoming": "próximas",
       "done": "completadas",
-      "see_details": "Ver perfil"
+      "see_details": "Ver perfil",
+      "table": {
+        "nickname": "Name",
+        "status": "Estatus"
+      }
     },
     "trucks": {
       "txt_header": "Unidades",
       "txt_search": "Buscar unidad...",
       "btn_add": "Agregar",
       "sort_by": {
-        "natural": "Fecha creación",
-        "brand": "Marca"
+        "date_created": "Fecha creación",
+        "atributes.brand": "Marca"
       },
       "see_details": "Ver unidad",
       "btn_view": "Ver unidad",
@@ -1335,11 +1339,15 @@
       "txt_search": "Buscar caja...",
       "btn_add": "Agregar",
       "sort_by": {
-        "natural": "Fecha creación",
+        "date_created": "Fecha creación",
         "trailer_number": "Número de caja"
       },
       "see_details": "Ver caja",
-      "btn_view": "Ver caja"
+      "btn_view": "Ver caja",
+      "table": {
+        "type": "Tipo",
+        "trailer_number": "Número de Trailer"
+      }
     }
   },
   "home": {

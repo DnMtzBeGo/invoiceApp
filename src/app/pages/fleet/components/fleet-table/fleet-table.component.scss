@@ -130,7 +130,32 @@
       }
     }
 
-    .rect-color {
+    > .member-status {
+      border-radius: 8px;
+      padding: 4px 6px;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+
+      &.inactive {
+        color: #c1c7d0;
+        border: 1px solid #7a8874;
+        background: linear-gradient(152.01deg, rgba(121, 121, 121, 0.29) 13.84%, rgba(68, 68, 68, 0.25) 80.67%);
+      }
+
+      &.available {
+        color: #87f484;
+        border: 1px solid #b9ff98;
+        background: linear-gradient(152.01deg, rgba(27, 69, 59, 0.29) 13.84%, rgba(85, 170, 83, 0.19) 80.67%);
+      }
+
+      &.unavailable {
+        color: #e05122;
+        border: 1px solid #ff7067;
+        background: linear-gradient(152.01deg, rgba(69, 40, 27, 0.29) 13.84%, rgba(170, 93, 83, 0.19) 80.67%);
+      }
+    }
+
+    > .rect-color {
       // background: linear-gradient(152.01deg, #01235e 13.84%, rgba(1, 33, 87, 0.53) 80.67%);
       display: inline-block;
       background: var(--color);

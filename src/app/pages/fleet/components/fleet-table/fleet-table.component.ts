@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { Paginator, TableFactura } from '../../../invoice/models';
-import { routes } from '../../../invoice/consts';
+import { routes } from '../../consts';
 import { environment } from 'src/environments/environment';
 import { facturaPermissions, previewFactura, facturaStatus } from '../../../invoice/containers/factura-edit-page/factura.core';
 import { clone } from 'src/app/shared/utils/object';
@@ -28,12 +28,18 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   resolvers = {
     members: {
+      avatarRounded: '50%',
+      avatarFallback: '../../../../assets/images/avatar-outline.svg',
       displayedColumns: ['avatar', 'nickname', 'status', 'operations']
     },
     trucks: {
+      avatarRounded: '24px',
+      avatarFallback: '../../../../assets/images/truck.svg',
       displayedColumns: ['avatar', 'brand', 'year', 'plates', 'color', 'operations']
     },
     trailers: {
+      avatarRounded: '24px',
+      avatarFallback: '../../../../assets/images/trailer.svg',
       displayedColumns: ['avatar', 'plates', 'type', 'trailer_number', 'operations']
     }
   };

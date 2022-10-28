@@ -102,7 +102,8 @@ export class FleetBrowserComponent implements OnInit {
 
   paginatorDefaults = {
     grid: { sizeOptions: [6, 9, 12], default: 6 },
-    list: { sizeOptions: [5, 10, 20, 50, 100], default: 5 }
+    list: { sizeOptions: [6, 9, 12, 50, 100], default: 6 }
+    // list: { sizeOptions: [5, 10, 20, 50, 100], default: 5 }
   };
 
   paginator: Paginator = {
@@ -166,8 +167,7 @@ export class FleetBrowserComponent implements OnInit {
         facturas.map((factura: any) => {
           if (this.model === 'members') {
             const newFactura = {
-              ...factura.member,
-              ...factura.member_meta,
+              ...factura,
               status: !factura.member.connected
                 ? 'inactive'
                 : factura.availability === 1
@@ -260,15 +260,14 @@ export class FleetBrowserComponent implements OnInit {
 
   fetchFacturas = (params: any) => {
     const payload = {
-      id_fleet: this.vm.fleetId,
       ...params
     };
 
     return from(
-      this.apiRestService.apiRest(JSON.stringify(payload), this.resolver.endpoint, {
-        loader: 'false'
-        // apiVersion: 'v1.1',
-        // ...payload
+      this.apiRestService.apiRestGet(this.resolver.endpoint.replace(':fleetId', this.vm.fleetId), {
+        loader: 'false',
+        apiVersion: 'v1.1',
+        ...payload
       })
     ).pipe(
       mergeAll(),
@@ -448,25 +447,24 @@ export class FleetBrowserComponent implements OnInit {
 
 const resolvers = {
   members: {
-    endpoint: 'fleets/members',
-    pluck: 'members',
+    endpoint: 'fleets/:fleetId/members',
+    pluck: 'data',
     lang: 'members',
-    sortBy: ['member_meta.date_created', 'nickname'],
+    sortBy: ['member_meta.date_created', 'member.nickname'],
     sortInit: ['member_meta.date_created', 'desc']
   },
   trucks: {
-    // endpoint: 'fleets/trucks',
-    endpoint: 'trucks/get_trucks_details',
-    pluck: null,
+    endpoint: 'fleets/:fleetId/trucks',
+    pluck: 'data',
     lang: 'trucks',
-    sortBy: ['natural', 'brand'],
-    sortInit: ['natural', 'desc']
+    sortBy: ['date_created', 'attributes.brand'],
+    sortInit: ['date_created', 'desc']
   },
   trailers: {
-    endpoint: 'fleets/trailers',
-    pluck: null,
+    endpoint: 'fleets/:fleetId/trailers',
+    pluck: 'data',
     lang: 'trailers',
-    sortBy: ['natural', 'trailer_number'],
-    sortInit: ['natural', 'desc']
+    sortBy: ['date_created', 'trailer_number'],
+    sortInit: ['date_created', 'desc']
   }
 };

@@ -143,7 +143,7 @@
       <div class="header">
         <h1>
           {{ 'fleet.' + resolver.lang + '.txt_header' | translate }}
-          <span>{{ vm.facturas?.length ?? '-' }}</span>
+          <span>{{ paginator.total || '-' }}</span>
         </h1>
         <div class="actions">
           <button mat-flat-button class="brand-btn-2" [routerLink]="[routes.NEW_MEMBER]" (click)="(1)">
