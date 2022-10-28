@@ -1335,7 +1335,8 @@
       "finish":"Finalizar",
       "uploading":"Subiendo",
       "insurer-name":"Aseguradora",
-      "policy-number":"Número de póliza"
+      "policy-number":"Número de póliza",
+      "delete-insurance-warning":"¿Estás seguro que quieres eliminar la póliza de seguro para este camión?"
     },
     "trailers": {
       "txt_header": "Cajas",

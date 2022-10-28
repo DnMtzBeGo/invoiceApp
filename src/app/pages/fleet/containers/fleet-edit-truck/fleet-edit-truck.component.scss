@@ -149,6 +149,11 @@
           .icon{
             font-size: 25px!important;
           }
+
+          .edit-insurance{
+            border: 1px solid red;
+            display: inline-flex;
+          }
         
         }
 
@@ -236,4 +241,8 @@
 
 mat-form-field{
   display: block;
+}
+
+.bego-btn{
+  align-self: self-end;
 }

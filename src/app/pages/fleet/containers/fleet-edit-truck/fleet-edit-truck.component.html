@@ -133,7 +133,7 @@
                 </div>
               </bego-drag-file-bar>
 
-              <div *ngIf="insuranceFile" class="insurance-file-wrapper">
+              <div *ngIf="insuranceFile" class="insurance-file-wrapper" (click)="showInsuranceFile()">
                 <div class="insurance-file">
                   <div  class="file-type">
                     <div class="type">{{insuranceFile.fileType | uppercase}}</div>
@@ -145,10 +145,10 @@
                     <div class="size">{{insuranceFile.size}}</div>
                   </div>
                 </div>
-                <div><i class="icon icon-trash" (click)="deleteInsuranceFile()"></i></div>
+                <i class="icon icon-edit" (click)="editInsuranceFile($event)"></i>
+
+
               </div>
-
-
 
             </div>
 
@@ -157,7 +157,15 @@
           </div>
         </div>
       </div>
-      </form>
+
+      <button
+      (click)="saveChanges()"
+      mat-raised-button
+      class="bego-btn yellow medium-size"
+      [disabled]="false"
+    >
+      {{'history.consignment_note.save_changes' | translate}}
+    </button>      </form>
 
 
 

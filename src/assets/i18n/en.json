@@ -1331,7 +1331,8 @@
       "finish":"Finish",
       "uploading":"Uploading",
       "insurer-name":"Name of insurer",
-      "policy-number":"Policy number"
+      "policy-number":"Policy number",
+      "delete-insurance-warning":"Are you sure you want to delete the insurance policy for this truck?"
     },
     "trailers": {
       "txt_header": "My Trailers",

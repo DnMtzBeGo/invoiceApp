@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import EmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
+import { ActionConfirmationComponent } from 'src/app/pages/invoice/modals';
 import { PickerSelectedColor } from 'src/app/shared/components/color-picker/color-picker.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UploadFileInfo, UploadFilesComponent } from '../../components/upload-files/upload-files.component';
@@ -155,7 +156,7 @@ export class FleetEditTruckComponent implements OnInit {
 
     const { result } = await (await this.authService.apiRest(JSON.stringify(payload),'/trucks/get_files')).toPromise();
     this.insuranceFile = result.files[0];
-    this.insuranceFile.size = (this.insuranceFile.size* 0.000001).toFixed(2) + 'MB';
+    this.insuranceFile.size = (Math.max(this.insuranceFile.size* 0.000001, 0.01)).toFixed(2) + 'MB';
 
     const destructuredUrl = this.insuranceFile.url.split('/')
     const fileName = destructuredUrl[destructuredUrl.length -1];
@@ -201,8 +202,63 @@ export class FleetEditTruckComponent implements OnInit {
     this.filteredTruckSettings = this.getCatalogue('sat_cp_config_autotransporte');
   }
 
-  deleteInsuranceFile(){
-    
+  showInsuranceFile(){
+    window.open(this.insuranceFile.url);
+  }
+
+  editInsuranceFile(event: PointerEvent){
+    event.stopPropagation();
+
+    const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
+      data: {
+        modalTitle: this.translateService.instant(
+          "invoice.invoice-table.delete-title"
+        ),
+        modalMessage: this.translateService.instant(
+          "fleet.trucks.delete-insurance-warning"
+        ),
+      },
+      restoreFocus: false,
+      backdropClass: ["brand-dialog-1"],
+    });
+
+    dialogRef.afterClosed().subscribe((response: boolean)=>{
+      if(response){
+        const input = document.createElement('input');
+        input.type =  'file';
+        input.onchange = (file) => {
+          this.updateInsuranceFile(input.files[0]);
+      
+        }
+
+        input.click();
+      }
+    });
+  }
+
+  async updateInsuranceFile(file: File){
+
+    const formData = new FormData();
+    const { id } = this.route.snapshot.params;
+    formData.append('id_truck', id);
+    formData.append('files', file);
+
+    const requestOptions = {
+      reportProgress : true,
+      observe: 'events',
+    };
+
+    const appBehaviourOptions = {
+      loader: 'false'
+    };
+
+    (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_files',requestOptions, appBehaviourOptions)).subscribe((resp)=>{
+      if(resp.status == 200)
+        this.getInsuranceFile({id});
+    })
+  }
+
+  saveChanges(){
   }
 
 }
