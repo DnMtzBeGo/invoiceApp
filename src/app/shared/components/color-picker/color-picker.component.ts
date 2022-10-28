@@ -39,7 +39,11 @@ export class ColorPickerComponent implements OnInit {
       const { color, colorName} = this.selectedColor;
       this.colorNameSelected = colorName;
       this.color = color;
-      this.setColor(this.color);
+      let selectedColor: string | number[] = color;
+      if(/^rgba?\(/.test(selectedColor)){
+        selectedColor = selectedColor.replace(/[rgba?\(|\)]/g,'').split(',').map(e=>parseInt(e))
+      }
+      this.setColor(selectedColor);
     }
   }
 
@@ -138,6 +142,7 @@ export class ColorPickerComponent implements OnInit {
 
 
   public setColor(selectedColor: string | number[]) {
+    console.log('Selected color is: ', selectedColor);
     if(typeof selectedColor !== 'string'){
       const [h] = this.rgbToHsl(selectedColor[0],selectedColor[1],selectedColor[2])
       this.colorNameSelected = this.getHSLColorsName(h*360);
@@ -152,6 +157,8 @@ export class ColorPickerComponent implements OnInit {
       color: selectedColor,
       colorName: this.colorNameSelected,
     });
+
+    console.log('About to emit the selected color');
 
     setTimeout(() => {
       const colorBox = document.getElementById('colorChild');

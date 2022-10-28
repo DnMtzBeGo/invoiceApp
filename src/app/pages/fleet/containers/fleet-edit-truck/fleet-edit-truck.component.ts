@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import EmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
 import { ActionConfirmationComponent } from 'src/app/pages/invoice/modals';
@@ -15,18 +15,25 @@ import { UploadFileInfo, UploadFilesComponent } from '../../components/upload-fi
   styleUrls: ['./fleet-edit-truck.component.scss']
 })
 export class FleetEditTruckComponent implements OnInit {
-
   @ViewChild('sliderRef') sliderRef: ElementRef;
   public slider: EmblaCarouselType;
 
-  constructor(private translateService: TranslateService, private formBuilder: FormBuilder, private route: ActivatedRoute, private authService: AuthService, private matDialog: MatDialog, private webService: AuthService) { 
+  constructor(
+    private translateService: TranslateService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService,
+    private matDialog: MatDialog,
+    private webService: AuthService
+  ) {
     this.route.params;
   }
 
   public fleetTabs = [
     this.translateService.instant('fleet.trucks.truck_details'),
     this.translateService.instant('fleet.trucks.truck_settings'),
-    this.translateService.instant('fleet.trucks.truck_insurance'),
+    this.translateService.instant('fleet.trucks.truck_insurance')
   ];
 
   public truckDetailsForm: FormGroup;
@@ -59,126 +66,122 @@ export class FleetEditTruckComponent implements OnInit {
 
     await this.fillCataloguesFromDb();
 
-    const { id} = this.route.snapshot.params;
-    await this.getTruckInfo({id});
+    const { id } = this.route.snapshot.params;
+    await this.getTruckInfo({ id });
 
-    await this.getInsuranceFile({id});
-    
-    const searchFunction = (options: any[], input: string)=>{
-      return options.filter((e: any)=>{
+    await this.getInsuranceFile({ id });
+
+    const searchFunction = (options: any[], input: string) => {
+      return options.filter((e: any) => {
         const currentValue = `${e.code} ${e.description}`.toLowerCase();
-        return currentValue.includes(input.toLowerCase())
+        return currentValue.includes(input.toLowerCase());
       });
     };
 
-    this.truckDetailsForm.valueChanges.subscribe(this.onFormChanged)
+    this.truckDetailsForm.valueChanges.subscribe(this.onFormChanged);
 
     //handling input search for sct permissions
-    this.truckDetailsForm.get('sct_permission').valueChanges.subscribe((inputValue: string)=>{
-      this.filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'),inputValue); ;
+    this.truckDetailsForm.get('sct_permission').valueChanges.subscribe((inputValue: string) => {
+      this.filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'), inputValue);
     });
 
-    //handling input search for truck settings 
-    this.truckDetailsForm.get('truck_settings').valueChanges.subscribe((inputValue: string)=>{
-      this.filteredTruckSettings = searchFunction(this.getCatalogue('sat_cp_config_autotransporte'),inputValue); ;
+    //handling input search for truck settings
+    this.truckDetailsForm.get('truck_settings').valueChanges.subscribe((inputValue: string) => {
+      this.filteredTruckSettings = searchFunction(this.getCatalogue('sat_cp_config_autotransporte'), inputValue);
     });
-    
   }
 
-  setAutocompleteValue = (catalogueName: string, selectedCode: string): string=>{
-    const selectedValue = this.getCatalogue(catalogueName)?.find(e=>e.code == selectedCode) || {};
+  setAutocompleteValue = (catalogueName: string, selectedCode: string): string => {
+    const selectedValue = this.getCatalogue(catalogueName)?.find((e) => e.code == selectedCode) || {};
     return `${selectedValue.code} - ${selectedValue.description}`;
-  }
+  };
 
-  ngAfterViewInit(){
-    var emblaNode = this.sliderRef.nativeElement
-    var options: EmblaOptionsType = { loop: false, draggable: false }
-  
+  ngAfterViewInit() {
+    var emblaNode = this.sliderRef.nativeElement;
+    var options: EmblaOptionsType = { loop: false, draggable: false };
+
     this.slider = EmblaCarousel(emblaNode, options);
 
     //THIS LINE MUST BE DELETED
     this.slider.canScrollNext();
   }
 
-  updateTruckColor(color){
+  updateTruckColor(color) {
+    this.truckDetailsForm.patchValue(color);
   }
 
-  openFileEditor(){
-    const dialog = this.matDialog.open(UploadFilesComponent,{
+  openFileEditor() {
+    const dialog = this.matDialog.open(UploadFilesComponent, {
       data: {
         places: 5,
         obligatoryImages: 3,
         files: this.pictures,
-        handleFileInput: async ({file, i}: {file: File, i: number}) =>{
-          const fileInfo =  dialog.componentInstance.info.files[i];
+        handleFileInput: async ({ file, i }: { file: File; i: number }) => {
+          const fileInfo = dialog.componentInstance.info.files[i];
 
           const reader = new FileReader();
           reader.readAsDataURL(file);
-          reader.onload = ()=>{
-              fileInfo.url = reader.result as string;
-          }
+          reader.onload = () => {
+            fileInfo.url = reader.result as string;
+          };
 
           const formData = new FormData();
           formData.append('id_truck', this.route.snapshot.params.id);
-          formData.append('pictures',file, (i).toString());
+          formData.append('pictures', file, i.toString());
 
           const requestOptions = {
-            reportProgress : true,
-            observe: 'events',
+            reportProgress: true,
+            observe: 'events'
           };
-      
+
           const appBehaviourOptions = {
             loader: 'false'
           };
 
-          (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_pictures',requestOptions, appBehaviourOptions)).subscribe((resp)=>{
-            fileInfo.uploadPercentage = resp.loaded / resp.total * 100;
-          })
-
-          
-          
+          (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_pictures', requestOptions, appBehaviourOptions)).subscribe(
+            (resp) => {
+              fileInfo.uploadPercentage = (resp.loaded / resp.total) * 100;
+            }
+          );
         }
       },
-      backdropClass: ['brand-dialog-1','no-padding']
+      backdropClass: ['brand-dialog-1', 'no-padding']
     });
   }
 
-  async getTruckInfo({id}: {id: string}){
-    const payload = { id_truck: id};
+  async getTruckInfo({ id }: { id: string }) {
+    const payload = { id_truck: id };
 
-    const { result } = await (await this.authService.apiRest(JSON.stringify(payload),'/trucks/get_by_id')).toPromise();
+    const { result } = await (await this.authService.apiRest(JSON.stringify(payload), '/trucks/get_by_id')).toPromise();
 
-    const {color, colorName} = result.attributes;
-    this.pictures = result.pictures.map(url=>({url: `${url}?${new Date()}`}));
+    const { color, colorName } = result.attributes;
+    this.pictures = result.pictures.map((url) => ({ url: `${url}?${new Date()}` }));
 
     this.truckDetailsForm.patchValue(result.attributes);
     this.originalInfo = result.attributes;
-    this.selectedColor = {color, colorName};
-
+    this.selectedColor = { color, colorName };
   }
 
-  async getInsuranceFile({id}: {id: string}){
-    const payload = { id_truck: id};
+  async getInsuranceFile({ id }: { id: string }) {
+    const payload = { id_truck: id };
 
-    const { result } = await (await this.authService.apiRest(JSON.stringify(payload),'/trucks/get_files')).toPromise();
+    const { result } = await (await this.authService.apiRest(JSON.stringify(payload), '/trucks/get_files')).toPromise();
     this.insuranceFile = result.files[0];
-    this.insuranceFile.size = (Math.max(this.insuranceFile.size* 0.000001, 0.01)).toFixed(2) + 'MB';
+    this.insuranceFile.size = Math.max(this.insuranceFile.size * 0.000001, 0.01).toFixed(2) + 'MB';
 
-    const destructuredUrl = this.insuranceFile.url.split('/')
-    const fileName = destructuredUrl[destructuredUrl.length -1];
+    const destructuredUrl = this.insuranceFile.url.split('/');
+    const fileName = destructuredUrl[destructuredUrl.length - 1];
     const splittedName = fileName.split('.');
 
-    this.insuranceFile.fileType = splittedName[splittedName.length -1];
+    this.insuranceFile.fileType = splittedName[splittedName.length - 1];
     this.insuranceFile.name = fileName;
-
   }
 
-  getCatalogue(catalogueName: string){
-    return this.catalogs?.find(c=>c.name == catalogueName).documents;
+  getCatalogue(catalogueName: string) {
+    return this.catalogs?.find((c) => c.name == catalogueName).documents;
   }
 
-  setOption(selectedValue, formControlName: string){
-
+  setOption(selectedValue, formControlName: string) {
     const values = {};
     values[formControlName] = selectedValue.code;
     values[formControlName + '_text'] = selectedValue.description;
@@ -186,106 +189,104 @@ export class FleetEditTruckComponent implements OnInit {
     this.truckDetailsForm.patchValue(values);
   }
 
-  async fillCataloguesFromDb(): Promise<any>{
+  async fillCataloguesFromDb(): Promise<any> {
     const payload = {
       catalogs: [
-          {
-              name: 'sat_cp_tipos_de_permiso',
-              version: 0
-          },
-          {
-              name: 'sat_cp_config_autotransporte',
-              version: 0
-          },
+        {
+          name: 'sat_cp_tipos_de_permiso',
+          version: 0
+        },
+        {
+          name: 'sat_cp_config_autotransporte',
+          version: 0
+        }
       ]
     };
 
-    const {result} =  await (await this.webService.apiRest(JSON.stringify(payload),'invoice/catalogs/fetch')).toPromise();
+    const { result } = await (await this.webService.apiRest(JSON.stringify(payload), 'invoice/catalogs/fetch')).toPromise();
 
     this.catalogs = result.catalogs;
     this.filteredPermisosSCT = this.getCatalogue('sat_cp_tipos_de_permiso');
     this.filteredTruckSettings = this.getCatalogue('sat_cp_config_autotransporte');
   }
 
-  showInsuranceFile(){
+  showInsuranceFile() {
     window.open(this.insuranceFile.url);
   }
 
-  editInsuranceFile(event: PointerEvent){
+  editInsuranceFile(event: PointerEvent) {
     event.stopPropagation();
 
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
-        modalTitle: this.translateService.instant(
-          "invoice.invoice-table.delete-title"
-        ),
-        modalMessage: this.translateService.instant(
-          "fleet.trucks.delete-insurance-warning"
-        ),
+        modalTitle: this.translateService.instant('invoice.invoice-table.delete-title'),
+        modalMessage: this.translateService.instant('fleet.trucks.delete-insurance-warning')
       },
       restoreFocus: false,
-      backdropClass: ["brand-dialog-1"],
+      backdropClass: ['brand-dialog-1']
     });
 
-    dialogRef.afterClosed().subscribe((response: boolean)=>{
-      if(response){
+    dialogRef.afterClosed().subscribe((response: boolean) => {
+      if (response) {
         const input = document.createElement('input');
-        input.type =  'file';
+        input.type = 'file';
         input.onchange = (file) => {
           this.updateInsuranceFile(input.files[0]);
-      
-        }
+        };
 
         input.click();
       }
     });
   }
 
-  async updateInsuranceFile(file: File){
-
+  async updateInsuranceFile(file: File) {
     const formData = new FormData();
     const { id } = this.route.snapshot.params;
     formData.append('id_truck', id);
     formData.append('files', file);
 
     const requestOptions = {
-      reportProgress : true,
-      observe: 'events',
+      reportProgress: true,
+      observe: 'events'
     };
 
     const appBehaviourOptions = {
       loader: 'false'
     };
 
-    (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_files',requestOptions, appBehaviourOptions)).subscribe((resp)=>{
-      if(resp.status == 200)
-        this.getInsuranceFile({id});
-    })
+    (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_files', requestOptions, appBehaviourOptions)).subscribe((resp) => {
+      if (resp.status == 200) this.getInsuranceFile({ id });
+    });
   }
 
-  saveChanges(){
+  async saveChanges() {
+    const payload = {
+      id_truck: this.route.snapshot.params.id,
+      attributes: this.truckDetailsForm.value
+    };
+    (await this.webService.apiRest(JSON.stringify(payload), 'trucks/insert_attributes')).subscribe(() => {
+      this.router.navigateByUrl('fleet/trucks');
+    });
   }
 
-  onFormChanged = ()=>{
+  onFormChanged = () => {
     this.disableSaveBtn = !this.valuesFormChanged();
-  }
+  };
 
-  valuesFormChanged(): boolean{
+  valuesFormChanged(): boolean {
     const changes = this.truckDetailsForm.value;
-    for(let key of Object.keys(changes)){
-      if(this.originalInfo[key] != changes[key]){
+    for (let key of Object.keys(changes)) {
+      if (this.originalInfo[key] != changes[key]) {
         return true;
       }
-        
     }
     return false;
   }
 
-  searchFunction(options: any[], input: string){
-    return options.filter((e: any)=>{
+  searchFunction(options: any[], input: string) {
+    return options.filter((e: any) => {
       const currentValue = `${e.code} ${e.description}`.toLowerCase();
-      return currentValue.includes(input.toLowerCase())
+      return currentValue.includes(input.toLowerCase());
     });
   }
-
 }
