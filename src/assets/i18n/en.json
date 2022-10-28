@@ -475,6 +475,7 @@
       "cancel-deletion-btn": "Cancel",
       "txt-role": "Role",
       "txt-fleet": "Fleet",
+      "txt-driver": "Driver",
       "txt-manager": "Manager",
       "txt-driver-manager": "Driver Manager"
     },

@@ -145,12 +145,10 @@
   margin-bottom: 10px;
 
   .orders-list-type {
-    display: grid;
-    gap: 5px ;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    gap: 5px;
     max-width: 260px;
     width: 260px;
-    display: grid;
     align-items: center;
     justify-content: space-between;
     background: linear-gradient(180deg, #080F15 0%, #171D23 100%);
