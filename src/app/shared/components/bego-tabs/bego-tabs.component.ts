@@ -19,17 +19,11 @@ export class BegoTabComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('bego tabs was just initialized')
   }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('changes are: ', changes);
     if(changes.selectedTab){
       this.currentTabIndex = this.selectedTab;
-    }
-
-    if(changes.tabs){
-      console.log('Received tabs are: ', changes.tabs)
     }
   }
 

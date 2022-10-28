@@ -50,29 +50,20 @@
           <div class="embla__slide with-gap">
 
             <!-- permiso sct input-->
-            <mat-form-field appearance="outline" class="brand-field-1">
+            <mat-form-field>
               <mat-label>{{
                 "invoice.autotransporte.permiso-sct" | translate
               }}</mat-label>
-              <input
-                type="text"
-                formControlName="sct_permission"
-                aria-label="Number"
-                matInput
-                [matAutocomplete]="sctRef"
-              />
-        
-              <mat-autocomplete
-                #sctRef="matAutocomplete"
-                [displayWith]="setAutocompleteValue.bind(this, 'sat_cp_tipos_de_permiso')"
-                (optionSelected)="setOption($event,'sat_cp_tipos_de_permiso','sct_permission')">
-
-                <mat-option *ngFor="let option of filteredPermisosSCT"  [value]="option.code" class="brand-option-1"
-                >
-                  {{ option.code }} - {{ option.description }}
+              <mat-select formControlName="sct_permission">
+                 <input
+                    (keyup)="filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'),$event.target.value)"> 
+                <mat-option  
+                  *ngFor="let option of filteredPermisosSCT"  
+                  [value]="option.code" class="brand-option-1"
+                  (click)="setOption(option,'sct_permission')">
+                    {{ option.code }} - {{ option.description }}
                 </mat-option>
-
-              </mat-autocomplete>
+              </mat-select>
             </mat-form-field>
 
             <!--  sct number input-->
@@ -82,29 +73,21 @@
             </div>
 
             <!--truck settings autocomplete-->
-            <mat-form-field appearance="outline" class="brand-field-1">
+            <mat-form-field >
               <mat-label>{{
                 "fleet.trucks.truck_settings" | translate
               }}</mat-label>
-              <input
-                type="text"
-                formControlName="truck_settings"
-                aria-label="Number"
-                matInput
-                [matAutocomplete]="tsRef"
-              />
-        
-              <mat-autocomplete
-                #tsRef="matAutocomplete"
-                [displayWith]="setAutocompleteValue.bind(this, 'sat_cp_config_autotransporte')"
-                (optionSelected)="setOption($event,'sat_cp_config_autotransporte','truck_settings')">
+              <mat-select formControlName="truck_settings">
+                <input
+                   (keyup)="filteredTruckSettings = searchFunction(this.getCatalogue('sat_cp_config_autotransporte'),$event.target.value)"> 
+               <mat-option  
+                 *ngFor="let option of filteredTruckSettings"  
+                 [value]="option.code" class="brand-option-1"
+                 (click)="setOption(option,'truck_settings')">
+                   {{ option.code }} - {{ option.description }}
+               </mat-option>
+             </mat-select>
 
-                <mat-option *ngFor="let option of filteredTruckSettings"  [value]="option.code" class="brand-option-1"
-                >
-                  {{ option.code }} - {{ option.description }}
-                </mat-option>
-
-              </mat-autocomplete>
             </mat-form-field>
             
           </div>
@@ -162,10 +145,11 @@
       (click)="saveChanges()"
       mat-raised-button
       class="bego-btn yellow medium-size"
-      [disabled]="false"
+      [disabled]="disableSaveBtn"
     >
       {{'history.consignment_note.save_changes' | translate}}
-    </button>      </form>
+    </button>      
+  </form>
 
 
 

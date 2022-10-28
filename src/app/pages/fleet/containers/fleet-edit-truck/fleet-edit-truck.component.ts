@@ -37,6 +37,9 @@ export class FleetEditTruckComponent implements OnInit {
   public filteredPermisosSCT: any[];
   public filteredTruckSettings: any[];
   public catalogs: Record<string, any>;
+  public disableSaveBtn: boolean = true;
+
+  private originalInfo: any;
 
   async ngOnInit(): Promise<void> {
     this.truckDetailsForm = this.formBuilder.group({
@@ -67,6 +70,8 @@ export class FleetEditTruckComponent implements OnInit {
         return currentValue.includes(input.toLowerCase())
       });
     };
+
+    this.truckDetailsForm.valueChanges.subscribe(this.onFormChanged)
 
     //handling input search for sct permissions
     this.truckDetailsForm.get('sct_permission').valueChanges.subscribe((inputValue: string)=>{
@@ -147,6 +152,7 @@ export class FleetEditTruckComponent implements OnInit {
     this.pictures = result.pictures.map(url=>({url: `${url}?${new Date()}`}));
 
     this.truckDetailsForm.patchValue(result.attributes);
+    this.originalInfo = result.attributes;
     this.selectedColor = {color, colorName};
 
   }
@@ -171,8 +177,7 @@ export class FleetEditTruckComponent implements OnInit {
     return this.catalogs?.find(c=>c.name == catalogueName).documents;
   }
 
-  setOption({option}: MatAutocompleteSelectedEvent, catalogueName: string, formControlName: string){
-    const selectedValue = this.getCatalogue(catalogueName).find(e=>e.code == option.value);
+  setOption(selectedValue, formControlName: string){
 
     const values = {};
     values[formControlName] = selectedValue.code;
@@ -259,6 +264,28 @@ export class FleetEditTruckComponent implements OnInit {
   }
 
   saveChanges(){
+  }
+
+  onFormChanged = ()=>{
+    this.disableSaveBtn = !this.valuesFormChanged();
+  }
+
+  valuesFormChanged(): boolean{
+    const changes = this.truckDetailsForm.value;
+    for(let key of Object.keys(changes)){
+      if(this.originalInfo[key] != changes[key]){
+        return true;
+      }
+        
+    }
+    return false;
+  }
+
+  searchFunction(options: any[], input: string){
+    return options.filter((e: any)=>{
+      const currentValue = `${e.code} ${e.description}`.toLowerCase();
+      return currentValue.includes(input.toLowerCase())
+    });
   }
 
 }
