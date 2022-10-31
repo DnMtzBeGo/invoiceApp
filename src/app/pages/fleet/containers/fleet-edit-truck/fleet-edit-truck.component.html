@@ -9,10 +9,10 @@
           <!-- Truck details tab-->
           <div class="embla__slide">
             <div class="pictures-wrapper">
-              <div class="pic1"><img [src]="pictures?.[0].url" alt=""/></div>
-              <div class="pic2"><img [src]="pictures?.[1].url" alt=""/></div>
-              <div class="pic3"><img [src]="pictures?.[2].url" alt=""/></div>
-              <div class="more-btn" (click)="openFileEditor()">
+              <div class="pic pic1" (click)="openFileEditor(!pictures?.[0])" [class]="{'no-picture': !pictures?.[0]}"><img [src]="pictures?.[0]?.url" alt=""/></div>
+              <div class="pic pic2" (click)="openFileEditor(!pictures?.[0])"[class]="{'no-picture': !pictures?.[1]}"><img [ngClass]="{'no-picture':pictures?.[1]}" [src]="pictures?.[1]?.url" alt=""/></div>
+              <div class="pic pic3" (click)="openFileEditor(!pictures?.[0])"[class]="{'no-picture': !pictures?.[2]}"><img [ngClass]="{'no-picture':pictures?.[2]}" [src]="pictures?.[2]?.url" alt=""/></div>
+              <div class="more-btn" (click)="openFileEditor(true)">
                 <div>
                   <i class="icon icon-plus" style="color: white;"></i>
                 </div>
@@ -24,17 +24,17 @@
       
               <div class="truck-input">
                 <label for="Model">{{'fleet.trucks.model' | translate}}</label>
-                <input type="text" name="Model" formControlName="brand">
+                <input [placeholder]="'fleet.trucks.type-model' | translate" type="text" name="Model" formControlName="brand">
               </div>
               
               <div class="truck-input">
-                <label for="Model">{{'fleet.trucks.year' | translate}}</label>
-                <input type="text" name="Model" formControlName="year">
+                <label for="year">{{'fleet.trucks.year' | translate}}</label>
+                <input [placeholder]="'fleet.trucks.type-year' | translate" type="text" name="year" formControlName="year">
               </div>
       
               <div class="truck-input">
-                <label for="Model">{{'fleet.trucks.plates' | translate}}</label>
-                <input type="text" name="Model" formControlName="plates">
+                <label for="plates">{{'fleet.trucks.plates' | translate}}</label>
+                <input  [placeholder]="'fleet.trucks.type-plates' | translate"type="text" name="plates" formControlName="plates">
               </div>
       
               <app-color-picker
@@ -97,12 +97,12 @@
 
             <div class="truck-input wide-label">
               <label for="insurer">{{'fleet.trucks.insurer-name' | translate}}</label>
-              <input type="text" name="insurer" formControlName="insurer">
+              <input [placeholder]="'fleet.trucks.type-insurer' | translate" type="text" name="insurer" formControlName="insurer">
             </div>
             
             <div class="truck-input wide-label">
               <label for="policy_number">{{'fleet.trucks.policy-number' | translate}}</label>
-              <input type="text" name="policy_number" formControlName="policy_number">
+              <input [placeholder]="'fleet.trucks.type-policy-number' | translate"type="text" name="policy_number" formControlName="policy_number">
             </div>
 
             <div class="truck-input wide-label">
@@ -110,7 +110,7 @@
                 <div>{{'fiscal-documents.upload-files.txt_insurance' | translate}}</div>
                 <div>(PDF, JPG, PNG)</div>
               </label>
-              <bego-drag-file-bar *ngIf="!insuranceFile">
+              <bego-drag-file-bar *ngIf="!insuranceFile" (fileOutput)="updateInsuranceFile($event)">
                 <div class="insurance-file-input" template>
                   <i class="icon icon-plus"></i>
                 </div>
@@ -142,10 +142,10 @@
       </div>
 
       <button
-      (click)="saveChanges()"
-      mat-raised-button
-      class="bego-btn yellow medium-size"
-      [disabled]="disableSaveBtn"
+        (click)="saveChanges()"
+        mat-raised-button
+        class="bego-btn yellow medium-size"
+        [disabled]="disableSaveBtn"
     >
       {{'history.consignment_note.save_changes' | translate}}
     </button>      

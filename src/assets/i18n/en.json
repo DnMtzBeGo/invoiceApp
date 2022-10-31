@@ -1332,7 +1332,13 @@
       "uploading":"Uploading",
       "insurer-name":"Name of insurer",
       "policy-number":"Policy number",
-      "delete-insurance-warning":"Are you sure you want to delete the insurance policy for this truck?"
+      "delete-insurance-warning":"Are you sure you want to delete the insurance policy for this truck?",
+      "type-model":"Type model",
+      "type-year":"Select year",
+      "type-plates":"Type plates",
+      "type-sct-number":"Type SCT number",
+      "type-insurer":"Type insurer",
+      "type-policy-number":"Type policy number"
     },
     "trailers": {
       "txt_header": "My Trailers",

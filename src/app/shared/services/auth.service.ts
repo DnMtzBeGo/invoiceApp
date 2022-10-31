@@ -43,11 +43,20 @@ export class AuthService {
     const params = await this.getOptions(appBehaviourOptions);
     // return this.http.post<any>(environment.URL_BASE + method, formData, { headers, params: params });
 
-    const result = this.http.post<any>(URL_BASE + method, formData, {
+    let splitUrl, url;
+    if(requestOptions && requestOptions["apiVersion"]) {
+      splitUrl = environment.URL_BASE.split("/");
+      splitUrl[splitUrl.length - 2] = requestOptions["apiVersion"];
+      url = splitUrl.join("/");
+    } else {
+      url = environment.URL_BASE;
+    }
+    const result = this.http.post<any>(url + method, formData, {
       headers,
       params,
       ...requestOptions
     });
+
 
     console.log('uploadFilesSerivce', formData, result);
     return result;

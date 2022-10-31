@@ -1336,7 +1336,13 @@
       "uploading":"Subiendo",
       "insurer-name":"Aseguradora",
       "policy-number":"Número de póliza",
-      "delete-insurance-warning":"¿Estás seguro que quieres eliminar la póliza de seguro para este camión?"
+      "delete-insurance-warning":"¿Estás seguro que quieres eliminar la póliza de seguro para este camión?",
+      "type-model":"Escribe modelo",
+      "type-year":"Selecciona año",
+      "type-plates":"Escribe placas",
+      "type-sct-number":"Escribe número de permiso SCT",
+      "type-insurer":"Escribe aseguradora",
+      "type-policy-number":"Escribe número de póliza"
     },
     "trailers": {
       "txt_header": "Cajas",

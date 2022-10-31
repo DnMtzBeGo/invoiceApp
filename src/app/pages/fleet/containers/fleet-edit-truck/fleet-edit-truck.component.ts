@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import EmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
+import { Observable } from 'rxjs';
 import { ActionConfirmationComponent } from 'src/app/pages/invoice/modals';
 import { PickerSelectedColor } from 'src/app/shared/components/color-picker/color-picker.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -37,7 +38,7 @@ export class FleetEditTruckComponent implements OnInit {
   ];
 
   public truckDetailsForm: FormGroup;
-  public pictures: UploadFileInfo[];
+  public pictures: UploadFileInfo[] = [];
   public selectedColor: PickerSelectedColor;
   //the url to the insurance file
   public insuranceFile: any;
@@ -47,6 +48,8 @@ export class FleetEditTruckComponent implements OnInit {
   public disableSaveBtn: boolean = true;
 
   private originalInfo: any;
+  private fleetId: string;
+  private newTruckPictures: File[] = [];
 
   async ngOnInit(): Promise<void> {
     this.truckDetailsForm = this.formBuilder.group({
@@ -65,11 +68,18 @@ export class FleetEditTruckComponent implements OnInit {
     });
 
     await this.fillCataloguesFromDb();
+    let changesAction = this.onTruckInfoUpdated;
+    if(this.router.url !== '/fleet/trucks/new'){
+      const { id } = this.route.snapshot.params;
+      await this.getTruckInfo({ id });
+  
+      await this.getInsuranceFile({ id });
+    }else{
+      changesAction = this.onTruckInfoChanged;
+      this.fleetId =( await this.getFleetOverview())._id;
+    }
 
-    const { id } = this.route.snapshot.params;
-    await this.getTruckInfo({ id });
-
-    await this.getInsuranceFile({ id });
+    this.truckDetailsForm.valueChanges.subscribe(changesAction);
 
     const searchFunction = (options: any[], input: string) => {
       return options.filter((e: any) => {
@@ -77,8 +87,6 @@ export class FleetEditTruckComponent implements OnInit {
         return currentValue.includes(input.toLowerCase());
       });
     };
-
-    this.truckDetailsForm.valueChanges.subscribe(this.onFormChanged);
 
     //handling input search for sct permissions
     this.truckDetailsForm.get('sct_permission').valueChanges.subscribe((inputValue: string) => {
@@ -110,7 +118,8 @@ export class FleetEditTruckComponent implements OnInit {
     this.truckDetailsForm.patchValue(color);
   }
 
-  openFileEditor() {
+  openFileEditor(flag: boolean) {
+    if(!flag) return;
     const dialog = this.matDialog.open(UploadFilesComponent, {
       data: {
         places: 5,
@@ -118,31 +127,24 @@ export class FleetEditTruckComponent implements OnInit {
         files: this.pictures,
         handleFileInput: async ({ file, i }: { file: File; i: number }) => {
           const fileInfo = dialog.componentInstance.info.files[i];
+          const newTruck = this.router.url == '/fleet/trucks/new';
 
           const reader = new FileReader();
           reader.readAsDataURL(file);
           reader.onload = () => {
             fileInfo.url = reader.result as string;
+            if(newTruck)this.pictures[i] = {url: fileInfo.url};
           };
 
-          const formData = new FormData();
-          formData.append('id_truck', this.route.snapshot.params.id);
-          formData.append('pictures', file, i.toString());
-
-          const requestOptions = {
-            reportProgress: true,
-            observe: 'events'
-          };
-
-          const appBehaviourOptions = {
-            loader: 'false'
-          };
-
-          (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_pictures', requestOptions, appBehaviourOptions)).subscribe(
-            (resp) => {
-              fileInfo.uploadPercentage = (resp.loaded / resp.total) * 100;
-            }
-          );
+          if(newTruck){
+            this.newTruckPictures[i] = file;
+          }else{
+            (await this.updatePicture(file,i)).subscribe(
+              (resp) => {
+                fileInfo.uploadPercentage = (resp.loaded / resp.total) * 100;
+              }
+            );
+          }
         }
       },
       backdropClass: ['brand-dialog-1', 'no-padding']
@@ -240,6 +242,12 @@ export class FleetEditTruckComponent implements OnInit {
   }
 
   async updateInsuranceFile(file: File) {
+
+    if(this.router.url == '/fleet/trucks/new'){
+      this.insuranceFile = file;
+      return;
+    }
+
     const formData = new FormData();
     const { id } = this.route.snapshot.params;
     formData.append('id_truck', id);
@@ -259,7 +267,15 @@ export class FleetEditTruckComponent implements OnInit {
     });
   }
 
-  async saveChanges() {
+  async saveChanges(){
+    if(this.router.url == '/fleet/trucks/new'){
+      this.createTruck();
+    }else{
+      this.updateChanges();
+    }
+  }
+
+  async updateChanges() {
     const payload = {
       id_truck: this.route.snapshot.params.id,
       attributes: this.truckDetailsForm.value
@@ -269,9 +285,40 @@ export class FleetEditTruckComponent implements OnInit {
     });
   }
 
-  onFormChanged = () => {
+  async createTruck(){
+    const formData = new FormData();
+    formData.append('id_fleet', this.fleetId);
+
+    const newTruckInfo = this.truckDetailsForm.value;
+    newTruckInfo.year = parseInt(newTruckInfo.year);
+
+    //add properties received props to formdata
+    Object.keys(newTruckInfo).forEach(key=>{
+      formData.append(key, newTruckInfo[key])
+    });
+
+    this.newTruckPictures.forEach((file: File,i: number) => {
+      formData.append('pictures', file, i.toString());
+    });
+
+    formData.append('files', this.insuranceFile);
+    // , {apiVersion: 'v1.1'}
+    (await this.webService.uploadFilesSerivce(formData, 'trucks/create', {apiVersion: 'v1.1'})).subscribe(() => {
+      // this.router.navigateByUrl('fleet/trucks');
+    });
+  }
+
+  async getFleetOverview(){
+    return (await (await this.webService.apiRest('','fleet/overview')).toPromise()).result;
+  }
+
+  onTruckInfoUpdated = () => {
     this.disableSaveBtn = !this.valuesFormChanged();
   };
+
+  onTruckInfoChanged = () => {
+    this.disableSaveBtn = !this.truckDetailsForm.valid;
+  }
 
   valuesFormChanged(): boolean {
     const changes = this.truckDetailsForm.value;
@@ -288,5 +335,29 @@ export class FleetEditTruckComponent implements OnInit {
       const currentValue = `${e.code} ${e.description}`.toLowerCase();
       return currentValue.includes(input.toLowerCase());
     });
+  }
+
+  /**
+   * Uploads a truck picture
+   * @param file the picture to be changed
+   * @param i The index of the picture that will be changed
+   * @returns the observable with the values of the progress of the uplaod
+   */
+  private async updatePicture(file: File, i: number): Promise<Observable<any>>{
+    const formData = new FormData();
+    formData.append('id_truck', this.route.snapshot.params.id);
+    formData.append('pictures', file, i.toString());
+
+    const requestOptions = {
+      reportProgress: true,
+      observe: 'events'
+    };
+
+    const appBehaviourOptions = {
+      loader: 'false'
+    };
+
+    return (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_pictures', requestOptions, appBehaviourOptions));
+
   }
 }
