@@ -30,17 +30,20 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
     members: {
       avatarRounded: '50%',
       avatarFallback: '../../../../assets/images/avatar-outline.svg',
-      displayedColumns: ['avatar', 'nickname', 'status', 'operations']
+      displayedColumns: ['avatar', 'nickname', 'status', 'operations'],
+      editUrl: routes.EDIT_MEMBER,
     },
     trucks: {
       avatarRounded: '24px',
       avatarFallback: '../../../../assets/images/truck.svg',
-      displayedColumns: ['avatar', 'brand', 'year', 'plates', 'color', 'operations']
+      displayedColumns: ['avatar', 'brand', 'year', 'plates', 'color', 'operations'],
+      editUrl: routes.EDIT_TRUCK,
     },
     trailers: {
       avatarRounded: '24px',
       avatarFallback: '../../../../assets/images/trailer.svg',
-      displayedColumns: ['avatar', 'plates', 'type', 'trailer_number', 'operations']
+      displayedColumns: ['avatar', 'plates', 'type', 'trailer_number', 'operations'],
+      editUrl: routes.EDIT_TRAILER,
     }
   };
 

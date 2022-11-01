@@ -42,10 +42,10 @@
 
         <div class="general-info">
           <div class="name">
-            {{ profileInfo?.nickname }}
+            {{ profileInfo?.nickname || '-' }}
           </div>
           <div class="number-orders">
-            {{ ordersCount }}
+            {{ ordersCount ?? '-' }}
           </div>
           <div class="order-label">
             {{ 'profile.account.txt_orders' | translate }}
@@ -58,10 +58,11 @@
             <p *ngIf="profileInfo.role == 1">{{ 'profile.account.txt-driver' | translate }}</p>
             <p *ngIf="profileInfo.role == 2">{{ 'profile.account.txt-driver-manager' | translate }}</p>
             <p *ngIf="profileInfo.role == 3">{{ 'profile.account.txt-manager' | translate }}</p>
+            <p *ngIf="!profileInfo.role">-</p>
           </div>
           <div class="name">
             <h3>{{ 'profile.account.txt-fleet' | translate }}</h3>
-            <p>{{ profileInfo?.fleet_name }}</p>
+            <p>{{ profileInfo?.fleet_name || '-' }}</p>
           </div>
         </div>
 

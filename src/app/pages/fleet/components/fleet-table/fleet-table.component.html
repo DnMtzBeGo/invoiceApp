@@ -39,7 +39,7 @@
           {{ 'fleet.trucks.table.operations' | translate }}
         </th>
         <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
-          <button mat-icon-button [routerLink]="['/fleet/' + model + '/view', { id: element._id }]">
+          <button mat-icon-button [routerLink]="[resolvers[model].editUrl]" [queryParams]="{ id: element.member_meta.id_member }">
             <mat-icon class="icon icon-eye-open icon-only" style="font-size: 18px"></mat-icon>
           </button>
           <!-- <mat-menu #menu="matMenu" class="brand-menu-1">
