@@ -1,11 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import EmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
-import { Observable } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { ActionConfirmationComponent } from 'src/app/pages/invoice/modals';
 import { PickerSelectedColor } from 'src/app/shared/components/color-picker/color-picker.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -42,10 +42,14 @@ export class FleetEditTruckComponent implements OnInit {
   public selectedColor: PickerSelectedColor;
   //the url to the insurance file
   public insuranceFile: any;
-  public filteredPermisosSCT: any[];
-  public filteredTruckSettings: any[];
+  public filteredPermisosSCT: any[] = [];
+  public filteredTruckSettings: any[] = [];
   public catalogs: Record<string, any>;
   public disableSaveBtn: boolean = true;
+  public years: number[] = [2020, 2021];
+
+  public selectedTruckSettings = this.selectedValueAutoComplete('truck_settings', 'sat_cp_config_autotransporte');
+  public selectedPermisoSCT = this.selectedValueAutoComplete('sct_permission', 'sat_cp_tipos_de_permiso');
 
   private originalInfo: any;
   private fleetId: string;
@@ -55,7 +59,7 @@ export class FleetEditTruckComponent implements OnInit {
     this.truckDetailsForm = this.formBuilder.group({
       brand: ['', Validators.required],
       year: ['', Validators.required],
-      plates: ['', Validators.required],
+      plates: ['', [Validators.required, this.arePlatesValid]],
       colorName: ['', Validators.required],
       color: ['', Validators.required],
       sct_permission: ['', Validators.required],
@@ -88,15 +92,6 @@ export class FleetEditTruckComponent implements OnInit {
       });
     };
 
-    //handling input search for sct permissions
-    this.truckDetailsForm.get('sct_permission').valueChanges.subscribe((inputValue: string) => {
-      this.filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'), inputValue);
-    });
-
-    //handling input search for truck settings
-    this.truckDetailsForm.get('truck_settings').valueChanges.subscribe((inputValue: string) => {
-      this.filteredTruckSettings = searchFunction(this.getCatalogue('sat_cp_config_autotransporte'), inputValue);
-    });
   }
 
   setAutocompleteValue = (catalogueName: string, selectedCode: string): string => {
@@ -159,6 +154,7 @@ export class FleetEditTruckComponent implements OnInit {
     const { color, colorName } = result.attributes;
     this.pictures = result.pictures.map((url) => ({ url: `${url}?${new Date()}` }));
 
+    result.attributes.year = parseInt(result.attributes.year);
     this.truckDetailsForm.patchValue(result.attributes);
     this.originalInfo = result.attributes;
     this.selectedColor = { color, colorName };
@@ -360,4 +356,25 @@ export class FleetEditTruckComponent implements OnInit {
     return (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_pictures', requestOptions, appBehaviourOptions));
 
   }
+
+  arePlatesValid = ({value}: FormControl): ValidationErrors | null=>{
+    let platesRegex = /^[^(?!.*\s)-]{5,7}$/;
+    return platesRegex.test(value) ?  null: { errors: true};
+  }
+
+  displayFn(element: any): string{
+    return `${element.code} - ${element.description}`;
+  }
+
+  selectedValueAutoComplete(input: string, catalogName: string): Observable<string>{
+    return new Observable<string>((observer: Observer<string>)=>{
+      this.truckDetailsForm.get(input)?.valueChanges.subscribe((value)=>{
+        const catalog = this.catalogs.find(e=>e.name == catalogName);
+        const selectedElement = catalog.documents.find(e=>e.code == value);
+        if(selectedElement)
+          observer.next(this.displayFn(selectedElement));
+      });
+  
+    });
+  } 
 }

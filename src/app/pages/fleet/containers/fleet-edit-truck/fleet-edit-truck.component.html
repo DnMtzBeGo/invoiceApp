@@ -22,19 +22,28 @@
       
             <form  class="inputs" [formGroup]="truckDetailsForm">
       
+              <div class="truck-input"
+                [class]="truckDetailsForm.controls.brand.status" 
+                [ngClass]="{touched: truckDetailsForm.controls.brand.touched}">
+                  <label for="Model">{{'fleet.trucks.model' | translate}}</label>
+                  <input [placeholder]="'fleet.trucks.type-model' | translate" type="text" name="Model" formControlName="brand">
+                  <mat-error>{{'fleet.trucks.invalid-model' | translate}}</mat-error>
+              </div>
+
               <div class="truck-input">
-                <label for="Model">{{'fleet.trucks.model' | translate}}</label>
-                <input [placeholder]="'fleet.trucks.type-model' | translate" type="text" name="Model" formControlName="brand">
+                <label>{{'fleet.trucks.year' | translate}}</label>
+                <select  formControlName="year" >
+                  <option *ngFor="let year of years" [value]="year" class="brand-option-1">{{ year }}</option>
+                </select>
               </div>
               
-              <div class="truck-input">
-                <label for="year">{{'fleet.trucks.year' | translate}}</label>
-                <input [placeholder]="'fleet.trucks.type-year' | translate" type="text" name="year" formControlName="year">
-              </div>
       
-              <div class="truck-input">
-                <label for="plates">{{'fleet.trucks.plates' | translate}}</label>
-                <input  [placeholder]="'fleet.trucks.type-plates' | translate"type="text" name="plates" formControlName="plates">
+              <div class="truck-input"
+                [class]="truckDetailsForm.controls.plates.status" 
+                [ngClass]="{touched: truckDetailsForm.controls.plates.touched}">
+                  <label for="plates">{{'fleet.trucks.plates' | translate}}</label>
+                  <input  [placeholder]="'fleet.trucks.type-plates' | translate"type="text" name="plates" formControlName="plates">
+                  <mat-error>{{'fleet.trucks.invalid-plates' | translate}}</mat-error>
               </div>
       
               <app-color-picker
@@ -50,45 +59,50 @@
           <div class="embla__slide with-gap">
 
             <!-- permiso sct input-->
-            <mat-form-field>
-              <mat-label>{{
+            <div class="truck-input wide-label">
+              <label>{{
                 "invoice.autotransporte.permiso-sct" | translate
-              }}</mat-label>
-              <mat-select formControlName="sct_permission">
-                 <input
-                    (keyup)="filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'),$event.target.value)"> 
-                <mat-option  
-                  *ngFor="let option of filteredPermisosSCT"  
-                  [value]="option.code" class="brand-option-1"
+              }}</label>
+
+              <input type="text"
+                      [value]="selectedPermisoSCT | async"
+                      (keyup)="filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'),$event.target.value)"
+                      [matAutocomplete]="sctAutocomplete">
+              <mat-autocomplete #sctAutocomplete="matAutocomplete" [displayWith]="displayFn">
+                <mat-option 
+                  *ngFor="let option of filteredPermisosSCT" 
+                  [value]="option"                   
                   (click)="setOption(option,'sct_permission')">
-                    {{ option.code }} - {{ option.description }}
+                    {{option.code}} - {{option.description}}
                 </mat-option>
-              </mat-select>
-            </mat-form-field>
+              </mat-autocomplete>
+            </div>
 
             <!--  sct number input-->
             <div class="truck-input wide-label">
-              <label for="sct_number">{{'invoice.autotransporte.num-permiso-sct' | translate}}</label>
+              <label for="sct_number">{{'fleet.trucks.sct-number' | translate}}</label>
               <input type="text" name="sct_number" formControlName="sct_number">
             </div>
 
             <!--truck settings autocomplete-->
-            <mat-form-field >
-              <mat-label>{{
+            <div class="truck-input wide-label">
+              <label>{{
                 "fleet.trucks.truck_settings" | translate
-              }}</mat-label>
-              <mat-select formControlName="truck_settings">
-                <input
-                   (keyup)="filteredTruckSettings = searchFunction(this.getCatalogue('sat_cp_config_autotransporte'),$event.target.value)"> 
-               <mat-option  
-                 *ngFor="let option of filteredTruckSettings"  
-                 [value]="option.code" class="brand-option-1"
-                 (click)="setOption(option,'truck_settings')">
-                   {{ option.code }} - {{ option.description }}
-               </mat-option>
-             </mat-select>
+              }}</label>
 
-            </mat-form-field>
+              <input type="text"
+                      [value]="selectedTruckSettings | async"
+                      (keyup)="filteredTruckSettings = searchFunction(this.getCatalogue('sat_cp_config_autotransporte'),$event.target.value)"
+                      [matAutocomplete]="truckSettingsAutocomplete">
+              <mat-autocomplete #truckSettingsAutocomplete="matAutocomplete" [displayWith]="displayFn">
+                <mat-option 
+                  *ngFor="let option of filteredTruckSettings" 
+                  [value]="option"                   
+                  (click)="setOption(option,'truck_settings')">
+                    {{option.code}} - {{option.description}}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
             
           </div>
 

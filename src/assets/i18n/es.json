@@ -1342,7 +1342,10 @@
       "type-plates":"Escribe placas",
       "type-sct-number":"Escribe número de permiso SCT",
       "type-insurer":"Escribe aseguradora",
-      "type-policy-number":"Escribe número de póliza"
+      "type-policy-number":"Escribe número de póliza",
+      "invalid-plates":"Placas invalidas",
+      "invalid-model":"Modelo inválido",
+      "sct-number": "Num. Permiso sct"
     },
     "trailers": {
       "txt_header": "Cajas",

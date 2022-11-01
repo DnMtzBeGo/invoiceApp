@@ -24,7 +24,16 @@
         .truck-input{
           display: grid;
           grid-template-columns: 1fr 5fr;
-          input{
+          gap: 5px;
+
+          &.touched.INVALID{
+            mat-error{
+              opacity: 1;
+            }
+          }
+
+
+          input, select, mat-select{
             color: white;
             font-family: 'Avenir';
             font-weight: 500;
@@ -46,10 +55,28 @@
             background-size:100% 1px ;
           }
 
+          select{
+            border: none;
+            outline: none;
+          }
+
+          mat-select{
+            ::ng-deep{
+              .mat-select-value{
+                color: white;
+
+                input{
+                  background-color: red;
+                }
+              }
+            }
+          }
+
           label{
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             font-family: 'Avenir Next';
             font-style: normal;
             font-weight: 100;
@@ -58,6 +85,15 @@
 
           &.wide-label{
             grid-template-columns: 2fr 5fr;
+          }
+
+          mat-error{
+            opacity: 0;
+            align-self: flex-end;
+            grid-column: span 2;
+            text-align: right;
+            transition: opacity 0.3s;
+            
           }
         }
 
@@ -151,7 +187,6 @@
           }
 
           .edit-insurance{
-            border: 1px solid red;
             display: inline-flex;
           }
         
@@ -271,7 +306,7 @@ mat-form-field{
   display: block;
 }
 
-input{
+input, select{
   color: white;
 }
 

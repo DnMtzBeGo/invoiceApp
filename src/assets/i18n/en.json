@@ -1338,7 +1338,10 @@
       "type-plates":"Type plates",
       "type-sct-number":"Type SCT number",
       "type-insurer":"Type insurer",
-      "type-policy-number":"Type policy number"
+      "type-policy-number":"Type policy number",
+      "invalid-plates":"Invalid plates",
+      "invalid-model":"Invalid",
+      "sct-number": "Num. Permiso sct"
     },
     "trailers": {
       "txt_header": "My Trailers",
