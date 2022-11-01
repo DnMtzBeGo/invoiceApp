@@ -55,6 +55,7 @@ import { BegoBodyModule } from 'src/app/shared/components/bego-body/bego-body.mo
     SimpleAvatarModule,
     ButtonModule,
     BegoBodyModule
-  ]
+  ],
+  exports: [OrderCardComponent, OrderInfoComponent, EditCnBtnComponent, DriverStatusCardComponent, EditOrderFleetComponent, ChooseFleetElementComponent, DownloadInvoicesComponent, DropDownModule, PickupDropoffInfoComponent, OrderEvidenceComponent]
 })
 export class HistoryModule { }

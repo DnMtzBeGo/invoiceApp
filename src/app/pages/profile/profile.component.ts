@@ -65,6 +65,12 @@ export class ProfileComponent implements OnInit {
         url: '/profile/fiscal-documents',
         key: 'documentation',
         enabled: true,
+      },
+      history: {
+        text: 'profile.history.txt_history',
+        url: '/profile/history',
+        key: 'history',
+        enabled: this.id != void 0,
       }
     };
 

@@ -525,6 +525,9 @@
       "btn_resend": "Resend security code",
       "txt_verify": "Verify Now",
       "txt_cancel": "Cancel"
+    },
+    "history": {
+      "txt_history": "History"
     }
   },
   "header": {
