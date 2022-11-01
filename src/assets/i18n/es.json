@@ -475,6 +475,7 @@
       "cancel-deletion-btn": "Cancelar",
       "txt-role": "Rol",
       "txt-fleet": "Flota",
+      "txt-driver": "Conductor",
       "txt-manager": "Manager",
       "txt-driver-manager": "Driver Manager"
     },
@@ -524,6 +525,9 @@
       "btn_resend": "Enviar código nuevo",
       "txt_verify": "Verificar",
       "txt_cancel": "Cancelar"
+    },
+    "history": {
+      "txt_history": "Historial"
     }
   },
   "header": {

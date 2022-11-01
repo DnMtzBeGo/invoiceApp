@@ -103,7 +103,8 @@
             <app-choose-fleet-element 
               #chooseFleetElementRef
               [orderInfo]="orderInfo"
-              (goBack)="slider.scrollPrev()">
+              (goBack)="slider.scrollPrev()"
+              (infoUpdated)="infoUpdated.emit($event); slider.scrollPrev()">
             </app-choose-fleet-element>
           </div>
         </div>
