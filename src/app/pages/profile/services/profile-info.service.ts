@@ -20,8 +20,8 @@ export class ProfileInfoService {
     this.profileInfoSubject.next(data);
   }
 
-  async getProfileInfo() {
-    (await this.webService.apiRest("", "carriers/select_attributes")).subscribe(
+  async getProfileInfo(carrier_id?: string) {
+    (await this.webService.apiRest(carrier_id ? JSON.stringify({ carrier_id }) :  "", "carriers/select_attributes")).subscribe(
       (res) => {
         console.log("select attributes : ", res.result);
         this.profileInfo = res.result;

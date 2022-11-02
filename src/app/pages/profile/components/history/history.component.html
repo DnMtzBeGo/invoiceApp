@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="orders-list">
+    <app-order-card
+      *ngFor="let order of upcomingData; index as j"
+      [order]="order"
+      [active]="selectedOrderId == order._id"
+      (click)="openDetails(order._id)"
+      [language]="translateService.currentLang">
+    </app-order-card>
+  </div>
+  <div class="order-detail">
+    <app-order-info [orderInfo]="orderInfo" [statusListData]="statusList" (infoUpdated)="openDetails($event)">
+    </app-order-info>
+  </div>
+</div>

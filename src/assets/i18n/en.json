@@ -475,6 +475,7 @@
       "cancel-deletion-btn": "Cancel",
       "txt-role": "Role",
       "txt-fleet": "Fleet",
+      "txt-driver": "Driver",
       "txt-manager": "Manager",
       "txt-driver-manager": "Driver Manager"
     },
@@ -524,6 +525,9 @@
       "btn_resend": "Resend security code",
       "txt_verify": "Verify Now",
       "txt_cancel": "Cancel"
+    },
+    "history": {
+      "txt_history": "History"
     }
   },
   "header": {
@@ -1302,19 +1306,23 @@
       "btn_add": "Add new",
       "sort_by": {
         "member_meta.date_created": "Creation date",
-        "nickname": "Name"
+        "member.nickname": "Name"
       },
       "incoming": "incoming",
       "done": "done",
-      "see_details": "See profile"
+      "see_details": "See profile",
+      "table": {
+        "nickname": "Name",
+        "status": "Status"
+      }
     },
     "trucks": {
       "txt_header": "My Trucks",
       "txt_search": "Search truck...",
       "btn_add": "Add new",
       "sort_by": {
-        "natural": "Creation date",
-        "brand": "Brand"
+        "date_created": "Creation date",
+        "attributes.brand": "Brand"
       },
       "see_details": "See truck",
       "btn_view": "View truck",
@@ -1341,18 +1349,29 @@
       "type-policy-number":"Type policy number",
       "invalid-plates":"Invalid plates",
       "invalid-model":"Invalid",
-      "sct-number": "Num. Permiso sct"
+      "sct-number": "Num. Permiso sct",
+      "table": {
+        "brand": "Brand",
+        "year": "Year",
+        "plates": "Plates",
+        "color": "Color",
+        "operations": "Operations"
+      }
     },
     "trailers": {
       "txt_header": "My Trailers",
       "txt_search": "Search trailer...",
       "btn_add": "Add new",
       "sort_by": {
-        "natural": "Creation date",
+        "date_created": "Creation date",
         "trailer_number": "Trailer"
       },
       "see_details": "See trailer",
-      "btn_view": "View trailer"
+      "btn_view": "View trailer",
+      "table": {
+        "type": "Type",
+        "trailer_number": "Trailer number"
+      }
     }
   },
   "home": {

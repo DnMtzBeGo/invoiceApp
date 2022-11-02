@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root'
 })
 export class FiscalDocumentsService {
+  public id?: string;
 
 
   filesToUploadCarriersAndShippers: FileInfo[]  = [
@@ -63,7 +64,10 @@ export class FiscalDocumentsService {
     ...this.filesToUploadCarriersAndShippers.map( e => ({ ...e })), 
     ...this.filesToUploadCarriersOnly.map( e => ({ ...e })),
   ];
-  const bodyJson = JSON.stringify({ type: userType });
+  const bodyJson = JSON.stringify({
+    type: userType,
+    ...(this.id ? { carrier_id: this.id } : {})
+  });
 
 
   return new Promise ( async ( resolve, reject ) => {
@@ -127,7 +131,10 @@ export class FiscalDocumentsService {
 
   async deleteFile(file_name: string): Promise<void>{
     return new Promise( async  ( resolve, reject ) => {
-      const requestJson = JSON.stringify( { file_name });
+      const requestJson = JSON.stringify({
+        file_name,
+        ...(this.id ? { carrier_id: this.id } : {})
+      });
       (await this.webService.apiRest( requestJson ,"profile/remove_file")).subscribe(
         (result)=>{
           resolve(result);
@@ -145,8 +152,10 @@ export class FiscalDocumentsService {
 
     const formData = new FormData();
     if(fileInfo.file){
-      formData.append('uploads', fileInfo.file , fileInfo.fileName );
+      formData.set('uploads', fileInfo.file , fileInfo.fileName );
     }
+
+    if (this.id) formData.set('carrier_id', this.id);
 
     const requestOptions = {
       reportProgress : true,

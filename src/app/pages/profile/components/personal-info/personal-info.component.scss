@@ -4,7 +4,7 @@
 
   .form-container{
     max-width: 700px;
-    margin: 0px auto;
+    // margin: 0px auto;
     padding: 15px;
 
     .row{
@@ -18,6 +18,9 @@
   mat-form-field, bego-phone-input{
     width: 100%;
 
+    ::ng-deep .mat-select.disable-custom-format .mat-select-value {
+      color: #ededed;
+    }
   }
 
   ::ng-deep .mat-form-field-appearance-legacy{

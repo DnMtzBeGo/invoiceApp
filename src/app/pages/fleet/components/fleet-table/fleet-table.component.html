@@ -1,0 +1,178 @@
+<mat-card class="fleet-table-wrapper">
+  <mat-card-content class="fleet-table__content">
+    <table mat-table matSort class="brand-table-1" matSortStart="desc" [dataSource]="dataSource">
+      <!-- Avatar column -->
+      <ng-container matColumnDef="avatar">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px"></th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          <div class="avatar" [style]="'--avatar-rounded: ' + resolvers[model].avatarRounded + ';'">
+            <div class="avatar-1">
+              <img [src]="element.thumbnail && !element.thumbnail.endsWith('/') ? element.thumbnail : resolvers[model].avatarFallback" />
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Nickname Column -->
+      <ng-container matColumnDef="nickname">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 80px">
+          {{ 'fleet.members.table.nickname' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.member.nickname }}
+        </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 90px">
+          {{ 'fleet.members.table.status' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          <span class="member-status" [class]="element.status">{{ element.status }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Operations Column -->
+      <ng-container matColumnDef="operations">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 50px">
+          {{ 'fleet.trucks.table.operations' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          <button mat-icon-button [routerLink]="[resolvers[model].editUrl]" [queryParams]="{ id: element.member_meta.id_member }">
+            <mat-icon class="icon icon-eye-open icon-only" style="font-size: 18px"></mat-icon>
+          </button>
+          <!-- <mat-menu #menu="matMenu" class="brand-menu-1">
+            <button
+              *ngIf="p(element).edit"
+              mat-menu-item
+              [routerLink]="
+                !!element.order
+                  ? [routes.EDIT_ORDER_FACTURA, { id: element.order }]
+                  : [routes.EDIT_FACTURA, p(element).edit ? { id: element._id } : { id: element._id, status: element.status }]
+              ">
+              <mat-icon>find_in_page</mat-icon>
+              <span>{{
+                p(element).edit ? ('invoice.invoice-table.edit-invoice' | translate) : ('invoice.invoice-table.view-details' | translate)
+              }}</span>
+            </button>
+            <button
+              *ngIf="
+                p(element).edit &&
+                p(element).cartaporte &&
+                !!element.carta_porte
+              "
+              mat-menu-item
+              [routerLink]="[routes.CARTA_PORTE, { id: element._id }]"
+            >
+              <mat-icon>ballot</mat-icon>
+              <span>{{ "invoice.invoice-table.carta-porte" | translate }}</span>
+            </button>
+            <button *ngIf="p(element).vistaprevia" mat-menu-item (click)="downloadPreview(element)">
+              <mat-icon>download</mat-icon>
+              <span>{{ 'invoice.invoice-table.preview' | translate }}</span>
+            </button>
+            <a *ngIf="p(element).pdf" mat-menu-item [href]="element.files?.pdf" download="">
+              <mat-icon>download</mat-icon>
+              <span>{{ 'invoice.invoice-table.download-pdf' | translate }}</span>
+            </a>
+            <a *ngIf="p(element).pdf_driver && element.files?.pdf_driver" mat-menu-item [href]="element.files?.pdf_driver" download="">
+              <mat-icon>download</mat-icon>
+              <span>{{ 'invoice.invoice-table.download-pdf-driver' | translate }}</span>
+            </a>
+            <a *ngIf="p(element).pdf_cancelado" mat-menu-item [href]="element.files?.pdf_cancelado" download="">
+              <mat-icon>download</mat-icon>
+              <span>{{ 'invoice.invoice-table.download-pdf' | translate }}</span>
+            </a>
+            <a *ngIf="p(element).xml" mat-menu-item [href]="element.files?.xml" download="">
+              <mat-icon>download</mat-icon>
+              <span>{{ 'invoice.invoice-table.download-xml' | translate }}</span>
+            </a>
+            <a *ngIf="p(element).xml_acuse" mat-menu-item [href]="element.files?.xml_acuse" download="">
+              <mat-icon>download</mat-icon>
+              <span>{{ 'invoice.invoice-table.download-acuse' | translate }}</span>
+            </a>
+            <button *ngIf="p(element).duplicar" mat-menu-item [routerLink]="[routes.NEW_FACTURA, { template: element._id }]">
+              <mat-icon>file_copy</mat-icon>
+              <span>{{ 'invoice.invoice-table.duplicate' | translate }}</span>
+            </button>
+            <button *ngIf="p(element).enviar_correo" mat-menu-item (click)="sendEmailFactura(element._id)">
+              <mat-icon>email</mat-icon>
+              <span>{{ 'invoice.invoice-table.send-by-email' | translate }}</span>
+            </button>
+            <button *ngIf="p(element).cancelar" mat-menu-item (click)="cancelarFactura(element._id)">
+              <mat-icon>cancel</mat-icon>
+              <span>{{ 'invoice.invoice-table.cancel-invoice' | translate }} </span>
+            </button>
+            <button *ngIf="p(element).eliminar" mat-menu-item (click)="deleteFactura(element._id)">
+              <mat-icon class="icon icon-trash1 icon-only" style="font-size: 18px"></mat-icon>
+              <span>{{ 'invoice.invoice-table.delete-invoice' | translate }}</span>
+            </button>
+          </mat-menu> -->
+        </td>
+      </ng-container>
+
+      <!-- Brand Column -->
+      <ng-container matColumnDef="brand">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
+          {{ 'fleet.trucks.table.brand' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.attributes.brand }}
+        </td>
+      </ng-container>
+
+      <!-- Year Column -->
+      <ng-container matColumnDef="year">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
+          {{ 'fleet.trucks.table.year' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.attributes.year }}
+        </td>
+      </ng-container>
+
+      <!-- Plates Column -->
+      <ng-container matColumnDef="plates">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
+          {{ 'fleet.trucks.table.plates' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.attributes.plates }}
+        </td>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="color">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 40px">
+          {{ 'fleet.trucks.table.color' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          <span class="rect-color" [style]="'--color: ' + element.attributes.color + ';'"></span>
+        </td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 220px">
+          {{ 'fleet.trailers.table.type' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">{{ element.attributes.type }}″</td>
+      </ng-container>
+
+      <!-- Trailer number Column -->
+      <ng-container matColumnDef="trailer_number">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 220px">
+          {{ 'fleet.trailers.table.trailer_number' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.attributes.trailer_number }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="resolvers[model].displayedColumns"></tr>
+
+      <tr mat-row *matRowDef="let row; columns: resolvers[model].displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

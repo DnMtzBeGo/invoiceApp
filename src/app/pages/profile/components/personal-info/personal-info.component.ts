@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CfdiService } from 'src/app/services/cfdi.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -11,7 +12,7 @@ import { BegoAlertHandler } from 'src/app/shared/components/bego-alert/BegoAlert
   styleUrls: ['./personal-info.component.scss']
 })
 export class PersonalInfoComponent implements OnInit {
-
+  public id?: string;
   CFDIs: any;
   originalCFDI: Array<any>;
   personalInfo: any;
@@ -42,10 +43,8 @@ export class PersonalInfoComponent implements OnInit {
     public cfdiService: CfdiService,
     public webService: AuthService,
     private translateService: TranslateService,
-  ) { 
-    
-  }
-
+    public route: ActivatedRoute
+  ) { }
 
   personalInfoForm: FormGroup = this.formBuilder.group({
     fullname: ['', Validators.required],
@@ -68,6 +67,11 @@ export class PersonalInfoComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.queryParamMap.get('id') || null;
+    // console.log('personal-info', this.route);
+    // console.log('personal-info params', this.route.snapshot.params);
+    // console.log('personal-info queryParams', this.route.snapshot.queryParams);
+
     this.profileInfoService.data.subscribe( (data: any) => {
       this.personalInfo = data;
       if(Object.keys(data).length){
@@ -164,9 +168,11 @@ export class PersonalInfoComponent implements OnInit {
           newTelephoneMail: newMail,
           telephone_mail: currentMail
         };
+        if (this.id) updateEmailBody['carrier_id'] = this.id;
+
         (await this.webService.apiRest(JSON.stringify(updateEmailBody),'carriers/change_telephone_mail')).subscribe(
           (res : any)=>{
-            this.profileInfoService.getProfileInfo();
+            this.profileInfoService.getProfileInfo(this.id);
             this.showEmailVerificationModal = false;
             this.mailErrorMsg = '';
 
@@ -236,7 +242,7 @@ export class PersonalInfoComponent implements OnInit {
   showErrorMsg(msg: string):void{
     this.alertMsg = msg;
     this.showGeneralAlert = true;
-    this.profileInfoService.getProfileInfo();
+    this.profileInfoService.getProfileInfo(this.id);
   }
 
 
@@ -264,9 +270,11 @@ export class PersonalInfoComponent implements OnInit {
           newTelephoneMail: newPhone,
           telephone_mail: currentPhone
         };
+        if (this.id) updateEmailBody['carrier_id'] = this.id;
+
         (await this.webService.apiRest(JSON.stringify(updateEmailBody),'carriers/change_telephone_mail')).subscribe(
           (res : any)=>{
-            this.profileInfoService.getProfileInfo();
+            this.profileInfoService.getProfileInfo(this.id);
             this.showPhoneVerificationModal = false;
             this.phoneErrorMsg = '';
 
@@ -300,7 +308,10 @@ export class PersonalInfoComponent implements OnInit {
     bodyRequest[formControlName]= this.personalInfoForm.value[formControlName];
     
     (await this.webService.apiRest(
-      JSON.stringify({attributes: bodyRequest }),
+      JSON.stringify({
+        attributes: bodyRequest,
+        ...(this.id ? { carrier_id: this.id } : {})
+      }),
       'carriers/insert_attributes')
     ).subscribe(
       ( res )=>{
@@ -322,6 +333,8 @@ export class PersonalInfoComponent implements OnInit {
     const requestBody = {
       nickname: newNickname
     };
+
+    if (this.id) requestBody['carrier_id'] = this.id;
 
     (await this.webService.apiRest(JSON.stringify(requestBody),'carriers/change_nickname')).subscribe(
       ( res )=>{

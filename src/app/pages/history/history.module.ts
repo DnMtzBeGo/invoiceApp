@@ -57,6 +57,7 @@ import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.mo
     ButtonModule,
     BegoBodyModule,
     BegoTabsModule
-  ]
+  ],
+  exports: [OrderCardComponent, OrderInfoComponent, EditCnBtnComponent, DriverStatusCardComponent, EditOrderFleetComponent, ChooseFleetElementComponent, DownloadInvoicesComponent, DropDownModule, PickupDropoffInfoComponent, OrderEvidenceComponent]
 })
 export class HistoryModule { }

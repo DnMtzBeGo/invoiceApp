@@ -1,4 +1,5 @@
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren, OnInit, Inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FiscalDocumentsService } from './services/fiscal-documents.service';
 import { FileInfo } from './interfaces/FileInfo';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -12,7 +13,8 @@ type FileInterfaceFormats = 'cards' | 'list';
 @Component({
   selector: 'app-upload-fiscal-docs',
   templateUrl: './upload-fiscal-docs.component.html',
-  styleUrls: ['./upload-fiscal-docs.component.scss']
+  styleUrls: ['./upload-fiscal-docs.component.scss'],
+  providers:  [FiscalDocumentsService]
 })
 export class UploadFiscalDocsComponent implements OnInit {
   selectedFormat: FileInterfaceFormats = 'cards';
@@ -42,10 +44,9 @@ export class UploadFiscalDocsComponent implements OnInit {
     @Inject(FiscalDocumentsService) public fiscalDocumentsService: FiscalDocumentsService,
     private sanitizer: DomSanitizer,
     private alertService: AlertService,
-    private translateService: TranslateService
-  ) {
-    this.refreshDocumentsToUpload();
-  }
+    private translateService: TranslateService,
+    public route: ActivatedRoute
+  ) { }
 
   /**
    * Function that helps refresh the list of files that
@@ -156,5 +157,9 @@ export class UploadFiscalDocsComponent implements OnInit {
     return !resquestUnavailable;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fiscalDocumentsService.id = this.route.snapshot.queryParamMap.get('id') || null;
+
+    this.refreshDocumentsToUpload();
+  }
 }

@@ -3,7 +3,7 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu" class="brand-menu-1">
-    <button mat-menu-item [routerLink]="[routes.EDIT_MEMBER, { id: data._id }]">
+    <button mat-menu-item [routerLink]="[routes.EDIT_MEMBER]" [queryParams]="{ id: data.member_meta.id_member }">
       <mat-icon class="icon icon-eye-open icon-only" style="font-size: 18px"></mat-icon>
       <span>{{ 'fleet.members.see_details' | translate }}</span>
     </button>
@@ -17,7 +17,7 @@
   </div>
 
   <p class="name">
-    {{ data.nickname }}
+    {{ data.member.nickname }}
   </p>
 
   <ul class="tasks">
