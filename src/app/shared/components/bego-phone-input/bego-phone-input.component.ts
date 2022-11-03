@@ -52,6 +52,7 @@ export class BegoPhoneInputComponent implements OnInit {
 
   @Input() phoneNumber: string = '';
   @Output() phoneNumberChange = new EventEmitter<string>();
+  @Output() phoneObject = new EventEmitter<any>();
 
 
 
@@ -181,7 +182,11 @@ export class BegoPhoneInputComponent implements OnInit {
     this.blur.emit({phoneFlag, phoneCode, phoneNumber});
   }
 
-
+  public phoneData(): void {
+    const { phoneFlag, phoneCode} = this;
+    const phoneNumber = this.phoneInputForm.value.phoneNumber
+    this.phoneObject.emit({phoneFlag, phoneCode, phoneNumber});
+  } 
 
 
 }

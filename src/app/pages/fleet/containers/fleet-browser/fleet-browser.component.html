@@ -7,7 +7,7 @@
           <span>{{ paginator.total || '-' }}</span>
         </h1>
         <div class="actions">
-          <button mat-flat-button class="brand-btn-2" [routerLink]="['new']">
+          <button mat-flat-button class="brand-btn-2" [routerLink]="['new']" [queryParams]="{id: vm.fleetId}">
             {{ 'fleet.' + resolver.lang + '.btn_add' | translate }}
           </button>
 

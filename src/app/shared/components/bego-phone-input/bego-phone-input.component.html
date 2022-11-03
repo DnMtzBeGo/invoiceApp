@@ -52,6 +52,7 @@
       <input 
         matInput
         (blur)="blurElement()"
+        (change)="phoneData()"
         formControlName="phoneNumber"
         [textMask]="{mask: phoneMask, guide: false}"
         (keyup)="detectInputChanges()">
