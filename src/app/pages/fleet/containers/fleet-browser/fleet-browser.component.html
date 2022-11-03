@@ -80,7 +80,6 @@
 
         <!-- copied from orders-list.component.html -->
         <div class="pagination">
-          <i class="icon icon-back" [ngClass]="{ desactivated: paginator.pageIndex == 1 }"></i>
           <p
             class="pagination-back"
             [ngClass]="{ desactivated: paginator.pageIndex == 1 }"
@@ -89,6 +88,7 @@
                 page: paginator.pageIndex - 1
               })
             ">
+            <i class="icon icon-back"></i>
             {{ 'history.btns.prev' | translate }}
           </p>
           <div class="current-pagination" (click)="paginator.pageTotal > 1 && (showSelectPage = true)">
@@ -96,7 +96,7 @@
           </div>
           <div class="select-page" *ngIf="showSelectPage">
             <p
-              *ngFor="let page of paginator.pageTotal"
+              *ngFor="let page of range(1, paginator.pageTotal)"
               (click)="
                 showSelectPage = false;
                 navigate({
@@ -115,8 +115,8 @@
               })
             ">
             {{ 'history.btns.next' | translate }}
+            <i class="icon icon-next"></i>
           </p>
-          <i class="icon icon-next" [ngClass]="{ desactivated: paginator.pageIndex >= paginator.pageTotal }"></i>
         </div>
 
         <div class="limit">

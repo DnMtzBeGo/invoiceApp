@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { TranslateService } from '@ngx-translate/core';
+import { routes } from '../../consts';
 
 @Component({
   selector: 'app-fleet-widget',
@@ -11,6 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
   animations: [trigger('enterAnimation', [transition(':enter', [style({ opacity: 0 }), animate('800ms', style({ opacity: 1 }))])])]
 })
 export class FleetWidgetComponent implements OnInit {
+  public routes: typeof routes = routes;
+
   // sm | md
   @Input()
   size: string = 'md';
@@ -25,16 +28,11 @@ export class FleetWidgetComponent implements OnInit {
   hasChange: boolean = false;
   hasMembers: boolean = false;
   differentTruck: number;
-  clearLastInput: string;
   haveTimeOut: any;
   changeByBlur: boolean = false;
   changeNameSuccessfull: boolean = false;
   prevUrlTrucks: string;
   fleetDataLoaded: boolean = false;
-  public cpErrors: string;
-  public isDriversValid: false;
-  public isTrucksValid: false;
-  public isTrailerValid: boolean;
 
   constructor(private webService: AuthService, private translateService: TranslateService, private router: Router) {
     this.router.events.subscribe((ev) => {
@@ -123,24 +121,6 @@ export class FleetWidgetComponent implements OnInit {
 
   onPicError(index) {
     this.members[index].thumbnail = '../../assets/fleet/user-outline.svg';
-  }
-
-  sendMembersData(member) {
-    this.router.navigate(['fleet/member-profile/account'], {
-      state: { memberData: member.member._id }
-    });
-  }
-
-  sendDatTrucks(truck: any) {
-    this.router.navigate(['fleet/trucks'], {
-      state: { truckIndex: truck }
-    });
-  }
-
-  private sendDataTrailers(trailer): void {
-    this.router.navigate(['fleet/trailers'], {
-      state: { ...trailer }
-    });
   }
 
   picError(index) {

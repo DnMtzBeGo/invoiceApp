@@ -12,8 +12,8 @@
   <div class="avatar">
     <div class="avatar-1">
       <img
-        [src]="data.thumbnails && data.thumbnails[0] && !data.thumbnails?.[0].endsWith('/') ? data.thumbnails[0] : '../../../../assets/images/truck.svg'" />
-      <div class="avatar-color" [style.background]="data.attributes.colorName || data.attributes.color"></div>
+        [src]="data.thumbnail && !data.thumbnail.endsWith('/') ? data.thumbnail : '../../../../assets/images/truck.svg'" />
+      <div class="avatar-color" [style.background]="data.attributes.colorName || data.attributes.color || 'transparent'"></div>
     </div>
   </div>
 

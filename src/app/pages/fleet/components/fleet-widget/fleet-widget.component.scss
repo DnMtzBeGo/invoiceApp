@@ -225,6 +225,7 @@
         border-radius: 50%;
         position: relative;
         overflow: hidden;
+        cursor: pointer;
 
         img {
           position: relative;
@@ -245,7 +246,6 @@
       }
 
       .remaining-bubbles {
-        cursor: pointer;
         display: inline-flex;
         justify-content: center;
         align-items: center;
