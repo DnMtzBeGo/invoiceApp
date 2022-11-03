@@ -46,7 +46,7 @@ export class FleetEditTruckComponent implements OnInit {
   public filteredTruckSettings: any[] = [];
   public catalogs: Record<string, any>;
   public disableSaveBtn: boolean = true;
-  public years: number[] = [2020, 2021];
+  public years: number[] = this.createDateOptions();
 
   public selectedTruckSettings = this.selectedValueAutoComplete('truck_settings', 'sat_cp_config_autotransporte');
   public selectedPermisoSCT = this.selectedValueAutoComplete('sct_permission', 'sat_cp_tipos_de_permiso');
@@ -377,4 +377,10 @@ export class FleetEditTruckComponent implements OnInit {
   
     });
   } 
+
+  public createDateOptions(): any[] {
+    const range = (start: number, end: number) => Array((end) - (start) + 1).fill(0).map((_, idx) => start + idx);
+    console.log('about to return ', range(1980, new Date().getFullYear() + 1).reverse().map(value => ({text: String(value), value })));
+    return range(1980, new Date().getFullYear() + 1).reverse().map(value => ({text: String(value), value }));
+  }
 }

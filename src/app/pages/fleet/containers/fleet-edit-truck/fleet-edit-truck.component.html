@@ -33,7 +33,7 @@
               <div class="truck-input">
                 <label>{{'fleet.trucks.year' | translate}}</label>
                 <select  formControlName="year" >
-                  <option *ngFor="let year of years" [value]="year" class="brand-option-1">{{ year }}</option>
+                  <option *ngFor="let year of years" [value]="year.value" class="brand-option-1">{{ year.value }}</option>
                 </select>
               </div>
               
