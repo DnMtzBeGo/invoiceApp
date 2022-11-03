@@ -70,16 +70,16 @@
             <h2>{{ 'fleet.txt_trailers' | translate }}</h2>
             <span>{{ trailers?.length }}</span>
           </div>
-          <div [routerLink]="routes.TRILERS">
+          <div [routerLink]="routes.TRAILERS">
             {{ 'fleet.btn_view_all' | translate }}
           </div>
         </div>
         <div class="fleet-bubbles" *ngIf="hasChange">
-          <div *ngIf="trailers.length < 1" class="no-status" [routerLink]="routes.TRILERS">
+          <div *ngIf="trailers.length < 1" class="no-status" [routerLink]="routes.TRAILERS">
             <img class="no-cover" src="../../assets/orders/trailer.svg" />
           </div>
           <ng-container *ngFor="let trailer of trailers; index as i">
-            <div class="no-status" *ngIf="i < 4" [routerLink]="routes.TRILERS">
+            <div class="no-status" *ngIf="i < 4" [routerLink]="routes.TRAILERS">
               <img [src]="trailer.thumbnail ? trailer.thumbnail + '?' + differentTruck : '../../../../assets/images/trailer.svg'" />
             </div>
           </ng-container>
