@@ -81,6 +81,7 @@
                 (click)="selectTab(i)"
                 [routerLink]="orderTabs[tab].url"
                 queryParamsHandling="merge"
+                [replaceUrl]="true"
                 [ngClass]="{'type-selected' : currentTabIndex ==  i  }">
                   {{ orderTabs[tab].text | translate }}
               </div>
