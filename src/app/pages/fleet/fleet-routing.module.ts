@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FleetPageComponent, FleetBrowserComponent } from './containers';
+import { FleetEditTruckComponent } from './containers/fleet-edit-truck/fleet-edit-truck.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,14 @@ const routes: Routes = [
     data: {
       model: 'trucks'
     }
+  },
+  {
+    path: 'trucks/new',
+    component: FleetEditTruckComponent
+  },
+  {
+    path: 'trucks/edit/:id',
+    component: FleetEditTruckComponent
   },
   {
     path: 'trailers',

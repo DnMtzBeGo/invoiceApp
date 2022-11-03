@@ -1,0 +1,44 @@
+{
+  "range": [
+    {
+      "heu-start": 0,
+      "hue-end": 15,
+      "color": "red"
+    },
+    {
+      "heu-start": 15.01,
+      "hue-end": 45,
+      "color": "orange"
+    },
+    {
+      "heu-start": 45.01,
+      "hue-end": 75,
+      "color": "yellow"
+    },
+    {
+      "heu-start": 75.01,
+      "hue-end": 150,
+      "color": "green"
+    },
+    {
+      "heu-start": 150.01,
+      "hue-end": 240,
+      "color": "blue"
+    },
+    {
+      "heu-start": 240.01,
+      "hue-end": 285,
+      "color": "purple"
+    },
+    {
+      "heu-start": 285.01,
+      "hue-end": 345,
+      "color": "pink"
+    },
+    {
+      "heu-start": 345.01,
+      "hue-end": 360,
+      "color": "red"
+    }
+  ]
+}

@@ -1,15 +1,6 @@
 <div class="orders-list-container">
   <div class="orders-list-row">
-    <div class="tabs-container">
-      <div class="orders-list-type">
-        <div 
-          *ngFor="let tab of Object.keys(orderTabs), index as i"
-          (click)="selectTab(i)"
-          [ngClass]="{'type-selected' : currentTabIndex ==  i  }">
-            {{ orderTabs[tab].text }}
-        </div>
-      </div>
-    </div>
+    <bego-tabs [tabs]="orderTabsText" (onTabChange)="selectTab($event)"></bego-tabs>
     <!-- <div class="orders-list-filter">
       <p>Filter</p>
       <img src="../../../../../assets/images/history/filter.svg" alt="">

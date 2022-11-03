@@ -340,6 +340,15 @@ ngx-mat-select-search.brand-select-search-1 {
         drop-shadow(0px -8px 8px rgba(0, 0, 0, 0.5));
     }
   }
+
+  &.no-padding{
+    & + * {
+      .mat-dialog-container {
+        padding: 0px;
+      }
+    }
+  }
+  
 }
 
 .cdk-overlay-backdrop.brand-dialog-map {
