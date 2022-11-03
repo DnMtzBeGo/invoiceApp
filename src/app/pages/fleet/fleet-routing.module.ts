@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FleetPageComponent, FleetBrowserComponent } from './containers';
+import { FleetEditTrailerComponent } from './containers/fleet-edit-trailer/fleet-edit-trailer.component';
 import { FleetEditTruckComponent } from './containers/fleet-edit-truck/fleet-edit-truck.component';
 
 const routes: Routes = [
@@ -29,6 +30,14 @@ const routes: Routes = [
   {
     path: 'trucks/edit/:id',
     component: FleetEditTruckComponent
+  },
+  {
+    path: 'trailers/new',
+    component: FleetEditTrailerComponent
+  },
+  {
+    path: 'trailers/edit/:id',
+    component: FleetEditTrailerComponent
   },
   {
     path: 'trailers',

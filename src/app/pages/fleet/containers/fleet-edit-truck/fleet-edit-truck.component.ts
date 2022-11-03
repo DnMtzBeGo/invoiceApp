@@ -9,6 +9,7 @@ import { Observable, Observer } from 'rxjs';
 import { ActionConfirmationComponent } from 'src/app/pages/invoice/modals';
 import { PickerSelectedColor } from 'src/app/shared/components/color-picker/color-picker.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ReceviedPicture } from '../../components/pictures-grid/pictures-grid.component';
 import { UploadFileInfo, UploadFilesComponent } from '../../components/upload-files/upload-files.component';
 @Component({
   selector: 'app-fleet-edit',
@@ -380,7 +381,29 @@ export class FleetEditTruckComponent implements OnInit {
 
   public createDateOptions(): any[] {
     const range = (start: number, end: number) => Array((end) - (start) + 1).fill(0).map((_, idx) => start + idx);
-    console.log('about to return ', range(1980, new Date().getFullYear() + 1).reverse().map(value => ({text: String(value), value })));
     return range(1980, new Date().getFullYear() + 1).reverse().map(value => ({text: String(value), value }));
+  }
+
+  public async handleFileInput({ file, i, dialog }: ReceviedPicture){
+    const fileInfo = dialog.componentInstance.info.files[i];
+    const newTruck = this.router.url == '/fleet/trucks/new';
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      fileInfo.url = reader.result as string;
+      if(newTruck)this.pictures[i] = {url: fileInfo.url};
+    };
+
+    if(newTruck){
+      this.newTruckPictures[i] = file;
+      this.onTruckInfoChanged();
+    }else{
+      (await this.updatePicture(file,i)).subscribe(
+        (resp) => {
+          fileInfo.uploadPercentage = (resp.loaded / resp.total) * 100;
+        }
+      );
+    }
   }
 }

@@ -1368,9 +1368,14 @@
       },
       "see_details": "See trailer",
       "btn_view": "View trailer",
+      "plates":"Plates",
+      "trailer-type":"Type of trailer",
+      "trailer-subtype":"Trailer subtype",
       "table": {
         "type": "Type",
-        "trailer_number": "Trailer number"
+        "trailer_number": "Trailer number",
+        "type-trailer-number":"Type trailer number"
+
       }
     }
   },
