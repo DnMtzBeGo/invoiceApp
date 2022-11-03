@@ -28,7 +28,7 @@ const routes: Routes = [
     component: FleetEditTruckComponent
   },
   {
-    path: 'trucks/edit/:id',
+    path: 'trucks/edit',
     component: FleetEditTruckComponent
   },
   {
@@ -36,7 +36,7 @@ const routes: Routes = [
     component: FleetEditTrailerComponent
   },
   {
-    path: 'trailers/edit/:id',
+    path: 'trailers/edit',
     component: FleetEditTrailerComponent
   },
   {
