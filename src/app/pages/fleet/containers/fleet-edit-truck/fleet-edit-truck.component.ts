@@ -85,12 +85,6 @@ export class FleetEditTruckComponent implements OnInit {
 
     this.truckDetailsForm.valueChanges.subscribe(changesAction);
 
-    const searchFunction = (options: any[], input: string) => {
-      return options.filter((e: any) => {
-        const currentValue = `${e.code} ${e.description}`.toLowerCase();
-        return currentValue.includes(input.toLowerCase());
-      });
-    };
 
   }
 
@@ -133,6 +127,7 @@ export class FleetEditTruckComponent implements OnInit {
 
           if(newTruck){
             this.newTruckPictures[i] = file;
+            this.onTruckInfoChanged();
           }else{
             (await this.updatePicture(file,i)).subscribe(
               (resp) => {
@@ -241,6 +236,8 @@ export class FleetEditTruckComponent implements OnInit {
 
     if(this.router.url == '/fleet/trucks/new'){
       this.insuranceFile = file;
+      this.onTruckInfoChanged();
+
       return;
     }
 
@@ -300,7 +297,7 @@ export class FleetEditTruckComponent implements OnInit {
     formData.append('files', this.insuranceFile);
     // , {apiVersion: 'v1.1'}
     (await this.webService.uploadFilesSerivce(formData, 'trucks/create', {apiVersion: 'v1.1'})).subscribe(() => {
-      // this.router.navigateByUrl('fleet/trucks');
+      this.router.navigateByUrl('fleet/trucks');
     });
   }
 
@@ -311,9 +308,12 @@ export class FleetEditTruckComponent implements OnInit {
   onTruckInfoUpdated = () => {
     this.disableSaveBtn = !this.valuesFormChanged();
   };
-
+  /**
+   * Called only when creating a new truck
+   */
   onTruckInfoChanged = () => {
-    this.disableSaveBtn = !this.truckDetailsForm.valid;
+   const enoughPictures = this.newTruckPictures.length >= 3;
+    this.disableSaveBtn = this.truckDetailsForm.status == 'INVALID' || !enoughPictures || !this.insuranceFile;
   }
 
   valuesFormChanged(): boolean {
