@@ -15,9 +15,11 @@ import { ColorPickerModule } from 'src/app/shared/components/color-picker/color-
 import { UploadFilesModule } from './components/upload-files/upload-files.module';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-file-bar.module';
+import { FleetEditTrailerComponent } from './containers/fleet-edit-trailer/fleet-edit-trailer.component';
+import { PicturesGridComponent } from './components/pictures-grid/pictures-grid.component';
 
 @NgModule({
-  declarations: [FleetWidgetComponent, FleetPageComponent, FleetBrowserComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent, FleetEditTruckComponent,FleetTableComponent],
+  declarations: [FleetWidgetComponent, FleetPageComponent, FleetBrowserComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent, FleetEditTruckComponent,FleetTableComponent, FleetEditTrailerComponent, PicturesGridComponent],
   imports: [
     CommonModule,
     RouterModule,

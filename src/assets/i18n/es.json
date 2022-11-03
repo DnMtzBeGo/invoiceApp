@@ -1372,9 +1372,13 @@
       },
       "see_details": "Ver caja",
       "btn_view": "Ver caja",
+      "plates":"Placas",
+      "trailer-type":"Tipo de caja",
+      "trailer-subtype":"Subtipo de caja",
       "table": {
         "type": "Tipo",
-        "trailer_number": "Número de Trailer"
+        "trailer_number": "Número de Trailer",
+        "type-trailer-number":"Escribe el número de trailer"
       }
     }
   },
