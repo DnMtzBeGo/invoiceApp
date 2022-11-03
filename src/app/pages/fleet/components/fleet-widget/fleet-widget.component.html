@@ -55,7 +55,7 @@
             <img class="no-cover" src="../../assets/orders/trailer.svg" />
           </div>
           <ng-container *ngFor="let truck of trucks; index as i">
-            <div class="no-status" *ngIf="i < 4" [routerLink]="[routes.TRUCKS]">
+            <div class="no-status" *ngIf="i < 4" [routerLink]="[routes.EDIT_TRUCK, { id: truck._id }]">
               <img [src]="truck.thumbnail ? truck.thumbnail + '?' + differentTruck : '../../../../assets/images/truck.svg'" />
             </div>
           </ng-container>
@@ -70,20 +70,20 @@
             <h2>{{ 'fleet.txt_trailers' | translate }}</h2>
             <span>{{ trailers?.length }}</span>
           </div>
-          <div [routerLink]="routes.TRAILERS">
+          <div [routerLink]="[routes.TRAILERS]">
             {{ 'fleet.btn_view_all' | translate }}
           </div>
         </div>
         <div class="fleet-bubbles" *ngIf="hasChange">
-          <div *ngIf="trailers.length < 1" class="no-status" [routerLink]="routes.TRAILERS">
+          <div *ngIf="trailers.length < 1" class="no-status" [routerLink]="[routes.TRAILERS]">
             <img class="no-cover" src="../../assets/orders/trailer.svg" />
           </div>
           <ng-container *ngFor="let trailer of trailers; index as i">
-            <div class="no-status" *ngIf="i < 4" [routerLink]="routes.TRAILERS">
+            <div class="no-status" *ngIf="i < 4" [routerLink]="[routes.EDIT_TRAILER, { id: trailer._id }]">
               <img [src]="trailer.thumbnail ? trailer.thumbnail + '?' + differentTruck : '../../../../assets/images/trailer.svg'" />
             </div>
           </ng-container>
-          <div *ngIf="trailers.length > 4" class="remaining-bubbles" [routerLink]="routes.TRAILERS">
+          <div *ngIf="trailers.length > 4" class="remaining-bubbles" [routerLink]="[routes.TRAILERS]">
             <span>+{{ trailers?.length - 4 }}</span>
           </div>
         </div>
