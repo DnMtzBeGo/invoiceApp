@@ -312,20 +312,24 @@ app-fleet-browser {
             color: #ededed;
 
             .icon-back {
-              margin-right: 10px;
-              cursor: pointer;
+              margin-right: 12px;
+              font-size: 12px;
             }
 
             .pagination-back {
               padding-right: 8px;
               border-right: 0.5px solid #ededed;
               cursor: pointer;
+              display: flex;
+              align-items: center;
             }
 
             .pagination-next {
               padding-left: 8px;
               border-left: 0.5px solid #ededed;
               cursor: pointer;
+              display: flex;
+              align-items: center;
             }
 
             .current-pagination {
@@ -341,8 +345,8 @@ app-fleet-browser {
             }
 
             .icon-next {
-              margin-left: 10px;
-              cursor: pointer;
+              margin-left: 12px;
+              font-size: 12px;
             }
 
             .select-page {

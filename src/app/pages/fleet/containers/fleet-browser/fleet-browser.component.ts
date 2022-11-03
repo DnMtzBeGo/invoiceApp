@@ -443,6 +443,13 @@ export class FleetBrowserComponent implements OnInit {
 
   filtersCount = (params = {}) =>
     Object.keys(params).filter((filterName) => filterParams.has(filterName) && params[filterName]).length || null;
+
+  range = (from, to) => {
+    to = to + 1;
+    return Array(to - from)
+      .fill(0)
+      .map((_, i) => from + i);
+  };
 }
 
 const resolvers = {
