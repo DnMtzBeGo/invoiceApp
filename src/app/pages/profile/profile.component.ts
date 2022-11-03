@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
 
   public orderTabs: any = [];
   public currentTabIndex: number = 0;
+  public currentTabKey: string = 'account';
 
   public deleteProfilepicHandlers: BegoAlertHandler[] = [];
 
@@ -50,6 +51,7 @@ export class ProfileComponent implements OnInit {
         url: '/profile/personal-info',
         key: 'account',
         enabled: true,
+        sidebar: true,
         whenActive: (): any => {
           this.profileInfoService.getProfileInfo(this.id);
         }
@@ -59,18 +61,21 @@ export class ProfileComponent implements OnInit {
         url: '/profile/sat-certificate',
         key: 'satCertificate',
         enabled: this.id == void 0,
+        sidebar: true,
       },
       documentation: {
         text: 'fiscal-documents.upload-files.documentation',
         url: '/profile/fiscal-documents',
         key: 'documentation',
         enabled: true,
+        sidebar: true,
       },
       history: {
         text: 'profile.history.txt_history',
         url: '/profile/history',
         key: 'history',
         enabled: this.id != void 0,
+        sidebar: false,
       }
     };
 
@@ -94,6 +99,7 @@ export class ProfileComponent implements OnInit {
     Object.values(this.orderTabs).find((e: any, index: number) => {
       if (this.router.url.startsWith(e.url)) {
         this.currentTabIndex = index;
+        this.currentTabKey = Object.keys(this.orderTabs)[index];
         return true;
       }
       return false;
@@ -146,7 +152,7 @@ export class ProfileComponent implements OnInit {
 
   selectTab(index: number): void {
     this.currentTabIndex = index;
-    const currentTabKey = Object.keys(this.orderTabs)[index];
+    const currentTabKey = this.currentTabKey = Object.keys(this.orderTabs)[index];
     const currentTab = this.orderTabs[currentTabKey];
     if (currentTab && currentTab.whenActive) {
       currentTab.whenActive();
