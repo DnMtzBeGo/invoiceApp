@@ -99,7 +99,6 @@ export class FleetEditTrailerComponent implements OnInit {
     const { result } = await (await this.authService.apiRest(JSON.stringify(payload), '/trailers/get_by_id')).toPromise();
 
     this.pictures = result.pictures.map((url) => ({ url: `${url}?${new Date()}` }));
-    console.log('Attributes are: ', result.attributes);
     this.trailerDetailsForm.patchValue(result.attributes);
     this.originalInfo = result.attributes;
   }
@@ -200,9 +199,7 @@ export class FleetEditTrailerComponent implements OnInit {
 
     selectedValueAutoComplete(input: string): Observable<string>{
       return new Observable<string>((observer: Observer<string>)=>{
-        console.log('Trailer details form is: ', this.trailerDetailsForm, this.trailerDetailsForm.get(input));
         this.trailerDetailsForm.get(input).valueChanges.subscribe((value)=>{
-          console.log('catching changes on ', input);
           const selectedElement = this.trailerTypesCataloge.find(e=>e.code == value);
           if(selectedElement)
             observer.next(this.displayFn(selectedElement));

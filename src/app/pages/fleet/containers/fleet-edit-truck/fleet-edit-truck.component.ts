@@ -370,7 +370,6 @@ export class FleetEditTruckComponent implements OnInit {
   selectedValueAutoComplete(input: string, catalogName: string): Observable<string>{
     return new Observable<string>((observer: Observer<string>)=>{
       this.truckDetailsForm.get(input)?.valueChanges.subscribe((value)=>{
-        console.log('CATCHING CHANGES ON: ', input);
         const catalog = this.catalogs.find(e=>e.name == catalogName);
         const selectedElement = catalog.documents.find(e=>e.code == value);
         if(selectedElement)
@@ -382,7 +381,6 @@ export class FleetEditTruckComponent implements OnInit {
 
   public createDateOptions(): any[] {
     const range = (start: number, end: number) => Array((end) - (start) + 1).fill(0).map((_, idx) => start + idx);
-    console.log('about to return ', range(1980, new Date().getFullYear() + 1).reverse().map(value => ({text: String(value), value })));
     return range(1980, new Date().getFullYear() + 1).reverse().map(value => ({text: String(value), value }));
   }
 
