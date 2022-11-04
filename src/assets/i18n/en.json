@@ -1288,6 +1288,7 @@
       "gray": "Gray",
       "grey": "Gray"
     },
+    "only-imgs":"Only images supported",
     "txt_fleet": "My Fleet",
     "btn_order": "ORDER",
     "btn_view_all": "VIEW ALL",
@@ -1351,6 +1352,9 @@
       "invalid-plates":"Invalid plates",
       "invalid-model":"Invalid",
       "sct-number": "Num. Permiso sct",
+      "sct-perm-required":"Permiso SCT es requerido",
+      "truck-settings-required":"Truck settings required",
+      "required":"required",
       "table": {
         "brand": "Brand",
         "year": "Year",

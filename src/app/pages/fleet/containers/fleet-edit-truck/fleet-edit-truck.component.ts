@@ -179,8 +179,14 @@ export class FleetEditTruckComponent implements OnInit {
     const values = {};
     values[formControlName] = selectedValue.code;
     values[formControlName + '_text'] = selectedValue.description;
-
+    //patch value
     this.truckDetailsForm.patchValue(values);
+  }
+
+  resetOption({target}: {target: HTMLInputElement}, catalog: any[], formControlName: string){
+      const selectedValue = catalog.find(e=>e.code == this.truckDetailsForm.value[formControlName] );
+      target.value = selectedValue ?  this.displayFn(selectedValue): '';
+      this.truckDetailsForm.get(formControlName).markAsTouched();
   }
 
   async fillCataloguesFromDb(): Promise<any> {

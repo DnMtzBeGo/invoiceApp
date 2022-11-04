@@ -1292,6 +1292,7 @@
       "gray": "Gris",
       "grey": "Gris"
     },
+    "only-imgs":"Sólo se aceptan imágenes",
     "txt_fleet": "Flotilla",
     "btn_order": "ORDEN",
     "btn_view_all": "VER TODOS",
@@ -1355,6 +1356,9 @@
       "invalid-plates":"Placas invalidas",
       "invalid-model":"Modelo inválido",
       "sct-number": "Num. Permiso sct",
+      "sct-perm-required":"Permiso sct requerido",
+      "truck-settings-required":"Ajustes del camión requeridos",
+      "required":"requerido",
       "table": {
         "brand": "Marca",
         "year": "Año",

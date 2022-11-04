@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Observer } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { ReceviedPicture } from '../../components/pictures-grid/pictures-grid.component';
 import { UploadFileInfo } from '../../components/upload-files/upload-files.component';
 
@@ -29,16 +31,28 @@ export class FleetEditTrailerComponent implements OnInit {
 
 
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private route: ActivatedRoute, private router: Router
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private route: ActivatedRoute, private router: Router, private notificationsService: NotificationsService, private translateService: TranslateService
     ) { }
 
   async ngOnInit(): Promise<void> {
     this.trailerDetailsForm = this.formBuilder.group({
-      plates: ['', [Validators.required]],
+      plates: ['', [Validators.required, this.arePlatesValid]],
       trailer_number: ['',Validators.required],
       type:['', Validators.required],
       subtype: ['']
     });
+
+    this.trailerDetailsForm.get('type').valueChanges.subscribe((val)=>{
+      let validations = [];
+      if(val == 'other'){
+        validations = [Validators.required]
+      }
+
+      this.trailerDetailsForm.get('subtype').setValidators(validations);
+      this.trailerDetailsForm.controls['subtype'].updateValueAndValidity();
+
+    });
+
     this.selectedSubtype = this.selectedValueAutoComplete('subtype')
 
     await this.fillCataloguesFromDb();
@@ -147,6 +161,16 @@ export class FleetEditTrailerComponent implements OnInit {
   }
 
   public async handleFileInput({ file, i, dialog }: ReceviedPicture){
+    const acceptedFiles = ['image/jpeg', 'image/jpg', 'image/png']
+
+    if(!acceptedFiles.includes(file.type)){
+      this.notificationsService.showErrorToastr(this.translateService.instant('fleet.only-imgs'));
+      return;
+    }
+
+    //if img not found then set index to the las of pictures
+    if(!this.pictures[i]) i = this.pictures.length;
+
     const fileInfo = dialog.componentInstance.info.files[i];
     const newtrailer = this.router.url == '/fleet/trailers/new';
 
@@ -222,6 +246,16 @@ export class FleetEditTrailerComponent implements OnInit {
       this.trailerDetailsForm.patchValue(values);
     }
   
+    resetOption({target}: {target: HTMLInputElement}, catalog: any[], formControlName: string){
+      const selectedValue = catalog.find(e=>e.code == this.trailerDetailsForm.value[formControlName] );
+      target.value = selectedValue ?  this.displayFn(selectedValue): '';
+      this.trailerDetailsForm.get(formControlName).markAsTouched();
+  }
 
+
+  arePlatesValid = ({value}: FormControl): ValidationErrors | null=>{
+    let platesRegex = /^[^(?!.*\s)-]{5,7}$/;
+    return platesRegex.test(value) ?  null: { errors: true};
+  }
 
 }

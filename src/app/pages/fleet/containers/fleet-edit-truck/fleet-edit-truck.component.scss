@@ -3,7 +3,7 @@
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 75px;
+  // margin-top: 75px;
 
   .wrapper {
     display: grid;
@@ -18,13 +18,14 @@
 
         display: flex;
         flex-direction: column;
-        gap: 35px;
-        padding: 0px 60px;
+        gap: 20px;
 
         .truck-input{
           display: grid;
           grid-template-columns: 1fr 5fr;
-          gap: 5px;
+          column-gap: 5px;
+          row-gap: 2px;
+          margin: 0px 100px;
 
           &.touched.INVALID{
             mat-error{
@@ -38,7 +39,7 @@
             font-family: 'Avenir';
             font-weight: 500;
             padding: 12px;
-            font-size: 20px;
+            font-size: 18px;
             text-align:center;
 
             // padding-bottom:1px;
@@ -80,7 +81,7 @@
             font-family: 'Avenir Next';
             font-style: normal;
             font-weight: 100;
-            font-size: 20px;
+            font-size: 16px;
           }
 
           &.wide-label{
@@ -93,6 +94,7 @@
             grid-column: span 2;
             text-align: right;
             transition: opacity 0.3s;
+            font-size: 13px;
             
           }
         }
@@ -214,7 +216,6 @@
 }
 
 .embla {
-  margin-top: 60px;
   overflow: hidden;
   color: white;
 }
