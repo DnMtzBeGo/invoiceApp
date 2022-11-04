@@ -22,11 +22,11 @@
 
   <ul class="tasks">
     <li>
-      {{ data.incoming ?? 0 }}
+      {{ data.orders_meta?.upcoming ?? '—' }}
       <span>{{ 'fleet.members.incoming' | translate }}</span>
     </li>
     <li>
-      {{ data.done ?? 0 }}
+      {{ data.orders_meta?.past ?? '—' }}
       <span>{{ 'fleet.members.done' | translate }}</span>
     </li>
   </ul>

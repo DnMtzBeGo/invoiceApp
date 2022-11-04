@@ -30,7 +30,7 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
     members: {
       avatarRounded: '50%',
       avatarFallback: '../../../../assets/images/avatar-outline.svg',
-      displayedColumns: ['avatar', 'nickname', 'status', 'operations'],
+      displayedColumns: ['avatar', 'nickname', 'incoming', 'done', 'status', 'operations'],
       editUrl: routes.EDIT_MEMBER,
       queryParams: true
     },

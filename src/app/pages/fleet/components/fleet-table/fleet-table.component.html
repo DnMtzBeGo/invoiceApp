@@ -23,6 +23,26 @@
         </td>
       </ng-container>
 
+      <!-- Incoming Column -->
+      <ng-container matColumnDef="incoming">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 90px; text-transform: capitalize">
+          {{ 'fleet.members.incoming' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.orders_meta?.upcoming ?? '—' }}
+        </td>
+      </ng-container>
+
+      <!-- Done Column -->
+      <ng-container matColumnDef="done">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 90px; text-transform: capitalize">
+          {{ 'fleet.members.done' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.orders_meta?.past ?? '—' }}
+        </td>
+      </ng-container>
+
       <!-- Status Column -->
       <ng-container matColumnDef="status">
         <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 90px">
