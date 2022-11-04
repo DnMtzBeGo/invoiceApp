@@ -3,11 +3,10 @@
   grid-template-columns: 5fr 4fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 21px;
-  height: 24.6vh;
+  height: 26vh;
 
   >div{
     border-radius: 22px;
-    min-height: 120px;
     overflow: hidden;
 
     img{

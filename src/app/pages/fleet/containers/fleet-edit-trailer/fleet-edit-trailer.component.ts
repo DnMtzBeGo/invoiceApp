@@ -37,7 +37,7 @@ export class FleetEditTrailerComponent implements OnInit {
       plates: ['', [Validators.required]],
       trailer_number: ['',Validators.required],
       type:['', Validators.required],
-      subtype: ['']
+      subtype: ['', Validators.required]
     });
     this.selectedSubtype = this.selectedValueAutoComplete('subtype')
 
@@ -147,6 +147,9 @@ export class FleetEditTrailerComponent implements OnInit {
   }
 
   public async handleFileInput({ file, i, dialog }: ReceviedPicture){
+    //if img not found then set index to the las of pictures
+    if(!this.pictures[i]) i = this.pictures.length;
+
     const fileInfo = dialog.componentInstance.info.files[i];
     const newtrailer = this.router.url == '/fleet/trailers/new';
 

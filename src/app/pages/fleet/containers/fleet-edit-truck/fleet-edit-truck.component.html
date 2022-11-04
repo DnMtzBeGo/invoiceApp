@@ -8,12 +8,13 @@
 
           <!-- Truck details tab-->
           <div class="embla__slide">
-
-            <app-pictures-grid 
-              [pictures]="pictures"
-              [obligatoryImgs]="3"
-              (onFileInput)="handleFileInput($event)">
-            </app-pictures-grid>
+            <div class="pictures-wrapper" >
+              <app-pictures-grid 
+                [pictures]="pictures"
+                [obligatoryImgs]="3"
+                (onFileInput)="handleFileInput($event)">
+              </app-pictures-grid>
+            </div>
 
       
             <form  class="inputs" [formGroup]="truckDetailsForm">
@@ -31,6 +32,8 @@
                 <select  formControlName="year" >
                   <option *ngFor="let year of years" [value]="year.value" class="brand-option-1">{{ year.value }}</option>
                 </select>
+                <mat-error>Invalid year</mat-error>
+
               </div>
               
       
