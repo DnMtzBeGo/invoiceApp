@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
 import { Observable, Observer } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -34,7 +34,7 @@ export class FleetEditTrailerComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.trailerDetailsForm = this.formBuilder.group({
-      plates: ['', [Validators.required]],
+      plates: ['', [Validators.required, this.arePlatesValid]],
       trailer_number: ['',Validators.required],
       type:['', Validators.required],
       subtype: ['']
@@ -244,5 +244,9 @@ export class FleetEditTrailerComponent implements OnInit {
   }
 
 
+  arePlatesValid = ({value}: FormControl): ValidationErrors | null=>{
+    let platesRegex = /^[^(?!.*\s)-]{5,7}$/;
+    return platesRegex.test(value) ?  null: { errors: true};
+  }
 
 }
