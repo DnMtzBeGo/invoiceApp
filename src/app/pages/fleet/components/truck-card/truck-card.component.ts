@@ -11,6 +11,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { FleetService } from 'src/app/shared/services/fleet.service';
 import { routes } from '../../consts';
 
 @Component({
@@ -25,11 +26,18 @@ export class TruckCardComponent implements OnInit, OnChanges, AfterViewInit {
   @Input()
   data: any;
 
-  constructor(private translateService: TranslateService) {}
+  @Output()
+  deleted = new EventEmitter<string>();
+
+  constructor(private translateService: TranslateService, public fleetService: FleetService) {}
 
   ngOnInit() {}
 
   ngOnChanges() {}
 
   ngAfterViewInit() {}
+
+  delete() {
+    this.fleetService.delete(['trucks', this.data.id_fleet, this.data._id]).subscribe(() => this.deleted.emit(this.data._id));
+  }
 }

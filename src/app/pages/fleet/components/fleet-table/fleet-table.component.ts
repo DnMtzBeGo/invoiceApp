@@ -10,6 +10,7 @@ import { routes } from '../../consts';
 import { environment } from 'src/environments/environment';
 import { facturaPermissions, previewFactura, facturaStatus } from '../../../invoice/containers/factura-edit-page/factura.core';
 import { clone } from 'src/app/shared/utils/object';
+import { FleetService } from 'src/app/shared/services/fleet.service';
 import { ActionSendEmailFacturaComponent, ActionCancelarFacturaComponent, ActionConfirmationComponent } from '../../../invoice/modals';
 
 type FleetTableModel = any;
@@ -70,12 +71,14 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   //Refresh
   @Output() refresh: EventEmitter<void> = new EventEmitter();
+  @Output() deleted = new EventEmitter<string>();
 
   constructor(
     private matDialog: MatDialog,
     private router: Router,
     private notificationsService: NotificationsService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    public fleetService: FleetService
   ) {}
 
   public ngOnChanges(): void {
@@ -126,6 +129,9 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   // Actions
+  delete(id_fleet, id) {
+    this.fleetService.delete([this.model, id_fleet, id]).subscribe(() => this.deleted.emit(id));
+  }
 
   // MODALS
   sendEmailFactura(_id: string) {

@@ -7,12 +7,15 @@
       <mat-icon class="icon icon-eye-open icon-only" style="font-size: 18px"></mat-icon>
       <span>{{ 'fleet.trucks.see_details' | translate }}</span>
     </button>
+    <button mat-menu-item (click)="delete()">
+      <mat-icon class="icon icon-trash1 icon-only" style="font-size: 18px"></mat-icon>
+      <span>{{ 'fleet.btn_remove' | translate }}</span>
+    </button>
   </mat-menu>
 
   <div class="avatar">
     <div class="avatar-1">
-      <img
-        [src]="data.thumbnail && !data.thumbnail.endsWith('/') ? data.thumbnail : '../../../../assets/images/truck.svg'" />
+      <img [src]="data.thumbnail && !data.thumbnail.endsWith('/') ? data.thumbnail : '../../../../assets/images/truck.svg'" />
       <div class="avatar-color" [style.background]="data.attributes.colorName || data.attributes.color || 'transparent'"></div>
     </div>
   </div>

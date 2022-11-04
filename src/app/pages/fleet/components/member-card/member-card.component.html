@@ -7,6 +7,10 @@
       <mat-icon class="icon icon-eye-open icon-only" style="font-size: 18px"></mat-icon>
       <span>{{ 'fleet.members.see_details' | translate }}</span>
     </button>
+    <button mat-menu-item (click)="delete()">
+      <mat-icon class="icon icon-trash1 icon-only" style="font-size: 18px"></mat-icon>
+      <span>{{ 'fleet.btn_remove' | translate }}</span>
+    </button>
   </mat-menu>
 
   <div class="avatar">

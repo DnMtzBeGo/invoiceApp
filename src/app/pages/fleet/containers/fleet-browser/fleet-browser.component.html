@@ -54,20 +54,23 @@
       <div class="content">
         <div *ngIf="vm.view === 'grid'" class="grid">
           <ng-container *ngIf="model === 'members'">
-            <app-member-card *ngFor="let data of vm.facturas" [data]="data"></app-member-card>
+            <app-member-card *ngFor="let data of vm.facturas" [data]="data" (deleted)="facturasEmitter.next(['refresh'])"></app-member-card>
           </ng-container>
 
           <ng-container *ngIf="model === 'trucks'">
-            <app-truck-card *ngFor="let data of vm.facturas" [data]="data"></app-truck-card>
+            <app-truck-card *ngFor="let data of vm.facturas" [data]="data" (deleted)="facturasEmitter.next(['refresh'])"></app-truck-card>
           </ng-container>
 
           <ng-container *ngIf="model === 'trailers'">
-            <app-trailer-card *ngFor="let data of vm.facturas" [data]="data"></app-trailer-card>
+            <app-trailer-card
+              *ngFor="let data of vm.facturas"
+              [data]="data"
+              (deleted)="facturasEmitter.next(['refresh'])"></app-trailer-card>
           </ng-container>
         </div>
 
         <div *ngIf="vm.view === 'list'" class="list">
-          <app-fleet-table [orderTableData]="vm.facturas" [model]="model"> </app-fleet-table>
+          <app-fleet-table [orderTableData]="vm.facturas" [model]="model" (deleted)="facturasEmitter.next(['refresh'])"> </app-fleet-table>
         </div>
       </div>
 

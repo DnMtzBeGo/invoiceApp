@@ -68,6 +68,9 @@
             [queryParams]="resolvers[model].queryParams ? { id: element?.member_meta?.id_member || element._id } : null">
             <mat-icon class="icon icon-eye-open icon-only" style="font-size: 18px"></mat-icon>
           </button>
+          <button mat-icon-button (click)="delete(element?.fleet_id || element?.id_fleet, element?.member_meta?.id_member || element._id)">
+            <mat-icon class="icon icon-trash1 icon-only" style="font-size: 16px"></mat-icon>
+          </button>
           <!-- <mat-menu #menu="matMenu" class="brand-menu-1">
             <button
               *ngIf="p(element).edit"
