@@ -27,13 +27,16 @@
                   <mat-error>{{'fleet.trucks.invalid-model' | translate}}</mat-error>
               </div>
 
-              <div class="truck-input">
-                <label>{{'fleet.trucks.year' | translate}}</label>
-                <select  formControlName="year" >
-                  <option *ngFor="let year of years" [value]="year.value" class="brand-option-1">{{ year.value }}</option>
-                </select>
-                <mat-error>Invalid year</mat-error>
-
+              <div 
+                class="truck-input"
+                [class]="truckDetailsForm.controls.year.status"
+                (blur)="truckDetailsForm.get('year').markAllAsTouched()"
+                [ngClass]="{touched: truckDetailsForm.controls.year.touched}">
+                  <label>{{'fleet.trucks.year' | translate}}</label>
+                  <select  formControlName="year" >
+                    <option *ngFor="let year of years" [value]="year.value" class="brand-option-1">{{ year.value }}</option>
+                  </select>
+                  <mat-error>{{'fleet.trucks.year' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
               </div>
               
       
@@ -58,15 +61,19 @@
           <div class="embla__slide with-gap">
 
             <!-- permiso sct input-->
-            <div class="truck-input wide-label">
+            <div 
+              class="truck-input wide-label"                 
+              [class]="truckDetailsForm.controls.sct_permission.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.sct_permission.touched} ">
               <label>{{
                 "invoice.autotransporte.permiso-sct" | translate
               }}</label>
 
               <input type="text"
-                      [value]="selectedPermisoSCT | async"
-                      (keyup)="filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'),$event.target.value)"
-                      [matAutocomplete]="sctAutocomplete">
+                [value]="selectedPermisoSCT | async"
+                (keyup)="filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'),$event.target.value)"
+                (blur)="resetOption($event,this.getCatalogue('sat_cp_tipos_de_permiso'), 'sct_permission' )"
+                [matAutocomplete]="sctAutocomplete">
               <mat-autocomplete #sctAutocomplete="matAutocomplete" [displayWith]="displayFn">
                 <mat-option 
                   *ngFor="let option of filteredPermisosSCT" 
@@ -75,23 +82,32 @@
                     {{option.code}} - {{option.description}}
                 </mat-option>
               </mat-autocomplete>
+              <mat-error>{{'fleet.trucks.sct-perm-required' | translate}}</mat-error>
             </div>
 
             <!--  sct number input-->
-            <div class="truck-input wide-label">
-              <label for="sct_number">{{'fleet.trucks.sct-number' | translate}}</label>
-              <input type="text" name="sct_number" formControlName="sct_number">
+            <div 
+              class="truck-input wide-label"
+              [class]="truckDetailsForm.controls.sct_number.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.sct_number.touched} ">
+                <label for="sct_number">{{'fleet.trucks.sct-number' | translate}}</label>
+                <input type="text" name="sct_number" formControlName="sct_number">
+                <mat-error>{{'fleet.trucks.sct-number' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
             </div>
 
             <!--truck settings autocomplete-->
-            <div class="truck-input wide-label">
-              <label>{{
-                "fleet.trucks.truck_settings" | translate
-              }}</label>
+            <div 
+              class="truck-input wide-label"
+              [class]="truckDetailsForm.controls.truck_settings.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.truck_settings.touched} ">
+                <label>{{
+                  "fleet.trucks.truck_settings" | translate
+                }}</label>
 
               <input type="text"
                       [value]="selectedTruckSettings | async"
                       (keyup)="filteredTruckSettings = searchFunction(this.getCatalogue('sat_cp_config_autotransporte'),$event.target.value)"
+                      (blur)="resetOption($event,this.getCatalogue('sat_cp_config_autotransporte'), 'truck_settings' )"
                       [matAutocomplete]="truckSettingsAutocomplete">
               <mat-autocomplete #truckSettingsAutocomplete="matAutocomplete" [displayWith]="displayFn">
                 <mat-option 
@@ -101,6 +117,7 @@
                     {{option.code}} - {{option.description}}
                 </mat-option>
               </mat-autocomplete>
+              <mat-error>{{'fleet.trucks.truck-settings-required' | translate}}</mat-error>
             </div>
             
           </div>
@@ -108,14 +125,23 @@
           <!-- truck insurance tab-->
           <div class="embla__slide with-gap">
 
-            <div class="truck-input wide-label">
+            <div 
+              class="truck-input wide-label"
+              [class]="truckDetailsForm.controls.insurer.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.insurer.touched} ">
               <label for="insurer">{{'fleet.trucks.insurer-name' | translate}}</label>
               <input [placeholder]="'fleet.trucks.type-insurer' | translate" type="text" name="insurer" formControlName="insurer">
+              <mat-error>{{'fleet.trucks.insurer-name' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
+
             </div>
             
-            <div class="truck-input wide-label">
-              <label for="policy_number">{{'fleet.trucks.policy-number' | translate}}</label>
-              <input [placeholder]="'fleet.trucks.type-policy-number' | translate"type="text" name="policy_number" formControlName="policy_number">
+            <div 
+              class="truck-input wide-label"
+              [class]="truckDetailsForm.controls.policy_number.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.policy_number.touched} ">
+                <label for="policy_number">{{'fleet.trucks.policy-number' | translate}}</label>
+                <input [placeholder]="'fleet.trucks.type-policy-number' | translate"type="text" name="policy_number" formControlName="policy_number">
+                <mat-error>{{'fleet.trucks.policy-number' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
             </div>
 
             <div class="truck-input wide-label">

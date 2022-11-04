@@ -23,8 +23,8 @@
           [ngClass]="{touched: trailerDetailsForm.controls.trailer_number.touched}">
             <label for="trailer_number">{{'fleet.trailers.table.trailer_number' | translate}}</label>
             <input [placeholder]="'fleet.trailers.table.type-trailer-number' | translate" type="text" name="trailer_number" formControlName="trailer_number">
-            <!-- <mat-error>{{'fleet.trailers.invalid-model' | translate}}</mat-error> -->
-        </div>
+            <mat-error>{{'fleet.trailers.table.trailer_number' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
+          </div>
         <!-- (change)="setCargoType($event)" -->
 
         <div class="cargo-type">
@@ -48,7 +48,10 @@
 
         <div [ngClass]="{hidden: trailerDetailsForm.value.type !== 'other'}">
             <!-- permiso sct input-->
-            <div class="trailer-input wide-label">
+            <div 
+              class="trailer-input wide-label"
+              [class]="trailerDetailsForm.controls.subtype.status" 
+              [ngClass]="{touched:trailerDetailsForm.controls.subtype.touched} ">
               <label>{{
                 "fleet.trailers.trailer-subtype" | translate
               }}</label>
@@ -56,7 +59,8 @@
               <input type="text"
                 [value]="selectedSubtype | async"
                 (keyup)="filteredTrailerTypesCataloge = searchFunction(this.trailerTypesCataloge,$event.target.value)"
-                [matAutocomplete]="subtypeAutocomplete">
+                [matAutocomplete]="subtypeAutocomplete"
+                (blur)="resetOption($event,trailerTypesCataloge, 'subtype' )">
               <mat-autocomplete #subtypeAutocomplete="matAutocomplete" [displayWith]="displayFn">
                 <mat-option 
                   *ngFor="let option of filteredTrailerTypesCataloge" 
@@ -65,6 +69,7 @@
                     {{option.code}} - {{option.description}}
                 </mat-option>
               </mat-autocomplete>
+              <mat-error>{{'fleet.trailers.trailer-subtype' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
             </div>
         </div>
 

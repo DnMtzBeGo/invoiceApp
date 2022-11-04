@@ -1354,6 +1354,9 @@
       "invalid-plates":"Placas invalidas",
       "invalid-model":"Modelo inválido",
       "sct-number": "Num. Permiso sct",
+      "sct-perm-required":"Permiso sct requerido",
+      "truck-settings-required":"Ajustes del camión requeridos",
+      "required":"requerido",
       "table": {
         "brand": "Marca",
         "year": "Año",

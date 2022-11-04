@@ -37,8 +37,20 @@ export class FleetEditTrailerComponent implements OnInit {
       plates: ['', [Validators.required]],
       trailer_number: ['',Validators.required],
       type:['', Validators.required],
-      subtype: ['', Validators.required]
+      subtype: ['']
     });
+
+    this.trailerDetailsForm.get('type').valueChanges.subscribe((val)=>{
+      let validations = [];
+      if(val == 'other'){
+        validations = [Validators.required]
+      }
+
+      this.trailerDetailsForm.get('subtype').setValidators(validations);
+      this.trailerDetailsForm.controls['subtype'].updateValueAndValidity();
+
+    });
+
     this.selectedSubtype = this.selectedValueAutoComplete('subtype')
 
     await this.fillCataloguesFromDb();
@@ -225,6 +237,12 @@ export class FleetEditTrailerComponent implements OnInit {
       this.trailerDetailsForm.patchValue(values);
     }
   
+    resetOption({target}: {target: HTMLInputElement}, catalog: any[], formControlName: string){
+      const selectedValue = catalog.find(e=>e.code == this.trailerDetailsForm.value[formControlName] );
+      target.value = selectedValue ?  this.displayFn(selectedValue): '';
+      this.trailerDetailsForm.get(formControlName).markAsTouched();
+  }
+
 
 
 }
