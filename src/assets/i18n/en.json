@@ -1288,6 +1288,7 @@
       "gray": "Gray",
       "grey": "Gray"
     },
+    "only-imgs":"Only images supported",
     "txt_fleet": "My Fleet",
     "btn_order": "ORDER",
     "btn_view_all": "VIEW ALL",
