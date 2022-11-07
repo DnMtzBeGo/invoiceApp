@@ -1,3 +1,4 @@
+@import "../../../../styles.scss";
 .tabs-container{
 
   display: flex;
@@ -26,7 +27,7 @@
       font-family: 'Avenir';
 
       &.type-selected {
-        background: #FFBE00;
+        background: $yellow-color;
         box-shadow: 0px 4px 4px #000000;
         border-radius: 19px;
         font-weight: 600;
