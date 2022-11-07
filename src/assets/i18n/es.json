@@ -1406,6 +1406,7 @@
         "type": "Tipo",
         "trailer_number": "Número de Trailer",
         "type-trailer-number":"Escribe el número de trailer"
+      }
     },
     "alerts": {
       "invitation_sent": {

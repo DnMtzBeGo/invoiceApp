@@ -1402,6 +1402,7 @@
         "type": "Type",
         "trailer_number": "Trailer number",
         "type-trailer-number":"Type trailer number"
+      }
     },
     "alerts": {
       "invitation_sent": {
