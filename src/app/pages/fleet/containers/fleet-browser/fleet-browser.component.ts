@@ -170,9 +170,9 @@ export class FleetBrowserComponent implements OnInit {
               ...factura,
               status: !factura.member.connected
                 ? 'inactive'
-                : factura.availability === 1
+                : factura.member.availability === 1
                 ? 'available'
-                : factura.availability === 2
+                : factura.member.availability === 2
                 ? 'unavailable'
                 : 'unavailable'
             };
