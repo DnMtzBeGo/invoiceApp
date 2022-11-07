@@ -1,8 +1,6 @@
 <div class="app-fleet-browser">
   <div class="wrapper">
     <div class="invitation-container">
-
-
       <div class="invitations-grid" *ngIf="invitationPath == ''">
         <div class="invitations-title">
           <h1>{{ 'fleet.choose-invitation.txt_choose' | translate }}</h1>
@@ -32,32 +30,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div>
-        <form [formGroup]="invitationForm">
-          <mat-form-field>
-            <i class="icon icon-user"></i>
-            <mat-label>{{ "orders.placeholder-fullname" | translate }}</mat-label>
-            <input matInput formControlName="fullname" />
-          </mat-form-field>
-    
-          <bego-phone-input
-            [phoneFlag]="phoneFlag"
-            [phoneCode]="phoneCode"
-            [phoneNumber]="phoneNumber"
-            (phoneFlagChange)="phoneFlagChangeValue($event)"
-            (phoneCodeChange)="phoneCodeChangeValue($event)"
-            (phoneNumberChange)="phoneNumberChangeValue($event)"
-          >
-          </bego-phone-input>
-    
-          <mat-form-field>
-            <i class="icon icon-email"></i>
-            <mat-label>{{ "orders.placeholder-mail" | translate }}</mat-label>
-            <input matInput formControlName="email" />
-          </mat-form-field>
-        </form>
-      </div> -->
     <div>
       <form [formGroup]="numDriverForm"  *ngIf="invitationPath == 'invite'">
         <div class="driver-selector-container">
@@ -67,26 +39,20 @@
               <mat-icon name="remove-outline">remove</mat-icon>
             </div>
             <div class="driver-selector-input">
-              <input type="number" formControlName="numDriver"/>
+              <input type="number" formControlName="numDriver" readonly/>
             </div>
             <div class="driver-selector-symbol" (click)="addDriver()">
               <mat-icon name="add-outline">add</mat-icon>
             </div>
-
           </div>
         </div>
       </form>
-
       <div class="invitation-form" [formGroup]="form"  *ngIf="invitationPath == 'invite'">
         <ng-container formArrayName="drivers">
             <ng-container *ngFor="let driverForm of drivers.controls; let i = index">
                 <div class="invitation-row" [formGroup]="driverForm">
                   <div class="invitation-form-title">
                     <h3>{{ 'fleet.invite-driver.txt_driver' | translate }} {{i + 1}}</h3>
-                    <!-- <div class="check" [ngClass]="driverForm.valid ? 'checked': ''">
-                      <mat-icon name="add-outline">add</mat-icon>
-                    </div> -->
-
                     <svg
                       *ngIf="driverForm.valid"
                       class="checkmark"
@@ -99,7 +65,6 @@
                         d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
                     </svg>
                   </div>
-                 
                   <mat-form-field>
                     <i class="icon icon-user"></i>
                     <mat-label>{{ "orders.placeholder-fullname" | translate }}</mat-label>
@@ -118,19 +83,16 @@
                   <mat-form-field>
                     <i class="icon icon-email"></i>
                     <mat-label>{{ "orders.placeholder-mail" | translate }}</mat-label>
-                    <input matInput formControlName="email" />
+                    <input matInput formControlName="email" (keydown)="emailValid(driverForm.controls.email.valid, i)"/>
                   </mat-form-field>
                 </div>
             </ng-container>
         </ng-container>
       </div>
-
       <div class="invitations-grid" *ngIf="invitationPath == 'register'">
-        
         <div class="invitations-title">
           <h1>{{ 'fleet.invite-csv.txt_register' | translate }}</h1>
         </div>
-
         <div class="register-content">
           <p>{{ 'fleet.invite-csv.txt_download' | translate }}</p>
           <img src="../../../../../assets/images/fleet/register.svg"/>
@@ -138,20 +100,12 @@
           <p><a href="mailto:bego@begomx.com">bego@begomx.com</a></p>
           <button type="button" class="bego-btn yellow thick-btn medium" (click)="download()">{{ 'fleet.invite-csv.btn_download' | translate }} <mat-icon name="add-outline">download</mat-icon></button>
         </div>
-
       </div>
     </div>
-
     <div *ngIf="invitationPath == 'invite'">
       <button class="bego-btn yellow thick-btn medium-size" [disabled]="!validateInvitation" (click)="sendInvitation()">{{ 'fleet.invite-driver.btn_send' | translate }}</button>
     </div>
 
-
-
-
-
-
-      
     </div>
 
 

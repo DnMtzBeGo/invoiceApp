@@ -1406,6 +1406,30 @@
         "type": "Tipo",
         "trailer_number": "Número de Trailer",
         "type-trailer-number":"Escribe el número de trailer"
+    },
+    "alerts": {
+      "invitation_sent": {
+        "title": "Invitación enviada",
+        "message": "Tu invitación ha sido enviada con éxito. Espera una respuesta del operador para que aparezca en tu flotilla"
+      },
+      "partial_sent": {
+        "title": "Invitation sent",
+        "message": "Tu invitación ha sido enviada con éxito con la excepción de los siguientes operadores:"
+      },
+      "delete_member": {
+        "title": "Eliminar miembro",
+        "message": "¿Estás seguro de querer eliminar permanentemente a este operador de tu flotilla?",
+        "btn_cancel": "Cancelar"
+      },
+      "delete_truck": {
+        "title": "Eliminar unidad",
+        "message": "¿Estás seguro de querer eliminar permanentemente a esta unidad de tu flotilla?",
+        "btn_cancel": "Cancelar"
+      },
+      "delete_trailer": {
+        "title": "Eliminar caja",
+        "message": "¿Estás seguro de querer eliminar permanentemente a esta caja de tu flotilla?",
+        "btn_cancel": "Cancelar"
       }
     }
   },

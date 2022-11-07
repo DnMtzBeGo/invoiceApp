@@ -1402,7 +1402,30 @@
         "type": "Type",
         "trailer_number": "Trailer number",
         "type-trailer-number":"Type trailer number"
-
+    },
+    "alerts": {
+      "invitation_sent": {
+        "title": "Invitation sent",
+        "message": "The invitation has been sent successfully. Wait for the driver's confirmation to see it in your fleet"
+      },
+      "partial_sent": {
+        "title": "Invitation sent",
+        "message": "The invitation has been sent successfully with the exception of the following drivers:"
+      },
+      "delete_member": {
+        "title": "Delete fleet member",
+        "message": "Are you sure you want to proceed? This action is permanent",
+        "btn_cancel": "Cancel"
+      },
+      "delete_truck": {
+        "title": "Delete truck",
+        "message": "Are you sure you want to proceed? This action is permanent",
+        "btn_cancel": "Cancel"
+      },
+      "delete_trailer": {
+        "title": "Delete trailer",
+        "message": "Are you sure you want to proceed? This action is permanent",
+        "btn_cancel": "Cancel"
       }
     }
   },

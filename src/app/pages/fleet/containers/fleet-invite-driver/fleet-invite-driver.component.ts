@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-fleet-invite-driver',
@@ -29,10 +32,18 @@ export class FleetInviteDriverComponent implements OnInit {
     private _formBuilder: FormBuilder,
     public router: Router,
     public route: ActivatedRoute,
+    private webService: AuthService,
+    private alertService: AlertService,
+    private translateService: TranslateService
   ) { 
   }
 
   ngOnInit(): void {
+
+    this.route.queryParams.subscribe((params: Params) => {
+      this.fleetId = params['id'];
+   });
+
     this.numDriverForm.get("numDriver").valueChanges.subscribe((value) => {
       if(value < 21) {
         if(value != '') {
@@ -49,11 +60,6 @@ export class FleetInviteDriverComponent implements OnInit {
       }
       
     });
-
-
-    // this.form.get("drivers").valueChanges.subscribe(value => {
-    //   console.log(value);
-    // });
 
     this.form.get("drivers").statusChanges.subscribe(value => {
       if(value == 'VALID') {
@@ -113,7 +119,7 @@ export class FleetInviteDriverComponent implements OnInit {
     if(this.drivers.length < 20) {
       const driverForm = this._formBuilder.group({
         fullname: ['', Validators.required],
-        email: ['', Validators.required],
+        email: ['', [Validators.required, this.mailValidator]],
         phone: ['', Validators.required],
         flag: ['mx'],
         phoneNumber: [''],
@@ -147,82 +153,117 @@ export class FleetInviteDriverComponent implements OnInit {
     let phone: string;
     phone = value.phoneCode;
     phone = phone.concat(' ');
-    phone = phone.concat(value.phone);
-    console.log("phone: ", phone);
+    phone = phone.concat(value.phoneNumber);
     (this.form.get('drivers') as FormArray).at(index).get('phone').patchValue(phone);
+    const email = (this.form.get('drivers') as FormArray).at(index).get('email');
+    if (!value.phoneNumber) {
+      email.setValidators(
+        Validators.compose([
+          Validators.required,
+          this.mailValidator
+        ])
+      );
+    } else {
+      email.clearValidators();
+    }
+    email.updateValueAndValidity();
   }
 
-  // validatePhone(flag, code, number) {
-  //   let phoneNumber: string = '';
-  //   if(flag != '' && code != '' && number != '' ) {
-  //     phoneNumber = code;
-  //     phoneNumber = phoneNumber.concat(' '); 
-  //     phoneNumber = phoneNumber.concat(x.phone);
-  //   } else phoneNumber = '';
-  // }
-
   invitationPathChange(value: string) {
-    //this.getFleetId();
     this.invitationPath = value;
   }
 
-  getFleetId() {
-    if(this.route.snapshot.paramMap.get('id') == null) {
-      console.log('No tiene tiene:', this.route.snapshot.paramMap.get('id'))
-      this.router.navigate(['/fleet/members']);
+
+  emailValid(validEmail: boolean, index: number) {
+
+    const phone = (this.form.get('drivers') as FormArray).at(index).get('phone');
+    const phoneValue = (this.form.get('drivers') as FormArray).at(index).get('phoneNumber').value;
+
+    if(validEmail && phoneValue == '') {
+      phone.setValidators(
+        Validators.compose([
+          Validators.required
+        ])
+      );
     } else {
-      console.log('Si tiene tiene:', this.route.snapshot.paramMap.get('id'))
-      this.fleetId = this.route.snapshot.paramMap.get('id');
+      phone.clearValidators();
     }
+    phone.updateValueAndValidity();
   }
 
   async download() {
     window.open('https://ion-files.s3.amazonaws.com/invite.csv');
   }
 
-  sendInvitation() {
-    
+  async sendInvitation() {
 
-    // const { value: fleetId } = await Storage.get({ key: 'fleet' });
+    let requestBody = {
+      id_fleet: this.fleetId,
+      invitations: []
+    };
 
-    // let requestBody = {
-    //   id_fleet: fleetId,
-    //   invitations: []
-    // };
+    requestBody.invitations = [];
 
-    // requestBody.invitations = [];
-    // let phoneNumber: string = '';
+    this.drivers.value.map((x) => {
 
-    // this.drivers.map((x) => {
-    //   if(x.phone != '') {
-    //     phoneNumber = x.selectedPhoneCode;
-    //     phoneNumber = phoneNumber.concat(' ');
-    //     phoneNumber = phoneNumber.concat(x.phone);
-    //   } else phoneNumber = '';
+      requestBody.invitations.push({
+        member: x.fullname,
+        email: x.email,
+        telephone: x.phone
+      });
+    });
 
-    //   requestBody.invitations.push({
-    //     member: x.name,
-    //     email: x.email,
-    //     telephone: phoneNumber
-    //   });
-    // });
-    // (
-    //   await this.apiRestService.apiRestToken(
-    //     JSON.stringify(requestBody),
-    //     'fleet/send_invitation'
-    //   )
-    // ).subscribe((res) => {
-    //   console.log(res.result.rejected.length);
+    (
+      await this.webService.apiRest(
+        JSON.stringify(requestBody),
+        'fleet/send_invitation'
+      )
+    ).subscribe((res) => {
       
-    //   if(res.result.rejected.length > 0) {
-    //     let sendMessage = this.translateService.instant('fleet.alerts.partial_sent.message');
-    //     this.invitationsConfirm(sendMessage, res.result.rejected);
-    //   } else {
-    //     let sendMessage = this.translateService.instant('fleet.alerts.invitation_sent.message');
-    //     this.invitationsConfirm(sendMessage);
-    //   }
+      if(res.result.rejected.length > 0) {
+        let sendMessage = this.translateService.instant('fleet.alerts.partial_sent.message');
+        this.invitationsConfirm(sendMessage, res.result.rejected);
+      } else {
+        let sendMessage = this.translateService.instant('fleet.alerts.invitation_sent.message');
+        this.invitationsConfirm(sendMessage);
+      }
       
-    // });
+    });
   }
+
+
+  async invitationsConfirm(message, rejected?) {
+
+    let messageString = rejected?.map(function(x) {
+      return x;
+    }).join("<br>") || '';
+
+    this.alertService.create({
+      title: this.translateService.instant('fleet.alerts.invitation_sent.title'),
+      body: message + "<br>" + messageString,
+      handlers: [
+        {
+          text: this.translateService.instant('Ok'),
+          color: '#FFE000',
+          action: async () => {
+            this.router.navigate(['fleet/members']);
+            this.alertService.close();
+          }
+        },
+        {
+          text: this.translateService.instant('orders.btn-cancel'),
+          color: '#FFE000',
+          action: async () => {
+            this.alertService.close();
+          }
+        }
+      ]
+    });
+
+  }
+
+
+
+
 
 }
