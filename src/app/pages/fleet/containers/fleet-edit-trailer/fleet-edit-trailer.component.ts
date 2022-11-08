@@ -87,7 +87,7 @@ export class FleetEditTrailerComponent implements OnInit {
   }
 
   ontrailerInfoUpdated = () => {
-    this.disableSaveBtn = !this.valuesFormChanged();
+    this.disableSaveBtn = !this.valuesFormChanged() || this.trailerDetailsForm.status == 'INVALID';;
   };
   /**
    * Called only when creating a new trailer
@@ -100,7 +100,9 @@ export class FleetEditTrailerComponent implements OnInit {
   valuesFormChanged(): boolean {
     const changes = this.trailerDetailsForm.value;
     for (let key of Object.keys(changes)) {
-      if (this.originalInfo[key] != changes[key]) {
+      const originalValue =this.originalInfo[key];
+      const change = changes[key];
+      if (originalValue != change && originalValue && change) {
         return true;
       }
     }
