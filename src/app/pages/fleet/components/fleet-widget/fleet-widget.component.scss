@@ -16,6 +16,15 @@
   .fleet-title {
     margin: 0 0 50px;
     color: #ededed;
+
+    .mat-form-field {
+      margin-top: 8px;
+
+      ::ng-deep .mat-form-field-infix {
+        width: auto;
+        padding: 0em 0 0.6em;
+      }
+    }
   }
 
   ion-input {
@@ -57,7 +66,7 @@
       background-color: #1c232a;
       box-shadow: inset -2px -2px 4px 0 #0c1217, inset 2px 2px 4px 0 #2e3640;
       border-radius: 50%;
-      color: #FFE000;
+      color: #ffe000;
       opacity: 0;
       transition: 2s ease-in-out;
     }

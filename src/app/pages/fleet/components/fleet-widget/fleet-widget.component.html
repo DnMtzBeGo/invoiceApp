@@ -2,7 +2,15 @@
   <div *ngIf="fleetDataLoaded" [@enterAnimation]>
     <div class="fleet-title">
       <h2>{{ 'fleet.txt_fleet' | translate }}</h2>
-      <h1>{{ fleetNameFromService }}</h1>
+      <h1 *ngIf="!editName">{{ fleetNameFromService }}</h1>
+      <mat-form-field *ngIf="editName" class="brand-field-1" appearance="outline" style="width: 100%">
+        <input
+          matInput
+          [(ngModel)]="fleetName"
+          (focusout)="blurDetectedInput($event)"
+          (ngModelChange)="detectedLastChange($event)"
+          (focusin)="resetVariablesOnFocus()" />
+      </mat-form-field>
     </div>
 
     <div class="fleet-dashboard">

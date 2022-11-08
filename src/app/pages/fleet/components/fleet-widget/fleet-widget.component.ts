@@ -18,6 +18,9 @@ export class FleetWidgetComponent implements OnInit {
   @Input()
   size: string = 'md';
 
+  @Input()
+  editName: boolean = false;
+
   fleetDetails: any;
   fleetNameFromService: string;
   fleetName: string;
