@@ -315,7 +315,6 @@ export class FleetEditTruckComponent implements OnInit {
   }
 
   onTruckInfoUpdated = () => {
-    const status = Object.keys(this.truckDetailsForm.controls).map(e=>[e,this.truckDetailsForm.controls[e].status ])
     this.disableSaveBtn = !this.valuesFormChanged() || this.truckDetailsForm.status == 'INVALID';
   };
   /**
