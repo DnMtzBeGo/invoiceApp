@@ -458,20 +458,23 @@ const resolvers = {
     pluck: 'data',
     lang: 'members',
     sortBy: ['member_meta.date_created', 'member.nickname'],
-    sortInit: ['member_meta.date_created', 'desc']
+    sortInit: ['member_meta.date_created', 'desc'],
+    withFleetId: true
   },
   trucks: {
     endpoint: 'fleets/:fleetId/trucks',
     pluck: 'data',
     lang: 'trucks',
     sortBy: ['date_created', 'attributes.brand'],
-    sortInit: ['date_created', 'desc']
+    sortInit: ['date_created', 'desc'],
+    withFleetId: false
   },
   trailers: {
     endpoint: 'fleets/:fleetId/trailers',
     pluck: 'data',
     lang: 'trailers',
     sortBy: ['date_created', 'trailer_number'],
-    sortInit: ['date_created', 'desc']
+    sortInit: ['date_created', 'desc'],
+    withFleetId: false
   }
 };

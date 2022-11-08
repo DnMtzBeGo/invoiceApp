@@ -41,7 +41,7 @@ export class FleetInviteDriverComponent implements OnInit {
   ngOnInit(): void {
 
     this.route.queryParams.subscribe((params: Params) => {
-      this.fleetId = params['id'];
+      this.fleetId = params['fleet_id'];
    });
 
     this.numDriverForm.get("numDriver").valueChanges.subscribe((value) => {
