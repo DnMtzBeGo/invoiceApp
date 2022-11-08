@@ -20,9 +20,15 @@
     .mat-form-field {
       margin-top: 8px;
 
-      ::ng-deep .mat-form-field-infix {
-        width: auto;
-        padding: 0em 0 0.6em;
+      ::ng-deep {
+        .mat-form-field-wrapper {
+          padding-bottom: 0;
+        }
+
+        .mat-form-field-infix {
+          width: auto;
+          padding: 0em 0 0.6em;
+        }
       }
     }
   }
