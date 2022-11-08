@@ -9,6 +9,7 @@ import { Observable, Observer } from 'rxjs';
 import { ActionConfirmationComponent } from 'src/app/pages/invoice/modals';
 import { PickerSelectedColor } from 'src/app/shared/components/color-picker/color-picker.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { ReceviedPicture } from '../../components/pictures-grid/pictures-grid.component';
 import { UploadFileInfo, UploadFilesComponent } from '../../components/upload-files/upload-files.component';
 @Component({
@@ -27,7 +28,8 @@ export class FleetEditTruckComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private matDialog: MatDialog,
-    private webService: AuthService
+    private webService: AuthService,
+    private notificationsService: NotificationsService
   ) {
     this.route.params;
   }
@@ -64,10 +66,10 @@ export class FleetEditTruckComponent implements OnInit {
       colorName: ['', Validators.required],
       color: ['', Validators.required],
       sct_permission: ['', Validators.required],
-      sct_permission_text: ['', Validators.required],
+      sct_permission_text: [''],
       sct_number: ['', Validators.required],
       truck_settings: ['', Validators.required],
-      truck_settings_text: ['', Validators.required],
+      truck_settings_text: [''],
       insurer: ['', Validators.required],
       policy_number: ['', Validators.required]
     });
@@ -313,7 +315,7 @@ export class FleetEditTruckComponent implements OnInit {
   }
 
   onTruckInfoUpdated = () => {
-    this.disableSaveBtn = !this.valuesFormChanged();
+    this.disableSaveBtn = !this.valuesFormChanged() || this.truckDetailsForm.status == 'INVALID';
   };
   /**
    * Called only when creating a new truck
@@ -326,7 +328,9 @@ export class FleetEditTruckComponent implements OnInit {
   valuesFormChanged(): boolean {
     const changes = this.truckDetailsForm.value;
     for (let key of Object.keys(changes)) {
-      if (this.originalInfo[key] != changes[key]) {
+      const originalValue =this.originalInfo[key];
+      const change = changes[key];
+      if (originalValue != change && originalValue && change) {
         return true;
       }
     }
@@ -391,6 +395,14 @@ export class FleetEditTruckComponent implements OnInit {
   }
 
   public async handleFileInput({ file, i, dialog }: ReceviedPicture){
+
+    const acceptedFiles = ['image/jpeg', 'image/jpg', 'image/png']
+
+    if(!acceptedFiles.includes(file.type)){
+      this.notificationsService.showErrorToastr(this.translateService.instant('fleet.only-imgs'));
+      return;
+    }
+
     const fileInfo = dialog.componentInstance.info.files[i];
     const newTruck = this.router.url == '/fleet/trucks/new';
 
