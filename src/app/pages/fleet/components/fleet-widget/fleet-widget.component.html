@@ -40,7 +40,10 @@
               *ngIf="i < 4"
               [routerLink]="[routes.EDIT_MEMBER]"
               [queryParams]="{ id: member._id }">
-              <img [src]="member.thumbnail || '../../../../assets/images/avatar-outline.svg'" />
+              <img
+                [src]="
+                  member.thumbnail && !member.thumbnail.endsWith('/') ? member.thumbnail : '../../../../assets/images/avatar-outline.svg'
+                " />
             </div>
           </ng-container>
           <div class="remaining-bubbles" *ngIf="members.length > 4" [routerLink]="[routes.MEMBERS]">
@@ -64,7 +67,12 @@
           </div>
           <ng-container *ngFor="let truck of trucks; index as i">
             <div class="no-status" *ngIf="i < 4" [routerLink]="[routes.EDIT_TRUCK, { id: truck._id }]">
-              <img [src]="truck.thumbnail ? truck.thumbnail + '?' + differentTruck : '../../../../assets/images/truck.svg'" />
+              <img
+                [src]="
+                  truck.thumbnail && !truck.thumbnail.endsWith('/')
+                    ? truck.thumbnail + '?' + differentTruck
+                    : '../../../../assets/images/truck.svg'
+                " />
             </div>
           </ng-container>
           <div *ngIf="trucks.length > 4" class="remaining-bubbles" [routerLink]="[routes.TRUCKS]">
@@ -88,7 +96,12 @@
           </div>
           <ng-container *ngFor="let trailer of trailers; index as i">
             <div class="no-status" *ngIf="i < 4" [routerLink]="[routes.EDIT_TRAILER, { id: trailer._id }]">
-              <img [src]="trailer.thumbnail ? trailer.thumbnail + '?' + differentTruck : '../../../../assets/images/trailer.svg'" />
+              <img
+                [src]="
+                  trailer.thumbnail && !trailer.thumbnail.endsWith('/')
+                    ? trailer.thumbnail + '?' + differentTruck
+                    : '../../../../assets/images/trailer.svg'
+                " />
             </div>
           </ng-container>
           <div *ngIf="trailers.length > 4" class="remaining-bubbles" [routerLink]="[routes.TRAILERS]">
