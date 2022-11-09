@@ -60,7 +60,7 @@
         </div>
         <div class="fleet-bubbles" *ngIf="hasChange">
           <div *ngIf="trucks.length < 1" class="no-status" [routerLink]="[routes.TRUCKS]">
-            <img class="no-cover" src="../../assets/orders/trailer.svg" />
+            <img class="no-cover" src="../../assets/orders/truck.svg" />
           </div>
           <ng-container *ngFor="let truck of trucks; index as i">
             <div class="no-status" *ngIf="i < 4" [routerLink]="[routes.EDIT_TRUCK, { id: truck._id }]">
