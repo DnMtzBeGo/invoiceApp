@@ -306,6 +306,8 @@ export class PersonalInfoComponent implements OnInit {
   async updateAttribute( formControlName: string ){
     const bodyRequest: any  = {};
     bodyRequest[formControlName]= this.personalInfoForm.value[formControlName];
+
+    if (!this.personalInfoForm.controls[formControlName].valid) return;
     
     (await this.webService.apiRest(
       JSON.stringify({

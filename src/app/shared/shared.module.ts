@@ -56,6 +56,8 @@ import { BegoInputFileComponent } from './components/bego-input-file/bego-input-
 
 import { NotificationBarModule } from "src/app/shared/components/notification-bar/notification-bar.module";
 import { NotificationBarComponent } from "src/app/shared/components/notification-bar/notification-bar.component";
+import { UppercaseDirective } from 'src/app/pages/shared/directives/uppercase.directive';
+
 @NgModule({
   declarations: [
     FacturaEmisorConceptosComponent,
@@ -66,6 +68,7 @@ import { NotificationBarComponent } from "src/app/shared/components/notification
     NotificationBarComponent,
     PinComponent,
     BegoInputFileComponent,
+    UppercaseDirective
   ],
   imports: [
     CommonModule,
@@ -156,6 +159,7 @@ import { NotificationBarComponent } from "src/app/shared/components/notification
     //    NotificationBarModule,
     NotificationBarComponent,
     PinComponent,
+    UppercaseDirective
   ],
   providers: [CartaPorteInfoService],
 })

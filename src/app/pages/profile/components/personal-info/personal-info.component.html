@@ -47,10 +47,14 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>RFC</mat-label>
-          <input 
-            matInput 
+          <input
+            appUppercase
+            matInput
             formControlName="RFC"
+            name="rfc"
+            autocomplete="off"
             (blur)="updateAttribute('RFC')">
+            <mat-error>{{'checkout.invalid_rfc' | translate}}</mat-error>
         </mat-form-field>
       </div>
 
