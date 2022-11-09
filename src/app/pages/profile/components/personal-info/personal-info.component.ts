@@ -338,6 +338,7 @@ export class PersonalInfoComponent implements OnInit {
 
     (await this.webService.apiRest(JSON.stringify(requestBody),'carriers/change_nickname')).subscribe(
       ( res )=>{
+        this.profileInfoService.getProfileInfo(this.id);
       },
       ( err ) => {
 
