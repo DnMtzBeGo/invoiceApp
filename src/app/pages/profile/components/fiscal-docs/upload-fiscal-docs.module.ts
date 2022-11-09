@@ -11,6 +11,7 @@ import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { ClickStopPropagationDirective } from '../../../../shared/directives/click-stop-propagation.directive';
 
+import { MatButtonModule } from "@angular/material/button";
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -30,6 +31,7 @@ export function playerFactory() {
   imports: [
     CommonModule,
     UploadFiscalDocsRoutingModule,
+    MatButtonModule,
     ButtonModule,
     BegoAlertModule,
     TranslateModule,

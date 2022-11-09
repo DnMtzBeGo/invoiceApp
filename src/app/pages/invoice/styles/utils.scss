@@ -27,7 +27,7 @@
 
   &.mat-button-disabled {
     background: linear-gradient(180deg, #080f15 0%, #171d23 100%);
-    outline: 3px solid #10161c;
+    border-color: #10161c;
     box-shadow: inset 3px 3px 8px 3px #111416;
     color: #494c50;
   }
