@@ -43,6 +43,10 @@ export class ProfileInfoService {
             this.profilePicSubject.next(result.url);
             console.log("Profile pic: ", result.url);
             resolve(result.url);
+          } else {
+            localStorage.setItem("profilePicture", '');
+            this.profilePicSubject.next('');
+            resolve('');
           }
         },
         (error) => {

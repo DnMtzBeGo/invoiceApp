@@ -12,9 +12,9 @@
             (error)="profilePicError()"
             alt="">
 
-            <div 
+            <div
+              *ngIf="!noProfilePic && id == null"
               class="close-btn"
-              *ngIf="!noProfilePic"
               (click)="showDeleteProfilePicModal = true">
             </div>
         </div>

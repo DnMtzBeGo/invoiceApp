@@ -105,8 +105,8 @@ export class ProfileComponent implements OnInit {
       return false;
     });
 
-    this.profileInfoService.getProfileInfo(this.id);
-    this.refreshProfilePic();
+    // this.profileInfoService.getProfileInfo(this.id);
+
     // this.profileInfoService.profilePicUrl.subscribe((profilePicUrl: string) => {
     //   this.profileImg = profilePicUrl;
     // });
@@ -115,16 +115,19 @@ export class ProfileComponent implements OnInit {
       //console.log(profileInfo);
       this.profileInfo = profileInfo;
       this.profileImg = profileInfo?.thumbnail;
+      this.noProfilePic = !profileInfo?.thumbnail;
     });
+
     this.getOrderCount(this.id);
+    this.profileInfoService.getProfileInfo(this.id);
   }
 
   refreshProfilePic() {
-    // this.profileInfoService.getProfilePic().then((profilePicUrl: string) => {
-      //console.log('New profile pic: ', profilePicUrl)
-      // this.profileImg = profilePicUrl;
-      // this.noProfilePic = false;
-    // });
+    return this.profileInfoService.getProfilePic().then((profilePicUrl: string) => {
+      console.log('New profile pic: ', profilePicUrl)
+      this.profileImg = profilePicUrl;
+      this.noProfilePic = false;
+    });
   }
 
   async getOrderCount(carrier_id) {
@@ -230,7 +233,8 @@ export class ProfileComponent implements OnInit {
     (await this.webService.apiRest('', 'profile/remove_picture')).subscribe(
       (res) => {
         console.log('Profile pic was removed  successfully', res);
-        this.profileInfoService.getProfilePic();
+        // this.profileInfoService.getProfileInfo(this.id);
+        this.refreshProfilePic();
       },
       (err) => {
         console.log('remove profile pic error: ', err);

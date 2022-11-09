@@ -54,6 +54,7 @@
           font-weight: 500;
           font-size: 36px;
           color: #ededed;
+          margin-top: 20px;
         }
 
         .order-label{
@@ -65,7 +66,6 @@
 
       .fleet-info {
         text-align: center;
-        margin-top: 20px;
 
         .name {
           @include fluid('margin-top',800px, 1920px, 10px, 15px);
