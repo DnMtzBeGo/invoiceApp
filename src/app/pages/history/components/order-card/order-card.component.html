@@ -5,8 +5,8 @@
   <div class="draft-info">
       <div class="drafts-data-header">
         <div class="order-date-info">
-          <div>{{order.created | date: 'dd/MM/yyyy'}}</div>
-          <div>{{order.created | date: 'shortTime'}}</div>
+          <div>{{order.pickup?.startDate | date: 'dd/MM/yyyy'}}</div>
+          <div>{{order.pickup?.startDate | date: 'shortTime'}}</div>
           <div>#{{order.order_number}}</div>
         </div>
         <div class="earning-order-info">
