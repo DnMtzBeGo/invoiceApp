@@ -1,5 +1,6 @@
 export interface Order {
-  reference_number: string;
+  stamp: boolean,
+  reference_number?: string;
   status: number;
   completion_percentage: number;
   cargo: {

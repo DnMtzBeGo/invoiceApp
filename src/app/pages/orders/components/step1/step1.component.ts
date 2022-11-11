@@ -37,14 +37,14 @@ export class Step1Component implements OnInit {
   @Output() validFormStep1: EventEmitter<boolean> = new EventEmitter();
 
   step1Form: FormGroup = this.formBuilder.group({
-    fullname: ["", Validators.required],
-    email: ["", [Validators.required, this.mailValidator]],
+    fullname: [null, Validators.required],
+    email: [null, [Validators.required, this.mailValidator]],
     phoneCode: [this.phoneCode],
     phonenumber: [this.phoneNumber, Validators.required],
-    reference: ["", Validators.required],
+    reference: [null, Validators.required],
     country_code: [this.phoneFlag],
     orderWithCP: [false],
-    rfc: [""],
+    rfc: [null],
   });
 
   constructor(
