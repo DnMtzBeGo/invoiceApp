@@ -27,7 +27,7 @@ export class BegoPhoneInputComponent implements OnInit {
   public phoneError: boolean = true;
 
   phoneInputForm: FormGroup = this.formBuilder.group({
-    phoneNumber: ['', Validators.required],
+    phoneNumber: ['', Validators.required], 
   });
 
   public defaultPhoneCode = '+52';
@@ -53,6 +53,8 @@ export class BegoPhoneInputComponent implements OnInit {
   @Input() phoneNumber: string = '';
   @Output() phoneNumberChange = new EventEmitter<string>();
   @Output() phoneObject = new EventEmitter<any>();
+
+  @Input() validations: boolean = true;
 
 
 
@@ -100,6 +102,17 @@ export class BegoPhoneInputComponent implements OnInit {
       }else{
         this.phoneInputForm.enable();
       }
+    }
+
+    if(changes.validations) {
+      if(this.validations) {
+        this.phoneInputForm.controls['phoneNumber'].clearValidators();
+        
+      } else {
+        this.phoneInputForm.controls['phoneNumber'].setValidators(Validators.compose([Validators.required]));
+      }
+
+      this.phoneInputForm.controls['phoneNumber'].updateValueAndValidity();
     }
 
   }

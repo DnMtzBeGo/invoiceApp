@@ -99,16 +99,18 @@ export class FleetInviteDriverComponent implements OnInit {
   //   return null;
   // }
 
-  mailValidator(c: AbstractControl)  {
-   
+  mailValidator(c: AbstractControl): { [key: string]: boolean } {
     const mail = c.value;
+    const regexp = new RegExp('^([da-zA-Z_.-]+)@([da-z.-]+).([a-z.]{2,6})$');
+    const pattern =
+      /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+    const test = regexp.test(mail);
 
-    const re: RegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const mailInvalid =  !re.test(String(mail).toLowerCase());
-    if(mailInvalid)
-      return { mailInvalid  };
+    if (!pattern.test(mail)) {
+      return { mailInvalid: true };
+    }
+
     return null;
-
   }
 
   get drivers() {
@@ -151,22 +153,39 @@ export class FleetInviteDriverComponent implements OnInit {
 
   phoneChangeValue(value: any, index: number) {
     let phone: string;
-    phone = value.phoneCode;
-    phone = phone.concat(' ');
-    phone = phone.concat(value.phoneNumber);
+    if(value.phoneNumber) {
+      phone = value.phoneCode;
+      phone = phone.concat(' ');
+      phone = phone.concat(value.phoneNumber);
+    } else {
+      phone = '';
+    }
     (this.form.get('drivers') as FormArray).at(index).get('phone').patchValue(phone);
-    const email = (this.form.get('drivers') as FormArray).at(index).get('email');
-    if (!value.phoneNumber) {
-      email.setValidators(
+    const emailInput = (this.form.get('drivers') as FormArray).at(index).get('email');
+    const phoneInput = (this.form.get('drivers') as FormArray).at(index).get('phone');
+    const phoneValue = (this.form.get('drivers') as FormArray).at(index).get('phone').value;
+    const emailValue = (this.form.get('drivers') as FormArray).at(index).get('email').value;
+    const phoneValid = (this.form.get('drivers') as FormArray).at(index).get('phone').valid;
+    if(phoneValid && emailValue == '') {
+      emailInput.clearValidators();
+    }
+    
+    if (emailValue == '' && phoneValue == '') {
+      emailInput.setValidators(
         Validators.compose([
           Validators.required,
           this.mailValidator
         ])
       );
-    } else {
-      email.clearValidators();
-    }
-    email.updateValueAndValidity();
+      phoneInput.setValidators(
+        Validators.compose([
+          Validators.required
+        ])
+      );
+      
+    } 
+    emailInput.updateValueAndValidity();
+    phoneInput.updateValueAndValidity();
   }
 
   invitationPathChange(value: string) {
@@ -174,21 +193,32 @@ export class FleetInviteDriverComponent implements OnInit {
   }
 
 
-  emailValid(validEmail: boolean, index: number) {
+  emailValid(validEmail: boolean, valueEmail: string, index: number) {
 
     const phone = (this.form.get('drivers') as FormArray).at(index).get('phone');
-    const phoneValue = (this.form.get('drivers') as FormArray).at(index).get('phoneNumber').value;
-
+    const phoneValue = (this.form.get('drivers') as FormArray).at(index).get('phone').value;
+    const emailInput = (this.form.get('drivers') as FormArray).at(index).get('email');
+    
     if(validEmail && phoneValue == '') {
-      phone.setValidators(
-        Validators.compose([
-          Validators.required
-        ])
-      );
-    } else {
       phone.clearValidators();
     }
+    
+    if(valueEmail == '' && phoneValue != '') {
+      emailInput.clearValidators();
+    }
+
+    if(!validEmail && valueEmail != '' ) {
+      emailInput.setValidators(
+        Validators.compose([
+          Validators.required,
+          this.mailValidator
+        ])
+      );
+    }
+
+    emailInput.updateValueAndValidity();
     phone.updateValueAndValidity();
+
   }
 
   async download() {
@@ -205,7 +235,6 @@ export class FleetInviteDriverComponent implements OnInit {
     requestBody.invitations = [];
 
     this.drivers.value.map((x) => {
-
       requestBody.invitations.push({
         member: x.fullname,
         email: x.email,
@@ -213,6 +242,7 @@ export class FleetInviteDriverComponent implements OnInit {
       });
     });
 
+    // console.log(requestBody);
     (
       await this.webService.apiRest(
         JSON.stringify(requestBody),
@@ -261,9 +291,4 @@ export class FleetInviteDriverComponent implements OnInit {
     });
 
   }
-
-
-
-
-
 }

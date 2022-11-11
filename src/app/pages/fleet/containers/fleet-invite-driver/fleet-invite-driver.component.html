@@ -71,6 +71,7 @@
                     <input matInput formControlName="fullname" />
                   </mat-form-field>
                   <bego-phone-input
+                  [validations]="driverForm.valid"
                   [phoneFlag]="driverForm.controls.flag.value"
                   [phoneCode]="driverForm.controls.phoneCode.value"
                   [phoneNumber]="driverForm.controls.phoneNumber.value"
@@ -83,7 +84,7 @@
                   <mat-form-field>
                     <i class="icon icon-email"></i>
                     <mat-label>{{ "orders.placeholder-mail" | translate }}</mat-label>
-                    <input matInput formControlName="email" (keydown)="emailValid(driverForm.controls.email.valid, i)"/>
+                    <input matInput formControlName="email" (keyup)="emailValid(driverForm.controls.email.valid, driverForm.controls.email.value, i)"/>
                   </mat-form-field>
                 </div>
             </ng-container>
