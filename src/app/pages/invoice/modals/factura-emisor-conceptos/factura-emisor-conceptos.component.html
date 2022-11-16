@@ -109,6 +109,18 @@
         }}
       </span>
     </button>
+    <a
+      *ngIf="config.mode === 'index'"
+      [matTooltip]="'invoice.emisor-concep.template-tooltip' | translate"
+      matTooltipPosition="right"
+      matTooltipHideDelay="100"
+      matTooltipClass="brand-tooltip-1"
+      style="margin-left: 0; display: flex; place-items: center; cursor: pointer; color: inherit; text-decoration: inherit;"
+      href="./assets/files/products-template.xlsx"
+      download=""
+    >
+      <mat-icon>download</mat-icon>
+    </a>
     <input
       style="display: none"
       type="file"
@@ -117,13 +129,14 @@
       accept=".xls, .xlsx"
       (change)="
         vm.formImport.archivo = $event.target.files[0];
-        conceptoEmitter.next(['submitImport', vm.formImport])
+        conceptoEmitter.next(['submitImport', vm.formImport]);
+        $event.target.value = '';
       "
     />
   </div>
 
   <!-- Table conceptos -->
-  <mat-card *ngIf="config.mode === 'index'" class="concepto-table-wrapper">
+  <mat-card *ngIf="config.mode === 'index'" class="concepto-table-wrapper" [style.display]="vm.conceptos?.length ? 'block' : 'none'">
     <mat-card-content class="concepto-table__content">
       <mat-progress-bar
         [style.display]="vm.conceptosLoading ? 'block' : 'none'"

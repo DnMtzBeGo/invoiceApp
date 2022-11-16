@@ -981,7 +981,9 @@
         "btn-save-update-success": "Concepto actualizado",
         "btn-save-save": "Guardar",
         "btn-save-save-success": "Concepto guardado",
-        "btn-save-new": "Nuevo Producto o Servicio"
+        "btn-save-new": "Nuevo Producto o Servicio",
+
+        "template-tooltip": "Template\nDescargar archivo template de productos."
     },
     "serie-new": {
         "title": "Series y logos",

@@ -64,11 +64,14 @@ export class SeriesTableComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.message != "") {
-        this.notificationsService.showSuccessToastr(
-          this.translateService.instant("invoice.serie-table.save-success")
+        this.notificationsService[result.success ? 'showSuccessToastr' : 'showErrorToastr'](
+          result.message
         );
-        this.refresh.emit();
-        this.table.renderRows();
+
+        if (result.success) {
+          this.refresh.emit();
+          this.table.renderRows();
+        }
       }
     });
   }

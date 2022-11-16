@@ -136,6 +136,11 @@
       box-shadow: none;
     }
 
+    input.mat-input-element,
+    .mat-select-value {
+      opacity: 0.4;
+    }
+
     .mat-select-disabled .mat-select-arrow,
     .mat-select-arrow {
       opacity: 0.4;
