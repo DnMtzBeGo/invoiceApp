@@ -1,19 +1,12 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  QueryList,
-  SimpleChanges,
-  ViewChildren,
-} from "@angular/core";
-import { CartaPorteInfoService } from "../services/carta-porte-info.service";
-import { CataloguesListService } from "../services/catalogues-list.service";
-import { UbicacionComponent } from "./components/ubicacion/ubicacion.component";
+import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { CartaPorteInfoService } from '../services/carta-porte-info.service';
+import { CataloguesListService } from '../services/catalogues-list.service';
+import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
 
 @Component({
-  selector: "app-ubicaciones",
-  templateUrl: "./ubicaciones.component.html",
-  styleUrls: ["./ubicaciones.component.scss"],
+  selector: 'app-ubicaciones',
+  templateUrl: './ubicaciones.component.html',
+  styleUrls: ['./ubicaciones.component.scss']
 })
 export class UbicacionesComponent implements OnInit {
   public locations: any[];
@@ -24,10 +17,7 @@ export class UbicacionesComponent implements OnInit {
 
   @Input() info: any;
 
-  constructor(
-    public cataloguesListService: CataloguesListService,
-    public cartaPorteInfoService: CartaPorteInfoService
-  ) {}
+  constructor(public cataloguesListService: CataloguesListService, public cartaPorteInfoService: CartaPorteInfoService) {}
 
   async ngOnInit(): Promise<void> {
     this.cartaPorteInfoService.infoRecolector.subscribe(() => {
@@ -37,18 +27,21 @@ export class UbicacionesComponent implements OnInit {
         });
         this.cartaPorteInfoService.addRecolectedInfo({
           ubicaciones,
-          isValid: this.checkIfUbicacionesValid(),
+          isValid: this.checkIfUbicacionesValid()
         });
       } catch (e) {
-        console.log("Error: ", e);
+        console.log('Error: ', e);
         this.cartaPorteInfoService.addRecolectedInfo({
           ubicaciones: [],
-          isValid: false,
+          isValid: false
         });
       }
     });
 
-    this.locations = [this.counter];
+    //
+    // Se comento la siguiente linea porque provoca que al editar salgan vacias las ubicaciones
+    //
+    // this.locations = [this.counter];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
