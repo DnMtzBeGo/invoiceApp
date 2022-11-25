@@ -133,4 +133,12 @@ export class MercanciasComponent implements OnInit {
     let stateFound = option ? this.unidadPeso?.find((x) => x.clave === option) : undefined;
     return stateFound ? `${stateFound.clave} - ${stateFound.nombre}` : undefined;
   }
+
+  resetFilterList(list) {
+    switch(list) {
+      case 'permisosSCT':
+        this.filteredUnidadPeso = this.unidadPeso;
+        break;
+    }
+  }
 }

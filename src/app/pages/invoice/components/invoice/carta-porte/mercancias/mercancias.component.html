@@ -17,6 +17,7 @@
       type="search"
       matInput
       [matAutocomplete]="unidadPesoRef"
+      (search)="resetFilterList('unidad_peso')"
     />
     <mat-autocomplete
       #unidadPesoRef="matAutocomplete"

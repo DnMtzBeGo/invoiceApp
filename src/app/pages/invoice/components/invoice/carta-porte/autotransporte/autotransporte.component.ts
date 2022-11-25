@@ -208,4 +208,32 @@ export class AutotransporteComponent implements OnInit {
     }
     return undefined;
   }
+
+  permisoSCTSearch() {
+    this.filteredPermisosSCT = this.permisosSCT;
+  }
+
+  identificacionVehicularConfigSearch() {
+    this.filteredIdentificacionVehicular = this.identificacionVehicular;
+  }
+
+  remolquesConfigSearch() {
+    this.filteredRemolquesConfig = this.remolquesConfig;
+  }
+
+
+  resetFilterList(list) {
+    switch(list) {
+      case 'permisosSCT':
+        this.filteredPermisosSCT = this.permisosSCT;
+        break;
+      case 'identificacionVehicularConfig':
+        this.filteredIdentificacionVehicular = this.identificacionVehicular;
+        break;
+      case 'remolquesConfig':
+        this.filteredRemolquesConfig = this.remolquesConfig;
+        break;
+    }
+  }
+  
 }

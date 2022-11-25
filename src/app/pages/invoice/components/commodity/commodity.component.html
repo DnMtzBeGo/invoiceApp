@@ -9,7 +9,9 @@
         autocomplete="off"
         type="search"
         matInput
+        (search)="resetFilterList('bienesTransportados')"
         [matAutocomplete]="bienesTransportadosRef"
+        
       />
       <mat-autocomplete
         #bienesTransportadosRef="matAutocomplete"
@@ -42,6 +44,7 @@
         autocomplete="off"
         type="search"
         matInput
+        (search)="resetFilterList('claveUnidad')"
         [matAutocomplete]="claveUnidadRef"
       />
       <mat-autocomplete
@@ -133,6 +136,7 @@
         autocomplete="off"
         type="search"
         matInput
+        (search)="resetFilterList('claveMaterialPeligroso')"
         [matAutocomplete]="claveMaterialPeligrosoRef"
       />
       <mat-autocomplete

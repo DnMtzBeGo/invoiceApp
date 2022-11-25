@@ -27,6 +27,7 @@ export class CartaPortePageComponent implements OnInit {
   public mercanciasInfo: any;
   public figuraTransporteInfo: any;
   public cartaPorteEnabled = [];
+  public cartaPorteDisabled: boolean = false;
   isLinear = false;
   constructor(
     public cartaPorteInfoService: CartaPorteInfoService,
@@ -70,6 +71,14 @@ export class CartaPortePageComponent implements OnInit {
       this.figuraTransporteInfo = carta_porte.figura_transporte;
       this.ubicacionesInfo = carta_porte.ubicaciones;
       this.mercanciasInfo = carta_porte.mercancias;
+    }
+    console.log(changes.facturaInfo?.currentValue?.complementos.length);
+    if(changes.facturaInfo?.currentValue?.complementos.length > 0) {
+      this.cartaPorteDisabled = true;
+      console.log("El switch se prende",this.cartaPorteDisabled)
+    } else {
+      this.cartaPorteDisabled = false;
+      console.log("El switch se apaga",this.cartaPorteDisabled)
     }
 
   }

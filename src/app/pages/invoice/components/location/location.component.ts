@@ -190,4 +190,21 @@ export class LocationComponent implements OnInit {
       ? `${stateFound.clave} - ${stateFound.nombre}`
       : undefined;
   }
+
+  resetFilterList(list) {
+    switch(list) {
+      case 'estado':
+        this.filteredEstados = this.estados;
+        break;
+      case 'municipio':
+        this.filteredMunicipios = this.municipios;
+        break;
+      case 'localidad':
+        this.filteredLocalidades = this.localidades;
+        break;
+      case 'colonia':
+        this.filteredColonias = this.colonias;
+        break;
+    }
+  }
 }

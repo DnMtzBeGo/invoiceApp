@@ -45,8 +45,12 @@ export class UbicacionesComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.info) {
+    // console.log(changes)
+    // console.log(changes.info)
+    if (changes.info.currentValue) {
       this.locations = this.info;
+    } else {
+      this.locations = [this.counter];
     }
   }
 
