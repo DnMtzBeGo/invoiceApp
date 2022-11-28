@@ -1,0 +1,117 @@
+<div class="app-fleet-browser">
+  <div class="wrapper">
+    <div class="invitation-container">
+      <div class="invitations-grid" *ngIf="invitationPath == ''">
+        <div class="invitations-title">
+          <h1>{{ 'fleet.choose-invitation.txt_choose' | translate }}</h1>
+        </div>
+        <div class="invitations-content"> 
+          <div class="invitations-block" (click)="invitationPathChange('invite')">
+            <div class="type-circle type-circle-padding">
+              <img src="../../../../../assets/images/fleet/botsibot_rol-01.svg"/>
+            </div>
+            <p class="medium-invitation-title">
+              {{ 'fleet.choose-invitation.txt_invite' | translate }}
+            </p>
+            <p class="small-invitation-title">
+              {{ 'fleet.choose-invitation.modal_manager_copy' | translate }}
+            </p>
+          </div>
+          <div class="invitations-block" (click)="invitationPathChange('register')">
+            <div class="type-circle type-circle-padding">
+              <img src="../../../../../assets/images/fleet/botsibot_rol-02.svg"/>
+            </div>
+            <p class="medium-invitation-title">
+              {{ 'fleet.choose-invitation.txt_register' | translate }}
+            </p>
+            <p class="small-invitation-title">
+              {{ 'fleet.choose-invitation.modal_bego_copy' | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+    <div>
+      <form [formGroup]="numDriverForm"  *ngIf="invitationPath == 'invite'">
+        <div class="driver-selector-container">
+          <div class="driver-selector">
+
+            <div class="driver-selector-symbol" (click)="deleteDriver()">
+              <mat-icon name="remove-outline">remove</mat-icon>
+            </div>
+            <div class="driver-selector-input">
+              <input type="number" formControlName="numDriver" readonly/>
+            </div>
+            <div class="driver-selector-symbol" (click)="addDriver()">
+              <mat-icon name="add-outline">add</mat-icon>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="invitation-form" [formGroup]="form"  *ngIf="invitationPath == 'invite'">
+        <ng-container formArrayName="drivers">
+            <ng-container *ngFor="let driverForm of drivers.controls; let i = index">
+                <div class="invitation-row" [formGroup]="driverForm">
+                  <div class="invitation-form-title">
+                    <h3>{{ 'fleet.invite-driver.txt_driver' | translate }} {{i + 1}}</h3>
+                    <svg
+                      *ngIf="driverForm.valid"
+                      class="checkmark"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 52 52">
+    
+                      <path
+                        class="checkmark__check"
+                        fill="none"
+                        d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                  </div>
+                  <mat-form-field>
+                    <i class="icon icon-user"></i>
+                    <mat-label>{{ "orders.placeholder-fullname" | translate }}</mat-label>
+                    <input matInput formControlName="fullname" />
+                  </mat-form-field>
+                  <bego-phone-input
+                  [validations]="driverForm.valid"
+                  [phoneFlag]="driverForm.controls.flag.value"
+                  [phoneCode]="driverForm.controls.phoneCode.value"
+                  [phoneNumber]="driverForm.controls.phoneNumber.value"
+                  (phoneFlagChange)="phoneFlagChangeValue($event, i)"
+                  (phoneCodeChange)="phoneCodeChangeValue($event, i)"
+                  (phoneNumberChange)="phoneNumberChangeValue($event, i)"
+                  (phoneObject)="phoneChangeValue($event, i)"
+                >
+                </bego-phone-input>
+                  <mat-form-field>
+                    <i class="icon icon-email"></i>
+                    <mat-label>{{ "orders.placeholder-mail" | translate }}</mat-label>
+                    <input matInput formControlName="email" (keyup)="emailValid(driverForm.controls.email.valid, driverForm.controls.email.value, i)"/>
+                  </mat-form-field>
+                </div>
+            </ng-container>
+        </ng-container>
+      </div>
+      <div class="invitations-grid" *ngIf="invitationPath == 'register'">
+        <div class="invitations-title">
+          <h1>{{ 'fleet.invite-csv.txt_register' | translate }}</h1>
+        </div>
+        <div class="register-content">
+          <p>{{ 'fleet.invite-csv.txt_download' | translate }}</p>
+          <img src="../../../../../assets/images/fleet/register.svg"/>
+          <p>{{ 'fleet.invite-csv.txt_instructions' | translate }}</p>
+          <p><a href="mailto:bego@begomx.com">bego@begomx.com</a></p>
+          <button type="button" class="bego-btn yellow thick-btn medium" (click)="download()">{{ 'fleet.invite-csv.btn_download' | translate }} <mat-icon name="add-outline">download</mat-icon></button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="invitationPath == 'invite'">
+      <button class="bego-btn yellow thick-btn medium-size" [disabled]="!validateInvitation" (click)="sendInvitation()">{{ 'fleet.invite-driver.btn_send' | translate }}</button>
+    </div>
+
+    </div>
+
+
+    <div class="sidebar">
+      <app-fleet-widget [size]="'sm'"></app-fleet-widget>
+    </div>
+  </div>
+</div>

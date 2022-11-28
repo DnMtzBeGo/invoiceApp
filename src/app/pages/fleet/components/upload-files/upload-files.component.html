@@ -1,0 +1,40 @@
+<div class="wrapper">
+
+  <div class="pictures-wrapper">
+    <bego-drag-file-bar
+      *ngFor="let url of info.files, let i = index"
+      acceptFiles="image/*"
+      [ignoreDrag]="url.uploadPercentage ? true: false"
+      (fileOutput)="info.handleFileInput({file: $event, i})">
+
+      <div 
+        template
+        class="picture" 
+        [ngClass]="{obligatory: i < info.obligatoryImages, missing: url.url.length == 0, uploading: url.uploadPercentage ? true: false }" > <!---->
+          <img draggable="false"  *ngIf="url.url.length" [src]="url.url"/>
+
+          <div class="uploading-file-status">
+            <div class="uploading-msg">
+              <div>
+                <i class="icon icon-cloud-upload"></i>
+              </div>
+              <div>
+                {{'fleet.trucks.uploading' | translate}}
+              </div>
+            </div>
+            <div class="progress-bar"><div class="progress" [style]="{width: url.uploadPercentage + '%'}"></div></div>
+          </div>
+
+      </div>
+
+    </bego-drag-file-bar>
+  </div>
+
+
+    <bego-button
+      class="btn-yellow"
+      [text]="'fleet.trucks.finish' | translate"
+      (click)="close()"
+    >
+  </bego-button>
+</div>

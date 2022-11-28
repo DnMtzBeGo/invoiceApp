@@ -16,7 +16,7 @@
         </linearGradient>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
             <stop stop-color="#FFD200" offset="0%"></stop>
-            <stop stop-color="#FFBE00" offset="100%"></stop>
+            <stop stop-color="#FFE000" offset="100%"></stop>
         </linearGradient>
         <linearGradient x1="50.0017994%" y1="25.1927533%" x2="50.0017994%" y2="-3.4273386%" id="linearGradient-5">
             <stop stop-color="#D4A301" stop-opacity="0" offset="0.01%"></stop>

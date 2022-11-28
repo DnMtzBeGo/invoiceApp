@@ -237,7 +237,7 @@ export class SatCertificateComponent implements OnInit {
               handlers: [
                 {
                   text: 'ok',
-                  color: '#ffbe00',
+                  color: '#FFE000',
                   action: async () => {
                     this.alertService.close();
                   }
@@ -253,7 +253,7 @@ export class SatCertificateComponent implements OnInit {
               handlers: [
                 {
                   text: 'ok',
-                  color: '#ffbe00',
+                  color: '#FFE000',
                   action: async () => {
                     this.alertService.close();
                   }
@@ -274,7 +274,7 @@ export class SatCertificateComponent implements OnInit {
           handlers: [
             {
               text: 'ok',
-              color: '#ffbe00',
+              color: '#FFE000',
               action: async () => {
                 this.alertService.close();
               }
@@ -300,7 +300,7 @@ export class SatCertificateComponent implements OnInit {
   //       handlers: [
   //         {
   //           text: "OK",
-  //           color: "#ffbe00",
+  //           color: "#FFE000",
   //           action: async () => {
   //             this.alertService.close();
   //           },

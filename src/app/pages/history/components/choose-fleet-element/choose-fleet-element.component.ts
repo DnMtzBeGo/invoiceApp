@@ -12,7 +12,6 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { FleetElementType } from "src/app/shared/interfaces/FleetElement.type";
 import { AuthService } from "src/app/shared/services/auth.service";
-import { HistoryComponent } from "../../history.component";
 import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { AlertService } from "src/app/shared/services/alert.service";
 
@@ -53,8 +52,6 @@ export class ChooseFleetElementComponent implements OnInit {
   constructor(
     private translateService: TranslateService,
     private webservice: AuthService,
-    @Inject(forwardRef(() => HistoryComponent))
-    private historyComponent: HistoryComponent,
     private notificationsService: NotificationsService,
     private alertService: AlertService
   ) {}
@@ -111,12 +108,10 @@ export class ChooseFleetElementComponent implements OnInit {
       )
     ).subscribe(
       () => {
-        this.historyComponent.getOrderById(this.orderInfo._id).then(() => {
-          this.goBack.emit();
-          this.notificationsService.showSuccessToastr(
-            this.translateService.instant("checkout.alerts.order-updated")
-          );
-        });
+        this.notificationsService.showSuccessToastr(
+          this.translateService.instant("checkout.alerts.order-updated")
+        );
+        this.infoUpdated.emit(this.orderInfo._id);
       },
       (error) => {
         console.error("Error: ", error);
@@ -144,7 +139,7 @@ export class ChooseFleetElementComponent implements OnInit {
         handlers: [
           {
             text: this.translateService.instant('Ok'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               setChanges();
               this.alertService.close();
@@ -152,7 +147,7 @@ export class ChooseFleetElementComponent implements OnInit {
           },
           {
             text: this.translateService.instant('orders.btn-cancel'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
             }
@@ -186,7 +181,7 @@ export class ChooseFleetElementComponent implements OnInit {
         handlers: [
           {
             text: this.translateService.instant('Ok'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               setChanges();
               this.alertService.close();
@@ -194,7 +189,7 @@ export class ChooseFleetElementComponent implements OnInit {
           },
           {
             text: this.translateService.instant('orders.btn-cancel'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
             }
@@ -229,7 +224,7 @@ export class ChooseFleetElementComponent implements OnInit {
         handlers: [
           {
             text: this.translateService.instant('Ok'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               setChanges();
               this.alertService.close();
@@ -237,7 +232,7 @@ export class ChooseFleetElementComponent implements OnInit {
           },
           {
             text: this.translateService.instant('orders.btn-cancel'),
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
             }
@@ -275,7 +270,7 @@ export class ChooseFleetElementComponent implements OnInit {
       handlers: [
         {
           text: this.translateService.instant('Ok'),
-          color: '#ffbe00',
+          color: '#FFE000',
           action: async () => {
             this.alertService.close();
           }

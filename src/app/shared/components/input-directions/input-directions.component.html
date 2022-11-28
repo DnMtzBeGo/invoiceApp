@@ -229,8 +229,17 @@
             </mat-form-field>
 
             <div class="input-timer">
-              <timepicker
+              <!-- <timepicker
                 [disabled]="monthSelected"
+                [formControlName]="'timepickup'"
+                class="timepicker"
+                (isValid)="timepickerValid($event)"
+                [hourStep]="1"
+                [minuteStep]="1"
+                [showMeridian]="ismeridian"
+                *ngIf="!destroyPicker"
+              ></timepicker> -->
+              <timepicker
                 [formControlName]="'timepickup'"
                 class="timepicker"
                 (isValid)="timepickerValid($event)"

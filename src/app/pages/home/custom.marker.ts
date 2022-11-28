@@ -36,7 +36,7 @@ export class CustomMarker extends google.maps.OverlayView {
       var img = document.createElement('img');
       img.src = this.imageSrc;
       div.appendChild(img);
-      google.maps.event.addDomListener(div, 'click', (event) => {
+      div.addEventListener('click', (event) => {
         console.log(this.title);
       });
 

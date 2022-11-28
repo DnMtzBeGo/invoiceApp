@@ -25,6 +25,7 @@ export class OrdersListComponent implements OnInit {
   public showSelectPage: boolean = false;
   public inputSearch: any = '';
   public orderTabs: any = [];
+  public orderTabsText: string[];
   public currentTabIndex: number = 0;
   public selectedOrderId!: string 
 
@@ -51,6 +52,8 @@ export class OrdersListComponent implements OnInit {
         key: 'past',
       },
     }
+
+    this.orderTabsText = Object.values(this.orderTabs).map((e: any)=>e.text);
    }
 
 

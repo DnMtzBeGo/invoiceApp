@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild, ElementRef, Host } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, ViewChild, ElementRef, Host, EventEmitter } from '@angular/core';
 import EmblaCarousel from 'embla-carousel';
 import { FleetElementType } from 'src/app/shared/interfaces/FleetElement.type';
 import { ChooseFleetElementComponent } from '../choose-fleet-element/choose-fleet-element.component';
@@ -23,6 +23,8 @@ export class OrderInfoComponent implements OnInit, OnChanges {
 
   @Input() orderInfo: any = {};
   @Input() statusListData: any = {};
+
+  @Output() infoUpdated = new EventEmitter<void>();
 
   @ViewChild('embla', { static: true }) protected embla: any;
   @ViewChild('viewPort', { static: true }) protected viewPort: any;

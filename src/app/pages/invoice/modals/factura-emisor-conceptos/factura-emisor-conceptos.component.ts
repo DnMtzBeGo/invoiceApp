@@ -41,6 +41,7 @@ import {
   withLatestFrom,
   scan,
   observeOn,
+  throwIfEmpty,
 } from "rxjs/operators";
 import { reactiveComponent } from "src/app/shared/utils/decorators";
 import { ofType, oof, simpleFilters } from "src/app/shared/utils/operators.rx";
@@ -194,8 +195,8 @@ export class FacturaEmisorConceptosComponent implements OnInit {
       distinctUntilChanged(object_compare),
       map((params) => ({
         ...params,
-        limit: params.limit || this.paginator.pageSize,
-        page: params.page || this.paginator.pageIndex,
+        limit: +params.limit || this.paginator.pageSize,
+        page: +params.page || this.paginator.pageIndex,
         rfc: this.config.rfc,
       })),
       tap((params) => {
@@ -510,11 +511,16 @@ export class FacturaEmisorConceptosComponent implements OnInit {
       this.apiRestService.uploadFilesSerivce(
         formData,
         "invoice/concepts/import",
+        null,
         {
           loader: "false",
+          timeout: "60000"
         }
       )
-    ).pipe(mergeAll());
+    ).pipe(
+      mergeAll(),
+      throwIfEmpty(() => Error(this.translateService.instant('errors.timeout.title'))),
+    );
   };
 
   //Paginator

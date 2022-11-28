@@ -55,7 +55,7 @@ export class MapComponent implements OnInit {
   private route = new google.maps.Polyline({
     path: [],
     geodesic : true,
-    strokeColor: '#FFBE00',
+    strokeColor: '#FFE000',
     strokeWeight: 3,
     editable: false,
     zIndex: 2
@@ -202,10 +202,12 @@ export class MapComponent implements OnInit {
     let perm = await navigator.permissions.query({ name: 'geolocation' });
 
     if (perm.state === 'granted') {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.longitude;
-      });
+      await new Promise((resolve, error) => navigator.geolocation.getCurrentPosition(resolve, error)).then(
+        (position: GeolocationPosition) => {
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+        }
+      );
     } else {
       console.log("User not allowing to access location");
       this.lat = 19.432608;

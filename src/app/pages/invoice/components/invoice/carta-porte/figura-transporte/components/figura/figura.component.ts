@@ -291,6 +291,7 @@ export class FiguraComponent implements OnInit {
   }
 
   removeData(id) {
+    console.log(this.figuraInfo)
     this.dataSource = this.dataSource.filter((item, index) => index !== id);
     this.figuraInfo.partes_transporte.splice(id, 1);
     this.table.renderRows();
@@ -314,4 +315,9 @@ export class FiguraComponent implements OnInit {
       }
     }
   }
+
+  parte_transporteCatalogueRefSearch() {
+    this.filteredParteTransporte = this.parteTransporte;
+  }
 }
+ 

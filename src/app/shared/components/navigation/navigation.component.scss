@@ -23,6 +23,8 @@
   }
 
   .avatar {
+    position: relative;
+
     img {
       display: block;
       width: 40px;
@@ -31,12 +33,12 @@
       border-radius: 50%;
       cursor: pointer;
     }
-  }
 
-  .notifications {
-    img {
-      display: block;
-      cursor: pointer;
+    .icon {
+      position: absolute;
+      right: -9px;
+      bottom: 0;
+      font-size: 9px;
     }
   }
 
@@ -57,22 +59,36 @@
     }
 
     &.active {
-      color: #ffbe00;
+      color: #FFE000;
     }
   }
 
   .notifications{
     position: relative;
+    cursor: pointer;
+    background: linear-gradient(180deg, #181C1E 0%, #1B2020 58.93%);
+    box-shadow: inset 0px 11px 6px #040B11;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    .icon {
+      font-size: 30px;
+      color: #FAFAFA;
+    }
 
-    .dot{
-      background: red;
+    .dot {
+      background: #FA6400;
       display: block;
       position: absolute;
-      top:0px;
+      top: 6px;
       right: 0px;
       border-radius: 50%;
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       z-index: 100;
     }
   
@@ -85,6 +101,12 @@
       animation: ring 4s 0s ease-in-out;
       transform-origin: 50% 4px;
     }
+  }
+
+  .divide {
+    width: 1px;
+    height: 32px;
+    background-color: #494C50;
   }
 
   @-webkit-keyframes ring {

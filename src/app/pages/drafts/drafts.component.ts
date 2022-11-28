@@ -48,7 +48,7 @@ export class DraftsComponent implements OnInit {
     let searchOptions: any = {
       pagination: {
           page: 1,
-          limit: 2000
+          limit: 30
       }
     };
     this.loader = true;

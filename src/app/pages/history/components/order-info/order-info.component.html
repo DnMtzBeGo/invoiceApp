@@ -7,8 +7,15 @@
             {{orderInfo['reference_number']}}</p>
         </div>
         <div class="order-number">{{'history.history_detail.order' | translate }} #{{orderInfo['order_number']}}</div>
-        <div class="order-date">{{orderInfo['created'] | date: 'dd/MM/yyyy'}} <i class="icon icon-dot"></i>
-          {{orderInfo['created'] | date: 'shortTime'}}</div>
+        <div class="order-date">
+          {{ orderInfo?.[selectedRow]?.startDate | date: 'dd/MM/yyyy' }}
+          <i class="icon icon-dot"></i>
+          {{ orderInfo?.[selectedRow]?.startDate | date: 'shortTime' }}
+          {{ selectedRow === 'dropoff'
+            ? ' - ' + (orderInfo?.[selectedRow]?.endDate | date: 'shortTime')
+            : ''
+          }}
+        </div>
       </div>
       <div class="edit-cn-btn-wrapper">
         <app-edit-cn-btn *ngIf="orderInfo.user_id == orderInfo.manager?._id" [progress]="orderInfo?.stampedPercentage"
@@ -103,7 +110,8 @@
             <app-choose-fleet-element 
               #chooseFleetElementRef
               [orderInfo]="orderInfo"
-              (goBack)="slider.scrollPrev()">
+              (goBack)="slider.scrollPrev()"
+              (infoUpdated)="infoUpdated.emit($event); slider.scrollPrev()">
             </app-choose-fleet-element>
           </div>
         </div>

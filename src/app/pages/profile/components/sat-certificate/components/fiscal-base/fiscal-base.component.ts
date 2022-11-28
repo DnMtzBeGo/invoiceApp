@@ -49,7 +49,7 @@ export class FiscalBaseComponent implements OnInit {
       },
       {
         text: this.translateService.instant('fiscal-documents.remove-file'),
-        color: '#ffbe00',
+        color: '#FFE000',
         action: async () => {
           await this.deleteFile();
           this.deleteAlertOpen = false;

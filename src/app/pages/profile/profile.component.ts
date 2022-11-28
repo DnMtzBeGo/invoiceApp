@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BegoAlertHandler } from 'src/app/shared/components/bego-alert/BegoAlertHandlerInterface';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -11,6 +11,7 @@ import { ProfileInfoService } from './services/profile-info.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  public id?: string;
   public profileImg?: string;
   public noProfilePic: boolean = false;
   profileInfo!: any;
@@ -24,6 +25,7 @@ export class ProfileComponent implements OnInit {
 
   public orderTabs: any = [];
   public currentTabIndex: number = 0;
+  public currentTabKey: string = 'account';
 
   public deleteProfilepicHandlers: BegoAlertHandler[] = [];
 
@@ -36,26 +38,44 @@ export class ProfileComponent implements OnInit {
     private webService: AuthService,
     private profileInfoService: ProfileInfoService,
     public translateService: TranslateService,
-    private router: Router
-  ) {
+    private router: Router,
+    public route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.queryParamMap.get('id') || null;
+
     this.orderTabs = {
       account: {
         text: 'profile.account.account',
         url: '/profile/personal-info',
         key: 'account',
+        enabled: true,
+        sidebar: true,
         whenActive: (): any => {
-          this.profileInfoService.getProfileInfo();
+          this.profileInfoService.getProfileInfo(this.id);
         }
       },
       satCertificate: {
         text: 'sat-certification.order_tab_label',
         url: '/profile/sat-certificate',
-        key: 'satCertificate'
+        key: 'satCertificate',
+        enabled: this.id == void 0,
+        sidebar: true,
       },
       documentation: {
         text: 'fiscal-documents.upload-files.documentation',
         url: '/profile/fiscal-documents',
-        key: 'documentation'
+        key: 'documentation',
+        enabled: true,
+        sidebar: true,
+      },
+      history: {
+        text: 'profile.history.txt_history',
+        url: '/profile/history',
+        key: 'history',
+        enabled: this.id != void 0,
+        sidebar: false,
       }
     };
 
@@ -68,59 +88,74 @@ export class ProfileComponent implements OnInit {
       },
       {
         text: this.translateService.instant('profile.account.delete-profile-pic-btn'),
-        color: '#ffbe00',
+        color: '#FFE000',
         action: async () => {
           await this.removeProfilePic();
           this.showDeleteProfilePicModal = false;
         }
       }
     ];
-  }
 
-  ngOnInit(): void {
     Object.values(this.orderTabs).find((e: any, index: number) => {
-      if (e.url == this.router.url) {
+      if (this.router.url.startsWith(e.url)) {
         this.currentTabIndex = index;
+        this.currentTabKey = Object.keys(this.orderTabs)[index];
         return true;
       }
       return false;
     });
 
-    this.profileInfoService.getProfileInfo();
-    this.refreshProfilePic();
-    this.profileInfoService.profilePicUrl.subscribe((profilePicUrl: string) => {
-      this.profileImg = profilePicUrl;
-    });
+    // this.profileInfoService.getProfileInfo(this.id);
+
+    // this.profileInfoService.profilePicUrl.subscribe((profilePicUrl: string) => {
+    //   this.profileImg = profilePicUrl;
+    // });
 
     this.profileInfoService.data.subscribe((profileInfo: any) => {
       //console.log(profileInfo);
       this.profileInfo = profileInfo;
+      this.profileImg = profileInfo?.thumbnail;
+      this.noProfilePic = !profileInfo?.thumbnail;
     });
-    this.getOrderCount();
+
+    this.getOrderCount(this.id);
+    this.profileInfoService.getProfileInfo(this.id);
   }
 
   refreshProfilePic() {
-    this.profileInfoService.getProfilePic().then((profilePicUrl: string) => {
-      //console.log('New profile pic: ', profilePicUrl)
+    return this.profileInfoService.getProfilePic().then((profilePicUrl: string) => {
+      console.log('New profile pic: ', profilePicUrl)
       this.profileImg = profilePicUrl;
       this.noProfilePic = false;
     });
   }
 
-  async getOrderCount() {
-    (await this.webService.apiRest('', 'orders/get')).subscribe(
-      async (res) => {
-        this.ordersCount = res.result.length;
-      },
-      async (err) => {
-        this.ordersCount = 0;
-      }
-    );
+  async getOrderCount(carrier_id) {
+    if (carrier_id == void 0) {
+      (await this.webService.apiRest("", 'orders/get')).subscribe(
+        async (res) => {
+          this.ordersCount = res.result.length;
+        },
+        async (err) => {
+          this.ordersCount = 0;
+        }
+      );
+    }
+    else {
+      (await this.webService.apiRest(JSON.stringify({ carrier_id }), 'orders/total_orders')).subscribe(
+        async (res) => {
+          this.ordersCount = res.result.total;
+        },
+        async (err) => {
+          this.ordersCount = 0;
+        }
+      );
+    }
   }
 
   selectTab(index: number): void {
     this.currentTabIndex = index;
-    const currentTabKey = Object.keys(this.orderTabs)[index];
+    const currentTabKey = this.currentTabKey = Object.keys(this.orderTabs)[index];
     const currentTab = this.orderTabs[currentTabKey];
     if (currentTab && currentTab.whenActive) {
       currentTab.whenActive();
@@ -198,7 +233,8 @@ export class ProfileComponent implements OnInit {
     (await this.webService.apiRest('', 'profile/remove_picture')).subscribe(
       (res) => {
         console.log('Profile pic was removed  successfully', res);
-        this.profileInfoService.getProfilePic();
+        // this.profileInfoService.getProfileInfo(this.id);
+        this.refreshProfilePic();
       },
       (err) => {
         console.log('remove profile pic error: ', err);

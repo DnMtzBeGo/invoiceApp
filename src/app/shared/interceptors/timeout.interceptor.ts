@@ -80,6 +80,8 @@ export class TimeoutInterceptor implements HttpInterceptor {
           if (!this.alertDisplayed) {
             if (err instanceof TimeoutError) {
               this.timeoutAlert(request.params.get('route'));
+              // NOTE: throw?
+              // throw Error(this.translateService.instant('errors.timeout.title'));
             } else {
               throw err;
             }
@@ -114,7 +116,7 @@ export class TimeoutInterceptor implements HttpInterceptor {
       handlers: [
         {
           text: 'ok',
-          color: '#ffbe00',
+          color: '#FFE000',
           action: async () => {
             this.alertService.close();
           }
@@ -136,7 +138,7 @@ export class TimeoutInterceptor implements HttpInterceptor {
       handlers: [
         {
           text: this.translateService.instant('errors.timeout.ok'),
-          color: '#ffbe00',
+          color: '#FFE000',
           action: async () => {
             this.alertService.close();
 

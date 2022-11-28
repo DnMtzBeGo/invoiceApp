@@ -17,7 +17,6 @@ import { mergeAll, tap, filter, startWith, mapTo, exhaustMap, takeUntil, catchEr
 import { AuthService } from "src/app/shared/services/auth.service";
 import { PlacesService } from "src/app/shared/services/places.service";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
-import { ProfileInfoService } from "../profile/services/profile-info.service";
 import { HeaderService } from "./services/header.service";
 import { ofType } from "src/app/shared/utils/operators.rx";
 import { CustomMarker } from './custom.marker';
@@ -48,12 +47,10 @@ export class HomeComponent implements OnInit {
   headerTransparent: boolean = true;
   showOrderDetails: boolean = false;
 
-  public orderId: string = "";
   public typeMap: string = "home";
   public imageFromGoogle: any;
   public membersToAssigned: object = {};
   public userWantCP: boolean = false;
-  public drafts: Array<object> = [];
   public haveNotFleetMembers: boolean = false;
   public haveFleetMembersErrors: Array<string> = [];
 
@@ -99,7 +96,6 @@ export class HomeComponent implements OnInit {
     private webService: AuthService,
     public placesService: PlacesService,
     private googlemaps: GoogleMapsService,
-    private profileinfoService: ProfileInfoService,
     private headerStyle: HeaderService,
     private elementRef: ElementRef
   ) {
@@ -138,7 +134,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     // this.showNewOrderCard();
-    // this.profileinfoService.getProfilePic();
 
     // Set the name of the hidden property and the change event for visibility
     let visibilityChange;
@@ -204,19 +199,6 @@ export class HomeComponent implements OnInit {
 
   updateDropOffDate(data: number) {
     this.datedropoff = data;
-  }
-
-  async getThumbnail() {
-    let requestThumbnail: any = {
-      id: this.orderId,
-    };
-
-    (await this.webService.apiRest(requestThumbnail, "profile/get_thumbnail")).subscribe(
-      (res) => {},
-      (error) => {
-        console.log("Error", error);
-      }
-    );
   }
 
   getGoogleImageMap(data: any) {

@@ -79,7 +79,6 @@ import { LocationComponent } from "./components/location/location.component";
 // Services
 import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { TwoDigitDecimaNumberDirective } from "../shared/directives/decimal.directive";
-import { UppercaseDirective } from "../shared/directives/uppercase.directive";
 import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/tooltip-help.module";
 
 @NgModule({
@@ -138,7 +137,6 @@ import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/toolti
     ActionSendEmailFacturaComponent,
     FacturaFiltersComponent,
     TwoDigitDecimaNumberDirective,
-    UppercaseDirective,
   ],
   imports: [
     CommonModule,

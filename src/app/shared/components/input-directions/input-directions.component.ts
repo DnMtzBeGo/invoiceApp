@@ -138,7 +138,7 @@ export class InputDirectionsComponent implements OnInit {
   directionsRenderer = new google.maps.DirectionsRenderer({
     suppressMarkers: true,
     polylineOptions: {
-      strokeColor: "#FFBE00",
+      strokeColor: "#FFE000",
       strokeWeight: 2,
     },
   });
@@ -684,7 +684,7 @@ export class InputDirectionsComponent implements OnInit {
       handlers: [
         {
           text: "Ok",
-          color: "#ffbe00",
+          color: "#FFE000",
           action: async () => {
             this.alertservice.close();
           },

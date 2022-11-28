@@ -1,0 +1,230 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  grid-gap: 3rem;
+  align-items: center;
+
+  .main {
+
+    display: flex;
+    justify-content: center;
+    .inputs{
+      margin-top:45px;
+      max-width: 900px;
+      min-width: 60vw;
+
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .trailer-input{
+        display: grid;
+        grid-template-columns: 1fr 5fr;
+        column-gap: 5px;
+        row-gap: 2px;
+        margin: 0px 100px;
+
+        &.touched.INVALID{
+          mat-error{
+            opacity: 1;
+          }
+        }
+
+
+        input, select, mat-select{
+          color: white;
+          font-family: 'Avenir';
+          font-weight: 500;
+          padding: 12px;
+          font-size: 18px;
+          text-align:center;
+
+          // padding-bottom:1px;
+          background:
+            linear-gradient(
+              to left, 
+              rgba(255,255,255,1),
+              rgba(0,0,0,0.28),
+              rgba(255,255,255,1),
+            )
+            left 
+            bottom
+            no-repeat; 
+          background-size:100% 1px ;
+        }
+
+        select{
+          border: none;
+          outline: none;
+        }
+
+        mat-select{
+          ::ng-deep{
+            .mat-select-value{
+              color: white;
+
+              input{
+                background-color: red;
+              }
+            }
+          }
+        }
+
+        label{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Avenir Next';
+          font-style: normal;
+          font-weight: 100;
+          font-size: 16px;
+        }
+
+        &.wide-label{
+          grid-template-columns: 2fr 5fr;
+        }
+
+        mat-error{
+          opacity: 0;
+          align-self: flex-end;
+          grid-column: span 2;
+          text-align: right;
+          transition: opacity 0.3s;
+          font-size: 13px;
+          
+        }
+      }
+
+      app-color-picker{
+        align-self: center;
+      }
+
+      .with-gap{
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+      }
+
+      .insurance-file-input{
+        border: 1.5px dashed #242A30;
+        color: #FFE000;
+        background-color: #040B11;
+        box-shadow: inset 4px 4px 4px 0 #000000, inset -4px -4px 4px 0 #10161C;
+        cursor: pointer;
+        // height: 100%;
+        min-height: 100px;
+        border-radius: 8px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover, &.dragging-file{
+          opacity: 0.7;
+        }
+
+      }
+
+      .insurance-file-wrapper{
+        max-width: 100%;
+        display: flex;
+        border: 1px solid black;
+        justify-content: space-between;
+        align-items: center;
+        gap: 50px;
+        cursor: pointer;
+        padding: 30px;
+        overflow: hidden;
+        background: #0B1117;
+        box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+
+        .insurance-file{
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+
+          .file-type{
+            position: relative;
+
+            >div{
+              position: absolute;
+            }
+
+            .icon{
+              font-size: 50px!important;
+            }
+
+            .type{
+              inset: 0;
+              display: flex;
+              justify-content: center;
+              font-size: 12px;
+              align-items: center;
+            }
+          }
+
+      
+      
+          .title{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 343px;
+            margin-bottom: 10px;
+          }
+
+          .size{
+            font-weight: 100;
+          }
+
+        }
+
+        .icon{
+          font-size: 25px!important;
+        }
+
+        .edit-insurance{
+          display: inline-flex;
+        }
+      
+      }
+
+
+    }
+
+    .cargo-type{
+      display: flex;
+      justify-content: center;
+    }
+
+  }
+
+  .sidebar {
+    padding: 40px 25px;
+    background: #0b1117;
+    box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
+    border-radius: 8px;
+    color: #ededed;
+    // min-width: 280px;
+    margin-right: 30px;
+  }
+
+  app-pictures-grid{
+    margin-bottom: 20px;
+  }
+}
+
+mat-form-field{
+  display: block;
+}
+
+input, select{
+  color: white;
+}
+
+.bego-btn{
+  align-self: self-end;
+  margin-top: 20px;
+}

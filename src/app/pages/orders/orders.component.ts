@@ -19,7 +19,8 @@ import * as moment from "moment";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
 import { Router } from "@angular/router";
 import { AlertService } from "src/app/shared/services/alert.service";
-import { Subscription } from "rxjs";
+import { Subscription, concat, from, of } from "rxjs";
+import { mergeAll, switchMap, toArray, mapTo } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { ContinueModalComponent } from "./components/continue-modal/continue-modal.component";
 @Component({
@@ -77,7 +78,8 @@ export class OrdersComponent implements OnInit {
   catalogsDescription: object = {};
 
   public orderData: Order = {
-    reference_number: "",
+    stamp: false,
+    reference_number: null,
     status: -1,
     completion_percentage: this.progress,
     cargo: {
@@ -228,7 +230,7 @@ export class OrdersComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (this.imageFromGoogle && !this.sendMap) {
       this.screenshotOrderMap = new File(this.imageFromGoogle, "image");
-      this.requestScreenshotOrderMap.append("map", this.screenshotOrderMap);
+      this.requestScreenshotOrderMap.set("map", this.screenshotOrderMap);
       this.sendMap = true;
     }
 
@@ -570,14 +572,14 @@ export class OrdersComponent implements OnInit {
     this.orderData["stamp"] = this.isOrderWithCP;
 
     const requestJson = JSON.stringify(this.orderData);
-    (await this.auth.apiRest(requestJson, "carriers/create_order")).subscribe(
+    (await this.submitCreateOrder(requestJson, page)).subscribe(
       async ({ result }) => {
         this.uploadScreenShotOrderMap(result._id);
         this.validateRoute = result.bego_order;
         if (this.hazardousFile) {
           const formData = new FormData();
-          formData.append("order_id", result._id);
-          formData.append('file', this.hazardousFile);
+          formData.set("order_id", result._id);
+          formData.set('file', this.hazardousFile);
           (
             await this.auth.uploadFilesSerivce(formData, "orders/upload_hazardous")
           ).subscribe(async (data) => {
@@ -596,7 +598,7 @@ export class OrdersComponent implements OnInit {
             handlers: [
               {
                 text: this.translateService.instant('checkout.btn-continue'),
-                color: '#ffbe00',
+                color: '#FFE000',
                 action: async () => {
                   this.alertService.close();
                   location.reload();
@@ -612,8 +614,48 @@ export class OrdersComponent implements OnInit {
     );
   }
 
+  submitCreateOrder(order, page) {
+    order = JSON.parse(order);
+
+    if (order.stamp || page === 'drafts') {
+      return this.auth.apiRest(JSON.stringify(order), "carriers/create_order");
+    }
+
+    const { driver: carrier_id, truck: id_truck, trailer: id_trailer } = order;
+
+    delete order.driver;
+    delete order.truck;
+    delete order.trailer;
+
+    // create order
+    return from(this.auth.apiRest(JSON.stringify(order), "carriers/create_order"))
+      .pipe(
+        mergeAll(),
+        switchMap((responseData) =>
+          concat(
+            // assign carrier, truck & trailer
+            from(this.auth.apiRest(JSON.stringify({
+              order_id: responseData.result._id,
+              carrier_id,
+              id_truck,
+              id_trailer,
+            }), "orders/assign_order", { apiVersion: "v1.1" })).pipe(mergeAll()),
+            // update status
+            from(this.auth.apiRest(JSON.stringify({
+              order_id: responseData.result._id,
+              order_status: 1,
+            }), "orders/update_status")).pipe(mergeAll()),
+          ).pipe(
+            toArray(),
+            mapTo(of(responseData)),
+          )
+        ),
+      )
+      .toPromise();
+  }
+
   public async uploadScreenShotOrderMap(orderId: string) {
-    this.requestScreenshotOrderMap.append("order_id", orderId);
+    this.requestScreenshotOrderMap.set("order_id", orderId);
 
     (
       await this.auth.uploadFilesSerivce(

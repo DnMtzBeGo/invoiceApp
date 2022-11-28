@@ -475,6 +475,7 @@
       "cancel-deletion-btn": "Cancel",
       "txt-role": "Role",
       "txt-fleet": "Fleet",
+      "txt-driver": "Driver",
       "txt-manager": "Manager",
       "txt-driver-manager": "Driver Manager"
     },
@@ -524,6 +525,9 @@
       "btn_resend": "Resend security code",
       "txt_verify": "Verify Now",
       "txt_cancel": "Cancel"
+    },
+    "history": {
+      "txt_history": "History"
     }
   },
   "header": {
@@ -679,6 +683,7 @@
   "menu": {
     "home": "Home",
     "drafts": "  Drafts",
+    "fleet": "Fleet",
     "history": "History",
     "invoice": "Invoice",
     "support": "Support",
@@ -976,7 +981,9 @@
         "btn-save-update-success": "Concepto actualizado",
         "btn-save-save": "Guardar",
         "btn-save-save-success": "Concepto guardado",
-        "btn-save-new": "Nuevo Producto o Servicio"
+        "btn-save-new": "Nuevo Producto o Servicio",
+
+        "template-tooltip": "Template\nDownload products template file."
     },
     "serie-new": {
         "title": "Series y logos",
@@ -1282,6 +1289,147 @@
       "black": "Black",
       "gray": "Gray",
       "grey": "Gray"
+    },
+    "only-imgs":"Only images supported",
+    "choose-invitation": {
+      "txt_choose": "Choose one option",
+      "txt_invite": "Register Invitation",
+      "txt_register": "I register you",
+      "btn_continue": "Continue",
+      "modal_manager_title": "Register invitation",
+      "modal_bego_title": "I register you",
+      "modal_manager_copy": "Send invitation emails so your drivers can join your fleet",
+      "modal_bego_copy": "Send us a spreadsheet with your drivers' information and we'll add them to your fleet as soon as possible"
+    },
+    "invite-csv": {
+      "txt_register": "I Register you",
+      "txt_download": "Download the template and enter the corresponding data.",
+      "txt_instructions": "Once the file has been filled in, send it to the following e-mail. Once registered you will be notified along with their credentials so they can enter.",
+      "btn_download": "Download"
+    },
+    "invite-driver": {
+      "txt_invitation": "Register Invitation",
+      "txt_driver": "Driver",
+      "txt_name": "Full Name",
+      "btn_send": "Send"
+    },
+    "txt_fleet": "My Fleet",
+    "btn_order": "ORDER",
+    "btn_view_all": "VIEW ALL",
+    "txt_fleet_name": "Fleet Name",
+    "txt_team": "Your Team",
+    "txt_trucks": "Your Trucks",
+    "txt_trailers": "Your Trailers",
+    "txt_driver_truck": "Driver and truck required",
+    "txt_driver_truck_m": "You need at least one driver and one truck to create an order",
+    "txt_sort": "Sort by:",
+    "txt_showing": "Showing",
+    "txt_of": "of",
+    "btn_remove": "Remove",
+    "members": {
+      "txt_header": "Team",
+      "txt_search": "Search...",
+      "btn_add": "Add new",
+      "sort_by": {
+        "member_meta.date_created": "Creation date",
+        "member.nickname": "Name"
+      },
+      "incoming": "incoming",
+      "done": "done",
+      "see_details": "See profile",
+      "table": {
+        "nickname": "Name",
+        "status": "Status"
+      }
+    },
+    "trucks": {
+      "txt_header": "My Trucks",
+      "txt_search": "Search truck...",
+      "btn_add": "Add new",
+      "sort_by": {
+        "date_created": "Creation date",
+        "attributes.brand": "Brand"
+      },
+      "see_details": "See truck",
+      "btn_view": "View truck",
+      "truck_details":"Truck Details",
+      "truck_settings":"Truck Settings",
+      "truck_insurance":"Truck insurance",
+      "model":"Model",
+      "year":"Year",
+      "plates":"Plates",
+      "color":"Color",
+      "more":"More",
+      "txt-done":"Done",
+      "btn-other":"Other",
+      "finish":"Finish",
+      "uploading":"Uploading",
+      "insurer-name":"Name of insurer",
+      "policy-number":"Policy number",
+      "delete-insurance-warning":"Are you sure you want to delete the insurance policy for this truck?",
+      "type-model":"Type model",
+      "type-year":"Select year",
+      "type-plates":"Type plates",
+      "type-sct-number":"Type SCT number",
+      "type-insurer":"Type insurer",
+      "type-policy-number":"Type policy number",
+      "invalid-plates":"Invalid plates",
+      "invalid-model":"Invalid",
+      "sct-number": "Num. Permiso sct",
+      "sct-perm-required":"Permiso SCT es requerido",
+      "truck-settings-required":"Truck settings required",
+      "required":"required",
+      "table": {
+        "brand": "Brand",
+        "year": "Year",
+        "plates": "Plates",
+        "color": "Color",
+        "operations": "Operations"
+      }
+    },
+    "trailers": {
+      "txt_header": "My Trailers",
+      "txt_search": "Search trailer...",
+      "btn_add": "Add new",
+      "sort_by": {
+        "date_created": "Creation date",
+        "trailer_number": "Trailer"
+      },
+      "see_details": "See trailer",
+      "btn_view": "View trailer",
+      "plates":"Plates",
+      "trailer-type":"Type of trailer",
+      "trailer-subtype":"Trailer subtype",
+      "table": {
+        "type": "Type",
+        "trailer_number": "Trailer number",
+        "type-trailer-number":"Type trailer number"
+      }
+    },
+    "alerts": {
+      "invitation_sent": {
+        "title": "Invitation sent",
+        "message": "The invitation has been sent successfully. Wait for the driver's confirmation to see it in your fleet"
+      },
+      "partial_sent": {
+        "title": "Invitation sent",
+        "message": "The invitation has been sent successfully with the exception of the following drivers:"
+      },
+      "delete_member": {
+        "title": "Delete fleet member",
+        "message": "Are you sure you want to proceed? This action is permanent",
+        "btn_cancel": "Cancel"
+      },
+      "delete_truck": {
+        "title": "Delete truck",
+        "message": "Are you sure you want to proceed? This action is permanent",
+        "btn_cancel": "Cancel"
+      },
+      "delete_trailer": {
+        "title": "Delete trailer",
+        "message": "Are you sure you want to proceed? This action is permanent",
+        "btn_cancel": "Cancel"
+      }
     }
   },
   "home": {

@@ -3,6 +3,7 @@
   font-family: Avenir;
   border-radius: 8px;
   min-width: 125px;
+  border: none;
 
   &.thick-btn{
     padding: 10px;
@@ -11,7 +12,10 @@
   }
 
   &.yellow{
-    background-color: #ffbe00;
+    background-color: #FFE000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 4px 4px 4px #FFEA52, inset -4px -4px 4px #E1C600;
+    border-radius: 8px;
+    cursor: pointer;
   }
 
   &.gray{
@@ -31,18 +35,19 @@
     width: 100%;
   }
 
-  &.mat-button-disabled{
+  &.mat-button-disabled, &[disabled] {
     color: #1C232A!important;
     box-shadow: 0px 1px 4px #040b11, inset -3px -3px 4px #13181e, inset 3px 3px 4px #000000!important;
     background: #040B11;
     border-radius: 8px;
+    cursor: default;
   }
   // color: black;
 }
 
 .bego-icon.mat-icon-button {
   color:#000000;
-  background: #FFBE00;
+  background: #FFE000;
   box-shadow: inset 4px 4px 4px #FFD354, inset -4px -4px 6px #D59E00;
   border-radius: 10px !important;
   font-size: 26px;
