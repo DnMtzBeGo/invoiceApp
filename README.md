@@ -32,3 +32,7 @@ Operations can use the following keywords inside Front chat:
 
 `#close: Closes a ticket.`
 `#forward: Sends the conversation to the user's email.`
+
+## AWS Pipeline
+
+When merging a PR or pushing code to development, an AWS pipeline will run to deploy the project to https://carriers-dev.bego.ai. The same is true for the master branch, and the production build will end up on https://carriers.bego.ai.
