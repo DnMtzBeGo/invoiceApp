@@ -6,8 +6,11 @@ phases:
       nodejs: 14
     commands:
       - echo Installing angular cli...
-      - npm install -g @angular/cli@12.2.17
-      - yarn add @angular-devkit/build-angular@12.2.17 --dev
+      - npm install -g @angular/cli
+      - rm package-lock.json
+    pre_build:
+      commands:
+      - npm install
   build:
     commands:
       - echo Starting production build...
