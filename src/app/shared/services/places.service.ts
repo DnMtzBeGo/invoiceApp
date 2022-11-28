@@ -17,7 +17,7 @@ type ID = string;
 type PlaceId = string;
 
 interface GetPlacesDTO {
-  result: { _id: ID; places: PlaceId }[];
+  result: { _id: ID; places: PlaceId }[] | null;
   status: number;
 }
 
@@ -87,7 +87,7 @@ export class PlacesService {
   private getPlaces() {
     return from(this.authService.apiRest('', 'places/get_places')).pipe(
       mergeAll(),
-      map((responseData: GetPlacesDTO) => responseData.result)
+      map((responseData: GetPlacesDTO) => responseData.result ?? [])
     );
   }
 

@@ -1,0 +1,91 @@
+<div class="edit-trailer">
+  <div class="wrapper">
+    <div class="main">
+
+      <form class="inputs" [formGroup]="trailerDetailsForm">
+
+        <app-pictures-grid 
+          [pictures]="pictures"
+          [obligatoryImgs]="2"
+          (onFileInput)="handleFileInput($event)">
+        </app-pictures-grid>
+
+        <div class="trailer-input wide-label"
+          [class]="trailerDetailsForm.controls.plates.status" 
+          [ngClass]="{touched: trailerDetailsForm.controls.plates.touched}">
+            <label for="plates">{{'fleet.trailers.plates' | translate}}</label>
+            <input [placeholder]="'fleet.trucks.type-plates' | translate" type="text" name="plates" formControlName="plates">
+            <mat-error>{{'fleet.trucks.invalid-plates' | translate}}</mat-error>
+        </div>
+
+        <div class="trailer-input wide-label"
+          [class]="trailerDetailsForm.controls.trailer_number.status" 
+          [ngClass]="{touched: trailerDetailsForm.controls.trailer_number.touched}">
+            <label for="trailer_number">{{'fleet.trailers.table.trailer_number' | translate}}</label>
+            <input [placeholder]="'fleet.trailers.table.type-trailer-number' | translate" type="text" name="trailer_number" formControlName="trailer_number">
+            <mat-error>{{'fleet.trailers.table.trailer_number' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
+          </div>
+        <!-- (change)="setCargoType($event)" -->
+
+        <div class="cargo-type">
+          <mat-button-toggle-group
+          formControlName="type"
+        >
+          <mat-button-toggle 
+            value="53">
+            53
+          </mat-button-toggle>
+          <mat-button-toggle 
+            value="48">
+           48
+          </mat-button-toggle>
+          <mat-button-toggle 
+            value="other">
+            {{'fleet.trucks.btn-other' | translate}}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+        </div>
+
+        <div [ngClass]="{hidden: trailerDetailsForm.value.type !== 'other'}">
+            <!-- permiso sct input-->
+            <div 
+              class="trailer-input wide-label"
+              [class]="trailerDetailsForm.controls.subtype.status" 
+              [ngClass]="{touched:trailerDetailsForm.controls.subtype.touched} ">
+              <label>{{
+                "fleet.trailers.trailer-subtype" | translate
+              }}</label>
+
+              <input type="text"
+                [value]="selectedSubtype | async"
+                (keyup)="filteredTrailerTypesCataloge = searchFunction(this.trailerTypesCataloge,$event.target.value)"
+                [matAutocomplete]="subtypeAutocomplete"
+                (blur)="resetOption($event,trailerTypesCataloge, 'subtype' )">
+              <mat-autocomplete #subtypeAutocomplete="matAutocomplete" [displayWith]="displayFn">
+                <mat-option 
+                  *ngFor="let option of filteredTrailerTypesCataloge" 
+                  [value]="option"                   
+                  (click)="setOption(option,'subtype')">
+                    {{option.code}} - {{option.description}}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error>{{'fleet.trailers.trailer-subtype' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
+            </div>
+        </div>
+
+
+        <button (click)="saveChanges()" mat-raised-button class="bego-btn yellow medium-size"
+          [disabled]="disableSaveBtn">
+          {{'history.consignment_note.save_changes' | translate}}
+        </button>
+      </form>
+
+
+
+    </div>
+
+    <div class="sidebar">
+      <app-fleet-widget [size]="'sm'"></app-fleet-widget>
+    </div>
+  </div>
+</div>

@@ -96,12 +96,13 @@
   </div>
 
   <div class="save-btn-wrapper">
-    <bego-button
+    <button
+      mat-flat-button
+      class="brand-btn-2"
       [disabled]="!verificationRequestAvailable()"
-      (click)="requestDocsVerification()"
-      [class]=" 'outline-btn' " 
-      text="{{ 'fiscal-documents.request-verification' | translate }}">
-    </bego-button>
+      (click)="requestDocsVerification()">
+      {{ 'fiscal-documents.request-verification' | translate }}
+    </button>
 
   </div>
   

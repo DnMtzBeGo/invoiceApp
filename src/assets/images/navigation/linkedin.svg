@@ -7,7 +7,7 @@
         </filter>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
             <stop stop-color="#FFD200" offset="0%"></stop>
-            <stop stop-color="#FFBE00" offset="100%"></stop>
+            <stop stop-color="#FFE000" offset="100%"></stop>
         </linearGradient>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

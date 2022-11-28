@@ -9,7 +9,7 @@ $normal: 1024px;
 $large: 992px;
 $extra-large: 1200px;
 
-//== Sidebar
+//== NotificationBar
 
 $sidebar-width: 230px;
 $sidebar-font-color: $gray-08;
@@ -34,7 +34,7 @@ $toolbar-button-font-color: $white;
 $toolbar-button-background-color: $pink;
 $toolbar-button-background-color-active: $dark-pink;
 
-//== Material Sidebar Content
+//== Material NotificationBar Content
 
 $sidebar-content-padding: 48px;
 
@@ -108,12 +108,12 @@ $color-phone: transparent;
 $color-phone-light: #cbe346;
 $color-phone-dark: #cbe346;
 
-$color-yellow: #ffbe00;
+$color-yellow: #FFE000;
 
 $background-btn-active: linear-gradient(
   180deg,
   #ffd200 0%,
-  #ffbe00 100%
+  #FFE000 100%
 ) !important;
 
 // =============================================================================

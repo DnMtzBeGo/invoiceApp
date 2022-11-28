@@ -1,62 +1,59 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Subject } from "rxjs";
+import { AuthService } from "src/app/shared/services/auth.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ProfileInfoService {
-
-  constructor(
-    private webService: AuthService,
-  ) { }
+  constructor(private webService: AuthService) {}
 
   public profileInfo: any;
   private profileInfoSubject: Subject<any> = new BehaviorSubject<any>({});
-  private profilePicSubject: Subject<string> = new BehaviorSubject<string>('/assets/images/user-outline.svg');
+  private profilePicSubject: Subject<string> = new BehaviorSubject<string>(
+    "/assets/images/user-outline.svg"
+  );
   data = this.profileInfoSubject.asObservable();
   profilePicUrl = this.profilePicSubject.asObservable();
 
-
-  updateDataSelection(data: any){
+  updateDataSelection(data: any) {
     this.profileInfoSubject.next(data);
   }
 
-  async getProfileInfo(){
-    (await this.webService.apiRest('', 'carriers/select_attributes'))
-    .subscribe(
+  async getProfileInfo(carrier_id?: string) {
+    (await this.webService.apiRest(carrier_id ? JSON.stringify({ carrier_id }) :  "", "carriers/select_attributes")).subscribe(
       (res) => {
-        console.log('select attributes : ', res.result);
+        console.log("select attributes : ", res.result);
         this.profileInfo = res.result;
         this.updateDataSelection(this.profileInfo);
       },
-      ( err ) => {
-      }
-    )
+      (err) => {}
+    );
   }
 
   async getProfilePic(): Promise<string> {
-
-    console.log('New profile pic: ');
-    return new Promise(async ( resolve, reject) => {
-      (await this.webService.apiRest('', 'profile/get_picture')).subscribe(
+    return new Promise(async (resolve, reject) => {
+      (await this.webService.apiRest("", "profile/get_picture")).subscribe(
         async ({ result }) => {
-          console.log('New profile pic result: ', result);
-          if (result.url || result.url == '') {
-            localStorage.setItem('profilePicture', result.url);
-            this.profilePicSubject.next(result.url)
-            console.log('Profile pic: ', result.url);
-            resolve(result.url)
-  
-          } 
+          if (result?.url) {
+            localStorage.setItem("profilePicture", result.url);
+            localStorage.setItem("profileId", result._id);
+            localStorage.setItem("profileName", result.name);
+
+            this.profilePicSubject.next(result.url);
+            console.log("Profile pic: ", result.url);
+            resolve(result.url);
+          } else {
+            localStorage.setItem("profilePicture", '');
+            this.profilePicSubject.next('');
+            resolve('');
+          }
         },
         (error) => {
-          console.error('Error loading profile pic : ', error.message);
+          console.error("Error loading profile pic : ", error.message);
           reject(error.message);
         }
       );
     });
   }
-
-  
 }

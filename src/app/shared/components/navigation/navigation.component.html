@@ -17,12 +17,23 @@
         {{ "header.btn-es" | translate }}
       </div>
     </div>
+    
     <!-- <div class="avatar" routerLink="/profile">
       <img [src]="profilePic" (error)="profilePicError()" alt="" />
+      
     </div> -->
-    <div class="avatar">
-      <img [src]="profilePic" (error)="profilePicError()" alt="" />
+    
+    <div class="notifications" (click)="toggleNotificationBar();">
+      <span class="dot" *ngIf="this.notificationsBarService.hasNewNotifications"></span>
+      <i class="icon icon-bell" [class]="this.notificationsBarService.ringBell ? 'ring-bell' : ''" ></i>
     </div>
+
+    <div class="avatar" routerLink="/profile">
+      <img [src]="profilePic" (error)="profilePicError()" alt="Perfil de usuario" title="Perfil de usuario"  />
+      <i class="icon icon-down"></i>
+    </div>
+
+    <div class="divide"></div>
     <app-web-menu-button [menuOpened]="menuOpened" (click)="toggleMenu()"></app-web-menu-button>
   </div>
 </section>

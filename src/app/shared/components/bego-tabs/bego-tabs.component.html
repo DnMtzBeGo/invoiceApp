@@ -1,0 +1,10 @@
+<div class="tabs-container">
+  <div class="orders-list-type">
+    <div 
+      *ngFor="let tab of tabs, index as i"
+      (click)="selectTab(i)"
+      [ngClass]="{'type-selected' : currentTabIndex ==  i  }">
+        {{ tab }}
+    </div>
+  </div>
+</div>

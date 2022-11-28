@@ -20,15 +20,19 @@ import * as moment from "moment";
   styleUrls: ["./drag-file-bar.component.scss"],
 })
 export class DragFileBarComponent implements OnInit {
+  @ViewChild('customTemplateRef') customTemplateRef: ElementRef;
   @ViewChild("fileInput", { read: ElementRef, static: false }) fileInput!: ElementRef;
   @ViewChild("uploadFilesBar", { read: ElementRef, static: false })
   uploadFilesBar!: ElementRef;
 
-  @Output() fileOutput = new EventEmitter<void>();
+  @Output() fileOutput = new EventEmitter<File>();
   @Output() deleteFile = new EventEmitter<void>();
 
   @Input() disabled?: boolean;
-
+  @Input() fileFromAWS: object = {};
+  //Files to be accepted
+  @Input() acceptFiles: string = "image/*, .pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/plain, application/pdf";
+  @Input() ignoreDrag: boolean = false;
   //used to know if to show loaded file once it's loaded
   @Input() displayFileLoaded: boolean = false;
 
@@ -36,7 +40,9 @@ export class DragFileBarComponent implements OnInit {
   file?: File;
   fileInfo?: FileInfo;
   formattedDateUpdated?: string;
-
+  awsFile: boolean = false;
+  awsFileName: string = '';
+  awsFileExtension: string = '';
   dragListeners = {
     dragOverEvent: this.dragOverEvent.bind(this),
     dragLeaveEvent: this.dragLeaveEvent.bind(this),
@@ -50,7 +56,15 @@ export class DragFileBarComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('DESDE LOS CHANGES DE DRAG FILES', changes);
     this.onChanges.next(changes);
+    if(changes.fileFromAWS?.currentValue.hasOwnProperty('url')) {
+      this.awsFile = true;
+      let result = this.fileFromAWS['url'].split('/');
+      this.awsFileName = result[result.length - 1];
+      let resExt = this.fileFromAWS['url'].split('.');
+      this.awsFileExtension = resExt[resExt.length - 1];
+    }
   }
 
   clickFileInputElement() {
@@ -131,11 +145,14 @@ export class DragFileBarComponent implements OnInit {
 
     this.formattedDateUpdated = moment(file.lastModified).format("MMM dd YYYY");
 
-    console.log("FileInfo: ", this.fileInfo, this.formattedDateUpdated);
-    this.fileOutput.emit(file);
+    if(!this.ignoreDrag)
+      this.fileOutput.emit(file);
   }
 
   removeFile(): void {
+    if(this.awsFile) {
+      this.awsFile = false;
+    }
     this.fileInfo = undefined;
     this.deleteFile.emit();
   }

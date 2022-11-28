@@ -1,5 +1,6 @@
 export interface Order {
-  reference_number: string;
+  stamp: boolean,
+  reference_number?: string;
   status: number;
   completion_percentage: number;
   cargo: {
@@ -22,6 +23,7 @@ export interface Order {
       email: string,
       country_code: string
     },
+    place_id_pickup: string
   },
   dropoff: {
     startDate: number,
@@ -37,5 +39,6 @@ export interface Order {
       email: string,
       country_code: string
     },
+    place_id_dropoff: string
   }
 }

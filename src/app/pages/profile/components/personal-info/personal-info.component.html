@@ -47,10 +47,14 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>RFC</mat-label>
-          <input 
-            matInput 
+          <input
+            appUppercase
+            matInput
             formControlName="RFC"
+            name="rfc"
+            autocomplete="off"
             (blur)="updateAttribute('RFC')">
+            <mat-error>{{'checkout.invalid_rfc' | translate}}</mat-error>
         </mat-form-field>
       </div>
 
@@ -69,11 +73,20 @@
                   {{ 'checkout.select-cfdi' | translate }}
               </mat-option>
       
-              <mat-option *ngFor="let option of CFDIs" [value]="option.code">
-                  {{ option.code }} - {{ option.description }}
+              <mat-option *ngFor="let option of CFDIs" [value]="option.value">
+                  {{ option.text }}
               </mat-option>
       
           </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>
+            Licencia
+          </mat-label>
+          <input 
+            matInput 
+            formControlName="license"
+            (blur)="updateAttribute('license')">
         </mat-form-field>
       </div>
 

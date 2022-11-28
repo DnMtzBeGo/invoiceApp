@@ -16,6 +16,24 @@
       {{ "menu.home" | translate }}
     </div>
 
+    <div 
+      class="menu-option"
+      [ngClass]="{ selected: router.url == '/drafts' }"
+      (click)="goTo('drafts')"
+    >
+      <bego-button class="btn-menu icon icon-drafts icon-only"></bego-button>
+      {{ "menu.home" | translate }}
+    </div>
+
+    <div
+      class="menu-option"
+      [ngClass]="{ selected: router.url.startsWith('/fleet') }"
+      (click)="goTo('fleet')"
+    >
+      <bego-button class="btn-menu icon icon-fleet icon-only"></bego-button>
+      {{ "menu.fleet" | translate }}
+    </div>
+
     <!-- <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/calendar' }"

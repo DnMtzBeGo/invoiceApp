@@ -443,6 +443,11 @@
       "body": "Tu cuenta estará verificada una vez hayamos checado los documentos subidos"
     }
   },
+  "sat-certification": {
+    "order_tab_label": "SAT",
+    "label_cer": "Certificado del sello digital (.cer)",
+    "label_key": "Llave del sello digital (.key)"
+  },
   "profile": {
     "account": {
       "txt_orders": "Órdenes",
@@ -467,7 +472,12 @@
       "txt-delete-profile-pic": "¿Estás seguro que quieres eliminar tu foto de perfil?",
       "txt-delete-profile-pic-title": "Eliminar foto de perfil",
       "delete-profile-pic-btn": "Ok",
-      "cancel-deletion-btn": "Cancelar"
+      "cancel-deletion-btn": "Cancelar",
+      "txt-role": "Rol",
+      "txt-fleet": "Flota",
+      "txt-driver": "Conductor",
+      "txt-manager": "Manager",
+      "txt-driver-manager": "Driver Manager"
     },
     "edit": {
       "txt_edit_profile": "Editar Perfil",
@@ -478,6 +488,10 @@
       "btn_save": "Guardar",
       "txt_saved": "Tus cambios han sido guardados.",
       "txt_address_not_found": "Dirección no encontrada..."
+    },
+    "sat": {
+      "save": "Enviar archivos",
+      "select-tax-regime" : "Seleccione el regimen fiscal"
     },
     "upload-files": {
       "txt_fiscal_documents": "Documentos Fiscales",
@@ -511,6 +525,9 @@
       "btn_resend": "Enviar código nuevo",
       "txt_verify": "Verificar",
       "txt_cancel": "Cancelar"
+    },
+    "history": {
+      "txt_history": "Historial"
     }
   },
   "header": {
@@ -666,6 +683,7 @@
   "menu": {
     "home": "Inicio",
     "drafts": "Borradores",
+    "fleet": "Flotilla",
     "history": "Historial",
     "invoice": "Facturas",
     "support": "Soporte",
@@ -963,7 +981,9 @@
         "btn-save-update-success": "Concepto actualizado",
         "btn-save-save": "Guardar",
         "btn-save-save-success": "Concepto guardado",
-        "btn-save-new": "Nuevo Producto o Servicio"
+        "btn-save-new": "Nuevo Producto o Servicio",
+
+        "template-tooltip": "Template\nDescargar archivo template de productos."
     },
     "serie-new": {
         "title": "Series y logos",
@@ -1248,6 +1268,15 @@
         "serie":"Serie\nExpresa letra o conjunto de letras para tener un control interno de los CFDI.",
         "precio": {
             "subtotal": "Escribe el precio total del servicio (Antes de impuestos)."
+        },
+        "commodity": {
+          "cve_material_peligroso": "Clave Material Peligroso\nIndica la clave del tipo de material peligroso que se transporta.",
+          "embalaje": "Embalaje\nIndica la clave del tipo de embalaje que se requiere para transportar el material o residuo peligroso."
+        },
+        "invoice_source": {
+          "factura": "Factura no relacionada con una orden.",
+          "ordenes": "Factura generada por la creación de una orden desde el dashboard.",
+          "drivers": "Factura generada por la creación de una orden desde la APP de Drivers."
         }
     }
   },
@@ -1264,6 +1293,147 @@
       "black": "Negro",
       "gray": "Gris",
       "grey": "Gris"
+    },
+    "only-imgs":"Sólo se aceptan imágenes",
+    "choose-invitation": {
+      "txt_choose": "Elige una opción",
+      "txt_invite": "Invitar",
+      "txt_register": "Registrar",
+      "btn_continue": "Continuar",
+      "modal_manager_title": "Invita",
+      "modal_bego_title": "Registra a todos",
+      "modal_manager_copy": "Ingresa correos e invita a operadores a unirse a tu flotilla",
+      "modal_bego_copy": "Descarga y envianos el formato anexo y lo hacemos por ti."
+    },
+    "invite-csv": {
+      "txt_register": "Registro",
+      "txt_download": "Descarga y completa el siguiente formato.",
+      "txt_instructions": "Una vez completado, por favor envíanos un correo con el archivo adjunto a la siguiente dirección. Nosotros te notificaremos cuando ya puedan accesar al app.",
+      "btn_download": "Descargar"
+    },
+    "invite-driver": {
+      "txt_invitation": "Invitación",
+      "txt_driver": "Operador",
+      "txt_name": "Nombre Completo",
+      "btn_send": "Enviar"
+    },
+    "txt_fleet": "Flotilla",
+    "btn_order": "ORDEN",
+    "btn_view_all": "VER TODOS",
+    "txt_fleet_name": "Nombre de flotilla",
+    "txt_team": "Equipo",
+    "txt_trucks": "Unidades",
+    "txt_trailers": "Cajas",
+    "txt_driver_truck": "Operador y unidad requeridos.",
+    "txt_driver_truck_m": "Necesitas al menos un operador y una unidad para generar servicios.",
+    "txt_sort": "Ordenar por:",
+    "txt_showing": "Mostrando",
+    "txt_of": "de",
+    "btn_remove": "Remover",
+    "members": {
+      "txt_header": "Equipo",
+      "txt_search": "Buscar...",
+      "btn_add": "Agregar",
+      "sort_by": {
+        "member_meta.date_created": "Fecha creación",
+        "member.nickname": "Nombre"
+      },
+      "incoming": "próximas",
+      "done": "completadas",
+      "see_details": "Ver perfil",
+      "table": {
+        "nickname": "Name",
+        "status": "Estatus"
+      }
+    },
+    "trucks": {
+      "txt_header": "Unidades",
+      "txt_search": "Buscar unidad...",
+      "btn_add": "Agregar",
+      "sort_by": {
+        "date_created": "Fecha creación",
+        "atributes.brand": "Marca"
+      },
+      "see_details": "Ver unidad",
+      "btn_view": "Ver unidad",
+      "truck_details":"Detalles del camión",
+      "truck_settings":"Ajustes del camión",
+      "truck_insurance":"Seguro del camión",
+      "model":"Modelo",
+      "year":"Año",
+      "plates":"Placas",
+      "color":"Color",
+      "more":"Más",
+      "txt-done":"Hecho",
+      "btn-other":"Otro",
+      "finish":"Finalizar",
+      "uploading":"Subiendo",
+      "insurer-name":"Aseguradora",
+      "policy-number":"Número de póliza",
+      "delete-insurance-warning":"¿Estás seguro que quieres eliminar la póliza de seguro para este camión?",
+      "type-model":"Escribe modelo",
+      "type-year":"Selecciona año",
+      "type-plates":"Escribe placas",
+      "type-sct-number":"Escribe número de permiso SCT",
+      "type-insurer":"Escribe aseguradora",
+      "type-policy-number":"Escribe número de póliza",
+      "invalid-plates":"Placas invalidas",
+      "invalid-model":"Modelo inválido",
+      "sct-number": "Num. Permiso sct",
+      "sct-perm-required":"Permiso sct requerido",
+      "truck-settings-required":"Ajustes del camión requeridos",
+      "required":"requerido",
+      "table": {
+        "brand": "Marca",
+        "year": "Año",
+        "plates": "Placas",
+        "color": "Color",
+        "operations": "Operaciones"
+      }
+    },
+    "trailers": {
+      "txt_header": "Cajas",
+      "txt_search": "Buscar caja...",
+      "btn_add": "Agregar",
+      "sort_by": {
+        "date_created": "Fecha creación",
+        "trailer_number": "Número de caja"
+      },
+      "see_details": "Ver caja",
+      "btn_view": "Ver caja",
+      "plates":"Placas",
+      "trailer-type":"Tipo de caja",
+      "trailer-subtype":"Subtipo de caja",
+      "table": {
+        "type": "Tipo",
+        "trailer_number": "Número de Trailer",
+        "type-trailer-number":"Escribe el número de trailer"
+      }
+    },
+    "alerts": {
+      "invitation_sent": {
+        "title": "Invitación enviada",
+        "message": "Tu invitación ha sido enviada con éxito. Espera una respuesta del operador para que aparezca en tu flotilla"
+      },
+      "partial_sent": {
+        "title": "Invitation sent",
+        "message": "Tu invitación ha sido enviada con éxito con la excepción de los siguientes operadores:"
+      },
+      "delete_member": {
+        "title": "Eliminar miembro",
+        "message": "¿Estás seguro de querer eliminar permanentemente a este operador de tu flotilla?",
+        "btn_cancel": "Cancelar"
+      },
+      "delete_truck": {
+        "title": "Eliminar unidad",
+        "message": "¿Estás seguro de querer eliminar permanentemente a esta unidad de tu flotilla?",
+        "btn_cancel": "Cancelar"
+      },
+      "delete_trailer": {
+        "title": "Eliminar caja",
+        "message": "¿Estás seguro de querer eliminar permanentemente a esta caja de tu flotilla?",
+        "btn_cancel": "Cancelar"
+      }
     }
   },
   "home": {
@@ -1299,5 +1469,18 @@
   "incompatible-browser-modal": {
     "incompatible-browser-modal-title": "Este navegador no es compatible con la app",
     "incompatible-browser-modal-body": "Para una mejor experiencia, usa otro navegador"
+  },
+  "pin": {
+    "title": "Confirmar dirección",
+    "btn": "Confirmar",
+    "placeholder": "Destino, Destino",
+    "address": {
+      "title": "Editar dirección",
+      "txt-address": "Dirección",
+      "placeholder-address": "Introduce destino",
+      "txt-pin": "Fijar la ubicación en el mapa",
+      "txt_invalidDriection": "Se más específico en su dirección.",
+      "txt-address-not-found": "No se encontró la dirección"
+    }
   }
 }

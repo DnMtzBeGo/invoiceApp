@@ -3,11 +3,15 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 12
+      nodejs: 16.x
     commands:
       - echo Installing angular cli...
-      - npm install -g @angular/cli@12.2.16
-      - yarn add @angular-devkit/build-angular@12.2.16 --dev
+      - npm install -g @angular/cli
+      - rm package-lock.json
+  pre_build:
+    commands:
+    - echo Installing NPM packages...
+    - npm install --legacy-peer-deps
   build:
     commands:
       - echo Starting production build...

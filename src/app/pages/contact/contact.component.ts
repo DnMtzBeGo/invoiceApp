@@ -61,7 +61,7 @@ export class ContactComponent implements OnInit {
             handlers: [
               {
                 text: 'ok',
-                color: '#ffbe00',
+                color: '#FFE000',
                 action: async () => {
                   this.alertService.close();
                   this.router.navigate(['/home']);
@@ -76,7 +76,7 @@ export class ContactComponent implements OnInit {
         handlers: [
           {
             text: 'ok',
-            color: '#ffbe00',
+            color: '#FFE000',
             action: async () => {
               this.alertService.close();
             }

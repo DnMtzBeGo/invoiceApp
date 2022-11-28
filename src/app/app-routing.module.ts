@@ -16,6 +16,11 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pages/calendar/calendar.module").then((m) => m.CalendarModule),
   },
+  {
+    path: "fleet",
+    loadChildren: () =>
+      import("./pages/fleet/fleet.module").then((m) => m.FleetModule),
+  },
   /* {
     path: 'shippers',
     component: ShippersComponent,
@@ -33,11 +38,11 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pages/faq/faq.module").then((m) => m.FaqModule),
   },
-  /* {
+  {
     path: 'drafts',
     loadChildren: () =>
       import('./pages/drafts/drafts.module').then((m) => m.DraftsModule)
-  }, */
+  },
   {
     path: "profile",
     loadChildren: () =>

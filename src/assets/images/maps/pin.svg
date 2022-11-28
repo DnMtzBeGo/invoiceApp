@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="40px" viewBox="0 0 17 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>FF74A0C5-3B7A-4BF3-B550-F0A855903A52</title>
+    <g id="User" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Adress-select-Pin" transform="translate(-180.000000, -239.000000)" fill-rule="nonzero">
+            <g id="location" transform="translate(188.500000, 259.000000) scale(-1, 1) translate(-188.500000, -259.000000) translate(180.000000, 239.000000)">
+                <rect id="Rectangle" fill="#8B8992" x="7" y="16" width="3" height="24"></rect>
+                <path d="M17,8.50040123 C17,13.1867359 13.1875384,17 8.50040123,17 C3.8132641,17 0,13.1867359 0,8.50040123 C0,3.8132641 3.8132641,0 8.50040123,0 C13.1875384,0 17,3.8132641 17,8.50040123 Z" id="Path" fill="#FFE000"></path>
+                <rect id="Rectangle" fill="#78777F" x="9" y="16" width="1" height="24"></rect>
+                <path d="M17,8.50040123 C17,13.1867359 13.4116314,17 9,17 L9,0 C13.4116314,0 17,3.8132641 17,8.50040123 Z" id="Path" fill="#FFD700"></path>
+            </g>
+        </g>
+    </g>
+</svg>

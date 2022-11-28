@@ -4,7 +4,7 @@
     <defs>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
             <stop stop-color="#FFD200" offset="0%"></stop>
-            <stop stop-color="#FFBE00" offset="100%"></stop>
+            <stop stop-color="#FFE000" offset="100%"></stop>
         </linearGradient>
         <circle id="path-2" cx="33.4603175" cy="33.4603175" r="8.63492063"></circle>
         <filter x="-101.3%" y="-72.4%" width="302.7%" height="302.7%" filterUnits="objectBoundingBox" id="filter-3">

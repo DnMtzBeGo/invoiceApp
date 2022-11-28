@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>7C8CEB81-4880-464E-AA9C-175EC955537A</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFD200" offset="0%"></stop>
+            <stop stop-color="#FFE000" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFD200" offset="0%"></stop>
+            <stop stop-color="#FFE000" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#FFD200" offset="0%"></stop>
+            <stop stop-color="#FFE000" offset="100%"></stop>
+        </linearGradient>
+        <ellipse id="path-4" cx="18.5454547" cy="17.4687501" rx="3.3636365" ry="3.46875014"></ellipse>
+        <filter x="-260.1%" y="-180.2%" width="620.3%" height="604.5%" filterUnits="objectBoundingBox" id="filter-5">
+            <feOffset dx="0" dy="5" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.917647059   0 0 0 0 0.509803922   0 0 0 0 0.223529412  0 0 0 0.374371722 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="User" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Adress-select-Pin" transform="translate(-36.000000, -652.000000)">
+            <g id="location" transform="translate(36.000000, 652.000000)">
+                <ellipse id="oval" fill="url(#linearGradient-1)" opacity="0.100000001" cx="18.0909091" cy="18" rx="13.6363636" ry="14"></ellipse>
+                <circle id="oval" fill="url(#linearGradient-2)" opacity="0.049999997" cx="18" cy="18" r="18"></circle>
+                <g id="oval">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-5)" xlink:href="#path-4"></use>
+                    <use fill="url(#linearGradient-3)" fill-rule="evenodd" xlink:href="#path-4"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

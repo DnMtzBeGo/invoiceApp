@@ -10,12 +10,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
 import { BegoAddressAutocompleteModule } from 'src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module';
-import { DateFormatterPipe } from 'src/app/shared/pipes/date-formatter/date-formatter.pipe';
 
 @NgModule({
   declarations: [
-    EmitterComponent,
-    DateFormatterPipe
+    EmitterComponent
   ],
   imports: [
     CommonModule,

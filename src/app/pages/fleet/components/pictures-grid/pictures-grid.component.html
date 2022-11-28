@@ -1,0 +1,11 @@
+<div class="pictures-wrapper">
+  <div class="pic pic1" (click)="openFileEditor(!pictures?.[0])" [class]="{'no-picture': !pictures?.[0]}"><img [src]="pictures?.[0]?.url" alt=""/></div>
+  <div class="pic pic2" (click)="openFileEditor(!pictures?.[0])"[class]="{'no-picture': !pictures?.[1]}"><img [ngClass]="{'no-picture':pictures?.[1]}" [src]="pictures?.[1]?.url" alt=""/></div>
+  <div class="pic pic3" (click)="openFileEditor(!pictures?.[0])"[class]="{'no-picture': !pictures?.[2]}"><img [ngClass]="{'no-picture':pictures?.[2]}" [src]="pictures?.[2]?.url" alt=""/></div>
+  <div class="more-btn" (click)="openFileEditor(true)">
+    <div>
+      <i class="icon icon-plus" style="color: white;"></i>
+    </div>
+     <p>{{'fleet.trucks.more' | translate}}</p>
+    </div>
+</div>

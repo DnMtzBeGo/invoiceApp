@@ -155,8 +155,8 @@ export class FacturasPageComponent implements OnInit {
       distinctUntilChanged(object_compare),
       map((params: any) => ({
         ...params,
-        limit: params.limit || this.paginator.pageSize,
-        page: params.page || this.paginator.pageIndex,
+        limit: +params.limit || this.paginator.pageSize,
+        page: +params.page || this.paginator.pageIndex,
         fec_inicial: params.fec_inicial
           ? this.decodeFecha(params.fec_inicial)
           : null,

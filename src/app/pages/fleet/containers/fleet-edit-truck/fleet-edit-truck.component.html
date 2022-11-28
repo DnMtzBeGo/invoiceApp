@@ -1,0 +1,201 @@
+<div class="edit-truck">
+  <div class="wrapper">
+    <div class="main">
+      <bego-tabs [tabs]="fleetTabs" (onTabChange)="slider.scrollTo($event)"></bego-tabs>
+      <form  class="inputs" [formGroup]="truckDetailsForm">
+      <div class="embla" #sliderRef>
+        <div class="embla__container">
+
+          <!-- Truck details tab-->
+          <div class="embla__slide">
+            <div class="pictures-wrapper" >
+              <app-pictures-grid 
+                [pictures]="pictures"
+                [obligatoryImgs]="3"
+                (onFileInput)="handleFileInput($event)">
+              </app-pictures-grid>
+            </div>
+
+      
+            <form  class="inputs" [formGroup]="truckDetailsForm">
+      
+              <div class="truck-input"
+                [class]="truckDetailsForm.controls.brand.status" 
+                [ngClass]="{touched: truckDetailsForm.controls.brand.touched}">
+                  <label for="Model">{{'fleet.trucks.model' | translate}}</label>
+                  <input [placeholder]="'fleet.trucks.type-model' | translate" type="text" name="Model" formControlName="brand">
+                  <mat-error>{{'fleet.trucks.invalid-model' | translate}}</mat-error>
+              </div>
+
+              <div 
+                class="truck-input"
+                [class]="truckDetailsForm.controls.year.status"
+                (blur)="truckDetailsForm.get('year').markAllAsTouched()"
+                [ngClass]="{touched: truckDetailsForm.controls.year.touched}">
+                  <label>{{'fleet.trucks.year' | translate}}</label>
+                  <select  formControlName="year" >
+                    <option *ngFor="let year of years" [value]="year.value" class="brand-option-1">{{ year.value }}</option>
+                  </select>
+                  <mat-error>{{'fleet.trucks.year' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
+              </div>
+              
+      
+              <div class="truck-input"
+                [class]="truckDetailsForm.controls.plates.status" 
+                [ngClass]="{touched: truckDetailsForm.controls.plates.touched}">
+                  <label for="plates">{{'fleet.trucks.plates' | translate}}</label>
+                  <input  [placeholder]="'fleet.trucks.type-plates' | translate"type="text" name="plates" formControlName="plates">
+                  <mat-error>{{'fleet.trucks.invalid-plates' | translate}}</mat-error>
+              </div>
+      
+              <app-color-picker
+                (changeColor)="updateTruckColor($event)"
+                [selectedColor]="selectedColor"
+                [btnDone]="'fleet.trucks.txt-done' | translate">
+              </app-color-picker>
+      
+            </form>
+          </div>
+
+          <!-- truck settings tab-->
+          <div class="embla__slide with-gap">
+
+            <!-- permiso sct input-->
+            <div 
+              class="truck-input wide-label"                 
+              [class]="truckDetailsForm.controls.sct_permission.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.sct_permission.touched} ">
+              <label>{{
+                "invoice.autotransporte.permiso-sct" | translate
+              }}</label>
+
+              <input type="text"
+                [value]="selectedPermisoSCT | async"
+                (keyup)="filteredPermisosSCT = searchFunction(this.getCatalogue('sat_cp_tipos_de_permiso'),$event.target.value)"
+                (blur)="resetOption($event,this.getCatalogue('sat_cp_tipos_de_permiso'), 'sct_permission' )"
+                [matAutocomplete]="sctAutocomplete">
+              <mat-autocomplete #sctAutocomplete="matAutocomplete" [displayWith]="displayFn">
+                <mat-option 
+                  *ngFor="let option of filteredPermisosSCT" 
+                  [value]="option"                   
+                  (click)="setOption(option,'sct_permission')">
+                    {{option.code}} - {{option.description}}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error>{{'fleet.trucks.sct-perm-required' | translate}}</mat-error>
+            </div>
+
+            <!--  sct number input-->
+            <div 
+              class="truck-input wide-label"
+              [class]="truckDetailsForm.controls.sct_number.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.sct_number.touched} ">
+                <label for="sct_number">{{'fleet.trucks.sct-number' | translate}}</label>
+                <input type="text" name="sct_number" formControlName="sct_number">
+                <mat-error>{{'fleet.trucks.sct-number' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
+            </div>
+
+            <!--truck settings autocomplete-->
+            <div 
+              class="truck-input wide-label"
+              [class]="truckDetailsForm.controls.truck_settings.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.truck_settings.touched} ">
+                <label>{{
+                  "fleet.trucks.truck_settings" | translate
+                }}</label>
+
+              <input type="text"
+                      [value]="selectedTruckSettings | async"
+                      (keyup)="filteredTruckSettings = searchFunction(this.getCatalogue('sat_cp_config_autotransporte'),$event.target.value)"
+                      (blur)="resetOption($event,this.getCatalogue('sat_cp_config_autotransporte'), 'truck_settings' )"
+                      [matAutocomplete]="truckSettingsAutocomplete">
+              <mat-autocomplete #truckSettingsAutocomplete="matAutocomplete" [displayWith]="displayFn">
+                <mat-option 
+                  *ngFor="let option of filteredTruckSettings" 
+                  [value]="option"                   
+                  (click)="setOption(option,'truck_settings')">
+                    {{option.code}} - {{option.description}}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error>{{'fleet.trucks.truck-settings-required' | translate}}</mat-error>
+            </div>
+            
+          </div>
+
+          <!-- truck insurance tab-->
+          <div class="embla__slide with-gap">
+
+            <div 
+              class="truck-input wide-label"
+              [class]="truckDetailsForm.controls.insurer.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.insurer.touched} ">
+              <label for="insurer">{{'fleet.trucks.insurer-name' | translate}}</label>
+              <input [placeholder]="'fleet.trucks.type-insurer' | translate" type="text" name="insurer" formControlName="insurer">
+              <mat-error>{{'fleet.trucks.insurer-name' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
+
+            </div>
+            
+            <div 
+              class="truck-input wide-label"
+              [class]="truckDetailsForm.controls.policy_number.status" 
+              [ngClass]="{touched:truckDetailsForm.controls.policy_number.touched} ">
+                <label for="policy_number">{{'fleet.trucks.policy-number' | translate}}</label>
+                <input [placeholder]="'fleet.trucks.type-policy-number' | translate"type="text" name="policy_number" formControlName="policy_number">
+                <mat-error>{{'fleet.trucks.policy-number' | translate}} {{'fleet.trucks.required' | translate}}</mat-error>
+            </div>
+
+            <div class="truck-input wide-label">
+              <label for="">
+                <div>{{'fiscal-documents.upload-files.txt_insurance' | translate}}</div>
+                <div>(PDF, JPG, PNG)</div>
+              </label>
+              <bego-drag-file-bar *ngIf="!insuranceFile" (fileOutput)="updateInsuranceFile($event)">
+                <div class="insurance-file-input" template>
+                  <i class="icon icon-plus"></i>
+                </div>
+              </bego-drag-file-bar>
+
+              <div *ngIf="insuranceFile" class="insurance-file-wrapper" (click)="showInsuranceFile()">
+                <div class="insurance-file">
+                  <div  class="file-type">
+                    <div class="type">{{insuranceFile.fileType | uppercase}}</div>
+                    <i class="icon icon-document"></i>
+                  </div>
+
+                  <div>
+                    <div class="title">{{insuranceFile.name}}</div>
+                    <div class="size">{{insuranceFile.size}}</div>
+                  </div>
+                </div>
+                <i class="icon icon-edit" (click)="editInsuranceFile($event)"></i>
+
+
+              </div>
+
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+
+      <button
+        (click)="saveChanges()"
+        mat-raised-button
+        class="bego-btn yellow medium-size"
+        [disabled]="disableSaveBtn"
+    >
+      {{'history.consignment_note.save_changes' | translate}}
+    </button>      
+  </form>
+
+
+
+    </div>
+
+    <div class="sidebar">
+      <app-fleet-widget [size]="'sm'"></app-fleet-widget>
+    </div>
+  </div>
+</div>

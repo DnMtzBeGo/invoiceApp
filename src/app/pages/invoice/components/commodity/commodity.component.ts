@@ -232,4 +232,19 @@ export class CommodityComponent implements OnInit {
   acceptOnlyNumbers(event: Event): void {
     event.target["value"] = event.target["value"].replace(/\D/g, "");
   }
+
+
+  resetFilterList(list) {
+    switch(list) {
+      case 'bienesTransportados':
+        this.filteredBienesTransportados = this.bienesTransportados;
+        break;
+      case 'claveUnidad':
+        this.filteredClaveUnidad = this.claveUnidad;
+        break;
+      case 'claveMaterialPeligroso':
+        this.filteredMaterialPeligroso = this.materialPeligroso;
+        break;
+    }
+  }
 }

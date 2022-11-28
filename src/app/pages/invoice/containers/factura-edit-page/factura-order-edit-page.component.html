@@ -256,6 +256,7 @@
                   "
                   [value]="uso.clave"
                   class="brand-option-1"
+                  [title]="uso.descripcion"
                 >
                   {{ uso.clave }} - {{ uso.descripcion }}
                 </mat-option>
@@ -322,6 +323,7 @@
                   "
                   [value]="regimen.clave"
                   class="brand-option-1"
+                  [title]="regimen.descripcion"
                 >
                   {{ regimen.clave }} - {{ regimen.descripcion }}
                 </mat-option>
@@ -372,6 +374,7 @@
         <div class="grid" style="padding-top: 1rem">
           <bego-address-autocomplete
             [address]="vm.form?.invoice?.receiver?.address?.address"
+            [placeId]="vm.form?.invoice?.receiver?.address?.place_id"
             (addressChange)="vm.form.invoice.receiver.address.address = $event"
             (placeIdChange)="vm.form.invoice.receiver.address.place_id = $event"
             formFieldClass="bego-address-autocomplete brand-field-1"
@@ -408,6 +411,7 @@
                 *ngFor="let metodopago of vm.catalogos?.metodos_de_pago"
                 [value]="metodopago.clave"
                 class="brand-option-1"
+                [title]="metodopago.descripcion"
               >
                 {{ metodopago.clave }} - {{ metodopago.descripcion }}
               </mat-option>
@@ -526,6 +530,14 @@
               "
               [matAutocomplete]="auto5"
               autocomplete="off"
+              (focusin)="
+                vm.receptorSearch?.cve_sat == null &&
+                  vm.form?.cargo?.cargo_goods &&
+                  formEmitter.next([
+                    'conceptos:search_cve',
+                    vm.form?.cargo?.cargo_goods
+                  ])
+              "
             />
 
             <span
@@ -641,6 +653,7 @@
                 *ngFor="let unidad of vm.catalogos?.unidades_de_medida"
                 [value]="unidad.clave"
                 class="brand-option-1"
+                [title]="unidad.descripcion"
               >
                 {{ unidad.clave }} - {{ unidad.descripcion }}
               </mat-option>
@@ -649,6 +662,144 @@
             <span
               class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.concepto?.unidad_de_medida"
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1"
+            >
+              <mat-icon
+                ><img
+                  src="./assets/images/invoice/help.png"
+                  style="width: inherit"
+              /></mat-icon>
+            </span>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="p(vm.form).hazardous"
+            class="brand-field-1"
+            appearance="outline"
+          >
+            <mat-label>{{
+              "invoice.commodity.clave-material-peligroso" | translate
+            }}</mat-label>
+            <input
+              matInput
+              name="hazardous_material"
+              [ngModel]="vm.form?.cargo?.hazardous_material"
+              (ngModelChange)="
+                formEmitter.next([
+                  'cargo:search_material',
+                  (vm.form.cargo.hazardous_material = $event)
+                ])
+              "
+              [matAutocomplete]="auto6"
+              autocomplete="off"
+              (focusin)="
+                vm.receptorSearch?.cve_material == null &&
+                  vm.form?.cargo?.hazardous_material &&
+                  formEmitter.next([
+                    'cargo:search_material',
+                    vm.form?.cargo?.hazardous_material
+                  ])
+              "
+            />
+
+            <span
+              class="brand-icon-help"
+              [matTooltip]="vm.helpTooltips?.commodity?.cve_material_peligroso"
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1"
+            >
+              <mat-icon
+                ><img
+                  src="./assets/images/invoice/help.png"
+                  style="width: inherit"
+              /></mat-icon>
+            </span>
+
+            <mat-progress-bar
+              [style.display]="
+                vm.searchAction?.type === 'cve_material' && vm.searchLoading
+                  ? 'block'
+                  : 'none'
+              "
+              class="brand-progress-bar-1"
+              mode="indeterminate"
+            ></mat-progress-bar>
+
+            <mat-autocomplete
+              autoActiveFirstOption
+              #auto6="matAutocomplete"
+              (optionSelected)="formEmitter.next(['autocomplete:cancel', ''])"
+            >
+              <mat-option
+                *ngIf="vm.receptorSearch?.cve_material?.length === 0"
+                value=""
+                class="brand-option-1"
+                disabled
+              >
+                {{ "invoice.edit.no-results" | translate }}
+              </mat-option>
+              <mat-option
+                *ngFor="
+                  let clave of vm.receptorSearch?.cve_material;
+                  let i = index
+                "
+                [value]="clave.clave"
+                class="brand-option-1"
+              >
+                <div>
+                  <span style="text-transform: uppercase">{{
+                    clave.clave
+                  }}</span>
+                  <span class="sublabel">{{ clave.descripcion }}</span>
+                </div>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="p(vm.form).hazardous"
+            class="brand-field-1"
+            appearance="outline"
+          >
+            <mat-label>{{
+              "invoice.commodity.embalaje" | translate
+            }}</mat-label>
+            <mat-select
+              name="packaging"
+              [ngModel]="vm.form?.cargo?.packaging"
+              (ngModelChange)="vm.form.cargo.packaging = $event"
+              class="disable-custom-format"
+            >
+              <mat-option>
+                <ngx-mat-select-search
+                  ngModel
+                  (ngModelChange)="
+                    formEmitter.next([
+                      'catalogos:search',
+                      ['tipos_de_embalaje', $event.toLowerCase()]
+                    ])
+                  "
+                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"
+                ></ngx-mat-select-search>
+              </mat-option>
+              <mat-option
+                *ngFor="let unidad of vm.catalogos?.tipos_de_embalaje"
+                [value]="unidad.clave"
+                class="brand-option-1"
+                [title]="unidad.descripcion"
+              >
+                {{ unidad.clave }} - {{ unidad.descripcion }}
+              </mat-option>
+            </mat-select>
+
+            <span
+              class="brand-icon-help"
+              [matTooltip]="vm.helpTooltips?.commodity?.embalaje"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
               matTooltipClass="brand-tooltip-1"
@@ -775,16 +926,9 @@
             flex: 1;
             text-align: right;
           "
-          [style.white-space]="
-            vm.form?.error?.length > 0 ? 'pre-line' : 'initial'
-          "
+          [style.white-space]="'pre-line'"
         >
-          {{
-            showError(vm.formError) ||
-              (vm.form?.error?.length > 0 && !vm.readonly
-                ? showError(vm.form)
-                : "")
-          }}
+          {{ showError(vm.formError) || "" }}
         </div>
 
         <div style="grid-column: span 2">
@@ -834,9 +978,7 @@
                     ? ("invoice.edit.btn-save-update-success" | translate)
                     : ("invoice.edit.btn-save-update" | translate)
                   : vm.formMode === "save" && vm.formSuccess
-                  ? model === "factura"
-                    ? ("invoice.edit.btn-save-save-success" | translate)
-                    : ("invoice.edit.btn-save-save-success-tpl" | translate)
+                  ? ("invoice.edit.btn-save-save-success" | translate)
                   : ("invoice.edit.btn-save-save" | translate)
               }}
             </span>

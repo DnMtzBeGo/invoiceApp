@@ -19,6 +19,14 @@ const routes: Routes = [
       {
         path: 'fiscal-documents',
         loadChildren: () => import('./components/fiscal-docs/upload-fiscal-docs.module').then((m)=>m.UploadFiscalDocsModule),
+      },
+      {
+        path: 'sat-certificate',
+        loadChildren: () => import('./components/sat-certificate/sat-certificate.module').then((m)=>m.SatCertificateModule),
+      },
+      {
+        path: 'history',
+        loadChildren: () => import('./components/history/history.module').then((m)=>m.HistoryModule),
       }
     ]
   },

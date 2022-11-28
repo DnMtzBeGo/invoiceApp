@@ -8,6 +8,7 @@ import { InfoModalComponent } from "../../modals/info-modal/info-modal.component
 import { CartaPorteInfoService } from "../../components/invoice/carta-porte/services/carta-porte-info.service";
 import { SubtiposRemolques } from "../../models/invoice/carta-porte/subtipos-remolques";
 import { facturaPermissions } from "../factura-edit-page/factura.core";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 @Component({
   selector: "app-carta-porte-page",
   templateUrl: "./carta-porte-page.component.html",
@@ -25,7 +26,8 @@ export class CartaPortePageComponent implements OnInit {
   public ubicacionesInfo: any;
   public mercanciasInfo: any;
   public figuraTransporteInfo: any;
-  public cartaPorteEnabled: boolean = false;
+  public cartaPorteEnabled = [];
+  public cartaPorteDisabled: boolean = false;
   isLinear = false;
   constructor(
     public cartaPorteInfoService: CartaPorteInfoService,
@@ -61,6 +63,8 @@ export class CartaPortePageComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.facturaInfo?.currentValue?.carta_porte) {
+      this.cartaPorteEnabled.push('carta_porte');
+      this.facturaInfo.complementos = this.cartaPorteEnabled;
       this.facturaInfo = changes.facturaInfo?.currentValue;
       const { carta_porte } = this.facturaInfo;
       this.transporteInfo = carta_porte;
@@ -68,7 +72,23 @@ export class CartaPortePageComponent implements OnInit {
       this.ubicacionesInfo = carta_porte.ubicaciones;
       this.mercanciasInfo = carta_porte.mercancias;
     }
+    console.log(changes.facturaInfo?.currentValue?.complementos.length);
+    if(changes.facturaInfo?.currentValue?.complementos.length > 0) {
+      this.cartaPorteDisabled = true;
+      console.log("El switch se prende",this.cartaPorteDisabled)
+    } else {
+      this.cartaPorteDisabled = false;
+      console.log("El switch se apaga",this.cartaPorteDisabled)
+    }
 
+  }
+
+  public cartaPorteStatus(event: MatSlideToggleChange) {
+    if(event.checked)
+      this.cartaPorteEnabled.push('carta_porte');
+    else
+      this.cartaPorteEnabled = [];
+    this.facturaInfo.complementos = this.cartaPorteEnabled;
   }
 
   async gatherInfo(): Promise<void> {

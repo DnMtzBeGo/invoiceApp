@@ -1,30 +1,17 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  QueryList,
-  SimpleChanges,
-  ViewChild,
-  ViewChildren,
-} from "@angular/core";
-import { MatTable } from "@angular/material/table";
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  AbstractControl,
-} from "@angular/forms";
-import { Pedimento } from "../../../../models/invoice/carta-porte/ubicaciones";
-import { CartaPorteInfoService } from "../services/carta-porte-info.service";
-import { CommodityComponent } from "../../../commodity/commodity.component";
-import { CataloguesListService } from "../services/catalogues-list.service";
+import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { MatTable } from '@angular/material/table';
+import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Pedimento } from '../../../../models/invoice/carta-porte/ubicaciones';
+import { CartaPorteInfoService } from '../services/carta-porte-info.service';
+import { CommodityComponent } from '../../../commodity/commodity.component';
+import { CataloguesListService } from '../services/catalogues-list.service';
 
 const ELEMENT_DATA: Pedimento[] = [];
 
 @Component({
-  selector: "app-mercancias",
-  templateUrl: "./mercancias.component.html",
-  styleUrls: ["./mercancias.component.scss"],
+  selector: 'app-mercancias',
+  templateUrl: './mercancias.component.html',
+  styleUrls: ['./mercancias.component.scss']
 })
 export class MercanciasComponent implements OnInit {
   @ViewChildren(CommodityComponent) commodityRef: QueryList<CommodityComponent>;
@@ -32,7 +19,7 @@ export class MercanciasComponent implements OnInit {
 
   @Input() info: any;
 
-  displayedColumns: string[] = ["value", "action"];
+  displayedColumns: string[] = ['value', 'action'];
   dataSource = [...ELEMENT_DATA];
 
   public pesoBrutoTotal: number;
@@ -42,19 +29,16 @@ export class MercanciasComponent implements OnInit {
 
   public commodities: Array<any> = [1];
   public monedas: any[] = [
-    { clave: "MXN", valor: "MXN" },
-    { clave: "USD", valor: "USD" },
+    { clave: 'MXN', valor: 'MXN' },
+    { clave: 'USD', valor: 'USD' }
   ];
 
   public mercanciasForm = new FormGroup({
-    peso_bruto_total: new FormControl("", Validators.required),
-    unidad_peso: new FormControl("", Validators.required),
+    peso_bruto_total: new FormControl('', Validators.required),
+    unidad_peso: new FormControl('', Validators.required)
   });
 
-  constructor(
-    public cartaPorteInfoService: CartaPorteInfoService,
-    private cataloguesListService: CataloguesListService
-  ) {
+  constructor(public cartaPorteInfoService: CartaPorteInfoService, private cataloguesListService: CataloguesListService) {
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
       this.unidadPeso = data.unidades_de_peso;
       this.filteredUnidadPeso = Object.assign([], this.unidadPeso);
@@ -69,25 +53,23 @@ export class MercanciasComponent implements OnInit {
         peso_bruto_total: peso_bruto_total,
         unidad_peso: unidad_peso,
         num_total_mercancias: mercancia.length,
-        mercancia: mercancia,
+        mercancia: mercancia
         // isValid: this.isValid()
       });
     });
 
-    this.mercanciasForm.controls.unidad_peso.valueChanges.subscribe(
-      (inputValue) => {
-        if (inputValue) {
-          this.filteredUnidadPeso = this.unidadPeso.filter((e) => {
-            const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
-            const input =
-              inputValue && typeof inputValue == "object"
-                ? `${inputValue.clave} ${inputValue.nombre}`.toLowerCase()
-                : inputValue.toLowerCase();
-            return currentValue.includes(input);
-          });
-        }
+    this.mercanciasForm.controls.unidad_peso.valueChanges.subscribe((inputValue) => {
+      if (inputValue) {
+        this.filteredUnidadPeso = this.unidadPeso.filter((e) => {
+          const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
+          const input =
+            inputValue && typeof inputValue == 'object'
+              ? `${inputValue.clave} ${inputValue.nombre}`.toLowerCase()
+              : inputValue.toLowerCase();
+          return currentValue.includes(input);
+        });
       }
-    );
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -96,7 +78,7 @@ export class MercanciasComponent implements OnInit {
       if (mercancia) this.commodities = mercancia;
       this.mercanciasForm.patchValue({
         peso_bruto_total,
-        unidad_peso,
+        unidad_peso
       });
     }
   }
@@ -115,10 +97,8 @@ export class MercanciasComponent implements OnInit {
       const response = {
         clave_unidad: info.claveUnidad,
         peso_en_kg: info.peso,
-        material_peligroso: info.materialPeligroso ? "Sí" : "No",
-        cve_material_peligroso: e.commodity.value.claveMaterialPeligroso
-          ? e.commodity.value.claveMaterialPeligroso
-          : "",
+        material_peligroso: info.materialPeligroso ? 'Sí' : 'No',
+        cve_material_peligroso: e.commodity.value.claveMaterialPeligroso ? e.commodity.value.claveMaterialPeligroso : '',
         embalaje: info.embalaje,
         descrip_embalaje: info.embalaje?.descripcion,
         bienes_transp: e.commodity.value.bienesTransportados,
@@ -128,7 +108,7 @@ export class MercanciasComponent implements OnInit {
         moneda: info.moneda,
         cantidad: parseInt(info.cantidad),
 
-        pedimentos: info.pedimento,
+        pedimentos: info.pedimento
       };
 
       if (!info.materialPeligroso) {
@@ -143,20 +123,22 @@ export class MercanciasComponent implements OnInit {
     if (this.commodityRef) {
       const commodityRef = this.commodityRef.toArray();
 
-      const validityArr = commodityRef.filter(
-        (x): any => x.commodity.status == "VALID"
-      );
+      const validityArr = commodityRef.filter((x): any => x.commodity.status == 'VALID');
       const validity = validityArr.length == commodityRef.length;
       return validity;
     }
   }
 
   getUnidadPesoText(option: string): string {
-    let stateFound = option
-      ? this.unidadPeso.find((x) => x.clave === option)
-      : undefined;
-    return stateFound
-      ? `${stateFound.clave} - ${stateFound.nombre}`
-      : undefined;
+    let stateFound = option ? this.unidadPeso?.find((x) => x.clave === option) : undefined;
+    return stateFound ? `${stateFound.clave} - ${stateFound.nombre}` : undefined;
+  }
+
+  resetFilterList(list) {
+    switch(list) {
+      case 'permisosSCT':
+        this.filteredUnidadPeso = this.unidadPeso;
+        break;
+    }
   }
 }

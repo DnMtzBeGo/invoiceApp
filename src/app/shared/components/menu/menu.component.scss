@@ -64,14 +64,13 @@
         }
   
         &.selected {
-          border-left: 3px solid #ffbe00;;
+          border-left: 3px solid #FFE000;
           font-weight: 400;
   
           ::ng-deep button.btn-menu{
   
             background: $yellow-color;
-            border: 1px solid #EAAE00;
-            box-shadow: inset 4px 4px 4px #FFD354, inset -4px -4px 6px #D59E00;
+            box-shadow: inset 4px 4px 4px #FFEA50, inset -4px -4px 6px #D5BB00;
             border-radius: 16px;
             color: #000000;
             font-weight: 500;
@@ -82,13 +81,13 @@
             }
           }
   
-          color: #ffbe00;
+          color: #FFE000;
         }
   
         &:hover{
           &:not(.selected){
             ::ng-deep button.btn-menu::before{
-              color: #ffbe00;
+              color: #FFE000;
             }
           }
         }

@@ -1,11 +1,15 @@
 <div
   (click)="clickFileInputElement()"
   #uploadFilesBar
-  class="upload-file-bar"
   [ngClass]="!displayFileLoaded || !this.fileInfo ? '' : 'hidden'"
-  style="cursor: pointer"
+  *ngIf="!awsFile"
 >
-  <div #elementContent>
+<div #customTemplateRef>
+  <ng-content select="[template]"></ng-content>
+</div>
+
+<div *ngIf="!customTemplateRef.children.length"   class="upload-file-bar">
+  <div #elementContent> 
     <ng-content></ng-content>
   </div>
 
@@ -21,18 +25,20 @@
   </ng-container>
 </div>
 
-<div *ngIf="displayFileLoaded && this.fileInfo" class="file-loaded">
+</div>
+
+<div *ngIf="(displayFileLoaded && this.fileInfo) || awsFile" class="file-loaded">
   <div class="icon icon-close close-btn" (click)="removeFile()"></div>
   <div>
     <div class="doc-icon">
-      {{ fileInfo?.extension }}
+      {{ fileInfo ? fileInfo?.extension : awsFileExtension }}
     </div>
   </div>
   <div class="file-details">
     <div class="file-name">
-      {{ fileInfo?.text }}
+      {{ fileInfo ? fileInfo?.text : awsFileName }}
     </div>
-    <div class="subtitle">{{ formattedDateUpdated }} | {{ fileInfo.formattedSize }}</div>
+   <!--  <div class="subtitle">{{ formattedDateUpdated }} | {{ fileInfo.formattedSize }}</div> -->
   </div>
 </div>
 
@@ -41,5 +47,5 @@
   hidden
   type="file"
   (change)="selectFile()"
-  accept="image/*, .pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/plain, application/pdf"
+  [accept]="acceptFiles"
 />

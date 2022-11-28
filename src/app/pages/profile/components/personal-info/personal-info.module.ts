@@ -15,6 +15,7 @@ import { BegoAddressAutocompleteModule } from 'src/app/shared/components/bego-ad
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { VerificationModalComponent } from '../verification-modal/verification-modal.component';
+import { SharedModule } from "src/app/shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { VerificationModalComponent } from '../verification-modal/verification-m
     MatButtonModule,
     BegoAddressAutocompleteModule,
     MatAutocompleteModule,
-    MatIconModule
+    MatIconModule,
+    SharedModule
   ]
 })
 export class PersonalInfoModule { }

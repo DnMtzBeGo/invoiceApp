@@ -1,20 +1,30 @@
-:host {
-  max-width: 1400px;
-  margin: 0 1.5rem;
-  padding: 0 2rem 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  grid-gap: 3rem;
-
+.container{
+  // max-width: 1400px;
+  // margin: 0 1.5rem;
+  // padding: 0 2rem 1.5rem;
+  // display: grid;
+  // grid-template-columns: 1fr 280px;
+  // grid-gap: 3rem;
+  height: calc(100vh - 152px);
+  display: flex;
+  gap: 3em;
+  width: 100%;
   #chat {
     position: relative;
     display: grid;
     grid-template-rows: 1fr auto;
-
+    inline-size:auto;
+    flex-grow: 1;
     &--messages {
       // overflow-y: scroll;
       // overflow-x: hidden;
       position: relative;
+
+      &::after{
+        content: '';
+        display: inline-block;
+        width: 100%;
+      }
 
       > div {
         position: absolute;
@@ -71,7 +81,7 @@
       opacity: 0;
       border-width: 2px;
       border-style: dashed;
-      border-color: #ffbe00;
+      border-color: #FFE000;
       box-shadow: inset -4px -4px 10px rgba(20, 28, 39, 0.69),
         inset 4px 4px 30px rgba(0, 0, 0, 0.64);
       border-radius: 8px;
@@ -99,6 +109,7 @@
     border-radius: 8px;
     text-align: center;
     color: #ededed;
+    min-width: 280px;
 
     > img {
       padding: 1rem;

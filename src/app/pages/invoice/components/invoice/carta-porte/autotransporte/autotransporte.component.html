@@ -5,10 +5,11 @@
         "invoice.autotransporte.permiso-sct" | translate
       }}</mat-label>
       <input
-        type="text"
+        type="search"
+        autocomplete="off"
         formControlName="permisoSCT"
-        aria-label="Number"
         matInput
+        (search)="resetFilterList('permisoSCT')"
         [matAutocomplete]="sctRef"
       />
 
@@ -122,6 +123,7 @@
         autocomplete="off"
         formControlName="identificacionVehicularConfig"
         matInput
+        (search)="resetFilterList('identificacionVehicularConfig')"
         [matAutocomplete]="identificacionVehicularConfigRef"
       />
       <mat-autocomplete
@@ -189,6 +191,7 @@
           autocomplete="off"
           formControlName="remolquesConfig"
           matInput
+          (search)="resetFilterList('remolquesConfig')"
           [matAutocomplete]="remolquesConfigRef"
           >
         <mat-autocomplete 

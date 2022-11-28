@@ -43,7 +43,13 @@ export class SeriesNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.isEditing = Object.keys(this.seriesData).length > 1;
-    if (this.isEditing) this.seriesForm.controls["folio"].disable();
+
+    if (this.isEditing) {
+      this.seriesForm.controls["tipo_comprobante"].disable();
+      this.seriesForm.controls["serie"].disable();
+      this.seriesForm.controls["folio"].disable();
+    }
+
     if (this.seriesData) {
       this.seriesForm.patchValue(this.seriesData);
       if (this.seriesData.logo) {
@@ -79,13 +85,14 @@ export class SeriesNewComponent implements OnInit {
     const formData = new FormData();
     const type = this.isEditing ? "update" : "create";
     formData.append("emisor", this.seriesData.emisor);
+    if (!this.isEditing) {
     formData.append("serie", this.seriesForm.get("serie").value);
-    formData.append(
-      "tipo_comprobante",
-      this.seriesForm.get("tipo_comprobante").value
-    );
-    if (!this.isEditing)
+      formData.append(
+        "tipo_comprobante",
+        this.seriesForm.get("tipo_comprobante").value
+      );
       formData.append("folio", this.seriesForm.get("folio").value);
+    }
     formData.append("color", this.seriesForm.get("color").value);
     if (this.logoFile) {
       formData.append("logo", this.logoFile);

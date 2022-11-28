@@ -24,6 +24,8 @@ import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/
 import { SimpleAvatarModule } from 'src/app/shared/components/simple-avatar/simple-avatar.module';
 import { ChooseFleetElementComponent } from './components/choose-fleet-element/choose-fleet-element.component';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { BegoBodyModule } from 'src/app/shared/components/bego-body/bego-body.module';
+import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.module';
 @NgModule({
   declarations: [
     HistoryComponent,
@@ -53,6 +55,9 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
     CircularAvatarModule,
     SimpleAvatarModule,
     ButtonModule,
-  ]
+    BegoBodyModule,
+    BegoTabsModule
+  ],
+  exports: [OrderCardComponent, OrderInfoComponent, EditCnBtnComponent, DriverStatusCardComponent, EditOrderFleetComponent, ChooseFleetElementComponent, DownloadInvoicesComponent, DropDownModule, PickupDropoffInfoComponent, OrderEvidenceComponent]
 })
 export class HistoryModule { }

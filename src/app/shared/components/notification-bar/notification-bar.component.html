@@ -1,0 +1,63 @@
+<div id="notificationBar" [class]="notificationsBarService.isVisible">
+  <div>
+    <div class="chevron text-right">
+      <i class="icon icon-up" (click)="toggleBar()"></i>
+      <!-- <img src="/assets/images/notifications/chevron.png" class="hand" (click)="toggleBar()" /> -->
+    </div>
+
+    <div class="avatar text-center">
+      <img [src]="profilePic" (error)="profilePicError()" />
+    </div>
+
+    <h3>{{ profileName }}</h3>
+
+    <div class="text-center">
+      <button class="bego-btn yellow" (click)="goToProfile()">Ver perfil</button>
+    </div>
+
+    <div class="text-center mt-1">
+      <button class="gray-button mr">
+        <i class="icon icon-chat"></i>
+        <!-- <img src="/assets/images/notifications/messages.png" /> -->
+      </button>
+      <button class="gray-button active">
+        <i class="icon icon-bell"></i>
+        <!-- <img src="/assets/images/notifications/notifications.png" /> -->
+      </button>
+    </div>
+
+    <div id="notificationsPanel">
+      <h2>
+        Notificaciones
+        <button
+          [disabled]="!this.notifications.length ? 'disabled' : ''"
+          type="button"
+          (click)="openDialog()"
+          class="bego-btn yellow hide-all-btn">
+          Ocultar todas
+        </button>
+      </h2>
+      <div class="notifications">
+        <ul>
+          <li *ngFor="let n of notifications; index as i">
+            <div class="image">
+              <img src="{{ '/assets/images/notifications/' + n.image }}" />
+            </div>
+            <div class="content">
+              <div class="times" title="Ocultar notificación" (click)="hideNotification(i)">
+                <span class="icon icon-close"></span>
+              </div>
+              <div class="title">{{ n.title }}</div>
+              <div [class]="'body ' + (n.opened ? 'open' : '')">{{ n.body }}</div>
+              <div class="more" *ngIf="n.body.length > 30" (click)="toggleNotification(i)">mas...</div>
+            </div>
+            <p>
+              <small class="time">{{ getTimeElapsed(n.date_created, now) }}...</small>
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="messagesPanel" [hidden]="true">Mensajes</div>
+  </div>
+</div>

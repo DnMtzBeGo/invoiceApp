@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { environment } from "src/environments/environment";
 
 @Component({
-  selector: 'bego-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  selector: "bego-menu",
+  templateUrl: "./menu.component.html",
+  styleUrls: ["./menu.component.scss"],
 })
 export class MenuComponent implements OnInit {
   open: boolean = false;
-  logo: string = '../assets/images/logo.svg';
+  logo: string = "../assets/images/logo.svg";
 
   menuIsOpen: boolean = false;
 
@@ -20,15 +20,15 @@ export class MenuComponent implements OnInit {
   goTo(route: string) {
     //if current page is home then refresh the page regardless of anything
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['/' + route ]);
+    this.router.onSameUrlNavigation = "reload";
+    this.router.navigate(["/" + route]);
   }
 
   terms() {
-    if (localStorage.getItem('lang') === 'es') {
-      window.open(environment.website_url + 'terminos-condiciones');
+    if (localStorage.getItem("lang") === "es") {
+      window.open(environment.website_url + "terminos-condiciones");
     } else {
-      window.open(environment.website_url + 'terms-and-conditions');
+      window.open(environment.website_url + "terms-and-conditions");
     }
   }
 
@@ -38,7 +38,7 @@ export class MenuComponent implements OnInit {
     localStorage.clear();
 
     window.setTimeout(
-      () => (window.location.href = environment.website_url + '?logout'),
+      () => (window.location.href = environment.website_url + "?logout"),
       1000
     );
   }
@@ -46,13 +46,13 @@ export class MenuComponent implements OnInit {
   toggleMenu() {
     this.menuIsOpen = !this.menuIsOpen;
 
-    const appContainer = document.getElementById('container');
-    console.log('container : ', appContainer);
+    const appContainer = document.getElementById("container");
+    console.log("container : ", appContainer);
 
     if (this.menuIsOpen) {
-      appContainer?.classList.add('open');
+      appContainer?.classList.add("open");
     } else {
-      appContainer?.classList.remove('open');
+      appContainer?.classList.remove("open");
     }
   }
 }

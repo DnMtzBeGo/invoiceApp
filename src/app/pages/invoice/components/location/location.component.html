@@ -24,6 +24,7 @@
         autocomplete="off"
         type="search"
         matInput
+        (search)="resetFilterList('estado')"
         [matAutocomplete]="estadosCatalogueRef"
       />
       <mat-autocomplete
@@ -70,6 +71,7 @@
         autocomplete="off"
         type="search"
         matInput
+        (search)="resetFilterList('municipio')"
         [matAutocomplete]="municipiosCatalogueRef"
       />
       <mat-autocomplete
@@ -115,6 +117,7 @@
         autocomplete="off"
         type="search"
         matInput
+        (search)="resetFilterList('localidad')"
         [matAutocomplete]="localidadesCatalogueRef"
       />
       <mat-autocomplete
@@ -172,6 +175,7 @@
         autocomplete="off"
         type="search"
         matInput
+        (search)="resetFilterList('colonia')"
         [matAutocomplete]="coloniasCatalogueRef"
       />
       <mat-autocomplete

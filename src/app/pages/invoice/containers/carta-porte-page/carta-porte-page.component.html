@@ -5,10 +5,10 @@
       {{ "invoice.cp-page.btn-save" | translate }}
     </button> -->
     <app-tooltip-help [content]="'invoice.tooltips.complementos' | translate"></app-tooltip-help>
-    <mat-slide-toggle [(ngModel)]="cartaPorteEnabled"></mat-slide-toggle>
+    <mat-slide-toggle [(ngModel)]="cartaPorteDisabled" (change)="cartaPorteStatus($event)"></mat-slide-toggle>
   </div>
 
-  <div class="page-wrapper" *ngIf="cartaPorteEnabled">
+  <div class="page-wrapper" *ngIf="cartaPorteEnabled.length > 0">
     <mat-horizontal-stepper [linear]="isLinear" #stepper class="stepper">
       <mat-step [label]="'invoice.cp-page.transporte' | translate">
         <!-- [subtiposRemolques]="catalogues?.subtipos_de_remolques"
