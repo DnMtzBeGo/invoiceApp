@@ -149,15 +149,8 @@ html.text-zoom .section-a14-bionic .grid {
   height: 100%;
   mix-blend-mode: overlay;
   pointer-events: none;
-  background-image: repeating-linear-gradient(
-      rgba(255, 255, 255, 0.171) 0 1px,
-      transparent 1px 2px
-    ),
-    repeating-linear-gradient(
-      0.25turn,
-      rgba(255, 255, 255, 0.171) 0 1px,
-      transparent 1px 2px
-    );
+  background-image: repeating-linear-gradient(rgba(255, 255, 255, 0.171) 0 1px, transparent 1px 2px),
+    repeating-linear-gradient(0.25turn, rgba(255, 255, 255, 0.171) 0 1px, transparent 1px 2px);
 }
 
 .section-a14-bionic .grid .spotlight-wrapper .spotlight {
@@ -761,8 +754,7 @@ html.text-zoom .section-a14-bionic .grid {
   line-height: 1.0625;
   font-weight: 600;
   letter-spacing: -0.009em;
-  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-    'Arial', sans-serif;
+  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   display: inline-block;
   color: transparent;
   background: linear-gradient(to right, #ededed, white);
@@ -772,24 +764,21 @@ html.text-zoom .section-a14-bionic .grid {
 
 .badge-gradient .badge-value:lang(ar) {
   letter-spacing: 0em;
-  font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-value:lang(ja) {
   line-height: 1.10938;
   letter-spacing: 0em;
-  font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons',
-    'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
+  font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
     'ＭＳ Ｐゴシック', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-value:lang(ko) {
   line-height: 1.17188;
   letter-spacing: 0em;
-  font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic',
-    'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim', 'Helvetica Neue',
-    'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic', 'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim',
+    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-value:lang(zh) {
@@ -798,28 +787,23 @@ html.text-zoom .section-a14-bionic .grid {
 
 .badge-gradient .badge-value:lang(th) {
   line-height: 1.34375;
-  font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue',
-    'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-value:lang(zh-CN) {
-  font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-value:lang(zh-HK) {
-  font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-value:lang(zh-MO) {
-  font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons',
-    'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-value:lang(zh-TW) {
-  font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 @media only screen and (max-width: 1068px) {
@@ -828,30 +812,26 @@ html.text-zoom .section-a14-bionic .grid {
     line-height: 1.07143;
     font-weight: 600;
     letter-spacing: -0.005em;
-    font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-      'Arial', sans-serif;
+    font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(ar) {
     letter-spacing: 0em;
-    font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(ja) {
     line-height: 1.125;
     letter-spacing: 0em;
-    font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons',
-      'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
+    font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
       'ＭＳ Ｐゴシック', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(ko) {
     line-height: 1.17865;
     letter-spacing: 0em;
-    font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic',
-      'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim', 'Helvetica Neue',
-      'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic', 'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim',
+      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh) {
@@ -860,28 +840,24 @@ html.text-zoom .section-a14-bionic .grid {
 
   .badge-gradient .badge-value:lang(th) {
     line-height: 1.33929;
-    font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue',
-      'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh-CN) {
-    font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh-HK) {
-    font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh-MO) {
-    font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons',
-      'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial',
+      sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh-TW) {
-    font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 }
 
@@ -891,30 +867,26 @@ html.text-zoom .section-a14-bionic .grid {
     line-height: 1.08349;
     font-weight: 600;
     letter-spacing: -0.003em;
-    font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-      'Arial', sans-serif;
+    font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(ar) {
     letter-spacing: 0em;
-    font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(ja) {
     line-height: 1.14599;
     letter-spacing: 0em;
-    font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons',
-      'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
+    font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
       'ＭＳ Ｐゴシック', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(ko) {
     line-height: 1.1875;
     letter-spacing: 0em;
-    font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic',
-      'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim', 'Helvetica Neue',
-      'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic', 'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim',
+      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh) {
@@ -923,28 +895,24 @@ html.text-zoom .section-a14-bionic .grid {
 
   .badge-gradient .badge-value:lang(th) {
     line-height: 1.33349;
-    font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue',
-      'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh-CN) {
-    font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh-HK) {
-    font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh-MO) {
-    font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons',
-      'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial',
+      sans-serif;
   }
 
   .badge-gradient .badge-value:lang(zh-TW) {
-    font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 }
 
@@ -961,55 +929,46 @@ html.text-zoom .badge-gradient .badge-value {
   line-height: 1.1;
   font-weight: 600;
   letter-spacing: 0em;
-  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-    'Arial', sans-serif;
+  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   -webkit-background-clip: text;
   background-clip: text;
 }
 
 .badge-gradient .badge-unit:lang(ja) {
   line-height: 1.175;
-  font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons',
-    'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
+  font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
     'ＭＳ Ｐゴシック', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-unit:lang(ko) {
   line-height: 1.2;
-  font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic',
-    'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim', 'Helvetica Neue',
-    'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic', 'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim',
+    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-unit:lang(th) {
   line-height: 1.35;
-  font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue',
-    'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-unit:lang(ar) {
-  font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-unit:lang(zh-CN) {
-  font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-unit:lang(zh-HK) {
-  font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-unit:lang(zh-MO) {
-  font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons',
-    'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-unit:lang(zh-TW) {
-  font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 @media only screen and (max-width: 1068px) {
@@ -1018,53 +977,45 @@ html.text-zoom .badge-gradient .badge-value {
     line-height: 1.125;
     font-weight: 600;
     letter-spacing: 0.004em;
-    font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-      'Arial', sans-serif;
+    font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-unit:lang(ja) {
     line-height: 1.21875;
-    font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons',
-      'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
+    font-family: 'SF Pro JP', 'SF Pro Display', 'SF Pro Icons', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
       'ＭＳ Ｐゴシック', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-unit:lang(ko) {
     line-height: 1.21875;
-    font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic',
-      'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim', 'Helvetica Neue',
-      'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro KR', 'SF Pro Display', 'SF Pro Icons', 'Apple Gothic', 'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim',
+      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-unit:lang(th) {
     line-height: 1.375;
-    font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue',
-      'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro TH', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-unit:lang(ar) {
-    font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-unit:lang(zh-CN) {
-    font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-unit:lang(zh-HK) {
-    font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro HK', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-unit:lang(zh-MO) {
-    font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons',
-      'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial',
+      sans-serif;
   }
 
   .badge-gradient .badge-unit:lang(zh-TW) {
-    font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro TC', 'SF Pro Display', 'SF Pro Icons', 'PingFang TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 }
 
@@ -1073,29 +1024,25 @@ html.text-zoom .badge-gradient .badge-value {
   line-height: 1.23536;
   font-weight: 600;
   letter-spacing: -0.022em;
-  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-    'Arial', sans-serif;
+  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-caption:lang(ar) {
   letter-spacing: 0em;
-  font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Text', 'SF Pro Icons',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-caption:lang(ja) {
   letter-spacing: 0em;
-  font-family: 'SF Pro JP', 'SF Pro Text', 'SF Pro Icons',
-    'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
+  font-family: 'SF Pro JP', 'SF Pro Text', 'SF Pro Icons', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
     'ＭＳ Ｐゴシック', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-caption:lang(ko) {
   line-height: 1.35296;
   letter-spacing: 0em;
-  font-family: 'SF Pro KR', 'SF Pro Text', 'SF Pro Icons', 'Apple Gothic',
-    'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim', 'Helvetica Neue',
-    'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro KR', 'SF Pro Text', 'SF Pro Icons', 'Apple Gothic', 'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim',
+    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-caption:lang(zh) {
@@ -1105,28 +1052,23 @@ html.text-zoom .badge-gradient .badge-value {
 .badge-gradient .badge-caption:lang(th) {
   line-height: 1.35296;
   letter-spacing: 0em;
-  font-family: 'SF Pro TH', 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue',
-    'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro TH', 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-caption:lang(zh-CN) {
-  font-family: 'SF Pro SC', 'SF Pro Text', 'SF Pro Icons', 'PingFang SC',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro SC', 'SF Pro Text', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-caption:lang(zh-HK) {
-  font-family: 'SF Pro HK', 'SF Pro Text', 'SF Pro Icons', 'PingFang HK',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro HK', 'SF Pro Text', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-caption:lang(zh-MO) {
-  font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Text', 'SF Pro Icons',
-    'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Text', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-caption:lang(zh-TW) {
-  font-family: 'SF Pro TC', 'SF Pro Text', 'SF Pro Icons', 'PingFang TC',
-    'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'SF Pro TC', 'SF Pro Text', 'SF Pro Icons', 'PingFang TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 @media only screen and (max-width: 1068px) {
@@ -1135,29 +1077,25 @@ html.text-zoom .badge-gradient .badge-value {
     line-height: 1.42859;
     font-weight: 600;
     letter-spacing: -0.016em;
-    font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-      'Arial', sans-serif;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-caption:lang(ar) {
     letter-spacing: 0em;
-    font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Text', 'SF Pro Icons',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro AR', 'SF Pro Gulf', 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-caption:lang(ja) {
     letter-spacing: 0em;
-    font-family: 'SF Pro JP', 'SF Pro Text', 'SF Pro Icons',
-      'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
+    font-family: 'SF Pro JP', 'SF Pro Text', 'SF Pro Icons', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo',
       'ＭＳ Ｐゴシック', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-caption:lang(ko) {
     line-height: 1.57143;
     letter-spacing: 0em;
-    font-family: 'SF Pro KR', 'SF Pro Text', 'SF Pro Icons', 'Apple Gothic',
-      'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim', 'Helvetica Neue',
-      'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro KR', 'SF Pro Text', 'SF Pro Icons', 'Apple Gothic', 'HY Gulim', 'MalgunGothic', 'HY Dotum', 'Lexi Gulim',
+      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-caption:lang(zh) {
@@ -1167,28 +1105,23 @@ html.text-zoom .badge-gradient .badge-value {
   .badge-gradient .badge-caption:lang(th) {
     line-height: 1.35718;
     letter-spacing: 0em;
-    font-family: 'SF Pro TH', 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue',
-      'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro TH', 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-caption:lang(zh-CN) {
-    font-family: 'SF Pro SC', 'SF Pro Text', 'SF Pro Icons', 'PingFang SC',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro SC', 'SF Pro Text', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-caption:lang(zh-HK) {
-    font-family: 'SF Pro HK', 'SF Pro Text', 'SF Pro Icons', 'PingFang HK',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro HK', 'SF Pro Text', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-caption:lang(zh-MO) {
-    font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Text', 'SF Pro Icons',
-      'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro HK', 'SF Pro TC', 'SF Pro Text', 'SF Pro Icons', 'PingFang HK', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 
   .badge-gradient .badge-caption:lang(zh-TW) {
-    font-family: 'SF Pro TC', 'SF Pro Text', 'SF Pro Icons', 'PingFang TC',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'SF Pro TC', 'SF Pro Text', 'SF Pro Icons', 'PingFang TC', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   }
 }
 
@@ -1259,8 +1192,7 @@ html.text-zoom .badge-gradient .badge-value {
   line-height: 1;
   font-weight: 400;
   letter-spacing: -0.003em;
-  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-    'Arial', sans-serif;
+  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
 
 .badge-gradient .badge-value {
@@ -1268,8 +1200,7 @@ html.text-zoom .badge-gradient .badge-value {
   line-height: 1.0625;
   font-weight: 600;
   letter-spacing: -0.009em;
-  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-    'Arial', sans-serif;
+  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   display: inline-block;
   color: transparent;
   background: linear-gradient(to right, #ededed, white);
