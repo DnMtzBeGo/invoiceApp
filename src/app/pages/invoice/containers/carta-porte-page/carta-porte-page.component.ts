@@ -1,18 +1,18 @@
-import { Component, OnInit, Input, SimpleChange, SimpleChanges } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Location } from "@angular/common";
-import { TranslateService } from "@ngx-translate/core";
-import { AuthService } from "src/app/shared/services/auth.service";
-import { InfoModalComponent } from "../../modals/info-modal/info-modal.component";
-import { CartaPorteInfoService } from "../../components/invoice/carta-porte/services/carta-porte-info.service";
-import { SubtiposRemolques } from "../../models/invoice/carta-porte/subtipos-remolques";
-import { facturaPermissions } from "../factura-edit-page/factura.core";
-import { MatSlideToggleChange } from "@angular/material/slide-toggle";
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { InfoModalComponent } from '../../modals/info-modal/info-modal.component';
+import { CartaPorteInfoService } from '../../components/invoice/carta-porte/services/carta-porte-info.service';
+import { SubtiposRemolques } from '../../models/invoice/carta-porte/subtipos-remolques';
+import { facturaPermissions } from '../factura-edit-page/factura.core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 @Component({
-  selector: "app-carta-porte-page",
-  templateUrl: "./carta-porte-page.component.html",
-  styleUrls: ["./carta-porte-page.component.scss"],
+  selector: 'app-carta-porte-page',
+  templateUrl: './carta-porte-page.component.html',
+  styleUrls: ['./carta-porte-page.component.scss']
 })
 export class CartaPortePageComponent implements OnInit {
   public subtiposRemolquesList: SubtiposRemolques;
@@ -62,7 +62,7 @@ export class CartaPortePageComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.facturaInfo?.currentValue?.carta_porte) {
+    if (changes.facturaInfo?.currentValue?.carta_porte) {
       this.cartaPorteEnabled.push('carta_porte');
       this.facturaInfo.complementos = this.cartaPorteEnabled;
       this.facturaInfo = changes.facturaInfo?.currentValue;
@@ -73,21 +73,18 @@ export class CartaPortePageComponent implements OnInit {
       this.mercanciasInfo = carta_porte.mercancias;
     }
     console.log(changes.facturaInfo?.currentValue?.complementos.length);
-    if(changes.facturaInfo?.currentValue?.complementos.length > 0) {
+    if (changes.facturaInfo?.currentValue?.complementos.length > 0) {
       this.cartaPorteDisabled = true;
-      console.log("El switch se prende",this.cartaPorteDisabled)
+      console.log('El switch se prende', this.cartaPorteDisabled);
     } else {
       this.cartaPorteDisabled = false;
-      console.log("El switch se apaga",this.cartaPorteDisabled)
+      console.log('El switch se apaga', this.cartaPorteDisabled);
     }
-
   }
 
   public cartaPorteStatus(event: MatSlideToggleChange) {
-    if(event.checked)
-      this.cartaPorteEnabled.push('carta_porte');
-    else
-      this.cartaPorteEnabled = [];
+    if (event.checked) this.cartaPorteEnabled.push('carta_porte');
+    else this.cartaPorteEnabled = [];
     this.facturaInfo.complementos = this.cartaPorteEnabled;
   }
 
@@ -97,17 +94,18 @@ export class CartaPortePageComponent implements OnInit {
     this.cartaPorteInfoService.infoRecolector.next(null);
     this.facturaInfo.carta_porte = this.cartaPorteInfoService.info;
 
-    this.facturaInfo.carta_porte.total_dist_rec =
-      this.facturaInfo.carta_porte.ubicaciones
-        .filter((e) => e.tipo_ubicacion == "Destino")
-        .map((e) => e.distancia_recorrida || 0)
-        .reduce((a, b) => a + b, 0);
+    this.facturaInfo.carta_porte.total_dist_rec = this.facturaInfo.carta_porte.ubicaciones
+      .filter((e) => e.tipo_ubicacion == 'Destino')
+      .map((e) => e.distancia_recorrida || 0)
+      .reduce((a, b) => a + b, 0);
 
-    if (this.facturaInfo.carta_porte.transp_internac == "No") {
+    if (this.facturaInfo.carta_porte.transp_internac == 'No') {
       delete this.facturaInfo.carta_porte.pais_origen_destino;
       delete this.facturaInfo.carta_porte.entrada_salida_merc;
       delete this.facturaInfo.carta_porte.via_entrada_salida;
     }
+
+    this.facturaInfo.carta_porte.cve_transporte = '01';
 
     // (
     //   await this.apiRestService.apiRest(
@@ -136,42 +134,40 @@ export class CartaPortePageComponent implements OnInit {
   showSuccessModal() {
     this.matDialog.open(InfoModalComponent, {
       data: {
-        title: this.translateService.instant("invoice.cp-page.success-title"),
-        message: this.translateService.instant(
-          "invoice.cp-page.success-message"
-        ),
+        title: this.translateService.instant('invoice.cp-page.success-title'),
+        message: this.translateService.instant('invoice.cp-page.success-message'),
         action: () => {
           if (this.redirectTo) {
             this.router.navigateByUrl(this.redirectTo);
           } else {
             this._location.back();
           }
-        },
+        }
       },
-      restoreFocus: false,
+      restoreFocus: false
     });
   }
 
   showErrorModal(error: string[] | string) {
     this.matDialog.open(InfoModalComponent, {
       data: {
-        title: this.translateService.instant("invoice.cp-page.error-title"),
-        message: error,
+        title: this.translateService.instant('invoice.cp-page.error-title'),
+        message: error
       },
-      restoreFocus: false,
+      restoreFocus: false
     });
   }
 
   showReadOnlyAlert() {
     this.matDialog.open(InfoModalComponent, {
       data: {
-        title: this.translateService.instant("invoice.cp-page.readonly-title"),
+        title: this.translateService.instant('invoice.cp-page.readonly-title'),
         action: () => {
-          this.router.navigateByUrl("/operations/facturas");
-        },
+          this.router.navigateByUrl('/operations/facturas');
+        }
       },
       restoreFocus: false,
-      disableClose: true,
+      disableClose: true
     });
   }
 }

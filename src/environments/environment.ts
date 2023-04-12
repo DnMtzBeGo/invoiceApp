@@ -5,11 +5,11 @@
 export const environment = {
   production: false,
   version: 'v1.0.0',
-  URL_BASE: 'https://qa.bego.ai/v1.0/',
-  // URL_BASE: 'http://localhost:3002/v1.0/',
-  //SOCKET_URI: "http://localhost:3008",
-  SOCKET_URI: 'https://slb.bego.ai/',
-  website_url: 'https://bego.ai/'
+  website_url: 'https://bego.ai/',
+  //URL_BASE: 'https://qa.bego.ai/v1.0/',
+  /// SOCKET_URI: 'https://slb.bego.ai/',
+  URL_BASE: 'http://localhost:3002/v1.0/',
+  SOCKET_URI: 'http://localhost:3008'
 };
 
 /*

@@ -4,10 +4,7 @@
     <span>Agregar</span>
   </div>
   <div class="figuras-wrapper">
-    <div
-      class="figuras-subwrapper"
-      *ngFor="let figura of figuras; let i = index"
-    >
+    <div class="figuras-subwrapper" *ngFor="let figura of figuras; let i = index">
       <div>
         <span class="bubble">{{ i + 1 }}</span>
         <span>
@@ -21,12 +18,10 @@
   </div>
   <!-- <button (click)="getFiguras()">Get Figuras</button>
   <button (click)="isValid()">Get Validity</button> -->
-  
 </div>
 
 <div class="grid">
   <button mat-button matStepperPrevious>
-    {{ "invoice.cp-page.anterior" | translate }}
+    {{ 'invoice.cp-page.anterior' | translate }}
   </button>
 </div>
-

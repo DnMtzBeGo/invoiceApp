@@ -44,10 +44,10 @@ export class AuthService {
     // return this.http.post<any>(environment.URL_BASE + method, formData, { headers, params: params });
 
     let splitUrl, url;
-    if(requestOptions && requestOptions["apiVersion"]) {
-      splitUrl = environment.URL_BASE.split("/");
-      splitUrl[splitUrl.length - 2] = requestOptions["apiVersion"];
-      url = splitUrl.join("/");
+    if (requestOptions && requestOptions['apiVersion']) {
+      splitUrl = environment.URL_BASE.split('/');
+      splitUrl[splitUrl.length - 2] = requestOptions['apiVersion'];
+      url = splitUrl.join('/');
     } else {
       url = environment.URL_BASE;
     }
@@ -56,7 +56,6 @@ export class AuthService {
       params,
       ...requestOptions
     });
-
 
     console.log('uploadFilesSerivce', formData, result);
     return result;
@@ -96,7 +95,7 @@ export class AuthService {
       'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
       Authorization: `Bearer ${localStorage.getItem('token')}`
     });
-    const URL_BASE = environment.URL_BASE;
+    const { URL_BASE } = environment;
     const params = await this.getOptions(options);
     let splitUrl, url;
 
@@ -107,6 +106,11 @@ export class AuthService {
     } else {
       url = environment.URL_BASE;
     }
+
+    // console.log('route', params.get('route'));
+    // if (!params.get('route')) {
+    //   params.delete('route');
+    // }
 
     return this.http.get<any>(url + method, {
       headers,

@@ -58,21 +58,28 @@ export class AutotransporteComponent implements OnInit {
 
   constructor(public cataloguesListService: CataloguesListService, public cartaPorteInfoService: CartaPorteInfoService) {
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
-      //permisosSCT
-      this.permisosSCT = data.tipos_de_permiso;
-      this.filteredPermisosSCT = Object.assign([], this.permisosSCT);
+      if (data?.tipos_de_permiso) {
+        //permisosSCT
+        this.permisosSCT = data.tipos_de_permiso;
+        this.filteredPermisosSCT = Object.assign([], this.permisosSCT);
 
-      //identificación vehicular => Configuración
-      this.identificacionVehicular = data.config_autotransporte;
-      this.filteredIdentificacionVehicular = Object.assign([], this.identificacionVehicular);
+        //identificación vehicular => Configuración
+        this.identificacionVehicular = data.config_autotransporte;
+        this.filteredIdentificacionVehicular = Object.assign([], this.identificacionVehicular);
 
-      //remolques => Configuración
-      this.remolquesConfig = data.subtipos_de_remolques;
-      this.filteredRemolquesConfig = Object.assign([], this.remolquesConfig);
+        //remolques => Configuración
+        this.remolquesConfig = data.subtipos_de_remolques;
+        this.filteredRemolquesConfig = Object.assign([], this.remolquesConfig);
+
+        // Evita que no se seleccionen los valores que provienen de catalogos
+        this.setCatalogsFields();
+      }
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  setCatalogsFields() {
+    this.autotransporteForm.patchValue(this.autotransporteForm.value);
+
     this.autotransporteForm.controls.permisoSCT.valueChanges.subscribe((inputValue) => {
       if (inputValue) {
         this.filteredPermisosSCT = this.permisosSCT?.filter((e) => {
@@ -81,6 +88,7 @@ export class AutotransporteComponent implements OnInit {
             typeof inputValue == 'string' ? inputValue.toLowerCase() : `${inputValue.clave} ${inputValue.descripcion}`.toLowerCase();
           return currentValue.includes(input);
         });
+        console.log('this.filteredPermisosSCT', this.filteredPermisosSCT);
       }
     });
 
@@ -110,6 +118,7 @@ export class AutotransporteComponent implements OnInit {
 
     this.cartaPorteInfoService.infoRecolector.subscribe(() => {
       const info = this.autotransporteForm.value;
+
       const response = {
         perm_sct: info.permisoSCT,
         num_permiso_sct: info.numeroSCT,
@@ -144,9 +153,9 @@ export class AutotransporteComponent implements OnInit {
         // isValid: this.autotransporteForm.status,
       });
     });
-
-    this.autotransporteForm.patchValue(this.autotransporteForm.value);
   }
+
+  async ngOnInit(): Promise<void> {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.info && this.info) {
@@ -221,9 +230,8 @@ export class AutotransporteComponent implements OnInit {
     this.filteredRemolquesConfig = this.remolquesConfig;
   }
 
-
   resetFilterList(list) {
-    switch(list) {
+    switch (list) {
       case 'permisosSCT':
         this.filteredPermisosSCT = this.permisosSCT;
         break;
@@ -235,5 +243,4 @@ export class AutotransporteComponent implements OnInit {
         break;
     }
   }
-  
 }

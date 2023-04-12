@@ -40,27 +40,32 @@ export class MercanciasComponent implements OnInit {
 
   constructor(public cartaPorteInfoService: CartaPorteInfoService, private cataloguesListService: CataloguesListService) {
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
-      this.unidadPeso = data.unidades_de_peso;
-      this.filteredUnidadPeso = Object.assign([], this.unidadPeso);
+      if (data?.unidades_de_peso) {
+        this.unidadPeso = data.unidades_de_peso;
+        this.filteredUnidadPeso = Object.assign([], this.unidadPeso);
+
+        this.setCatalogsFields();
+      }
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  setCatalogsFields() {
     this.cartaPorteInfoService.infoRecolector.subscribe(() => {
       const mercancia = this.sendDataToService();
       const { peso_bruto_total, unidad_peso } = this.mercanciasForm.value;
+
       this.cartaPorteInfoService.addRecoletedInfoMercancias({
         peso_bruto_total: peso_bruto_total,
-        unidad_peso: unidad_peso,
+        unidad_peso,
         num_total_mercancias: mercancia.length,
-        mercancia: mercancia
+        mercancia
         // isValid: this.isValid()
       });
     });
 
     this.mercanciasForm.controls.unidad_peso.valueChanges.subscribe((inputValue) => {
       if (inputValue) {
-        this.filteredUnidadPeso = this.unidadPeso.filter((e) => {
+        this.filteredUnidadPeso = this.unidadPeso?.filter((e) => {
           const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
           const input =
             inputValue && typeof inputValue == 'object'
@@ -70,7 +75,11 @@ export class MercanciasComponent implements OnInit {
         });
       }
     });
+
+    this.mercanciasForm.patchValue(this.info);
   }
+
+  async ngOnInit(): Promise<void> {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.info && this.info) {
@@ -135,7 +144,7 @@ export class MercanciasComponent implements OnInit {
   }
 
   resetFilterList(list) {
-    switch(list) {
+    switch (list) {
       case 'permisosSCT':
         this.filteredUnidadPeso = this.unidadPeso;
         break;
