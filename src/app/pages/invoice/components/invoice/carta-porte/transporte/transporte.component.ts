@@ -58,7 +58,6 @@ export class TransporteComponent implements OnInit {
     });
 
     this.firstFormGroup.controls.transp_internac.valueChanges.subscribe((inputValue) => {
-      console.log(inputValue);
       if (inputValue && this.firstFormGroup.get('entrada_salida_merc').value == 'salida') {
         this.cartaPorteInfoService.showFraccionArancelaria(true);
       } else {
@@ -67,7 +66,6 @@ export class TransporteComponent implements OnInit {
     });
 
     this.firstFormGroup.controls.entrada_salida_merc.valueChanges.subscribe((inputValue) => {
-      console.log(inputValue);
       if (inputValue == 'salida' && this.firstFormGroup.get('transp_internac').value) {
         this.cartaPorteInfoService.showFraccionArancelaria(true);
       } else {

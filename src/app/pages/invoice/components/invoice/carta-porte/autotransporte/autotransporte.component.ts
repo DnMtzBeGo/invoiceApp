@@ -88,7 +88,6 @@ export class AutotransporteComponent implements OnInit {
             typeof inputValue == 'string' ? inputValue.toLowerCase() : `${inputValue.clave} ${inputValue.descripcion}`.toLowerCase();
           return currentValue.includes(input);
         });
-        console.log('this.filteredPermisosSCT', this.filteredPermisosSCT);
       }
     });
 

@@ -95,8 +95,6 @@ export class FiguraComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    console.log('ngOnInit');
-
     this.figuraTransporteForm.get('rfc_figura').statusChanges.subscribe((val) => {
       if (val === 'VALID') {
         if (!this.figuraTransporteForm.get('rfc_figura'))

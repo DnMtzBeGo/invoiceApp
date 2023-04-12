@@ -72,13 +72,13 @@ export class CartaPortePageComponent implements OnInit {
       this.ubicacionesInfo = carta_porte.ubicaciones;
       this.mercanciasInfo = carta_porte.mercancias;
     }
-    console.log(changes.facturaInfo?.currentValue?.complementos.length);
+
     if (changes.facturaInfo?.currentValue?.complementos.length > 0) {
       this.cartaPorteDisabled = true;
-      console.log('El switch se prende', this.cartaPorteDisabled);
+      // console.log('El switch se prende', this.cartaPorteDisabled);
     } else {
       this.cartaPorteDisabled = false;
-      console.log('El switch se apaga', this.cartaPorteDisabled);
+      // console.log('El switch se apaga', this.cartaPorteDisabled);
     }
   }
 
