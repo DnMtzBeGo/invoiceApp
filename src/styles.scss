@@ -1,8 +1,9 @@
-@use "./app/shared/styles/cross-icon.scss";
+@use 'sass:math';
+@use './app/shared/styles/cross-icon.scss';
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use "~@angular/material" as mat;
+@use '~@angular/material' as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -26,8 +27,8 @@ $carriersDashboard-theme: mat.define-light-theme(
     color: (
       primary: $carriersDashboard-primary,
       accent: $carriersDashboard-accent,
-      warn: $carriersDashboard-warn,
-    ),
+      warn: $carriersDashboard-warn
+    )
   )
 );
 
@@ -36,9 +37,9 @@ $carriersDashboard-theme: mat.define-light-theme(
 // that you are using.
 @include mat.all-component-themes($carriersDashboard-theme);
 
-@import "./app/shared/styles/cross-icon.scss";
-@import "./app/shared/styles/icomoon.scss";
-@import "~aos/dist/aos.css";
+@import './app/shared/styles/cross-icon.scss';
+@import './app/shared/styles/icomoon.scss';
+@import '~aos/dist/aos.css';
 
 //angular material components
 @import './styles/angular-components/button-toggle-group.scss';
@@ -50,11 +51,11 @@ $carriersDashboard-theme: mat.define-light-theme(
 @import './styles/custom-styles/textarea.scss';
 
 //custom styles
-@import "./styles/custom-styles/radio-button.scss";
-@import "./app/pages/invoice/styles/styles";
+@import './styles/custom-styles/radio-button.scss';
+@import './app/pages/invoice/styles/styles';
 
 //Swiper for Insurance
-@import "~swiper/css/bundle";
+@import '~swiper/css/bundle';
 
 .swiper {
   width: 100%;
@@ -67,26 +68,26 @@ $carriersDashboard-theme: mat.define-light-theme(
 
   .swiper-button-next,
   .swiper-button-prev {
-    color: #FFE000;
+    color: #ffe000;
   }
 
   .swiper-button-next:after,
   .swiper-button-prev:after {
-    font-family: "bego-icons";
+    font-family: 'bego-icons';
   }
 
   .swiper-button-next:after,
   .swiper-rtl .swiper-button-prev:after {
-    content: "\e90f";
+    content: '\e90f';
   }
 
   .swiper-button-prev:after,
   .swiper-rtl .swiper-button-next:after {
-    content: "\e908";
+    content: '\e908';
   }
 
   .swiper-pagination-bullet {
-    background: #FFE000;
+    background: #ffe000;
     opacity: 0.3;
     position: relative;
     width: 12px;
@@ -94,15 +95,15 @@ $carriersDashboard-theme: mat.define-light-theme(
   }
 
   .swiper-pagination-bullet-active {
-    background: #FFE000;
+    background: #ffe000;
     opacity: 1;
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      border: 3px solid #FFE000;
+      border: 3px solid #ffe000;
       width: 37px;
       height: 37px;
       border-radius: 50%;
@@ -126,7 +127,7 @@ $carriersDashboard-theme: mat.define-light-theme(
   width: 100%;
 }
 //theme component styles
-@import "./styles/components/_loader";
+@import './styles/components/_loader';
 
 // =============================================================================
 // Colors
@@ -135,7 +136,7 @@ $carriersDashboard-theme: mat.define-light-theme(
 $background-color: #040b11;
 $lighter-color: #ededed;
 $light-color: #c1c7d0;
-$yellow-color: #FFE000;
+$yellow-color: #ffe000;
 $white: #ffffff;
 $color-font-grey: #c1c7d0;
 
@@ -153,7 +154,7 @@ $bego-menu-width-open: 196px;
 
 body {
   font-size: 16px;
-  font-family: "Avenir", Helvetica, sans-serif;
+  font-family: 'Avenir', Helvetica, sans-serif;
   background: $background-color;
   color: $white;
 }
@@ -167,81 +168,69 @@ body {
 // Font face
 // =============================================================================
 
-$font-url: "assets/fonts/avenir/";
+$font-url: 'assets/fonts/avenir/';
 
 @font-face {
-  font-family: "Avenir";
-  src: url($font-url + "Avenir-Heavy.eot");
-  src: url($font-url + "Avenir-Heavy.eot?#iefix") format("embedded-opentype"),
-    url($font-url + "Avenir-Heavy.woff2") format("woff2"),
-    url($font-url + "Avenir-Heavy.woff") format("woff"),
-    url($font-url + "Avenir-Heavy.ttf") format("truetype"),
-    url($font-url + "Avenir-Heavy.svg#Avenir-Heavy") format("svg");
+  font-family: 'Avenir';
+  src: url($font-url + 'Avenir-Heavy.eot');
+  src: url($font-url + 'Avenir-Heavy.eot?#iefix') format('embedded-opentype'), url($font-url + 'Avenir-Heavy.woff2') format('woff2'),
+    url($font-url + 'Avenir-Heavy.woff') format('woff'), url($font-url + 'Avenir-Heavy.ttf') format('truetype'),
+    url($font-url + 'Avenir-Heavy.svg#Avenir-Heavy') format('svg');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Avenir";
-  src: url($font-url + "Avenir-Medium.eot");
-  src: url($font-url + "Avenir-Medium.eot?#iefix") format("embedded-opentype"),
-    url($font-url + "Avenir-Medium.woff2") format("woff2"),
-    url($font-url + "Avenir-Medium.woff") format("woff"),
-    url($font-url + "Avenir-Medium.ttf") format("truetype"),
-    url($font-url + "Avenir-Medium.svg#Avenir-Medium") format("svg");
+  font-family: 'Avenir';
+  src: url($font-url + 'Avenir-Medium.eot');
+  src: url($font-url + 'Avenir-Medium.eot?#iefix') format('embedded-opentype'), url($font-url + 'Avenir-Medium.woff2') format('woff2'),
+    url($font-url + 'Avenir-Medium.woff') format('woff'), url($font-url + 'Avenir-Medium.ttf') format('truetype'),
+    url($font-url + 'Avenir-Medium.svg#Avenir-Medium') format('svg');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Avenir";
-  src: url($font-url + "Avenir-Light.eot");
-  src: url($font-url + "Avenir-Light.eot?#iefix") format("embedded-opentype"),
-    url($font-url + "Avenir-Light.woff2") format("woff2"),
-    url($font-url + "Avenir-Light.woff") format("woff"),
-    url($font-url + "Avenir-Light.ttf") format("truetype"),
-    url($font-url + "Avenir-Light.svg#Avenir-Light") format("svg");
+  font-family: 'Avenir';
+  src: url($font-url + 'Avenir-Light.eot');
+  src: url($font-url + 'Avenir-Light.eot?#iefix') format('embedded-opentype'), url($font-url + 'Avenir-Light.woff2') format('woff2'),
+    url($font-url + 'Avenir-Light.woff') format('woff'), url($font-url + 'Avenir-Light.ttf') format('truetype'),
+    url($font-url + 'Avenir-Light.svg#Avenir-Light') format('svg');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Avenir Book";
-  src: url($font-url + "Avenir-Book.eot");
-  src: url($font-url + "Avenir-Book.eot?#iefix") format("embedded-opentype"),
-    url($font-url + "Avenir-Book.woff2") format("woff2"),
-    url($font-url + "Avenir-Book.woff") format("woff"),
-    url($font-url + "Avenir-Book.ttf") format("truetype"),
-    url($font-url + "Avenir-Book.svg#Avenir-Book") format("svg");
+  font-family: 'Avenir Book';
+  src: url($font-url + 'Avenir-Book.eot');
+  src: url($font-url + 'Avenir-Book.eot?#iefix') format('embedded-opentype'), url($font-url + 'Avenir-Book.woff2') format('woff2'),
+    url($font-url + 'Avenir-Book.woff') format('woff'), url($font-url + 'Avenir-Book.ttf') format('truetype'),
+    url($font-url + 'Avenir-Book.svg#Avenir-Book') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Avenir";
-  src: url($font-url + "Avenir-Black.eot");
-  src: url($font-url + "Avenir-Black.eot?#iefix") format("embedded-opentype"),
-    url($font-url + "Avenir-Black.woff2") format("woff2"),
-    url($font-url + "Avenir-Black.woff") format("woff"),
-    url($font-url + "Avenir-Black.ttf") format("truetype"),
-    url($font-url + "Avenir-Black.svg#Avenir-Black") format("svg");
+  font-family: 'Avenir';
+  src: url($font-url + 'Avenir-Black.eot');
+  src: url($font-url + 'Avenir-Black.eot?#iefix') format('embedded-opentype'), url($font-url + 'Avenir-Black.woff2') format('woff2'),
+    url($font-url + 'Avenir-Black.woff') format('woff'), url($font-url + 'Avenir-Black.ttf') format('truetype'),
+    url($font-url + 'Avenir-Black.svg#Avenir-Black') format('svg');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Avenir";
-  src: url($font-url + "Avenir-Roman.eot");
-  src: url($font-url + "Avenir-Roman.eot?#iefix") format("embedded-opentype"),
-    url($font-url + "Avenir-Roman.woff2") format("woff2"),
-    url($font-url + "Avenir-Roman.woff") format("woff"),
-    url($font-url + "Avenir-Roman.ttf") format("truetype"),
-    url($font-url + "Avenir-Roman.svg#Avenir-Roman") format("svg");
+  font-family: 'Avenir';
+  src: url($font-url + 'Avenir-Roman.eot');
+  src: url($font-url + 'Avenir-Roman.eot?#iefix') format('embedded-opentype'), url($font-url + 'Avenir-Roman.woff2') format('woff2'),
+    url($font-url + 'Avenir-Roman.woff') format('woff'), url($font-url + 'Avenir-Roman.ttf') format('truetype'),
+    url($font-url + 'Avenir-Roman.svg#Avenir-Roman') format('svg');
   font-weight: 400;
   font-weight: normal;
   font-style: normal;
@@ -249,13 +238,11 @@ $font-url: "assets/fonts/avenir/";
 }
 
 @font-face {
-  font-family: "Avenir Next";
-  src: url($font-url + "AvenirNext-Regular.eot");
-  src: url($font-url + "AvenirNext-Regular.eot?#iefix") format("embedded-opentype"),
-    url($font-url + "AvenirNext-Regular.woff2") format("woff2"),
-    url($font-url + "AvenirNext-Regular.woff") format("woff"),
-    url($font-url + "AvenirNext-Regular.ttf") format("truetype"),
-    url($font-url + "AvenirNext-Regular.svg#AvenirNext-Regular") format("svg");
+  font-family: 'Avenir Next';
+  src: url($font-url + 'AvenirNext-Regular.eot');
+  src: url($font-url + 'AvenirNext-Regular.eot?#iefix') format('embedded-opentype'),
+    url($font-url + 'AvenirNext-Regular.woff2') format('woff2'), url($font-url + 'AvenirNext-Regular.woff') format('woff'),
+    url($font-url + 'AvenirNext-Regular.ttf') format('truetype'), url($font-url + 'AvenirNext-Regular.svg#AvenirNext-Regular') format('svg');
   font-weight: 400;
   font-weight: normal;
   font-style: normal;
@@ -263,8 +250,8 @@ $font-url: "assets/fonts/avenir/";
 }
 
 @font-face {
-  font-family: "Keep Calm";
-  src: url("assets/fonts/keepcalm/KeepCalm-Medium.woff");
+  font-family: 'Keep Calm';
+  src: url('assets/fonts/keepcalm/KeepCalm-Medium.woff');
   font-style: normal;
   font-display: swap;
 }
@@ -373,7 +360,7 @@ $font-url: "assets/fonts/avenir/";
 // =============================================================================
 
 @function strip-unit($value) {
-  @return $value / ($value * 0 + 1);
+  @return math.div($value, ($value * 0 + 1));
 }
 
 @mixin fluid-type($min-vw, $max-vw, $min-font-size, $max-font-size) {
@@ -387,8 +374,7 @@ $font-url: "assets/fonts/avenir/";
       font-size: $min-font-size;
       @media screen and (min-width: $min-vw) {
         font-size: calc(
-          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
-            ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
+          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
         );
       }
       @media screen and (min-width: $max-vw) {
@@ -409,8 +395,7 @@ $font-url: "assets/fonts/avenir/";
       padding-left: $min-font-size;
       @media screen and (min-width: $min-vw) {
         padding-left: calc(
-          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
-            ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
+          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
         );
       }
       @media screen and (min-width: $max-vw) {
@@ -431,8 +416,7 @@ $font-url: "assets/fonts/avenir/";
       #{$property}: $min-font-size;
       @media screen and (min-width: $min-vw) {
         #{$property}: calc(
-          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
-            ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
+          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
         );
       }
       @media screen and (min-width: $max-vw) {
@@ -551,13 +535,13 @@ input {
   display: none !important;
 }
 
-#map div[title="yellow"] {
+#map div[title='yellow'] {
   box-shadow: 0 0 0 0 rgba(255, 190, 0, 1);
   animation: pulse-yellow 2s infinite;
   border-radius: 51px;
 }
 
-#map div[title="white"] {
+#map div[title='white'] {
   box-shadow: 0 0 0 0 rgba(255, 255, 255, 1);
   animation: pulse-white 2s infinite;
   border-radius: 51px;
@@ -566,11 +550,11 @@ input {
 .blob.yellow {
 }
 
-#map div[title="title"] img {
+#map div[title='title'] img {
   display: none;
 }
 
-input[type="search"]::-webkit-search-cancel-button {
+input[type='search']::-webkit-search-cancel-button {
   -webkit-appearance: none;
 
   height: 10px;
@@ -684,7 +668,7 @@ input[type="search"]::-webkit-search-cancel-button {
 /*Inputs*/
 
 .mat-form-field-appearance-legacy {
-  font-family: "Avenir", Helvetica, sans-serif;
+  font-family: 'Avenir', Helvetica, sans-serif;
   font-weight: 400;
   position: relative;
 
@@ -737,7 +721,7 @@ input.mat-input-element {
 .mat-flat-button,
 .mat-fab,
 .mat-mini-fab {
-  font-family: "Avenir", Helvetica, sans-serif;
+  font-family: 'Avenir', Helvetica, sans-serif;
 }
 
 /*** MAT Calendar ***/
@@ -745,14 +729,13 @@ input.mat-input-element {
   opacity: 0;
 }
 
-.mat-calendar-body-label[colspan="7"] {
+.mat-calendar-body-label[colspan='7'] {
   display: none;
 }
 
 .mat-datepicker-content {
   background: #091016;
-  box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a,
-    inset -4px -4px 4px #040b11;
+  box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a, inset -4px -4px 4px #040b11;
 }
 
 .mat-datepicker-content,
@@ -856,7 +839,7 @@ input.mat-input-element {
 }
 
 .mat-button-toggle-checked {
-  background-color: #FFE000;
+  background-color: #ffe000;
   color: #040b11 !important;
   border-radius: 8px !important;
   min-width: 153px;
@@ -867,7 +850,7 @@ input.mat-input-element {
 }
 
 .mat-button-toggle {
-  font-family: "Avenir", Helvetica, sans-serif;
+  font-family: 'Avenir', Helvetica, sans-serif;
   font-size: 18px;
   text-transform: capitalize;
   min-width: 153px;
@@ -881,7 +864,7 @@ input.mat-input-element {
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: #FFE000;
+  border-color: #ffe000;
 }
 
 .mat-ripple-element {
@@ -889,12 +872,10 @@ input.mat-input-element {
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle,
-.mat-radio-button.mat-accent
-  .mat-radio-ripple
-  .mat-ripple-element:not(.mat-radio-persistent-ripple),
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
 .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
-  background-color: #FFE000;
+  background-color: #ffe000;
 }
 
 .mat-radio-outer-circle {
@@ -983,8 +964,7 @@ input.mat-input-element {
 
 .period-selector {
   background: #091016 !important;
-  box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a,
-    inset -4px -4px 4px #040b11 !important;
+  box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a, inset -4px -4px 4px #040b11 !important;
   border-radius: 4px;
 }
 
@@ -1023,10 +1003,10 @@ input.mat-input-element {
     border-radius: 8px;
     caret-color: #ffffff;
     padding: 10px;
-    font-family: "Avenir", Helvetica, sans-serif;
+    font-family: 'Avenir', Helvetica, sans-serif;
 
     &::placeholder {
-      font-family: "Avenir", Helvetica, sans-serif;
+      font-family: 'Avenir', Helvetica, sans-serif;
       color: #89898a;
     }
   }
@@ -1046,7 +1026,7 @@ input.mat-input-element {
   padding: 0.75em 0 0 !important;
 }
 .browse-btn {
-  color: #FFE000;
+  color: #ffe000;
   text-decoration: underline;
   cursor: pointer;
 
@@ -1063,7 +1043,7 @@ input.mat-input-element {
 }
 
 .yellow-dot {
-  color: #FFE000;
+  color: #ffe000;
 }
 
 .grey-dot {
@@ -1075,7 +1055,7 @@ input.mat-input-element {
 }
 
 .yellow-dot-bg {
-  color: #FFE000;
+  color: #ffe000;
 }
 
 .grey-dot-bg {
@@ -1085,8 +1065,7 @@ input.mat-input-element {
 .modal {
   .mat-dialog-container {
     background: #091016;
-    box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a,
-      inset -4px -4px 4px #040b11;
+    box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a, inset -4px -4px 4px #040b11;
     border-radius: 4px;
     color: $white;
     position: relative;
@@ -1110,7 +1089,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -1142,7 +1121,7 @@ input[type="number"] {
               border-right: none;
               border-radius: 0;
               font-size: 18px;
-              font-family: "Avenir", Helvetica, sans-serif;
+              font-family: 'Avenir', Helvetica, sans-serif;
             }
             &:nth-of-type(3) {
               border-top: 2px solid #161b20;
@@ -1165,7 +1144,7 @@ input[type="number"] {
     color: #ededed;
     text-align: center;
     font-size: 18px;
-    font-family: "Avenir", Helvetica, sans-serif;
+    font-family: 'Avenir', Helvetica, sans-serif;
     letter-spacing: 2px;
     padding: 0;
   }
@@ -1203,7 +1182,7 @@ input[type="number"] {
     background: #12171d;
     box-shadow: inset 2px 2px 5px #292e35, inset -2px -2px 4px #0d1215;
     border-radius: 6px;
-    font-family: "Avenir", Helvetica, sans-serif;
+    font-family: 'Avenir', Helvetica, sans-serif;
     font-size: 18px;
     font-weight: 500px;
     line-height: 41px;
@@ -1221,8 +1200,7 @@ input[type="number"] {
 
   .icon-timer {
     background: #0b1117;
-    box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24,
-      inset -2px -2px 4px #050d14;
+    box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
     border-radius: 4px;
     padding: 7.5px;
     text-align: center;
@@ -1242,29 +1220,35 @@ input[type="number"] {
   margin: 0;
 }
 
-.input-timepicker.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
-  color: #EDEDED;
+.input-timepicker.mat-button.mat-primary,
+.mat-icon-button.mat-primary,
+.mat-stroked-button.mat-primary {
+  color: #ededed;
 }
 
-.icon-invoice-order,  .icon-invoice-cfdi, .icon-invoice-user, .icon-invoice-driver {
+.icon-invoice-order,
+.icon-invoice-cfdi,
+.icon-invoice-user,
+.icon-invoice-driver {
   font-size: 30px;
   position: relative;
   z-index: 1;
 }
 
 .icon-invoice-user {
-  color: #FFE000;
+  color: #ffe000;
 }
 
 .icon-invoice-driver {
-  color: #EDEDED;
+  color: #ededed;
 }
 
-.icon-invoice-order,  .icon-invoice-cfdi {
-  color: #2568EF;
+.icon-invoice-order,
+.icon-invoice-cfdi {
+  color: #2568ef;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1305,12 +1289,12 @@ input[type="number"] {
 
 //To be defined...
 .no-status {
-  border: 2px solid #C1C7D0;
+  border: 2px solid #c1c7d0;
 }
 
 .offline {
   border: 2px solid gray;
-  
+
   > img {
     filter: grayscale(1);
   }
