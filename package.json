@@ -1,6 +1,9 @@
 {
   "name": "carriers-dashboard",
   "version": "0.0.0",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
@@ -33,7 +36,6 @@
     "lottie-web": "^5.7.13",
     "mat-currency-format": "0.0.7",
     "moment": "^2.29.1",
-    "ng-circle-progress": "^1.6.0",
     "ngx-bootstrap": "^8.0.0",
     "ngx-currency": "^2.5.3",
     "ngx-infinite-scroll": "^10.0.1",
