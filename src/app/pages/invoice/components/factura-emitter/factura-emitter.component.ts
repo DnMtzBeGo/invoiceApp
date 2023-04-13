@@ -95,10 +95,12 @@ export class FacturaEmitterComponent implements OnInit {
         });
       },
       (err) => {
-        // console.log(err);
+        console.log('uploading', err);
         this.isLoading = false;
+        let message = '';
 
-        const message = err.error?.error?.[0]?.error ?? err.error?.error?.error ?? err.statusText ?? err.message;
+        if (typeof err.error?.error === 'object') message = err.error?.error[0]?.error ?? err.statusText ?? err.message;
+        else message = err.error?.error;
 
         this.notificationsService.showErrorToastr(message);
       }

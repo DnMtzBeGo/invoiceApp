@@ -9,7 +9,7 @@ import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-
 
 import { FiscalDocumentCardComponent } from './components/fiscal-document-card/fiscal-document-card.component';
 
-import { NgCircleProgressModule } from 'ng-circle-progress';
+//import { NgCircleProgressModule } from 'ng-circle-progress';
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { ClickStopPropagationDirective } from '../../../../shared/directives/click-stop-propagation.directive';
@@ -39,22 +39,22 @@ export function playerFactory() {
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    NgCircleProgressModule.forRoot({
-      maxPercent: 100,
-      radius: 50,
-      space: -6,
-      outerStrokeWidth: 6,
-      innerStrokeWidth: 6,
-      outerStrokeColor: '#FFE000',
-      innerStrokeColor: '#1e242b',
-      showSubtitle: false,
-      animation: true,
-      titleFontSize: '40px',
-      unitsFontSize: '20px',
-      showBackground: false,
-      clockwise: false,
-      startFromZero: false
-    }),
+    // NgCircleProgressModule.forRoot({
+    //   maxPercent: 100,
+    //   radius: 50,
+    //   space: -6,
+    //   outerStrokeWidth: 6,
+    //   innerStrokeWidth: 6,
+    //   outerStrokeColor: '#FFE000',
+    //   innerStrokeColor: '#1e242b',
+    //   showSubtitle: false,
+    //   animation: true,
+    //   titleFontSize: '40px',
+    //   unitsFontSize: '20px',
+    //   showBackground: false,
+    //   clockwise: false,
+    //   startFromZero: false
+    // }),
     LottieModule.forRoot({ player: playerFactory })
   ],
   exports: []
