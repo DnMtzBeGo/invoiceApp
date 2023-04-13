@@ -1,36 +1,34 @@
-<section class="navigation" [ngClass]="headerTransparent ? 'transparent':''">
+<section class="navigation" [ngClass]="headerTransparent ? 'transparent' : ''">
   <div class="container-navigation">
     <div id="languages">
       <div
         class="language-tag"
         [ngClass]="{ active: translateService.currentLang === 'en' }"
-        (click)="languageService.changeLanguage('en')"
-      >
-        {{ "header.btn-en" | translate }}
+        (click)="languageService.changeLanguage('en')">
+        {{ 'header.btn-en' | translate }}
       </div>
       <span>·</span>
       <div
         class="language-tag"
         [ngClass]="{ active: translateService.currentLang === 'es' }"
-        (click)="languageService.changeLanguage('es')"
-      >
-        {{ "header.btn-es" | translate }}
+        (click)="languageService.changeLanguage('es')">
+        {{ 'header.btn-es' | translate }}
       </div>
     </div>
-    
+
     <!-- <div class="avatar" routerLink="/profile">
       <img [src]="profilePic" (error)="profilePicError()" alt="" />
       
     </div> -->
-    
-    <div class="notifications" (click)="toggleNotificationBar();">
+
+    <div class="notifications" (click)="toggleNotificationBar()">
       <span class="dot" *ngIf="this.notificationsBarService.hasNewNotifications"></span>
-      <i class="icon icon-bell" [class]="this.notificationsBarService.ringBell ? 'ring-bell' : ''" ></i>
+      <i class="icon icon-bell" [class]="this.notificationsBarService.ringBell ? 'ring-bell' : ''"></i>
     </div>
 
     <div class="avatar" routerLink="/profile">
-      <img [src]="profilePic" (error)="profilePicError()" alt="Perfil de usuario" title="Perfil de usuario"  />
-      <i class="icon icon-down"></i>
+      <img [src]="profilePic" (error)="profilePicError()" alt="Perfil de usuario" title="Perfil de usuario" />
+      <i class="icon icon-down fix-pos"></i>
     </div>
 
     <div class="divide"></div>

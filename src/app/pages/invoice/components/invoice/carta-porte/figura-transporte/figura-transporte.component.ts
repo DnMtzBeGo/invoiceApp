@@ -1,20 +1,12 @@
-import {
-  Component,
-  OnInit,
-  ViewChildren,
-  QueryList,
-  ChangeDetectorRef,
-  Input,
-  SimpleChanges,
-} from "@angular/core";
-import { CartaPorteInfoService } from "../services/carta-porte-info.service";
-import { CataloguesListService } from "../services/catalogues-list.service";
-import { FiguraComponent } from "./components/figura/figura.component";
+import { Component, OnInit, ViewChildren, QueryList, ChangeDetectorRef, Input, SimpleChanges } from '@angular/core';
+import { CartaPorteInfoService } from '../services/carta-porte-info.service';
+import { CataloguesListService } from '../services/catalogues-list.service';
+import { FiguraComponent } from './components/figura/figura.component';
 
 @Component({
-  selector: "app-figura-transporte",
-  templateUrl: "./figura-transporte.component.html",
-  styleUrls: ["./figura-transporte.component.scss"],
+  selector: 'app-figura-transporte',
+  templateUrl: './figura-transporte.component.html',
+  styleUrls: ['./figura-transporte.component.scss']
 })
 export class FiguraTransporteComponent implements OnInit {
   public figuras: any[];
@@ -35,11 +27,11 @@ export class FiguraTransporteComponent implements OnInit {
     this.cartaPorteInfoService.infoRecolector.subscribe(() => {
       this.cartaPorteInfoService.addRecolectedInfo({
         figura_transporte: this.getFiguras(),
-        isValid: this.isValid(),
+        isValid: this.isValid()
       });
     });
 
-    this.figuras = [this.counter];
+    this.figuras = this.info ?? [this.counter];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -67,9 +59,7 @@ export class FiguraTransporteComponent implements OnInit {
     if (this.figurasRef) {
       const figurasRef = this.figurasRef.toArray();
 
-      const validityArr = figurasRef.filter(
-        (x): any => x.figuraTransporteForm.status == "VALID"
-      );
+      const validityArr = figurasRef.filter((x): any => x.figuraTransporteForm.status == 'VALID');
 
       const validity = validityArr.length == figurasRef.length;
       // console.log(validity);

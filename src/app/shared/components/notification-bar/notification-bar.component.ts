@@ -115,7 +115,6 @@ export class NotificationBarComponent implements OnInit {
     };
 
     (await this.auth.apiRest(JSON.stringify(request), 'notifications/get_all')).subscribe(async (res) => {
-      console.log(res.result);
       if (res.result.length > 0) {
         res.result.forEach((n: CustomNotification) => {
           n.image = 'ico_package.png';
