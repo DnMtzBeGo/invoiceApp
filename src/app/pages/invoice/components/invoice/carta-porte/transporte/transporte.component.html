@@ -1,83 +1,38 @@
 <form [formGroup]="firstFormGroup">
   <div class="grid container-row">
-
     <!-- <mat-slide-toggle formControlName="transp_internac">{{
       "invoice.transporte.transporte-internacional" | translate
     }}</mat-slide-toggle> -->
     <div>
-      <button mat-icon-button class="bego-icon icon icon-truck" type="button">
-      </button>
-      <button mat-icon-button class="bego-icon icon icon-ship" type="button" disabled>
-      </button>
-      <button mat-icon-button class="bego-icon icon icon-airplane" type="button" disabled>
-      </button>
-      <button mat-icon-button class="bego-icon icon icon-train" type="button" disabled>
-      </button>
+      <button mat-icon-button class="bego-icon icon icon-truck" type="button"></button>
+      <button mat-icon-button class="bego-icon icon icon-ship" type="button" disabled></button>
+      <button mat-icon-button class="bego-icon icon icon-airplane" type="button" disabled></button>
+      <button mat-icon-button class="bego-icon icon icon-train" type="button" disabled></button>
     </div>
-    <mat-button-toggle-group
-      #group="matButtonToggleGroup"
-      class="container-row-b"
-      formControlName="transp_internac"
-    >
-      <mat-button-toggle
-        mat-fab
-        value="No"
-        aria-label="Nacional"
-      >
-      Nacional
-      </mat-button-toggle>
+    <mat-button-toggle-group #group="matButtonToggleGroup" class="container-row-b" formControlName="transp_internac">
+      <mat-button-toggle mat-fab value="No" aria-label="Nacional"> Nacional </mat-button-toggle>
 
-      <mat-button-toggle
-        mat-fab
-        value="Sí"
-        aria-label="Internacional"
-      >
-      Internacional
-      </mat-button-toggle>
+      <mat-button-toggle mat-fab value="Sí" aria-label="Internacional"> Internacional </mat-button-toggle>
     </mat-button-toggle-group>
-
-
   </div>
   <div class="grid" *ngIf="group.value == 'Sí'">
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{
-        "invoice.transporte.pais-origen-destino" | translate
-      }}</mat-label>
-      <mat-select
-        class="disable-custom-format"
-        formControlName="pais_origen_destino"
-      >
-        <mat-option [value]="country.code" *ngFor="let country of countries">
-          {{ country.code }} - {{ country.name }}
-        </mat-option>
+      <mat-label>{{ 'invoice.transporte.pais-origen-destino' | translate }}</mat-label>
+      <mat-select class="disable-custom-format" formControlName="pais_origen_destino">
+        <mat-option [value]="country.code" *ngFor="let country of countries"> {{ country.code }} - {{ country.name }} </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{
-        "invoice.transporte.movimiento-mercancia" | translate
-      }}</mat-label>
-      <mat-select
-        class="disable-custom-format"
-        formControlName="entrada_salida_merc"
-      >
-        <mat-option value="Entrada">{{
-          "invoice.transporte.movimiento-mercancia-entrada" | translate
-        }}</mat-option>
-        <mat-option value="salida">{{
-          "invoice.transporte.movimiento-mercancia-salida" | translate
-        }}</mat-option>
+      <mat-label>{{ 'invoice.transporte.movimiento-mercancia' | translate }}</mat-label>
+      <mat-select class="disable-custom-format" formControlName="entrada_salida_merc">
+        <mat-option value="Entrada">{{ 'invoice.transporte.movimiento-mercancia-entrada' | translate }}</mat-option>
+        <mat-option value="salida">{{ 'invoice.transporte.movimiento-mercancia-salida' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ "invoice.transporte.via-entrada" | translate }}</mat-label>
-      <mat-select
-        class="disable-custom-format"
-        formControlName="via_entrada_salida"
-      >
-        <mat-option
-          [value]="option.clave"
-          *ngFor="let option of ingresoSalidaPais"
-        >
+      <mat-label>{{ 'invoice.transporte.via-entrada' | translate }}</mat-label>
+      <mat-select class="disable-custom-format" formControlName="via_entrada_salida">
+        <mat-option [value]="option.clave" *ngFor="let option of ingresoSalidaPais">
           {{ option.clave }} - {{ option.descripcion }}
         </mat-option>
       </mat-select>
@@ -92,10 +47,7 @@
     </mat-form-field> -->
   </div>
   <div class="grid" *ngIf="cartaPorteType === 'autotransporte'">
-    <app-autotransporte
-      [subtiposRemolques]="subtiposRemolques"
-      [info]="autotransportesInfo"
-    ></app-autotransporte>
+    <app-autotransporte [subtiposRemolques]="subtiposRemolques" [info]="autotransportesInfo"></app-autotransporte>
   </div>
   <div class="grid" *ngIf="cartaPorteType === 'maritimo'">
     <app-maritimo></app-maritimo>
@@ -108,7 +60,7 @@
   </div>
   <div class="grid">
     <button mat-button matStepperNext>
-      {{ "invoice.cp-page.siguiente" | translate }}
+      {{ 'invoice.cp-page.siguiente' | translate }}
     </button>
   </div>
 </form>

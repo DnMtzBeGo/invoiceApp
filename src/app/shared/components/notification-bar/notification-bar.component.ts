@@ -46,21 +46,27 @@ export class NotificationBarComponent implements OnInit {
 
     this.getPreviousNotifications();
 
-    this.socket = io(`${environment.SOCKET_URI}`, {
-      reconnectionDelayMax: 1000,
-      auth: {
-        token
-      }
-    });
+    if (token) {
+      this.socket = io(`${environment.SOCKET_URI}`, {
+        reconnectionDelayMax: 1000,
+        auth: {
+          token
+        }
+      });
+      this.socket.on('connect', () => {
+        console.log('conectado al socket');
 
-    this.socket.on(`notifications:carriers:${localStorage.getItem('profileId')}`, (data) => {
-      const n: CustomNotification = data;
-      n.image = 'ico_package.png';
-      n.opened = false;
-      console.log(n);
-      this.addNewNotification(n);
-    });
+        this.socket.emit('joinNotifications', { user_type: 'carriers', id: localStorage.getItem('profileId') });
 
+        this.socket.on(`notifications`, (data: any) => {
+          const n: CustomNotification = data;
+          n.image = 'ico_package.png';
+          n.opened = false;
+          console.log(n);
+          this.addNewNotification(n);
+        });
+      });
+    }
     this.updateTimeElapsed();
   }
 
@@ -109,7 +115,6 @@ export class NotificationBarComponent implements OnInit {
     };
 
     (await this.auth.apiRest(JSON.stringify(request), 'notifications/get_all')).subscribe(async (res) => {
-      console.log(res.result);
       if (res.result.length > 0) {
         res.result.forEach((n: CustomNotification) => {
           n.image = 'ico_package.png';

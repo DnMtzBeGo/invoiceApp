@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 // import { ApiRestService } from "src/app/core/services";
-import { AuthService } from "src/app/shared/services/auth.service";
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class CataloguesListService {
   public catalogues: any = {};
@@ -12,26 +12,22 @@ export class CataloguesListService {
   public consignmentNoteSubject = new BehaviorSubject([]);
   constructor(private apiRestService: AuthService) {
     //Getting countries list
-    this.apiRestService
-      .apiRestGet("invoice/catalogs/countries")
-      .then((observable) => {
-        observable.subscribe((res: any) => {
-          this.countriesSubject.next(res.result);
-        });
+    this.apiRestService.apiRestGet('invoice/catalogs/countries').then((observable) => {
+      observable.subscribe((res: any) => {
+        this.countriesSubject.next(res.result);
       });
+    });
     //getting consignment note catalogues
-    this.apiRestService
-      .apiRestGet("invoice/catalogs/consignment-note")
-      .then((observable) => {
-        observable.subscribe(
-          (res: any) => {
-            this.consignmentNoteSubject.next(res.result);
-          },
-          (error) => {
-            console.log("Error getting catalogue: ", error);
-          }
-        );
-      });
+    this.apiRestService.apiRestGet('invoice/catalogs/consignment-note').then((observable) => {
+      observable.subscribe(
+        (res: any) => {
+          this.consignmentNoteSubject.next(res.result);
+        },
+        (error) => {
+          console.log('Error getting catalogue: ', error);
+        }
+      );
+    });
   }
 
   /**
@@ -47,17 +43,9 @@ export class CataloguesListService {
       if (!this.catalogues[endpoint] || payload) {
         (
           await (payload
-            ? ["states", "locations", "municipalities", "suburbs"].includes(
-                endpoint
-              )
-              ? this.apiRestService.apiRestGet(
-                  `invoice/catalogs/${endpoint}`,
-                  payload
-                )
-              : this.apiRestService.apiRest(
-                  payload,
-                  `invoice/catalogs/${endpoint}`
-                )
+            ? ['states', 'locations', 'municipalities', 'suburbs'].includes(endpoint)
+              ? this.apiRestService.apiRestGet(`invoice/catalogs/${endpoint}`, payload)
+              : this.apiRestService.apiRest(payload, `invoice/catalogs/${endpoint}`)
             : this.apiRestService.apiRestGet(`invoice/catalogs/${endpoint}`))
         ).subscribe(
           (res) => {
