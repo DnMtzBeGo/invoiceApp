@@ -1,0 +1,111 @@
+<div class="payments-container">
+  <!-- <bego-button [activated]="true">Testing</bego-button>
+  <bego-button-toggle></bego-button-toggle>
+  <bego-calendar-time></bego-calendar-time>
+  <bego-checkout-card></bego-checkout-card>
+  <bego-circular-avatar></bego-circular-avatar>
+  <bego-drag-drop
+    [lang]="{
+      name: 'File Name',
+      labelBrowse: 'Browse your file',
+      labelOr: 'or',
+      btnBrowse: 'Choose File',
+      labelMax: 'max'
+    }"></bego-drag-drop>
+  <bego-edit-cn-button></bego-edit-cn-button>
+  <bego-input></bego-input> -->
+
+  <!-- Phone Code Select no funciona -->
+  <!-- 16.20.0 -->
+  <!-- <div class="code-select-wrapper">  -->
+  <!-- <bego-phone-code-select [selectedPhoneCode]="'+52'" [flag]="'mx'"></bego-phone-code-select> -->
+  <!-- </div> -->
+  <!-- Phone Code Select no funciona -->
+
+  <!--  <bego-radio-bullet></bego-radio-bullet>
+  <bego-radio-select [options]="options" selected="20"></bego-radio-select>
+  <bego-search-select></bego-search-select>
+  <bego-select></bego-select>
+  <bego-text-area></bego-text-area>
+  <bego-tooltip></bego-tooltip>
+  <bego-history-card></bego-history-card>
+  <bego-input-directions></bego-input-directions> -->
+  <!-- <bego-alert></bego-alert> -->
+
+  <div class="page-header" role="heading">
+    <div>
+      <button
+        mat-flat-button
+        class="brand-btn-1 radius-30"
+        style="z-index: 10000"
+        matBadgeColor="warn"
+        matBadgeSize="small"
+        matBadgeOverlap="true">
+        {{ 'invoice.invoices.filters' | translate }}
+        <img src="/assets/images/invoice/filters.svg" class="brand-filter-1" style="margin-left: 4px" />
+      </button>
+    </div>
+    <div class="toolbar-right">
+      <button mat-flat-button class="brand-btn-1">
+        {{ 'invoice.invoices.emisor-btn' | translate }}
+      </button>
+
+      <mat-form-field *ngIf="0" appearance="outline" floatLabel="always" class="suffix-btn" style="max-width: 245px">
+        <input
+          matInput
+          aria-label="Template"
+          name="template"
+          maxlength="13"
+          [placeholder]="'invoice.invoices.template-placeholder' | translate"
+          [matAutocomplete]="auto" />
+
+        <mat-progress-bar
+          style="bottom: 0px; position: absolute; width: calc(100% + 16px); height: 2px; left: -9px"
+          class="brand-progress-bar-1"
+          mode="indeterminate"></mat-progress-bar>
+
+        <!-- <mat-autocomplete
+          autoActiveFirstOption
+          #auto="matAutocomplete"
+          (optionSelected)="
+            router.navigate([
+              routes.NEW_FACTURA,
+              {
+                template: $event.option._element.nativeElement.dataset.template
+              }
+            ])
+          ">
+          <mat-option
+            *ngFor="let template of vm.receptorSearch?.template"
+            [value]="template.name"
+            class="brand-option-2"
+            [attr.data-template]="makeTemplate(template)"
+            [routerLink]="[routes.NEW_FACTURA, { template: makeTemplate(template) }]">
+            <a [routerLink]="[routes.NEW_FACTURA, { template: makeTemplate(template) }]" style="color: inherit; text-decoration: unset">
+              {{ template.name }}
+              <mat-icon
+                (click)="
+                  $event.stopPropagation();
+                  $event.preventDefault();
+                  router.navigate([
+                    routes.EDIT_TEMPLATE,
+                    {
+                      id: template._id
+                    }
+                  ])
+                ">
+                edit
+              </mat-icon>
+            </a>
+          </mat-option>
+        </mat-autocomplete> -->
+      </mat-form-field>
+
+      <button mat-flat-button class="brand-btn-2">
+        {{ 'invoice.invoices.new-invoice' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <app-payments-table></app-payments-table>
+</div>
