@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { DatePipe, CurrencyPipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
 
 @Component({
   selector: 'app-payments',
@@ -19,6 +21,8 @@ export class PaymentsComponent implements OnInit {
     { id: 'total', label: 'Total' },
     { id: 'bank', label: 'Banco' },
     { id: 'account', label: 'Numero de cuenta' }
+    // { id: '_id', label: 'Numero de ID' },
+    // { id: 'user_id', label: 'Numero de USER' }
   ];
 
   actions = [
@@ -57,9 +61,12 @@ export class PaymentsComponent implements OnInit {
 
   loadingData: boolean = false;
 
+  
+
   constructor(
     private webService: AuthService,
     private notificationsService: NotificationsService,
+    private matDialog: MatDialog,
     private datePipe: DatePipe,
     private currencyPipe: CurrencyPipe
   ) {}
@@ -68,6 +75,8 @@ export class PaymentsComponent implements OnInit {
     this.page.size = this.searchQueries.limit;
     this.page.index = this.searchQueries.page - 1;
     await this.getPayments();
+
+    this.openUploaderModal()
   }
 
   async getPayments() {
@@ -91,9 +100,9 @@ export class PaymentsComponent implements OnInit {
             subtotal: this.currency(data.subtotal)
           };
         });
+        this.loadingData = false;
       },
-      error: () => {},
-      complete: () => (this.loadingData = false)
+      error: () => (this.loadingData = false)
     });
   }
 
@@ -123,8 +132,23 @@ export class PaymentsComponent implements OnInit {
       this.searchQueries.page = 1;
     }
     this.searchQueries.limit = size;
-    // console.log('changing page: ', event.index, event.size, event.total);
     this.getPayments();
+  }
+
+  openUploaderModal() {
+    const dialogRef = this.matDialog.open(PaymentsUploadModalComponent, {
+      data: {},
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1']
+    });
+
+    dialogRef.afterClosed().subscribe((result?) => {
+      /* if (result?.success === true) {
+        this.facturasEmitter.next(["refresh:defaultEmisor"]);
+      } */
+    });
   }
 
   currency(price: number) {
@@ -133,7 +157,6 @@ export class PaymentsComponent implements OnInit {
   }
 
   openFile({ files }: any, type: 'pdf' | 'xml') {
-    console.log('files: ', files);
     if (files[type]) window.open(files[type]);
     else this.notificationsService.showErrorToastr('Archivo inexistente');
   }

@@ -1,4 +1,9 @@
 <div class="payments-container">
+  <div class="page-header">
+    <div></div>
+    <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">Crear</button>
+  </div>
+
   <bego-table
     [loading]="loadingData"
     [columns]="columns"

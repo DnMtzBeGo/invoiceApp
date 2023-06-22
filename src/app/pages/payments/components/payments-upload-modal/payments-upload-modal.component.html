@@ -1,0 +1,69 @@
+<div class="payments-container">
+  <div class="payments-header">
+    <h4 style="margin-bottom: 0rem; font-size: 20px">Subir datos</h4>
+    <div class="close-btn">
+      <mat-icon>close</mat-icon>
+    </div>
+  </div>
+  <div class="payments-body">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>Numero de referencia</mat-label>
+      <input matInput value="1111" />
+    </mat-form-field>
+
+    <!-- <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>Subtotal</mat-label>
+      <input matInput type="number" value="1111" />
+    </mat-form-field> -->
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>Amount</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="formattedAmount"
+        (input)="formatCurrency()"
+        (blur)="parseCurrency()"
+        [value]="formattedAmount" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>Total</mat-label>
+      <input matInput type="number" value="1111" />
+    </mat-form-field>
+
+    <div class="files-container">
+      <div class="files-subcontainer">
+        <span>XML *</span>
+
+        <bego-drag-drop
+          [lang]="lang"
+          [styleRect]="true"
+          [maxSize]="10000000"
+          [fileInfo]="files.xml.data"
+          [drag]="true"
+          (fileSelected)="handleFileChange($event, 'xml')"></bego-drag-drop>
+      </div>
+
+      <div class="files-subcontainer">
+        <span>PDF</span>
+
+        <bego-drag-drop
+          [lang]="lang"
+          [styleRect]="true"
+          [maxSize]="10000000"
+          [fileInfo]="files.pdf.data"
+          [drag]="true"
+          (fileSelected)="handleFileChange($event, 'pdf')"></bego-drag-drop>
+      </div>
+    </div>
+  </div>
+
+  <button
+    mat-flat-button
+    [disabled]="!validated"
+    [ngClass]="['brand-btn-2']"
+    style="min-width: 155px; min-height: 40px; position: absolute; bottom: 0; right: 0">
+    Subir
+  </button>
+</div>
