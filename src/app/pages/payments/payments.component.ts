@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
-import { DatePipe, CurrencyPipe } from '@angular/common';
+import { DatePipe, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-payments',
@@ -12,40 +13,36 @@ import { PaymentsUploadModalComponent } from './components/payments-upload-modal
 })
 export class PaymentsComponent implements OnInit {
   columns: any[] = [
-    { id: 'order_number', label: 'Orden' },
-    { id: 'due_date', label: 'Vencimiento' },
-    { id: 'folio', label: 'Factura' },
-    { id: 'razon_social', label: 'Razon Social' },
-    { id: 'status', label: 'Status' },
-    { id: 'subtotal', label: 'Subtotal' },
-    { id: 'total', label: 'Total' },
-    { id: 'bank', label: 'Banco' },
-    { id: 'account', label: 'Numero de cuenta' },
-    { id: 'date_created', label: 'Subida' }
-    // { id: '_id', label: 'Numero de ID' },
-    // { id: 'user_id', label: 'Numero de USER' }
+    { id: 'order_number', label: this.translate('order_number', 'table') },
+    { id: 'due_date', label: this.translate('due_date', 'table') },
+    { id: 'folio', label: this.translate('folio', 'table') },
+    { id: 'razon_social', label: this.translate('razon_social', 'table') },
+    { id: 'status', label: this.translate('status', 'table') },
+    { id: 'subtotal', label: this.translate('subtotal', 'table') },
+    { id: 'total', label: this.translate('total', 'table') },
+    { id: 'bank', label: this.translate('bank', 'table') },
+    { id: 'account', label: this.translate('account', 'table') },
+    { id: 'date_created', label: this.translate('date_created', 'table') }
   ];
+
+  paginatorLang = {
+    total: '',
+    totalOf: '',
+    nextPage: '',
+    prevPage: '',
+    itemsPerPage: ''
+  };
 
   actions = [
     {
-      label: 'Editar pago',
-      id: 'edit_invoice',
-      icon: 'edit-fintech'
-    },
-    {
-      label: 'Ver PDF',
+      label: this.translate('view_pdf', 'actions'),
       id: 'view_pdf',
       icon: 'eye'
     },
     {
-      label: 'Ver XML',
+      label: this.translate('view_xml', 'actions'),
       id: 'view_xml',
       icon: 'eye'
-    },
-    {
-      label: 'Eliminar pago',
-      id: 'delete_payment',
-      icon: 'trash1'
     }
   ];
 
@@ -61,25 +58,39 @@ export class PaymentsComponent implements OnInit {
   payments = [];
 
   loadingData: boolean = false;
+  lang: string = null;
 
   constructor(
     private webService: AuthService,
     private notificationsService: NotificationsService,
     private matDialog: MatDialog,
     private datePipe: DatePipe,
-    private currencyPipe: CurrencyPipe
-  ) {}
-
-  async ngOnInit() {
-    this.page.size = this.searchQueries.limit;
-    this.page.index = this.searchQueries.page - 1;
-    await this.getPayments();
-
-    this.openUploaderModal();
+    private currencyPipe: CurrencyPipe,
+    private translateService: TranslateService
+  ) {
+    this.lang = localStorage.getItem('lang') || 'en';
+    this.setLang();
   }
 
-  async getPayments() {
+  async ngOnInit() {
+    this.translateService.onLangChange.subscribe(async ({ lang }) => {
+      this.lang = lang;
+      this.setLang();
+
+      await this.getPayments(true);
+    });
+
+    this.page.size = this.searchQueries.limit;
+    this.page.index = this.searchQueries.page - 1;
+
+    await this.getPayments();
+  }
+
+  async getPayments(translated?: boolean) {
     this.loadingData = true;
+
+    if (translated) this.payments = [];
+
     const { limit, page, sort, match } = this.searchQueries;
     const queryParams = new URLSearchParams({
       limit: limit.toString(),
@@ -88,21 +99,25 @@ export class PaymentsComponent implements OnInit {
       ...(match && { match })
     }).toString();
 
-    (await this.webService.apiRestGet(`carriers_payments/?${queryParams}`, { apiVersion: 'v1.1', loader: 'false' })).subscribe({
+    (await this.webService.apiRestGet(`carriers_payments/?${queryParams}`, { loader: 'false', apiVersion: 'v1.1' })).subscribe({
       next: ({ result: { result, total } }) => {
         this.page.total = total;
-        this.payments = result.map((data) => {
+        this.payments = result.map((payment) => {
           return {
-            ...data,
-            due_date: this.datePipe.transform(data.due_date) || '-',
-            date_created: this.datePipe.transform(data.date_created) || '-',
-            total: this.currency(data.total),
-            subtotal: this.currency(data.subtotal)
+            ...payment,
+            due_date: this.datePipe.transform(payment.due_date, 'MMMM d, yy', '', this.lang),
+            date_created: this.datePipe.transform(payment.date_created, 'MMMM d, yy', '', this.lang),
+            total: this.currency(payment.total),
+            subtotal: this.currency(payment.subtotal),
+            status: this.translate(payment.status, 'status')
           };
         });
         this.loadingData = false;
       },
-      error: () => (this.loadingData = false)
+      error: (err) => {
+        console.error(err);
+        this.loadingData = false;
+      }
     });
   }
 
@@ -126,7 +141,6 @@ export class PaymentsComponent implements OnInit {
 
   changingPage({ index, size }: any) {
     this.searchQueries.page = index + 1;
-    console.log('changing page: ', this.searchQueries.limit, size);
     if (this.searchQueries.limit !== size) {
       this.page.index = 0;
       this.searchQueries.page = 1;
@@ -152,13 +166,29 @@ export class PaymentsComponent implements OnInit {
     });
   }
 
+  openFile({ files }: any, type: 'pdf' | 'xml') {
+    if (files[type]) window.open(files[type]);
+    else this.notificationsService.showErrorToastr('Archivo inexistente');
+  }
+
   currency(price: number) {
     if (price) return this.currencyPipe.transform(price, 'MXN', 'symbol-narrow', '1.2-2') + ' MXN';
     return '-';
   }
 
-  openFile({ files }: any, type: 'pdf' | 'xml') {
-    if (files[type]) window.open(files[type]);
-    else this.notificationsService.showErrorToastr('Archivo inexistente');
+  translate(word: string, type: string) {
+    return this.translateService.instant(`payments.${type}.${word}`);
+  }
+
+  setLang() {
+    this.paginatorLang = {
+      total: this.translate('total', 'paginator'),
+      totalOf: this.translate('of', 'paginator'),
+      nextPage: this.translate('nextPage', 'paginator'),
+      prevPage: this.translate('prevPage', 'paginator'),
+      itemsPerPage: this.translate('itemsPerPage', 'paginator')
+    };
+    this.columns.forEach((column) => (column.label = this.translate(column.id, 'table')));
+    this.actions.forEach((action) => (action.label = this.translate(action.id, 'actions')));
   }
 }

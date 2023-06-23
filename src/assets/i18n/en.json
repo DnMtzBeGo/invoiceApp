@@ -1478,5 +1478,42 @@
       "txt_invalidDriection": "Please be more specific on your address.",
       "txt-address-not-found": "No address found"
     }
+  },
+  "payments": {
+    "buttons": {
+      "upload": "Upload payment"
+    },
+    "table": {
+      "order_number": "Order",
+      "due_date": "Due Date",
+      "folio": "Invoice",
+      "razon_social": "Social Reason",
+      "status": "Status",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "bank": "Bank",
+      "account": "Account Number",
+      "date_created": "Uploaded"
+    },
+    "paginator": {
+      "total": "Total",
+      "of": "of",
+      "nextPage": "Next",
+      "prevPage": "Prev",
+      "itemsPerPage": "Items per page"
+    },
+    "status": {
+      "cancel": "Cancel",
+      "rejected": "Rejected",
+      "invalid-data": "Invalid data",
+      "uploaded": "Uploaded",
+      "validated": "Validated",
+      "pending-payment": "Pending payment",
+      "paid": "Paid"
+    },
+    "actions": {
+      "view_xml": "View XML",
+      "view_pdf": "View PDF"
+    }
   }
 }
