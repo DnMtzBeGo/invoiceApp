@@ -2,35 +2,36 @@
   <div class="payments-header">
     <h4 style="margin-bottom: 0rem; font-size: 20px">Subir datos</h4>
     <div class="close-btn">
-      <mat-icon>close</mat-icon>
+      <mat-icon (click)="close(false)">close</mat-icon>
     </div>
   </div>
   <div class="payments-body">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>Numero de referencia</mat-label>
-      <input matInput value="1111" />
+      <input matInput [(ngModel)]="order_number" (input)="checkValidated()" maxlength="8" />
     </mat-form-field>
 
-    <!-- <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>Subtotal</mat-label>
-      <input matInput type="number" value="1111" />
-    </mat-form-field> -->
+    <div class="price-container">
+      <mat-form-field appearance="outline" class="brand-field-1">
+        <mat-label>Subtotal</mat-label>
+        <input
+          matInput
+          currencyMask
+          [ngModel]="prices.subtotal"
+          [options]="currencyOptions"
+          (ngModelChange)="onModelChange($event, 'subtotal')" />
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>Amount</mat-label>
-      <input
-        matInput
-        type="text"
-        [(ngModel)]="formattedAmount"
-        (input)="formatCurrency()"
-        (blur)="parseCurrency()"
-        [value]="formattedAmount" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>Total</mat-label>
-      <input matInput type="number" value="1111" />
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="brand-field-1">
+        <mat-label>Total</mat-label>
+        <input
+          matInput
+          currencyMask
+          [ngModel]="prices.total"
+          [options]="currencyOptions"
+          (ngModelChange)="onModelChange($event, 'total')" />
+      </mat-form-field>
+    </div>
 
     <div class="files-container">
       <div class="files-subcontainer">
@@ -60,10 +61,11 @@
   </div>
 
   <button
-    mat-flat-button
     [disabled]="!validated"
+    mat-flat-button
     [ngClass]="['brand-btn-2']"
-    style="min-width: 155px; min-height: 40px; position: absolute; bottom: 0; right: 0">
+    style="min-width: 155px; min-height: 40px; position: absolute; bottom: 0; right: 0"
+    (click)="uploadData()">
     Subir
   </button>
 </div>

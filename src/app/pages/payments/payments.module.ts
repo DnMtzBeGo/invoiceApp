@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 @NgModule({
   declarations: [PaymentsComponent, PaymentsTableComponent, PaymentsUploadModalComponent],
@@ -31,7 +32,8 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
     MatFormFieldModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    NgxCurrencyModule
   ],
   providers: [DatePipe, CurrencyPipe]
 })

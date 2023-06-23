@@ -20,7 +20,8 @@ export class PaymentsComponent implements OnInit {
     { id: 'subtotal', label: 'Subtotal' },
     { id: 'total', label: 'Total' },
     { id: 'bank', label: 'Banco' },
-    { id: 'account', label: 'Numero de cuenta' }
+    { id: 'account', label: 'Numero de cuenta' },
+    { id: 'date_created', label: 'Subida' }
     // { id: '_id', label: 'Numero de ID' },
     // { id: 'user_id', label: 'Numero de USER' }
   ];
@@ -61,8 +62,6 @@ export class PaymentsComponent implements OnInit {
 
   loadingData: boolean = false;
 
-  
-
   constructor(
     private webService: AuthService,
     private notificationsService: NotificationsService,
@@ -76,7 +75,7 @@ export class PaymentsComponent implements OnInit {
     this.page.index = this.searchQueries.page - 1;
     await this.getPayments();
 
-    this.openUploaderModal()
+    this.openUploaderModal();
   }
 
   async getPayments() {
@@ -96,6 +95,7 @@ export class PaymentsComponent implements OnInit {
           return {
             ...data,
             due_date: this.datePipe.transform(data.due_date) || '-',
+            date_created: this.datePipe.transform(data.date_created) || '-',
             total: this.currency(data.total),
             subtotal: this.currency(data.subtotal)
           };
@@ -118,7 +118,7 @@ export class PaymentsComponent implements OnInit {
   }
 
   sortingTable({ type, asc }: any) {
-    this.searchQueries.sort = JSON.stringify({ [type]: asc ? 1 : -1 });
+    this.searchQueries.sort = JSON.stringify({ [type]: asc ? -1 : 1 });
     this.page.index = 0;
     this.searchQueries.page = 1;
     this.getPayments();
@@ -144,15 +144,16 @@ export class PaymentsComponent implements OnInit {
       backdropClass: ['brand-dialog-1']
     });
 
-    dialogRef.afterClosed().subscribe((result?) => {
-      /* if (result?.success === true) {
-        this.facturasEmitter.next(["refresh:defaultEmisor"]);
-      } */
+    dialogRef.afterClosed().subscribe((uploaded: boolean) => {
+      if (uploaded) {
+        this.searchQueries.sort = JSON.stringify({ date_created: -1 });
+        this.getPayments();
+      }
     });
   }
 
   currency(price: number) {
-    if (price) return this.currencyPipe.transform(price, 'MXN', 'symbol-narrow', '1.0-0') + ' MXN';
+    if (price) return this.currencyPipe.transform(price, 'MXN', 'symbol-narrow', '1.2-2') + ' MXN';
     return '-';
   }
 
