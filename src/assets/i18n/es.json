@@ -1518,6 +1518,11 @@
     "actions": {
       "view_xml": "Ver XML",
       "view_pdf": "Ver PDF"
+    },
+    "upload-modal": {
+      "title": "Subir datos",
+      "send-btn": "Enviar",
+      "order-number": "Número de referencia"
     }
   }
 }

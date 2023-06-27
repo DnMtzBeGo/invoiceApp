@@ -1514,6 +1514,11 @@
     "actions": {
       "view_xml": "View XML",
       "view_pdf": "View PDF"
+    },
+    "upload-modal": {
+      "title": "Upload data",
+      "send-btn": "Send",
+      "order-number": "Order number"
     }
   }
 }

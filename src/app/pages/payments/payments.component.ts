@@ -13,16 +13,16 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class PaymentsComponent implements OnInit {
   columns: any[] = [
-    { id: 'order_number', label: this.translate('order_number', 'table') },
-    { id: 'due_date', label: this.translate('due_date', 'table') },
-    { id: 'folio', label: this.translate('folio', 'table') },
-    { id: 'razon_social', label: this.translate('razon_social', 'table') },
-    { id: 'status', label: this.translate('status', 'table') },
-    { id: 'subtotal', label: this.translate('subtotal', 'table') },
-    { id: 'total', label: this.translate('total', 'table') },
-    { id: 'bank', label: this.translate('bank', 'table') },
-    { id: 'account', label: this.translate('account', 'table') },
-    { id: 'date_created', label: this.translate('date_created', 'table') }
+    { id: 'order_number', label: this.translate('order_number', 'table'), input: 'label' },
+    { id: 'due_date', label: this.translate('due_date', 'table'), input: 'label' },
+    { id: 'folio', label: this.translate('folio', 'table'), input: 'label' },
+    { id: 'razon_social', label: this.translate('razon_social', 'table'), input: 'label' },
+    { id: 'status', label: this.translate('status', 'table'), input: 'label' },
+    { id: 'subtotal', label: this.translate('subtotal', 'table'), input: 'label' },
+    { id: 'total', label: this.translate('total', 'table'), input: 'label' },
+    { id: 'bank', label: this.translate('bank', 'table'), input: 'label' },
+    { id: 'account', label: this.translate('account', 'table'), input: 'label' },
+    { id: 'date_created', label: this.translate('date_created', 'table'), input: 'label' }
   ];
 
   paginatorLang = {
@@ -51,7 +51,7 @@ export class PaymentsComponent implements OnInit {
   searchQueries = {
     limit: 10,
     page: 1,
-    sort: '',
+    sort: JSON.stringify({ due_date: -1 }),
     match: ''
   };
 
@@ -81,7 +81,7 @@ export class PaymentsComponent implements OnInit {
     });
 
     this.page.size = this.searchQueries.limit;
-    this.page.index = this.searchQueries.page - 1;
+    this.page.index = this.searchQueries.page;
 
     await this.getPayments();
   }
@@ -134,15 +134,15 @@ export class PaymentsComponent implements OnInit {
 
   sortingTable({ type, asc }: any) {
     this.searchQueries.sort = JSON.stringify({ [type]: asc ? -1 : 1 });
-    this.page.index = 0;
+    this.page.index = 1;
     this.searchQueries.page = 1;
     this.getPayments();
   }
 
   changingPage({ index, size }: any) {
-    this.searchQueries.page = index + 1;
+    this.searchQueries.page = index;
     if (this.searchQueries.limit !== size) {
-      this.page.index = 0;
+      this.page.index = 1;
       this.searchQueries.page = 1;
     }
     this.searchQueries.limit = size;
