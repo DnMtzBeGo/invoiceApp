@@ -1485,15 +1485,16 @@
     },
     "table": {
       "order_number": "Order",
-      "due_date": "Due Date",
+      "due_date": "Due date",
       "folio": "Invoice",
-      "razon_social": "Social Reason",
+      "razon_social": "Social reason",
       "status": "Status",
       "subtotal": "Subtotal",
       "total": "Total",
       "bank": "Bank",
-      "account": "Account Number",
-      "date_created": "Uploaded"
+      "account": "Account number",
+      "date_created": "Uploaded",
+      "carrier_credit_days": "Credit days"
     },
     "paginator": {
       "total": "Total",

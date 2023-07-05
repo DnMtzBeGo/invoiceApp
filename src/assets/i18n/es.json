@@ -1497,7 +1497,8 @@
       "total": "Total",
       "bank": "Banco",
       "account": "Numero de cuenta",
-      "date_created": "Subida"
+      "date_created": "Subida",
+      "carrier_credit_days": "Días de Credito"
     },
     "paginator": {
       "total": "Total",

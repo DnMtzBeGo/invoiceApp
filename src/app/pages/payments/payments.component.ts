@@ -12,15 +12,32 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./payments.component.scss']
 })
 export class PaymentsComponent implements OnInit {
+  statusOptions = [
+    { label: 'Cancel', value: 'cancel', id: -3 },
+    { label: 'Rejected', value: 'rejected', id: -2 },
+    { label: 'Invalid', value: 'invalid-data', id: -1 },
+    { label: 'Uploaded', value: 'uploaded', id: 0 },
+    { label: 'Validated', value: 'validated', id: 1 },
+    { label: 'Pending', value: 'pending-payment', id: 2 },
+    { label: 'Paid', value: 'paid', id: 3 }
+  ];
+
   columns: any[] = [
-    { id: 'order_number', label: this.translate('order_number', 'table'), input: 'label' },
-    { id: 'due_date', label: this.translate('due_date', 'table'), input: 'label' },
-    { id: 'folio', label: this.translate('folio', 'table'), input: 'label' },
-    { id: 'razon_social', label: this.translate('razon_social', 'table'), input: 'label' },
-    { id: 'status', label: this.translate('status', 'table'), input: 'label' },
+    { id: 'order_number', label: this.translate('order_number', 'table'), input: 'label', pipe: '', activeFilter: 'label' },
+    { id: 'due_date', label: this.translate('due_date', 'table'), input: 'label', pipe: 'countdown' },
+    { id: 'carrier_credit_days', label: this.translate('carrier_credit_days', 'table'), input: 'label' },
+    // { id: 'folio', label: this.translate('folio', 'table'), input: 'label' },
+    { id: 'razon_social', label: this.translate('razon_social', 'table'), input: 'label', activeFilter: 'label' },
+    {
+      id: 'status',
+      label: this.translate('status', 'table'),
+      input: 'label',
+      activeFilter: 'selector',
+      options: this.statusOptions
+    },
     { id: 'subtotal', label: this.translate('subtotal', 'table'), input: 'label' },
     { id: 'total', label: this.translate('total', 'table'), input: 'label' },
-    { id: 'bank', label: this.translate('bank', 'table'), input: 'label' },
+    { id: 'bank', label: this.translate('bank', 'table'), input: 'label', activeFilter: 'label' },
     { id: 'account', label: this.translate('account', 'table'), input: 'label' },
     { id: 'date_created', label: this.translate('date_created', 'table'), input: 'label' }
   ];
@@ -105,10 +122,11 @@ export class PaymentsComponent implements OnInit {
         this.payments = result.map((payment) => {
           return {
             ...payment,
-            due_date: this.datePipe.transform(payment.due_date, 'MMMM d, yy', '', this.lang),
+            // due_date: this.datePipe.transform(payment.due_date, 'MMMM d, yy', '', this.lang),
+            carrier_credit_days: this.creditDays(payment.carrier_credit_days),
             date_created: this.datePipe.transform(payment.date_created, 'MMMM d, yy', '', this.lang),
-            total: this.currency(payment.total),
-            subtotal: this.currency(payment.subtotal),
+            total: this.currency(payment.total, payment?.moneda),
+            subtotal: this.currency(payment.subtotal, payment?.moneda),
             status: this.translate(payment.status, 'status')
           };
         });
@@ -171,8 +189,8 @@ export class PaymentsComponent implements OnInit {
     else this.notificationsService.showErrorToastr('Archivo inexistente');
   }
 
-  currency(price: number) {
-    if (price) return this.currencyPipe.transform(price, 'MXN', 'symbol-narrow', '1.2-2') + ' MXN';
+  currency(price: number, type: string = 'MXN') {
+    if (price) return this.currencyPipe.transform(price, type, 'symbol-narrow', '1.2-2') + ` ${type}`;
     return '-';
   }
 
@@ -188,7 +206,27 @@ export class PaymentsComponent implements OnInit {
       prevPage: this.translate('prevPage', 'paginator'),
       itemsPerPage: this.translate('itemsPerPage', 'paginator')
     };
+    this.statusOptions.forEach((status) => (status.label = this.translate(status.value, 'status')));
     this.columns.forEach((column) => (column.label = this.translate(column.id, 'table')));
     this.actions.forEach((action) => (action.label = this.translate(action.id, 'actions')));
+  }
+
+  filterData({ active, search, type }) {
+    console.log('filtering: ', active, search, type);
+    if (active) {
+      if (type === 'status') this.searchQueries.match = JSON.stringify({ status: this.searchStatus(search) });
+      else this.searchQueries.match = JSON.stringify({ [type]: search });
+    } else this.searchQueries.match = '';
+    this.getPayments();
+  }
+
+  creditDays(days: number) {
+    if (!days || days === -1) return 'TBD';
+    if (days === 3) return 'APP';
+    return `${days} ${this.lang === 'es' ? ' días' : ' days'}`;
+  }
+
+  searchStatus(search) {
+    return this.statusOptions.find((status) => status.value === search).id;
   }
 }
