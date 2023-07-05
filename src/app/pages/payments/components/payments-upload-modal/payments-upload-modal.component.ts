@@ -71,7 +71,7 @@ export class PaymentsUploadModalComponent implements OnInit {
   }
 
   checkValidated() {
-    this.validated = Boolean(this.files.xml.file && this.order_number);
+    this.validated = Boolean(this.files.xml.file && this.order_number && this.prices.total > this.prices.subtotal);
   }
 
   async uploadData() {

@@ -1498,7 +1498,9 @@
       "bank": "Banco",
       "account": "Numero de cuenta",
       "date_created": "Subida",
-      "carrier_credit_days": "Días de Credito"
+      "carrier_credit_days": "Días de Credito",
+      "pdf": "PDF",
+      "xml": "XML"
     },
     "paginator": {
       "total": "Total",

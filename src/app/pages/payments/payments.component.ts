@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
-import { DatePipe, CurrencyPipe, TitleCasePipe } from '@angular/common';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,23 +23,18 @@ export class PaymentsComponent implements OnInit {
   ];
 
   columns: any[] = [
-    { id: 'order_number', label: this.translate('order_number', 'table'), input: 'label', pipe: '', activeFilter: 'label' },
-    { id: 'due_date', label: this.translate('due_date', 'table'), input: 'label', pipe: 'countdown' },
-    { id: 'carrier_credit_days', label: this.translate('carrier_credit_days', 'table'), input: 'label' },
-    // { id: 'folio', label: this.translate('folio', 'table'), input: 'label' },
-    { id: 'razon_social', label: this.translate('razon_social', 'table'), input: 'label', activeFilter: 'label' },
-    {
-      id: 'status',
-      label: this.translate('status', 'table'),
-      input: 'label',
-      activeFilter: 'selector',
-      options: this.statusOptions
-    },
-    { id: 'subtotal', label: this.translate('subtotal', 'table'), input: 'label' },
-    { id: 'total', label: this.translate('total', 'table'), input: 'label' },
-    { id: 'bank', label: this.translate('bank', 'table'), input: 'label', activeFilter: 'label' },
-    { id: 'account', label: this.translate('account', 'table'), input: 'label' },
-    { id: 'date_created', label: this.translate('date_created', 'table'), input: 'label' }
+    { id: 'order_number', label: '', input: 'label', activeFilter: 'label' },
+    { id: 'due_date', label: '', input: 'label', pipe: 'countdown' },
+    { id: 'carrier_credit_days', label: '', input: 'label' },
+    { id: 'razon_social', label: '', input: 'label', activeFilter: 'label' },
+    { id: 'status', label: '', input: 'label', activeFilter: 'selector', options: this.statusOptions },
+    { id: 'subtotal', label: '', input: 'label' },
+    { id: 'total', label: '', input: 'label' },
+    { id: 'bank', label: '', input: 'label', activeFilter: 'label' },
+    { id: 'account', label: '', input: 'label' },
+    { id: 'pdf', label: 'PDF', input: 'label' },
+    { id: 'xml', label: 'XML', input: 'label' },
+    { id: 'date_created', label: '', input: 'label' }
   ];
 
   paginatorLang = {
@@ -93,7 +88,6 @@ export class PaymentsComponent implements OnInit {
     this.translateService.onLangChange.subscribe(async ({ lang }) => {
       this.lang = lang;
       this.setLang();
-
       await this.getPayments(true);
     });
 
@@ -122,12 +116,14 @@ export class PaymentsComponent implements OnInit {
         this.payments = result.map((payment) => {
           return {
             ...payment,
-            // due_date: this.datePipe.transform(payment.due_date, 'MMMM d, yy', '', this.lang),
             carrier_credit_days: this.creditDays(payment.carrier_credit_days),
-            date_created: this.datePipe.transform(payment.date_created, 'MMMM d, yy', '', this.lang),
+            date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yy', '', this.lang),
+            // date_created: this.datePipe.transform(payment.date_created, 'MMMM d, yy', '', this.lang),
             total: this.currency(payment.total, payment?.moneda),
             subtotal: this.currency(payment.subtotal, payment?.moneda),
-            status: this.translate(payment.status, 'status')
+            status: this.translate(payment.status, 'status'),
+            pdf: payment.files?.pdf ? '✓' : '✕',
+            xml: payment.files?.xml ? '✓' : '✕'
           };
         });
         this.loadingData = false;
@@ -217,6 +213,8 @@ export class PaymentsComponent implements OnInit {
       if (type === 'status') this.searchQueries.match = JSON.stringify({ status: this.searchStatus(search) });
       else this.searchQueries.match = JSON.stringify({ [type]: search });
     } else this.searchQueries.match = '';
+    this.page.index = 1;
+    this.searchQueries.page = 1;
     this.getPayments();
   }
 

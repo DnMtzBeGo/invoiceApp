@@ -1494,7 +1494,9 @@
       "bank": "Bank",
       "account": "Account number",
       "date_created": "Uploaded",
-      "carrier_credit_days": "Credit days"
+      "carrier_credit_days": "Credit days",
+      "pdf": "PDF",
+      "xml": "XML"
     },
     "paginator": {
       "total": "Total",
