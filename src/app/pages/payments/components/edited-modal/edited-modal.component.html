@@ -1,0 +1,11 @@
+<bego-alert
+  [simple]="true"
+  [lang]="{
+    done: ('payments.edited-modal.done' | translate),
+    cancel: ('payments.edited-modal.cancel' | translate)
+  }"
+  [alertLang]="{
+    title: 'payments.edited-modal.title' | translate,
+    subtitle: 'payments.edited-modal.subtitle' | translate
+  }"
+  (closeEmitter)="closeEmitter($event)"></bego-alert>

@@ -5,6 +5,7 @@ import { DatePipe, CurrencyPipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
 import { TranslateService } from '@ngx-translate/core';
+import { EditedModalComponent } from './components/edited-modal/edited-modal.component';
 
 @Component({
   selector: 'app-payments',
@@ -99,7 +100,6 @@ export class PaymentsComponent implements OnInit {
 
     this.page.size = this.searchQueries.limit;
     this.page.index = this.searchQueries.page;
-
     await this.getPayments();
   }
 
@@ -124,7 +124,6 @@ export class PaymentsComponent implements OnInit {
             ...payment,
             carrier_credit_days: this.creditDays(payment.carrier_credit_days),
             date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yy', '', this.lang.selected),
-            // date_created: this.datePipe.transform(payment.date_created, 'MMMM d, yy', '', this.lang),
             total: this.currency(payment.total, payment?.moneda),
             subtotal: this.currency(payment.subtotal, payment?.moneda),
             status: this.translate(payment.status, 'status'),
@@ -178,11 +177,23 @@ export class PaymentsComponent implements OnInit {
       backdropClass: ['brand-dialog-1']
     });
 
-    dialogRef.afterClosed().subscribe((uploaded: boolean) => {
-      if (uploaded) {
+    dialogRef.afterClosed().subscribe((edited: string) => {
+      if (edited === 'success') {
         this.searchQueries.sort = JSON.stringify({ date_created: -1 });
+        this.openUploadedModal()
         this.getPayments();
       }
+      if (edited === 'failed') this.notificationsService.showErrorToastr(this.translate(edited, 'edited-modal'));
+    });
+  }
+
+  openUploadedModal() {
+    const dialogRef = this.matDialog.open(EditedModalComponent, {
+      data: {},
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1', 'no-padding', 'full-visible']
     });
   }
 
@@ -213,6 +224,7 @@ export class PaymentsComponent implements OnInit {
       input: this.translate('input', 'filter'),
       selector: this.translate('selector', 'filter')
     };
+
     this.statusOptions.forEach((status) => (status.label = this.translate(status.value, 'status')));
     this.columns.forEach((column) => (column.label = this.translate(column.id, 'table')));
     this.actions.forEach((action) => (action.label = this.translate(action.id, 'actions')));

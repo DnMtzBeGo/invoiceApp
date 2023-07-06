@@ -87,15 +87,16 @@ export class PaymentsUploadModalComponent implements OnInit {
 
     (await this.webService.uploadFilesSerivce(formData, 'carriers_payments', { apiVersion: 'v1.1' })).subscribe({
       next: () => {
-        this.close(true);
+        this.close('success');
       },
       error: (err) => {
+        this.close('failed');
         console.error(err);
       }
     });
   }
 
-  close(uploaded: boolean) {
-    this.dialogRef.close(uploaded);
+  close(edited: string = '') {
+    this.dialogRef.close(edited);
   }
 }

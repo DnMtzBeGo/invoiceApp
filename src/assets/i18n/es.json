@@ -1530,6 +1530,13 @@
       "title": "Subir datos",
       "send-btn": "Enviar",
       "order-number": "Número de referencia"
+    },
+    "edited-modal": {
+      "done": "Hecho",
+      "cancel": "Cancel",
+      "title": "¡Listo!",
+      "subtitle": "Su pago fue subido correctamente",
+      "failed": "Hubo un error, intente más tarde"
     }
   }
 }

@@ -1526,6 +1526,13 @@
       "title": "Upload data",
       "send-btn": "Send",
       "order-number": "Order number"
+    },
+    "edited-modal": {
+      "done": "Done",
+      "cancel": "Cancel",
+      "title": "Success!",
+      "subtitle": "Your payment was uploaded successfully",
+      "failed": "There was an error, try again later"
     }
   }
 }
