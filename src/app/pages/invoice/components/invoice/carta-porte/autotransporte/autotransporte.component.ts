@@ -171,8 +171,8 @@ export class AutotransporteComponent implements OnInit {
         numeroSCT: this.info.num_permiso_sct,
         permisoSCT: this.info.perm_sct,
         primaSeguro: seguros?.prima_seguro,
-        remolquesConfig: remolques?.sub_tipo_rem,
-        remolquesPlates: remolques?.placa,
+        remolquesConfig: Array.isArray(remolques) ? remolques[0]?.sub_tipo_rem : remolques?.sub_tipo_rem,
+        remolquesPlates: Array.isArray(remolques) ? remolques[0]?.placa : remolques?.placa,
         truckModel: identificacion_vehicular?.anio_modelo_v_m,
         truckPlates: identificacion_vehicular?.placa_v_m
       });
