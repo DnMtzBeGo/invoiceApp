@@ -5,14 +5,13 @@
   </div>
 
   <bego-table
-    [paginatorLang]="paginatorLang"
+    [lang]="lang"
     [loading]="loadingData"
     [columns]="columns"
     [values]="payments"
     [page]="page"
     [actions]="actions"
     [filter]="true"
-    [lang]="lang"
     [debounce]="1000"
     (filterEmitter)="filterData($event)"
     (selectedActionEmitter)="selectingAction($event)"

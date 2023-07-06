@@ -1505,6 +1505,10 @@
       "prevPage": "Prev",
       "itemsPerPage": "Items per page"
     },
+    "filter": {
+      "input": "Search...",
+      "selector": "Search..."
+    },
     "status": {
       "cancel": "Cancel",
       "rejected": "Rejected",

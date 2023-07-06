@@ -1509,6 +1509,10 @@
       "prevPage": "Anterior",
       "itemsPerPage": "Items por página"
     },
+    "filter": {
+      "input": "Buscar...",
+      "selector": "Buscar..."
+    },
     "status": {
       "cancel": "Cancelada",
       "rejected": "Rechazada",

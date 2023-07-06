@@ -23,26 +23,33 @@ export class PaymentsComponent implements OnInit {
   ];
 
   columns: any[] = [
-    { id: 'order_number', label: '', input: 'label', activeFilter: 'label' },
-    { id: 'due_date', label: '', input: 'label', pipe: 'countdown' },
-    { id: 'carrier_credit_days', label: '', input: 'label' },
-    { id: 'razon_social', label: '', input: 'label', activeFilter: 'label' },
-    { id: 'status', label: '', input: 'label', activeFilter: 'selector', options: this.statusOptions },
-    { id: 'subtotal', label: '', input: 'label' },
-    { id: 'total', label: '', input: 'label' },
-    { id: 'bank', label: '', input: 'label', activeFilter: 'label' },
-    { id: 'account', label: '', input: 'label' },
-    { id: 'pdf', label: 'PDF', input: 'label' },
-    { id: 'xml', label: 'XML', input: 'label' },
-    { id: 'date_created', label: '', input: 'label' }
+    { id: 'order_number', label: '', filter: 'input', sort: true },
+    { id: 'due_date', label: '', pipe: 'countdown', sort: true },
+    { id: 'carrier_credit_days', label: '', sort: true },
+    { id: 'razon_social', label: '', filter: 'input', sort: true },
+    { id: 'status', label: '', filter: 'selector', options: this.statusOptions, sort: true },
+    { id: 'subtotal', label: '', sort: true },
+    { id: 'total', label: '', sort: true },
+    { id: 'bank', label: '', filter: 'input', sort: true },
+    { id: 'account', label: '', sort: true },
+    { id: 'pdf', label: 'PDF' },
+    { id: 'xml', label: 'XML' },
+    { id: 'date_created', label: '', sort: true }
   ];
 
-  paginatorLang = {
-    total: '',
-    totalOf: '',
-    nextPage: '',
-    prevPage: '',
-    itemsPerPage: ''
+  lang = {
+    selected: 'en',
+    paginator: {
+      total: '',
+      totalOf: '',
+      nextPage: '',
+      prevPage: '',
+      itemsPerPage: ''
+    },
+    filter: {
+      input: '',
+      selector: ''
+    }
   };
 
   actions = [
@@ -70,7 +77,6 @@ export class PaymentsComponent implements OnInit {
   payments = [];
 
   loadingData: boolean = false;
-  lang: string = null;
 
   constructor(
     private webService: AuthService,
@@ -80,13 +86,13 @@ export class PaymentsComponent implements OnInit {
     private currencyPipe: CurrencyPipe,
     private translateService: TranslateService
   ) {
-    this.lang = localStorage.getItem('lang') || 'en';
+    this.lang.selected = localStorage.getItem('lang') || 'en';
     this.setLang();
   }
 
   async ngOnInit() {
     this.translateService.onLangChange.subscribe(async ({ lang }) => {
-      this.lang = lang;
+      this.lang.selected = lang;
       this.setLang();
       await this.getPayments(true);
     });
@@ -117,7 +123,7 @@ export class PaymentsComponent implements OnInit {
           return {
             ...payment,
             carrier_credit_days: this.creditDays(payment.carrier_credit_days),
-            date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yy', '', this.lang),
+            date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yy', '', this.lang.selected),
             // date_created: this.datePipe.transform(payment.date_created, 'MMMM d, yy', '', this.lang),
             total: this.currency(payment.total, payment?.moneda),
             subtotal: this.currency(payment.subtotal, payment?.moneda),
@@ -195,12 +201,17 @@ export class PaymentsComponent implements OnInit {
   }
 
   setLang() {
-    this.paginatorLang = {
+    this.lang.paginator = {
       total: this.translate('total', 'paginator'),
       totalOf: this.translate('of', 'paginator'),
       nextPage: this.translate('nextPage', 'paginator'),
       prevPage: this.translate('prevPage', 'paginator'),
       itemsPerPage: this.translate('itemsPerPage', 'paginator')
+    };
+
+    this.lang.filter = {
+      input: this.translate('input', 'filter'),
+      selector: this.translate('selector', 'filter')
     };
     this.statusOptions.forEach((status) => (status.label = this.translate(status.value, 'status')));
     this.columns.forEach((column) => (column.label = this.translate(column.id, 'table')));
@@ -221,7 +232,7 @@ export class PaymentsComponent implements OnInit {
   creditDays(days: number) {
     if (!days || days === -1) return 'TBD';
     if (days === 3) return 'APP';
-    return `${days} ${this.lang === 'es' ? ' días' : ' days'}`;
+    return `${days} ${this.lang.selected === 'es' ? ' días' : ' days'}`;
   }
 
   searchStatus(search) {
