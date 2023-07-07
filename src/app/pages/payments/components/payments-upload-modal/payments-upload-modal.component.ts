@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { CurrencyMaskConfig } from 'ngx-currency';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 @Component({
   selector: 'app-payments-upload-modal',
@@ -46,7 +48,7 @@ export class PaymentsUploadModalComponent implements OnInit {
     nullable: false
   };
 
-  constructor(public dialogRef: MatDialogRef<PaymentsUploadModalComponent>, private webService: AuthService) {}
+  constructor(public dialogRef: MatDialogRef<PaymentsUploadModalComponent>, private webService: AuthService,private translateService: TranslateService,private notificationsService: NotificationsService) {}
 
   ngOnInit(): void {}
 
@@ -94,6 +96,14 @@ export class PaymentsUploadModalComponent implements OnInit {
         console.error(err);
       }
     });
+  }
+
+  invalidFile() {
+    this.notificationsService.showErrorToastr(this.translate('invalid-file', 'upload-modal'))
+  }
+
+  translate(word: string, type: string) {
+    return this.translateService.instant(`payments.${type}.${word}`);
   }
 
   close(edited: string = '') {

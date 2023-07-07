@@ -1525,7 +1525,8 @@
     "upload-modal": {
       "title": "Upload data",
       "send-btn": "Send",
-      "order-number": "Order number"
+      "order-number": "Order number",
+      "invalid-file": "Invalid file"
     },
     "edited-modal": {
       "done": "Done",

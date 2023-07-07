@@ -1529,7 +1529,8 @@
     "upload-modal": {
       "title": "Subir datos",
       "send-btn": "Enviar",
-      "order-number": "Número de referencia"
+      "order-number": "Número de referencia",
+      "invalid-file": "Archivo inválido"
     },
     "edited-modal": {
       "done": "Hecho",

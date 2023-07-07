@@ -44,6 +44,7 @@
           [maxSize]="10000000"
           [fileInfo]="files.xml.data"
           [drag]="true"
+          (invalidFiletype)="invalidFile()"
           (fileSelected)="handleFileChange($event, 'xml')"></bego-drag-drop>
       </div>
 
