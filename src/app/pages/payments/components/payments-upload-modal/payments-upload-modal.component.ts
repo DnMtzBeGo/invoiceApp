@@ -26,7 +26,8 @@ export class PaymentsUploadModalComponent implements OnInit {
   };
 
   validated: boolean = false;
-
+  xmlType = ['.xml'];
+  pdfType = ['.pdf'];
   lang = {
     name: 'File Name',
     labelBrowse: 'Browse your file',
@@ -48,7 +49,12 @@ export class PaymentsUploadModalComponent implements OnInit {
     nullable: false
   };
 
-  constructor(public dialogRef: MatDialogRef<PaymentsUploadModalComponent>, private webService: AuthService,private translateService: TranslateService,private notificationsService: NotificationsService) {}
+  constructor(
+    public dialogRef: MatDialogRef<PaymentsUploadModalComponent>,
+    private webService: AuthService,
+    private translateService: TranslateService,
+    private notificationsService: NotificationsService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -99,7 +105,7 @@ export class PaymentsUploadModalComponent implements OnInit {
   }
 
   invalidFile() {
-    this.notificationsService.showErrorToastr(this.translate('invalid-file', 'upload-modal'))
+    this.notificationsService.showErrorToastr(this.translate('invalid-file', 'upload-modal'));
   }
 
   translate(word: string, type: string) {

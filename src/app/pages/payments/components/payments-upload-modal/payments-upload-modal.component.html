@@ -38,7 +38,7 @@
         <span>XML *</span>
 
         <bego-drag-drop
-          validTypes=".xml"
+          [validTypes]="xmlType"
           [lang]="lang"
           [styleRect]="true"
           [maxSize]="10000000"
@@ -52,12 +52,13 @@
         <span>PDF</span>
 
         <bego-drag-drop
-          validTypes=".pdf"
+          [validTypes]="pdfType"
           [lang]="lang"
           [styleRect]="true"
           [maxSize]="10000000"
           [fileInfo]="files.pdf.data"
           [drag]="true"
+          (invalidFiletype)="invalidFile()"
           (fileSelected)="handleFileChange($event, 'pdf')"></bego-drag-drop>
       </div>
     </div>

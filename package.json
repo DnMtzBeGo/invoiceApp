@@ -29,7 +29,7 @@
     "@angular/platform-browser-dynamic": "~12.2.6",
     "@angular/router": "~12.2.6",
     "@begomx/icons": "^0.5.1",
-    "@begomx/ui-components": "^0.12.5",
+    "@begomx/ui-components": "^0.12.9",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "angular2-text-mask": "^9.0.0",
