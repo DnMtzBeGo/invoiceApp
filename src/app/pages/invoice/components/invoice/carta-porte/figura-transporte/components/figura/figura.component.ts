@@ -88,13 +88,17 @@ export class FiguraComponent implements OnInit {
     });
 
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
-      this.tiposDeTransporte = data.figuras_de_transporte;
       this.parteTransporte = data.partes_del_transporte;
+      this.tiposDeTransporte = data.figuras_de_transporte;
       this.filteredParteTransporte = Object.assign([], this.parteTransporte);
+
+      this.loadCatalogs1();
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  async loadCatalogs1() {
+    this.updatePartesTransporte();
+
     this.figuraTransporteForm.get('rfc_figura').statusChanges.subscribe((val) => {
       if (val === 'VALID') {
         if (!this.figuraTransporteForm.get('rfc_figura'))
@@ -133,7 +137,9 @@ export class FiguraComponent implements OnInit {
         });
       }
     });
+  }
 
+  async ngOnInit(): Promise<void> {
     this.domicilioForm.controls.pais.valueChanges.subscribe(async (newVal: any) => {
       if (newVal) {
         this.estados = await this.cataloguesListService.getCatalogue('states', {
@@ -190,7 +196,6 @@ export class FiguraComponent implements OnInit {
         return currentValue.includes(input);
       });
     });
-    this.updatePartesTransporte();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -244,16 +249,18 @@ export class FiguraComponent implements OnInit {
   }
 
   updatePartesTransporte() {
-    this.dataSource = this.figuraInfo.partes_transporte || [];
-    if (this.figuraInfo.partes_transporte) {
-      const dataSource = this.figuraInfo.partes_transporte.map((e) => {
-        return this.parteTransporte.find((t) => {
-          return e.parte_transporte == t.clave;
+    this.dataSource = this.figuraInfo?.partes_transporte || [];
+    if (this.figuraInfo?.partes_transporte) {
+      if (this.parteTransporte?.length) {
+        const dataSource = this.figuraInfo.partes_transporte.map((el) => {
+          return this.parteTransporte.find((t) => {
+            return el.parte_transporte == t.clave;
+          });
         });
-      });
 
-      if (!dataSource.some((e) => e == undefined)) {
-        this.dataSource = dataSource;
+        if (!dataSource.some((e) => e == undefined)) {
+          this.dataSource = dataSource;
+        }
       }
     }
   }
