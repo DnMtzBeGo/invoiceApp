@@ -39,7 +39,9 @@
 
         <bego-drag-drop
           [validTypes]="xmlType"
-          [lang]="lang"
+          [lang]="{
+            labelBrowse: 'payments.upload-modal.select-file' | translate
+          }"
           [styleRect]="true"
           [maxSize]="10000000"
           [fileInfo]="files.xml.data"
@@ -53,7 +55,9 @@
 
         <bego-drag-drop
           [validTypes]="pdfType"
-          [lang]="lang"
+          [lang]="{
+            labelBrowse: 'payments.upload-modal.select-file' | translate
+          }"
           [styleRect]="true"
           [maxSize]="10000000"
           [fileInfo]="files.pdf.data"

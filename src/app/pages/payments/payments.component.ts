@@ -26,7 +26,7 @@ export class PaymentsComponent implements OnInit {
   columns: any[] = [
     { id: 'order_number', label: '', filter: 'input', sort: true },
     { id: 'due_date', label: '', pipe: 'countdown', sort: true },
-    { id: 'carrier_credit_days', label: '', sort: true },
+    // { id: 'carrier_credit_days', label: '', sort: true },
     { id: 'razon_social', label: '', filter: 'input', sort: true },
     { id: 'status', label: '', filter: 'selector', options: this.statusOptions, sort: true },
     { id: 'subtotal', label: '', sort: true },
@@ -183,7 +183,7 @@ export class PaymentsComponent implements OnInit {
         this.openUploadedModal()
         this.getPayments();
       }
-      if (edited === 'failed') this.notificationsService.showErrorToastr(this.translate(edited, 'edited-modal'));
+      // if (edited === 'failed') this.notificationsService.showErrorToastr(this.translate(edited, 'edited-modal'));
     });
   }
 

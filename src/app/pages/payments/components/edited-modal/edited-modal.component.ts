@@ -1,5 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+interface AlertLang {
+  subtitle: string;
+}
 
 @Component({
   selector: 'app-edited-modal',
@@ -7,7 +10,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./edited-modal.component.scss']
 })
 export class EditedModalComponent implements OnInit {
-  constructor(public dialogRef: MatDialogRef<EditedModalComponent>) {}
+  alertLang = { subtitle: '' };
+
+  constructor(@Inject(MAT_DIALOG_DATA) alertLang: AlertLang, public dialogRef: MatDialogRef<EditedModalComponent>) {
+    this.alertLang = alertLang;
+  }
 
   ngOnInit(): void {}
 
@@ -19,7 +26,7 @@ export class EditedModalComponent implements OnInit {
   done() {
     this.dialogRef.close();
   }
-  
+
   close() {
     this.dialogRef.close();
   }

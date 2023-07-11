@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { CurrencyMaskConfig } from 'ngx-currency';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { EditedModalComponent } from '../edited-modal/edited-modal.component';
 
 @Component({
   selector: 'app-payments-upload-modal',
@@ -28,14 +29,6 @@ export class PaymentsUploadModalComponent implements OnInit {
   validated: boolean = false;
   xmlType = ['.xml'];
   pdfType = ['.pdf'];
-  lang = {
-    name: 'File Name',
-    labelBrowse: 'Browse your file',
-    labelOr: 'or',
-    btnBrowse: 'Choose File',
-    labelMax: 'max',
-    uploading: 'Uploading...'
-  };
 
   currencyOptions: CurrencyMaskConfig = {
     align: 'right',
@@ -49,14 +42,19 @@ export class PaymentsUploadModalComponent implements OnInit {
     nullable: false
   };
 
+  lang: string = 'es';
+
   constructor(
     public dialogRef: MatDialogRef<PaymentsUploadModalComponent>,
     private webService: AuthService,
     private translateService: TranslateService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private matDialog: MatDialog
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.lang = localStorage.getItem('lang') || 'en';
+  }
 
   handleFileChange(file: File, type: 'pdf' | 'xml') {
     if (file == undefined) {
@@ -97,10 +95,20 @@ export class PaymentsUploadModalComponent implements OnInit {
       next: () => {
         this.close('success');
       },
-      error: (err) => {
-        this.close('failed');
-        console.error(err);
+      error: ({ error: { error } }) => {
+        const { validationErrors, message } = error;
+        this.errorAlert(error.hasOwnProperty('validationErrors') ? validationErrors[0].message[this.lang] : message[this.lang]);
       }
+    });
+  }
+
+  errorAlert(subtitle) {
+    const dialogRef = this.matDialog.open(EditedModalComponent, {
+      data: { subtitle },
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1', 'no-padding', 'full-visible']
     });
   }
 

@@ -1526,7 +1526,8 @@
       "title": "Upload data",
       "send-btn": "Send",
       "order-number": "Order number",
-      "invalid-file": "Invalid file"
+      "invalid-file": "Invalid file",
+      "select-file": "Browse your file"
     },
     "edited-modal": {
       "done": "Done",

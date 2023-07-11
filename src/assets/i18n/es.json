@@ -1530,7 +1530,8 @@
       "title": "Subir datos",
       "send-btn": "Enviar",
       "order-number": "Número de referencia",
-      "invalid-file": "Archivo inválido"
+      "invalid-file": "Archivo inválido",
+      "select-file": "Selecciona un archivo"
     },
     "edited-modal": {
       "done": "Hecho",
