@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { of, timer, Subject, merge, from, combineLatest, NEVER, Observable, asapScheduler, animationFrameScheduler } from 'rxjs';
 import {
@@ -64,6 +64,7 @@ import {
 import { FacturaEmitterComponent } from '../../components/factura-emitter/factura-emitter.component';
 import { SeriesNewComponent } from '../../components/series-new/series-new.component';
 import { BegoSliderDotsOpts } from 'src/app/shared/components/bego-slider-dots/bego-slider-dots.component';
+import { CataloguesListService } from '../../components/invoice/carta-porte/services/catalogues-list.service';
 
 @Component({
   selector: 'app-factura-edit-page',
@@ -92,6 +93,10 @@ export class FacturaEditPageComponent implements OnInit {
       // rfc
       rfc: string;
       nombre: string;
+
+      num_reg_id_trib?: string;
+      residencia_fiscal?: string;
+
       usoCFDI: string;
       regimen_fiscal: string;
       // direccion
@@ -229,6 +234,8 @@ export class FacturaEditPageComponent implements OnInit {
         | 'conceptos:remove'
         | 'openCartaporte'
         | 'submit'
+        | 'num_reg_id_trib'
+        | 'residencia_fiscal'
       ),
       unknown
     ]
@@ -251,6 +258,9 @@ export class FacturaEditPageComponent implements OnInit {
   cantidad = new FormControl(null);
   descuento = new FormControl(null);
 
+  public isForeignReceiver = false;
+  public paisCatalogue = [];
+
   @ViewChild('cartaporteCmp') cartaporteCmp: any;
 
   constructor(
@@ -259,8 +269,13 @@ export class FacturaEditPageComponent implements OnInit {
     private notificationsService: NotificationsService,
     private route: ActivatedRoute,
     private matDialog: MatDialog,
-    private translateService: TranslateService
-  ) {}
+    private translateService: TranslateService,
+    private cataloguesListService: CataloguesListService
+  ) {
+    this.cataloguesListService.countriesSubject.subscribe((data: any[]) => {
+      this.paisCatalogue = data;
+    });
+  }
 
   ngOnInit(): void {
     //TAB
@@ -382,10 +397,14 @@ export class FacturaEditPageComponent implements OnInit {
         ofType('rfc:search'),
         map((search: string) => ({ type: 'rfc' as const, search })),
         tap(() => {
-          this.vm.form.nombre = '';
-          this.vm.form.usoCFDI = '';
-          this.vm.form.regimen_fiscal = '';
-          this.vm.form.direccion = {};
+          this.vm.form = {
+            ...this.vm.form,
+            nombre: '',
+            usoCFDI: '',
+            regimen_fiscal: '',
+            direccion: {},
+            residencia_fiscal: ''
+          };
         })
       ),
       this.formEmitter.pipe(
@@ -397,8 +416,12 @@ export class FacturaEditPageComponent implements OnInit {
         map((search: string) => ({ type: 'rfcEmisor' as const, search })),
         tap(() => {
           delete this.vm.form.emisor._id;
-          this.vm.form.emisor.nombre = '';
-          this.vm.form.emisor.regimen_fiscal = '';
+          this.vm.form.emisor = {
+            ...this.vm.form.emisor,
+            nombre: '',
+            regimen_fiscal: ''
+          };
+
           this.vm.form.serie = '';
           this.vm.form.lugar_de_expedicion = {};
         })
@@ -739,11 +762,22 @@ export class FacturaEditPageComponent implements OnInit {
     });
   }
 
+  onReceiverRfcChanged(event: any) {
+    if (event.target.value == 'XEXX010101000') this.isForeignReceiver = true;
+    else {
+      this.isForeignReceiver = false;
+      this.vm.form.num_reg_id_trib = '';
+      this.vm.form.residencia_fiscal = '';
+    }
+  }
+
   createForm() {
     return of({
       rfc: '',
       nombre: '',
       usoCFDI: '',
+      num_reg_id_trib: '',
+      residencia_fiscal: '',
       regimen_fiscal: '',
       direccion: {},
       emisor: {
@@ -786,13 +820,16 @@ export class FacturaEditPageComponent implements OnInit {
 
     return from(this.apiRestService.apiRestGet('invoice', { loader: 'false', _id })).pipe(
       mergeAll(),
-      map((responseData) =>
-        fromFactura(
+      map((responseData) => {
+        const factura = fromFactura(
           responseData?.result?.invoices?.[0] ?? {
             _notExists: true
           }
-        )
-      )
+        );
+
+        if (factura.rfc === 'XEXX010101000') this.isForeignReceiver = true;
+        return factura;
+      })
     );
   }
 
