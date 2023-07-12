@@ -77,6 +77,11 @@ const routes: Routes = [
       import("./pages/history/history.module").then((m) => m.HistoryModule),
   },
   {
+    path: "payments",
+    loadChildren: () =>
+      import("./pages/payments/payments.module").then((m) => m.PaymentsModule),
+  },
+  {
     path: "checkout",
     loadChildren: () =>
       import("./pages/orders/components/checkout/checkout.module").then(

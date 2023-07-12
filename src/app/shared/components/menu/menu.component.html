@@ -59,6 +59,14 @@
       <bego-button class="btn-menu icon icon-history icon-only"></bego-button>
       {{ "menu.history" | translate }}
     </div>
+    <div
+      class="menu-option"
+      [ngClass]="{ selected: router.url == '/payments' }"
+      (click)="goTo('payments')"
+    >
+      <bego-button class="btn-menu icon icon-history icon-only"></bego-button>
+      {{ "menu.history" | translate }}
+    </div>
     <!-- <bego-button class="btn-menu icon icon-referals" (click)="goTo('referals')"></bego-button> -->
     <div
       class="menu-option"

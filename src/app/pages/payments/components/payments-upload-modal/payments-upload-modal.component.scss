@@ -1,0 +1,53 @@
+.payments-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 400px;
+    // min-height: 400px;
+    justify-content: center;
+    color: #ededed;
+
+    .payments-header {
+        position: relative;
+        text-align: center;
+        margin-bottom: 2rem;
+
+        .close-btn {
+            position: absolute;
+            right: 10px;
+            top: 0px;
+            cursor: pointer;
+
+            mat-icon {
+                color: rgb(150, 150, 150);
+            }
+        }
+    }
+
+    .payments-body {
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+
+        .price-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .files-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 45px;
+
+            .files-subcontainer {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 20px;
+
+                span {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}

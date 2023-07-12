@@ -1478,5 +1478,65 @@
       "txt_invalidDriection": "Please be more specific on your address.",
       "txt-address-not-found": "No address found"
     }
+  },
+  "payments": {
+    "buttons": {
+      "upload": "Upload payment"
+    },
+    "table": {
+      "order_number": "Order",
+      "reference_number": "Reference number (BGO)",
+      "due_date": "Due date",
+      "folio": "Invoice",
+      "razon_social": "Social reason",
+      "status": "Status",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "bank": "Bank",
+      "account": "Account number",
+      "date_created": "Uploaded",
+      "carrier_credit_days": "Credit days",
+      "pdf": "PDF",
+      "xml": "XML"
+    },
+    "paginator": {
+      "total": "Total",
+      "of": "of",
+      "nextPage": "Next",
+      "prevPage": "Prev",
+      "itemsPerPage": "Items per page"
+    },
+    "filter": {
+      "input": "Search...",
+      "selector": "Search..."
+    },
+    "status": {
+      "cancel": "Cancel",
+      "rejected": "Rejected",
+      "invalid-data": "Invalid data",
+      "uploaded": "Uploaded",
+      "validated": "Validated",
+      "pending-payment": "Pending payment",
+      "paid": "Paid"
+    },
+    "actions": {
+      "view_xml": "View XML",
+      "view_pdf": "View PDF"
+    },
+    "upload-modal": {
+      "title": "Upload data",
+      "send-btn": "Send",
+      "order-number": "Order number",
+      "reference-number": "Reference number (BGO)",
+      "invalid-file": "Invalid file",
+      "select-file": "Browse your file"
+    },
+    "edited-modal": {
+      "done": "Done",
+      "cancel": "Cancel",
+      "title": "Success!",
+      "subtitle": "Your payment was uploaded successfully",
+      "failed": "There was an error, try again later"
+    }
   }
 }
