@@ -67,12 +67,12 @@
         (blur)="onDestinationRfcChanged($event)" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="brand-field-1" *ngIf="!hideResidenciaRegistro">
+    <mat-form-field appearance="outline" class="brand-field-1" *ngIf="isForeignRFC">
       <mat-label>{{ 'invoice.ubicacion.reg-tributario' | translate }}</mat-label>
       <input matInput formControlName="num_reg_id_trib" name="Registro Tributario" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="brand-field-1" *ngIf="!hideResidenciaRegistro">
+    <mat-form-field appearance="outline" class="brand-field-1" *ngIf="isForeignRFC">
       <mat-label>{{ 'invoice.ubicacion.residencia-fiscal' | translate }}</mat-label>
       <mat-select formControlName="residencia_fiscal" class="disable-custom-format" name="Residencia Fiscal">
         <mat-option *ngFor="let option of residenciaFiscal" [value]="option.code"> {{ option.code }} - {{ option.name }} </mat-option>

@@ -18,7 +18,7 @@ export class UbicacionComponent implements OnInit {
 
   public origenInfoAlreadySet: boolean;
   public locationComponentInfo: any;
-  public hideResidenciaRegistro: boolean = false;
+  public isForeignRFC: boolean = false;
 
   public ubicacionesForm = new FormGroup({
     distancia_recorrida: new FormControl(''),
@@ -110,23 +110,11 @@ export class UbicacionComponent implements OnInit {
 
   toggleForeignFields(value: string) {
     if (value !== 'XEXX010101000') {
-      //this.ubicacionesForm.removeControl('num_reg_id_trib');
-      //this.ubicacionesForm.removeControl('residencia_fiscal');
       this.ubicacionesForm.controls['num_reg_id_trib'].setValue('');
       this.ubicacionesForm.controls['residencia_fiscal'].setValue('');
-      this.hideResidenciaRegistro = true;
+      this.isForeignRFC = false;
     } else {
-      // if (!this.ubicacionesForm.get('num_reg_id_trib'))
-      //   this.ubicacionesForm.addControl(
-      //     'num_reg_id_trib',
-      //     new FormControl(this.ubicacionesForm.value.num_reg_id_trib, Validators.required)
-      //   );
-      // if (!this.ubicacionesForm.get('residencia_fiscal'))
-      //   this.ubicacionesForm.addControl(
-      //     'residencia_fiscal',
-      //     new FormControl(this.ubicacionesForm.value.residencia_fiscal, Validators.required)
-      //   );
-      this.hideResidenciaRegistro = false;
+      this.isForeignRFC = true;
     }
   }
 

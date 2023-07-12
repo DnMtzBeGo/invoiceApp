@@ -160,6 +160,20 @@ export const toFactura = (factura: any) => {
     residencia_fiscal: factura.residencia_fiscal
   };
 
+  if (factura.rfc !== 'XEXX010101000') {
+    delete receptor.num_reg_id_trib;
+    delete receptor.residencia_fiscal;
+
+    const indexRS = requiredPathsFactura.findIndex((el) => el === 'residencia_fiscal');
+    const indexNR = requiredPathsFactura.findIndex((el) => el === 'num_reg_id_trib');
+
+    if (indexRS != -1) requiredPathsFactura.splice(indexRS, 1);
+    if (indexNR != -1) requiredPathsFactura.splice(indexNR, 1);
+  } else {
+    requiredPathsFactura.push('num_reg_id_trib');
+    requiredPathsFactura.push('residencia_fiscal');
+  }
+
   const conceptos = (factura.conceptos || []).map((concepto) => ({
     ...concepto,
     impuestos: (concepto.impuestos || []).map((impuesto) => {
