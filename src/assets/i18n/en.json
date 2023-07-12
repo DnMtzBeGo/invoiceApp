@@ -685,6 +685,7 @@
     "drafts": "  Drafts",
     "fleet": "Fleet",
     "history": "History",
+    "payments": "Payments",
     "invoice": "Invoice",
     "support": "Support",
     "faq": "FAQs",
@@ -1484,6 +1485,7 @@
       "upload": "Upload payment"
     },
     "table": {
+      "title": "Payments",
       "order_number": "Order",
       "reference_number": "Reference number (BGO)",
       "due_date": "Due date",
