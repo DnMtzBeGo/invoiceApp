@@ -1485,6 +1485,7 @@
     },
     "table": {
       "order_number": "Order",
+      "reference_number": "Reference number (BGO)",
       "due_date": "Due date",
       "folio": "Invoice",
       "razon_social": "Social reason",
@@ -1526,6 +1527,7 @@
       "title": "Upload data",
       "send-btn": "Send",
       "order-number": "Order number",
+      "reference-number": "Reference number (BGO)",
       "invalid-file": "Invalid file",
       "select-file": "Browse your file"
     },

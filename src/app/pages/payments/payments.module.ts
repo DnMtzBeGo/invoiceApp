@@ -17,7 +17,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { EditedModalComponent } from './components/edited-modal/edited-modal.component';
-
+import { TextMaskModule } from 'angular2-text-mask';
 @NgModule({
   declarations: [PaymentsComponent, PaymentsTableComponent, PaymentsUploadModalComponent, EditedModalComponent],
   imports: [
@@ -35,7 +35,8 @@ import { EditedModalComponent } from './components/edited-modal/edited-modal.com
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
-    NgxCurrencyModule
+    NgxCurrencyModule,
+    TextMaskModule
   ],
   providers: [DatePipe, CurrencyPipe]
 })

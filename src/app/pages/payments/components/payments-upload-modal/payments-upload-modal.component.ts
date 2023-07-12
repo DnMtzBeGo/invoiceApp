@@ -13,6 +13,7 @@ import { EditedModalComponent } from '../edited-modal/edited-modal.component';
 })
 export class PaymentsUploadModalComponent implements OnInit {
   order_number: string = '';
+  reference_number: string = '';
   prices = { subtotal: 0, total: 0 };
 
   files = {
@@ -41,6 +42,33 @@ export class PaymentsUploadModalComponent implements OnInit {
     allowZero: false,
     nullable: false
   };
+  bgoOptions = {
+    mask: [
+      'B',
+      'G',
+      'O',
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      '-',
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/,
+      /[0-9]/
+    ],
+    placeholderChar: ' '
+  };
+  bgoPattern: RegExp = /^BGO\d{11}-\d{6}$/;
 
   lang: string = 'es';
 
@@ -77,7 +105,14 @@ export class PaymentsUploadModalComponent implements OnInit {
   }
 
   checkValidated() {
-    this.validated = Boolean(this.files.xml.file && this.order_number && this.prices.total > this.prices.subtotal);
+    this.validated = Boolean(
+      this.files.xml.file &&
+        this.files.pdf.file &&
+        this.order_number &&
+        this.prices.total > this.prices.subtotal &&
+        this.reference_number &&
+        this.bgoPattern.test(this.reference_number)
+    );
   }
 
   async uploadData() {
@@ -86,6 +121,7 @@ export class PaymentsUploadModalComponent implements OnInit {
     const formData = new FormData();
 
     formData.append('order_number', this.order_number);
+    formData.append('reference_number', this.reference_number);
     formData.append('files', this.files.xml.file);
     if (this.files.pdf.file) formData.append('files', this.files.pdf.file);
     formData.append('total', this.prices.total.toString());
@@ -104,7 +140,7 @@ export class PaymentsUploadModalComponent implements OnInit {
 
   errorAlert(subtitle) {
     const dialogRef = this.matDialog.open(EditedModalComponent, {
-      data: { subtitle },
+      data: { title: this.translateService.instant('checkout.alerts.error-something'), subtitle },
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 interface AlertLang {
+  title: string;
   subtitle: string;
 }
 
@@ -10,7 +11,7 @@ interface AlertLang {
   styleUrls: ['./edited-modal.component.scss']
 })
 export class EditedModalComponent implements OnInit {
-  alertLang = { subtitle: '' };
+  alertLang: AlertLang = { title: '', subtitle: '' };
 
   constructor(@Inject(MAT_DIALOG_DATA) alertLang: AlertLang, public dialogRef: MatDialogRef<EditedModalComponent>) {
     this.alertLang = alertLang;

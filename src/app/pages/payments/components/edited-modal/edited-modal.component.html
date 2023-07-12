@@ -5,7 +5,7 @@
     cancel: ('payments.edited-modal.cancel' | translate)
   }"
   [alertLang]="{
-    title: 'checkout.alerts.error-something' | translate,
+    title: alertLang.title,
     subtitle: alertLang.subtitle
   }"
   (closeEmitter)="closeEmitter($event)"></bego-alert>

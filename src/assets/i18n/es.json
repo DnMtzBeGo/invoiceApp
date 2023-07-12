@@ -1489,6 +1489,7 @@
     },
     "table": {
       "order_number": "Orden",
+      "reference_number": "Número de referencia BGO",
       "due_date": "Vencimiento",
       "folio": "Factura",
       "razon_social": "Razon Social",
@@ -1529,7 +1530,8 @@
     "upload-modal": {
       "title": "Subir datos",
       "send-btn": "Enviar",
-      "order-number": "Número de referencia",
+      "order-number": "Orden",
+      "reference-number": "Número de referencia BGO",
       "invalid-file": "Archivo inválido",
       "select-file": "Selecciona un archivo"
     },

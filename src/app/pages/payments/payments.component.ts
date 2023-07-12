@@ -25,16 +25,14 @@ export class PaymentsComponent implements OnInit {
 
   columns: any[] = [
     { id: 'order_number', label: '', filter: 'input', sort: true },
+    { id: 'reference_number', label: '', filter: 'input', sort: true },
     { id: 'due_date', label: '', pipe: 'countdown', sort: true },
-    // { id: 'carrier_credit_days', label: '', sort: true },
     { id: 'razon_social', label: '', filter: 'input', sort: true },
     { id: 'status', label: '', filter: 'selector', options: this.statusOptions, sort: true },
     { id: 'subtotal', label: '', sort: true },
     { id: 'total', label: '', sort: true },
     { id: 'bank', label: '', filter: 'input', sort: true },
     { id: 'account', label: '', sort: true },
-    { id: 'pdf', label: 'PDF' },
-    { id: 'xml', label: 'XML' },
     { id: 'date_created', label: '', sort: true }
   ];
 
@@ -120,15 +118,25 @@ export class PaymentsComponent implements OnInit {
       next: ({ result: { result, total } }) => {
         this.page.total = total;
         this.payments = result.map((payment) => {
+          const actions = {
+            enabled: false,
+            options: {
+              view_pdf: !!payment.files?.pdf,
+              view_xml: !!payment.files?.xml
+            }
+          };
+
+          actions.enabled = Object.values(actions.options).includes(true);
+
           return {
             ...payment,
+            actions,
+            reference_number: payment?.reference_number || '-',
             carrier_credit_days: this.creditDays(payment.carrier_credit_days),
             date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yy', '', this.lang.selected),
             total: this.currency(payment.total, payment?.moneda),
             subtotal: this.currency(payment.subtotal, payment?.moneda),
-            status: this.translate(payment.status, 'status'),
-            pdf: payment.files?.pdf ? '✓' : '✕',
-            xml: payment.files?.xml ? '✓' : '✕'
+            status: this.translate(payment.status, 'status')
           };
         });
         this.loadingData = false;
@@ -180,16 +188,18 @@ export class PaymentsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((edited: string) => {
       if (edited === 'success') {
         this.searchQueries.sort = JSON.stringify({ date_created: -1 });
-        this.openUploadedModal()
+        this.openUploadedModal();
         this.getPayments();
       }
-      // if (edited === 'failed') this.notificationsService.showErrorToastr(this.translate(edited, 'edited-modal'));
     });
   }
 
   openUploadedModal() {
     const dialogRef = this.matDialog.open(EditedModalComponent, {
-      data: {},
+      data: {
+        title: this.translate('title', 'edited-modal'),
+        subtitle: this.translate('subtitle', 'edited-modal')
+      },
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,
@@ -231,7 +241,6 @@ export class PaymentsComponent implements OnInit {
   }
 
   filterData({ active, search, type }) {
-    console.log('filtering: ', active, search, type);
     if (active) {
       if (type === 'status') this.searchQueries.match = JSON.stringify({ status: this.searchStatus(search) });
       else this.searchQueries.match = JSON.stringify({ [type]: search });
