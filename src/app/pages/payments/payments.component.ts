@@ -25,7 +25,7 @@ export class PaymentsComponent implements OnInit {
 
   columns: any[] = [
     { id: 'order_number', label: '', filter: 'input', sort: true },
-    { id: 'reference_number', label: '', filter: 'input', sort: true },
+    { id: 'reference_number', label: '', filter: 'input' },
     { id: 'due_date', label: '', pipe: 'countdown', sort: true },
     { id: 'razon_social', label: '', filter: 'input', sort: true },
     { id: 'status', label: '', filter: 'selector', options: this.statusOptions, sort: true },
