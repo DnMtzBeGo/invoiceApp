@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="24px" viewBox="0 0 13 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>D32E64C2-3ACD-4D20-B3EA-1411FDB055CE</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.929461 0 0 0 0 0.929461 0 0 0 0 0.929461 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="facebook" transform="translate(-1367.000000, -352.000000)" filter="url(#filter-1)">
+            <g transform="translate(1367.402344, 352.000000)">
+                <path d="M9.99898009,3.94668269 L12.168732,3.94668269 L12.168732,0.167375 C11.7943978,0.115875 10.5070051,0 9.0076877,0 C5.8793234,0 3.73630967,1.96789423 3.73630967,5.58477885 L3.73630967,8.91346154 L0.284116587,8.91346154 L0.284116587,13.1384423 L3.73630967,13.1384423 L3.73630967,23.7692308 L7.96886081,23.7692308 L7.96886081,13.1394327 L11.2814213,13.1394327 L11.8072717,8.91445192 L7.9678705,8.91445192 L7.9678705,6.00371154 C7.96886081,4.78256731 8.2976411,3.94668269 9.99898009,3.94668269 L9.99898009,3.94668269 Z" id="Path" fill="#000000" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

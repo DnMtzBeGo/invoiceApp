@@ -70,7 +70,7 @@ const routes: Routes = [
         (m) => m.ContactSupportModule
       ),
   },
-  { path: "", redirectTo: "invoice", pathMatch: "full" },
+  { path: "", redirectTo: "payments", pathMatch: "full" },
   {
     path: "history",
     loadChildren: () =>

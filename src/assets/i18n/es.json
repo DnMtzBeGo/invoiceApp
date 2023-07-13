@@ -685,6 +685,7 @@
     "drafts": "Borradores",
     "fleet": "Flotilla",
     "history": "Historial",
+    "payments": "Pagos",
     "invoice": "Facturas",
     "support": "Soporte",
     "faq": "FAQs",
@@ -1488,6 +1489,7 @@
       "upload": "Subir pago"
     },
     "table": {
+      "title": "Emisión de Pagos",
       "order_number": "Orden",
       "reference_number": "Número de referencia BGO",
       "due_date": "Vencimiento",
