@@ -1,0 +1,43 @@
+.payments-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+
+    .page-header {
+        margin: 24px 54px 24px 54px;
+        display: flex;
+        justify-content: space-between;
+
+        h1 {
+            font-weight: 400;
+            font-size: 38.4px;
+            color: #b9b9b9;
+            line-height: 1;
+            letter-spacing: -0.2186px;
+        }
+
+        ::ng-deep {
+            .mat-form-field-wrapper {
+                padding-bottom: 0;
+            }
+
+            .mat-form-field-label-wrapper {
+                transform: none !important;
+            }
+        }
+    }
+
+    bego-table {
+        ::ng-deep {
+            .mat-form-field-label-wrapper {
+                transform: none !important;
+            }
+        }
+    }
+
+    .code-select-wrapper {
+        min-width: 161px;
+        margin-bottom: 15px;
+    }
+}

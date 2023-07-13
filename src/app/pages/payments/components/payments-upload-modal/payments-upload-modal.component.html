@@ -1,0 +1,84 @@
+<div class="payments-container">
+  <div class="payments-header">
+    <h4 style="margin-bottom: 0rem; font-size: 20px">{{ 'payments.upload-modal.title' | translate }}</h4>
+    <div class="close-btn">
+      <mat-icon (click)="close()">close</mat-icon>
+    </div>
+  </div>
+  <div class="payments-body">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'payments.upload-modal.order-number' | translate }}</mat-label>
+      <input matInput [(ngModel)]="order_number" (input)="checkValidated()" maxlength="8" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'payments.upload-modal.reference-number' | translate }}</mat-label>
+      <input matInput [(ngModel)]="reference_number" (input)="checkValidated()" [textMask]="bgoOptions" />
+    </mat-form-field>
+
+    <div class="price-container">
+      <mat-form-field appearance="outline" class="brand-field-1">
+        <mat-label>Subtotal</mat-label>
+        <input
+          matInput
+          currencyMask
+          [ngModel]="prices.subtotal"
+          [options]="currencyOptions"
+          (ngModelChange)="onModelChange($event, 'subtotal')" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="brand-field-1">
+        <mat-label>Total</mat-label>
+        <input
+          matInput
+          currencyMask
+          [ngModel]="prices.total"
+          [options]="currencyOptions"
+          (ngModelChange)="onModelChange($event, 'total')" />
+      </mat-form-field>
+    </div>
+
+    <div class="files-container">
+      <div class="files-subcontainer">
+        <span>XML</span>
+
+        <bego-drag-drop
+          [validTypes]="xmlType"
+          [lang]="{
+            labelBrowse: 'payments.upload-modal.select-file' | translate
+          }"
+          [styleRect]="true"
+          [maxSize]="10000000"
+          [fileInfo]="files.xml.data"
+          [drag]="true"
+          (invalidFiletype)="invalidFile()"
+          (fileSelected)="handleFileChange($event, 'xml')"></bego-drag-drop>
+      </div>
+
+      <div class="files-subcontainer">
+        <span>PDF</span>
+
+        <bego-drag-drop
+          [validTypes]="pdfType"
+          [lang]="{
+            labelBrowse: 'payments.upload-modal.select-file' | translate
+          }"
+          [styleRect]="true"
+          [maxSize]="10000000"
+          [fileInfo]="files.pdf.data"
+          [drag]="true"
+          (invalidFiletype)="invalidFile()"
+          (fileSelected)="handleFileChange($event, 'pdf')"></bego-drag-drop>
+      </div>
+    </div>
+  </div>
+
+  <button
+    [disabled]="!validated"
+    mat-flat-button
+    [ngClass]="['brand-btn-2']"
+    style="min-width: 155px; min-height: 40px; position: absolute; bottom: 0; right: 0"
+    (click)="uploadData()">
+    {{ 'payments.upload-modal.send-btn' | translate }}
+  </button>
+</div>

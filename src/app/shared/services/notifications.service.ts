@@ -18,11 +18,11 @@ export class NotificationsService {
     });
   }
 
-  showErrorToastr(message: string): void {
-    this.showSuccessToastr(message);
+  showErrorToastr(message: string, duration: number = 5000): void {
+    this.showSuccessToastr(message, duration);
   }
 
-  showInfoToastr(message: string): void {
-    this.showSuccessToastr(message);
+  showInfoToastr(message: string, duration: number = 5000): void {
+    this.showSuccessToastr(message, duration);
   }
 }

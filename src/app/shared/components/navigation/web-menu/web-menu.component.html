@@ -5,7 +5,7 @@
     <div (mouseenter)="applyClipPath(1)" (mouseleave)="removeClipPath()" [ngClass]="{'menuItem1': menuOpened}">
       <div>
         <div class="menu-number">01</div>
-        <div class="menu-title" (click)="nav('shippers')">
+        <div class="menu-title" (click)="navExternal('https://bego.ai/shippers')">
           <div>{{'header.menu.shippers' | translate}}</div>
           <div #menuTitle1>{{'header.menu.shippers' | translate}}</div>
         </div>
@@ -14,7 +14,7 @@
     <div (mouseenter)="applyClipPath(2)" (mouseleave)="removeClipPath()" [ngClass]="{'menuItem2': menuOpened, 'remove-delay': removeDelay}">
       <div>
         <div class="menu-number">02</div>
-        <div class="menu-title" (click)="nav('carriers')">
+        <div class="menu-title" (click)="navExternal('https://bego.ai/carriers')">
           <div>{{'header.menu.carriers' | translate}}</div>
           <div #menuTitle2>{{'header.menu.carriers' | translate}}</div>
         </div>
@@ -23,7 +23,7 @@
     <div (mouseenter)="applyClipPath(3)" (mouseleave)="removeClipPath()" [ngClass]="{'menuItem3': menuOpened, 'remove-delay': removeDelay}">
       <div>
         <div class="menu-number">03</div>
-        <div class="menu-title" (click)="nav('about')">
+        <div class="menu-title" (click)="navExternal('https://bego.ai/about')">
           <div>{{'header.menu.about' | translate}}</div>
           <div #menuTitle3>{{'header.menu.about' | translate}}</div>
         </div>
@@ -32,24 +32,35 @@
     <div (mouseenter)="applyClipPath(4)" (mouseleave)="removeClipPath()" [ngClass]="{'menuItem4': menuOpened, 'remove-delay': removeDelay}">
       <div>
         <div class="menu-number">04</div>
-        <div class="menu-title" (click)="nav('contact')">
+        <div class="menu-title" (click)="navExternal('https://bego.ai/contact/shippers')">
           <div>{{'header.menu.contact' | translate}}</div>
           <div #menuTitle4>{{'header.menu.contact' | translate}}</div>
+        </div>
+      </div>
+    </div>
+    <div (mouseenter)="applyClipPath(5)" (mouseleave)="removeClipPath()" [ngClass]="{'menuItem5': menuOpened, 'remove-delay': removeDelay}">
+      <div>
+        <div class="menu-number">05</div>
+        <div class="menu-title" (click)="navExternal('https://blog.bego.ai')">
+          <div>Blog</div>
+          <div #menuTitle5>Blog</div>
         </div>
       </div>
     </div>
   </div>
   <div class="menu-info">
     <div class="menu-contact-info">
-      <div class="menu-phone">55 6478 9090</div>
-      <div class="menu-email">bego@begomx.com</div>
-      <div class="menu-address">Perif. Blvd. Manuel Ávila Camacho 3130, Valle Dorado, 54020, Tlalnepantla de Baz, Méx.</div>
+      <!-- <div class="menu-phone">55 6478 9090</div> -->
+      <div class="menu-email">bego@bego.ai</div>
+      <div class="menu-address">Cda. San Isidro 44, Piso 5, Reforma Soc, Miguel Hidalgo, 11650 Ciudad de México, CDMX, Mexico.</div>
     </div>
     <div class="menu-social">
       <div class="menu-networks">
-        <div><a href="https://www.facebook.com/begoapp/" target="_blank"><img src="assets/images/navigation/facebook.svg"></a></div>
-        <div><a href="https://www.instagram.com/begomx/?hl=en" target="_blank"><img src="assets/images/navigation/instagram.svg"></a></div>
-        <div><a href="https://mx.linkedin.com/in/bego-mx-39562519a" target="_blank"><img src="assets/images/navigation/linkedin.svg"></a></div>
+        <div><a href="https://www.facebook.com/begoapp/" target="_blank"><img src="assets/images/menu/facebook.svg"></a></div>
+        <div><a href="https://www.instagram.com/begomx/?hl=en" target="_blank"><img src="assets/images/menu/instagram.svg"></a></div>
+        <div><a href="https://www.linkedin.com/company/begoapp/mycompany/" target="_blank"><img src="assets/images/menu/linkedin.svg"></a></div>
+        <div><a href="https://www.youtube.com/channel/UC6kObAJ0B70OPmtpeQAooyQ" target="_blank"><img src="assets/images/menu/youtube.svg"></a></div>
+        <div><a href="https://twitter.com/BeGoMx_" target="_blank"><img src="assets/images/menu/twitter.svg"></a></div>
       </div>
     </div>
   </div>

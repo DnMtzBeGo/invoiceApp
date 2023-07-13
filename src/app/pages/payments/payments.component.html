@@ -1,0 +1,24 @@
+<div class="payments-container">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'payments.table.title' | translate }}</h1>
+    </div>
+    <!-- <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'payments.buttons.upload' | translate }}</button> -->
+  </div>
+
+  <bego-table
+    [lang]="lang"
+    [loading]="loadingData"
+    [columns]="columns"
+    [values]="payments"
+    [page]="page"
+    [actions]="actions"
+    [filter]="true"
+    [debounce]="1000"
+    (filterEmitter)="filterData($event)"
+    (selectedActionEmitter)="selectingAction($event)"
+    (sortColumnEmitter)="sortingTable($event)"
+    (pageChangeEmitter)="changingPage($event)">
+    <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'payments.buttons.upload' | translate }}</button>
+  </bego-table>
+</div>

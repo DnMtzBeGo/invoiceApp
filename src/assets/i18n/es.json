@@ -685,6 +685,7 @@
     "drafts": "Borradores",
     "fleet": "Flotilla",
     "history": "Historial",
+    "payments": "Pagos",
     "invoice": "Facturas",
     "support": "Soporte",
     "faq": "FAQs",
@@ -1481,6 +1482,67 @@
       "txt-pin": "Fijar la ubicación en el mapa",
       "txt_invalidDriection": "Se más específico en su dirección.",
       "txt-address-not-found": "No se encontró la dirección"
+    }
+  },
+  "payments": {
+    "buttons": {
+      "upload": "Subir pago"
+    },
+    "table": {
+      "title": "Emisión de Pagos",
+      "order_number": "Orden",
+      "reference_number": "Número de referencia BGO",
+      "due_date": "Vencimiento",
+      "folio": "Factura",
+      "razon_social": "Razon Social",
+      "status": "Estado",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "bank": "Banco",
+      "account": "Numero de cuenta",
+      "date_created": "Subida",
+      "carrier_credit_days": "Días de Credito",
+      "pdf": "PDF",
+      "xml": "XML"
+    },
+    "paginator": {
+      "total": "Total",
+      "of": "de",
+      "nextPage": "Siguiente",
+      "prevPage": "Anterior",
+      "itemsPerPage": "Items por página"
+    },
+    "filter": {
+      "input": "Buscar...",
+      "selector": "Buscar..."
+    },
+    "status": {
+      "cancel": "Cancelada",
+      "rejected": "Rechazada",
+      "invalid-data": "Invalida",
+      "uploaded": "Subida",
+      "validated": "Validada",
+      "pending-payment": "Por pagar",
+      "paid": "Pagada"
+    },
+    "actions": {
+      "view_xml": "Ver XML",
+      "view_pdf": "Ver PDF"
+    },
+    "upload-modal": {
+      "title": "Subir datos",
+      "send-btn": "Enviar",
+      "order-number": "Orden",
+      "reference-number": "Número de referencia BGO",
+      "invalid-file": "Archivo inválido",
+      "select-file": "Selecciona un archivo"
+    },
+    "edited-modal": {
+      "done": "Hecho",
+      "cancel": "Cancel",
+      "title": "¡Listo!",
+      "subtitle": "Su pago fue subido correctamente",
+      "failed": "Hubo un error, intente más tarde"
     }
   }
 }

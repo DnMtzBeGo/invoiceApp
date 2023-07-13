@@ -354,7 +354,14 @@ ngx-mat-select-search.brand-select-search-1 {
       }
     }
   }
-  
+  &.full-visible {
+    & + * {
+      .mat-dialog-container {
+        border-radius: 30px;
+        overflow: visible;
+      }
+    }
+  }
 }
 
 .cdk-overlay-backdrop.brand-dialog-map {
