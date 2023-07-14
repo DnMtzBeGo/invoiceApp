@@ -10,8 +10,10 @@ phases:
       - rm package-lock.json
   pre_build:
     commands:
-    - echo Installing NPM packages...
-    - npm install --legacy-peer-deps
+      - echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc
+      - echo "@OWNER:registry=https://npm.pkg.github.com" >> ~/.npmrc
+      - echo Installing NPM packages...
+      - npm install --legacy-peer-deps
   build:
     commands:
       - echo Starting production build...
