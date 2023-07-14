@@ -70,11 +70,16 @@ const routes: Routes = [
         (m) => m.ContactSupportModule
       ),
   },
-  { path: "", redirectTo: "invoice", pathMatch: "full" },
+  { path: "", redirectTo: "payments", pathMatch: "full" },
   {
     path: "history",
     loadChildren: () =>
       import("./pages/history/history.module").then((m) => m.HistoryModule),
+  },
+  {
+    path: "payments",
+    loadChildren: () =>
+      import("./pages/payments/payments.module").then((m) => m.PaymentsModule),
   },
   {
     path: "checkout",

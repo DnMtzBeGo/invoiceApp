@@ -46,6 +46,7 @@ import { HorizontalCardComponent } from './shared/components/horizontal-card/hor
 import { SharedModule } from './shared/shared.module';
 import { SmallResolutionModalComponent } from './shared/components/small-resolution-modal/small-resolution-modal.component';
 import { IncompatibleBrowserModalComponent } from './shared/components/incompatible-browser-modal/incompatible-browser-modal.component';
+import { IonicModule } from '@ionic/angular';
 
 export function playerFactory() {
   return player;
@@ -120,7 +121,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatSelectModule,
     LottieModule.forRoot({ player: playerFactory }),
     CalendarModule,
-    SharedModule
+    SharedModule,
+    IonicModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
