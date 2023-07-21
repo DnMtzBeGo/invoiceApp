@@ -46,13 +46,14 @@ export class CommodityComponent implements OnInit {
 
   constructor(private catalogListService: CataloguesListService, private cartaPorteInfoService: CartaPorteInfoService) {
     this.cartaPorteInfoService.emitShowFraccion.subscribe((value) => {
-      if (value) this.showFraccion = true;
-      else this.showFraccion = false;
+      this.showFraccion = true;
+      // if (value) this.showFraccion = true;
+      // else this.showFraccion = true;
     });
 
     this.catalogListService.consignmentNoteSubject.subscribe((data: any) => {
       this.embalaje = data.tipos_de_embalaje;
-      this.claveUnidad = data.claves_de_unidad;
+      this.claveUnidad = Object.assign([], data.claves_de_unidad);
       this.filteredClaveUnidad = Object.assign([], this.claveUnidad);
 
       this.setCatalogsFields();
@@ -116,7 +117,8 @@ export class CommodityComponent implements OnInit {
         valor_mercancia,
         embalaje,
         material_peligroso,
-        cve_material_peligroso
+        cve_material_peligroso,
+        fraccion_arancelaria
       } = this.commodityInfo;
       if (pedimentos) this.dataSourcePedimento = pedimentos;
       if (bienes_transp) {
@@ -130,6 +132,7 @@ export class CommodityComponent implements OnInit {
           limit: 30
         });
       }
+
       this.commodity.patchValue({
         bienesTransportados: bienes_transp,
         // claveSCTT: new FormControl(''),
@@ -142,7 +145,8 @@ export class CommodityComponent implements OnInit {
         materialPeligroso: material_peligroso == 'Sí',
         claveMaterialPeligroso: cve_material_peligroso,
         embalaje: embalaje,
-        cantidad: cantidad
+        cantidad: cantidad,
+        fraccionArancelaria: fraccion_arancelaria
       });
     }
   }

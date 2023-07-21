@@ -1,53 +1,40 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  QueryList,
-  ViewChild,
-  ElementRef,
-  SimpleChanges,
-} from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
-import { TranslateService } from "@ngx-translate/core";
-import { InfoModalComponent } from "../../../../../../modals/info-modal/info-modal.component";
-import { CartaPorteInfoService } from "../../../services/carta-porte-info.service";
-import { CataloguesListService } from "../../../services/catalogues-list.service";
+import { Component, OnInit, Input, QueryList, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { InfoModalComponent } from '../../../../../../modals/info-modal/info-modal.component';
+import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
+import { CataloguesListService } from '../../../services/catalogues-list.service';
 
 @Component({
-  selector: "app-ubicacion",
-  templateUrl: "./ubicacion.component.html",
-  styleUrls: ["./ubicacion.component.scss"],
+  selector: 'app-ubicacion',
+  templateUrl: './ubicacion.component.html',
+  styleUrls: ['./ubicacion.component.scss']
 })
 export class UbicacionComponent implements OnInit {
   @Input() allUbicaciones: QueryList<UbicacionComponent>;
   @Input() locationInfo: any;
-  @ViewChild("picker") pickerRef: ElementRef;
+  @ViewChild('picker') pickerRef: ElementRef;
 
   public origenInfoAlreadySet: boolean;
   public locationComponentInfo: any;
-  public hideResidenciaRegistro: boolean = false;
+  public isForeignRFC: boolean = false;
 
   public ubicacionesForm = new FormGroup({
-    distancia_recorrida: new FormControl(""),
-    tipo_ubicacion: new FormControl("", Validators.required),
-    fecha_hora_salida_llegada: new FormControl("", Validators.required),
-    id_ubicacion: new FormControl(
-      "",
-      Validators.compose([Validators.pattern(/^(OR|DE)\d{6}$/)])
-    ),
-    nombre_remitente_destinatario: new FormControl(""),
+    distancia_recorrida: new FormControl(''),
+    tipo_ubicacion: new FormControl('', Validators.required),
+    fecha_hora_salida_llegada: new FormControl('', Validators.required),
+    id_ubicacion: new FormControl('', Validators.compose([Validators.pattern(/^(OR|DE)\d{6}$/)])),
+    nombre_remitente_destinatario: new FormControl(''),
     rfc_remitente_destinatario: new FormControl(
-      "",
+      '',
       Validators.compose([
-        Validators.pattern(
-          /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d&]{2}(?:[A\d]))?$/
-        ),
-        Validators.required,
+        Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d&]{2}(?:[A\d]))?$/),
+        Validators.required
       ])
     ),
-    num_reg_id_trib: new FormControl(""),
-    residencia_fiscal: new FormControl(""),
+    num_reg_id_trib: new FormControl(''),
+    residencia_fiscal: new FormControl('')
     // numeroEstacion: new FormControl(''),
     // nombreEstacion: new FormControl(''),
     // tipoEstacion: new FormControl(''),
@@ -58,13 +45,13 @@ export class UbicacionComponent implements OnInit {
   public tipoEstacionOptions: any[];
   public tipoUbicacion: any[] = [
     {
-      clave: "Origen",
-      descripcion: "Origen",
+      clave: 'Origen',
+      descripcion: 'Origen'
     },
     {
-      clave: "Destino",
-      descripcion: "Destino",
-    },
+      clave: 'Destino',
+      descripcion: 'Destino'
+    }
   ];
   public residenciaFiscal: any[];
 
@@ -84,44 +71,29 @@ export class UbicacionComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.ubicacionesForm.controls.tipo_ubicacion.valueChanges.subscribe(
-      (inputValue) => {
-        if (this.allUbicaciones) {
-          const ubicacionesSeleccionadas = this.allUbicaciones.map(
-            (e: UbicacionComponent) => {
-              return e.ubicacionesForm.value.tipo_ubicacion;
-            }
-          );
-          const origenInfoAlreadySet = ubicacionesSeleccionadas.some(
-            (e) => e == "Origen"
-          );
+    this.ubicacionesForm.controls.tipo_ubicacion.valueChanges.subscribe((inputValue) => {
+      if (this.allUbicaciones) {
+        const ubicacionesSeleccionadas = this.allUbicaciones.map((e: UbicacionComponent) => {
+          return e.ubicacionesForm.value.tipo_ubicacion;
+        });
+        const origenInfoAlreadySet = ubicacionesSeleccionadas.some((e) => e == 'Origen');
 
-          if (
-            origenInfoAlreadySet &&
-            inputValue == "Origen" &&
-            this.infoIsLoaded
-          ) {
-            this.showOriginAlreadySetModal();
+        if (origenInfoAlreadySet && inputValue == 'Origen' && this.infoIsLoaded) {
+          this.showOriginAlreadySetModal();
 
-            this.ubicacionesForm.patchValue({ tipo_ubicacion: "Destino" });
-          }
+          this.ubicacionesForm.patchValue({ tipo_ubicacion: 'Destino' });
         }
-      }
-    );
-
-    this.ubicacionesForm.get("rfc_remitente_destinatario").statusChanges.subscribe((val) => {
-      if (val === 'VALID') {
-        this.ubicacionesForm.removeControl('num_reg_id_trib');
-        this.ubicacionesForm.removeControl('residencia_fiscal');
-        this.hideResidenciaRegistro = true;
-      } else {
-        if(!this.ubicacionesForm.get('num_reg_id_trib')) this.ubicacionesForm.addControl('num_reg_id_trib', new FormControl('', Validators.required));
-        if(!this.ubicacionesForm.get('residencia_fiscal')) this.ubicacionesForm.addControl('residencia_fiscal', new FormControl('', Validators.required));
-        this.hideResidenciaRegistro = false;
       }
     });
 
+    // this.ubicacionesForm.get('rfc_remitente_destinatario').statusChanges.subscribe((val) => {
+    //   this.toggleForeignFields(val);
+    // });
+
     this.ubicacionesForm.patchValue(this.ubicacionesForm.value);
+
+    this.toggleForeignFields(this.ubicacionesForm.value.rfc_remitente_destinatario);
+
     this.infoIsLoaded = true;
   }
 
@@ -132,17 +104,27 @@ export class UbicacionComponent implements OnInit {
     }
   }
 
+  onDestinationRfcChanged(event: any) {
+    this.toggleForeignFields(event.target.value);
+  }
+
+  toggleForeignFields(value: string) {
+    if (value !== 'XEXX010101000') {
+      this.ubicacionesForm.controls['num_reg_id_trib'].setValue('');
+      this.ubicacionesForm.controls['residencia_fiscal'].setValue('');
+      this.isForeignRFC = false;
+    } else {
+      this.isForeignRFC = true;
+    }
+  }
+
   showOriginAlreadySetModal() {
     this.matDialog.open(InfoModalComponent, {
       data: {
-        title: this.translateService.instant(
-          "invoice.ubicacion.origin-already-title"
-        ),
-        message: this.translateService.instant(
-          "invoice.ubicacion.origin-already-message"
-        ),
+        title: this.translateService.instant('invoice.ubicacion.origin-already-title'),
+        message: this.translateService.instant('invoice.ubicacion.origin-already-message')
       },
-      restoreFocus: false,
+      restoreFocus: false
     });
   }
 
@@ -150,8 +132,7 @@ export class UbicacionComponent implements OnInit {
     const ubicacion = Object.assign({}, this.ubicacionesForm.value);
     ubicacion.domicilio = this.locationComponentInfo;
 
-    if (ubicacion.tipo_ubicacion == "Origen")
-      delete ubicacion.distancia_recorrida;
+    if (ubicacion.tipo_ubicacion == 'Origen') delete ubicacion.distancia_recorrida;
     return ubicacion;
   }
 
