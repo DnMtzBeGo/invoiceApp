@@ -23,6 +23,7 @@ import { Subscription, concat, from, of } from "rxjs";
 import { mergeAll, switchMap, toArray, mapTo } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { ContinueModalComponent } from "./components/continue-modal/continue-modal.component";
+import { BegoStepper, StepperOptions } from "@begomx/ui-components";
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
@@ -125,7 +126,6 @@ export class OrdersComponent implements OnInit {
   public ETA: number = 0;
   public minDropoff: any;
   public checkoutProgress: number = 0;
-  public currentStepIndex: number = 0;
   public sendMap: boolean = false;
 
   isLinear = false;
@@ -158,6 +158,20 @@ export class OrdersComponent implements OnInit {
   public screenshotCanvas: any;
   public thumbnailMap: Array<any> = [];
   public thumbnailMapFile: Array<any> = [];
+
+  @ViewChild(BegoStepper) stepperRef: BegoStepper;
+
+  get currentStepIndex(): number {
+    return this.stepperRef?.controller.currentStep ?? 0;
+  }
+
+  set currentStepIndex(step: number) {
+    this.stepperRef?.controller.setStep(step)
+  }
+
+  stepperOptions: StepperOptions = {
+    allowTouchMove: false,
+  }
 
   constructor(
     private translateService: TranslateService,

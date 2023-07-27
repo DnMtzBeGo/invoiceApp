@@ -14,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BegoRadioCardModule } from 'src/app/shared/components/bego-radio-card/bego-radio-card.module';
 import { PriceDetailsModule } from 'src/app/shared/components/price-details/price-details.module';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { BegoStepModule, BegoStepperModule } from '@begomx/ui-components';
 
 
 @NgModule({
@@ -32,7 +33,9 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
     BegoRadioCardModule,
     PriceDetailsModule,
     EmitterModule,
-    ButtonModule
+    ButtonModule,
+    BegoStepperModule,
+    BegoStepModule,
   ]
 })
 export class CheckoutModule { }
