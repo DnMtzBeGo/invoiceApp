@@ -42,6 +42,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { InputSelectableComponent } from './components/input-selectable/input-selectable.component';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
 import { UnitDetailsModalComponent } from './components/unit-details-modal/unit-details-modal.component';
+import { BegoStepModule, BegoStepperModule } from "@begomx/ui-components";
 
 export const MY_FORMATS = {
   parse: {
@@ -90,6 +91,8 @@ export const MY_FORMATS = {
     MatDialogModule,
     GoogleAddressModule,
     TimepickerModule.forRoot(),
+    BegoStepperModule,
+    BegoStepModule,
   ],
   exports: [OrdersComponent],
   // providers: [

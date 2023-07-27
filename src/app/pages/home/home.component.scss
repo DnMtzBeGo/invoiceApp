@@ -16,13 +16,16 @@
     z-index: 2;
     overflow: hidden;
 
+    $directions-width: 400px;
+
     .new-order-details{
-        flex-grow: 1;
+        max-width: calc(100% - #{$directions-width});
+        min-width: 780px;
         pointer-events: none;
     }
 
     .input-directions{
-        width: 400px;
+        width: $directions-width;
         position: relative;
     }
 }

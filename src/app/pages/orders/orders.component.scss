@@ -10,12 +10,12 @@
     }
   }
 
-  .mat-tab-group {
-    display: flex;
-    flex-direction: column;
-    max-width: 100%;
-    height: 100%;
+  bego-stepper {
     overflow-y: hidden;
+
+    ::ng-deep .swiper-slide {
+      overflow: auto;
+    }
   }
 
   .new-order-wrapper {

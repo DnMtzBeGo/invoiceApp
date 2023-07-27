@@ -19,8 +19,8 @@
         </app-stepper>
       </div>
 
-      <mat-tab-group [(selectedIndex)]="currentStepIndex">
-        <mat-tab>
+      <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions">
+        <bego-step>
           <app-step1
             [locations]="locations"
             (step1FormData)="getStep1FormData($event)"
@@ -28,9 +28,9 @@
             [draftData]="draftData"
             [orderWithCP]="isOrderWithCP"
           ></app-step1>
-        </mat-tab>
+        </bego-step>
 
-        <mat-tab>
+        <bego-step>
           <app-step2
             [creationdatepickup]="datepickup"
             [creationTime]="creationTime"
@@ -43,9 +43,9 @@
             [hazardousFileAWS]="hazardousFileAWS"
             [catalogsDescription]="catalogsDescription"
           ></app-step2>
-        </mat-tab>
+        </bego-step>
 
-        <mat-tab>
+        <bego-step>
           <app-step3
             [locations]="locations"
             (step3FormData)="getStep3FormData($event)"
@@ -53,9 +53,9 @@
             [draftData]="draftData"
             [orderWithCP]="isOrderWithCP"
           ></app-step3>
-        </mat-tab>
+        </bego-step>
 
-        <mat-tab>
+        <bego-step>
           <app-step4
             [dropoffETA]="datedropoff"
             [timeETA]="minDropoff"
@@ -63,8 +63,8 @@
             (validFormStep4)="validStep4($event)"
             [draftData]="draftData"
           ></app-step4>
-        </mat-tab>
-      </mat-tab-group>
+        </bego-step>
+      </bego-stepper>
 
       <div class="footer">
         <button (click)="prevSlide()" maat-button class="bego-btn gray" *ngIf="currentStepIndex">
