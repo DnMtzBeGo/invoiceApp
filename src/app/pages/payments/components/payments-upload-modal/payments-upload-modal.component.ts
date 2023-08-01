@@ -27,6 +27,17 @@ export class PaymentsUploadModalComponent implements OnInit {
     }
   };
 
+  valuesInputs = {
+    total: {
+      inputValue: '',
+      originalValue: ''
+    },
+    subtotal: {
+      inputValue: '',
+      originalValue: ''
+    }
+  };
+
   validated: boolean = false;
   xmlType = ['.xml'];
   pdfType = ['.pdf'];
@@ -136,6 +147,44 @@ export class PaymentsUploadModalComponent implements OnInit {
         this.errorAlert(error.hasOwnProperty('validationErrors') ? validationErrors[0].message[this.lang] : message[this.lang]);
       }
     });
+  }
+
+  onInputChange(event: Event, type: 'total' | 'subtotal') {
+    const inputElement = event.target as HTMLInputElement;
+    const inputValue = inputElement.value;
+    const regex = /^\d+(\.\d{0,2})?$/;
+
+    if (inputValue === undefined || inputValue === null || inputValue.trim() === '') {
+      inputElement.value = '';
+      this.valuesInputs[type].inputValue = '';
+      return;
+    }
+    if (!regex.test(inputValue)) {
+      inputElement.value = this.valuesInputs[type].inputValue || '';
+      this.prices[type] = parseFloat(this.valuesInputs[type].inputValue) || 0;
+    } else {
+      this.valuesInputs[type].inputValue = inputValue;
+      this.prices[type] = parseFloat(inputValue) || 0;
+    }
+  }
+
+  onInputBlur(event: Event, type: 'total' | 'subtotal') {
+    const inputElement = event.target as HTMLInputElement;
+    let inputValue = inputElement.value;
+    if (inputValue === '') {
+      inputValue = '0.00';
+    }
+    if (inputValue !== this.valuesInputs[type].originalValue) {
+      const formattedValue = this.formatNumberWithCommasAndDecimals(inputValue);
+      inputElement.value = formattedValue;
+      this.valuesInputs[type].originalValue = inputElement.value;
+      inputElement.value = '$' + inputElement.value + ' MXM';
+    }
+  }
+
+  formatNumberWithCommasAndDecimals(value: string): string {
+    const numberValue = parseFloat(value).toFixed(2);
+    return numberValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
   errorAlert(subtitle) {

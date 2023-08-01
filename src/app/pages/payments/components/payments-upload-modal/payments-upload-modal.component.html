@@ -21,20 +21,20 @@
         <mat-label>Subtotal</mat-label>
         <input
           matInput
-          currencyMask
-          [ngModel]="prices.subtotal"
-          [options]="currencyOptions"
-          (ngModelChange)="onModelChange($event, 'subtotal')" />
+          placeholder="$000.00 MXM"
+          (input)="onInputChange($event, 'subtotal')"
+          (focus)="onInputChange($event, 'subtotal')"
+          (blur)="onInputBlur($event, 'subtotal')" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>Total</mat-label>
         <input
           matInput
-          currencyMask
-          [ngModel]="prices.total"
-          [options]="currencyOptions"
-          (ngModelChange)="onModelChange($event, 'total')" />
+          placeholder="$000.00 MXM"
+          (input)="onInputChange($event, 'total')"
+          (focus)="onInputChange($event, 'total')"
+          (blur)="onInputBlur($event, 'total')" />
       </mat-form-field>
     </div>
 
