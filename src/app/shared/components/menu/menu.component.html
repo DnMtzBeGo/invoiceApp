@@ -59,23 +59,15 @@
       <bego-button class="btn-menu icon icon-history icon-only"></bego-button>
       {{ "menu.history" | translate }}
     </div> -->
-    <div
-      class="menu-option"
-      [ngClass]="{ selected: router.url == '/payments' }"
-      (click)="goTo('payments')"
-    >
+    <div class="menu-option" [ngClass]="{ selected: router.url == '/payments' }" (click)="goTo('payments')">
       <bego-button class="btn-menu icon icon-invoice icon-only"></bego-button>
-      {{ "menu.payments" | translate }}
+      {{ 'menu.payments' | translate }}
     </div>
     <!-- <bego-button class="btn-menu icon icon-referals" (click)="goTo('referals')"></bego-button> -->
-    <!-- <div
-      class="menu-option"
-      [ngClass]="{ selected: router.url.startsWith('/invoice') }"
-      (click)="goTo('invoice')"
-    >
-      <bego-button class="btn-menu icon icon-invoice icon-only"></bego-button>
-      {{ "menu.invoice" | translate }}
-    </div> -->
+    <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/invoice') }" (click)="goTo('invoice')">
+      <bego-button class="btn-menu icon icon-invoices icon-only"></bego-button>
+      {{ 'menu.invoice' | translate }}
+    </div>
     <!-- <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/contact-support' }"
@@ -95,20 +87,13 @@
     </div> -->
     <div class="menu-option" (click)="terms()">
       <bego-button class="btn-menu icon icon-terms icon-only"></bego-button>
-      {{ "menu.terms-conditions" | translate }}
+      {{ 'menu.terms-conditions' | translate }}
     </div>
 
     <div class="menu-option logout" (click)="logout()">
-      <div
-        style="
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          margin-right: 10px;
-        "
-      >
+      <div style="overflow: hidden; display: flex; align-items: center; margin-right: 10px">
         <bego-button class="btn-menu icon icon-logout icon-only"></bego-button>
-        {{ "menu.log-out" | translate }}
+        {{ 'menu.log-out' | translate }}
       </div>
     </div>
   </div>
@@ -119,13 +104,7 @@
     <div class="line"></div>
 
     <div class="arrow-container">
-      <mat-icon
-        (click)="toggleMenu()"
-        [ngClass]="{ closed: !menuIsOpen }"
-        class="arrow"
-      >
-        keyboard_backspace
-      </mat-icon>
+      <mat-icon (click)="toggleMenu()" [ngClass]="{ closed: !menuIsOpen }" class="arrow"> keyboard_backspace </mat-icon>
     </div>
   </div>
 </section>
