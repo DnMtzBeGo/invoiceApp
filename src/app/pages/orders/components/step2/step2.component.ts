@@ -1,35 +1,34 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-  SimpleChanges,
-} from "@angular/core";
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
-import { MatDatepickerInputEvent } from "@angular/material/datepicker";
-import { MatButtonToggleChange } from "@angular/material/button-toggle";
-import { TranslateService } from "@ngx-translate/core";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { InputSelectableComponent } from "../input-selectable/input-selectable.component";
-import { CargoWeightComponent } from "../cargo-weight/cargo-weight.component";
-import * as moment from "moment";
-import { UnitDetailsModalComponent } from "../unit-details-modal/unit-details-modal.component";
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { TranslateService } from '@ngx-translate/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { InputSelectableComponent } from '../input-selectable/input-selectable.component';
+import { CargoWeightComponent } from '../cargo-weight/cargo-weight.component';
+import * as moment from 'moment';
+import { UnitDetailsModalComponent } from '../unit-details-modal/unit-details-modal.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
-type CargoType = "general" | "hazardous";
+type CargoType = 'general' | 'hazardous';
 
 interface Option {
   value?: string;
   viewValue?: string;
 }
+
+interface Catalog {
+  value: string;
+  displayValue: string;
+}
+
+const enum Catalogs {
+  Cargo = 'sat_cp_claves_productos_servicios',
+  Packaging = 'sat_cp_tipos_de_embalaje',
+  Hazardous = 'sat_cp_material_peligroso',
+}
+
+const CARGO_UNIT_WEIGHT = 1000
 
 @Component({
   selector: "app-step2",
@@ -37,7 +36,6 @@ interface Option {
   styleUrls: ["./step2.component.scss"],
 })
 export class Step2Component implements OnInit {
-  @ViewChild("fileBar") fileBar!: ElementRef;
   @Input() creationTime: any;
   @Input() draftData: any;
   @Input() hazardousFileAWS: object = {};
@@ -60,13 +58,23 @@ export class Step2Component implements OnInit {
   creationDatePickupLabel: string;
 
   cargoType: CargoType = "general";
-  hazardousList: Array<any> = [];
   hazardousType: string = "select-catergory";
   hazardousFile!: File;
 
   destroyPicker: boolean = false;
   firstLoad: boolean = true;
   lastTime: any;
+
+  unitsData = {
+    first: {
+      label: '53 ft',
+      value: 53
+    },
+    second: {
+      label: '48 ft',
+      value: 48
+    }
+  };
 
   calendar: any;
   // step2Form: FormGroup = this.formBuilder.group({
@@ -85,33 +93,20 @@ export class Step2Component implements OnInit {
   step2Form = new FormGroup({
     hazardous_material: new FormControl(""),
     packaging: new FormControl(""),
+    hazardousFile: new FormControl(this.hazardousFile),
     hazardous_type: new FormControl(""),
     hazardousUn: new FormControl(""),
     cargo_goods: new FormControl(""),
     datepickup: new FormControl(""),
     timepickup: new FormControl("", Validators.required),
-    unitType: new FormControl("", Validators.required),
+    unitType: new FormControl(this.unitsData.first.value, Validators.required),
     cargoUnits: new FormControl(1, Validators.required),
-    cargoWeight: new FormControl([1]),
+    cargoWeight: new FormControl([CARGO_UNIT_WEIGHT]),
     cargoType: new FormControl(this.cargoType, Validators.required),
     description: new FormControl("", Validators.required),
+    commodity_quantity: new FormControl(""),
+    satUnitType: new FormControl("")
   });
-
-  mercModal: Option = {
-    value: '',
-    viewValue: ''
-  };
-  mercModalSelected: boolean = false;
-  packModal: Option = {
-    value: '',
-    viewValue: ''
-  };
-  packModalSelected: boolean = false;
-  hzrdModal: Option = {
-    value: '',
-    viewValue: ''
-  };
-  hzrdModalSelected: boolean = false;
 
   satUnitData: Option = {
     value: '',
@@ -122,20 +117,21 @@ export class Step2Component implements OnInit {
   public thumbnailMap: Array<any> = [];
   public thumbnailMapFile: Array<any> = [];
 
-  constructor(
-    translateService: TranslateService,
-    private formBuilder: FormBuilder,
-    public dialog: MatDialog
-  ) {
-    const hazardousList = translateService.instant("orders.hazardous-list");
+  fileInfo: any = null;
 
-    this.hazardousList = [];
-    for (const [key, value] of Object.entries(hazardousList)) {
-      this.hazardousList.push({
-        key,
-        text: value,
-      });
-    }
+  fileLang = {
+    labelBrowse: this.translateService.instant('orders.upload-file.label-browse'),
+    labelOr: this.translateService.instant('orders.upload-file.label-or'),
+    btnBrowse: this.translateService.instant('orders.upload-file.btn-browse'),
+    labelMax: this.translateService.instant('orders.upload-file.label-max'),
+  };
+
+  cargoCatalog: Catalog[] = [];
+  categoryCatalog: Catalog[] = [];
+  packagingCatalog: Catalog[] = [];
+  hazardousCatalog: Catalog[] = [];
+
+  constructor(private translateService: TranslateService, public dialog: MatDialog, private apiRestService: AuthService) {
     this.minTime.setHours(1);
     this.minTime.setMinutes(0);
 
@@ -153,7 +149,6 @@ export class Step2Component implements OnInit {
 
     this.handleCargoTypeChange();
     this.step2Form.get("cargoType")!.valueChanges.subscribe((val) => {
-      this.step2Form.updateValueAndValidity();
       this.handleCargoTypeChange();
     });
 
@@ -180,32 +175,17 @@ export class Step2Component implements OnInit {
     this.step2Form.valueChanges.subscribe(() => {
       this.step2FormData.emit(this.step2Form.value);
     });
+
+    this.getCargoTypeList();
+    this.getPackagingList();
+    this.getCategoryCatalog();
+    this.getHazardousTypeList();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.hasOwnProperty('hazardousFileAWS') && changes.hazardousFileAWS.currentValue.hasOwnProperty('url')) {
       this.generateScreenshot(changes.hazardousFileAWS.currentValue.url);
     }
-
-    if(changes.hasOwnProperty('catalogsDescription') && changes.catalogsDescription.currentValue.hasOwnProperty('cargo_goods') && changes.catalogsDescription.currentValue.cargo_goods.length > 0) {
-      this.catalogsDescription = changes.catalogsDescription.currentValue;
-      this.mercModal.viewValue = changes.catalogsDescription.currentValue['cargo_goods'];
-      this.mercModalSelected = true;
-    }
-
-    if(changes.hasOwnProperty('catalogsDescription') && changes.catalogsDescription.currentValue.hasOwnProperty('packaging') && changes.catalogsDescription.currentValue.packaging.length > 0) {
-      this.packModal.viewValue = changes.catalogsDescription.currentValue['packaging'];
-      this.packModalSelected = true;
-    }
-
-    if(changes.hasOwnProperty('catalogsDescription') && changes.catalogsDescription.currentValue.hasOwnProperty('hazardous_material') && changes.catalogsDescription.currentValue.hazardous_material.length > 0) {
-      this.hzrdModal.viewValue = changes.catalogsDescription.currentValue['hazardous_material'];
-      this.hzrdModalSelected = true;
-    }
-
-    if(changes.hasOwnProperty('catalogsDescription') && changes.catalogsDescription.currentValue.hasOwnProperty('unit_type')) {
-      this.satUnitData['viewValue'] = changes.catalogsDescription.currentValue['unit_type'];
-    } 
 
     if (
       changes.draftData &&
@@ -272,23 +252,31 @@ export class Step2Component implements OnInit {
   }
 
   handleCargoTypeChange(): void {
-    const cargoType = this.step2Form.get("cargoType")?.value;
-    if (cargoType === "hazardous") {
-      const validators = [Validators.required];
-      this.step2Form.addControl(
-        "hazardous_type",
-        new FormControl(this.hazardousType, validators)
-      );
-      /* this.step2Form.addControl("hazardousUn", new FormControl("", validators)); */
-      this.step2Form.addControl(
-        "hazardousFile",
-        new FormControl(this.hazardousFile, validators)
-      );
+    const hazardousType = this.step2Form.get("hazardous_type")!;
+    const hazardousFile = this.step2Form.get("hazardousFile")!;
+    const cargoType: CargoType = this.step2Form.get("cargoType")!.value;
+
+    if (cargoType === 'general') {
+      hazardousType.clearValidators();
+      hazardousFile.clearValidators();
+
+      this.fileInfo = null;
+      this.hazardousFile = null;
+      this.step2Form.get('hazardousFile').reset();
+      this.step2Form.get('hazardous_type').reset();
+
       if (this.orderWithCP) {
-        this.step2Form.addControl("packaging", new FormControl(""));
-        this.step2Form.addControl("hazardous_material", new FormControl(""));
+        this.step2Form.get("packaging").reset();
+        this.step2Form.get("hazardous_material").reset();
       }
-    } 
+    } else {
+      const validators = [Validators.required];
+      hazardousType.setValidators(validators);
+      hazardousFile.setValidators(validators);
+    }
+
+    hazardousType.updateValueAndValidity();
+    hazardousFile.updateValueAndValidity();
   }
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -297,10 +285,21 @@ export class Step2Component implements OnInit {
 
   timeChange(time: any) {}
 
+  updateQuantityUnits(newValue: number) {
+    if (newValue > this.quantityunits) {
+      this.increment();
+    } else {
+      this.decrement();
+    }
+  }
+
   increment() {
     if (this.quantityunits < 100) {
       this.quantityunits++;
       this.step2Form.get("cargoUnits")!.setValue(this.quantityunits);
+
+      const weights = this.step2Form.get('cargoWeight')!;
+      weights.setValue([... weights.value, CARGO_UNIT_WEIGHT]);
     }
   }
 
@@ -308,11 +307,14 @@ export class Step2Component implements OnInit {
     if (this.quantityunits > 1) {
       this.quantityunits--;
       this.step2Form.get("cargoUnits")!.setValue(this.quantityunits);
+
+      const weights = this.step2Form.get('cargoWeight')!;
+      weights.setValue(weights.value.slice(0, -1));
     }
   }
 
-  selectedUnits(unit: MatButtonToggleChange): void {
-    this.step2Form.get("unitType")!.setValue(unit.value);
+  selectedUnits(unit: any): void {
+    this.step2Form.get('unitType')!.setValue(unit.value);
   }
 
   editUnits(): void {
@@ -342,25 +344,29 @@ export class Step2Component implements OnInit {
    * Sets cargotype to the value to what it was changed
    * @param value The value to what was changed an element
    */
-  setCargoType(value: MatButtonToggleChange): void {
-    this.step2Form.get("cargoType")!.setValue(value.value);
-    this.cargoType = value.value;
-    if (value.value === "hazardous") {
-      this.step2Form.get("file");
+  setCargoType(value: CargoType): void {
+    this.cargoType = value;
+    this.step2Form.get('cargoType')!.setValue(value);
+  }
+
+  selectHazardousFile(file?: File) {
+    if (file) {
+      this.fileInfo = {
+        name: file.name,
+        date: new Date(file.lastModified),
+        size: file.size
+      };
+    } else {
+      this.fileInfo = null;
     }
+
+    this.step2Form.get('hazardousFile')!.setValue(file);
   }
 
-  clickFileInputElement() {}
-
-  selectHazardousFile(file: any) {
-    this.step2Form.get("hazardousFile")!.setValue(file);
+  setCargoDescirption(data: any) {
+    this.step2Form.get('description')!.setValue(data.details);
   }
 
-  dropHazardousFile() {
-    // console.log("Here goes the logic to drop hazardous file");
-  }
-
-  
   timepickerValid(data: any) {
     this.lastTime = this.step2Form.controls["timepickup"].value || this.lastTime;
     if (!data && !this.firstLoad) {
@@ -372,36 +378,6 @@ export class Step2Component implements OnInit {
       }, 0);
     }
     this.firstLoad = false;
-  }
-
-  showInputSelectorCP(type) {
-    const modalData =
-      type === "merc"
-        ? this.mercModal
-        : type === "pack"
-        ? this.packModal
-        : this.hzrdModal;
-    const dialogRef = this.dialog.open(InputSelectableComponent, {
-      panelClass: "modal",
-      data: { data: modalData, type },
-    });
-    dialogRef.afterClosed().subscribe(async (res) => {
-      if (typeof res === "object") {
-        if (type === "merc") {
-          this.mercModal = res;
-          this.mercModalSelected = true;
-          this.step2Form.get("cargo_goods")!.setValue(res.value);
-        } else if (type === "pack") {
-          this.packModal = res;
-          this.packModalSelected = true;
-          this.step2Form.get("packaging")!.setValue(res.value);
-        } else {
-          this.hzrdModal = res;
-          this.hzrdModalSelected = true;
-          this.step2Form.get("hazardous_material")!.setValue(res.value);
-        }
-      }
-    });
   }
 
   addUnitDetailsFields() {
@@ -465,7 +441,69 @@ export class Step2Component implements OnInit {
     }
     const arr = new Uint8Array(bytes);
     const blob = new Blob([arr], { type: 'image/png '});
+    this.setHazardousAWSFile(blob);
+  }
+
+  setHazardousAWSFile(blob: Blob) {
     this.thumbnailMapFile.push(blob);
-    this.selectHazardousFile(this.thumbnailMapFile);
+    this.step2Form.get("hazardousFile")!.setValue(blob);
+    this.fileInfo = {
+      name: 'AWS file',
+      date: new Date(),
+      size: blob.size,
+    }
+  }
+
+
+  private async getCatalogs(catalog: string, query?: string): Promise<Catalog[]> {
+    const params = new URLSearchParams()
+    if (query) params.set('q', query)
+
+    const req = await this.apiRestService.apiRestGet(`invoice/catalogs/query/${catalog}?${params.toString()}`)
+
+    return new Promise((resolve, reject) => {
+      req.subscribe(({ result }) => {
+        const catalog = result.map((item: any) => ({
+          value: item.code,
+          displayValue: `${item.code} - ${item.description}`
+        }))
+
+        resolve(catalog)
+      }),
+      (err: any) => {
+        console.error(err)
+        reject(err)
+      }
+    })
+  }
+
+  async getCargoTypeList(query?: string) {
+    const catalog = await this.getCatalogs(Catalogs.Cargo, query);
+    this.cargoCatalog = catalog;
+  }
+
+  async getPackagingList(query?: string) {
+    const catalog = await this.getCatalogs(Catalogs.Packaging, query);
+    this.packagingCatalog = catalog;
+  }
+
+  async getHazardousTypeList(query?: string) {
+    const catalog = await this.getCatalogs(Catalogs.Hazardous, query);
+    this.hazardousCatalog = catalog;
+  }
+
+  getCategoryCatalog() {
+    const list: Record<string, string> = this.translateService.instant('orders.hazardous-list');
+
+    const catalog = Object.entries(list).map(([key, value]) => ({
+      value: key,
+      displayValue: value
+    }))
+
+    this.categoryCatalog = catalog;
+  }
+
+  updateForm(key: string, value: any) {
+    this.step2Form.get(key)!.setValue(value);
   }
 }

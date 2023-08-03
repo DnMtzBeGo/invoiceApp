@@ -141,19 +141,21 @@ export class Step1Component implements OnInit {
     return null as any;
   }
 
-  phoneFlagChangeValue(value: any) {
-    this.phoneFlag = value;
-    this.step1Form.get("country_code")!.setValue(value);
+  phoneCodeChanged(data: any) {
+    this.phoneFlag = data.code;
+    this.phoneCode = data.dial_code;
+
+    this.step1Form.get("country_code")!.setValue(data.code);
+    this.step1Form.get("phoneCode")!.setValue(data.dial_code);
   }
 
-  phoneCodeChangeValue(value: any) {
-    this.phoneCode = value;
-    this.step1Form.get("phoneCode")!.setValue(value);
+  phoneNumberChangeValue(data: any) {
+    this.phoneNumber = data.value;
+    this.step1Form.get("phonenumber")!.setValue(data.value);
   }
 
-  phoneNumberChangeValue(value: any) {
-    this.phoneNumber = value;
-    this.step1Form.get("phonenumber")!.setValue(value);
+  updateFormGroup(data: any) {
+    this.step1Form.get(data.key)!.setValue(data.value);
   }
 
   changeLocation(type: string) {

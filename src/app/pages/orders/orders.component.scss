@@ -18,6 +18,20 @@
     }
   }
 
+  ::ng-deep .field {
+    display: flex;
+    gap: 33px;
+    align-items: center;
+    margin: 40px 0;
+
+    bego-phone-code-select {
+      ion-select {
+        width: 161px;
+        justify-content: center;
+      }
+    }
+  }
+
   .new-order-wrapper {
     height: 100%;
     background: #0b1117;

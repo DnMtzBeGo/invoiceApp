@@ -42,7 +42,23 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { InputSelectableComponent } from './components/input-selectable/input-selectable.component';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
 import { UnitDetailsModalComponent } from './components/unit-details-modal/unit-details-modal.component';
-import { BegoStepModule, BegoStepperModule } from "@begomx/ui-components";
+import {
+  BegoButtonModule,
+  BegoButtonToggleModule,
+  BegoCalendarTimeModule,
+  BegoDragDropModule,
+  BegoIncrementDecrementModule,
+  BegoLabelInputModule,
+  BegoMarksModule,
+  BegoPhoneCodeSelectModule,
+  BegoSearchSelectModule,
+  BegoSelectItemModule,
+  BegoSelectModule,
+  BegoStepModule,
+  BegoStepperModule,
+  BegoTextAreaModule,
+  BegoTextInputModule,
+} from "@begomx/ui-components";
 
 export const MY_FORMATS = {
   parse: {
@@ -93,6 +109,19 @@ export const MY_FORMATS = {
     TimepickerModule.forRoot(),
     BegoStepperModule,
     BegoStepModule,
+    BegoMarksModule,
+    BegoLabelInputModule,
+    BegoTextInputModule,
+    BegoPhoneCodeSelectModule,
+    BegoCalendarTimeModule,
+    BegoButtonModule,
+    BegoSearchSelectModule,
+    BegoButtonToggleModule,
+    BegoIncrementDecrementModule,
+    BegoSelectModule,
+    BegoSelectItemModule,
+    BegoTextAreaModule,
+    BegoDragDropModule,
   ],
   exports: [OrdersComponent],
   // providers: [

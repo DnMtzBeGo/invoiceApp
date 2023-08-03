@@ -2,25 +2,13 @@
   <div class="new-order-wrapper" [ngClass]="cardIsOpen ? 'card-open' : ''">
     <div class="steps-body">
       <div class="order-header">
-        <!-- (click)="jumpStepTitle()" -->
-        <h1 (click)="jumpStepTitle()">
-          {{ typeOrder }}<img src="../../../assets/orders/exchange.svg" />
-        </h1>
+        <h1 (click)="jumpStepTitle()">{{ typeOrder }}</h1>
       </div>
 
-      <div class="order-stepper-wrapper">
-        <app-stepper
-          style="margin-top: 50px"
-          [(selectedSlide)]="currentStepIndex"
-          (selectedSlideChange)="calculateProgress()"
-          [progress]="checkoutProgress"
-          [steps]="ordersSteps"
-        >
-        </app-stepper>
-      </div>
+      <bego-marks class="order-stepper-wrapper" type="number"></bego-marks>
 
-      <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions">
-        <bego-step>
+      <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions" (stepChange)="calculateProgress()">
+        <bego-step [completed]="stepsValidate[0]">
           <app-step1
             [locations]="locations"
             (step1FormData)="getStep1FormData($event)"
@@ -30,7 +18,17 @@
           ></app-step1>
         </bego-step>
 
-        <bego-step>
+        <bego-step [completed]="stepsValidate[2]">
+          <app-step3
+            [locations]="locations"
+            (step3FormData)="getStep3FormData($event)"
+            (validFormStep3)="validStep3($event)"
+            [draftData]="draftData"
+            [orderWithCP]="isOrderWithCP"
+          ></app-step3>
+        </bego-step>
+
+        <bego-step [completed]="stepsValidate[1]">
           <app-step2
             [creationdatepickup]="datepickup"
             [creationTime]="creationTime"
@@ -44,42 +42,17 @@
             [catalogsDescription]="catalogsDescription"
           ></app-step2>
         </bego-step>
-
-        <bego-step>
-          <app-step3
-            [locations]="locations"
-            (step3FormData)="getStep3FormData($event)"
-            (validFormStep3)="validStep3($event)"
-            [draftData]="draftData"
-            [orderWithCP]="isOrderWithCP"
-          ></app-step3>
-        </bego-step>
-
-        <bego-step>
-          <app-step4
-            [dropoffETA]="datedropoff"
-            [timeETA]="minDropoff"
-            (step4FormData)="getStep4FormData($event)"
-            (validFormStep4)="validStep4($event)"
-            [draftData]="draftData"
-          ></app-step4>
-        </bego-step>
       </bego-stepper>
 
       <div class="footer">
-        <button (click)="prevSlide()" maat-button class="bego-btn gray" *ngIf="currentStepIndex">
+        <bego-button size="small" [activated]="true" background="none" (click)="prevSlide()" *ngIf="currentStepIndex">
           <i class="icon icon-arrow-left back-arrow-icon"></i>
           {{ "orders.back" | translate }}
-        </button>
+        </bego-button>
 
-        <button
-          (click)="nextSlide()"
-          mat-raised-button
-          class="bego-btn yellow medium-size"
-          [disabled]="btnStatusNext"
-        >
+        <bego-button [activated]="!btnStatusNext" background="yellow" (click)="nextSlide()">
           {{ ordersSteps[currentStepIndex].nextBtnTxt }}
-        </button>
+        </bego-button>
       </div>
     </div>
   </div>

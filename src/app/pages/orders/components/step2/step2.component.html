@@ -1,205 +1,104 @@
 <div class="steps">
   <form [formGroup]="step2Form">
     <div class="steps-container">
-      <!-- cargo information -->
-      <div class="section">
-        <div class="section-title">
-          <span class="asterisk">*</span>
-          {{ "orders.title-cargo-info" | translate }}
-        </div>
-      </div>
-      <div
-        class="input-selectable-container"
-        (click)="showInputSelectorCP('merc')"
+      <bego-search-select
         *ngIf="orderWithCP"
-      >
-        <p class="value-selected" *ngIf="!mercModalSelected">
-          <i class="icon icon-search"></i
-          >{{ "orders.slct-input-cargo_goods" | translate }}
-        </p>
-        <p class="value-selected" *ngIf="mercModalSelected">{{ mercModal.viewValue }}</p>
-      </div>
-      <div class="section section-padding">
-        <mat-form-field class="input-calendar" appearance="fill">
-          <input
-            matInput
-            formControlName="datepickup"
-            [matDatepicker]="picker"
-            [min]="calendar"
-            disabled
-          />
-          <mat-datepicker #picker></mat-datepicker>
-          <div class="btn-input-calendar">
-            <i class="icon icon-calendar"></i> {{ creationDatePickupLabel }}
-            <i class="icon icon-down"></i>
-          </div>
-        </mat-form-field>
+        [debounce]="500"
+        [catalogs]="cargoCatalog"
+        (searchValueChange)="getCargoTypeList($event)"
+        (catalogValueChange)="updateForm('cargo_goods', $event)"
+        [inputPlaceHolder]="'orders.slct-input-cargo_goods' | translate"></bego-search-select>
 
-        <div class="input-timer">
-          <i class="icon icon-timer"></i>
-          <!-- <ngx-timepicker-field [controlOnly]="true" (timeChanged)="timeChange($event)" formControlName="timepickup"></ngx-timepicker-field> -->
-          <timepicker
-            [formControlName]="'timepickup'"
-            class="timepicker"
-            (isValid)="timepickerValid($event)"
-            [hourStep]="1"
-            [minuteStep]="1"
-            [min]="minTime"
-            disabled="true"
-          ></timepicker>
-        </div>
-      </div>
-
-      <div class="section section-padding">
+      <div class="field section">
         <div class="section-title">
           <span class="asterisk">*</span>
-          {{ "orders.txt-select-units" | translate }}
+          {{ 'orders.txt-select-units' | translate }}
         </div>
 
         <div class="select-units-input">
-          <div class="input-increment">
-            <i class="icon icon-minus" (click)="decrement()"></i>
-            <div>{{ quantityunits }}</div>
-            <i class="icon icon-plus" (click)="increment()"></i>
-          </div>
-          <mat-button-toggle-group
-            formControlName="unitType"
-            (change)="selectedUnits($event)"
-          >
-            <mat-button-toggle value="53"> 53 </mat-button-toggle>
-            <mat-button-toggle value="48"> 48 </mat-button-toggle>
-          </mat-button-toggle-group>
+          <bego-increment-decrement [units]="quantityunits" (changeUnits)="updateQuantityUnits($event)"></bego-increment-decrement>
+
+          <bego-button-toggle
+            (statusChanged)="selectedUnits($event)"
+            [enabled]="step2Form.get('unitType').value === unitsData.second.value"
+            [noPadding]="true"
+            [first]="unitsData.first"
+            [second]="unitsData.second"></bego-button-toggle>
         </div>
       </div>
 
-      <div class="section section-padding right" >
+      <div class="field section right">
         <div class="btn-weight" (click)="editUnits()">
           <i class="icon icon-plus"></i
-          ><span>{{ !editWeight ? ("orders.btn-add-weight" | translate) : ("orders.btn-edit-weight" | translate) }}</span>
+          ><span>{{ !editWeight ? ('orders.btn-add-weight' | translate) : ('orders.btn-edit-weight' | translate) }}</span>
         </div>
       </div>
 
       <!--  select cargo -->
-      <div class="section select-cargo-section">
+      <div class="field section select-cargo-section">
         <div class="section-title">
           <span class="asterisk">*</span>
-          {{ "orders.txt-select-cargo" | translate }}
+          {{ 'orders.txt-select-cargo' | translate }}
         </div>
 
-        <div>
-          <mat-button-toggle-group
-            formControlName="cargoType"
-            (change)="setCargoType($event)"
-          >
-            <mat-button-toggle 
-              [checked]="cargoType === 'general'"
-              value="general">
-              {{ "orders.btn-general" | translate }}
-            </mat-button-toggle>
-            <mat-button-toggle 
-              [checked]="cargoType === 'hazardous'"
-              value="hazardous">
-              {{ "orders.btn-hazardous" | translate }}
-            </mat-button-toggle>
-          </mat-button-toggle-group>
-        </div>
+        <bego-select [(selected)]="cargoType">
+          <bego-select-item value="general" (click)="setCargoType('general')">
+            <bego-icon icon="begon-truck"></bego-icon>
+            {{ 'orders.btn-general' | translate }}
+          </bego-select-item>
+
+          <bego-select-item value="hazardous" (click)="setCargoType('hazardous')">
+            <bego-icon icon="begon-truck"></bego-icon>
+            {{ 'orders.btn-hazardous' | translate }}
+          </bego-select-item>
+        </bego-select>
       </div>
 
-      <div class="section" style="flex-direction: column">
-        <div class="selectableHazard" *ngIf="cargoType == 'hazardous'">
-          <div
-            class="input-selectable-container"
-            (click)="showInputSelectorCP('pack')"
-            *ngIf="orderWithCP"
-          >
-            <p class="value-selected" *ngIf="!packModalSelected">
-              <i class="icon icon-search"></i
-              >{{ "orders.slct-input-packaging" | translate }}
-            </p>
-            <p class="value-selected" *ngIf="packModalSelected">
-              {{ packModal.viewValue }}
-            </p>
-          </div>
-          <div
-            class="input-selectable-container"
-            (click)="showInputSelectorCP('hzrd')"
-            *ngIf="orderWithCP"
-          >
-            <p class="value-selected" *ngIf="!hzrdModalSelected">
-              <i class="icon icon-search"></i
-              >{{ "orders.slct-input-hzrd_material" | translate }}
-            </p>
-            <p class="value-selected" *ngIf="hzrdModalSelected">
-              {{ hzrdModal.viewValue }}
-            </p>
-          </div>
+      <div class="field selectableHazard" *ngIf="cargoType == 'hazardous'">
+        <div class="selectableHazard-details">
+          <bego-search-select
+            [debounce]="500"
+            [catalogs]="categoryCatalog"
+            (catalogValueChange)="updateForm('hazardous_type', $event)"
+            [inputPlaceHolder]="'orders.choose-category' | translate"></bego-search-select>
+
+          <ng-container *ngIf="orderWithCP" )>
+            <bego-search-select
+              [debounce]="500"
+              [catalogs]="packagingCatalog"
+              (searchValueChange)="getPackagingList($event)"
+              (catalogValueChange)="updateForm('packaging', $event)"
+              [inputPlaceHolder]="'orders.slct-input-packaging' | translate"></bego-search-select>
+            <bego-search-select
+              [debounce]="500"
+              [catalogs]="hazardousCatalog"
+              (searchValueChange)="getHazardousTypeList($event)"
+              (catalogValueChange)="updateForm('hazardous_material', $event)"
+              [inputPlaceHolder]="'orders.slct-input-hzrd_material' | translate"></bego-search-select>
+          </ng-container>
         </div>
-        <div class="hazardous-container" *ngIf="cargoType == 'hazardous'">
-          <div class="hazardous-input">
-            <mat-select formControlName="hazardous_type" [(value)]="hazardous_type">
-              <mat-option value="select-catergory">
-                {{ "orders.choose-category" | translate }}
-              </mat-option>
 
-              <mat-option *ngFor="let option of hazardousList" [value]="option.key">
-                {{ option.text }}
-              </mat-option>
-            </mat-select>
-
-            <!-- <mat-form-field class="input-textarea" appearance="fill">
-              <textarea
-                matInput
-                rows="1"
-                formControlName="hazardousUn"
-                [placeholder]="'orders.placeholder-un' | translate"
-              >
-              </textarea>
-            </mat-form-field> -->
-          </div>
-
-          <div>
-            <bego-drag-file-bar
-              #fileBar
-              (fileOutput)="selectHazardousFile($event)"
-              (deleteFile)="dropHazardousFile()"
-              [disabled]="hazardousType == 'select-catergory'"
-              [displayFileLoaded]="true"
-              [fileFromAWS]="hazardousFileAWS"
-            >
-              <div class="hazardous-drag-file-container">
-                {{ "fiscal-documents.drag-files" | translate }}
-                <span
-                  (click)="fileBar.clickFileInputElement()"
-                  class="browse-btn"
-                  [ngClass]="hazardousType == 'select-catergory' ? 'disabled' : ''"
-                >
-                  {{ "fiscal-documents.browse" | translate }}
-                </span>
-              </div>
-            </bego-drag-file-bar>
-          </div>
-        </div>
+        <bego-drag-drop
+          [maxSize]="10000000"
+          [lang]="fileLang"
+          [fileInfo]="fileInfo"
+          [disabled]="hazardousType == 'select-catergory'"
+          (fileSelected)="selectHazardousFile($event)"></bego-drag-drop>
       </div>
 
-      <!-- cargo description -->
-      <div class="section">
+      <div class="field cargo-description">
         <div class="section-title">
           <span class="asterisk">*</span>
-          {{ "orders.txt-cargo" | translate }}
+          {{ 'orders.txt-cargo' | translate }}
         </div>
-      </div>
-      <div class="section section-padding">
-        <mat-form-field class="input-textarea" appearance="fill">
-          <textarea
-            matInput
-            class="comments"
-            placeholder=""
-            rows="4"
-            formControlName="description"
-            (click)="orderWithCP && showUnitDetailsModal()"
-          >
-          </textarea>
-        </mat-form-field>
+
+        <bego-text-area
+          keyValue="description"
+          [customPlaceholder]="'orders.placeholder-cargo' | translate"
+          [customTextarea]="orderWithCP"
+          [defaultValue]="step2Form.get('description')!.value"
+          (openModal)="orderWithCP && showUnitDetailsModal()"
+          (sendData)="setCargoDescirption($event)"></bego-text-area>
       </div>
     </div>
   </form>

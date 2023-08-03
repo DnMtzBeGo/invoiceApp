@@ -23,7 +23,7 @@ import { Subscription, concat, from, of } from "rxjs";
 import { mergeAll, switchMap, toArray, mapTo } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { ContinueModalComponent } from "./components/continue-modal/continue-modal.component";
-import { BegoStepper, StepperOptions } from "@begomx/ui-components";
+import { BegoMarks, BegoStepper, StepperOptions } from "@begomx/ui-components";
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
@@ -56,11 +56,11 @@ export class OrdersComponent implements OnInit {
   ordersSteps: Step[] = [
     {
       text: "1",
-      nextBtnTxt: this.translateService.instant("orders.next-step"),
+      nextBtnTxt: this.translateService.instant("orders.continue-to-dropoff"),
     },
     {
       text: "2",
-      nextBtnTxt: this.translateService.instant("orders.continue-to-dropoff"),
+      nextBtnTxt: this.translateService.instant("orders.next-step"),
     },
     {
       text: "3",
@@ -160,6 +160,7 @@ export class OrdersComponent implements OnInit {
   public thumbnailMapFile: Array<any> = [];
 
   @ViewChild(BegoStepper) stepperRef: BegoStepper;
+  @ViewChild(BegoMarks) marksRef: BegoMarks;
 
   get currentStepIndex(): number {
     return this.stepperRef?.controller.currentStep ?? 0;
@@ -191,12 +192,12 @@ export class OrdersComponent implements OnInit {
               this.translateService.instant("orders.next-step");
             break;
           case 1:
-            this.typeOrder = this.translateService.instant("orders.title-pickup");
+            this.typeOrder = this.translateService.instant("orders.title-dropoff");
             this.ordersSteps[this.currentStepIndex].nextBtnTxt =
               this.translateService.instant("orders.continue-to-dropoff");
             break;
           case 2:
-            this.typeOrder = this.translateService.instant("orders.title-dropoff");
+            this.typeOrder = this.translateService.instant("orders.title-cargo-info");
             this.ordersSteps[this.currentStepIndex].nextBtnTxt =
               this.translateService.instant("orders.next-step");
             break;
@@ -232,7 +233,9 @@ export class OrdersComponent implements OnInit {
     );
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.marksRef.controller = this.stepperRef.controller
+  }
 
   ngOnDestroy() {
     if(this.membersToAssigned.hasOwnProperty('drivers') && this.membersToAssigned.hasOwnProperty('trucks') && this.membersToAssigned.hasOwnProperty('trailers')) {

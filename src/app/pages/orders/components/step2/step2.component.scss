@@ -1,9 +1,73 @@
 @import "~/src/styles";
 
+.select-units-input {
+  position: relative;
+
+  bego-increment-decrement {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+
+    ::ng-deep .increment-decrement-container button {
+      background: none;
+    }
+  }
+
+  bego-button-toggle {
+    ::ng-deep {
+      .option-label {
+        padding: 20px;
+
+        &.first {
+          justify-content: flex-start;
+        }
+        &.second {
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+}
+
+bego-select {
+  width: 360px;
+
+  .cargo-type-icon {
+    margin-right: 15px;
+  }
+}
+
+.selectableHazard {
+  align-items: flex-start;
+  width: 100%;
+  gap: 44px;
+
+  &-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: inherit;
+  }
+
+  bego-drag-drop {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+bego-text-area {
+  height: 108px;
+}
+
 .steps-container {
-  display: flex;
-  flex-direction: column;
   padding: 0 57px;
+
+  .cargo-description {
+    flex-direction: column;
+    align-items: initial;
+  }
 }
 
 .section {
@@ -80,7 +144,6 @@
 
 .select-units-input {
   position: relative;
-  max-width: 310px;
 
   .input-increment {
     position: absolute;
@@ -165,12 +228,10 @@
   }
 }
 
-.input-textarea {
-  width: 100%;
-}
-
 .btn-weight {
   cursor: pointer;
+  line-height: 52px;
+
   span {
     font-size: 18px;
     letter-spacing: 1px;

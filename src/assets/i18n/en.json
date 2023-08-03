@@ -49,6 +49,7 @@
     "placeholder-mail": "example@mail.com",
     "placeholder-reference": "#Reference",
     "title-cargo-info": "Cargo Information",
+    "placeholder-rfc": "RFC",
     "placeholder-date": "No date selected",
     "placeholder-time": "No time selected",
     "btn-add-weight": "Add your Weight",
@@ -112,6 +113,12 @@
       "unit_type": "Unit type is missing",
       "cp-cancel": "Cancel",
       "cp-confirm": "Confirm"
+    },
+    "upload-file": {
+      "label-browse": "Drag your file",
+      "label-or": "or",
+      "btn-browse": "Choose your file",
+      "label-max": "max"
     }
   },
   "checkout": {

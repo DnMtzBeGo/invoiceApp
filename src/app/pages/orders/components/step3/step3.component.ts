@@ -134,19 +134,21 @@ export class Step3Component implements OnInit {
     return null as any;
   }
 
-  phoneFlagChangeValue(value: any) {
-    this.phoneFlag = value;
-    this.step3Form.get("country_code")!.setValue(value);
+  updateFormGroup(data: any) {
+    this.step3Form.get(data.key)!.setValue(data.value)
   }
 
-  phoneCodeChangeValue(value: any) {
-    this.phoneCode = value;
-    this.step3Form.get("phoneCode")!.setValue(value);
+  updateFormPhoneCode(data: any) {
+    this.phoneFlag = data.code;
+    this.phoneCode = data.dial_code;
+
+    this.step3Form.get("country_code")!.setValue(data.code);
+    this.step3Form.get("phoneCode")!.setValue(data.dial_code);
   }
 
-  phoneNumberChangeValue(value: any) {
-    this.phoneNumber = value;
-    this.step3Form.get("phonenumber")!.setValue(value);
+  phoneNumberChangeValue(data: any) {
+    this.phoneNumber = data.value;
+    this.step3Form.get("phonenumber")!.setValue(data.value);
   }
 
   changeLocation(type: string) {

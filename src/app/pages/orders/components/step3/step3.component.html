@@ -1,45 +1,37 @@
 <div class="steps">
   <form [formGroup]="step3Form">
     <div class="steps-container">
-      <div class="address-box">
-        <p class="icons address-check">
-          {{ locations.dropoff | splitGoogleAddress
-          }}<span>{{ locations.dropoff | splitGoogleAddressSecond }}</span>
-        </p>
-        <div class="btn-change icons change-route" (click)="changeLocation('dropoff')">
-          {{ "orders.btn-change-route-dropoff" | translate }}
-        </div>
+      <h2><span>* </span>{{ 'orders.title-personal-info' | translate }}</h2>
+
+      <div class="field">
+        <bego-label-input size="small" textLabel="Full name*"></bego-label-input>
+        <bego-input
+          keyValue="fullname"
+          (value)="updateFormGroup($event)"
+          [placeholder]="'orders.placeholder-fullname' | translate"></bego-input>
       </div>
 
-      <h2><span>* </span>{{ "orders.title-personal-info" | translate }}</h2>
+      <div class="field">
+        <bego-phone-code-select
+          [flag]="phoneFlag"
+          [selectedPhoneCode]="phoneCode"
+          (sendValues)="updateFormPhoneCode($event)"></bego-phone-code-select>
+        <bego-input
+          type="phone"
+          [setValue]="phoneNumber"
+          (value)="phoneNumberChangeValue($event)"
+          [placeholder]="'bego-phone-input.phone' | translate"></bego-input>
+      </div>
 
-      <mat-form-field>
-        <i class="icon icon-user"></i>
-        <mat-label>{{ "orders.placeholder-fullname" | translate }}</mat-label>
-        <input matInput formControlName="fullname" />
-      </mat-form-field>
+      <div class="field">
+        <bego-label-input size="small" textLabel="Email*"></bego-label-input>
+        <bego-input keyValue="email" (value)="updateFormGroup($event)" [placeholder]="'orders.placeholder-mail' | translate"></bego-input>
+      </div>
 
-      <bego-phone-input
-        [phoneFlag]="phoneFlag"
-        [phoneCode]="phoneCode"
-        [phoneNumber]="phoneNumber"
-        (phoneFlagChange)="phoneFlagChangeValue($event)"
-        (phoneCodeChange)="phoneCodeChangeValue($event)"
-        (phoneNumberChange)="phoneNumberChangeValue($event)"
-      >
-      </bego-phone-input>
-
-      <mat-form-field>
-        <i class="icon icon-email"></i>
-        <mat-label>{{ "orders.placeholder-mail" | translate }}</mat-label>
-        <input matInput formControlName="email" />
-      </mat-form-field>
-
-      <mat-form-field *ngIf="orderWithCP">
-        <img src="../../../assets/orders/rfc.svg" alt="" class="icon" />
-        <mat-label>RFC</mat-label>
-        <input matInput formControlName="rfc" autocomplete="off" />
-      </mat-form-field>
+      <div class="field" *ngIf="orderWithCP">
+        <bego-label-input size="small" textLabel="RFC*"></bego-label-input>
+        <bego-input keyValue="rfc" (value)="updateFormGroup($event)" [placeholder]="'orders.placeholder-rfc' | translate"></bego-input>
+      </div>
     </div>
   </form>
 </div>
