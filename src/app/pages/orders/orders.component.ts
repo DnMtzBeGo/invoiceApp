@@ -391,6 +391,24 @@ export class OrdersComponent implements OnInit {
   }
 
   getStep2FormData(data: any) {
+    this.orderData.dropoff.contact_info.name = data.fullname;
+    this.orderData.dropoff.contact_info.telephone = data.phoneCode.concat(
+      " ",
+      data.phonenumber
+    );
+    this.orderData.dropoff.contact_info.email = data.email;
+    this.orderData.dropoff.contact_info.country_code = data.country_code;
+    if (this.isOrderWithCP) {
+      this.orderData.dropoff.contact_info["rfc"] = data.rfc;
+      if (this.validateRFC(data.rfc)) {
+        this.orderWithCPFields.dropoffRFC = true;
+      } else {
+        this.orderWithCPFields.dropoffRFC = false;
+      }
+    }
+  }
+
+  getStep3FormData(data: any) {
     this.orderData.cargo["53_48"] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoUnits;
@@ -425,24 +443,6 @@ export class OrdersComponent implements OnInit {
       this.orderData.cargo["commodity_quantity"] = data.commodity_quantity;
     }
     this.orderData.cargo.weigth = data.cargoWeight;
-  }
-
-  getStep3FormData(data: any) {
-    this.orderData.dropoff.contact_info.name = data.fullname;
-    this.orderData.dropoff.contact_info.telephone = data.phoneCode.concat(
-      " ",
-      data.phonenumber
-    );
-    this.orderData.dropoff.contact_info.email = data.email;
-    this.orderData.dropoff.contact_info.country_code = data.country_code;
-    if (this.isOrderWithCP) {
-      this.orderData.dropoff.contact_info["rfc"] = data.rfc;
-      if (this.validateRFC(data.rfc)) {
-        this.orderWithCPFields.dropoffRFC = true;
-      } else {
-        this.orderWithCPFields.dropoffRFC = false;
-      }
-    }
   }
 
   getStep4FormData(data: any) {

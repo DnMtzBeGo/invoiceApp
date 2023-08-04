@@ -1,110 +1,320 @@
-@import "../../../../../styles.scss";
+@import "~/src/styles";
 
-.steps-container {
-    padding: 0 57px;
+.select-units-input {
+  position: relative;
 
-    h2 {
-        font-size: 18px;
-        letter-spacing: 0.5px;
-        color: #EDEDED;
-        span {
-            color: #FFE000;
-        }
+  bego-increment-decrement {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+
+    ::ng-deep .increment-decrement-container button {
+      background: none;
     }
+  }
+
+  bego-button-toggle {
+    ::ng-deep {
+      .option-label {
+        padding: 20px;
+
+        &.first {
+          justify-content: flex-start;
+        }
+        &.second {
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
 }
 
-.address-box {
-    padding: 36px 20px 23px 57px;
-    margin-bottom: 32px;
-    max-width: 545px;
-    transform: translateX(-57px);
-    border-radius: 0 8px 8px 0;
-    background-color: #0B1117;
-    box-shadow: 0px 10px 10px #040B11, inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
+bego-select {
+  width: 360px;
 
-    p {
-        color: #EDEDED;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        position: relative;
-        font-weight: 500;
-        font-size: 18px;
-        line-height: 25px;
-        letter-spacing: 0.5px;
-        text-transform: capitalize;
-        padding-left: 65px;
-        margin-bottom: 58px;
+  .cargo-type-icon {
+    margin-right: 15px;
+  }
+}
 
-        span {
-            display: block;
-            font-weight: 300;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #C1C7D0;
-        }
+.selectableHazard {
+  align-items: flex-start;
+  width: 100%;
+  gap: 44px;
+
+  &-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: inherit;
+  }
+
+  bego-drag-drop {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+bego-text-area {
+  height: 108px;
+}
+
+.steps-container {
+  padding: 0 57px;
+
+  .cargo-description {
+    flex-direction: column;
+    align-items: initial;
+  }
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .asterisk {
+    color: #706b5d;
+  }
+
+  &.right {
+    justify-content: flex-end;
+  }
+
+  .hazardous-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 40px;
+
+    > div:first-child {
+      min-width: 315px;
     }
 
-    .btn-change {
-        color: #C1C7D0;
-        font-size: 16px;
-        font-weight: 400;
-        text-decoration: underline;
-        margin: 0;
-        letter-spacing: 0.5px;
-        position: relative;
-        padding-left: 65px;
-        text-transform: capitalize;
+    > div:last-child {
+      width: 100%;
     }
 
-    .icons {
-        &::before {
-            content: '';
-            font-family: $icomoon-font-family;
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translate(0, -50%);
-            width: 35px;
-            height: 35px;
-            text-align: center;
-            line-height: 35px;
-            border-radius: 50%;
-        }
+    .hazardous-drag-file-container {
+      font-size: 14px;
+      font-weight: 300;
     }
 
-    .address-check {
-
-        &::before {
-            content: "\e916";
-            font-size: 25px;
-            background: #1C232A;
-            box-shadow: inset -2px -2px 4px #10161C, inset 2px 2px 4px #1C232A;
-        }
+    .upload-file-bar {
+      font-size: 12px;
+      background-color: red;
     }
 
-    .change-route {
-        display: inline;
-        cursor: pointer;
-        &::before {
-            content: "\e909";
-            font-size: 11px;
-            width: 33px;
-            height: 33px;
-            color: $yellow-color;
-            border: 1px solid #494C50;
-        }
+    .hazardous-input {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .selectableHazard {
+    width: 100%;
+  }
+}
+
+// ::ng-deep.mat-form-field-appearence-legacy.mat-form-field-can-float.mat-form-field-should-float.mat-form-field-label {
+//     transform: unset;
+// }
+
+.section-padding {
+  padding-bottom: 50px;
+}
+
+.input-calendar {
+  width: 100%;
+  max-width: 350px;
+
+  input {
+    display: none;
+  }
+}
+
+.select-units-input {
+  position: relative;
+
+  .input-increment {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 126px;
+    height: 46px;
+    display: flex;
+    background: #e3e3e3;
+    box-shadow: inset 0px 2px 4px rgba(134, 134, 134, 0.5),
+      inset -2px -2px 4px rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    color: #040b11;
+    font-size: 18px;
+    z-index: 1;
+    height: 46px;
+    justify-content: space-evenly;
+    align-items: center;
+
+    .icon {
+      padding: 14px;
+      cursor: pointer;
     }
 
-    &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 74px;
-        transform: translate(-0.5px, 0);
-        width: 1px;
-        height: 27px;
-        background: #C1C7D0;
+    div {
+      background: #fff;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      text-align: center;
+      line-height: 42px;
     }
+  }
+
+  .mat-button-toggle-appearance-standard {
+    &:first-child {
+      padding-right: 63px;
+    }
+
+    &:last-child {
+      padding-left: 63px;
+    }
+  }
+}
+
+.btn-input-calendar {
+  min-width: 314px;
+  padding-left: 65px;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 46px;
+  position: relative;
+  background: #0b1117;
+  border: 2px solid #171e24;
+  box-shadow: inset 4px 4px 10px #040b11;
+  border-radius: 8px;
+  cursor: pointer;
+
+  .icon-calendar {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(18px, -60%);
+    font-size: 23px;
+    font-weight: 400;
+  }
+
+  .icon-down {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    width: 39px;
+    height: 43px;
+    background: linear-gradient(180deg, #12171d 74.49%, #14191f 96.15%);
+    box-shadow: inset 0px 11px 10px #040b11;
+    border-radius: 6px;
+    color: #ededed;
+    text-align: center;
+    line-height: 43px;
+    font-size: 14px;
+  }
+}
+
+.btn-weight {
+  cursor: pointer;
+  line-height: 52px;
+
+  span {
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-decoration-line: underline;
+    text-transform: capitalize;
+    color: $lighter-color;
+  }
+  .icon {
+    border: 1px solid $light-color;
+    border-radius: 50%;
+    padding: 6px;
+    margin-right: 20px;
+
+    &::before {
+      color: $yellow-color;
+    }
+  }
+}
+
+textarea {
+  resize: none;
+
+  &.mat-input-element {
+    border: 1px solid #1c232a;
+    border-radius: 8px;
+    caret-color: #ffffff;
+    padding: 10px;
+    font-family: "Avenir", Helvetica, sans-serif;
+
+    &::placeholder {
+      font-family: "Avenir", Helvetica, sans-serif;
+      color: #89898a;
+    }
+  }
+}
+
+.input-selectable-container {
+  width: 100%;
+  height: auto;
+  position: relative;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  cursor: pointer;
+
+  .value-selected {
+    color: #ededed;
+  }
+
+  > p {
+    width: 100%;
+    border: none;
+    border-radius: 30px;
+    background-color: #0b1117;
+    box-shadow: 0 1px 0 0 #494c50;
+    text-align: center;
+    padding: 6px 5px;
+    color: #494c50;
+    font-family: "Avenir", Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 19px;
+    pointer-events: none;
+
+    > i {
+      position: absolute;
+      z-index: 9;
+      top: 5px;
+      left: 13px;
+      color: #494c50;
+    }
+  }
+
+  ::ng-deep ionic-selectable {
+    position: absolute;
+    top: 0;
+  }
+
+  ::ng-deep .selectable-icon {
+    display: none !important;
+  }
+
+  ::ng-deep .selectable-value-item {
+    display: none;
+  }
 }
