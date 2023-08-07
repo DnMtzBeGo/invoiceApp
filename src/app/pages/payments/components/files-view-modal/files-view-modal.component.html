@@ -1,0 +1,24 @@
+<div class="files-view-container">
+  <div class="files-view-header">
+    <mat-icon class="close-icon" (click)="close()">close</mat-icon>
+    <div class="text-files-header">
+      <h1 class="title-modal-files">{{ templat_text.title | translate }}</h1>
+      <label class="info-modal-files">
+        {{ templat_text.subtitle | translate }}
+      </label>
+    </div>
+  </div>
+  <div class="files-view-body">
+    <div class="container">
+      <div class="files-view">
+        <bego-drag-drop-documents
+          [selectedFiles]="files"
+          [showBegoDragDrop]="false"
+          [showIconTrash]="false"
+          [showMaxFile]="files.length > 0"
+          (iconClick)="onIconClick($event)">
+        </bego-drag-drop-documents>
+      </div>
+    </div>
+  </div>
+</div>

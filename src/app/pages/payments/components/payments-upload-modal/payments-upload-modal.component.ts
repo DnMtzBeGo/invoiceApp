@@ -5,7 +5,6 @@ import { CurrencyMaskConfig } from 'ngx-currency';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { EditedModalComponent } from '../edited-modal/edited-modal.component';
-
 @Component({
   selector: 'app-payments-upload-modal',
   templateUrl: './payments-upload-modal.component.html',
@@ -116,6 +115,7 @@ export class PaymentsUploadModalComponent implements OnInit {
   }
 
   checkValidated() {
+    this.order_number = this.order_number.toUpperCase();
     this.validated = Boolean(
       this.files.xml.file &&
         this.files.pdf.file &&
@@ -143,8 +143,8 @@ export class PaymentsUploadModalComponent implements OnInit {
         this.close('success');
       },
       error: ({ error: { error } }) => {
-        const { validationErrors, message } = error;
-        this.errorAlert(error.hasOwnProperty('validationErrors') ? validationErrors[0].message[this.lang] : message[this.lang]);
+        const { errors, message } = error;
+        this.errorAlert(error.hasOwnProperty('errors') ? errors[0].message[this.lang] : message);
       }
     });
   }

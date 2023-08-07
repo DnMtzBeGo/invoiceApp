@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { EditedModalComponent } from './components/edited-modal/edited-modal.component';
+import { FilesViewModalComponent } from './components/files-view-modal/files-view-modal.component';
 
 @Component({
   selector: 'app-payments',
@@ -60,6 +61,16 @@ export class PaymentsComponent implements OnInit {
     {
       label: this.translate('view_xml', 'actions'),
       id: 'view_xml',
+      icon: 'eye'
+    },
+    {
+      label: this.translate('view_vouchers', 'actions'),
+      id: 'view_vouchers',
+      icon: 'eye'
+    },
+    {
+      label: this.translate('view_upfronts', 'actions'),
+      id: 'view_upfronts',
       icon: 'eye'
     }
   ];
@@ -122,7 +133,9 @@ export class PaymentsComponent implements OnInit {
             enabled: false,
             options: {
               view_pdf: !!payment.files?.pdf,
-              view_xml: !!payment.files?.xml
+              view_xml: !!payment.files?.xml,
+              view_vouchers: payment?.vouchers,
+              view_upfronts: payment?.upfront_vouchers
             }
           };
 
@@ -155,6 +168,12 @@ export class PaymentsComponent implements OnInit {
         break;
       case 'view_xml':
         this.openFile(data, 'xml');
+        break;
+      case 'view_vouchers':
+        this.openFilesViewModal(data, 'vouchers');
+        break;
+      case 'view_upfronts':
+        this.openFilesViewModal(data, 'upfront_vouchers');
         break;
     }
   }
@@ -204,6 +223,16 @@ export class PaymentsComponent implements OnInit {
       autoFocus: false,
       disableClose: true,
       backdropClass: ['brand-dialog-1', 'no-padding', 'full-visible']
+    });
+  }
+
+  openFilesViewModal(data: any, modal_key: string) {
+    const dialogRef = this.matDialog.open(FilesViewModalComponent, {
+      data: { ...data, modal_key },
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1']
     });
   }
 
