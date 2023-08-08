@@ -24,6 +24,13 @@ import { mergeAll, switchMap, toArray, mapTo } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { ContinueModalComponent } from "./components/continue-modal/continue-modal.component";
 import { BegoMarks, BegoStepper, StepperOptions } from "@begomx/ui-components";
+
+export interface OrderPreview {
+  destinations: string[],
+  order_id: string,
+  order_number: string,
+}
+
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
@@ -78,6 +85,7 @@ export class OrdersComponent implements OnInit {
   hazardousFileAWS: object = {};
   catalogsDescription: object = {};
 
+  @Input() orderPreview?: OrderPreview;
   public orderData: Order = {
     stamp: false,
     reference_number: null,
@@ -90,6 +98,11 @@ export class OrdersComponent implements OnInit {
       description: "",
       weigth: [1],
       hazardous_type: "",
+      unit_type: '',
+      packaging: '',
+      cargo_goods: '',
+      commodity_quantity: 0,
+      hazardous_material: '',
     },
     pickup: {
       lat: 0,
@@ -451,30 +464,21 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  validStep1(valid: any) {
-    if (valid) {
-      this.stepsValidate[0] = true;
-    } else {
-      this.stepsValidate[0] = false;
-    }
+  validStep1(valid: boolean) {
+    this.stepsValidate[0] = valid;
+    if (valid) this.sendPickup();
     this.calculateProgress();
   }
 
-  validStep2(valid: any) {
-    if (valid) {
-      this.stepsValidate[1] = true;
-    } else {
-      this.stepsValidate[1] = false;
-    }
+  validStep2(valid: boolean) {
+    this.stepsValidate[1] = valid;
+    if (valid) this.sendDropoff();
     this.calculateProgress();
   }
 
-  validStep3(valid: any) {
-    if (valid) {
-      this.stepsValidate[2] = true;
-    } else {
-      this.stepsValidate[2] = false;
-    }
+  validStep3(valid: boolean) {
+    this.stepsValidate[2] = valid;
+    if (valid) this.sendCargo();
     this.calculateProgress();
   }
 
@@ -485,6 +489,93 @@ export class OrdersComponent implements OnInit {
       this.stepsValidate[3] = false;
     }
     this.calculateProgress();
+  }
+
+  async sendPickup() {
+    const { pickup, reference_number } = this.orderData;
+    const { startDate, contact_info } = pickup;
+    const [destination_id] = this.orderPreview?.destinations;
+
+    const destinationPayload = {
+      destination_id,
+      reference_number,
+      start_date: startDate,
+      name: contact_info.name,
+      email: contact_info.email,
+      telephone: contact_info.telephone,
+      country_code: contact_info.country_code,
+      rfc: contact_info.rfc,
+    };
+
+    this.sendDestination(destinationPayload);
+  }
+
+  async sendDropoff() {
+    const { dropoff } = this.orderData;
+    const { contact_info, extra_notes } = dropoff;
+    const [, destination_id] = this.orderPreview?.destinations;
+
+    const destinationPayload = {
+      destination_id,
+      extra_notes,
+      name: contact_info.name,
+      email: contact_info.email,
+      telephone: contact_info.telephone,
+      country_code: contact_info.country_code,
+      rfc: contact_info.rfc,
+    };
+
+    this.sendDestination(destinationPayload);
+  }
+
+  async sendCargo() {
+    const { cargo } = this.orderData;
+    const { order_id } = this.orderPreview;
+
+    const cargoPayload = {
+      type: cargo.type,
+      description: cargo.description,
+      unit_type: cargo.unit_type,
+      commodity_quantity: cargo.commodity_quantity,
+      required_units: cargo.required_units,
+      weight: cargo.weigth,
+      weight_uom: 'kg',
+      trailer: {
+        load_cap: cargo['53_48'],
+      },
+    };
+
+    if (this.isOrderWithCP) {
+      Object.assign(cargoPayload, {
+        hazardous_material: cargo.hazardous_material,
+        packaging: cargo.packaging,
+        hazardous_type: cargo.hazardous_type,
+        cargo_goods: cargo.cargo_goods,
+      })
+    }
+
+    for (const key in cargoPayload) {
+      if ([undefined, null, ''].includes(cargoPayload[key])) {
+        delete cargoPayload[key]
+      };
+    }
+
+    const req = await this.auth.apiRestPut(JSON.stringify(cargoPayload), `orders/cargo/${order_id}`, { apiVersion: 'v1.1' });
+    await req.toPromise();
+
+    if (this.hazardousFile) {
+      const formData = new FormData();
+      formData.append('order_id', order_id);
+      formData.append('file', this.hazardousFile);
+
+      const req = await this.auth.uploadFilesSerivce(formData, 'orders/upload_hazardous');
+      await req.toPromise();
+    }
+  }
+
+  async sendDestination(payload: any) {
+    const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/destination', { apiVersion: 'v1.1' });
+    await req.toPromise();
   }
 
   async getETA(locations: GoogleLocation) {

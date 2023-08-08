@@ -8,8 +8,13 @@ export interface Order {
     type: string,
     required_units: number,
     description: string,
+    cargo_goods?: string,
     hazardous_type?: string,
+    hazardous_material?: string,
+    packaging?: string,
     weigth: Array<number>,
+    unit_type: string,
+    commodity_quantity: number,
   },
   pickup: {
     lat: number,
@@ -21,7 +26,8 @@ export interface Order {
       name: string,
       telephone: string,
       email: string,
-      country_code: string
+      country_code: string,
+      rfc?: string
     },
     place_id_pickup: string
   },
@@ -37,7 +43,8 @@ export interface Order {
       name: string,
       telephone: string,
       email: string,
-      country_code: string
+      country_code: string,
+      rfc?: string
     },
     place_id_dropoff: string
   }

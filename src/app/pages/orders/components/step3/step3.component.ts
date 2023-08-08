@@ -68,11 +68,11 @@ export class Step3Component implements OnInit {
   unitsData = {
     first: {
       label: '53 ft',
-      value: 53
+      value: '53'
     },
     second: {
       label: '48 ft',
-      value: 48
+      value: '48'
     }
   };
 

@@ -20,6 +20,7 @@ import { GoogleMapsService } from "src/app/shared/services/google-maps/google-ma
 import { HeaderService } from "./services/header.service";
 import { ofType } from "src/app/shared/utils/operators.rx";
 import { CustomMarker } from './custom.marker';
+import { OrderPreview } from "../orders/orders.component";
 
 declare var google: any;
 // 10 seconds for refreshing map markers
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit {
   datepickup: number;
   datedropoff: number;
   draftData: any;
+  orderPreview: OrderPreview;
   headerTransparent: boolean = true;
   showOrderDetails: boolean = false;
 
@@ -183,9 +185,47 @@ export class HomeComponent implements OnInit {
     this.subs.unsubscribe();
   }
 
-  showNewOrderCard() {
+  async createDraft() {
+    const draftPayload = {
+      destinations: [
+        {
+          type: 'pickup',
+          location: await this.getLocationId(this.locations.place_id_pickup),
+        },
+        {
+          type: 'dropoff',
+          location: await this.getLocationId(this.locations.place_id_dropoff),
+        },
+      ],
+      stamp: this.userWantCP,
+      type: 'FTL',
+      target: 'carriers',
+      origin: 'web',
+    };
+
+    const req = await this.webService.apiRest(JSON.stringify(draftPayload), 'orders/create_draft', { apiVersion: 'v1.1' });
+    const { result } = await req.toPromise();
+
+    this.orderPreview = result;
+  }
+
+  async showNewOrderCard() {
+    await this.createDraft();
     this.showOrderDetails = true;
   }
+
+  private async getLocationId(place_id: string): Promise<string> {
+    const payload = { place_id };
+
+    const req = await this.webService.apiRestPut(
+      JSON.stringify(payload),
+      'orders/locations',
+      { apiVersion: 'v1.1', loader: false, }
+    )
+
+    const res = await req.toPromise();
+    return res.result._id
+  };
 
   updateLocations(data: GoogleLocation) {
     this.locations = data;
