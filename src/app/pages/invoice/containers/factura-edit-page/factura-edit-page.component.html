@@ -1,3 +1,4 @@
+<!-- Create or edit a invoice view -->
 <div class="app-factura-edit-page">
   <!-- <mat-toolbar class="page-header" role="heading">
     <h1 *ngIf="model === 'factura'">
@@ -69,7 +70,8 @@
               (ngModelChange)="formEmitter.next(['rfc:search', (vm.form.rfc = $event.toUpperCase().trim())])"
               maxlength="13"
               [matAutocomplete]="auto"
-              [readonly]="vm.readonly" />
+              [readonly]="vm.readonly"
+              (blur)="onReceiverRfcChanged($event)" />
 
             <span
               class="brand-icon-help"
@@ -256,6 +258,31 @@
               matTooltipClass="brand-tooltip-1">
               <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
             </span>
+          </mat-form-field>
+
+          <mat-form-field class="brand-field-1" appearance="outline" *ngIf="isForeignReceiver" [attr.readonly]="vm.readonly">
+            <mat-label>Número de registro de identidad</mat-label>
+            <input
+              matInput
+              name="num_reg_id_trib"
+              placeholder=""
+              type="text"
+              [ngModel]="vm.form?.num_reg_id_trib"
+              [value]=""
+              [readonly]="vm.readonly"
+              (ngModelChange)="formEmitter.next(['num_reg_id_trib', (vm.form.num_reg_id_trib = $event.toUpperCase().trim())])" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="brand-field-1" *ngIf="isForeignReceiver" [attr.readonly]="vm.readonly">
+            <mat-label>Residencia fiscal</mat-label>
+            <mat-select
+              class="disable-custom-format"
+              name="residencia_fiscal"
+              [ngModel]="vm.form?.residencia_fiscal"
+              [readonly]="vm.readonly"
+              (ngModelChange)="formEmitter.next(['residencia_fiscal', (vm.form.residencia_fiscal = $event.toUpperCase().trim())])">
+              <mat-option *ngFor="let option of paisCatalogue" [value]="option.code"> {{ option.code }} - {{ option.name }} </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </section>

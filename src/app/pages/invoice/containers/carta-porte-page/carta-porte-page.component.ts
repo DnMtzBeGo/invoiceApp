@@ -73,7 +73,7 @@ export class CartaPortePageComponent implements OnInit {
       this.mercanciasInfo = carta_porte.mercancias;
     }
 
-    if (changes.facturaInfo?.currentValue?.complementos.length > 0) {
+    if (changes.facturaInfo?.currentValue?.complementos?.length > 0) {
       this.cartaPorteDisabled = true;
       // console.log('El switch se prende', this.cartaPorteDisabled);
     } else {

@@ -114,6 +114,7 @@ export class MercanciasComponent implements OnInit {
         descripcion: e.commodity.value.bienesTransportadosDescripcion,
         dimensiones: info.dimensiones,
         valor_mercancia: parseFloat(info.valorMercancia),
+        fraccion_arancelaria: info.fraccionArancelaria,
         moneda: info.moneda,
         cantidad: parseInt(info.cantidad),
 

@@ -1,40 +1,32 @@
-import { addObjectKeys, prop } from "../../../../shared/utils/object";
+import { addObjectKeys, prop } from '../../../../shared/utils/object';
 
 const add = (x, y) => x + y;
 
 const isaN = (n) => !isNaN(n);
 
-export const validRFC = (rfc) =>
-  rfc != void 0 && rfc.length >= 12 && rfc.length <= 13;
+export const validRFC = (rfc) => rfc != void 0 && rfc.length >= 12 && rfc.length <= 13;
 
-const isRetencion = (impuesto) =>
-  impuesto.retencion === true ||
-  impuesto.es_retencion === true ||
-  impuesto.es_retencion === "true";
+const isRetencion = (impuesto) => impuesto.retencion === true || impuesto.es_retencion === true || impuesto.es_retencion === 'true';
 
 export const getImpuestoDescripcion = (impuesto) => {
   if (impuesto.descripcion) return impuesto.descripcion;
 
-  const tipo = isRetencion(impuesto) ? "Retención" : "Traslado";
-  let factor = impuesto.tipo_factor || impuesto.factor || "";
-  factor = factor === "Tasa" || factor === "" ? [] : [`(${factor})`];
+  const tipo = isRetencion(impuesto) ? 'Retención' : 'Traslado';
+  let factor = impuesto.tipo_factor || impuesto.factor || '';
+  factor = factor === 'Tasa' || factor === '' ? [] : [`(${factor})`];
 
-  return [tipo, "IVA"].concat(factor).join(" ");
+  return [tipo, 'IVA'].concat(factor).join(' ');
 };
 
 export const calcImporte = (concepto) => {
   const cantidad = !isNaN(concepto.cantidad) ? Number(concepto.cantidad) : 0;
-  const valor_unitario = !isNaN(concepto.valor_unitario)
-    ? Number(concepto.valor_unitario)
-    : 0;
+  const valor_unitario = !isNaN(concepto.valor_unitario) ? Number(concepto.valor_unitario) : 0;
 
   return cantidad * valor_unitario;
 };
 
 export const calcImpuesto = (subtotal) => (impuesto) => {
-  const tasa_cuota = !isNaN(impuesto.tasa_cuota)
-    ? Number(impuesto.tasa_cuota)
-    : 0;
+  const tasa_cuota = !isNaN(impuesto.tasa_cuota) ? Number(impuesto.tasa_cuota) : 0;
 
   return subtotal * tasa_cuota * (isRetencion(impuesto) ? -1 : 1);
 };
@@ -49,16 +41,13 @@ export const calcConceptoSubtotal = (concepto) => {
 
 export const calcConcepto = (concepto) => {
   const subtotal = calcConceptoSubtotal(concepto);
-  const impuestos = (concepto.impuestos || [])
-    .map(calcImpuesto(subtotal))
-    .reduce(add, 0);
+  const impuestos = (concepto.impuestos || []).map(calcImpuesto(subtotal)).reduce(add, 0);
   const total = subtotal + impuestos;
 
   return total;
 };
 
-export const calcSubtotal = (conceptos) =>
-  (conceptos || []).map(calcImporte).reduce(add, 0);
+export const calcSubtotal = (conceptos) => (conceptos || []).map(calcImporte).reduce(add, 0);
 
 export const calcDescuentos = (conceptos) =>
   (conceptos || [])
@@ -67,23 +56,17 @@ export const calcDescuentos = (conceptos) =>
     .map(Number)
     .reduce(add, 0);
 
-export const calcTotal = (conceptos) =>
-  (conceptos || []).map(calcConcepto).reduce(add, 0);
+export const calcTotal = (conceptos) => (conceptos || []).map(calcConcepto).reduce(add, 0);
 
 export const resolveImpuestoLabel = (impuestos, key, impuesto) => {
   const label =
     impuesto[key] ||
-    (impuestos || []).find(
-      (impuesto_) =>
-        getImpuestoDescripcion(impuesto_) === getImpuestoDescripcion(impuesto)
-    )?.[key] ||
-    "";
+    (impuestos || []).find((impuesto_) => getImpuestoDescripcion(impuesto_) === getImpuestoDescripcion(impuesto))?.[key] ||
+    '';
 
-  const tasa_cuota = !isNaN(impuesto.tasa_cuota)
-    ? `${Number(impuesto.tasa_cuota * 100)}%`
-    : "";
+  const tasa_cuota = !isNaN(impuesto.tasa_cuota) ? `${Number(impuesto.tasa_cuota * 100)}%` : '';
 
-  return label.replace(":tasa_cuota", tasa_cuota);
+  return label.replace(':tasa_cuota', tasa_cuota);
 };
 
 export const resolveImpuesto = (concepto, impuesto) => {
@@ -91,15 +74,15 @@ export const resolveImpuesto = (concepto, impuesto) => {
   const calc = calcImpuesto(subtotal)(impuesto);
 
   return isNaN(impuesto.tasa_cuota)
-    ? ""
+    ? ''
     : isRetencion(impuesto)
-    ? `($${Math.abs(calc).toLocaleString("en-US", {
+    ? `($${Math.abs(calc).toLocaleString('en-US', {
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        maximumFractionDigits: 2
       })})`
-    : `$${calc.toLocaleString("en-US", {
+    : `$${calc.toLocaleString('en-US', {
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        maximumFractionDigits: 2
       })}`;
 };
 
@@ -112,32 +95,29 @@ export const resolveImpuestosGroup = (impuestos, key, conceptos) => {
 
         return [
           {
-            [label]: Math.abs(
-              calcImpuesto(calcConceptoSubtotal(concepto))(impuesto)
-            ),
+            [label]: Math.abs(calcImpuesto(calcConceptoSubtotal(concepto))(impuesto))
           },
-          { [label]: isRetencion(impuesto) },
+          { [label]: isRetencion(impuesto) }
         ];
       })
   );
 
-  const impuestosGroupImpositivo = allImpuestos
-    .map((result) => result[1])
-    .reduce((o1, o2) => Object.assign(o1, o2), {});
+  const impuestosGroupImpositivo = allImpuestos.map((result) => result[1]).reduce((o1, o2) => Object.assign(o1, o2), {});
 
-  const impuestosGroup = allImpuestos
-    .map((result) => result[0])
-    .reduce(addObjectKeys, {});
+  const impuestosGroup = allImpuestos.map((result) => result[0]).reduce(addObjectKeys, {});
 
   return Object.entries(impuestosGroup).map(([label, impuesto]) => ({
     label,
     impuesto,
-    retencion: impuestosGroupImpositivo[label],
+    retencion: impuestosGroupImpositivo[label]
   }));
 };
 
+// TODO agregar campos de extranjeros
 export const fromFactura = (factura) => {
-  const rfc = factura.receptor?.rfc?.toUpperCase() ?? "";
+  const rfc = factura.receptor?.rfc?.toUpperCase() ?? '';
+  const num_reg_id_trib = factura.receptor?.num_reg_id_trib ?? '';
+  const residencia_fiscal = factura.receptor?.residencia_fiscal ?? '';
   const nombre = factura.receptor?.nombre;
   const usoCFDI = factura.receptor?.uso_cfdi;
   const regimen_fiscal = factura.receptor?.regimen_fiscal;
@@ -152,12 +132,14 @@ export const fromFactura = (factura) => {
     nombre,
     usoCFDI,
     regimen_fiscal,
+    num_reg_id_trib,
+    residencia_fiscal,
     direccion,
     emisor,
     lugar_de_expedicion,
     conceptos,
     documentos_relacionados,
-    ...factura,
+    ...factura
   };
 
   delete newFactura.receptor;
@@ -165,6 +147,7 @@ export const fromFactura = (factura) => {
   return newFactura;
 };
 
+// TODO agregar campos de extranjeros
 export const toFactura = (factura: any) => {
   const receptor = {
     rfc: factura.rfc,
@@ -172,7 +155,24 @@ export const toFactura = (factura: any) => {
     uso_cfdi: factura.usoCFDI,
     regimen_fiscal: factura.regimen_fiscal,
     direccion: { ...(factura.direccion || {}) },
+
+    num_reg_id_trib: factura.num_reg_id_trib,
+    residencia_fiscal: factura.residencia_fiscal
   };
+
+  if (factura.rfc !== 'XEXX010101000') {
+    delete receptor.num_reg_id_trib;
+    delete receptor.residencia_fiscal;
+
+    const indexRS = requiredPathsFactura.findIndex((el) => el === 'residencia_fiscal');
+    const indexNR = requiredPathsFactura.findIndex((el) => el === 'num_reg_id_trib');
+
+    if (indexRS != -1) requiredPathsFactura.splice(indexRS, 1);
+    if (indexNR != -1) requiredPathsFactura.splice(indexNR, 1);
+  } else {
+    requiredPathsFactura.push('num_reg_id_trib');
+    requiredPathsFactura.push('residencia_fiscal');
+  }
 
   const conceptos = (factura.conceptos || []).map((concepto) => ({
     ...concepto,
@@ -181,16 +181,16 @@ export const toFactura = (factura: any) => {
         ...impuesto,
         cve_sat: impuesto.clave ?? impuesto.cve_sat,
         es_retencion: impuesto.retencion ?? impuesto.es_retencion,
-        tipo_factor: impuesto.factor ?? impuesto.tipo_factor,
+        tipo_factor: impuesto.factor ?? impuesto.tipo_factor
       };
-    }),
+    })
   }));
 
   const newFactura = {
     ...factura,
     receptor,
     conceptos,
-    fecha_emision: new Date().toString(),
+    fecha_emision: new Date().toString()
   };
 
   delete newFactura.rfc;
@@ -198,6 +198,8 @@ export const toFactura = (factura: any) => {
   delete newFactura.usoCFDI;
   delete newFactura.regimen_fiscal;
   delete newFactura.direccion;
+  delete newFactura.num_reg_id_trib;
+  delete newFactura.residencia_fiscal;
 
   return newFactura;
 };
@@ -229,14 +231,11 @@ export const facturaPermissions = (factura) => {
     pdf_cancelado: factura?.status && [6, 7, 8].includes(factura.status),
     xml_acuse: factura?.status && [6, 7, 8].includes(factura.status),
     enviar_correo: factura?.status && [3, 4, 5].includes(factura.status),
-    duplicar:
-      factura?.status && [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(factura.status),
+    duplicar: factura?.status && [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(factura.status),
     cancelar: factura?.status && [3].includes(factura.status),
     eliminar: factura?.status && [1, 9].includes(factura.status),
-    cartaporte:
-      factura?.tipo_de_comprobante &&
-      ["I", "T"].includes(factura.tipo_de_comprobante),
-    showError: factura?.status && factura.status !== 3,
+    cartaporte: factura?.tipo_de_comprobante && ['I', 'T'].includes(factura.tipo_de_comprobante),
+    showError: factura?.status && factura.status !== 3
   };
 };
 
@@ -246,8 +245,8 @@ export const makeReceptorTemplate = (user) => {
       receptor: {
         rfc: user?.rfc,
         nombre: user?.company,
-        uso_cfdi: user?.cfdi,
-      },
+        uso_cfdi: user?.cfdi
+      }
     })
   );
 };
@@ -257,8 +256,8 @@ export const makeEmisorTemplate = (user) => {
     JSON.stringify({
       emisor: {
         rfc: user?.rfc,
-        nombre: user?.company,
-      },
+        nombre: user?.company
+      }
     })
   );
 };
@@ -277,59 +276,45 @@ export const previewFactura = (factura) => {
         impuestos: (concepto.impuestos || []).map((impuesto) => {
           return {
             ...impuesto,
-            total: calcImpuesto(subtotal)(impuesto),
+            total: calcImpuesto(subtotal)(impuesto)
           };
-        }),
+        })
       };
     }),
-    fecha_emision: new Date().toISOString(),
+    fecha_emision: new Date().toISOString()
   };
 };
 
-const empty = () => "";
+const empty = () => '';
 export const validators = {
   valor_unitario: (control, value) => {
-    const validations = [
-      (v) => !Boolean(String(v ?? "")) && "Campo numérico requerido",
-      (v) => +v < 0 && "Valor mínimo requerido de 0",
-    ];
+    const validations = [(v) => !Boolean(String(v ?? '')) && 'Campo numérico requerido', (v) => +v < 0 && 'Valor mínimo requerido de 0'];
 
-    return control.dirty || control.touched
-      ? (validations.find((f) => f(value)) || empty)(value)
-      : "";
+    return control.dirty || control.touched ? (validations.find((f) => f(value)) || empty)(value) : '';
   },
   cantidad: (control, value) => {
-    const validations = [
-      (v) => !Boolean(String(v ?? "")) && "Campo numérico requerido",
-      (v) => +v < 0 && "Valor mínimo requerido de 0",
-    ];
+    const validations = [(v) => !Boolean(String(v ?? '')) && 'Campo numérico requerido', (v) => +v < 0 && 'Valor mínimo requerido de 0'];
 
-    return control.dirty || control.touched
-      ? (validations.find((f) => f(value)) || empty)(value)
-      : "";
+    return control.dirty || control.touched ? (validations.find((f) => f(value)) || empty)(value) : '';
   },
   descuento: (control, value, concepto?) => {
     const validations = [
-      (v) => isNaN(v ?? undefined) && "Campo numérico requerido",
-      (v) => +v < 0 && "Valor mínimo requerido de 0",
-      (v) =>
-        +v > calcImporte(concepto) &&
-        "El descuento no puede superar el importe",
+      (v) => isNaN(v ?? undefined) && 'Campo numérico requerido',
+      (v) => +v < 0 && 'Valor mínimo requerido de 0',
+      (v) => +v > calcImporte(concepto) && 'El descuento no puede superar el importe'
     ];
 
-    return (control.dirty || control.touched) && value != null
-      ? (validations.find((f) => f(value)) || empty)(value)
-      : "";
-  },
+    return (control.dirty || control.touched) && value != null ? (validations.find((f) => f(value)) || empty)(value) : '';
+  }
 };
 
 export const facturaStatus = (key, status?) => {
   const defaults = {
-    color: "#ededed",
+    color: '#ededed'
   };
 
   const map = {
-    [9]: { color: "#fa3c00" },
+    [9]: { color: '#fa3c00' }
   };
 
   return map[status]?.[key] ?? defaults?.[key];
@@ -339,7 +324,7 @@ export const groupStatus = (list) => {
   const map = new Map();
 
   list.forEach((item) => {
-    const group = item.nombre.split(" ").shift();
+    const group = item.nombre.split(' ').shift();
     map.set(group, (map.get(group) ?? []).concat(item));
   });
 
@@ -359,29 +344,28 @@ export const optimizeInvoiceCatalog = (catalog?) => {
 };
 
 const requiredPathsFactura = [
-  "receptor.rfc",
-  "receptor.nombre",
-  "receptor.uso_cfdi",
-  "receptor.direccion.cp",
-  "condiciones_de_pago",
-  "emisor._id",
-  "emisor.rfc",
-  "emisor.nombre",
-  "emisor.regimen_fiscal",
-  "lugar_de_expedicion.cp",
-  "tipo_de_comprobante",
-  "metodo_de_pago",
-  "forma_de_pago",
-  "conceptos.0.nombre",
-  "conceptos.0.cve_sat",
-  "conceptos.0.unidad_de_medida",
-  "conceptos.0.valor_unitario",
-  "conceptos.0.cantidad",
-  "conceptos.0.descripcion",
+  'receptor.rfc',
+  'receptor.nombre',
+  'receptor.uso_cfdi',
+  'receptor.direccion.cp',
+  'condiciones_de_pago',
+  'emisor._id',
+  'emisor.rfc',
+  'emisor.nombre',
+  'emisor.regimen_fiscal',
+  'lugar_de_expedicion.cp',
+  'tipo_de_comprobante',
+  'metodo_de_pago',
+  'forma_de_pago',
+  'conceptos.0.nombre',
+  'conceptos.0.cve_sat',
+  'conceptos.0.unidad_de_medida',
+  'conceptos.0.valor_unitario',
+  'conceptos.0.cantidad',
+  'conceptos.0.descripcion'
 ];
 
-const requiredFieldF = (object) => (path) =>
-  ![void 0, ""].includes(prop(object, path.split(".")));
+const requiredFieldF = (object) => (path) => ![void 0, ''].includes(prop(object, path.split('.')));
 
 export const minimumRequiredFields = (factura) => {
   return requiredPathsFactura.every(requiredFieldF(factura));
