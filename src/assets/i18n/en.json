@@ -718,6 +718,7 @@
   },
   "invoice": {
     "invoices": {
+      "title": "Invoices",
       "filters": "Filters",
       "series": "Series",
       "emisor-btn": "Emisores",
