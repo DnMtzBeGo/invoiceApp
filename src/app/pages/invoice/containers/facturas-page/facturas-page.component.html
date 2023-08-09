@@ -1,25 +1,28 @@
 <div class="app-facturas-page">
   <div class="page-header" role="heading">
     <div>
-      <button
-        mat-flat-button
-        class="brand-btn-1 radius-30"
-        (click)="openFilters()"
-        style="z-index: 100"
-        [matBadge]="filtersCount(vm.params)"
-        matBadgeColor="warn"
-        matBadgeSize="small"
-        matBadgeOverlap="true"
-      >
-        {{ "invoice.invoices.filters" | translate }}
-        <img
-          src="/assets/images/invoice/filters.svg"
-          class="brand-filter-1"
-          style="margin-left: 4px"
-        />
-      </button>
+      <h1>{{ 'invoice.invoices.title' | translate }}</h1>
     </div>
     <div class="toolbar-right">
+      <div>
+        <button
+          mat-flat-button
+          class="brand-btn-1 radius-30"
+          (click)="openFilters()"
+          style="z-index: 100"
+          [matBadge]="filtersCount(vm.params)"
+          matBadgeColor="warn"
+          matBadgeSize="small"
+          matBadgeOverlap="true"
+        >
+          {{ "invoice.invoices.filters" | translate }}
+          <img
+            src="/assets/images/invoice/filters.svg"
+            class="brand-filter-1"
+            style="margin-left: 4px"
+          />
+        </button>
+      </div>
       <button
         mat-flat-button
         class="brand-btn-1"
