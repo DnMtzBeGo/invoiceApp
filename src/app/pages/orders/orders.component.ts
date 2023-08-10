@@ -352,7 +352,7 @@ export class OrdersComponent implements OnInit {
       this.isOrderWithCP ? this.checkCPFields() : this.sendOrders("orders");
     }
 
-    if (this.currentStepIndex === 1 && !this.hasEditedCargoWeight) {
+    if (this.currentStepIndex === 2 && !this.hasEditedCargoWeight) {
       this.editCargoWeightNow = true;
     }
 
@@ -424,7 +424,7 @@ export class OrdersComponent implements OnInit {
   getStep3FormData(data: any) {
     this.orderData.cargo["53_48"] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
-    this.orderData.cargo.required_units = data.cargoUnits;
+    this.orderData.cargo.required_units = data.cargoWeight.length;
     this.orderData.cargo.description = data.description;
 
     if(data.hazardousFile) {

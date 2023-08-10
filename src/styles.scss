@@ -991,6 +991,20 @@ input.mat-input-element {
   color: #c1c7d0;
 }
 
+.bego-modal {
+  display: contents;
+
+  .mat-dialog-container {
+    display: contents;
+
+    .alert-container {
+      background: linear-gradient(225deg, #080C0F 0%, rgba(46, 48, 49, 0.00) 100%);
+      box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a, inset -4px -4px 4px #040b11;
+      backdrop-filter: blur(35px);
+    }
+  }
+}
+
 .modal {
   .mat-dialog-container {
     background: #091016;

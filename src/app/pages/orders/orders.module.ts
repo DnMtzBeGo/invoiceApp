@@ -43,11 +43,13 @@ import { InputSelectableComponent } from './components/input-selectable/input-se
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
 import { UnitDetailsModalComponent } from './components/unit-details-modal/unit-details-modal.component';
 import {
+  BegoAlertCustomerModule,
   BegoButtonModule,
   BegoButtonToggleModule,
   BegoCalendarTimeModule,
   BegoDragDropModule,
   BegoIncrementDecrementModule,
+  BegoInputIncrementDecrementModule,
   BegoLabelInputModule,
   BegoMarksModule,
   BegoPhoneCodeSelectModule,
@@ -59,6 +61,7 @@ import {
   BegoTextAreaModule,
   BegoTextInputModule,
 } from "@begomx/ui-components";
+import { CargoUnitsComponent } from './components/cargo-units/cargo-units.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -84,6 +87,7 @@ export const MY_FORMATS = {
     InputSelectableComponent,
     ContinueModalComponent,
     UnitDetailsModalComponent,
+    CargoUnitsComponent,
   ],
   imports: [
     CommonModule,
@@ -122,6 +126,8 @@ export const MY_FORMATS = {
     BegoSelectItemModule,
     BegoTextAreaModule,
     BegoDragDropModule,
+    BegoAlertCustomerModule,
+    BegoInputIncrementDecrementModule,
   ],
   exports: [OrdersComponent],
   // providers: [

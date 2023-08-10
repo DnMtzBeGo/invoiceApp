@@ -16,7 +16,7 @@
         </div>
 
         <div class="select-units-input">
-          <bego-increment-decrement [units]="quantityunits" (changeUnits)="updateQuantityUnits($event)"></bego-increment-decrement>
+          <app-cargo-units [units]="this.step3Form.get('cargoWeight').value" (unitsChange)="updateForm('cargoWeight', $event)"></app-cargo-units>
 
           <bego-button-toggle
             (statusChanged)="selectedUnits($event)"

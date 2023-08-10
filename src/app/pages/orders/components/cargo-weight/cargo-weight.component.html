@@ -1,33 +1,12 @@
-<div mat-dialog-title class="cargo-form-header">
-  <h1>{{ 'orders.cargo-weight.title' | translate }}</h1>
-  <h2>{{ 'orders.cargo-weight.subtitule' | translate }}</h2>
-</div>
-<mat-dialog-content>
-  <form class="cargo-form" [formGroup]="form">
-    <div formArrayName="cargo" class="item-cargo" *ngFor="let items of getControls(); let i = index">
-      <ng-container [formGroupName]="i">
-        <p>{{'orders.cargo-weight.unit' | translate }} {{i+1}}</p>
-        <button matRipple (click)="decreament(i)" [disabled]="btnDecrement[i]"><i class="icon icon-minus"></i></button>
-        <mat-form-field appearance="standard">
-          <input
-            matInput
-            type="number" 
-            name="units" 
-            formControlName="units"
-            onkeydown="return event.keyCode !== 69"
-            min="1"
-            max="20000"
-            pattern="[0-9]*"
-            (change)="saverange($event,i)"
-            oninput="(!validity.rangeOverflow||(value=20)) && (!validity.rangeUnderflow||(value=1)) &&
-            (!validity.stepMismatch||(value=parseInt(this.value)));"
-          >
-        </mat-form-field>
-        <button matRipple (click)="increament(i)" [disabled]="btnIncrement[i]"><i class="icon icon-plus"></i></button>
-      </ng-container>
-    </div>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="save()">Save</button>
-</mat-dialog-actions>
+<bego-alert-customer [showChibi]="false" [simple]="true" (closeEmitter)="save()" class="cargo-weight">
+  <h2 class="title">{{ 'orders.cargo-weight.subtitule' | translate }}</h2>
+
+  <app-cargo-units [(units)]="data.units"></app-cargo-units>
+
+  <ul class="unit-list">
+    <li class="unit" *ngFor="let unit of data.units; index as i; trackBy: trackByIndex">
+      <p>{{ 'orders.cargo-weight.unit' | translate }} {{ i + 1 }}</p>
+      <bego-input-increment-decrement [(value)]="data.units[i]" (sendValue)="updateUnit(i, $event)"></bego-input-increment-decrement>
+    </li>
+  </ul>
+</bego-alert-customer>

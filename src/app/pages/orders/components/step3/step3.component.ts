@@ -28,8 +28,6 @@ const enum Catalogs {
   Hazardous = 'sat_cp_material_peligroso',
 }
 
-const CARGO_UNIT_WEIGHT = 1000
-
 @Component({
   selector: "app-step3",
   templateUrl: "./step3.component.html",
@@ -49,7 +47,6 @@ export class Step3Component implements OnInit {
 
   events: string = "DD / MM / YY";
   editWeight: boolean = false;
-  public quantityunits: number = 1;
 
   datepicker: Date = new Date();
   draftDate: number = 0;
@@ -81,7 +78,6 @@ export class Step3Component implements OnInit {
   //   datepickup: [this.events, Validators.required],
   //   timepickup: ['', Validators.required],
   //   unitType: ['', Validators.required],
-  //   cargoUnits: [1, Validators.required],
   //   cargoWeight: [1],
   //   cargoType: [this.cargoType, Validators.required],
   //   hazardousType: [this.hazardousType, Validators.required],
@@ -100,8 +96,7 @@ export class Step3Component implements OnInit {
     datepickup: new FormControl(""),
     timepickup: new FormControl("", Validators.required),
     unitType: new FormControl(this.unitsData.first.value, Validators.required),
-    cargoUnits: new FormControl(1, Validators.required),
-    cargoWeight: new FormControl([CARGO_UNIT_WEIGHT]),
+    cargoWeight: new FormControl([1000]),
     cargoType: new FormControl(this.cargoType, Validators.required),
     description: new FormControl("", Validators.required),
     commodity_quantity: new FormControl(""),
@@ -216,13 +211,7 @@ export class Step3Component implements OnInit {
       if (changes.draftData.currentValue.pickup.startDate !== null) {
         this.draftDate = changes.draftData.currentValue.pickup.startDate;
       }
-      this.step3Form
-        .get("unitType")!
-        .setValue(changes.draftData.currentValue.cargo["53_48"]);
-      this.quantityunits = changes.draftData.currentValue.cargo.required_units;
-      this.step3Form
-        .get("cargoUnits")!
-        .setValue(changes.draftData.currentValue.cargo.required_units);
+      this.step3Form.get("unitType")!.setValue(changes.draftData.currentValue.cargo["53_48"]);
       if (changes.draftData.currentValue.cargo.weigth) {
         this.step3Form
           .get("cargoWeight")!
@@ -285,55 +274,21 @@ export class Step3Component implements OnInit {
 
   timeChange(time: any) {}
 
-  updateQuantityUnits(newValue: number) {
-    if (newValue > this.quantityunits) {
-      this.increment();
-    } else {
-      this.decrement();
-    }
-  }
-
-  increment() {
-    if (this.quantityunits < 100) {
-      this.quantityunits++;
-      this.step3Form.get("cargoUnits")!.setValue(this.quantityunits);
-
-      const weights = this.step3Form.get('cargoWeight')!;
-      weights.setValue([... weights.value, CARGO_UNIT_WEIGHT]);
-    }
-  }
-
-  decrement() {
-    if (this.quantityunits > 1) {
-      this.quantityunits--;
-      this.step3Form.get("cargoUnits")!.setValue(this.quantityunits);
-
-      const weights = this.step3Form.get('cargoWeight')!;
-      weights.setValue(weights.value.slice(0, -1));
-    }
-  }
-
   selectedUnits(unit: any): void {
     this.step3Form.get('unitType')!.setValue(unit.value);
   }
 
   editUnits(): void {
     const dialogRef = this.dialog.open(CargoWeightComponent, {
-      width: "312px",
-      minHeight: "496px",
-      panelClass: "modal",
+      panelClass: "bego-modal",
       backdropClass: "backdrop",
       data: {
-        units: this.step3Form.get("cargoUnits")!.value,
-        weight: this.step3Form.get("cargoWeight")!.value,
+        units: this.step3Form.get("cargoWeight")!.value,
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.step3Form.get("cargoUnits")!.setValue(result.units);
-        this.step3Form.get("cargoWeight")!.setValue(result.weight);
-        this.quantityunits = result.units;
+    dialogRef.afterClosed().subscribe((result) => { if (result) {
+        this.step3Form.get("cargoWeight")!.setValue(result);
         this.editWeight = true;
         this.cargoWeightEdited.emit();
       }
