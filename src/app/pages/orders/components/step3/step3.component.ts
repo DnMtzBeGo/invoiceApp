@@ -126,6 +126,23 @@ export class Step3Component implements OnInit {
   packagingCatalog: Catalog[] = [];
   hazardousCatalog: Catalog[] = [];
 
+  get cargoDescription() {
+    if (!this.orderWithCP) {
+      return this.step3Form.get('description')!.value
+    }
+
+    const quantity = this.step3Form.get('commodity_quantity').value;
+    const unitType = this.step3Form.get('satUnitType').value;
+    const description = this.step3Form.get('description').value;
+
+    return [
+      unitType && `Qty ${quantity} units`,
+      unitType,
+      description,
+    ].filter(Boolean).join('\n')
+  }
+
+
   constructor(private translateService: TranslateService, public dialog: MatDialog, private apiRestService: AuthService) {
     this.minTime.setHours(1);
     this.minTime.setMinutes(0);
@@ -351,15 +368,18 @@ export class Step3Component implements OnInit {
       description: this.step3Form.value.description,
     };
     const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
-      panelClass: "modal",
+      panelClass: "bego-modal",
+      backdropClass: "backdrop",
       disableClose: true,
       data: modalData,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.step3Form.get("description")!.setValue(result.description);
-        this.step3Form.get("commodity_quantity")!.setValue(result.qty);
-        this.step3Form.get("satUnitType")!.setValue(result.value);
+        this.step3Form.patchValue({
+          description: result.description,
+          commodity_quantity: result.qty,
+          satUnitType: result.value
+        })
         this.satUnitData = { value: result.value, viewValue: result.viewValue };
       }
     });

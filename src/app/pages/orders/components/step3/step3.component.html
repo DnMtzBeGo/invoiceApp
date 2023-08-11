@@ -96,7 +96,7 @@
           keyValue="description"
           [customPlaceholder]="'orders.placeholder-cargo' | translate"
           [customTextarea]="orderWithCP"
-          [defaultValue]="step3Form.get('description')!.value"
+          [defaultValue]="cargoDescription"
           (openModal)="orderWithCP && showUnitDetailsModal()"
           (sendData)="setCargoDescirption($event)"></bego-text-area>
       </div>
