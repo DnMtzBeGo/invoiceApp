@@ -11,6 +11,15 @@
             color: #FFE000;
         }
     }
+
+    .aditional-details {
+        flex-direction: column;
+        align-items: initial;
+
+        bego-text-area {
+          height: 108px;
+        }
+    }
 }
 
 .address-box {

@@ -43,6 +43,7 @@ export class Step2Component implements OnInit {
     country_code: [this.phoneFlag],
     orderWithCP: [false],
     rfc: [""],
+    extra_notes: [""],
   });
 
   constructor(
@@ -135,7 +136,7 @@ export class Step2Component implements OnInit {
   }
 
   updateFormGroup(data: any) {
-    this.step2Form.get(data.key)!.setValue(data.value)
+    this.step2Form.get(data.key)!.setValue(data.value ?? data.details)
   }
 
   updateFormPhoneCode(data: any) {

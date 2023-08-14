@@ -411,6 +411,7 @@ export class OrdersComponent implements OnInit {
     );
     this.orderData.dropoff.contact_info.email = data.email;
     this.orderData.dropoff.contact_info.country_code = data.country_code;
+    this.orderData.dropoff.extra_notes = data.extra_notes;
     if (this.isOrderWithCP) {
       this.orderData.dropoff.contact_info["rfc"] = data.rfc;
       if (this.validateRFC(data.rfc)) {
@@ -459,9 +460,6 @@ export class OrdersComponent implements OnInit {
   }
 
   getStep4FormData(data: any) {
-    this.orderData.dropoff.extra_notes = data.notes;
-    if (this.stepsValidate.includes(false) && this.currentStepIndex > 2) {
-    }
   }
 
   validStep1(valid: boolean) {

@@ -32,6 +32,16 @@
         <bego-label-input size="small" textLabel="RFC*"></bego-label-input>
         <bego-input keyValue="rfc" (value)="updateFormGroup($event)" [placeholder]="'orders.placeholder-rfc' | translate"></bego-input>
       </div>
+
+      <div class="field aditional-details">
+        <h2>Additional Details</h2>
+
+        <bego-text-area
+          keyValue="extra_notes"
+          [customPlaceholder]="'orders.placeholder-notes' | translate"
+          (sendData)="updateFormGroup($event)"
+        ></bego-text-area>
+      </div>
     </div>
   </form>
 </div>
