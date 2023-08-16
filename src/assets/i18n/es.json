@@ -36,6 +36,8 @@
     },
     "title-pickup": "Recolección",
     "title-dropoff": "Entrega",
+    "title-summary": "Resumen",
+    "title-invoice": "Factura",
     "btn-step1": "Continuar",
     "btn-step2": "Orden de Entrega",
     "btn-step3": "Continuar",

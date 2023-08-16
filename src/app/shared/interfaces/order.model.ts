@@ -48,4 +48,11 @@ export interface Order {
     },
     place_id_dropoff: string
   }
+  invoice: {
+    address: string
+    company: string,
+    rfc: string,
+    cfdi: string,
+    tax_regime: string,
+  }
 }

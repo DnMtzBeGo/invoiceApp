@@ -47,6 +47,7 @@ import {
   BegoButtonModule,
   BegoButtonToggleModule,
   BegoCalendarTimeModule,
+  BegoCheckoutCardModule,
   BegoDragDropModule,
   BegoIncrementDecrementModule,
   BegoInputIncrementDecrementModule,
@@ -128,6 +129,7 @@ export const MY_FORMATS = {
     BegoDragDropModule,
     BegoAlertCustomerModule,
     BegoInputIncrementDecrementModule,
+    BegoCheckoutCardModule,
   ],
   exports: [OrdersComponent],
   // providers: [

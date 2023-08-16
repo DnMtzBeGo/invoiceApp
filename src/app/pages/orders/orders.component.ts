@@ -96,7 +96,7 @@ export class OrdersComponent implements OnInit {
       type: "",
       required_units: 1,
       description: "",
-      weigth: [1],
+      weigth: [1000],
       hazardous_type: "",
       unit_type: '',
       packaging: '',
@@ -134,6 +134,13 @@ export class OrdersComponent implements OnInit {
       },
       place_id_dropoff: ""
     },
+    invoice: {
+      address: '',
+      company: '',
+      rfc: '',
+      cfdi: '',
+      tax_regime: '',
+    }
   };
 
   public ETA: number = 0;
@@ -198,28 +205,7 @@ export class OrdersComponent implements OnInit {
   ) {
     this.subscription = this.translateService.onLangChange.subscribe(
       (langChangeEvent: LangChangeEvent) => {
-        switch (this.currentStepIndex) {
-          case 0:
-            this.typeOrder = this.translateService.instant("orders.title-pickup");
-            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-              this.translateService.instant("orders.next-step");
-            break;
-          case 1:
-            this.typeOrder = this.translateService.instant("orders.title-dropoff");
-            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-              this.translateService.instant("orders.continue-to-dropoff");
-            break;
-          case 2:
-            this.typeOrder = this.translateService.instant("orders.title-cargo-info");
-            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-              this.translateService.instant("orders.next-step");
-            break;
-          case 3:
-            this.typeOrder = this.translateService.instant("orders.title-dropoff");
-            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-              this.userWantCP ? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order");
-            break;
-        }
+        this.updateStepTexts();
       }
     );
   }
@@ -237,11 +223,7 @@ export class OrdersComponent implements OnInit {
 
     this.subscription = this.translateService.onLangChange.subscribe(
       (langChangeEvent: LangChangeEvent) => {
-        if (this.currentStepIndex < 2) {
-          this.typeOrder = this.translateService.instant("orders.title-pickup");
-        } else {
-          this.typeOrder = this.translateService.instant("orders.title-dropoff");
-        }
+        this.updateStepTexts();
       }
     );
   }
@@ -311,11 +293,7 @@ export class OrdersComponent implements OnInit {
   calculateProgress(): number {
     this.checkoutProgress = (this.currentStepIndex / (this.ordersSteps.length - 1)) * 100;
 
-    if (this.currentStepIndex < 2) {
-      this.typeOrder = this.translateService.instant("orders.title-pickup");
-    } else {
-      this.typeOrder = this.translateService.instant("orders.title-dropoff");
-    }
+    this.updateStepTexts();
 
     if (this.currentStepIndex < 3) {
       this.btnStatusNext = false;
@@ -375,13 +353,7 @@ export class OrdersComponent implements OnInit {
   }
 
   jumpStepTitle() {
-    if (this.currentStepIndex < 2) {
-      this.currentStepIndex = 2;
-      this.typeOrder = this.translateService.instant("orders.title-dropoff");
-    } else {
-      this.currentStepIndex = 0;
-      this.typeOrder = this.translateService.instant("orders.title-pickup");
-    }
+    this.updateStepTexts();
   }
 
   getStep1FormData(data: any) {
@@ -401,6 +373,8 @@ export class OrdersComponent implements OnInit {
         this.orderWithCPFields.pickupRFC = false;
       }
     }
+
+    this.orderData = {...this.orderData };
   }
 
   getStep2FormData(data: any) {
@@ -420,6 +394,8 @@ export class OrdersComponent implements OnInit {
         this.orderWithCPFields.dropoffRFC = false;
       }
     }
+
+    this.orderData = {...this.orderData };
   }
 
   getStep3FormData(data: any) {
@@ -457,9 +433,11 @@ export class OrdersComponent implements OnInit {
       this.orderData.cargo["commodity_quantity"] = data.commodity_quantity;
     }
     this.orderData.cargo.weigth = data.cargoWeight;
+    this.orderData = {...this.orderData };
   }
 
   getStep4FormData(data: any) {
+    Object.assign(this.orderData.invoice, data);
   }
 
   validStep1(valid: boolean) {
@@ -480,19 +458,16 @@ export class OrdersComponent implements OnInit {
     this.calculateProgress();
   }
 
-  validStep4(valid: any) {
-    if (valid) {
-      this.stepsValidate[3] = true;
-    } else {
-      this.stepsValidate[3] = false;
-    }
+  validStep4(valid: boolean) {
+    this.stepsValidate[3] = valid;
+    if (valid) this.sendInvoice();
     this.calculateProgress();
   }
 
   async sendPickup() {
     const { pickup, reference_number } = this.orderData;
     const { startDate, contact_info } = pickup;
-    const [destination_id] = this.orderPreview?.destinations;
+    const [destination_id] = this.orderPreview?.destinations || [];
 
     const destinationPayload = {
       destination_id,
@@ -511,7 +486,7 @@ export class OrdersComponent implements OnInit {
   async sendDropoff() {
     const { dropoff } = this.orderData;
     const { contact_info, extra_notes } = dropoff;
-    const [, destination_id] = this.orderPreview?.destinations;
+    const [, destination_id] = this.orderPreview?.destinations || [];
 
     const destinationPayload = {
       destination_id,
@@ -575,6 +550,23 @@ export class OrdersComponent implements OnInit {
     const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/destination', { apiVersion: 'v1.1' });
     await req.toPromise();
   }
+
+  async sendInvoice() {
+    const { invoice } = this.orderData;
+
+    const invoicePayload = {
+      order_id: this.orderPreview.order_id,
+      cfdi: invoice.cfdi,
+      rfc: invoice.rfc,
+      company: invoice.company,
+      tax_regime: invoice.tax_regime,
+      place_id: invoice.address,
+    };
+
+    const req = await this.auth.apiRestPut(JSON.stringify(invoicePayload), 'orders/update_invoice', { apiVersion: 'v1.1' });
+    await req.toPromise();
+  }
+
 
   async getETA(locations: GoogleLocation) {
     let datos = {
@@ -824,5 +816,30 @@ export class OrdersComponent implements OnInit {
 
   public cargoWeightEdited() {
     this.hasEditedCargoWeight = true;
+  }
+
+  updateStepTexts() {
+    switch (this.currentStepIndex) {
+      case 0:
+        this.typeOrder = this.translateService.instant("orders.title-pickup");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+          this.translateService.instant("orders.next-step");
+        break;
+      case 1:
+        this.typeOrder = this.translateService.instant("orders.title-dropoff");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+          this.translateService.instant("orders.continue-to-dropoff");
+        break;
+      case 2:
+        this.typeOrder = this.translateService.instant("orders.title-cargo-info");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+          this.translateService.instant("orders.next-step");
+        break;
+      case 3:
+        this.typeOrder = this.translateService.instant("orders.title-summary");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+          this.userWantCP ? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order");
+        break;
+    }
   }
 }

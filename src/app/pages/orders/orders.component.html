@@ -42,6 +42,14 @@
             [catalogsDescription]="catalogsDescription"
           ></app-step3>
         </bego-step>
+
+        <bego-step [completed]="stepsValidate[3]">
+          <app-step4
+            [orderData]="orderData"
+            (step4FormData)="getStep4FormData($event)"
+            (validFormStep4)="validStep4($event)"
+          ></app-step4>
+        </bego-step>
       </bego-stepper>
 
       <div class="footer">

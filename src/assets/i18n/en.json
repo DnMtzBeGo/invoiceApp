@@ -36,6 +36,8 @@
     },
     "title-pickup": "Pickup Order",
     "title-dropoff": "Dropoff Order",
+    "title-summary": "Summary",
+    "title-invoice": "Invoice",
     "btn-step1": "Next Step",
     "btn-step2": "Continue to Drop off",
     "btn-step3": "Next Step",
