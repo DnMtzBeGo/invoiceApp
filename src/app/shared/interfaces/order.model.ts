@@ -48,6 +48,10 @@ export interface Order {
     },
     place_id_dropoff: string
   }
+  pricing: {
+    deferred_payment: boolean,
+    subtotal: number
+  }
   invoice: {
     address: string
     company: string,

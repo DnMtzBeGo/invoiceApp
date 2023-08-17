@@ -44,6 +44,10 @@
         </bego-step>
 
         <bego-step [completed]="stepsValidate[3]">
+          <app-pricing-step (pricingStepFormData)="getPricingStepFormData($event)" (validPricingStep)="validPricingStep($event)"></app-pricing-step>
+        </bego-step>
+
+        <bego-step [completed]="stepsValidate[4]">
           <app-step4
             [orderData]="orderData"
             (step4FormData)="getStep4FormData($event)"

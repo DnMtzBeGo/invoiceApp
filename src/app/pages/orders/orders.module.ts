@@ -9,6 +9,7 @@ import { Step1Component } from "./components/step1/step1.component";
 import { Step2Component } from "./components/step2/step2.component";
 import { Step3Component } from "./components/step3/step3.component";
 import { Step4Component } from "./components/step4/step4.component";
+import { PricingStepComponent } from "./components/pricing-step/pricing-step.component";
 
 import { DragFileBarModule } from "src/app/shared/components/drag-file-bar/drag-file-bar.module";
 import { StepperModule } from "src/app/shared/components/stepper/stepper.module";
@@ -63,6 +64,7 @@ import {
   BegoTextInputModule,
 } from "@begomx/ui-components";
 import { CargoUnitsComponent } from './components/cargo-units/cargo-units.component';
+import { NgxCurrencyModule } from "ngx-currency";
 
 export const MY_FORMATS = {
   parse: {
@@ -89,6 +91,7 @@ export const MY_FORMATS = {
     ContinueModalComponent,
     UnitDetailsModalComponent,
     CargoUnitsComponent,
+    PricingStepComponent,
   ],
   imports: [
     CommonModule,
@@ -111,6 +114,7 @@ export const MY_FORMATS = {
     BegoPhoneInputModule,
     MatDialogModule,
     GoogleAddressModule,
+    NgxCurrencyModule,
     TimepickerModule.forRoot(),
     BegoStepperModule,
     BegoStepModule,

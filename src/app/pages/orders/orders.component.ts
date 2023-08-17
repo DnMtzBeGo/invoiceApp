@@ -75,8 +75,12 @@ export class OrdersComponent implements OnInit {
     },
     {
       text: "4",
-      nextBtnTxt: this.translateService.instant("orders.proceed-checkout"),
+      nextBtnTxt: this.translateService.instant("orders.next-step"),
     },
+    {
+      text: "5",
+      nextBtnTxt: this.translateService.instant("orders.proceed-checkout"),
+    }
   ];
 
   validateRoute: boolean = false;
@@ -134,6 +138,10 @@ export class OrdersComponent implements OnInit {
       },
       place_id_dropoff: ""
     },
+    pricing: {
+      deferred_payment: false,
+      subtotal: 0,
+    },
     invoice: {
       address: '',
       company: '',
@@ -152,7 +160,7 @@ export class OrdersComponent implements OnInit {
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
 
-  stepsValidate = [false, false, false, false];
+  stepsValidate = [false, false, false, false, false];
 
   private subscription: Subscription;
 
@@ -440,6 +448,10 @@ export class OrdersComponent implements OnInit {
     Object.assign(this.orderData.invoice, data);
   }
 
+  getPricingStepFormData(data: any) {
+    Object.assign(this.orderData.pricing, data);
+  }
+
   validStep1(valid: boolean) {
     this.stepsValidate[0] = valid;
     if (valid) this.sendPickup();
@@ -458,8 +470,13 @@ export class OrdersComponent implements OnInit {
     this.calculateProgress();
   }
 
-  validStep4(valid: boolean) {
+  validPricingStep(valid: boolean) {
     this.stepsValidate[3] = valid;
+    if (valid) this.sendPricing();
+  }
+
+  validStep4(valid: boolean) {
+    this.stepsValidate[4] = valid;
     if (valid) this.sendInvoice();
     this.calculateProgress();
   }
@@ -564,6 +581,19 @@ export class OrdersComponent implements OnInit {
     };
 
     const req = await this.auth.apiRestPut(JSON.stringify(invoicePayload), 'orders/update_invoice', { apiVersion: 'v1.1' });
+    await req.toPromise();
+  }
+
+  async sendPricing() {
+    const { pricing } = this.orderData;
+
+    let pricingPayload = {
+      order_id: this.orderPreview.order_id,
+      subtotal: pricing.subtotal,
+      deferred_payment: pricing.deferred_payment,
+    };
+
+    const req = await this.auth.apiRest(JSON.stringify(pricingPayload), 'orders/set_pricing');
     await req.toPromise();
   }
 
@@ -837,8 +867,11 @@ export class OrdersComponent implements OnInit {
         break;
       case 3:
         this.typeOrder = this.translateService.instant("orders.title-summary");
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-          this.userWantCP ? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant("orders.next-step");
+        break;
+      case 4:
+        this.typeOrder = this.translateService.instant("orders.title-summary");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.userWantCP ? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order"); 
         break;
     }
   }
