@@ -14,7 +14,7 @@ type CargoType = 'general' | 'hazardous';
 
 interface Option {
   value?: string;
-  viewValue?: string;
+  displayValue?: string;
 }
 
 interface Catalog {
@@ -105,7 +105,7 @@ export class Step3Component implements OnInit {
 
   satUnitData: Option = {
     value: '',
-    viewValue: ''
+    displayValue: ''
   };
 
   public screenshotCanvas: any;
@@ -380,7 +380,7 @@ export class Step3Component implements OnInit {
           commodity_quantity: result.qty,
           satUnitType: result.value
         })
-        this.satUnitData = { value: result.value, viewValue: result.viewValue };
+        this.satUnitData = { value: result.value, displayValue: result.displayValue };
       }
     });
   }

@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { AuthService } from "src/app/shared/services/auth.service";
-import { FormControl, FormGroup } from "@angular/forms";
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 interface Option {
   value?: string;
-  viewValue?: string;
+  displayValue?: string;
 }
 
 interface UnitDetailsModalData {
@@ -15,17 +15,17 @@ interface UnitDetailsModalData {
 }
 
 @Component({
-  selector: "app-unit-details-modal",
-  templateUrl: "./unit-details-modal.component.html",
-  styleUrls: ["./unit-details-modal.component.scss"],
+  selector: 'app-unit-details-modal',
+  templateUrl: './unit-details-modal.component.html',
+  styleUrls: ['./unit-details-modal.component.scss']
 })
 export class UnitDetailsModalComponent implements OnInit {
   unitForm = new FormGroup({
     qty: new FormControl(1),
-    description: new FormControl(""),
+    description: new FormControl('')
   });
 
-  selected: Option = { value: "", viewValue: "" };
+  selected: Option = { value: '', displayValue: '' };
   unitsCatalog: Option[] = [];
 
   constructor(
@@ -40,9 +40,8 @@ export class UnitDetailsModalComponent implements OnInit {
   }
 
   loadPrevData() {
-    this.data.qty && this.unitForm.get("qty")!.setValue(this.data.qty);
-    this.data.description &&
-      this.unitForm.get("description")!.setValue(this.data.description);
+    this.data.qty && this.unitForm.get('qty')!.setValue(this.data.qty);
+    this.data.description && this.unitForm.get('description')!.setValue(this.data.description);
     this.data.satUnit && (this.selected = this.data.satUnit);
   }
 

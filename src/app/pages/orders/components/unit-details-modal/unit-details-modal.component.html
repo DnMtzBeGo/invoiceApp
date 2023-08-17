@@ -3,11 +3,12 @@
 
   <div class="quantity">
     <div class="quantity-title">{{ 'orders.unit-details-list.qty' | translate }}</div>
-    <bego-increment-decrement (units)="unitForm.get('qty').value" (changeUnits)="updateQuantity($event)"></bego-increment-decrement>
+    <bego-increment-decrement [units]="unitForm.get('qty').value" (changeUnits)="updateQuantity($event)"></bego-increment-decrement>
   </div>
 
   <bego-search-select
     [catalogs]="unitsCatalog"
+    [defaultValue]="selected.displayValue"
     [inputPlaceHolder]="'orders.unit-details-list.slct-unit' | translate"
     (searchValueChange)="getCatalog($event)"
     (catalogValueChange)="updateUnitType($event)"></bego-search-select>
