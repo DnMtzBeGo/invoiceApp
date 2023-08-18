@@ -141,6 +141,7 @@ export class OrdersComponent implements OnInit {
     pricing: {
       deferred_payment: false,
       subtotal: 0,
+      currency: "mxn",
     },
     invoice: {
       address: '',
@@ -570,6 +571,7 @@ export class OrdersComponent implements OnInit {
     let pricingPayload = {
       order_id: this.orderPreview.order_id,
       subtotal: pricing.subtotal,
+      currency: pricing.currency,
       deferred_payment: pricing.deferred_payment,
     };
 

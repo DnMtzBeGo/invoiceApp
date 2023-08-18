@@ -10,13 +10,20 @@
     <div class="subtotal">
       <input formControlName="subtotal" (blur)="updateSubtotal()" min="0" currencyMask [options]="{
         align: 'center',
-        prefix: '',
+        prefix: '$',
         thousands: ',',
         decimal: '.',
         precision: 0,
-        allowNegative: false,
-        suffix: ' MXN'
+        allowNegative: false
       }" />
+
+      <bego-button-toggle
+        class="pricing-toggle"
+        size="small"
+        [noPadding]="true"
+        [first]="currencyOptions.mxn"
+        [second]="currencyOptions.usd"
+        (statusChanged)="changePricingMethod($event)"></bego-button-toggle>
     </div>
 
     <div class="payment-mode">

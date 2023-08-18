@@ -50,7 +50,8 @@ export interface Order {
   }
   pricing: {
     deferred_payment: boolean,
-    subtotal: number
+    subtotal: number,
+    currency: string
   }
   invoice: {
     address: string

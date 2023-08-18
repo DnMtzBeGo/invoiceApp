@@ -19,9 +19,15 @@ export class PricingStepComponent implements OnInit {
     ppd: { label: 'PPD', value: true }
   };
 
+  currencyOptions = {
+    mxn: { label: 'MXN', value: 'mxn' },
+    usd: { label: 'USD', value: 'usd' }
+  };
+
   pricingForm: FormGroup = this.formBuilder.group({
     subtotal: [0, Validators.min(1)],
-    deferred_payment: [false]
+    deferred_payment: [false],
+    currency: ['mxn']
   });
 
   // helper to avoid calling `pricingStepFormData` each time `subtotal` changes
@@ -48,5 +54,9 @@ export class PricingStepComponent implements OnInit {
   changePay(data: any) {
     this.pricingForm.get('deferred_payment').setValue(data.value);
     this.deferredPayment = data.value;
+  }
+
+  changePricingMethod(data: any) {
+    this.pricingForm.get('currency').setValue(data.value);
   }
 }
