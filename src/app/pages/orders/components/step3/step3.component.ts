@@ -122,9 +122,11 @@ export class Step3Component implements OnInit {
   };
 
   cargoCatalog: Catalog[] = [];
-  categoryCatalog: Catalog[] = [];
   packagingCatalog: Catalog[] = [];
   hazardousCatalog: Catalog[] = [];
+
+  categoryCatalog: Catalog[] = [];
+  filteredCategoryCatalog: Catalog[] = [];
 
   get cargoDescription() {
     if (!this.orderWithCP) {
@@ -476,6 +478,11 @@ export class Step3Component implements OnInit {
     }))
 
     this.categoryCatalog = catalog;
+    this.filteredCategoryCatalog = catalog;
+  }
+
+  updateCategoryCatalog(value: any) {
+    this.filteredCategoryCatalog = this.categoryCatalog.filter(item => item.displayValue.includes(value));
   }
 
   updateForm(key: string, value: any) {
