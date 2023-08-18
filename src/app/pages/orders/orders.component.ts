@@ -153,7 +153,6 @@ export class OrdersComponent implements OnInit {
 
   public ETA: number = 0;
   public minDropoff: any;
-  public checkoutProgress: number = 0;
   public sendMap: boolean = false;
 
   isLinear = false;
@@ -298,55 +297,35 @@ export class OrdersComponent implements OnInit {
     this.cardIsOpen = !this.cardIsOpen;
   }
 
-  calculateProgress(): number {
-    this.checkoutProgress = (this.currentStepIndex / (this.ordersSteps.length - 1)) * 100;
-
+  updateStatus() {
     this.updateStepTexts();
 
-    if (this.currentStepIndex < 3) {
+    if (this.currentStepIndex < 4) {
       this.btnStatusNext = false;
     } else {
       this.btnStatusNext = !this.validateForm();
     }
 
     this.ordersSteps.forEach((e, i) => {
-      if (this.stepsValidate[i]) {
-        e.validated = true;
-        return false;
-      } else {
-        e.validated = false;
-        return true;
-      }
+        e.validated = this.stepsValidate[i];
     });
-
-    return this.checkoutProgress;
   }
 
   validateForm() {
-    const v = this.stepsValidate;
-    return v[0] && v[1] && v[2] && v[3];
+    return this.stepsValidate.every(Boolean);
   }
 
   nextSlide() {
-    if (
-      this.stepsValidate[0] &&
-      this.stepsValidate[1] &&
-      this.stepsValidate[2] &&
-      this.stepsValidate[3] &&
-      this.currentStepIndex === 3
-    ) {
-      this.isOrderWithCP ? this.checkCPFields() : this.sendOrders("orders");
-    }
-
     if (this.currentStepIndex === 2 && !this.hasEditedCargoWeight) {
       this.editCargoWeightNow = true;
     }
 
-    if (this.currentStepIndex < 3) {
+    if (this.currentStepIndex < 4) {
       this.currentStepIndex = this.currentStepIndex + 1;
-      if (this.currentStepIndex > 2) {
-        this.btnStatusNext = !this.validateForm();
-      }
+    }
+
+    if (this.currentStepIndex === 4 && this.validateForm()) {
+      this.isOrderWithCP ? this.checkCPFields() : this.sendOrders("orders");
     }
   }
 
@@ -455,30 +434,31 @@ export class OrdersComponent implements OnInit {
   validStep1(valid: boolean) {
     this.stepsValidate[0] = valid;
     if (valid) this.sendPickup();
-    this.calculateProgress();
+    this.updateStatus();
   }
 
   validStep2(valid: boolean) {
     this.stepsValidate[1] = valid;
     if (valid) this.sendDropoff();
-    this.calculateProgress();
+    this.updateStatus();
   }
 
   validStep3(valid: boolean) {
     this.stepsValidate[2] = valid;
     if (valid) this.sendCargo();
-    this.calculateProgress();
+    this.updateStatus();
   }
 
   validPricingStep(valid: boolean) {
     this.stepsValidate[3] = valid;
     if (valid) this.sendPricing();
+    this.updateStatus();
   }
 
   validStep4(valid: boolean) {
     this.stepsValidate[4] = valid;
     if (valid) this.sendInvoice();
-    this.calculateProgress();
+    this.updateStatus();
   }
 
   async sendPickup() {
@@ -596,7 +576,6 @@ export class OrdersComponent implements OnInit {
     const req = await this.auth.apiRest(JSON.stringify(pricingPayload), 'orders/set_pricing');
     await req.toPromise();
   }
-
 
   async getETA(locations: GoogleLocation) {
     let datos = {

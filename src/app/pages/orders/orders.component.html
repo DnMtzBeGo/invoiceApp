@@ -7,7 +7,7 @@
 
       <bego-marks class="order-stepper-wrapper" type="number"></bego-marks>
 
-      <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions" (stepChange)="calculateProgress()">
+      <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions" (stepChange)="updateStatus()">
         <bego-step [completed]="stepsValidate[0]">
           <app-step1
             [locations]="locations"
