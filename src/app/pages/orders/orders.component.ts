@@ -509,6 +509,7 @@ export class OrdersComponent implements OnInit {
       unit_type: cargo.unit_type,
       commodity_quantity: cargo.commodity_quantity,
       required_units: cargo.required_units,
+      hazardous_type: cargo.hazardous_type,
       weight: cargo.weigth,
       weight_uom: 'kg',
       trailer: {
@@ -520,7 +521,6 @@ export class OrdersComponent implements OnInit {
       Object.assign(cargoPayload, {
         hazardous_material: cargo.hazardous_material,
         packaging: cargo.packaging,
-        hazardous_type: cargo.hazardous_type,
         cargo_goods: cargo.cargo_goods,
       })
     }
