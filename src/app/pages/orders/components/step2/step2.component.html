@@ -1,7 +1,7 @@
 <div class="steps">
   <form [formGroup]="step2Form">
     <div class="steps-container">
-      <h2><span>* </span>{{ 'orders.title-personal-info' | translate }}</h2>
+      <h2 class="formgroup-title-required">{{ 'orders.title-personal-info' | translate }}</h2>
 
       <div class="field">
         <bego-label-input size="small" textLabel="Full name*"></bego-label-input>
@@ -33,8 +33,8 @@
         <bego-input keyValue="rfc" (value)="updateFormGroup($event)" [placeholder]="'orders.placeholder-rfc' | translate"></bego-input>
       </div>
 
-      <div class="field aditional-details">
-        <h2>Additional Details</h2>
+      <div class="aditional-details">
+        <h2 class="formgroup-title">Additional Details</h2>
 
         <bego-text-area
           keyValue="extra_notes"

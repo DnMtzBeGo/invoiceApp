@@ -2,16 +2,12 @@
 
 
 .new-order-wrapper{
-    margin-top: 125px;
-    margin-right: 50px;
     display: flex;
-    height: 80vh;
     position: absolute;
-    top:0;
-    right: 0;
+    top: 125px;
+    right: 20px;
     left: 0;
     bottom: 0;
-    margin-left: calc(50px + #{$bego-menu-width});
     pointer-events: none;
     z-index: 2;
     overflow: hidden;

@@ -61,27 +61,15 @@ bego-text-area {
   height: 124px;
 }
 
-.steps-container {
-  padding: 0 57px;
-
-  .cargo-description {
-    flex-direction: column;
-    align-items: initial;
-  }
+.cargo-description {
+  display: grid;
+  gap: 24px;
 }
 
 .section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  .section-title {
-    font-size: 18px;
-  }
-
-  .asterisk {
-    color: #706b5d;
-  }
 
   &.right {
     justify-content: flex-end;

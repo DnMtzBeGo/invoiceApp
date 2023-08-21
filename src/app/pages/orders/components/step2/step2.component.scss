@@ -1,24 +1,13 @@
 @import "../../../../../styles.scss";
 
-.steps-container {
-    padding: 0 57px;
+.aditional-details {
+    display: grid;
+    gap: 24px;
+    flex-direction: column;
+    align-items: initial;
 
-    h2 {
-        font-size: 18px;
-        letter-spacing: 0.5px;
-        color: #EDEDED;
-        span {
-            color: #FFE000;
-        }
-    }
-
-    .aditional-details {
-        flex-direction: column;
-        align-items: initial;
-
-        bego-text-area {
-          height: 108px;
-        }
+    bego-text-area {
+      height: 108px;
     }
 }
 

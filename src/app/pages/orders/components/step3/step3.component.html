@@ -10,10 +10,7 @@
         [inputPlaceHolder]="'orders.slct-input-cargo_goods' | translate"></bego-search-select>
 
       <div class="field section">
-        <div class="section-title">
-          <span class="asterisk">*</span>
-          {{ 'orders.txt-select-units' | translate }}
-        </div>
+        <h2 class="formgroup-title-required">{{ 'orders.txt-select-units' | translate }}</h2>
 
         <div class="select-units-input">
           <app-cargo-units [units]="this.step3Form.get('cargoWeight').value" (unitsChange)="updateForm('cargoWeight', $event)"></app-cargo-units>
@@ -36,10 +33,7 @@
 
       <!--  select cargo -->
       <div class="field section select-cargo-section">
-        <div class="section-title">
-          <span class="asterisk">*</span>
-          {{ 'orders.txt-select-cargo' | translate }}
-        </div>
+        <h2 class="formgroup-title-required">{{ 'orders.txt-select-cargo' | translate }}</h2>
 
         <bego-select [(selected)]="cargoType">
           <bego-select-item value="general" (click)="setCargoType('general')">
@@ -87,11 +81,8 @@
           (fileSelected)="selectHazardousFile($event)"></bego-drag-drop>
       </div>
 
-      <div class="field cargo-description">
-        <div class="section-title">
-          <span class="asterisk">*</span>
-          {{ 'orders.txt-cargo' | translate }}
-        </div>
+      <div class="cargo-description">
+        <h2 class="formgroup-title-required">{{ 'orders.txt-cargo' | translate }}</h2>
 
         <bego-text-area
           keyValue="description"
