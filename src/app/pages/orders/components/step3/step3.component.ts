@@ -482,7 +482,7 @@ export class Step3Component implements OnInit {
   }
 
   updateCategoryCatalog(value: any) {
-    this.filteredCategoryCatalog = this.categoryCatalog.filter(item => item.displayValue.includes(value));
+    this.filteredCategoryCatalog = this.categoryCatalog.filter((item) => item.displayValue.toLowerCase().includes(value.toLowerCase()));
   }
 
   updateForm(key: string, value: any) {
