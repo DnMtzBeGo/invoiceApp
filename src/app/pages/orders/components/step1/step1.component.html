@@ -4,7 +4,7 @@
       <h2 class="formgroup-title-required">{{ 'orders.title-personal-info' | translate }}</h2>
 
       <div class="field">
-        <bego-label-input size="small" textLabel="Full name*"></bego-label-input>
+        <bego-label-input size="small" [textLabel]="('orders.title-fullname' | translate) + '*'"></bego-label-input>
         <bego-input
           keyValue="fullname"
           (value)="updateFormGroup($event)"
@@ -20,7 +20,7 @@
           type="phone"
           [setValue]="phoneNumber"
           (value)="phoneNumberChangeValue($event)"
-          [placeholder]="'bego-phone-input.phone' | translate"></bego-input>
+          [placeholder]="'orders.placeholder-phone' | translate"></bego-input>
       </div>
 
       <div class="field">
@@ -34,7 +34,7 @@
       </div>
 
       <div class="field">
-        <bego-label-input size="small" textLabel="Reference*"></bego-label-input>
+        <bego-label-input size="small" [textLabel]="('orders.title-reference' | translate) + '*'"></bego-label-input>
         <bego-input
           keyValue="reference"
           (value)="updateFormGroup($event)"

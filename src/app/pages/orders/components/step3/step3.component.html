@@ -13,7 +13,9 @@
         <h2 class="formgroup-title-required">{{ 'orders.txt-select-units' | translate }}</h2>
 
         <div class="select-units-input">
-          <app-cargo-units [units]="this.step3Form.get('cargoWeight').value" (unitsChange)="updateForm('cargoWeight', $event)"></app-cargo-units>
+          <app-cargo-units
+            [units]="this.step3Form.get('cargoWeight').value"
+            (unitsChange)="updateForm('cargoWeight', $event)"></app-cargo-units>
 
           <bego-button-toggle
             (statusChanged)="selectedUnits($event)"

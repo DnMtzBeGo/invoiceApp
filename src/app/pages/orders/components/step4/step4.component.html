@@ -2,28 +2,28 @@
   <bego-checkout-card
     class="card"
     [title]="'orders.title-pickup' | translate"
-    btnLabel="Edit"
+    [btnLabel]="'orders.btn-edit' | translate"
     [content]="pickupContent"
     (editSignal)="redirectToStep(0)"
   ></bego-checkout-card>
   <bego-checkout-card
     class="card"
     [title]="'orders.title-dropoff' | translate"
-    btnLabel="Edit"
+    [btnLabel]="'orders.btn-edit' | translate"
     [content]="dropoffContent"
     (editSignal)="redirectToStep(1)">
   ></bego-checkout-card>
   <bego-checkout-card
     class="card"
     [title]="'orders.title-cargo-info' | translate"
-    btnLabel="Edit"
+    [btnLabel]="'orders.btn-edit' | translate"
     [content]="cargoContent"
     (editSignal)="redirectToStep(2)">
   ></bego-checkout-card>
   <bego-checkout-card
     class="card"
     [title]="'orders.title-invoice' | translate"
-    [btnLabel]="invoiceEditable ? 'Save' : 'Edit'"
+    [btnLabel]="(invoiceEditable ? 'orders.btn-save' : 'orders.btn-edit') | translate"
     [content]="invoiceContent"
     [editable]="invoiceEditable"
     (editSignal)="editInvoice()"
