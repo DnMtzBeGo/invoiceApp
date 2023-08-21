@@ -2,7 +2,6 @@ export interface Order {
   stamp: boolean,
   reference_number?: string;
   status: number;
-  completion_percentage: number;
   cargo: {
     '53_48': string,
     type: string,

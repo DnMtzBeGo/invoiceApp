@@ -6,7 +6,6 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  SimpleChange,
   SimpleChanges,
 } from "@angular/core";
 import { LangChangeEvent, TranslateService } from "@ngx-translate/core";
@@ -19,8 +18,7 @@ import * as moment from "moment";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
 import { Router } from "@angular/router";
 import { AlertService } from "src/app/shared/services/alert.service";
-import { Subscription, concat, from, of } from "rxjs";
-import { mergeAll, switchMap, toArray, mapTo } from "rxjs/operators";
+import { Subscription  } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
 import { ContinueModalComponent } from "./components/continue-modal/continue-modal.component";
 import { BegoMarks, BegoStepper, StepperOptions } from "@begomx/ui-components";
@@ -83,8 +81,6 @@ export class OrdersComponent implements OnInit {
     }
   ];
 
-  validateRoute: boolean = false;
-  progress: number = 0;
   hazardousFile?: File;
   hazardousFileAWS: object = {};
   catalogsDescription: object = {};
@@ -94,7 +90,6 @@ export class OrdersComponent implements OnInit {
     stamp: false,
     reference_number: null,
     status: -1,
-    completion_percentage: this.progress,
     cargo: {
       "53_48": "",
       type: "",
@@ -241,9 +236,6 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if(this.membersToAssigned.hasOwnProperty('drivers') && this.membersToAssigned.hasOwnProperty('trucks') && this.membersToAssigned.hasOwnProperty('trailers')) {
-      this.sendOrders("drafts")
-    }
     this.subscription.unsubscribe();
   }
 
@@ -326,7 +318,7 @@ export class OrdersComponent implements OnInit {
     }
 
     if (this.currentStepIndex === 4 && this.validateForm()) {
-      this.isOrderWithCP ? this.checkCPFields() : this.sendOrders("orders");
+      this.isOrderWithCP ? this.checkCPFields() : this.confirmOrder();
     }
   }
 
@@ -471,6 +463,7 @@ export class OrdersComponent implements OnInit {
       destination_id,
       reference_number,
       start_date: startDate,
+      end_date: startDate,
       name: contact_info.name,
       email: contact_info.email,
       telephone: contact_info.telephone,
@@ -654,117 +647,38 @@ export class OrdersComponent implements OnInit {
     return Date.parse(event.toString());
   }
 
-  porcentageComplete(orderData: any) {
-    if (orderData) {
-      this.progress += 1 / 12;
+  async confirmOrder() {
+    const confirmPayload = {
+      order_id: this.orderPreview.order_id
     }
+
+    await this.auth.apiRestPut(
+      JSON.stringify(confirmPayload),
+      'orders/confirm_order',
+      { apiVersion: 'v1.1' }
+    )
+
+    this.assignOrder();
+    this.uploadScreenShotOrderMap();
   }
 
-  async sendOrders(page: string) {
-    this.progress = 0;
-    this.porcentageComplete(this.orderData.pickup.contact_info.name);
-    this.porcentageComplete(this.orderData.pickup.contact_info.email);
-    this.porcentageComplete(this.orderData.pickup.contact_info.telephone);
-    this.porcentageComplete(this.orderData.reference_number);
-    this.porcentageComplete(this.orderData.pickup.startDate);
-    this.porcentageComplete(this.orderData.cargo.description);
-    this.porcentageComplete(this.orderData.dropoff.contact_info.name);
-    this.porcentageComplete(this.orderData.dropoff.contact_info.email);
-    this.porcentageComplete(this.orderData.dropoff.contact_info.telephone);
-    this.porcentageComplete(this.orderData.dropoff.startDate);
-    this.porcentageComplete(this.orderData.dropoff.endDate);
+  async assignOrder() {
+    const assignPayload = {
+      order_id: this.orderPreview.order_id,
+      carrier_id: this.membersToAssigned.drivers._id,
+      id_truck: this.membersToAssigned.trucks._id,
+      id_trailer: this.membersToAssigned.trailers._id,
+    }
 
-    this.orderData.completion_percentage = this.progress;
-    this.orderData["driver"] = this.membersToAssigned["drivers"]._id;
-    this.orderData["truck"] = this.membersToAssigned["trucks"]._id;
-    this.orderData["trailer"] = this.membersToAssigned["trailers"]._id;
-    this.orderData["stamp"] = this.isOrderWithCP;
-
-    const requestJson = JSON.stringify(this.orderData);
-    (await this.submitCreateOrder(requestJson, page)).subscribe(
-      async ({ result }) => {
-        this.uploadScreenShotOrderMap(result._id);
-        this.validateRoute = result.bego_order;
-        if (this.hazardousFile) {
-          const formData = new FormData();
-          formData.set("order_id", result._id);
-          formData.set('file', this.hazardousFile);
-          (
-            await this.auth.uploadFilesSerivce(formData, "orders/upload_hazardous")
-          ).subscribe(async (data) => {
-          });
-        }
-        if(this.userWantCP && page != 'drafts'){
-          this.router.navigate(["pricing"], {
-            state: {
-              orderId: result._id,
-            },
-          });
-        }
-        else if(page != 'drafts') {
-          this.alertService.create({
-            body: this.translateService.instant('orders.create'),
-            handlers: [
-              {
-                text: this.translateService.instant('checkout.btn-continue'),
-                color: '#FFE000',
-                action: async () => {
-                  this.alertService.close();
-                  location.reload();
-                }
-              }
-            ]
-          });
-        }
-      },
-      async (res) => {
-       console.log('Something went wrong', res.error)
-      }
+    await this.auth.apiRest(
+      JSON.stringify(assignPayload),
+      "orders/assign_order",
+      { apiVersion: "v1.1" }
     );
   }
 
-  submitCreateOrder(order, page) {
-    order = JSON.parse(order);
-
-    if (order.stamp || page === 'drafts') {
-      return this.auth.apiRest(JSON.stringify(order), "carriers/create_order");
-    }
-
-    const { driver: carrier_id, truck: id_truck, trailer: id_trailer } = order;
-
-    delete order.driver;
-    delete order.truck;
-    delete order.trailer;
-
-    // create order
-    return from(this.auth.apiRest(JSON.stringify(order), "carriers/create_order"))
-      .pipe(
-        mergeAll(),
-        switchMap((responseData) =>
-          concat(
-            // assign carrier, truck & trailer
-            from(this.auth.apiRest(JSON.stringify({
-              order_id: responseData.result._id,
-              carrier_id,
-              id_truck,
-              id_trailer,
-            }), "orders/assign_order", { apiVersion: "v1.1" })).pipe(mergeAll()),
-            // update status
-            from(this.auth.apiRest(JSON.stringify({
-              order_id: responseData.result._id,
-              order_status: 1,
-            }), "orders/update_status")).pipe(mergeAll()),
-          ).pipe(
-            toArray(),
-            mapTo(of(responseData)),
-          )
-        ),
-      )
-      .toPromise();
-  }
-
-  public async uploadScreenShotOrderMap(orderId: string) {
-    this.requestScreenshotOrderMap.set("order_id", orderId);
+  public async uploadScreenShotOrderMap() {
+    this.requestScreenshotOrderMap.set("order_id", this.orderPreview.order_id);
 
     (
       await this.auth.uploadFilesSerivce(
@@ -791,23 +705,22 @@ export class OrdersComponent implements OnInit {
   }
 
   public checkCPFields() {
-    if (this.isOrderWithCP) {
-      const leftList = [];
-      for (const item in this.orderWithCPFields) {
-        this.orderWithCPFields[item] === false && leftList.push(item);
+    const leftList = [];
+
+    for (const item in this.orderWithCPFields) {
+      this.orderWithCPFields[item] === false && leftList.push(item);
+    }
+
+    if (this.orderData.cargo.type === "hazardous") {
+      for (const item in this.hazardousCPFields) {
+        this.hazardousCPFields[item] === false && leftList.push(item);
       }
-      if (this.orderData.cargo.type === "hazardous") {
-        for (const item in this.hazardousCPFields) {
-          this.hazardousCPFields[item] === false && leftList.push(item);
-        }
-      }
-      if (leftList.length > 0) {
-        this.showModal(leftList);
-      } else {
-        this.sendOrders("orders");
-      }
+    }
+
+    if (leftList.length > 0) {
+      this.showModal(leftList);
     } else {
-      this.sendOrders("orders");
+      this.confirmOrder();
     }
   }
 
@@ -821,7 +734,7 @@ export class OrdersComponent implements OnInit {
       data: modalData,
     });
     dialogRef.afterClosed().subscribe(async (res) => {
-      res ? this.sendOrders("orders") : (this.currentStepIndex = 0);
+      res ? this.confirmOrder() : (this.currentStepIndex = 0);
     });
   }
 
