@@ -6,10 +6,8 @@ import {
   SimpleChanges,
   Input,
 } from "@angular/core";
-import { LangChangeEvent, TranslateService } from "@ngx-translate/core";
 import { FormBuilder, FormGroup, Validators, AbstractControl } from "@angular/forms";
 import { GoogleLocation } from "src/app/shared/interfaces/google-location";
-import { Subscription } from "rxjs";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
 @Component({
   selector: "app-step1",
@@ -48,7 +46,6 @@ export class Step1Component implements OnInit {
   });
 
   constructor(
-    private translateService: TranslateService,
     private formBuilder: FormBuilder,
     private googleService: GoogleMapsService
   ) {}
@@ -129,10 +126,8 @@ export class Step1Component implements OnInit {
 
   mailValidator(c: AbstractControl): { [key: string]: boolean } {
     const mail = c.value;
-    const regexp = new RegExp("^([da-z_.-]+)@([da-z.-]+).([a-z.]{2,6})$");
     const pattern =
       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
-    const test = regexp.test(mail);
 
     if (!pattern.test(mail)) {
       return { mailInvalid: true };

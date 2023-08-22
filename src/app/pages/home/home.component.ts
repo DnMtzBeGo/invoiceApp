@@ -3,17 +3,13 @@ import { GoogleLocation } from "src/app/shared/interfaces/google-location";
 import { Router, NavigationEnd } from "@angular/router";
 import {
   Subscription,
-  Observable,
   of,
   Subject,
-  BehaviorSubject,
-  timer,
   merge,
-  from,
   fromEvent,
   interval
 } from "rxjs";
-import { mergeAll, tap, filter, startWith, mapTo, exhaustMap, takeUntil, catchError } from 'rxjs/operators'
+import { tap, filter, mapTo, exhaustMap, takeUntil, catchError } from 'rxjs/operators'
 import { AuthService } from "src/app/shared/services/auth.service";
 import { PlacesService } from "src/app/shared/services/places.service";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";

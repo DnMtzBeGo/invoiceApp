@@ -1,10 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { TranslateService } from '@ngx-translate/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { InputSelectableComponent } from '../input-selectable/input-selectable.component';
+import { MatDialog } from '@angular/material/dialog';
 import { CargoWeightComponent } from '../cargo-weight/cargo-weight.component';
 import * as moment from 'moment';
 import { UnitDetailsModalComponent } from '../unit-details-modal/unit-details-modal.component';
@@ -74,18 +72,6 @@ export class Step3Component implements OnInit {
   };
 
   calendar: any;
-  // step3Form: FormGroup = this.formBuilder.group({
-  //   datepickup: [this.events, Validators.required],
-  //   timepickup: ['', Validators.required],
-  //   unitType: ['', Validators.required],
-  //   cargoWeight: [1],
-  //   cargoType: [this.cargoType, Validators.required],
-  //   hazardousType: [this.hazardousType, Validators.required],
-  //   hazardousUn: ['', Validators.required],
-  //   hazardousFile: [this.hazardousFile],
-  //   description: ['', Validators.required],
-  //   file: ['valid', Validators.required],
-  // });
   step3Form = new FormGroup({
     hazardous_material: new FormControl(""),
     packaging: new FormControl(""),
@@ -165,20 +151,6 @@ export class Step3Component implements OnInit {
     this.step3Form.get("cargoType")!.valueChanges.subscribe((val) => {
       this.handleCargoTypeChange();
     });
-
-    // this.step3Form.get("datepickup")!.valueChanges.subscribe((val) => {
-    //   let oldDate = moment(this.calendar, "MM-DD-YYYY").format("MMMM DD YYYY");
-    //   let newDate = moment(val, "MM-DD-YYYY").format("MMMM DD YYYY");
-    //   if (oldDate !== newDate) {
-    //     // this.minTime.setHours(0);
-    //     // this.minTime.setMinutes(0);
-    //     // this.minTime.setSeconds(0);
-    //     this.minTime = this.creationTime;
-    //     this.step3Form.controls.timepickup.setValue(void 0);
-    //   } else {
-    //     this.minTime = this.creationTime;
-    //   }
-    // });
 
     this.step3Form.get("timepickup")!.valueChanges.subscribe((val) => {
       // if(val===null) {
@@ -290,8 +262,6 @@ export class Step3Component implements OnInit {
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     this.events = moment(new Date(`${event.value}`), "MM-DD-YYYY").format("MMMM DD YYYY");
   }
-
-  timeChange(time: any) {}
 
   selectedUnits(unit: any): void {
     this.step3Form.get('unitType')!.setValue(unit.value);
