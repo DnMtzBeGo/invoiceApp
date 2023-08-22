@@ -128,6 +128,7 @@
     }
   },
   "checkout": {
+    "description": "Descripción",
     "title-checkout": "Checkout",
     "txt-reference": "Referencia",
     "title-emitter": "Informacion del Emisor",
@@ -136,6 +137,9 @@
     "txt-dropoff": "Entrega",
     "txt-invoice": "Factura",
     "title-invoice": "Información de Receptor",
+    "txt-address": "Dirección",
+    "txt-company": "Razon social",
+    "txt-tax_regime": "Regimen Fiscal",
     "placeholder-fullname": "Nombre completo",
     "placeholder-email": "Email",
     "placeholder-phonenumber": "Teléfono Móvil",

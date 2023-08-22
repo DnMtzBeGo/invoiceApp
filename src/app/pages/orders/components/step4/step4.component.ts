@@ -146,6 +146,11 @@ export class Step4Component implements OnInit {
     this.step4Form.valueChanges.subscribe(() => {
       this.step4FormData.emit(this.step4Form.value);
     });
+
+    this.updateCardTitles();
+    this.translateService.onLangChange.subscribe(() => {
+      this.updateCardTitles()
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -154,6 +159,27 @@ export class Step4Component implements OnInit {
     this.updatePickup(orderData);
     this.updateDropoff(orderData);
     this.updateCargo(orderData);
+  }
+
+  updateCardTitles() {
+    this.pickupContent[0].label = this.translateService.instant('orders.title-fullname');
+    this.pickupContent[1].label = this.translateService.instant('orders.phone_text');
+    this.pickupContent[3].label = this.translateService.instant('orders.title-reference');
+    this.pickupContent[5].label = this.translateService.instant('checkout.date');
+    this.pickupContent[6].label = this.translateService.instant('checkout.time');
+
+    this.dropoffContent[0].label = this.translateService.instant('orders.title-fullname');
+    this.dropoffContent[1].label = this.translateService.instant('orders.phone_text');
+    this.dropoffContent[3].label = this.translateService.instant('orders.description');
+
+    this.cargoContent[0].label = this.translateService.instant('checkout.units');
+    this.cargoContent[1].label = this.translateService.instant('checkout.weight');
+    this.cargoContent[2].label = this.translateService.instant('checkout.cargo-type');
+    this.cargoContent[3].label = this.translateService.instant('orders.unit-details-list.description');
+
+    this.invoiceContent[0].label = this.translateService.instant('checkout.txt-address');
+    this.invoiceContent[1].label = this.translateService.instant('checkout.txt-company');
+    this.invoiceContent[4].label = this.translateService.instant('checkout.txt-tax_regime');
   }
 
   async fetchCFDI() {

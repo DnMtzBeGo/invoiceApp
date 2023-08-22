@@ -21,6 +21,7 @@
     "drag-files-in-here": "Drag files in here"
   },
   "orders": {
+    "description": "Description",
     "back": "Back",
     "next-step":"Next Step",
     "create": "Order created successfully",
@@ -136,6 +137,9 @@
     "txt-dropoff": "Drop off",
     "txt-inovice": "Inovice",
     "title-invoice": "Receiver Information",
+    "txt-address": "Address",
+    "txt-company": "Company",
+    "txt-tax_regime": "Tax Regime",
     "placeholder-fullname": "Full Name",
     "placeholder-email": "Email",
     "placeholder-phonenumber": "Phone Number",
