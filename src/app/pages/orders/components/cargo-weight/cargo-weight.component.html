@@ -1,4 +1,4 @@
-<bego-alert-customer [showChibi]="false" [simple]="true" (closeEmitter)="save()" class="cargo-weight">
+<bego-alert-customer [showChibi]="false" [simple]="true" [arrayButtons]="arrayButtons" (closeEmitter)="save()" class="cargo-weight">
   <h2 class="title">{{ 'orders.cargo-weight.subtitule' | translate }}</h2>
 
   <app-cargo-units [(units)]="data.units"></app-cargo-units>

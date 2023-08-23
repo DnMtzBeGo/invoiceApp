@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { CargoWeight } from '../../interfaces/cargo-weight'
 
 @Component({
@@ -10,8 +11,17 @@ import { CargoWeight } from '../../interfaces/cargo-weight'
 export class CargoWeightComponent implements OnInit {
   maxUnits = Number.MAX_SAFE_INTEGER;
 
+  arrayButtons = [
+    {
+      textBtn: this.translateService.instant('orders.btn-save'),
+      textEmit: 'close',
+      activated: true,
+    }
+  ]
+
   constructor(
     public dialogRef: MatDialogRef<CargoWeightComponent>,
+    private translateService: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: CargoWeight
   ) {}
 
