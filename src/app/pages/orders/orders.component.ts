@@ -318,7 +318,7 @@ export class OrdersComponent implements OnInit {
     }
 
     if (this.currentStepIndex === 4 && this.validateForm()) {
-      this.isOrderWithCP ? this.checkCPFields() : this.confirmOrder();
+      this.isOrderWithCP ? this.checkCPFields() : this.completeOrder();
     }
   }
 
@@ -647,19 +647,24 @@ export class OrdersComponent implements OnInit {
     return Date.parse(event.toString());
   }
 
+  async completeOrder() {
+    await this.confirmOrder();
+    await this.assignOrder();
+    await this.uploadScreenShotOrderMap();
+  }
+
   async confirmOrder() {
     const confirmPayload = {
       order_id: this.orderPreview.order_id
-    }
+    };
 
-    await this.auth.apiRestPut(
+    const req = await this.auth.apiRestPut(
       JSON.stringify(confirmPayload),
       'orders/confirm_order',
       { apiVersion: 'v1.1' }
     )
 
-    this.assignOrder();
-    this.uploadScreenShotOrderMap();
+    return req.toPromise();
   }
 
   async assignOrder() {
@@ -670,27 +675,24 @@ export class OrdersComponent implements OnInit {
       id_trailer: this.membersToAssigned.trailers._id,
     }
 
-    await this.auth.apiRest(
+    const req = await this.auth.apiRest(
       JSON.stringify(assignPayload),
       "orders/assign_order",
       { apiVersion: "v1.1" }
     );
+
+    return req.toPromise();
   }
 
   public async uploadScreenShotOrderMap() {
     this.requestScreenshotOrderMap.set("order_id", this.orderPreview.order_id);
 
-    (
-      await this.auth.uploadFilesSerivce(
-        this.requestScreenshotOrderMap,
-        "orders/upload_map"
-      )
-    ).subscribe(
-      (res) => {},
-      (error) => {
-        console.log("Con el error", error.error.errror);
-      }
-    );
+    const req = await this.auth.uploadFilesSerivce(
+      this.requestScreenshotOrderMap,
+      "orders/upload_map"
+    )
+
+    return req.toPromise();
   }
 
   public toogleOrderWithCP() {
@@ -720,7 +722,7 @@ export class OrdersComponent implements OnInit {
     if (leftList.length > 0) {
       this.showModal(leftList);
     } else {
-      this.confirmOrder();
+      this.completeOrder();
     }
   }
 
@@ -734,7 +736,7 @@ export class OrdersComponent implements OnInit {
       data: modalData,
     });
     dialogRef.afterClosed().subscribe(async (res) => {
-      res ? this.confirmOrder() : (this.currentStepIndex = 0);
+      res ? this.completeOrder() : (this.currentStepIndex = 0);
     });
   }
 
