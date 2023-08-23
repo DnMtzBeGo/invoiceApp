@@ -1,12 +1,12 @@
 .pricing {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   height: 100%;
 
   .box {
     position: relative;
     max-width: 512px;
+    margin: 32px;
     padding: 72px;
     border-radius: 50px;
     background: linear-gradient(101.18deg, #080c0f 10.56%, #0f1113 92.19%);
