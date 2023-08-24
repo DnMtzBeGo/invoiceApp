@@ -651,6 +651,10 @@ export class OrdersComponent implements OnInit {
     await this.confirmOrder();
     await this.assignOrder();
     await this.uploadScreenShotOrderMap();
+
+    // cleanup page
+    await this.router.navigate(['/'], { skipLocationChange: true });
+    await this.router.navigate(['/home']);
   }
 
   async confirmOrder() {
