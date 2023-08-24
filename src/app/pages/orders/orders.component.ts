@@ -305,7 +305,7 @@ export class OrdersComponent implements OnInit {
   }
 
   validateForm() {
-    return this.stepsValidate.every(Boolean);
+    return this.stepsValidate.slice(0, -1).every(Boolean);
   }
 
   nextSlide() {
