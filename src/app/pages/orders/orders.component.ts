@@ -309,16 +309,16 @@ export class OrdersComponent implements OnInit {
   }
 
   nextSlide() {
+    if (this.currentStepIndex === 4 && this.validateForm()) {
+      this.isOrderWithCP ? this.checkCPFields() : this.completeOrder();
+    }
+
     if (this.currentStepIndex === 2 && !this.hasEditedCargoWeight) {
       this.editCargoWeightNow = true;
     }
 
     if (this.currentStepIndex < 4) {
       this.currentStepIndex = this.currentStepIndex + 1;
-    }
-
-    if (this.currentStepIndex === 4 && this.validateForm()) {
-      this.isOrderWithCP ? this.checkCPFields() : this.completeOrder();
     }
   }
 
