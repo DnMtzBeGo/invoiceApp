@@ -19,6 +19,7 @@ export class Step1Component implements OnInit {
   phoneCode = "+52";
   phoneNumber = "";
 
+  @Input() cardIsOpen = false;
   @Input() locations: GoogleLocation = {
     pickup: "",
     dropoff: "",
@@ -29,6 +30,7 @@ export class Step1Component implements OnInit {
     pickupPostalCode: 0,
     dropoffPostalCode: 0,
   };
+  @Input() datePickup: number;
   @Input() draftData: any;
   @Input() orderWithCP: boolean;
   @Output() step1FormData: EventEmitter<any> = new EventEmitter();

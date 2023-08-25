@@ -41,8 +41,7 @@
           [placeholder]="'orders.placeholder-reference' | translate"></bego-input>
       </div>
 
-      <!-- TODO: calendar cannot be read-only and cannot has initial time -->
-      <!-- <bego-calendar-time></bego-calendar-time> -->
+      <bego-calendar-time *ngIf="cardIsOpen" [disabled]="true"[defaultDate]="datePickup"></bego-calendar-time>
     </div>
   </form>
 </div>
