@@ -38,6 +38,7 @@ export class OrdersComponent implements OnInit {
   @ViewChild("ordersRef") public ordersRef!: ElementRef;
   @Input() cardIsOpen: boolean = false;
   @Output() cardIsOpenChange = new EventEmitter<boolean>();
+  @Output() stepChange = new EventEmitter<number>();
   @Input() draftData: any;
   @Input() locations: GoogleLocation = {
     pickup: "",
@@ -302,6 +303,8 @@ export class OrdersComponent implements OnInit {
     this.ordersSteps.forEach((e, i) => {
         e.validated = this.stepsValidate[i];
     });
+
+    this.stepChange.emit(this.currentStepIndex);
   }
 
   validateForm() {

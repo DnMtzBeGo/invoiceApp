@@ -18,6 +18,10 @@
         max-width: calc(100% - #{$directions-width});
         min-width: 780px;
         pointer-events: none;
+
+        &.full {
+            max-width: 100%;
+        }
     }
 
     .input-directions{

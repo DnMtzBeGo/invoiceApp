@@ -11,9 +11,10 @@
   </bego-map>
 
   <div class="new-order-wrapper">
-    <div class="new-order-details">
+    <div class="new-order-details" [ngClass]="{ full: !showSidebar }">
       <app-orders
         [(cardIsOpen)]="showOrderDetails"
+        (stepChange)="onStepChange($event)"
         [draftData]="draftData"
         [locations]="locations"
         [datepickup]="datepickup"
@@ -28,6 +29,7 @@
 
     <div class="input-directions">
       <app-input-directions
+        *ngIf="showSidebar"
         (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
         [showMapPreview]="showOrderDetails"
         (showNewOrderCard)="showNewOrderCard()"

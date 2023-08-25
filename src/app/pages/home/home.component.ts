@@ -89,6 +89,8 @@ export class HomeComponent implements OnInit {
 
   subs = new Subscription();
 
+  showSidebar = true;
+
   constructor(
     private router: Router,
     private webService: AuthService,
@@ -474,5 +476,9 @@ export class HomeComponent implements OnInit {
 
     if (cleanRefresh === false || fromShowMap || this.isMapDirty === false)
       this.map.fitBounds(this.bounds, { bottom: 50, top: 50, left: 80, right: 50 + 400 + 50 });
+  }
+
+  onStepChange(step: number) {
+    this.showSidebar = !this.showOrderDetails || step < 3;
   }
 }
