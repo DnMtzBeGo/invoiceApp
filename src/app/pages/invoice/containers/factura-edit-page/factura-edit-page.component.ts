@@ -1254,8 +1254,14 @@ export class FacturaEditPageComponent implements OnInit {
 
   facturaStatus = facturaStatus;
 
-  downloadPreview = (factura?) => {
+  downloadPreview = () => {
+    this.cartaporteCmp.gatherInfo();
+    const factura = this.vm.form;
+
     if (factura == void 0) return;
+    if (!factura.tipo_de_comprobante) return;
+
+    console.log(factura);
 
     window
       .fetch(this.URL_BASE + 'invoice/preview', {

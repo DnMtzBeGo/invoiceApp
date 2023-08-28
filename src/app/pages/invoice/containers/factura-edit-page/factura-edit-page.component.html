@@ -1918,7 +1918,7 @@
         </div>
 
         <div *ngIf="p(vm.form).vistaprevia && model === 'factura'">
-          <button mat-flat-button class="brand-btn-1" (click)="downloadPreview(vm.form)" target="_blank">
+          <button mat-flat-button class="brand-btn-1" (click)="downloadPreview()" target="_blank">
             {{ 'invoice.edit.btn-preview' | translate }}
           </button>
         </div>
