@@ -1261,8 +1261,6 @@ export class FacturaEditPageComponent implements OnInit {
     if (factura == void 0) return;
     if (!factura.tipo_de_comprobante) return;
 
-    console.log(factura);
-
     window
       .fetch(this.URL_BASE + 'invoice/preview', {
         method: 'POST',
