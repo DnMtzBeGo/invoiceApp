@@ -1,59 +1,41 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-  OnChanges,
-  AfterViewInit,
-  Output,
-  EventEmitter,
-  ViewEncapsulation,
-} from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
-import { TranslateService } from "@ngx-translate/core";
-import { MatSort } from "@angular/material/sort";
-import { MatDialog } from "@angular/material/dialog";
-import { Router } from "@angular/router";
-import { NotificationsService } from "src/app/shared/services/notifications.service";
-import { Paginator, TableFactura } from "../../models";
-import { routes } from "../../consts";
-import { environment } from "src/environments/environment";
-import {
-  facturaPermissions,
-  previewFactura,
-  facturaStatus,
-} from "../../containers/factura-edit-page/factura.core";
-import { clone } from "../../../../shared/utils/object";
-import {
-  ActionSendEmailFacturaComponent,
-  ActionCancelarFacturaComponent,
-  ActionConfirmationComponent,
-} from "../../modals";
+import { Component, Input, OnInit, ViewChild, OnChanges, AfterViewInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { TranslateService } from '@ngx-translate/core';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { Paginator, TableFactura } from '../../models';
+import { routes } from '../../consts';
+import { environment } from 'src/environments/environment';
+import { facturaPermissions, previewFactura, facturaStatus } from '../../containers/factura-edit-page/factura.core';
+import { clone } from '../../../../shared/utils/object';
+import { ActionSendEmailFacturaComponent, ActionCancelarFacturaComponent, ActionConfirmationComponent } from '../../modals';
 
 @Component({
-  selector: "app-factura-table",
-  templateUrl: "./factura-table.component.html",
-  styleUrls: ["./factura-table.component.scss"],
-  encapsulation: ViewEncapsulation.None,
+  selector: 'app-factura-table',
+  templateUrl: './factura-table.component.html',
+  styleUrls: ['./factura-table.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
   public routes: typeof routes = routes;
   public URL_BASE = environment.URL_BASE;
-  public token = localStorage.getItem("token") || "";
+  public token = localStorage.getItem('token') || '';
 
   //Table data
   @Input() orderTableData: TableFactura[];
   public displayedColumns: string[] = [
-    "plataforma",
-    "fecha_emision",
-    "emisor",
-    "receptor",
-    "serie",
-    "tipo",
-    "status",
-    "subtotal",
-    "total",
-    "actions",
+    'plataforma',
+    'fecha_emision',
+    'emisor',
+    'receptor',
+    'serie',
+    'tipo',
+    'status',
+    'subtotal',
+    'total',
+    'actions'
   ];
   public dataSource: MatTableDataSource<TableFactura>;
 
@@ -97,9 +79,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
   public handleUpdateTable() {
     if (this.dataSource) {
       this.dataSource.data = [];
-      this.dataSource = new MatTableDataSource<TableFactura>(
-        this.orderTableData
-      );
+      this.dataSource = new MatTableDataSource<TableFactura>(this.orderTableData);
       this.dataSource.sort = this.sort;
     }
   }
@@ -116,7 +96,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   // Filter
   public applyFilter(event: any): void {
-    if (event.key === "Enter" || event.keyCode === 13) {
+    if (event.key === 'Enter' || event.keyCode === 13) {
       this.page.pageSearch = (event.target as HTMLInputElement).value;
       this.pageChangeEmiter();
     }
@@ -124,7 +104,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   public showFilterInput(close = false): void {
     if (close) {
-      this.page.pageSearch = "";
+      this.page.pageSearch = '';
       this.pageChangeEmiter();
     }
     this.isShowFilterInput = !this.isShowFilterInput;
@@ -138,10 +118,10 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
       data: {
         _id,
         to: [],
-        reply_to: "",
+        reply_to: ''
       },
       restoreFocus: false,
-      backdropClass: ["brand-dialog-1"],
+      backdropClass: ['brand-dialog-1']
     });
   }
 
@@ -151,39 +131,31 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
         _id,
         afterSuccessDelay: () => {
           this.refresh.emit();
-        },
+        }
       },
       restoreFocus: false,
-      backdropClass: ["brand-dialog-1"],
+      backdropClass: ['brand-dialog-1']
     });
   }
 
   deleteFactura(_id: string) {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
-        modalTitle: this.translateService.instant(
-          "invoice.invoice-table.delete-title"
-        ),
-        modalMessage: this.translateService.instant(
-          "invoice.invoice-table.delete-message"
-        ),
+        modalTitle: this.translateService.instant('invoice.invoice-table.delete-title'),
+        modalMessage: this.translateService.instant('invoice.invoice-table.delete-message'),
         modalPayload: {
           body: {
-            _id,
+            _id
           },
-          endpoint: "invoice/delete",
-          successMessage: this.translateService.instant(
-            "invoice.invoice-table.delete-success"
-          ),
-          errorMessage: this.translateService.instant(
-            "invoice.invoice-table.delete-error"
-          ),
+          endpoint: 'invoice/delete',
+          successMessage: this.translateService.instant('invoice.invoice-table.delete-success'),
+          errorMessage: this.translateService.instant('invoice.invoice-table.delete-error'),
           // TODO: remove action?
-          action: "emitBegoUser",
-        },
+          action: 'emitBegoUser'
+        }
       },
       restoreFocus: false,
-      backdropClass: ["brand-dialog-1"],
+      backdropClass: ['brand-dialog-1']
     });
 
     // TODO: false/positive when close event
@@ -203,44 +175,40 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
     if (factura == void 0) return;
 
     window
-      .fetch(this.URL_BASE + "invoice/preview", {
-        method: "POST",
+      .fetch(this.URL_BASE + 'invoice/preview_consignment_note', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Acceontrol-Allow-Headers": "Content-Type, Accept",
-          "Access-Css-Control-Allow-Methods": "POST,GET,OPTIONS",
-          Authorization: `Bearer ${this.token}`,
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Acceontrol-Allow-Headers': 'Content-Type, Accept',
+          'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
+          Authorization: `Bearer ${this.token}`
         },
-        body: JSON.stringify(previewFactura(clone(factura))),
+        body: JSON.stringify(previewFactura(clone(factura)))
       })
       .then((responseData) => responseData.arrayBuffer())
       .then((buffer) => {
         const blob = new Blob([buffer], {
-          type: "application/pdf",
+          type: 'application/pdf'
         });
 
         const linkSource = URL.createObjectURL(blob);
 
-        const downloadLink = document.createElement("a");
+        const downloadLink = document.createElement('a');
         downloadLink.href = linkSource;
-        downloadLink.target = "_blank";
+        downloadLink.target = '_blank';
         // downloadLink.download = 'Vista previa.pdf'
         downloadLink.click();
         setTimeout(() => URL.revokeObjectURL(linkSource), 5000);
       })
       .catch(() => {
-        this.notificationsService.showErrorToastr(
-          this.translateService.instant("invoice.invoice-table.preview-error")
-        );
+        this.notificationsService.showErrorToastr(this.translateService.instant('invoice.invoice-table.preview-error'));
       });
   };
 
   showError = (error: any) => {
     error = error?.message || error?.error;
 
-    return Array.isArray(error)
-      ? error.map((e) => e.error ?? e.message).join("\n")
-      : error;
+    return Array.isArray(error) ? error.map((e) => e.error ?? e.message).join('\n') : error;
   };
 }
