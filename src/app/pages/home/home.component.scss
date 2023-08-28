@@ -3,21 +3,17 @@
 
 .new-order-wrapper{
     display: flex;
-    position: absolute;
-    top: 125px;
-    right: 20px;
-    left: 0;
-    bottom: 0;
     pointer-events: none;
-    z-index: 2;
-    overflow: hidden;
 
+    $spacing-top: 125px;
     $directions-width: 400px;
+    $spacing-right: 20px;
 
     .new-order-details{
-        max-width: calc(100% - #{$directions-width});
+        max-width: calc(100% - #{$directions-width + $spacing-right});
         min-width: 780px;
         pointer-events: none;
+        margin-top: $spacing-top;
 
         &.full {
             max-width: 100%;
@@ -25,8 +21,11 @@
     }
 
     .input-directions{
+        position: fixed;
+        top: $spacing-top;
+        right: $spacing-right;
         width: $directions-width;
-        position: relative;
+        z-index: 2;
     }
 }
 
@@ -75,7 +74,7 @@
       #reset {
         position: absolute;
         bottom: -150px;
-        right: calc(400px + 10px);
+        right: calc(100% + 10px);
         border: none;
         cursor: pointer;
         transition: all 0.5s ease-in-out;
@@ -94,7 +93,7 @@
 }
 
 .google-map {
-    height: calc(100vh - 106px);
+    height: 100vh;
     transition: opacity 0.5s;
     position: absolute;
     top: 0;
@@ -111,4 +110,9 @@
     &.transparent {
         height: 100vh;
     }
+}
+
+bego-map {
+    position: absolute;
+    inset: 0;
 }

@@ -10,14 +10,6 @@
     }
   }
 
-  bego-stepper {
-    overflow-y: hidden;
-
-    ::ng-deep .swiper-slide {
-      overflow: auto;
-    }
-  }
-
   ::ng-deep .steps-container {
     padding: 0 57px;
     max-width: 830px;

@@ -7,6 +7,8 @@ import {
   Output,
   EventEmitter,
   SimpleChanges,
+  ViewChildren,
+  QueryList,
 } from "@angular/core";
 import { LangChangeEvent, TranslateService } from "@ngx-translate/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
@@ -196,7 +198,13 @@ export class OrdersComponent implements OnInit {
 
   stepperOptions: StepperOptions = {
     allowTouchMove: false,
+    autoHeight: true,
   }
+
+  @ViewChildren('step') stepsRef: QueryList<any>;
+  resizeObserver = new ResizeObserver(() => {
+    this.stepperRef.controller.swiper.updateAutoHeight();
+  });
 
   constructor(
     private translateService: TranslateService,
@@ -234,10 +242,15 @@ export class OrdersComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.marksRef.controller = this.stepperRef.controller
+
+    this.stepsRef.forEach((el) => {
+      this.resizeObserver.observe(el.nativeElement);
+    });
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.resizeObserver.disconnect();
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -9,52 +9,65 @@
 
       <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions" (stepChange)="updateStatus()">
         <bego-step [completed]="stepsValidate[0]">
-          <app-step1
-            [locations]="locations"
-            (step1FormData)="getStep1FormData($event)"
-            (validFormStep1)="validStep1($event)"
-            [cardIsOpen]="cardIsOpen"
-            [draftData]="draftData"
-            [datePickup]="datepickup"
-            [orderWithCP]="isOrderWithCP"
-          ></app-step1>
+          <div #step>
+            <app-step1
+              [locations]="locations"
+              (step1FormData)="getStep1FormData($event)"
+              (validFormStep1)="validStep1($event)"
+              [cardIsOpen]="cardIsOpen"
+              [draftData]="draftData"
+              [datePickup]="datepickup"
+              [orderWithCP]="isOrderWithCP"
+            ></app-step1>
+          </div>
         </bego-step>
 
         <bego-step [completed]="stepsValidate[1]">
-          <app-step2
-            [locations]="locations"
-            (step2FormData)="getStep2FormData($event)"
-            (validFormStep2)="validStep2($event)"
-            [draftData]="draftData"
-            [orderWithCP]="isOrderWithCP"
-          ></app-step2>
+          <div #step>
+            <app-step2
+              [locations]="locations"
+              (step2FormData)="getStep2FormData($event)"
+              (validFormStep2)="validStep2($event)"
+              [draftData]="draftData"
+              [orderWithCP]="isOrderWithCP"
+            ></app-step2>
+          </div>
         </bego-step>
 
         <bego-step [completed]="stepsValidate[2]">
-          <app-step3
-            [creationdatepickup]="datepickup"
-            [creationTime]="creationTime"
-            (step3FormData)="getStep3FormData($event)"
-            (validFormStep3)="validStep3($event)"
-            [draftData]="draftData"
-            [orderWithCP]="isOrderWithCP"
-            [editCargoWeightNow]="editCargoWeightNow"
-            (cargoWeightEdited)="cargoWeightEdited()"
-            [hazardousFileAWS]="hazardousFileAWS"
-            [catalogsDescription]="catalogsDescription"
-          ></app-step3>
+          <div #step>
+            <app-step3
+              [creationdatepickup]="datepickup"
+              [creationTime]="creationTime"
+              (step3FormData)="getStep3FormData($event)"
+              (validFormStep3)="validStep3($event)"
+              [draftData]="draftData"
+              [orderWithCP]="isOrderWithCP"
+              [editCargoWeightNow]="editCargoWeightNow"
+              (cargoWeightEdited)="cargoWeightEdited()"
+              [hazardousFileAWS]="hazardousFileAWS"
+              [catalogsDescription]="catalogsDescription"
+            ></app-step3>
+          </div>
         </bego-step>
 
         <bego-step [completed]="stepsValidate[3]">
-          <app-pricing-step (pricingStepFormData)="getPricingStepFormData($event)" (validPricingStep)="validPricingStep($event)"></app-pricing-step>
+          <div #step>
+            <app-pricing-step
+              (pricingStepFormData)="getPricingStepFormData($event)"
+              (validPricingStep)="validPricingStep($event)"
+            ></app-pricing-step>
+          </div>
         </bego-step>
 
         <bego-step [completed]="stepsValidate[4]">
-          <app-step4
-            [orderData]="orderData"
-            (step4FormData)="getStep4FormData($event)"
-            (validFormStep4)="validStep4($event)"
-          ></app-step4>
+          <div #step>
+            <app-step4
+              [orderData]="orderData"
+              (step4FormData)="getStep4FormData($event)"
+              (validFormStep4)="validStep4($event)"
+            ></app-step4>
+          </div>
         </bego-step>
       </bego-stepper>
 
