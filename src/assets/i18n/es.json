@@ -1561,7 +1561,8 @@
       "order-number": "Orden",
       "reference-number": "Número de referencia BGO",
       "invalid-file": "Archivo inválido",
-      "select-file": "Selecciona un archivo"
+      "select-file": "Selecciona un archivo",
+      "label_foreign_payment": "Pago en Banco extrangero?"
     },
     "edited-modal": {
       "done": "Hecho",

@@ -38,7 +38,7 @@ export class PaymentsUploadModalComponent implements OnInit {
     decimal: '.',
     precision: 2,
     allowNegative: false,
-    suffix: ' MXN',
+    suffix: '',
     allowZero: false,
     nullable: false
   };
@@ -72,6 +72,9 @@ export class PaymentsUploadModalComponent implements OnInit {
 
   lang: string = 'es';
 
+  public foreingPayment: boolean = false;
+  public currency: string = '';
+
   constructor(
     public dialogRef: MatDialogRef<PaymentsUploadModalComponent>,
     private webService: AuthService,
@@ -84,12 +87,27 @@ export class PaymentsUploadModalComponent implements OnInit {
     this.lang = localStorage.getItem('lang') || 'en';
   }
 
-  handleFileChange(file: File, type: 'pdf' | 'xml') {
+  async handleFileChange(file: File, type: 'pdf' | 'xml') {
     if (file == undefined) {
       this.files[type].data = undefined;
       this.files[type].file = null;
       return;
     }
+    // if (type == 'xml') {
+    //   (await this.webService.apiRestGet('endpoint', { apiVersion: 'v1.1' })).subscribe(
+    //     (res) => {
+    //       if(res == 'MXN') {
+    //         this.currency = 'MXN';
+    //       } else {
+    //         this.currency = 'USD';
+    //       }
+    //     },
+    //     (err) => {
+    //       console.log(err);
+    //     }
+    //   );
+    // }
+
     this.files[type].file = file;
     this.files[type].data = {
       name: file.name,
@@ -102,6 +120,14 @@ export class PaymentsUploadModalComponent implements OnInit {
   onModelChange(value: number, type: 'total' | 'subtotal') {
     this.prices[type] = value;
     this.checkValidated();
+  }
+
+  onForeignPaymentChange(value: Object) {
+    if(Boolean(value["enabled"])) {
+      this.foreingPayment = true;
+    } else {
+      this.foreingPayment = false;
+    }
   }
 
   checkValidated() {

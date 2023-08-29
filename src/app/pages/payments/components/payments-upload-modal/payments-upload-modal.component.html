@@ -6,6 +6,13 @@
     </div>
   </div>
   <div class="payments-body">
+    <div class="foreing-container">
+      <bego-button-toggle
+        [simple]="true"
+        (statusChanged)="onForeignPaymentChange($event)"
+      ></bego-button-toggle>
+      <span>{{ 'payments.upload-modal.label_foreign_payment' | translate }}</span>
+    </div>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'payments.upload-modal.order-number' | translate }}</mat-label>
       <input matInput [(ngModel)]="order_number" (input)="checkValidated()" maxlength="8" />
@@ -25,6 +32,7 @@
           [ngModel]="prices.subtotal"
           [options]="currencyOptions"
           (ngModelChange)="onModelChange($event, 'subtotal')" />
+          <span matSuffix>{{currency}}</span>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="brand-field-1">
@@ -35,11 +43,12 @@
           [ngModel]="prices.total"
           [options]="currencyOptions"
           (ngModelChange)="onModelChange($event, 'total')" />
+          <span matSuffix>{{currency}}</span>
       </mat-form-field>
     </div>
 
     <div class="files-container">
-      <div class="files-subcontainer">
+      <div class="files-subcontainer" *ngIf="!foreingPayment">
         <span>XML</span>
 
         <bego-drag-drop
