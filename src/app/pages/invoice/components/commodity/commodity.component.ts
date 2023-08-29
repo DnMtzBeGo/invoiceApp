@@ -76,7 +76,15 @@ export class CommodityComponent implements OnInit {
             limit: 1
           });
           this.filteredBienesTransportados = Object.assign([], productsCatalogs);
+          this.bienesTransportados = [...productsCatalogs];
         }
+      } else {
+        this.bienesTransportados = await this.catalogListService.getCatalogue('consignment-note/productos-y-servicios', {
+          term: '',
+          limit: 30
+        });
+
+        this.filteredBienesTransportados = Object.assign([], this.bienesTransportados);
       }
     });
 
@@ -163,7 +171,7 @@ export class CommodityComponent implements OnInit {
   }
 
   getBienesTransportadosText(option: string) {
-    const optionInfo = this.bienesTransportados.find((e) => e.code == option);
+    const optionInfo = this.bienesTransportados?.find((e) => e.code == option);
     this.commodity.patchValue({
       bienesTransportadosDescripcion: optionInfo?.description
     });
