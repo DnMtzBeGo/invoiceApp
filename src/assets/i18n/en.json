@@ -83,6 +83,8 @@
     "txt-valid-route": "This route is not included on our pricing list, but you can create it and we will contact you as soon as possible with a quotation.",
     "btn-cancel": "Cancel",
     "btn-done": "Done",
+    "invalid-email": "Invalid email",
+    "invalid-phone": "Invalid phone number",
     "hazardous-list": {
       "class-1": "CLASS 1 - Explosive substance and objects",
       "class-2": "CLASS 2 - Gases",

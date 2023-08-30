@@ -21,6 +21,7 @@
     "drag-files-in-here": "Arrastra tus archivos aquí"
   },
   "orders": {
+    "description": "Description",
     "back": "Atrás",
     "next-step": "Siguiente paso",
     "create": "Orden creada exitosamente",
@@ -82,6 +83,8 @@
     "txt-valid-route": "Esta ruta no se encuentra en nuestra lista de precios, pero puedes crearla y te contactaremos pronto con una cotización.",
     "btn-cancel": "Cancelar",
     "btn-done": "Hecho",
+    "invalid-email": "Email inválido",
+    "invalid-phone": "Numero de telefono invalido",
     "hazardous-list": {
       "class-1": "CLASS 1 - Sustancias u objetos explosivos",
       "class-2": "CLASS 2 - Gases",

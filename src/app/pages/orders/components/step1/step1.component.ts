@@ -6,9 +6,14 @@ import {
   SimpleChanges,
   Input,
 } from "@angular/core";
-import { FormBuilder, FormGroup, Validators, AbstractControl } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { TranslateService } from "@ngx-translate/core";
 import { GoogleLocation } from "src/app/shared/interfaces/google-location";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
+
+const MAIL_REGEX = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+const PHONE_REGEX = /^([0-9]{2}\s?){5}$/
+
 @Component({
   selector: "app-step1",
   templateUrl: "./step1.component.html",
@@ -38,18 +43,45 @@ export class Step1Component implements OnInit {
 
   step1Form: FormGroup = this.formBuilder.group({
     fullname: [null, Validators.required],
-    email: [null, [Validators.required, this.mailValidator]],
+    email: [null, [Validators.required, Validators.pattern(MAIL_REGEX)]],
     phoneCode: [this.phoneCode],
-    phonenumber: [this.phoneNumber, Validators.required],
+    phonenumber: [this.phoneNumber, [Validators.required, Validators.pattern(PHONE_REGEX)]],
     reference: [null, Validators.required],
     country_code: [this.phoneFlag],
     orderWithCP: [false],
     rfc: [null],
   });
 
+  phoneValidator = {
+    _firstCheck: true,
+    errorMsg: this.translateService.instant('orders.invalid-phone'),
+    isValid(value: string) {
+      if (this._firstCheck) {
+        this._firstCheck = false;
+        return true
+      }
+
+      return PHONE_REGEX.test(value)
+    }
+  }
+
+  emailValidator = {
+    _firstCheck: true,
+    errorMsg: this.translateService.instant('orders.invalid-email'),
+    isValid(value: string) {
+      if (this._firstCheck) {
+        this._firstCheck = false;
+        return true
+      }
+
+      return MAIL_REGEX.test(value);
+    }
+  };
+
   constructor(
     private formBuilder: FormBuilder,
-    private googleService: GoogleMapsService
+    private googleService: GoogleMapsService,
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -124,18 +156,6 @@ export class Step1Component implements OnInit {
       }
 
     }
-  }
-
-  mailValidator(c: AbstractControl): { [key: string]: boolean } {
-    const mail = c.value;
-    const pattern =
-      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
-
-    if (!pattern.test(mail)) {
-      return { mailInvalid: true };
-    }
-
-    return null as any;
   }
 
   phoneCodeChanged(data: any) {
