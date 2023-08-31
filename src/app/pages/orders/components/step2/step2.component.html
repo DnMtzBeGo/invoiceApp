@@ -11,27 +11,31 @@
           [placeholder]="'orders.placeholder-fullname' | translate"></bego-input>
       </div>
 
-      <div class="field">
-        <bego-phone-code-select
-          [flag]="phoneFlag"
-          [selectedPhoneCode]="phoneCode"
-          (sendValues)="updateFormPhoneCode($event)"></bego-phone-code-select>
-        <bego-input
-          type="phone"
-          [setValue]="phoneNumber"
-          [validators]="phoneValidator"
-          (value)="phoneNumberChangeValue($event)"
-          [placeholder]="'bego-phone-input.phone' | translate"></bego-input>
-      </div>
+      <div class="row-field">
+        <div class="field">
+          <bego-phone-code-select
+            [flag]="phoneFlag"
+            [selectedPhoneCode]="phoneCode"
+            (sendValues)="updateFormPhoneCode($event)"></bego-phone-code-select>
+          <bego-input
+            type="phone"
+            size="small"
+            [setValue]="phoneNumber"
+            [validators]="phoneValidator"
+            (value)="phoneNumberChangeValue($event)"
+            [placeholder]="'orders.placeholder-phone' | translate"></bego-input>
+        </div>
 
-      <div class="field">
-        <bego-label-input size="small" textLabel="Email*"></bego-label-input>
-        <bego-input
-          keyValue="email"
-          type="email"
-          [validators]="emailValidator"
-          (value)="updateFormGroup($event)"
-          [placeholder]="'orders.placeholder-mail' | translate"></bego-input>
+        <div class="field">
+          <bego-label-input size="small" textLabel="Email*"></bego-label-input>
+          <bego-input
+            keyValue="email"
+            type="email"
+            size="small"
+            [validators]="emailValidator"
+            (value)="updateFormGroup($event)"
+            [placeholder]="'orders.placeholder-mail' | translate"></bego-input>
+        </div>
       </div>
 
       <div class="field" *ngIf="orderWithCP">

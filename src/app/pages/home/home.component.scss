@@ -11,7 +11,6 @@
 
     .new-order-details{
         max-width: calc(100% - #{$directions-width + $spacing-right});
-        min-width: 780px;
         pointer-events: none;
         margin-top: $spacing-top;
 

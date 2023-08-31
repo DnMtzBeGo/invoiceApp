@@ -12,20 +12,44 @@
 
   ::ng-deep .steps-container {
     padding: 0 57px;
-    max-width: 830px;
+    max-width: 768px;
+    box-sizing: content-box;
     margin: auto;
   }
 
-  ::ng-deep .field {
-    display: flex;
-    gap: 33px;
-    align-items: center;
-    margin: 40px 0;
+  ::ng-deep {
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
 
-    bego-phone-code-select {
-      ion-select {
-        width: 161px;
-        justify-content: center;
+    .row-field {
+      display: flex;
+      flex-wrap: wrap;
+      gap: inherit;
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      flex: 1;
+
+      bego-input {
+        flex: 1;
+
+        .input-wrapper {
+          width: unset;
+        }
+      }
+
+      bego-phone-code-select {
+        ion-select {
+          width: 161px;
+          height: 42px;
+          justify-content: center;
+        }
       }
     }
   }
