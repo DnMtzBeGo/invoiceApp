@@ -202,13 +202,13 @@ export class Step4Component implements OnInit {
 
   updatePickup(orderData: Order) {
     const { pickup, reference_number } = orderData;
-    const { contact_info } = pickup;
+    const { contact_info, tax_information } = pickup;
 
     this.pickupContent[0].value = contact_info.name;
     this.pickupContent[1].value = contact_info.telephone;
     this.pickupContent[2].value = contact_info.email;
     this.pickupContent[3].value = reference_number;
-    this.pickupContent[4].value = contact_info.rfc;
+    this.pickupContent[4].value = tax_information?.rfc;
     this.pickupContent[5].value = this.formatDate(pickup.startDate);
     this.pickupContent[6].value = this.formatTime(pickup.startDate);
   }

@@ -7,6 +7,7 @@ import {
   Input,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { BegoRfcInputInfoOutput } from "@begomx/ui-components";
 import { TranslateService } from "@ngx-translate/core";
 import { GoogleLocation } from "src/app/shared/interfaces/google-location";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
@@ -50,6 +51,9 @@ export class Step1Component implements OnInit {
     country_code: [this.phoneFlag],
     orderWithCP: [false],
     rfc: [null],
+    registration_number: [null],
+    country_of_residence: [null],
+    company_name: [null],
   });
 
   phoneValidator = {
@@ -173,6 +177,16 @@ export class Step1Component implements OnInit {
 
   updateFormGroup(data: any) {
     this.step1Form.get(data.key)!.setValue(data.value);
+  }
+
+  updateRFC(data: BegoRfcInputInfoOutput) {
+    const { isInternationalRFC, values } = data;
+
+    this.step1Form.patchValue({
+      rfc: values.rfc,
+      registration_number: isInternationalRFC ? values.registration_number : '',
+      country_of_residence: isInternationalRFC ? values.country_of_residence : '',
+    });
   }
 
   changeLocation(type: string) {

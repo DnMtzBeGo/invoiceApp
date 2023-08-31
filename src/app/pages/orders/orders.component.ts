@@ -362,7 +362,12 @@ export class OrdersComponent implements OnInit {
     this.orderData.reference_number = data.reference;
     this.orderData.pickup.contact_info.country_code = data.country_code;
     if (this.isOrderWithCP) {
-      this.orderData.pickup.contact_info["rfc"] = data.rfc;
+      this.orderData.pickup.tax_information = {
+        rfc: data.rfc,
+        company_name: data.company_name,
+        registration_number: data.registration_number,
+        country_of_residence: data.country_of_residence,
+      };
       if (this.validateRFC(data.rfc)) {
         this.orderWithCPFields.pickupRFC = true;
       } else {
@@ -383,7 +388,12 @@ export class OrdersComponent implements OnInit {
     this.orderData.dropoff.contact_info.country_code = data.country_code;
     this.orderData.dropoff.extra_notes = data.extra_notes;
     if (this.isOrderWithCP) {
-      this.orderData.dropoff.contact_info["rfc"] = data.rfc;
+      this.orderData.dropoff.tax_information = {
+        rfc: data.rfc,
+        company_name: data.company_name,
+        country_of_residence: data.country_of_residence,
+        registration_number: data.registration_number,
+      }
       if (this.validateRFC(data.rfc)) {
         this.orderWithCPFields.dropoffRFC = true;
       } else {
@@ -472,11 +482,10 @@ export class OrdersComponent implements OnInit {
 
   async sendPickup() {
     const { pickup, reference_number } = this.orderData;
-    const { startDate, contact_info } = pickup;
-    const [destination_id] = this.orderPreview?.destinations || [];
+    const { startDate, contact_info, tax_information } = pickup;
+    const [id] = this.orderPreview?.destinations || [];
 
     const destinationPayload = {
-      destination_id,
       reference_number,
       start_date: startDate,
       end_date: startDate,
@@ -484,28 +493,33 @@ export class OrdersComponent implements OnInit {
       email: contact_info.email,
       telephone: contact_info.telephone,
       country_code: contact_info.country_code,
-      rfc: contact_info.rfc,
+      rfc: tax_information.rfc,
+      company_name: tax_information.company_name,
+      registration_number: tax_information.registration_number,
+      country_of_residence: tax_information.country_of_residence,
     };
 
-    this.sendDestination(destinationPayload);
+    this.sendDestination(destinationPayload, id);
   }
 
   async sendDropoff() {
     const { dropoff } = this.orderData;
-    const { contact_info, extra_notes } = dropoff;
-    const [, destination_id] = this.orderPreview?.destinations || [];
+    const { contact_info, tax_information, extra_notes } = dropoff;
+    const [, id] = this.orderPreview?.destinations || [];
 
     const destinationPayload = {
-      destination_id,
       extra_notes,
       name: contact_info.name,
       email: contact_info.email,
       telephone: contact_info.telephone,
       country_code: contact_info.country_code,
-      rfc: contact_info.rfc,
+      rfc: tax_information.rfc,
+      company_name: tax_information.company_name,
+      registration_number: tax_information.registration_number,
+      country_of_residence: tax_information.country_of_residence,
     };
 
-    this.sendDestination(destinationPayload);
+    this.sendDestination(destinationPayload, id);
   }
 
   async sendCargo() {
@@ -553,8 +567,8 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  async sendDestination(payload: any) {
-    const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/destination', { apiVersion: 'v1.1' });
+  async sendDestination(payload: any, id: string) {
+    const req = await this.auth.apiRestPut(JSON.stringify(payload), `orders/destination/${id}`, { apiVersion: 'v1.1' });
     await req.toPromise();
   }
 

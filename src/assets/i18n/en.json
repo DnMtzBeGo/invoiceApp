@@ -57,6 +57,8 @@
     "placeholder-rfc": "Type your RFC",
     "placeholder-date": "No date selected",
     "placeholder-time": "No time selected",
+    "title-company_name": "Company name",
+    "placeholder-company_name": "Type your company name",
     "btn-add-weight": "Add your Weight",
     "btn-edit-weight": "Edit your Weight",
     "btn-edit": "Edit",
@@ -85,6 +87,9 @@
     "btn-done": "Done",
     "invalid-email": "Invalid email",
     "invalid-phone": "Invalid phone number",
+    "rfc-not_found": "Item not found",
+    "tax-registration_number": "Tax registration number",
+    "tax-country_of_residence": "Tax residence",
     "hazardous-list": {
       "class-1": "CLASS 1 - Explosive substance and objects",
       "class-2": "CLASS 2 - Gases",

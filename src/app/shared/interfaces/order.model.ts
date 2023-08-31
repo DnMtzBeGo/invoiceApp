@@ -26,9 +26,14 @@ export interface Order {
       telephone: string,
       email: string,
       country_code: string,
-      rfc?: string
     },
-    place_id_pickup: string
+    place_id_pickup: string,
+    tax_information?: {
+      rfc?: string,
+      company_name?: string,
+      registration_number?: string,
+      country_of_residence?: string,
+    }
   },
   dropoff: {
     startDate: number,
@@ -43,9 +48,14 @@ export interface Order {
       telephone: string,
       email: string,
       country_code: string,
-      rfc?: string
     },
     place_id_dropoff: string
+    tax_information?: {
+      rfc?: string,
+      company_name?: string,
+      registration_number?: string,
+      country_of_residence?: string,
+    }
   }
   pricing: {
     deferred_payment: boolean,

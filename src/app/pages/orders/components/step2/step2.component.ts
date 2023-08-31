@@ -7,6 +7,7 @@ import {
   SimpleChanges,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { BegoRfcInputInfoOutput } from "@begomx/ui-components";
 import { TranslateService } from "@ngx-translate/core";
 import { GoogleLocation } from "src/app/shared/interfaces/google-location";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
@@ -47,6 +48,9 @@ export class Step2Component implements OnInit {
     country_code: [this.phoneFlag],
     orderWithCP: [false],
     rfc: [""],
+    registration_number: [""],
+    country_of_residence: [""],
+    company_name: [""],
     extra_notes: [""],
   });
 
@@ -161,6 +165,16 @@ export class Step2Component implements OnInit {
 
     this.step2Form.get("country_code")!.setValue(data.code);
     this.step2Form.get("phoneCode")!.setValue(data.dial_code);
+  }
+
+  updateRFC(data: BegoRfcInputInfoOutput) {
+    const { isInternationalRFC, values } = data;
+
+    this.step2Form.patchValue({
+      rfc: values.rfc,
+      registration_number: isInternationalRFC ? values.registration_number : '',
+      country_of_residence: isInternationalRFC ? values.country_of_residence : '',
+    });
   }
 
   phoneNumberChangeValue(data: any) {

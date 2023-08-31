@@ -44,6 +44,7 @@ import {
   BegoLabelInputModule,
   BegoMarksModule,
   BegoPhoneCodeSelectModule,
+  BegoRfcInputModule,
   BegoSearchSelectModule,
   BegoSelectItemModule,
   BegoSelectModule,
@@ -122,6 +123,7 @@ export const MY_FORMATS = {
     BegoAlertCustomerModule,
     BegoInputIncrementDecrementModule,
     BegoCheckoutCardModule,
+    BegoRfcInputModule,
   ],
   exports: [OrdersComponent],
   // providers: [

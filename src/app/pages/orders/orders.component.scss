@@ -18,10 +18,12 @@
   }
 
   ::ng-deep {
+    $field-spacing: 40px;
+
     .steps-container {
       display: flex;
       flex-direction: column;
-      gap: 40px;
+      gap: $field-spacing;
     }
 
     .row-field {
@@ -36,12 +38,16 @@
       gap: 30px;
       flex: 1;
 
-      bego-input {
+       bego-input, bego-rfc-input {
         flex: 1;
 
         .input-wrapper {
           width: unset;
         }
+      }
+
+      bego-rfc-input {
+        --gap: #{$field-spacing};
       }
 
       bego-phone-code-select {

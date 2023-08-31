@@ -57,6 +57,8 @@
     "placeholder-rfc": "Ingresa tu RFC",
     "placeholder-date": "No hay fecha",
     "placeholder-time": "No hay horario",
+    "title-company_name": "Razon social",
+    "placeholder-company_name": "Ingresa la razon social",
     "btn-add-weight": "Añadir Peso",
     "btn-edit-weight": "Editar Peso",
     "btn-edit": "Editar",
@@ -85,6 +87,9 @@
     "btn-done": "Hecho",
     "invalid-email": "Email inválido",
     "invalid-phone": "Numero de telefono invalido",
+    "rfc-not_found": "Item no encontrado",
+    "tax-registration_number": "Número de registro de impuestos",
+    "tax-country_of_residence": "País de residencia",
     "hazardous-list": {
       "class-1": "CLASS 1 - Sustancias u objetos explosivos",
       "class-2": "CLASS 2 - Gases",
@@ -413,7 +418,7 @@
   "fiscal-documents": {
     "cards-instructions": "Arrastra un archivo en cada tarjeta o haz clic en ellas para elegir un archivo.",
     "txt-required-inputs": "Las cartas con un '*' son obligatorias",
-    "select-document": "Selecciona un item",
+    "select-document": "Selecciona un ifoundtem",
     "txt-select-item-required": "Los items con un '*' son obligatorios",
     "request-verification": "Solicitar verificación",
     "drag-files": "Arrastra archivo aquí o",
