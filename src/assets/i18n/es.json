@@ -1525,7 +1525,8 @@
       "subtotal": "Subtotal",
       "total": "Total",
       "bank": "Banco",
-      "account": "Numero de cuenta",
+      "account": "Número de cuenta",
+      "swift": "Número swift",
       "date_created": "Subida",
       "carrier_credit_days": "Días de Credito",
       "pdf": "PDF",
@@ -1562,7 +1563,7 @@
       "reference-number": "Número de referencia BGO",
       "invalid-file": "Archivo inválido",
       "select-file": "Selecciona un archivo",
-      "label_foreign_payment": "Pago en Banco extrangero?"
+      "label_foreign_payment": "Banco extranjero"
     },
     "edited-modal": {
       "done": "Hecho",

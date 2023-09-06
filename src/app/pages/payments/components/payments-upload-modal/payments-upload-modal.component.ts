@@ -88,32 +88,37 @@ export class PaymentsUploadModalComponent implements OnInit {
   }
 
   async handleFileChange(file: File, type: 'pdf' | 'xml') {
+
+    const formData = new FormData();
+    formData.append('file', file);
+
     if (file == undefined) {
       this.files[type].data = undefined;
       this.files[type].file = null;
       return;
     }
-    // if (type == 'xml') {
-    //   (await this.webService.apiRestGet('endpoint', { apiVersion: 'v1.1' })).subscribe(
-    //     (res) => {
-    //       if(res == 'MXN') {
-    //         this.currency = 'MXN';
-    //       } else {
-    //         this.currency = 'USD';
-    //       }
-    //     },
-    //     (err) => {
-    //       console.log(err);
-    //     }
-    //   );
-    // }
-
     this.files[type].file = file;
     this.files[type].data = {
       name: file.name,
       date: new Date(file.lastModified),
       size: file.size
     };
+
+    if (type == 'xml') {
+      (await this.webService.uploadFilesSerivce(formData, 'carriers_payments/check_currency', { apiVersion: 'v1.1' })).subscribe(
+        (res) => {
+          if(Object.keys(res).length > 0) {
+            this.currency = res["result"];
+          } else {
+            this.currency = '';
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+    
     this.checkValidated();
   }
 
@@ -131,14 +136,25 @@ export class PaymentsUploadModalComponent implements OnInit {
   }
 
   checkValidated() {
-    this.validated = Boolean(
-      this.files.xml.file &&
-        this.files.pdf.file &&
-        this.order_number &&
-        this.prices.total > this.prices.subtotal &&
-        this.reference_number &&
-        this.bgoPattern.test(this.reference_number)
-    );
+    if(this.foreingPayment) {
+      this.validated = Boolean(
+          this.files.pdf.file &&
+          this.order_number &&
+          this.prices.total > this.prices.subtotal &&
+          this.reference_number &&
+          this.bgoPattern.test(this.reference_number)
+      );
+    } else {
+      this.validated = Boolean(
+        this.files.xml.file &&
+          this.files.pdf.file &&
+          this.order_number &&
+          this.prices.total > this.prices.subtotal &&
+          this.reference_number &&
+          this.bgoPattern.test(this.reference_number)
+      );
+    }
+
   }
 
   async uploadData() {
@@ -152,6 +168,8 @@ export class PaymentsUploadModalComponent implements OnInit {
     if (this.files.pdf.file) formData.append('files', this.files.pdf.file);
     formData.append('total', this.prices.total.toString());
     formData.append('subtotal', this.prices.subtotal.toString());
+    formData.append('foreign_payment', this.foreingPayment.toString());
+    
 
     (await this.webService.uploadFilesSerivce(formData, 'carriers_payments', { apiVersion: 'v1.1' })).subscribe({
       next: () => {
