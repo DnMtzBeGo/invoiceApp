@@ -33,6 +33,7 @@ export class PaymentsComponent implements OnInit {
     { id: 'total', label: '', sort: true },
     { id: 'bank', label: '', filter: 'input', sort: true },
     { id: 'account', label: '', sort: true },
+    { id: 'swift', label: '', sort: true },
     { id: 'date_created', label: '', sort: true }
   ];
 
