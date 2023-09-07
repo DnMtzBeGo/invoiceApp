@@ -493,10 +493,10 @@ export class OrdersComponent implements OnInit {
       email: contact_info.email,
       telephone: contact_info.telephone,
       country_code: contact_info.country_code,
-      rfc: tax_information.rfc,
-      company_name: tax_information.company_name,
-      registration_number: tax_information.registration_number,
-      country_of_residence: tax_information.country_of_residence,
+      rfc: tax_information?.rfc,
+      company_name: tax_information?.company_name,
+      registration_number: tax_information?.registration_number,
+      country_of_residence: tax_information?.country_of_residence,
     };
 
     this.sendDestination(destinationPayload, id);
@@ -513,10 +513,10 @@ export class OrdersComponent implements OnInit {
       email: contact_info.email,
       telephone: contact_info.telephone,
       country_code: contact_info.country_code,
-      rfc: tax_information.rfc,
-      company_name: tax_information.company_name,
-      registration_number: tax_information.registration_number,
-      country_of_residence: tax_information.country_of_residence,
+      rfc: tax_information?.rfc,
+      company_name: tax_information?.company_name,
+      registration_number: tax_information?.registration_number,
+      country_of_residence: tax_information?.country_of_residence,
     };
 
     this.sendDestination(destinationPayload, id);
@@ -530,7 +530,6 @@ export class OrdersComponent implements OnInit {
       type: cargo.type,
       description: cargo.description,
       unit_type: cargo.unit_type,
-      commodity_quantity: cargo.commodity_quantity,
       required_units: cargo.required_units,
       hazardous_type: cargo.hazardous_type,
       weight: cargo.weigth,
@@ -542,6 +541,7 @@ export class OrdersComponent implements OnInit {
 
     if (this.isOrderWithCP) {
       Object.assign(cargoPayload, {
+        commodity_quantity: cargo.commodity_quantity,
         hazardous_material: cargo.hazardous_material,
         packaging: cargo.packaging,
         cargo_goods: cargo.cargo_goods,
@@ -568,7 +568,12 @@ export class OrdersComponent implements OnInit {
   }
 
   async sendDestination(payload: any, id: string) {
-    const req = await this.auth.apiRestPut(JSON.stringify(payload), `orders/destination/${id}`, { apiVersion: 'v1.1' });
+    const req = await this.auth.apiRestPut(
+      JSON.stringify(this.removeEmpty(payload)),
+      `orders/destination/${id}`,
+      { apiVersion: 'v1.1' }
+    );
+
     await req.toPromise();
   }
 
@@ -804,5 +809,13 @@ export class OrdersComponent implements OnInit {
         this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.userWantCP ? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order"); 
         break;
     }
+  }
+
+  private removeEmpty(obj: any) {
+    return Object.fromEntries(
+      Object.entries(obj)
+        .filter(([_, v]) => ![null, undefined, ''].includes(v as any))
+        .map(([k, v]) => [k, v === Object(v) ? this.removeEmpty(v) : v])
+    );
   }
 }
