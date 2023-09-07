@@ -1497,6 +1497,7 @@
       "total": "Total",
       "bank": "Bank",
       "account": "Account number",
+      "swift": "Swift/ADA number",
       "date_created": "Uploaded",
       "carrier_credit_days": "Credit days",
       "pdf": "PDF",
@@ -1524,6 +1525,7 @@
     },
     "actions": {
       "view_xml": "View XML",
+
       "view_pdf": "View PDF"
     },
     "upload-modal": {
@@ -1532,7 +1534,8 @@
       "order-number": "Order number",
       "reference-number": "Reference number (BGO)",
       "invalid-file": "Invalid file",
-      "select-file": "Browse your file"
+      "select-file": "Browse your file",
+      "label_foreign_payment": "Foreign payment"
     },
     "edited-modal": {
       "done": "Done",
