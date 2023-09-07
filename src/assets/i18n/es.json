@@ -1501,7 +1501,7 @@
       "total": "Total",
       "bank": "Banco",
       "account": "Número de cuenta",
-      "swift": "Número swift",
+      "swift": "Número swift/ADA",
       "date_created": "Subida",
       "carrier_credit_days": "Días de Credito",
       "pdf": "PDF",
