@@ -27,7 +27,6 @@
     "create": "Order created successfully",
     "create-order": "Create Order",
     "continue-to-dropoff":"Continue to Dropoff",
-    "proceed-checkout":"Proceed to checkout",
     "phone_text": "Phone",
     "cargo-weight": {
       "title": "Add your cargo weight",

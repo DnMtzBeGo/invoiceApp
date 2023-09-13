@@ -80,7 +80,7 @@ export class OrdersComponent implements OnInit {
     },
     {
       text: "5",
-      nextBtnTxt: this.translateService.instant("orders.proceed-checkout"),
+      nextBtnTxt: this.translateService.instant("orders.create-order"),
     }
   ];
 
@@ -297,8 +297,6 @@ export class OrdersComponent implements OnInit {
     if (changes.hasOwnProperty("userWantCP")) {
       this.isOrderWithCP = this.userWantCP;
     }
-
-    this.ordersSteps[3].nextBtnTxt = this.userWantCP? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order"); 
   }
   toggleCard() {
     this.cardIsOpen = !this.cardIsOpen;
@@ -806,7 +804,7 @@ export class OrdersComponent implements OnInit {
         break;
       case 4:
         this.typeOrder = this.translateService.instant("orders.title-summary");
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.userWantCP ? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order"); 
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant("orders.create-order");
         break;
     }
   }
