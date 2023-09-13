@@ -3,6 +3,9 @@
     <div class="steps-body">
       <div class="order-header">
         <h1 (click)="jumpStepTitle()">{{ typeOrder }}</h1>
+        <h2 class="order-number">
+          {{ 'orders.title-order_number' | translate }}: #{{ orderPreview?.order_number }}
+        </h2>
       </div>
 
       <bego-marks class="order-stepper-wrapper" type="number"></bego-marks>
