@@ -1,20 +1,5 @@
 @import "../../../../../styles.scss";
 
-.steps-container {
-    display: flex;
-    flex-direction: column;
-    padding: 0 57px;
-
-    h2 {
-        font-size: 18px;
-        letter-spacing: 0.5px;
-        color: #EDEDED;
-        span {
-            color: #FFE000;
-        }
-    }
-}
-
 .address-box {
     padding: 36px 20px 23px 57px;
     margin-bottom: 32px;

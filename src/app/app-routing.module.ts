@@ -94,11 +94,6 @@ const routes: Routes = [
       import("./pages/tracking/tracking.module").then((m) => m.TrackingModule),
   },
   {
-    path: "pricing",
-    loadChildren: () =>
-      import("./pages/orders/components/pricing/pricing.module").then((m) => m.PricingModule),
-  },
-  {
     path: "invoice",
     loadChildren: () =>
       import("./pages/invoice/invoice.module").then((m) => m.InvoiceModule),

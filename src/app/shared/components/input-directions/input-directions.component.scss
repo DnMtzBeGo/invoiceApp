@@ -198,10 +198,11 @@
 }
 
 section {
+    $card-radius: 8px;
+
     background: #0B1117;
     box-shadow: inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
-    border-radius: 8px;
-    width: 400px;
+    border-radius: $card-radius;
     height: 80vh;
     overflow-y: hidden;
     pointer-events: auto;
@@ -233,8 +234,33 @@ section {
 
         &.show-map{
             .map-preview{
+                $border-size: 1px;
+
                 opacity: 1;
                 pointer-events: unset;
+                padding: $border-size;
+
+                &::before {
+                    content:'';
+                    position: absolute;
+                    inset: 0;
+                    z-index: -1;
+                    padding: $border-size;
+                    border-radius: $card-radius;
+                    background: linear-gradient(-45deg,transparent, rgb(139, 139, 139), transparent);
+                    -webkit-mask:
+                      linear-gradient(#fff 0 0) content-box,
+                      linear-gradient(#fff 0 0);
+                    -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+                }
+            }
+
+            bego-map {
+              display: block;
+              border-radius: 8px;
+              overflow: hidden;
+              height: 100%;
             }
         }
 
@@ -271,11 +297,6 @@ section {
             text-align: center;
           }
         }
-    }
-
-    &.order-details-open{
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
     }
 
     .body{

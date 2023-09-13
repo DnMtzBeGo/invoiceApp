@@ -489,30 +489,41 @@ export class InputDirectionsComponent implements OnInit {
     this.events = moment(new Date(`${event.value}`), "MM-DD-YYYY").format(
       "MMMM DD YYYY"
     );
+
+    if (this.lastTime !== "DD / MM / YY") {
+      this.updateDate();
+    }
+
     this.monthSelected = false;
   }
 
   timepickerValid(data: any) {
     this.lastTime =
       this.orderForm.controls["timepickup"].value || this.lastTime;
-    if (this.lastTime != "DD / MM / YY") {
-      this.isDatesSelected = true;
-      this.showScroll = true;
-      let hours = moment(this.lastTime).format("HH");
-      let minutes = moment(this.lastTime).format("mm");
-      let hoursInt = parseInt(hours);
-      let minutesInt = parseInt(minutes);
-      let resHours = hoursInt * 60 * 60000;
-      let resMinutes = minutesInt * 60000;
-      let resMilliseconds = resHours + resMinutes;
-      let total = moment(this.events).valueOf();
-      this.fromDate = total + resMilliseconds;
 
-      this.getETA(this.locations);
-      this.updateDatepickup.emit(this.fromDate);
+    if (this.lastTime !== "DD / MM / YY" && this.events !== "DD / MM / YY") {
+      this.updateDate();
     }
 
     this.firstLoad = false;
+  }
+
+  updateDate() {
+    const hours = moment(this.lastTime).format("HH");
+    const minutes = moment(this.lastTime).format("mm");
+    const hoursInt = parseInt(hours);
+    const minutesInt = parseInt(minutes);
+    const resHours = hoursInt * 60 * 60000;
+    const resMinutes = minutesInt * 60000;
+    const resMilliseconds = resHours + resMinutes;
+    const total = moment(this.events).valueOf();
+
+    this.fromDate = total + resMilliseconds;
+    this.isDatesSelected = true;
+    this.showScroll = true;
+
+    this.getETA(this.locations);
+    this.updateDatepickup.emit(this.fromDate);
   }
 
   async getETA(data: any) {

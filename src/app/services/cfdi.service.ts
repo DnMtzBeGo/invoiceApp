@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class CfdiService {
 
-  url_es = '../pages/invoice/containers/factura-edit-page/catalogs.json';
+  url_es = '../assets/json/cfdi_es.json';
   url_en = '../assets/json/cfdi_en.json';
-  
+
   constructor(private http: HttpClient) {}
 
   getCFDI_es(): Observable<any[]> {

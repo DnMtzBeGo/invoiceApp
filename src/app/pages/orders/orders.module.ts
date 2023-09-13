@@ -9,6 +9,7 @@ import { Step1Component } from "./components/step1/step1.component";
 import { Step2Component } from "./components/step2/step2.component";
 import { Step3Component } from "./components/step3/step3.component";
 import { Step4Component } from "./components/step4/step4.component";
+import { PricingStepComponent } from "./components/pricing-step/pricing-step.component";
 
 import { DragFileBarModule } from "src/app/shared/components/drag-file-bar/drag-file-bar.module";
 import { StepperModule } from "src/app/shared/components/stepper/stepper.module";
@@ -20,18 +21,8 @@ import { MatInputModule } from "@angular/material/input";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { MomentDatePipe } from "src/app/shared/pipes/momentDate/moment-date.pipe";
-import {
-  MomentDateAdapter,
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-} from "@angular/material-moment-adapter";
-import {
-  DateAdapter,
-  MatNativeDateModule,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from "@angular/material/core";
+import { MatNativeDateModule, } from "@angular/material/core";
 import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { BegoPhoneInputModule } from "src/app/shared/components/bego-phone-input/bego-phone-input.module";
 import { CargoWeightComponent } from "./components/cargo-weight/cargo-weight.component";
@@ -39,9 +30,31 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { GoogleAddressModule } from "src/app/shared/pipes/google-address/google-address.module";
 import { TimepickerModule } from "ngx-bootstrap/timepicker";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { InputSelectableComponent } from './components/input-selectable/input-selectable.component';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
 import { UnitDetailsModalComponent } from './components/unit-details-modal/unit-details-modal.component';
+import {
+  BegoAlertCustomerModule,
+  BegoButtonModule,
+  BegoButtonToggleModule,
+  BegoCalendarTimeModule,
+  BegoCheckoutCardModule,
+  BegoDragDropModule,
+  BegoIncrementDecrementModule,
+  BegoInputIncrementDecrementModule,
+  BegoLabelInputModule,
+  BegoMarksModule,
+  BegoPhoneCodeSelectModule,
+  BegoRfcInputModule,
+  BegoSearchSelectModule,
+  BegoSelectItemModule,
+  BegoSelectModule,
+  BegoStepModule,
+  BegoStepperModule,
+  BegoTextAreaModule,
+  BegoTextInputModule,
+} from "@begomx/ui-components";
+import { CargoUnitsComponent } from './components/cargo-units/cargo-units.component';
+import { NgxCurrencyModule } from "ngx-currency";
 
 export const MY_FORMATS = {
   parse: {
@@ -64,9 +77,10 @@ export const MY_FORMATS = {
     Step4Component,
     MomentDatePipe,
     CargoWeightComponent,
-    InputSelectableComponent,
     ContinueModalComponent,
     UnitDetailsModalComponent,
+    CargoUnitsComponent,
+    PricingStepComponent,
   ],
   imports: [
     CommonModule,
@@ -89,7 +103,27 @@ export const MY_FORMATS = {
     BegoPhoneInputModule,
     MatDialogModule,
     GoogleAddressModule,
+    NgxCurrencyModule,
     TimepickerModule.forRoot(),
+    BegoStepperModule,
+    BegoStepModule,
+    BegoMarksModule,
+    BegoLabelInputModule,
+    BegoTextInputModule,
+    BegoPhoneCodeSelectModule,
+    BegoCalendarTimeModule,
+    BegoButtonModule,
+    BegoSearchSelectModule,
+    BegoButtonToggleModule,
+    BegoIncrementDecrementModule,
+    BegoSelectModule,
+    BegoSelectItemModule,
+    BegoTextAreaModule,
+    BegoDragDropModule,
+    BegoAlertCustomerModule,
+    BegoInputIncrementDecrementModule,
+    BegoCheckoutCardModule,
+    BegoRfcInputModule,
   ],
   exports: [OrdersComponent],
   // providers: [
