@@ -418,7 +418,7 @@
   "fiscal-documents": {
     "cards-instructions": "Arrastra un archivo en cada tarjeta o haz clic en ellas para elegir un archivo.",
     "txt-required-inputs": "Las cartas con un '*' son obligatorias",
-    "select-document": "Selecciona un ifoundtem",
+    "select-document": "Selecciona un item",
     "txt-select-item-required": "Los items con un '*' son obligatorios",
     "request-verification": "Solicitar verificación",
     "drag-files": "Arrastra archivo aquí o",
