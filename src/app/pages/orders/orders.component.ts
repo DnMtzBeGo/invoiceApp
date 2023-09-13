@@ -64,7 +64,7 @@ export class OrdersComponent implements OnInit {
   ordersSteps: Step[] = [
     {
       text: "1",
-      nextBtnTxt: this.translateService.instant("orders.continue-to-dropoff"),
+      nextBtnTxt: this.translateService.instant("orders.next-step"),
     },
     {
       text: "2",
@@ -791,7 +791,7 @@ export class OrdersComponent implements OnInit {
       case 1:
         this.typeOrder = this.translateService.instant("orders.title-dropoff");
         this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-          this.translateService.instant("orders.continue-to-dropoff");
+          this.translateService.instant("orders.next-step");
         break;
       case 2:
         this.typeOrder = this.translateService.instant("orders.title-cargo-info");
