@@ -6,11 +6,15 @@ import {
   SimpleChanges,
   Input,
 } from "@angular/core";
-import { LangChangeEvent, TranslateService } from "@ngx-translate/core";
-import { FormBuilder, FormGroup, Validators, AbstractControl } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { BegoRfcInputInfoOutput } from "@begomx/ui-components";
+import { TranslateService } from "@ngx-translate/core";
 import { GoogleLocation } from "src/app/shared/interfaces/google-location";
-import { Subscription } from "rxjs";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
+
+const MAIL_REGEX = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+const PHONE_REGEX = /^([0-9]{2}\s?){5}$/
+
 @Component({
   selector: "app-step1",
   templateUrl: "./step1.component.html",
@@ -21,6 +25,7 @@ export class Step1Component implements OnInit {
   phoneCode = "+52";
   phoneNumber = "";
 
+  @Input() cardIsOpen = false;
   @Input() locations: GoogleLocation = {
     pickup: "",
     dropoff: "",
@@ -31,6 +36,7 @@ export class Step1Component implements OnInit {
     pickupPostalCode: 0,
     dropoffPostalCode: 0,
   };
+  @Input() datePickup: number;
   @Input() draftData: any;
   @Input() orderWithCP: boolean;
   @Output() step1FormData: EventEmitter<any> = new EventEmitter();
@@ -38,19 +44,48 @@ export class Step1Component implements OnInit {
 
   step1Form: FormGroup = this.formBuilder.group({
     fullname: [null, Validators.required],
-    email: [null, [Validators.required, this.mailValidator]],
+    email: [null, [Validators.required, Validators.pattern(MAIL_REGEX)]],
     phoneCode: [this.phoneCode],
-    phonenumber: [this.phoneNumber, Validators.required],
+    phonenumber: [this.phoneNumber, [Validators.required, Validators.pattern(PHONE_REGEX)]],
     reference: [null, Validators.required],
     country_code: [this.phoneFlag],
     orderWithCP: [false],
     rfc: [null],
+    registration_number: [null],
+    country_of_residence: [null],
+    company_name: [null],
   });
 
+  phoneValidator = {
+    _firstCheck: true,
+    errorMsg: this.translateService.instant('orders.invalid-phone'),
+    isValid(value: string) {
+      if (this._firstCheck) {
+        this._firstCheck = false;
+        return true
+      }
+
+      return PHONE_REGEX.test(value)
+    }
+  }
+
+  emailValidator = {
+    _firstCheck: true,
+    errorMsg: this.translateService.instant('orders.invalid-email'),
+    isValid(value: string) {
+      if (this._firstCheck) {
+        this._firstCheck = false;
+        return true
+      }
+
+      return MAIL_REGEX.test(value);
+    }
+  };
+
   constructor(
-    private translateService: TranslateService,
     private formBuilder: FormBuilder,
-    private googleService: GoogleMapsService
+    private googleService: GoogleMapsService,
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -127,33 +162,31 @@ export class Step1Component implements OnInit {
     }
   }
 
-  mailValidator(c: AbstractControl): { [key: string]: boolean } {
-    const mail = c.value;
-    const regexp = new RegExp("^([da-z_.-]+)@([da-z.-]+).([a-z.]{2,6})$");
-    const pattern =
-      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
-    const test = regexp.test(mail);
+  phoneCodeChanged(data: any) {
+    this.phoneFlag = data.code;
+    this.phoneCode = data.dial_code;
 
-    if (!pattern.test(mail)) {
-      return { mailInvalid: true };
-    }
-
-    return null as any;
+    this.step1Form.get("country_code")!.setValue(data.code);
+    this.step1Form.get("phoneCode")!.setValue(data.dial_code);
   }
 
-  phoneFlagChangeValue(value: any) {
-    this.phoneFlag = value;
-    this.step1Form.get("country_code")!.setValue(value);
+  phoneNumberChangeValue(data: any) {
+    this.phoneNumber = data.value;
+    this.step1Form.get("phonenumber")!.setValue(data.value);
   }
 
-  phoneCodeChangeValue(value: any) {
-    this.phoneCode = value;
-    this.step1Form.get("phoneCode")!.setValue(value);
+  updateFormGroup(data: any) {
+    this.step1Form.get(data.key)!.setValue(data.value);
   }
 
-  phoneNumberChangeValue(value: any) {
-    this.phoneNumber = value;
-    this.step1Form.get("phonenumber")!.setValue(value);
+  updateRFC(data: BegoRfcInputInfoOutput) {
+    const { isInternationalRFC, values } = data;
+
+    this.step1Form.patchValue({
+      rfc: values.rfc,
+      registration_number: isInternationalRFC ? values.registration_number : '',
+      country_of_residence: isInternationalRFC ? values.country_of_residence : '',
+    });
   }
 
   changeLocation(type: string) {

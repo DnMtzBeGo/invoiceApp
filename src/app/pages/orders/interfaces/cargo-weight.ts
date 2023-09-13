@@ -1,4 +1,3 @@
 export interface CargoWeight {
-  units: number,
-  weight: Array<number>
+  units: Array<number>
 }

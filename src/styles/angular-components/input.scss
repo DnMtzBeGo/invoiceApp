@@ -35,10 +35,9 @@
     outline: none;
     resize: none; /*remove the resize handle on the bottom right*/  
   }
+}
 
-  .mat-input-element:disabled{
-    color: #C1C7D0;
-  }
-
+.mat-input-element:disabled{
+  color: #C1C7D0;
 }
 
