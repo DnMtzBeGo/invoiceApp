@@ -1520,7 +1520,7 @@
       "subtotal": "Subtotal",
       "total": "Total",
       "bank": "Bank",
-      "account": "Account number",
+      "account": "CLABE account",
       "swift": "Swift/ADA number",
       "date_created": "Uploaded",
       "carrier_credit_days": "Credit days",

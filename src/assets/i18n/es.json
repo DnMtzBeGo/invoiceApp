@@ -1515,7 +1515,7 @@
       "upload": "Subir pago"
     },
     "table": {
-      "title": "Emisión de Pagos",
+      "title": "Control de Pagos",
       "order_number": "Orden",
       "reference_number": "Número de referencia BGO",
       "due_date": "Vencimiento",
@@ -1525,7 +1525,7 @@
       "subtotal": "Subtotal",
       "total": "Total",
       "bank": "Banco",
-      "account": "Número de cuenta",
+      "account": "CLABE interbancaria",
       "swift": "Número swift/ADA",
       "date_created": "Subida",
       "carrier_credit_days": "Días de Credito",
