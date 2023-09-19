@@ -140,7 +140,7 @@ export class PaymentsUploadModalComponent implements OnInit {
       this.validated = Boolean(
           this.files.pdf.file &&
           this.order_number &&
-          this.prices.total > this.prices.subtotal &&
+          this.prices.total >= this.prices.subtotal &&
           this.reference_number &&
           this.bgoPattern.test(this.reference_number)
       );
@@ -149,7 +149,7 @@ export class PaymentsUploadModalComponent implements OnInit {
         this.files.xml.file &&
           this.files.pdf.file &&
           this.order_number &&
-          this.prices.total > this.prices.subtotal &&
+          this.prices.total >= this.prices.subtotal &&
           this.reference_number &&
           this.bgoPattern.test(this.reference_number)
       );
