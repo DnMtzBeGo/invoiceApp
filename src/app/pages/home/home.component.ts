@@ -3,23 +3,20 @@ import { GoogleLocation } from "src/app/shared/interfaces/google-location";
 import { Router, NavigationEnd } from "@angular/router";
 import {
   Subscription,
-  Observable,
   of,
   Subject,
-  BehaviorSubject,
-  timer,
   merge,
-  from,
   fromEvent,
   interval
 } from "rxjs";
-import { mergeAll, tap, filter, startWith, mapTo, exhaustMap, takeUntil, catchError } from 'rxjs/operators'
+import { tap, filter, mapTo, exhaustMap, takeUntil, catchError } from 'rxjs/operators'
 import { AuthService } from "src/app/shared/services/auth.service";
 import { PlacesService } from "src/app/shared/services/places.service";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
 import { HeaderService } from "./services/header.service";
 import { ofType } from "src/app/shared/utils/operators.rx";
 import { CustomMarker } from './custom.marker';
+import { OrderPreview } from "../orders/orders.component";
 
 declare var google: any;
 // 10 seconds for refreshing map markers
@@ -44,6 +41,7 @@ export class HomeComponent implements OnInit {
   datepickup: number;
   datedropoff: number;
   draftData: any;
+  orderPreview: OrderPreview;
   headerTransparent: boolean = true;
   showOrderDetails: boolean = false;
 
@@ -90,6 +88,8 @@ export class HomeComponent implements OnInit {
   @ViewChild('map', { read: ElementRef, static: false }) mapRef!: ElementRef;
 
   subs = new Subscription();
+
+  showSidebar = true;
 
   constructor(
     private router: Router,
@@ -183,9 +183,47 @@ export class HomeComponent implements OnInit {
     this.subs.unsubscribe();
   }
 
-  showNewOrderCard() {
+  async createDraft() {
+    const draftPayload = {
+      destinations: [
+        {
+          type: 'pickup',
+          location: await this.getLocationId(this.locations.place_id_pickup),
+        },
+        {
+          type: 'dropoff',
+          location: await this.getLocationId(this.locations.place_id_dropoff),
+        },
+      ],
+      stamp: this.userWantCP,
+      type: 'FTL',
+      target: 'carriers',
+      origin: 'web',
+    };
+
+    const req = await this.webService.apiRest(JSON.stringify(draftPayload), 'orders/create_draft', { apiVersion: 'v1.1' });
+    const { result } = await req.toPromise();
+
+    this.orderPreview = result;
+  }
+
+  async showNewOrderCard() {
+    await this.createDraft();
     this.showOrderDetails = true;
   }
+
+  private async getLocationId(place_id: string): Promise<string> {
+    const payload = { place_id };
+
+    const req = await this.webService.apiRestPut(
+      JSON.stringify(payload),
+      'orders/locations',
+      { apiVersion: 'v1.1', loader: false, }
+    )
+
+    const res = await req.toPromise();
+    return res.result._id
+  };
 
   updateLocations(data: GoogleLocation) {
     this.locations = data;
@@ -438,5 +476,9 @@ export class HomeComponent implements OnInit {
 
     if (cleanRefresh === false || fromShowMap || this.isMapDirty === false)
       this.map.fitBounds(this.bounds, { bottom: 50, top: 50, left: 80, right: 50 + 400 + 50 });
+  }
+
+  onStepChange(step: number) {
+    this.showSidebar = !this.showOrderDetails || step < 3;
   }
 }

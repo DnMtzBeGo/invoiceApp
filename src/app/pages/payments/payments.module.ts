@@ -4,7 +4,7 @@ import { PaymentsComponent } from './payments.component';
 import { PaymentsRoutingModule } from './payments-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { BegoDragDropModule, BegoTableModule, BegoAlertModule, BegoDragDropDocumentsModule } from '@begomx/ui-components';
+import { BegoDragDropModule, BegoTableModule, BegoAlertModule, BegoDragDropDocumentsModule, BegoButtonToggleModule } from '@begomx/ui-components';
 
 import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
@@ -38,7 +38,8 @@ import { TextMaskModule } from 'angular2-text-mask';
     MatOptionModule,
     MatSelectModule,
     NgxCurrencyModule,
-    TextMaskModule
+    TextMaskModule,
+    BegoButtonToggleModule
   ],
   providers: [DatePipe, CurrencyPipe]
 })

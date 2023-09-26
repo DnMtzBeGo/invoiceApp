@@ -6,8 +6,9 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  SimpleChange,
   SimpleChanges,
+  ViewChildren,
+  QueryList,
 } from "@angular/core";
 import { LangChangeEvent, TranslateService } from "@ngx-translate/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
@@ -19,10 +20,17 @@ import * as moment from "moment";
 import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
 import { Router } from "@angular/router";
 import { AlertService } from "src/app/shared/services/alert.service";
-import { Subscription, concat, from, of } from "rxjs";
-import { mergeAll, switchMap, toArray, mapTo } from "rxjs/operators";
+import { Subscription  } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
 import { ContinueModalComponent } from "./components/continue-modal/continue-modal.component";
+import { BegoMarks, BegoStepper, StepperOptions } from "@begomx/ui-components";
+
+export interface OrderPreview {
+  destinations: string[],
+  order_id: string,
+  order_number: string,
+}
+
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
@@ -32,6 +40,7 @@ export class OrdersComponent implements OnInit {
   @ViewChild("ordersRef") public ordersRef!: ElementRef;
   @Input() cardIsOpen: boolean = false;
   @Output() cardIsOpenChange = new EventEmitter<boolean>();
+  @Output() stepChange = new EventEmitter<number>();
   @Input() draftData: any;
   @Input() locations: GoogleLocation = {
     pickup: "",
@@ -59,7 +68,7 @@ export class OrdersComponent implements OnInit {
     },
     {
       text: "2",
-      nextBtnTxt: this.translateService.instant("orders.continue-to-dropoff"),
+      nextBtnTxt: this.translateService.instant("orders.next-step"),
     },
     {
       text: "3",
@@ -67,28 +76,35 @@ export class OrdersComponent implements OnInit {
     },
     {
       text: "4",
-      nextBtnTxt: this.translateService.instant("orders.proceed-checkout"),
+      nextBtnTxt: this.translateService.instant("orders.next-step"),
     },
+    {
+      text: "5",
+      nextBtnTxt: this.translateService.instant("orders.create-order"),
+    }
   ];
 
-  validateRoute: boolean = false;
-  progress: number = 0;
   hazardousFile?: File;
   hazardousFileAWS: object = {};
   catalogsDescription: object = {};
 
+  @Input() orderPreview?: OrderPreview;
   public orderData: Order = {
     stamp: false,
     reference_number: null,
     status: -1,
-    completion_percentage: this.progress,
     cargo: {
       "53_48": "",
       type: "",
       required_units: 1,
       description: "",
-      weigth: [1],
+      weigth: [1000],
       hazardous_type: "",
+      unit_type: '',
+      packaging: '',
+      cargo_goods: '',
+      commodity_quantity: 0,
+      hazardous_material: '',
     },
     pickup: {
       lat: 0,
@@ -120,19 +136,29 @@ export class OrdersComponent implements OnInit {
       },
       place_id_dropoff: ""
     },
+    pricing: {
+      deferred_payment: false,
+      subtotal: 0,
+      currency: "mxn",
+    },
+    invoice: {
+      address: '',
+      company: '',
+      rfc: '',
+      cfdi: '',
+      tax_regime: '',
+    }
   };
 
   public ETA: number = 0;
   public minDropoff: any;
-  public checkoutProgress: number = 0;
-  public currentStepIndex: number = 0;
   public sendMap: boolean = false;
 
   isLinear = false;
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
 
-  stepsValidate = [false, false, false, false];
+  stepsValidate = [false, false, false, false, false];
 
   private subscription: Subscription;
 
@@ -159,6 +185,27 @@ export class OrdersComponent implements OnInit {
   public thumbnailMap: Array<any> = [];
   public thumbnailMapFile: Array<any> = [];
 
+  @ViewChild(BegoStepper) stepperRef: BegoStepper;
+  @ViewChild(BegoMarks) marksRef: BegoMarks;
+
+  get currentStepIndex(): number {
+    return this.stepperRef?.controller.currentStep ?? 0;
+  }
+
+  set currentStepIndex(step: number) {
+    this.stepperRef?.controller.setStep(step)
+  }
+
+  stepperOptions: StepperOptions = {
+    allowTouchMove: false,
+    autoHeight: true,
+  }
+
+  @ViewChildren('step') stepsRef: QueryList<any>;
+  resizeObserver = new ResizeObserver(() => {
+    this.stepperRef.controller.swiper.updateAutoHeight();
+  });
+
   constructor(
     private translateService: TranslateService,
     private _formBuilder: FormBuilder,
@@ -170,28 +217,7 @@ export class OrdersComponent implements OnInit {
   ) {
     this.subscription = this.translateService.onLangChange.subscribe(
       (langChangeEvent: LangChangeEvent) => {
-        switch (this.currentStepIndex) {
-          case 0:
-            this.typeOrder = this.translateService.instant("orders.title-pickup");
-            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-              this.translateService.instant("orders.next-step");
-            break;
-          case 1:
-            this.typeOrder = this.translateService.instant("orders.title-pickup");
-            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-              this.translateService.instant("orders.continue-to-dropoff");
-            break;
-          case 2:
-            this.typeOrder = this.translateService.instant("orders.title-dropoff");
-            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-              this.translateService.instant("orders.next-step");
-            break;
-          case 3:
-            this.typeOrder = this.translateService.instant("orders.title-dropoff");
-            this.ordersSteps[this.currentStepIndex].nextBtnTxt =
-              this.userWantCP ? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order");
-            break;
-        }
+        this.updateStepTexts();
       }
     );
   }
@@ -209,22 +235,22 @@ export class OrdersComponent implements OnInit {
 
     this.subscription = this.translateService.onLangChange.subscribe(
       (langChangeEvent: LangChangeEvent) => {
-        if (this.currentStepIndex < 2) {
-          this.typeOrder = this.translateService.instant("orders.title-pickup");
-        } else {
-          this.typeOrder = this.translateService.instant("orders.title-dropoff");
-        }
+        this.updateStepTexts();
       }
     );
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.marksRef.controller = this.stepperRef.controller
+
+    this.stepsRef.forEach((el) => {
+      this.resizeObserver.observe(el.nativeElement);
+    });
+  }
 
   ngOnDestroy() {
-    if(this.membersToAssigned.hasOwnProperty('drivers') && this.membersToAssigned.hasOwnProperty('trucks') && this.membersToAssigned.hasOwnProperty('trailers')) {
-      this.sendOrders("drafts")
-    }
     this.subscription.unsubscribe();
+    this.resizeObserver.disconnect();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -271,66 +297,42 @@ export class OrdersComponent implements OnInit {
     if (changes.hasOwnProperty("userWantCP")) {
       this.isOrderWithCP = this.userWantCP;
     }
-
-    this.ordersSteps[3].nextBtnTxt = this.userWantCP? this.translateService.instant("orders.proceed-checkout") : this.translateService.instant("orders.create-order"); 
   }
   toggleCard() {
     this.cardIsOpen = !this.cardIsOpen;
   }
 
-  calculateProgress(): number {
-    this.checkoutProgress = (this.currentStepIndex / (this.ordersSteps.length - 1)) * 100;
+  updateStatus() {
+    this.updateStepTexts();
 
-    if (this.currentStepIndex < 2) {
-      this.typeOrder = this.translateService.instant("orders.title-pickup");
-    } else {
-      this.typeOrder = this.translateService.instant("orders.title-dropoff");
-    }
-
-    if (this.currentStepIndex < 3) {
+    if (this.currentStepIndex < 4) {
       this.btnStatusNext = false;
     } else {
       this.btnStatusNext = !this.validateForm();
     }
 
     this.ordersSteps.forEach((e, i) => {
-      if (this.stepsValidate[i]) {
-        e.validated = true;
-        return false;
-      } else {
-        e.validated = false;
-        return true;
-      }
+        e.validated = this.stepsValidate[i];
     });
 
-    return this.checkoutProgress;
+    this.stepChange.emit(this.currentStepIndex);
   }
 
   validateForm() {
-    const v = this.stepsValidate;
-    return v[0] && v[1] && v[2] && v[3];
+    return this.stepsValidate.slice(0, -1).every(Boolean);
   }
 
   nextSlide() {
-    if (
-      this.stepsValidate[0] &&
-      this.stepsValidate[1] &&
-      this.stepsValidate[2] &&
-      this.stepsValidate[3] &&
-      this.currentStepIndex === 3
-    ) {
-      this.isOrderWithCP ? this.checkCPFields() : this.sendOrders("orders");
+    if (this.currentStepIndex === 4 && this.validateForm()) {
+      this.isOrderWithCP ? this.checkCPFields() : this.completeOrder();
     }
 
-    if (this.currentStepIndex === 1 && !this.hasEditedCargoWeight) {
+    if (this.currentStepIndex === 2 && !this.hasEditedCargoWeight) {
       this.editCargoWeightNow = true;
     }
 
-    if (this.currentStepIndex < 3) {
+    if (this.currentStepIndex < 4) {
       this.currentStepIndex = this.currentStepIndex + 1;
-      if (this.currentStepIndex > 2) {
-        this.btnStatusNext = !this.validateForm();
-      }
     }
   }
 
@@ -345,13 +347,7 @@ export class OrdersComponent implements OnInit {
   }
 
   jumpStepTitle() {
-    if (this.currentStepIndex < 2) {
-      this.currentStepIndex = 2;
-      this.typeOrder = this.translateService.instant("orders.title-dropoff");
-    } else {
-      this.currentStepIndex = 0;
-      this.typeOrder = this.translateService.instant("orders.title-pickup");
-    }
+    this.updateStepTexts();
   }
 
   getStep1FormData(data: any) {
@@ -364,19 +360,52 @@ export class OrdersComponent implements OnInit {
     this.orderData.reference_number = data.reference;
     this.orderData.pickup.contact_info.country_code = data.country_code;
     if (this.isOrderWithCP) {
-      this.orderData.pickup.contact_info["rfc"] = data.rfc;
+      this.orderData.pickup.tax_information = {
+        rfc: data.rfc,
+        company_name: data.company_name,
+        registration_number: data.registration_number,
+        country_of_residence: data.country_of_residence,
+      };
       if (this.validateRFC(data.rfc)) {
         this.orderWithCPFields.pickupRFC = true;
       } else {
         this.orderWithCPFields.pickupRFC = false;
       }
     }
+
+    this.orderData = {...this.orderData };
   }
 
   getStep2FormData(data: any) {
+    this.orderData.dropoff.contact_info.name = data.fullname;
+    this.orderData.dropoff.contact_info.telephone = data.phoneCode.concat(
+      " ",
+      data.phonenumber
+    );
+    this.orderData.dropoff.contact_info.email = data.email;
+    this.orderData.dropoff.contact_info.country_code = data.country_code;
+    this.orderData.dropoff.extra_notes = data.extra_notes;
+    if (this.isOrderWithCP) {
+      this.orderData.dropoff.tax_information = {
+        rfc: data.rfc,
+        company_name: data.company_name,
+        country_of_residence: data.country_of_residence,
+        registration_number: data.registration_number,
+      }
+      if (this.validateRFC(data.rfc)) {
+        this.orderWithCPFields.dropoffRFC = true;
+      } else {
+        this.orderWithCPFields.dropoffRFC = false;
+      }
+    }
+
+    this.orderData = {...this.orderData };
+  }
+
+  getStep3FormData(data: any) {
     this.orderData.cargo["53_48"] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
-    this.orderData.cargo.required_units = data.cargoUnits;
+    this.orderData.cargo.required_units = data.cargoWeight.length;
     this.orderData.cargo.description = data.description;
 
     if(data.hazardousFile) {
@@ -408,66 +437,172 @@ export class OrdersComponent implements OnInit {
       this.orderData.cargo["commodity_quantity"] = data.commodity_quantity;
     }
     this.orderData.cargo.weigth = data.cargoWeight;
-  }
-
-  getStep3FormData(data: any) {
-    this.orderData.dropoff.contact_info.name = data.fullname;
-    this.orderData.dropoff.contact_info.telephone = data.phoneCode.concat(
-      " ",
-      data.phonenumber
-    );
-    this.orderData.dropoff.contact_info.email = data.email;
-    this.orderData.dropoff.contact_info.country_code = data.country_code;
-    if (this.isOrderWithCP) {
-      this.orderData.dropoff.contact_info["rfc"] = data.rfc;
-      if (this.validateRFC(data.rfc)) {
-        this.orderWithCPFields.dropoffRFC = true;
-      } else {
-        this.orderWithCPFields.dropoffRFC = false;
-      }
-    }
+    this.orderData = {...this.orderData };
   }
 
   getStep4FormData(data: any) {
-    this.orderData.dropoff.extra_notes = data.notes;
-    if (this.stepsValidate.includes(false) && this.currentStepIndex > 2) {
+    Object.assign(this.orderData.invoice, data);
+  }
+
+  getPricingStepFormData(data: any) {
+    Object.assign(this.orderData.pricing, data);
+  }
+
+  validStep1(valid: boolean) {
+    this.stepsValidate[0] = valid;
+    if (valid) this.sendPickup();
+    this.updateStatus();
+  }
+
+  validStep2(valid: boolean) {
+    this.stepsValidate[1] = valid;
+    if (valid) this.sendDropoff();
+    this.updateStatus();
+  }
+
+  validStep3(valid: boolean) {
+    this.stepsValidate[2] = valid;
+    if (valid) this.sendCargo();
+    this.updateStatus();
+  }
+
+  validPricingStep(valid: boolean) {
+    this.stepsValidate[3] = valid;
+    if (valid) this.sendPricing();
+    this.updateStatus();
+  }
+
+  validStep4(valid: boolean) {
+    this.stepsValidate[4] = valid;
+    if (valid) this.sendInvoice();
+    this.updateStatus();
+  }
+
+  async sendPickup() {
+    const { pickup, reference_number } = this.orderData;
+    const { startDate, contact_info, tax_information } = pickup;
+    const [id] = this.orderPreview?.destinations || [];
+
+    const destinationPayload = {
+      reference_number,
+      start_date: startDate,
+      end_date: startDate,
+      name: contact_info.name,
+      email: contact_info.email,
+      telephone: contact_info.telephone,
+      country_code: contact_info.country_code,
+      rfc: tax_information?.rfc,
+      company_name: tax_information?.company_name,
+      registration_number: tax_information?.registration_number,
+      country_of_residence: tax_information?.country_of_residence,
+    };
+
+    this.sendDestination(destinationPayload, id);
+  }
+
+  async sendDropoff() {
+    const { dropoff } = this.orderData;
+    const { contact_info, tax_information, extra_notes } = dropoff;
+    const [, id] = this.orderPreview?.destinations || [];
+
+    const destinationPayload = {
+      extra_notes,
+      name: contact_info.name,
+      email: contact_info.email,
+      telephone: contact_info.telephone,
+      country_code: contact_info.country_code,
+      rfc: tax_information?.rfc,
+      company_name: tax_information?.company_name,
+      registration_number: tax_information?.registration_number,
+      country_of_residence: tax_information?.country_of_residence,
+    };
+
+    this.sendDestination(destinationPayload, id);
+  }
+
+  async sendCargo() {
+    const { cargo } = this.orderData;
+    const { order_id } = this.orderPreview;
+
+    const cargoPayload = {
+      type: cargo.type,
+      description: cargo.description,
+      unit_type: cargo.unit_type,
+      required_units: cargo.required_units,
+      hazardous_type: cargo.hazardous_type,
+      weight: cargo.weigth,
+      weight_uom: 'kg',
+      trailer: {
+        load_cap: cargo['53_48'],
+      },
+    };
+
+    if (this.isOrderWithCP) {
+      Object.assign(cargoPayload, {
+        commodity_quantity: cargo.commodity_quantity,
+        hazardous_material: cargo.hazardous_material,
+        packaging: cargo.packaging,
+        cargo_goods: cargo.cargo_goods,
+      })
+    }
+
+    for (const key in cargoPayload) {
+      if ([undefined, null, ''].includes(cargoPayload[key])) {
+        delete cargoPayload[key]
+      };
+    }
+
+    const req = await this.auth.apiRestPut(JSON.stringify(cargoPayload), `orders/cargo/${order_id}`, { apiVersion: 'v1.1' });
+    await req.toPromise();
+
+    if (this.hazardousFile) {
+      const formData = new FormData();
+      formData.append('order_id', order_id);
+      formData.append('file', this.hazardousFile);
+
+      const req = await this.auth.uploadFilesSerivce(formData, 'orders/upload_hazardous');
+      await req.toPromise();
     }
   }
 
-  validStep1(valid: any) {
-    if (valid) {
-      this.stepsValidate[0] = true;
-    } else {
-      this.stepsValidate[0] = false;
-    }
-    this.calculateProgress();
+  async sendDestination(payload: any, id: string) {
+    const req = await this.auth.apiRestPut(
+      JSON.stringify(this.removeEmpty(payload)),
+      `orders/destination/${id}`,
+      { apiVersion: 'v1.1' }
+    );
+
+    await req.toPromise();
   }
 
-  validStep2(valid: any) {
-    if (valid) {
-      this.stepsValidate[1] = true;
-    } else {
-      this.stepsValidate[1] = false;
-    }
-    this.calculateProgress();
+  async sendInvoice() {
+    const { invoice } = this.orderData;
+
+    const invoicePayload = {
+      order_id: this.orderPreview.order_id,
+      cfdi: invoice.cfdi,
+      rfc: invoice.rfc,
+      company: invoice.company,
+      tax_regime: invoice.tax_regime,
+      place_id: invoice.address,
+    };
+
+    const req = await this.auth.apiRestPut(JSON.stringify(invoicePayload), 'orders/update_invoice', { apiVersion: 'v1.1' });
+    await req.toPromise();
   }
 
-  validStep3(valid: any) {
-    if (valid) {
-      this.stepsValidate[2] = true;
-    } else {
-      this.stepsValidate[2] = false;
-    }
-    this.calculateProgress();
-  }
+  async sendPricing() {
+    const { pricing } = this.orderData;
 
-  validStep4(valid: any) {
-    if (valid) {
-      this.stepsValidate[3] = true;
-    } else {
-      this.stepsValidate[3] = false;
-    }
-    this.calculateProgress();
+    let pricingPayload = {
+      order_id: this.orderPreview.order_id,
+      subtotal: pricing.subtotal,
+      currency: pricing.currency,
+      deferred_payment: pricing.deferred_payment,
+    };
+
+    const req = await this.auth.apiRest(JSON.stringify(pricingPayload), 'orders/set_pricing');
+    await req.toPromise();
   }
 
   async getETA(locations: GoogleLocation) {
@@ -545,129 +680,56 @@ export class OrdersComponent implements OnInit {
     return Date.parse(event.toString());
   }
 
-  porcentageComplete(orderData: any) {
-    if (orderData) {
-      this.progress += 1 / 12;
-    }
+  async completeOrder() {
+    await this.confirmOrder();
+    await this.assignOrder();
+    await this.uploadScreenShotOrderMap();
+
+    // cleanup page
+    await this.router.navigate(['/'], { skipLocationChange: true });
+    await this.router.navigate(['/home']);
   }
 
-  async sendOrders(page: string) {
-    this.progress = 0;
-    this.porcentageComplete(this.orderData.pickup.contact_info.name);
-    this.porcentageComplete(this.orderData.pickup.contact_info.email);
-    this.porcentageComplete(this.orderData.pickup.contact_info.telephone);
-    this.porcentageComplete(this.orderData.reference_number);
-    this.porcentageComplete(this.orderData.pickup.startDate);
-    this.porcentageComplete(this.orderData.cargo.description);
-    this.porcentageComplete(this.orderData.dropoff.contact_info.name);
-    this.porcentageComplete(this.orderData.dropoff.contact_info.email);
-    this.porcentageComplete(this.orderData.dropoff.contact_info.telephone);
-    this.porcentageComplete(this.orderData.dropoff.startDate);
-    this.porcentageComplete(this.orderData.dropoff.endDate);
+  async confirmOrder() {
+    const confirmPayload = {
+      order_id: this.orderPreview.order_id
+    };
 
-    this.orderData.completion_percentage = this.progress;
-    this.orderData["driver"] = this.membersToAssigned["drivers"]._id;
-    this.orderData["truck"] = this.membersToAssigned["trucks"]._id;
-    this.orderData["trailer"] = this.membersToAssigned["trailers"]._id;
-    this.orderData["stamp"] = this.isOrderWithCP;
+    const req = await this.auth.apiRestPut(
+      JSON.stringify(confirmPayload),
+      'orders/confirm_order',
+      { apiVersion: 'v1.1' }
+    )
 
-    const requestJson = JSON.stringify(this.orderData);
-    (await this.submitCreateOrder(requestJson, page)).subscribe(
-      async ({ result }) => {
-        this.uploadScreenShotOrderMap(result._id);
-        this.validateRoute = result.bego_order;
-        if (this.hazardousFile) {
-          const formData = new FormData();
-          formData.set("order_id", result._id);
-          formData.set('file', this.hazardousFile);
-          (
-            await this.auth.uploadFilesSerivce(formData, "orders/upload_hazardous")
-          ).subscribe(async (data) => {
-          });
-        }
-        if(this.userWantCP && page != 'drafts'){
-          this.router.navigate(["pricing"], {
-            state: {
-              orderId: result._id,
-            },
-          });
-        }
-        else if(page != 'drafts') {
-          this.alertService.create({
-            body: this.translateService.instant('orders.create'),
-            handlers: [
-              {
-                text: this.translateService.instant('checkout.btn-continue'),
-                color: '#FFE000',
-                action: async () => {
-                  this.alertService.close();
-                  location.reload();
-                }
-              }
-            ]
-          });
-        }
-      },
-      async (res) => {
-       console.log('Something went wrong', res.error)
-      }
-    );
+    return req.toPromise();
   }
 
-  submitCreateOrder(order, page) {
-    order = JSON.parse(order);
-
-    if (order.stamp || page === 'drafts') {
-      return this.auth.apiRest(JSON.stringify(order), "carriers/create_order");
+  async assignOrder() {
+    const assignPayload = {
+      order_id: this.orderPreview.order_id,
+      carrier_id: this.membersToAssigned.drivers._id,
+      id_truck: this.membersToAssigned.trucks._id,
+      id_trailer: this.membersToAssigned.trailers._id,
     }
 
-    const { driver: carrier_id, truck: id_truck, trailer: id_trailer } = order;
+    const req = await this.auth.apiRest(
+      JSON.stringify(assignPayload),
+      "orders/assign_order",
+      { apiVersion: "v1.1" }
+    );
 
-    delete order.driver;
-    delete order.truck;
-    delete order.trailer;
-
-    // create order
-    return from(this.auth.apiRest(JSON.stringify(order), "carriers/create_order"))
-      .pipe(
-        mergeAll(),
-        switchMap((responseData) =>
-          concat(
-            // assign carrier, truck & trailer
-            from(this.auth.apiRest(JSON.stringify({
-              order_id: responseData.result._id,
-              carrier_id,
-              id_truck,
-              id_trailer,
-            }), "orders/assign_order", { apiVersion: "v1.1" })).pipe(mergeAll()),
-            // update status
-            from(this.auth.apiRest(JSON.stringify({
-              order_id: responseData.result._id,
-              order_status: 1,
-            }), "orders/update_status")).pipe(mergeAll()),
-          ).pipe(
-            toArray(),
-            mapTo(of(responseData)),
-          )
-        ),
-      )
-      .toPromise();
+    return req.toPromise();
   }
 
-  public async uploadScreenShotOrderMap(orderId: string) {
-    this.requestScreenshotOrderMap.set("order_id", orderId);
+  public async uploadScreenShotOrderMap() {
+    this.requestScreenshotOrderMap.set("order_id", this.orderPreview.order_id);
 
-    (
-      await this.auth.uploadFilesSerivce(
-        this.requestScreenshotOrderMap,
-        "orders/upload_map"
-      )
-    ).subscribe(
-      (res) => {},
-      (error) => {
-        console.log("Con el error", error.error.errror);
-      }
-    );
+    const req = await this.auth.uploadFilesSerivce(
+      this.requestScreenshotOrderMap,
+      "orders/upload_map"
+    )
+
+    return req.toPromise();
   }
 
   public toogleOrderWithCP() {
@@ -682,23 +744,22 @@ export class OrdersComponent implements OnInit {
   }
 
   public checkCPFields() {
-    if (this.isOrderWithCP) {
-      const leftList = [];
-      for (const item in this.orderWithCPFields) {
-        this.orderWithCPFields[item] === false && leftList.push(item);
+    const leftList = [];
+
+    for (const item in this.orderWithCPFields) {
+      this.orderWithCPFields[item] === false && leftList.push(item);
+    }
+
+    if (this.orderData.cargo.type === "hazardous") {
+      for (const item in this.hazardousCPFields) {
+        this.hazardousCPFields[item] === false && leftList.push(item);
       }
-      if (this.orderData.cargo.type === "hazardous") {
-        for (const item in this.hazardousCPFields) {
-          this.hazardousCPFields[item] === false && leftList.push(item);
-        }
-      }
-      if (leftList.length > 0) {
-        this.showModal(leftList);
-      } else {
-        this.sendOrders("orders");
-      }
+    }
+
+    if (leftList.length > 0) {
+      this.showModal(leftList);
     } else {
-      this.sendOrders("orders");
+      this.completeOrder();
     }
   }
 
@@ -712,11 +773,47 @@ export class OrdersComponent implements OnInit {
       data: modalData,
     });
     dialogRef.afterClosed().subscribe(async (res) => {
-      res ? this.sendOrders("orders") : (this.currentStepIndex = 0);
+      res ? this.completeOrder() : (this.currentStepIndex = 0);
     });
   }
 
   public cargoWeightEdited() {
     this.hasEditedCargoWeight = true;
+  }
+
+  updateStepTexts() {
+    switch (this.currentStepIndex) {
+      case 0:
+        this.typeOrder = this.translateService.instant("orders.title-pickup");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+          this.translateService.instant("orders.next-step");
+        break;
+      case 1:
+        this.typeOrder = this.translateService.instant("orders.title-dropoff");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+          this.translateService.instant("orders.next-step");
+        break;
+      case 2:
+        this.typeOrder = this.translateService.instant("orders.title-cargo-info");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt =
+          this.translateService.instant("orders.next-step");
+        break;
+      case 3:
+        this.typeOrder = this.translateService.instant("orders.title-summary");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant("orders.next-step");
+        break;
+      case 4:
+        this.typeOrder = this.translateService.instant("orders.title-summary");
+        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant("orders.create-order");
+        break;
+    }
+  }
+
+  private removeEmpty(obj: any) {
+    return Object.fromEntries(
+      Object.entries(obj)
+        .filter(([_, v]) => ![null, undefined, ''].includes(v as any))
+        .map(([k, v]) => [k, v === Object(v) ? this.removeEmpty(v) : v])
+    );
   }
 }

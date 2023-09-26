@@ -96,63 +96,63 @@
 
     <div class="checkout-body" >
       <div class="tabs" *ngIf="checkoutSteps.length === 2; else elseBlock">
-        <mat-tab-group [(selectedIndex)]="currentStepIndex" class="invisible-tabs" >
+        <bego-stepper class="invisible-tabs" [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions">
 
-          <mat-tab >
+          <bego-step>
             <div class="tab-container">
               <app-invoice
                 [userData]="invoiceData"
                 (receiverData)="updatereceiverData($event)">
               </app-invoice>
             </div>
-          </mat-tab>
+          </bego-step>
 
 
-          <mat-tab  >
+          <bego-step>
             <div class="tab-container">
               <app-summary
                 [orderData]="summaryData"
                 [selectedCard]="selectedCard">
               </app-summary>
             </div>
-          </mat-tab>
+          </bego-step>
 
-        </mat-tab-group>
+        </bego-stepper>
       </div>
 
       <ng-template #elseBlock>
         <div class="tabs">
-          <mat-tab-group [(selectedIndex)]="currentStepIndex" class="invisible-tabs" >
+          <bego-stepper class="invisible-tabs" [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions">
   
-            <mat-tab >
+            <bego-step>
               <div class="tab-container">
                 <app-emitter
                   [userData]="invoiceData"
                   (emitterData)="updateEmitterData($event)">>
                 </app-emitter>
               </div>
-            </mat-tab>
+            </bego-step>
   
-            <mat-tab >
+            <bego-step>
               <div class="tab-container">
                 <app-invoice
                   [userData]="invoiceData"
                   (receiverData)="updatereceiverData($event)">
                 </app-invoice>
               </div>
-            </mat-tab>
+            </bego-step>
   
   
-            <mat-tab  >
+            <bego-step>
               <div class="tab-container">
                 <app-summary
                   [orderData]="summaryData"
                   [selectedCard]="selectedCard">
                 </app-summary>
               </div>
-            </mat-tab>
+            </bego-step>
   
-          </mat-tab-group>
+          </bego-stepper>
         </div>
       </ng-template>
 

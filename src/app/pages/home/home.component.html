@@ -11,9 +11,10 @@
   </bego-map>
 
   <div class="new-order-wrapper">
-    <div class="new-order-details">
+    <div class="new-order-details" [ngClass]="{ full: !showSidebar }">
       <app-orders
         [(cardIsOpen)]="showOrderDetails"
+        (stepChange)="onStepChange($event)"
         [draftData]="draftData"
         [locations]="locations"
         [datepickup]="datepickup"
@@ -21,12 +22,14 @@
         [imageFromGoogle]="imageFromGoogle"
         [membersToAssigned]="membersToAssigned"
         [userWantCP]="userWantCP"
+        [orderPreview]="orderPreview"
       >
       </app-orders>
     </div>
 
     <div class="input-directions">
       <app-input-directions
+        *ngIf="showSidebar"
         (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
         [showMapPreview]="showOrderDetails"
         (showNewOrderCard)="showNewOrderCard()"
@@ -42,16 +45,17 @@
         [haveFleetMembersErrors]="haveFleetMembersErrors"
       >
       </app-input-directions>
-    </div>
 
-    <button
-      id="reset"
-      (click)="mapEmitter.next(['center'])"
-      [ngClass]="{
-        'reset-up': userRole && showFleetMap && !showOrderDetails
-      }"
-    >
-      <i class="icon icon-gps"></i>
-    </button>
+      <button
+        id="reset"
+        *ngIf="!showOrderDetails"
+        (click)="mapEmitter.next(['center'])"
+        [ngClass]="{
+          'reset-up': userRole && showFleetMap && !showOrderDetails
+        }"
+      >
+        <i class="icon icon-gps"></i>
+      </button>
+    </div>
   </div>
 </div>

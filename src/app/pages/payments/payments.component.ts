@@ -34,6 +34,7 @@ export class PaymentsComponent implements OnInit {
     { id: 'total', label: '', sort: true },
     { id: 'bank', label: '', filter: 'input', sort: true },
     { id: 'account', label: '', sort: true },
+    { id: 'swift', label: '', sort: true },
     { id: 'date_created', label: '', sort: true }
   ];
 
@@ -146,7 +147,7 @@ export class PaymentsComponent implements OnInit {
             actions,
             reference_number: payment?.reference_number || '-',
             carrier_credit_days: this.creditDays(payment.carrier_credit_days),
-            date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yy', '', this.lang.selected),
+            date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
             total: this.currency(payment.total, payment?.moneda),
             subtotal: this.currency(payment.subtotal, payment?.moneda),
             status: this.translate(payment.status, 'status')

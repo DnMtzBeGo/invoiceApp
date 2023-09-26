@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { CargoWeight } from '../../interfaces/cargo-weight'
 
 @Component({
@@ -9,134 +9,34 @@ import { CargoWeight } from '../../interfaces/cargo-weight'
   styleUrls: ['./cargo-weight.component.scss']
 })
 export class CargoWeightComponent implements OnInit {
+  maxUnits = Number.MAX_SAFE_INTEGER;
 
-  form: FormGroup;
-  btnIncrement = [] as Array<boolean>;
-  btnDecrement = [] as Array<boolean>;
-  minUnits = 1;
-  maxUnits = 20000;
-  incrementUnit = 1000;
-
-  public quantityunits: number = 1;
+  arrayButtons = [
+    {
+      textBtn: this.translateService.instant('orders.btn-save'),
+      textEmit: 'close',
+      activated: true,
+    }
+  ]
 
   constructor(
-    private _formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<CargoWeightComponent>,
+    private translateService: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: CargoWeight
-  ) {
-    this.form = this._formBuilder.group({
-      cargo: this._formBuilder.array([]),
-      cargoUnits: [data.units, Validators.required]
-    });
+  ) {}
 
-    this.quantityunits = data.units;
-  }
+  ngOnInit() {}
 
-  ngOnInit() {
-    this.addUnitsArray();
-    this.onChanges();
-  }
-
-  addUnitsArray() {
-    if (this.data.weight.length > 0) {
-      for (var i = 0; i < this.data.units; i++) {
-        this.addUnits(this.data.weight[i]);
-        this.btnDecrement[i] = true;
-      }
-    } else {
-      for (var i = 0; i < this.data.units; i++) {
-        this.addUnits(this.incrementUnit);
-        this.btnDecrement[i] = true;
-      }
-    }
-  }
-
-  getControls() {
-    return (this.form.get('cargo') as FormArray).controls;
-  }
-
-  addUnits(values: any) {
-    if (values == null) {
-      values = this.incrementUnit;
-    }
-    const items = this.form.controls.cargo as FormArray;
-    items.push(
-      this._formBuilder.group({
-        units: [values],
-      })
-    );
-  }
-
-  removeUnits(values: any) {
-    if (values == null) {
-      values = 1;
-    }
-    const items = this.form.controls.cargo as FormArray;
-    items.removeAt(items.length - 1);
-  }
-
-  onChanges() {
-    (this.form.get('cargo') as FormArray).valueChanges.subscribe((values) => {
-      console.log(values);
-    });
-  }
-
-  saverange($event: any, i: number) {
-    // console.log($event.target.value);
-    if ($event.target.value == '') {
-      ((this.form.get('cargo') as FormArray).at(i) as FormGroup).get('units')!.patchValue(this.incrementUnit);
-      this.btnDecrement[i] = true;('units')
-    } else if ($event.target.value < this.maxUnits && $event.target.value > this.minUnits) {
-      this.btnIncrement[i] = false;
-      this.btnDecrement[i] = false;
-    } else if ($event.target.value == this.minUnits) {
-      this.btnIncrement[i] = false;
-      this.btnDecrement[i] = true;
-    } else {
-      this.btnIncrement[i] = true;
-      this.btnDecrement[i] = false;
-    }
-  }
-
-  increament(i: number) {
-    let val = (this.form.get('cargo') as FormArray).at(i).get('units')!.value;
-    if (val < this.maxUnits) {
-      this.btnIncrement[i] = false;
-      this.btnDecrement[i] = false;
-      ((this.form.get('cargo') as FormArray).at(i) as FormGroup).get('units')
-      .patchValue(val + this.incrementUnit >= this.maxUnits ? this.maxUnits : val + this.incrementUnit);
-      let num = (this.form.get('cargo') as FormArray).at(i).get('units')!.value;
-      if (num === this.maxUnits) {
-        this.btnIncrement[i] = true;
-      } else {
-        this.btnIncrement[i] = false;
-      }
-    } else {
-      this.btnIncrement[i] = true;
-    }
-  }
-
-  decreament(i: number) {
-    let val = (this.form.get('cargo') as FormArray).at(i).get('units')!.value;
-    if (val > this.minUnits) {
-      this.btnIncrement[i] = false;
-      this.btnDecrement[i] = false;
-      ((this.form.get('cargo') as FormArray).at(i) as FormGroup).get('units')
-      .patchValue(val - this.incrementUnit <= 0 ? this.minUnits : val - this.incrementUnit);
-      let num = (this.form.get('cargo') as FormArray).at(i).get('units')!.value;
-      if (num === this.minUnits) {
-        this.btnDecrement[i] = true;
-      } else {
-        this.btnDecrement[i] = false;
-      }
-    } else {
-      this.btnDecrement[i] = true;
-    }
+  updateUnit(i: number, value: number) {
+    this.data.units[i] = value;
   }
 
   save() {
-    let result = this.form.controls.cargo.value.map((value: any) => value.units);
-    console.log(result)
-    this.dialogRef.close({units:result.length,weight:result});
+    this.dialogRef.close(this.data.units);
+  }
+
+  // needed to avoid extrange visual changes
+  trackByIndex(i: number, _value: number) {
+    return i;
   }
 }

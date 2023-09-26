@@ -6,6 +6,7 @@ import { Observable, of, timer } from "rxjs";
 import { map } from "rxjs/operators";
 import { AlertService } from "./shared/services/alert.service";
 import * as AOS from "aos";
+import { uiComponentsConfig } from "@begomx/ui-components";
 
 interface IncompatibleBrowserVersion {
   /**
@@ -75,6 +76,11 @@ export class AppComponent {
       }
       return this.showIncompatibleBrowserModal;
     });
+
+    uiComponentsConfig.config = {
+      urlBase: environment.URL_BASE,
+      token: localStorage.getItem('token'),
+    };
   }
 
   ngOnInit(): void {

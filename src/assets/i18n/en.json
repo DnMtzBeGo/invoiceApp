@@ -21,12 +21,13 @@
     "drag-files-in-here": "Drag files in here"
   },
   "orders": {
+    "description": "Description",
     "back": "Back",
     "next-step": "Next Step",
     "create": "Order created successfully",
     "create-order": "Create Order",
-    "continue-to-dropoff": "Continue to Dropoff",
-    "proceed-checkout": "Proceed to checkout",
+    "continue-to-dropoff":"Continue to Dropoff",
+    "proceed-checkout":"Proceed to checkout",
     "phone_text": "Phone",
     "cargo-weight": {
       "title": "Add your cargo weight",
@@ -36,6 +37,9 @@
     },
     "title-pickup": "Pickup Order",
     "title-dropoff": "Dropoff Order",
+    "title-summary": "Summary",
+    "title-invoice": "Invoice",
+    "title-order_number": "Order Number",
     "btn-step1": "Next Step",
     "btn-step2": "Continue to Drop off",
     "btn-step3": "Next Step",
@@ -44,15 +48,22 @@
     "btn-change-route-pickup": "Change Pickup Point",
     "btn-change-route-dropoff": "Change Dropoff Point",
     "title-personal-info": "Personal Information",
-    "placeholder-fullname": "Full name",
-    "placeholder-phone": "Phone number",
-    "placeholder-mail": "example@mail.com",
-    "placeholder-reference": "#Reference",
+    "title-fullname": "Full Name",
+    "placeholder-fullname": "Type your full name",
+    "placeholder-phone": "Type your phone",
+    "placeholder-mail": "Type your email",
+    "title-reference": "Reference",
+    "placeholder-reference": "Type your reference",
     "title-cargo-info": "Cargo Information",
+    "placeholder-rfc": "Type your RFC",
     "placeholder-date": "No date selected",
     "placeholder-time": "No time selected",
+    "title-company_name": "Company name",
+    "placeholder-company_name": "Type your company name",
     "btn-add-weight": "Add your Weight",
     "btn-edit-weight": "Edit your Weight",
+    "btn-edit": "Edit",
+    "btn-save": "Save",
     "placeholder-start": "Start",
     "placeholder-end": "End",
     "txt-select-units": "Select Units",
@@ -75,6 +86,11 @@
     "txt-valid-route": "This route is not included on our pricing list, but you can create it and we will contact you as soon as possible with a quotation.",
     "btn-cancel": "Cancel",
     "btn-done": "Done",
+    "invalid-email": "Invalid email",
+    "invalid-phone": "Invalid phone number",
+    "rfc-not_found": "Item not found",
+    "tax-registration_number": "Tax registration number",
+    "tax-country_of_residence": "Tax residence",
     "hazardous-list": {
       "class-1": "CLASS 1 - Explosive substance and objects",
       "class-2": "CLASS 2 - Gases",
@@ -112,6 +128,12 @@
       "unit_type": "Unit type is missing",
       "cp-cancel": "Cancel",
       "cp-confirm": "Confirm"
+    },
+    "upload-file": {
+      "label-browse": "Drag your file",
+      "label-or": "or",
+      "btn-browse": "Choose your file",
+      "label-max": "max"
     }
   },
   "checkout": {
@@ -123,6 +145,9 @@
     "txt-dropoff": "Drop off",
     "txt-inovice": "Inovice",
     "title-invoice": "Receiver Information",
+    "txt-address": "Address",
+    "txt-company": "Company",
+    "txt-tax_regime": "Tax Regime",
     "placeholder-fullname": "Full Name",
     "placeholder-email": "Email",
     "placeholder-phonenumber": "Phone Number",
@@ -701,6 +726,7 @@
   },
   "invoice": {
     "invoices": {
+      "title": "Invoices",
       "filters": "Filters",
       "series": "Series",
       "emisor-btn": "Emisores",
@@ -1495,7 +1521,7 @@
       "subtotal": "Subtotal",
       "total": "Total",
       "bank": "Bank",
-      "account": "Clabe Interbancario",
+      "account": "Account number",
       "date_created": "Uploaded",
       "carrier_credit_days": "Credit days",
       "pdf": "PDF",
@@ -1523,9 +1549,7 @@
     },
     "actions": {
       "view_xml": "View XML",
-      "view_pdf": "View PDF",
-      "view_vouchers": "View Vouchers",
-      "view_upfronts": "View Upfronts"
+      "view_pdf": "View PDF"
     },
     "upload-modal": {
       "title": "Upload data",
@@ -1533,7 +1557,8 @@
       "order-number": "Order number",
       "reference-number": "Reference number (BGO)",
       "invalid-file": "Invalid file",
-      "select-file": "Browse your file"
+      "select-file": "Browse your file",
+      "label_foreign_payment": "Foreign payment"
     },
     "edited-modal": {
       "done": "Done",

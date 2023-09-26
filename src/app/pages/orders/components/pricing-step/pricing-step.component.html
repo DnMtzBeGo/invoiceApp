@@ -1,0 +1,40 @@
+<section class="pricing">
+  <form [formGroup]="dummyForm" class="box">
+    <h2 class="title">{{ 'checkout.insurance-modal.title-insurance' | translate }}</h2>
+    <p class="description">
+      {{ 'checkout.insurance-modal.txt-insurance' | translate }}
+      <br />
+      {{ 'checkout.insurance-modal.txt-insurance-taxes' | translate }}
+    </p>
+
+    <div class="subtotal">
+      <input formControlName="subtotal" (blur)="updateSubtotal()" min="0" currencyMask [options]="{
+        align: 'center',
+        prefix: '$',
+        thousands: ',',
+        decimal: '.',
+        precision: 0,
+        allowNegative: false
+      }" />
+
+      <bego-button-toggle
+        class="pricing-toggle"
+        size="small"
+        [noPadding]="true"
+        [first]="currencyOptions.mxn"
+        [second]="currencyOptions.usd"
+        (statusChanged)="changePricingMethod($event)"></bego-button-toggle>
+    </div>
+
+    <div class="payment-mode">
+      <bego-button-toggle
+        [noPadding]="true"
+        size="small"
+        [first]="payModeOptions.pue"
+        [second]="payModeOptions.ppd"
+        (statusChanged)="changePay($event)"></bego-button-toggle>
+      <p *ngIf="!deferredPayment">{{ 'checkout.insurance-modal.deferred-PUE' | translate }}</p>
+      <p *ngIf="deferredPayment">{{ 'checkout.insurance-modal.deferred-PPD' | translate }}</p>
+    </div>
+  </form>
+</section>

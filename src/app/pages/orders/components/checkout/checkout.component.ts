@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Step } from '../../../../shared/components/stepper/interfaces/Step'
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -7,6 +7,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { emitterData} from './interfaces/emitterData';
 import { receiverData } from './interfaces/receiverData';
 import { environment } from 'src/environments/environment';
+import { BegoStepper, StepperOptions } from '@begomx/ui-components';
 
 @Component({
   selector: 'app-checkout',
@@ -16,7 +17,6 @@ import { environment } from 'src/environments/environment';
 export class CheckoutComponent implements OnInit {
 
   checkoutSteps: Step[] = [];
-  currentStepIndex: number = 0;
 
   selectedCard: string = 'pickup';
   validateRoute: boolean = true;
@@ -47,6 +47,20 @@ export class CheckoutComponent implements OnInit {
   weights: any;
   orderId: string = ''
 
+  @ViewChild(BegoStepper) stepperRef: BegoStepper;
+
+  stepperOptions: StepperOptions = {
+    allowTouchMove: false,
+    autoHeight: true,
+  }
+
+  get currentStepIndex(): number {
+    return this.stepperRef?.controller.currentStep ?? 0;
+  }
+
+  set currentStepIndex(step: number) {
+    this.stepperRef.controller.setStep(step);
+  }
 
   constructor(
     public translateService: TranslateService,
