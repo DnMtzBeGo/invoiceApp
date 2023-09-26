@@ -222,7 +222,7 @@ export class PaymentsUploadModalComponent implements OnInit {
       const formattedValue = this.formatNumberWithCommasAndDecimals(inputValue);
       inputElement.value = formattedValue;
       this.valuesInputs[type].originalValue = inputElement.value;
-      inputElement.value = '$' + inputElement.value + ' MXM';
+      inputElement.value = '$' + inputElement.value + ' MXN';
     }
   }
 
