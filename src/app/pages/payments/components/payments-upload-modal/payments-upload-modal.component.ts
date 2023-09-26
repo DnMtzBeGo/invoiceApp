@@ -104,6 +104,11 @@ export class PaymentsUploadModalComponent implements OnInit {
     if (file == undefined) {
       this.files[type].data = undefined;
       this.files[type].file = null;
+      if(type == 'xml'){
+        this.currency = '';
+        this.changeRenderInput('subtotal');
+        this.changeRenderInput('total');
+      }
       return;
     }
     this.files[type].file = file;
