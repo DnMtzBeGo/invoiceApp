@@ -27,11 +27,11 @@ export class PaymentsUploadModalComponent implements OnInit {
   };
 
   valuesInputs = {
-    total: {
+    subtotal: {
       inputValue: '',
       originalValue: ''
     },
-    subtotal: {
+    total: {
       inputValue: '',
       originalValue: ''
     }
@@ -98,7 +98,6 @@ export class PaymentsUploadModalComponent implements OnInit {
   }
 
   async handleFileChange(file: File, type: 'pdf' | 'xml') {
-
     const formData = new FormData();
     formData.append('file', file);
 
@@ -117,18 +116,20 @@ export class PaymentsUploadModalComponent implements OnInit {
     if (type == 'xml') {
       (await this.webService.uploadFilesSerivce(formData, 'carriers_payments/check_currency', { apiVersion: 'v1.1' })).subscribe(
         (res) => {
-          if(Object.keys(res).length > 0) {
-            this.currency = res["result"];
+          if (Object.keys(res).length > 0) {
+            this.currency = res['result'];
           } else {
             this.currency = '';
           }
+          this.changeRenderInput('subtotal');
+          this.changeRenderInput('total');
         },
         (err) => {
           console.log(err);
         }
       );
     }
-    
+
     this.checkValidated();
   }
 
@@ -138,7 +139,7 @@ export class PaymentsUploadModalComponent implements OnInit {
   }
 
   onForeignPaymentChange(value: Object) {
-    if(Boolean(value["enabled"])) {
+    if (Boolean(value['enabled'])) {
       this.foreingPayment = true;
     } else {
       this.foreingPayment = false;
@@ -147,9 +148,9 @@ export class PaymentsUploadModalComponent implements OnInit {
 
   checkValidated() {
     this.order_number.toUpperCase();
-    if(this.foreingPayment) {
+    if (this.foreingPayment) {
       this.validated = Boolean(
-          this.files.pdf.file &&
+        this.files.pdf.file &&
           this.order_number &&
           this.prices.total >= this.prices.subtotal &&
           this.reference_number &&
@@ -165,7 +166,6 @@ export class PaymentsUploadModalComponent implements OnInit {
           this.bgoPattern.test(this.reference_number)
       );
     }
-
   }
 
   async uploadData() {
@@ -180,7 +180,6 @@ export class PaymentsUploadModalComponent implements OnInit {
     formData.append('total', this.prices.total.toString());
     formData.append('subtotal', this.prices.subtotal.toString());
     formData.append('foreign_payment', this.foreingPayment.toString());
-    
 
     (await this.webService.uploadFilesSerivce(formData, 'carriers_payments', { apiVersion: 'v1.1' })).subscribe({
       next: () => {
@@ -195,17 +194,31 @@ export class PaymentsUploadModalComponent implements OnInit {
 
   onInputChange(event: Event, type: 'total' | 'subtotal') {
     const inputElement = event.target as HTMLInputElement;
-    const inputValue = inputElement.value;
+    let inputValue = inputElement.value;
     const regex = /^\d+(\.\d{0,2})?$/;
-
     if (inputValue === undefined || inputValue === null || inputValue.trim() === '') {
       inputElement.value = '';
       this.valuesInputs[type].inputValue = '';
       return;
     }
     if (!regex.test(inputValue)) {
-      inputElement.value = this.valuesInputs[type].inputValue || '';
-      this.prices[type] = parseFloat(this.valuesInputs[type].inputValue) || 0;
+      if (!regex.test(this.valuesInputs[type].inputValue)) {
+        const clearValue = this.valuesInputs[type].inputValue.replace(/[^0-9.]/g, '');
+        if (!clearValue) {
+          this.valuesInputs[type].inputValue = '00';
+          this.prices[type] = parseFloat(this.valuesInputs[type].inputValue) || 0;
+          return;
+        }
+        const valueFloat = parseFloat(clearValue);
+        const valueRounded = valueFloat.toFixed(2);
+        const formattedValue = valueRounded.replace(/\.00$/, '');
+        this.valuesInputs[type].inputValue = formattedValue;
+        inputElement.value = this.valuesInputs[type].inputValue || '';
+        this.prices[type] = parseFloat(this.valuesInputs[type].inputValue) || 0;
+      } else {
+        inputElement.value = this.valuesInputs[type].inputValue || '';
+        this.prices[type] = parseFloat(this.valuesInputs[type].inputValue) || 0;
+      }
     } else {
       this.valuesInputs[type].inputValue = inputValue;
       this.prices[type] = parseFloat(inputValue) || 0;
@@ -222,13 +235,21 @@ export class PaymentsUploadModalComponent implements OnInit {
       const formattedValue = this.formatNumberWithCommasAndDecimals(inputValue);
       inputElement.value = formattedValue;
       this.valuesInputs[type].originalValue = inputElement.value;
-      inputElement.value = '$' + inputElement.value + ' MXN';
+      inputElement.value = '$' + inputElement.value + this.currency;
     }
   }
 
   formatNumberWithCommasAndDecimals(value: string): string {
     const numberValue = parseFloat(value).toFixed(2);
     return numberValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  changeRenderInput(type) {
+    if (this.valuesInputs[type].originalValue === '') {
+      this.valuesInputs[type].originalValue = '00.00';
+      this.prices[type] = parseFloat(this.valuesInputs[type].originalValue) || 0;
+    }
+    this.valuesInputs[type].inputValue = '$' + this.valuesInputs[type].originalValue + ' ' + this.currency;
   }
 
   errorAlert(subtitle) {
