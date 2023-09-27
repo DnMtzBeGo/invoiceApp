@@ -141,7 +141,6 @@ export class ProfileComponent implements OnInit {
     // });
 
     this.profileInfoService.data.subscribe((profileInfo: any) => {
-      //console.log(profileInfo);
       this.profileInfo = profileInfo;
       this.profileImg = profileInfo?.thumbnail;
       this.noProfilePic = !profileInfo?.thumbnail;
@@ -153,7 +152,6 @@ export class ProfileComponent implements OnInit {
 
   refreshProfilePic() {
     return this.profileInfoService.getProfilePic().then((profilePicUrl: string) => {
-      console.log('New profile pic: ', profilePicUrl)
       this.profileImg = profilePicUrl;
       this.noProfilePic = false;
     });
@@ -161,7 +159,6 @@ export class ProfileComponent implements OnInit {
 
   async getOrderCount(carrier_id) {
 
-    console.log(carrier_id);
     if (carrier_id == void 0) {
       (await this.webService.apiRest("", 'orders/get')).subscribe(
         async (res) => {
@@ -204,7 +201,6 @@ export class ProfileComponent implements OnInit {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-          console.log('Reader result: ', reader.result);
           resolve(reader.result);
         };
         reader.onerror = function (error) {
@@ -253,8 +249,6 @@ export class ProfileComponent implements OnInit {
     const { files } = this.profilePicInput.nativeElement;
     const newProfilePicFile = files[0];
 
-    console.log('New file: ', newProfilePicFile);
-
     const newProfilePic = await this.getBase64(newProfilePicFile);
 
     this.uploadProfilePic(newProfilePic);
@@ -263,7 +257,6 @@ export class ProfileComponent implements OnInit {
   async removeProfilePic() {
     (await this.webService.apiRest('', 'profile/remove_picture')).subscribe(
       (res) => {
-        console.log('Profile pic was removed  successfully', res);
         // this.profileInfoService.getProfileInfo(this.id);
         this.refreshProfilePic();
       },
@@ -284,7 +277,6 @@ export class ProfileComponent implements OnInit {
   }
 
   takePic() {
-    console.log('Taking pic here');
     const canvas = this.pictureCanvas.nativeElement;
     const video = this.videoTag.nativeElement;
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
