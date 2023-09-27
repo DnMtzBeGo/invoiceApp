@@ -104,11 +104,12 @@ export class PaymentsUploadModalComponent implements OnInit {
     if (file == undefined) {
       this.files[type].data = undefined;
       this.files[type].file = null;
-      if(type == 'xml'){
+      if (type == 'xml') {
         this.currency = '';
         this.changeRenderInput('subtotal');
         this.changeRenderInput('total');
       }
+      this.checkValidated();
       return;
     }
     this.files[type].file = file;
@@ -162,14 +163,30 @@ export class PaymentsUploadModalComponent implements OnInit {
           this.bgoPattern.test(this.reference_number)
       );
     } else {
-      this.validated = Boolean(
-        this.files.xml.file &&
-          this.files.pdf.file &&
-          this.order_number &&
-          this.prices.total >= this.prices.subtotal &&
-          this.reference_number &&
-          this.bgoPattern.test(this.reference_number)
-      );
+      if (this.currency) {
+        if (this.currency === 'USD')
+          this.validated = Boolean(
+            this.files.xml.file &&
+              this.files.pdf.file &&
+              this.order_number &&
+              this.prices.total >= this.prices.subtotal &&
+              this.prices.subtotal > 0 &&
+              this.reference_number &&
+              this.bgoPattern.test(this.reference_number)
+          );
+        if (this.currency === 'MXN')
+          this.validated = Boolean(
+            this.files.xml.file &&
+              this.files.pdf.file &&
+              this.order_number &&
+              this.prices.total > this.prices.subtotal &&
+              this.prices.subtotal > 0 &&
+              this.reference_number &&
+              this.bgoPattern.test(this.reference_number)
+          );
+      } else {
+        this.validated = false;
+      }
     }
   }
 
@@ -212,6 +229,7 @@ export class PaymentsUploadModalComponent implements OnInit {
         if (!clearValue) {
           this.valuesInputs[type].inputValue = '00';
           this.prices[type] = parseFloat(this.valuesInputs[type].inputValue) || 0;
+          this.checkValidated();
           return;
         }
         const valueFloat = parseFloat(clearValue);
@@ -220,13 +238,16 @@ export class PaymentsUploadModalComponent implements OnInit {
         this.valuesInputs[type].inputValue = formattedValue;
         inputElement.value = this.valuesInputs[type].inputValue || '';
         this.prices[type] = parseFloat(this.valuesInputs[type].inputValue) || 0;
+        this.checkValidated();
       } else {
         inputElement.value = this.valuesInputs[type].inputValue || '';
         this.prices[type] = parseFloat(this.valuesInputs[type].inputValue) || 0;
+        this.checkValidated();
       }
     } else {
       this.valuesInputs[type].inputValue = inputValue;
       this.prices[type] = parseFloat(inputValue) || 0;
+      this.checkValidated();
     }
   }
 
@@ -253,6 +274,7 @@ export class PaymentsUploadModalComponent implements OnInit {
     if (this.valuesInputs[type].originalValue === '') {
       this.valuesInputs[type].originalValue = '00.00';
       this.prices[type] = parseFloat(this.valuesInputs[type].originalValue) || 0;
+      this.checkValidated();
     }
     this.valuesInputs[type].inputValue = '$' + this.valuesInputs[type].originalValue + ' ' + this.currency;
   }
