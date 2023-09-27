@@ -43,7 +43,43 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.queryParamMap.get('id') || null;
+    // this.id = this.route.snapshot.queryParamMap.get('id') || null;
+    this.id = localStorage.getItem('profileId') || null;
+    
+
+    // this.orderTabs = {
+    //   account: {
+    //     text: 'profile.account.account',
+    //     url: '/profile/personal-info',
+    //     key: 'account',
+    //     enabled: true,
+    //     sidebar: true,
+    //     whenActive: (): any => {
+    //       this.profileInfoService.getProfileInfo(this.id);
+    //     }
+    //   },
+    //   satCertificate: {
+    //     text: 'sat-certification.order_tab_label',
+    //     url: '/profile/sat-certificate',
+    //     key: 'satCertificate',
+    //     enabled: this.id == void 0,
+    //     sidebar: true,
+    //   },
+    //   documentation: {
+    //     text: 'fiscal-documents.upload-files.documentation',
+    //     url: '/profile/fiscal-documents',
+    //     key: 'documentation',
+    //     enabled: true,
+    //     sidebar: true,
+    //   },
+    //   history: {
+    //     text: 'profile.history.txt_history',
+    //     url: '/profile/history',
+    //     key: 'history',
+    //     enabled: this.id != void 0,
+    //     sidebar: false,
+    //   }
+    // };
 
     this.orderTabs = {
       account: {
@@ -60,7 +96,7 @@ export class ProfileComponent implements OnInit {
         text: 'sat-certification.order_tab_label',
         url: '/profile/sat-certificate',
         key: 'satCertificate',
-        enabled: this.id == void 0,
+        enabled: true,
         sidebar: true,
       },
       documentation: {
@@ -69,13 +105,6 @@ export class ProfileComponent implements OnInit {
         key: 'documentation',
         enabled: true,
         sidebar: true,
-      },
-      history: {
-        text: 'profile.history.txt_history',
-        url: '/profile/history',
-        key: 'history',
-        enabled: this.id != void 0,
-        sidebar: false,
       }
     };
 
@@ -112,7 +141,6 @@ export class ProfileComponent implements OnInit {
     // });
 
     this.profileInfoService.data.subscribe((profileInfo: any) => {
-      //console.log(profileInfo);
       this.profileInfo = profileInfo;
       this.profileImg = profileInfo?.thumbnail;
       this.noProfilePic = !profileInfo?.thumbnail;
@@ -124,13 +152,13 @@ export class ProfileComponent implements OnInit {
 
   refreshProfilePic() {
     return this.profileInfoService.getProfilePic().then((profilePicUrl: string) => {
-      console.log('New profile pic: ', profilePicUrl)
       this.profileImg = profilePicUrl;
       this.noProfilePic = false;
     });
   }
 
   async getOrderCount(carrier_id) {
+
     if (carrier_id == void 0) {
       (await this.webService.apiRest("", 'orders/get')).subscribe(
         async (res) => {
@@ -173,7 +201,6 @@ export class ProfileComponent implements OnInit {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-          console.log('Reader result: ', reader.result);
           resolve(reader.result);
         };
         reader.onerror = function (error) {
@@ -222,8 +249,6 @@ export class ProfileComponent implements OnInit {
     const { files } = this.profilePicInput.nativeElement;
     const newProfilePicFile = files[0];
 
-    console.log('New file: ', newProfilePicFile);
-
     const newProfilePic = await this.getBase64(newProfilePicFile);
 
     this.uploadProfilePic(newProfilePic);
@@ -232,7 +257,6 @@ export class ProfileComponent implements OnInit {
   async removeProfilePic() {
     (await this.webService.apiRest('', 'profile/remove_picture')).subscribe(
       (res) => {
-        console.log('Profile pic was removed  successfully', res);
         // this.profileInfoService.getProfileInfo(this.id);
         this.refreshProfilePic();
       },
@@ -253,7 +277,6 @@ export class ProfileComponent implements OnInit {
   }
 
   takePic() {
-    console.log('Taking pic here');
     const canvas = this.pictureCanvas.nativeElement;
     const video = this.videoTag.nativeElement;
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);

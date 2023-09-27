@@ -4,7 +4,7 @@ import { PaymentsComponent } from './payments.component';
 import { PaymentsRoutingModule } from './payments-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { BegoDragDropModule, BegoTableModule, BegoAlertModule, BegoButtonToggleModule } from '@begomx/ui-components';
+import { BegoDragDropModule, BegoTableModule, BegoAlertModule, BegoDragDropDocumentsModule, BegoButtonToggleModule } from '@begomx/ui-components';
 
 import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
@@ -17,9 +17,10 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { EditedModalComponent } from './components/edited-modal/edited-modal.component';
+import { FilesViewModalComponent } from './components/files-view-modal/files-view-modal.component';
 import { TextMaskModule } from 'angular2-text-mask';
 @NgModule({
-  declarations: [PaymentsComponent, PaymentsTableComponent, PaymentsUploadModalComponent, EditedModalComponent],
+  declarations: [PaymentsComponent, PaymentsTableComponent, PaymentsUploadModalComponent, EditedModalComponent, FilesViewModalComponent],
   imports: [
     CommonModule,
     PaymentsRoutingModule,
@@ -29,6 +30,7 @@ import { TextMaskModule } from 'angular2-text-mask';
     BegoAlertModule,
     BegoDragDropModule,
     BegoTableModule,
+    BegoDragDropDocumentsModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,

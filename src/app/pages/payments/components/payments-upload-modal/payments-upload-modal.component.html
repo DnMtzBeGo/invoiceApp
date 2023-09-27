@@ -7,10 +7,7 @@
   </div>
   <div class="payments-body">
     <div class="foreing-container">
-      <bego-button-toggle
-        [simple]="true"
-        (statusChanged)="onForeignPaymentChange($event)"
-      ></bego-button-toggle>
+      <bego-button-toggle [simple]="true" (statusChanged)="onForeignPaymentChange($event)"></bego-button-toggle>
       <span>{{ 'payments.upload-modal.label_foreign_payment' | translate }}</span>
     </div>
     <mat-form-field appearance="outline" class="brand-field-1">
@@ -28,22 +25,22 @@
         <mat-label>Subtotal</mat-label>
         <input
           matInput
-          currencyMask
-          [ngModel]="prices.subtotal"
-          [options]="currencyOptions"
-          (ngModelChange)="onModelChange($event, 'subtotal')" />
-          <span matSuffix>{{currency}}</span>
+          [value]="valuesInputs.subtotal.inputValue"
+          placeholder="$000.00"
+          (input)="onInputChange($event, 'subtotal')"
+          (focus)="onInputChange($event, 'subtotal')"
+          (blur)="onInputBlur($event, 'subtotal')" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>Total</mat-label>
         <input
           matInput
-          currencyMask
-          [ngModel]="prices.total"
-          [options]="currencyOptions"
-          (ngModelChange)="onModelChange($event, 'total')" />
-          <span matSuffix>{{currency}}</span>
+          [value]="valuesInputs.total.inputValue"
+          placeholder="$000.00"
+          (input)="onInputChange($event, 'total')"
+          (focus)="onInputChange($event, 'total')"
+          (blur)="onInputBlur($event, 'total')" />
       </mat-form-field>
     </div>
 
