@@ -43,7 +43,43 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.queryParamMap.get('id') || null;
+    // this.id = this.route.snapshot.queryParamMap.get('id') || null;
+    this.id = localStorage.getItem('profileId') || null;
+    
+
+    // this.orderTabs = {
+    //   account: {
+    //     text: 'profile.account.account',
+    //     url: '/profile/personal-info',
+    //     key: 'account',
+    //     enabled: true,
+    //     sidebar: true,
+    //     whenActive: (): any => {
+    //       this.profileInfoService.getProfileInfo(this.id);
+    //     }
+    //   },
+    //   satCertificate: {
+    //     text: 'sat-certification.order_tab_label',
+    //     url: '/profile/sat-certificate',
+    //     key: 'satCertificate',
+    //     enabled: this.id == void 0,
+    //     sidebar: true,
+    //   },
+    //   documentation: {
+    //     text: 'fiscal-documents.upload-files.documentation',
+    //     url: '/profile/fiscal-documents',
+    //     key: 'documentation',
+    //     enabled: true,
+    //     sidebar: true,
+    //   },
+    //   history: {
+    //     text: 'profile.history.txt_history',
+    //     url: '/profile/history',
+    //     key: 'history',
+    //     enabled: this.id != void 0,
+    //     sidebar: false,
+    //   }
+    // };
 
     this.orderTabs = {
       account: {
@@ -60,7 +96,7 @@ export class ProfileComponent implements OnInit {
         text: 'sat-certification.order_tab_label',
         url: '/profile/sat-certificate',
         key: 'satCertificate',
-        enabled: this.id == void 0,
+        enabled: true,
         sidebar: true,
       },
       documentation: {
@@ -69,13 +105,6 @@ export class ProfileComponent implements OnInit {
         key: 'documentation',
         enabled: true,
         sidebar: true,
-      },
-      history: {
-        text: 'profile.history.txt_history',
-        url: '/profile/history',
-        key: 'history',
-        enabled: this.id != void 0,
-        sidebar: false,
       }
     };
 
@@ -131,6 +160,8 @@ export class ProfileComponent implements OnInit {
   }
 
   async getOrderCount(carrier_id) {
+
+    console.log(carrier_id);
     if (carrier_id == void 0) {
       (await this.webService.apiRest("", 'orders/get')).subscribe(
         async (res) => {
