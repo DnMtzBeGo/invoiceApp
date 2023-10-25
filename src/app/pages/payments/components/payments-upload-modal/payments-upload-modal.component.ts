@@ -179,7 +179,7 @@ export class PaymentsUploadModalComponent implements OnInit {
             this.files.xml.file &&
               this.files.pdf.file &&
               this.order_number &&
-              this.prices.total > this.prices.subtotal &&
+              this.prices.total >= this.prices.subtotal &&
               this.prices.subtotal > 0 &&
               this.reference_number &&
               this.bgoPattern.test(this.reference_number)
