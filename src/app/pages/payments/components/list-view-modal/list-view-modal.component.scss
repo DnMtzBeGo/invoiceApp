@@ -1,0 +1,31 @@
+.list-voucher-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 400px;
+    // min-height: 400px;
+    justify-content: center;
+    color: #ededed;
+
+    .list-voucher-header {
+        position: relative;
+        text-align: center;
+        margin-bottom: 2rem;
+
+        .close-btn {
+            position: absolute;
+            right: 10px;
+            top: 0px;
+            cursor: pointer;
+
+            mat-icon {
+                color: rgb(150, 150, 150);
+            }
+        }
+    }
+
+    .list-voucher-body {
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,22 @@
+<div class="list-voucher-container">
+  <div class="list-voucher-header">
+    <h4 style="margin-bottom: 0rem; font-size: 20px">{{ 'payments.upload-modal.title' | translate }}</h4>
+    <div class="close-btn">
+      <mat-icon (click)="close()">close</mat-icon>
+    </div>
+  </div>
+  <div class="list-voucher-body">
+    <div>
+      <h3>Upfront vouchers:</h3>
+      <ul>
+        <li *ngFor="let voucher of voucherAll.upfront_vouchers; let i = index">{{ i + 1 }}.- {{ voucher?.name }}</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Vouchers:</h3>
+      <ul>
+        <li *ngFor="let voucher of voucherAll.vouchers; let i = index">{{ i + 1 }}.- {{ voucher?.name }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

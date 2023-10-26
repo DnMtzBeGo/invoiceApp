@@ -7,7 +7,7 @@ import { PaymentsUploadModalComponent } from './components/payments-upload-modal
 import { TranslateService } from '@ngx-translate/core';
 import { EditedModalComponent } from './components/edited-modal/edited-modal.component';
 import { FilesViewModalComponent } from './components/files-view-modal/files-view-modal.component';
-
+import { ListViewModalComponent } from './components/list-view-modal/list-view-modal.component';
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
@@ -30,6 +30,7 @@ export class PaymentsComponent implements OnInit {
     { id: 'due_date', label: '', pipe: 'countdown', sort: true },
     { id: 'razon_social', label: '', filter: 'input', sort: true },
     { id: 'status', label: '', filter: 'selector', options: this.statusOptions, sort: true },
+    { id: 'vouchers_icon', label: 'vouchers_icon', input: 'icon', sort: true },
     { id: 'subtotal', label: '', sort: true },
     { id: 'total', label: '', sort: true },
     { id: 'bank', label: '', filter: 'input', sort: true },
@@ -85,6 +86,12 @@ export class PaymentsComponent implements OnInit {
     match: ''
   };
 
+  selectRow: any = {
+    showColumnSelection: false,
+    selectionLimit: 0,
+    keyPrimaryRow: 'concept'
+  };
+
   payments = [];
 
   loadingData: boolean = false;
@@ -130,6 +137,18 @@ export class PaymentsComponent implements OnInit {
       next: ({ result: { result, total } }) => {
         this.page.total = total;
         this.payments = result.map((payment) => {
+          const validDoc = this.validateVouchers(payment);
+          if (validDoc) {
+            payment.vouchers_icon = {
+              icon: 'document',
+              label: ''
+            };
+          } else {
+            payment.vouchers_icon = {
+              icon: '',
+              label: '-'
+            };
+          }
           const actions = {
             enabled: false,
             options: {
@@ -237,6 +256,16 @@ export class PaymentsComponent implements OnInit {
     });
   }
 
+  openViewVouchersModal(data) {
+    const dialogRef = this.matDialog.open(ListViewModalComponent, {
+      data, 
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1', 'no-padding', 'full-visible']
+    });
+  }
+
   openFile({ files }: any, type: 'pdf' | 'xml') {
     if (files[type]) window.open(files[type]);
     else this.notificationsService.showErrorToastr('Archivo inexistente');
@@ -288,5 +317,60 @@ export class PaymentsComponent implements OnInit {
 
   searchStatus(search) {
     return this.statusOptions.find((status) => status.value === search).id;
+  }
+
+  handleReload(event: any) {
+    if (event === 'reloadTable') {
+      this.getPayments();
+    }
+  }
+
+  validateVouchers(event) {
+    let validDoc = false;
+    if (event?.vouchers) {
+      let contador = 0;
+
+      for (let i = 0; i < event?.vouchers.length; i++) {
+        if (event?.vouchers[i] !== null && event?.vouchers[i] !== undefined) {
+          contador++;
+        }
+      }
+      if (contador > 0) {
+        validDoc = true;
+      } else {
+        validDoc = false;
+      }
+    }
+    if (event?.upfront_vouchers) {
+      let contador = 0;
+
+      for (let i = 0; i < event?.upfront_vouchers.length; i++) {
+        if (event?.upfront_vouchers[i] !== null && event?.upfront_vouchers[i] !== undefined) {
+          contador++;
+        }
+      }
+      if (contador > 0) {
+        validDoc = true;
+      } else {
+        validDoc = false;
+      }
+    }
+    return validDoc;
+  }
+
+  selectColumn(event) {
+    if (event?.column?.id === 'vouchers_icon') {
+      let allDocVocuchers: any = {
+        vouchers : [],
+        upfront_vouchers: [],
+      }
+      if (event?.element?.vouchers) {
+        allDocVocuchers.vouchers = event?.element?.vouchers;
+      }
+      if (event?.element?.upfront_vouchers) {
+        allDocVocuchers.upfront_vouchers = event?.element?.upfront_vouchers;
+      }
+      this.openViewVouchersModal(allDocVocuchers);
+    }
   }
 }

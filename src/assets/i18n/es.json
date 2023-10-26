@@ -1518,6 +1518,7 @@
       "title": "Control de Pagos",
       "order_number": "Orden",
       "reference_number": "Número de referencia BGO",
+      "vouchers_icon": "Vouchers",
       "due_date": "Vencimiento",
       "folio": "Factura",
       "razon_social": "Razón Social",
