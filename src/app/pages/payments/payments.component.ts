@@ -30,7 +30,7 @@ export class PaymentsComponent implements OnInit {
     { id: 'due_date', label: '', pipe: 'countdown', sort: true },
     { id: 'razon_social', label: '', filter: 'input', sort: true },
     { id: 'status', label: '', filter: 'selector', options: this.statusOptions, sort: true },
-    { id: 'vouchers_icon', label: 'vouchers_icon', input: 'icon', sort: true },
+    { id: 'vouchers_icon', label: 'vouchers_icon', input: 'icon' },
     { id: 'subtotal', label: '', sort: true },
     { id: 'total', label: '', sort: true },
     { id: 'bank', label: '', filter: 'input', sort: true },
@@ -252,7 +252,7 @@ export class PaymentsComponent implements OnInit {
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1', 'no-padding', 'full-visible']
     });
   }
 
@@ -365,10 +365,10 @@ export class PaymentsComponent implements OnInit {
         upfront_vouchers: [],
       }
       if (event?.element?.vouchers) {
-        allDocVocuchers.vouchers = event?.element?.vouchers;
+        allDocVocuchers.vouchers = (event?.element?.vouchers);
       }
       if (event?.element?.upfront_vouchers) {
-        allDocVocuchers.upfront_vouchers = event?.element?.upfront_vouchers;
+        allDocVocuchers.upfront_vouchers = (event?.element?.upfront_vouchers);
       }
       this.openViewVouchersModal(allDocVocuchers);
     }

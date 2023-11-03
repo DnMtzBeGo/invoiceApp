@@ -1,21 +1,73 @@
 <div class="list-voucher-container">
   <div class="list-voucher-header">
-    <h4 style="margin-bottom: 0rem; font-size: 20px">{{ 'payments.upload-modal.title' | translate }}</h4>
+    <h4 style="margin-bottom: 0rem; font-size: 20px">{{ 'payments.view-modal-files.title' | translate }}</h4>
     <div class="close-btn">
       <mat-icon (click)="close()">close</mat-icon>
     </div>
   </div>
   <div class="list-voucher-body">
     <div>
-      <h3>Upfront vouchers:</h3>
-      <ul>
-        <li *ngFor="let voucher of voucherAll.upfront_vouchers; let i = index">{{ i + 1 }}.- {{ voucher?.name }}</li>
+      <h3>{{ 'payments.upfront_vouchers.title' | translate }}</h3>
+      <ul *ngIf="!voucherAll.upfront_vouchers || voucherAll.upfront_vouchers.length === 0">
+        <li>
+          <div class="not-file">
+            <h3>{{'payments.view-modal-files.not-upfront' | translate }}</h3>
+          </div>
+        </li>
+      </ul>
+      <ul class="formatt-files">
+        <li *ngFor="let voucher of voucherAll.upfront_vouchers">
+          <ng-container *ngIf="voucher !== null && voucher !== undefined && voucher !== empty">
+            <div *ngIf="voucher" class="card-file-info">
+              <div class="card-icon">
+                <mat-icon class="icon icon-document document-icon"></mat-icon>
+                <label class="document-type">
+                  {{ voucher.type }}
+                </label>
+              </div>
+              <div class="document-info">
+                <p>{{ voucher.name }}</p>
+                <p class="size-file">{{ voucher.size | documentSize }}</p>
+                <p>${{ voucher?.amount | moneyFormatter}} {{voucher?.currency}}</p>
+              </div>
+              <div class="bego-actions">
+                <mat-icon class="icon icon-eye-open" (click)="openNewTab(voucher?.url)"></mat-icon>
+              </div>
+            </div>
+          </ng-container>
+        </li>
       </ul>
     </div>
     <div>
-      <h3>Vouchers:</h3>
-      <ul>
-        <li *ngFor="let voucher of voucherAll.vouchers; let i = index">{{ i + 1 }}.- {{ voucher?.name }}</li>
+      <h3>{{ 'payments.vouchers.title' | translate }}</h3>
+      <ul *ngIf="!voucherAll.vouchers || voucherAll.vouchers.length === 0">
+        <li>
+          <div class="not-file">
+            <h3>{{'payments.view-modal-files.not-vouchers' | translate }}</h3>
+          </div>
+        </li>
+      </ul>
+      <ul class="formatt-files">
+        <li *ngFor="let voucher of voucherAll.vouchers">
+          <ng-container *ngIf="voucher !== null && voucher !== undefined && voucher !== empty">
+            <div *ngIf="voucher" class="card-file-info">
+              <div class="card-icon">
+                <mat-icon class="icon icon-document document-icon"></mat-icon>
+                <label class="document-type">
+                  {{ voucher.type }}
+                </label>
+              </div>
+              <div class="document-info">
+                <p>{{ voucher?.name }}</p>
+                <p class="size-file">{{ voucher?.size | documentSize }}</p>
+                <p>${{ voucher?.amount | moneyFormatter}} {{voucher?.currency}}</p>
+              </div>
+              <div class="bego-actions">
+                <mat-icon class="icon icon-eye-open" (click)="openNewTab(voucher?.url)"></mat-icon>
+              </div>
+            </div>
+          </ng-container>
+        </li>
       </ul>
     </div>
   </div>

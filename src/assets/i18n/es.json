@@ -1582,6 +1582,11 @@
     "upfront_vouchers": {
       "title": "Adelantos",
       "subtitle": "Podrás observar algunos de los adelantos que se han subido a esta orden."
+    },
+    "view-modal-files": {
+      "title": "Comprobantes",
+      "not-vouchers": "Actualmente, no hay comprobantes disponibles para esta orden.",
+      "not-upfront": "Actualmente, no hay adelantos disponibles para esta orden."
     }
   }
 }

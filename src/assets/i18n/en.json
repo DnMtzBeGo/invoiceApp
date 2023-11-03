@@ -1523,6 +1523,7 @@
       "total": "Total",
       "bank": "Bank",
       "account": "Account number",
+      "swift": "Number swift/ABA",
       "date_created": "Uploaded",
       "carrier_credit_days": "Credit days",
       "pdf": "PDF",
@@ -1575,6 +1576,11 @@
     "upfront_vouchers": {
       "title": "Upfronts",
       "subtitle": "You will be able to observe some of the advances that have been uploaded to this order."
+    },
+    "view-modal-files": {
+      "title": "Vouchers",
+      "not-vouchers": "Currently, there are no vouchers available for this order.",
+      "not-upfront": "Currently, there are no upfront payments available for this order."    
     }
   }
 }

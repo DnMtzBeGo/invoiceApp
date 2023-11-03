@@ -20,8 +20,10 @@ import { EditedModalComponent } from './components/edited-modal/edited-modal.com
 import { FilesViewModalComponent } from './components/files-view-modal/files-view-modal.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { ListViewModalComponent } from './components/list-view-modal/list-view-modal.component';
+import { DocumentSizePipe } from 'src/app/shared/pipes/document-size/document-size.pipe';
+import { MoneyFormatterPipe } from 'src/app/shared/pipes/money-formatter/money-formatter.pipe';
 @NgModule({
-  declarations: [PaymentsComponent, PaymentsTableComponent, PaymentsUploadModalComponent, EditedModalComponent, FilesViewModalComponent, ListViewModalComponent],
+  declarations: [PaymentsComponent, PaymentsTableComponent, PaymentsUploadModalComponent, EditedModalComponent, FilesViewModalComponent, ListViewModalComponent, DocumentSizePipe, MoneyFormatterPipe],
   imports: [
     CommonModule,
     PaymentsRoutingModule,

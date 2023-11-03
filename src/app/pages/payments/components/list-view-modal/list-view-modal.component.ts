@@ -9,27 +9,30 @@ export class ListViewModalComponent implements OnInit {
   voucherAll: any = [];
 
   constructor(public dialogRef: MatDialogRef<ListViewModalComponent>, @Inject(MAT_DIALOG_DATA) dataVouchers: any) {
-    console.log(dataVouchers, 'data');
-    this.voucherAll = this.clearObject(dataVouchers);
-    console.log(this.voucherAll);
+    const newObjectData = this.clearObject(dataVouchers);
+    console.log(newObjectData);
+    this.voucherAll = newObjectData;
   }
 
   ngOnInit(): void {}
 
-  clearObject(objeto: Record<string, any>): Record<string, any> {
-    for (const clave in objeto) {
-      if (objeto[clave] === null || objeto[clave] === undefined) {
-        delete objeto[clave];
-      } else if (typeof objeto[clave] === 'object') {
-        this.clearObject(objeto[clave]);
-        if (Object.keys(objeto[clave]).length === 0) {
-          delete objeto[clave];
-        }
-      } else if (Array.isArray(objeto[clave]) && objeto[clave].length === 0) {
-        delete objeto[clave];
-      }
+  clearObject(data: { upfront_vouchers: any[]; vouchers: any[] }): any {
+    const newObject = {};
+
+    if (data.upfront_vouchers && data.upfront_vouchers.length > 0) {
+      newObject['upfront_vouchers'] = data.upfront_vouchers.filter((voucher) => voucher !== null);
     }
-    return objeto;
+
+    if (data.vouchers && data.vouchers.length > 0) {
+      newObject['vouchers'] = data.vouchers.filter((voucher) => voucher !== null);
+    }
+
+    return newObject;
+  }
+
+  openNewTab(url: string): void {
+    const newTab = window.open(url, '_blank');
+    newTab?.focus(); 
   }
 
   close(edited: string = '') {
