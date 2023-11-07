@@ -10,7 +10,6 @@ export class ListViewModalComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ListViewModalComponent>, @Inject(MAT_DIALOG_DATA) dataVouchers: any) {
     const newObjectData = this.clearObject(dataVouchers);
-    console.log(newObjectData);
     this.voucherAll = newObjectData;
   }
 
@@ -32,7 +31,7 @@ export class ListViewModalComponent implements OnInit {
 
   openNewTab(url: string): void {
     const newTab = window.open(url, '_blank');
-    newTab?.focus(); 
+    newTab?.focus();
   }
 
   close(edited: string = '') {

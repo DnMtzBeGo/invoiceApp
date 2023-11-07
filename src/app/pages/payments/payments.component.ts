@@ -258,7 +258,7 @@ export class PaymentsComponent implements OnInit {
 
   openViewVouchersModal(data) {
     const dialogRef = this.matDialog.open(ListViewModalComponent, {
-      data, 
+      data,
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,
@@ -361,14 +361,14 @@ export class PaymentsComponent implements OnInit {
   selectColumn(event) {
     if (event?.column?.id === 'vouchers_icon') {
       let allDocVocuchers: any = {
-        vouchers : [],
-        upfront_vouchers: [],
-      }
+        vouchers: [],
+        upfront_vouchers: []
+      };
       if (event?.element?.vouchers) {
-        allDocVocuchers.vouchers = (event?.element?.vouchers);
+        allDocVocuchers.vouchers = event?.element?.vouchers;
       }
       if (event?.element?.upfront_vouchers) {
-        allDocVocuchers.upfront_vouchers = (event?.element?.upfront_vouchers);
+        allDocVocuchers.upfront_vouchers = event?.element?.upfront_vouchers;
       }
       this.openViewVouchersModal(allDocVocuchers);
     }
