@@ -1511,6 +1511,13 @@
     }
   },
   "payments": {
+    "expiration":{
+      "paid": "Pagada",
+      "expired": "Vencida",
+      "day": "día",
+      "days": "días",
+      "lastDay": "Último día"
+    },
     "buttons": {
       "upload": "Subir pago"
     },
@@ -1518,6 +1525,7 @@
       "title": "Control de Pagos",
       "order_number": "Orden",
       "reference_number": "Número de referencia BGO",
+      "vouchers_icon": "Vouchers",
       "due_date": "Vencimiento",
       "folio": "Factura",
       "razon_social": "Razón Social",
@@ -1581,6 +1589,11 @@
     "upfront_vouchers": {
       "title": "Adelantos",
       "subtitle": "Podrás observar algunos de los adelantos que se han subido a esta orden."
+    },
+    "view-modal-files": {
+      "title": "Comprobantes",
+      "not-vouchers": "Actualmente, no hay comprobantes disponibles para esta orden.",
+      "not-upfront": "Actualmente, no hay adelantos disponibles para esta orden."
     }
   }
 }
