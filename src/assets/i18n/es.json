@@ -1511,6 +1511,13 @@
     }
   },
   "payments": {
+    "expiration":{
+      "paid": "Pagada",
+      "expired": "Vencida",
+      "day": "día",
+      "days": "días",
+      "lastDay": "Último día"
+    },
     "buttons": {
       "upload": "Subir pago"
     },

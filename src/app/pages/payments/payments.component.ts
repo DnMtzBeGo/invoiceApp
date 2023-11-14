@@ -8,6 +8,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { EditedModalComponent } from './components/edited-modal/edited-modal.component';
 import { FilesViewModalComponent } from './components/files-view-modal/files-view-modal.component';
 import { ListViewModalComponent } from './components/list-view-modal/list-view-modal.component';
+import * as moment from 'moment';
+
+interface Translations {
+  expired: string;
+  day: string;
+  days: string;
+  lastDay: string;
+}
+
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
@@ -27,7 +36,7 @@ export class PaymentsComponent implements OnInit {
   columns: any[] = [
     { id: 'order_number', label: '', filter: 'input', sort: true },
     { id: 'reference_number', label: '', filter: 'input' },
-    { id: 'due_date', label: '', pipe: 'countdown', sort: true },
+    { id: 'due_date', label: '', input: 'style', sort: true },
     { id: 'razon_social', label: '', filter: 'input', sort: true },
     { id: 'status', label: '', filter: 'selector', options: this.statusOptions, sort: true },
     { id: 'vouchers_icon', label: 'vouchers_icon', input: 'icon' },
@@ -96,6 +105,21 @@ export class PaymentsComponent implements OnInit {
 
   loadingData: boolean = false;
 
+  translations: Record<string, Translations> = {
+    es: {
+      expired: 'Vencida',
+      day: 'día',
+      days: 'días',
+      lastDay: 'Último día'
+    },
+    en: {
+      expired: 'Expired',
+      day: 'day',
+      days: 'days',
+      lastDay: 'Last day'
+    }
+  };
+
   constructor(
     private webService: AuthService,
     private notificationsService: NotificationsService,
@@ -137,6 +161,16 @@ export class PaymentsComponent implements OnInit {
       next: ({ result: { result, total } }) => {
         this.page.total = total;
         this.payments = result.map((payment) => {
+          const due_date = {
+            value:
+              payment?.status === 'paid'
+                ? this.translateService.instant(`payments.expiration.paid`)
+                : this.countdownFormatter(payment.due_date),
+            style: {
+              color: payment?.status === 'paid' ? '#38EB67' : '#EB4515',
+              'font-weight': 700
+            }
+          };
           const validDoc = this.validateVouchers(payment);
           if (validDoc) {
             payment.vouchers_icon = {
@@ -164,6 +198,7 @@ export class PaymentsComponent implements OnInit {
           return {
             ...payment,
             actions,
+            due_date,
             reference_number: payment?.reference_number || '-',
             carrier_credit_days: this.creditDays(payment.carrier_credit_days),
             date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
@@ -371,6 +406,25 @@ export class PaymentsComponent implements OnInit {
         allDocVocuchers.upfront_vouchers = event?.element?.upfront_vouchers;
       }
       this.openViewVouchersModal(allDocVocuchers);
+    }
+  }
+
+  countdownFormatter(value: number): string {
+    const translation = this.translateService.instant(`payments.expiration`);
+
+    const currentDate = moment();
+    const targetDate = moment.unix(value / 1000);
+
+    if (currentDate.isAfter(targetDate)) {
+      const formattedDate = targetDate.format('DD/MM/YY');
+      return `${translation.expired} (${formattedDate})`;
+    }
+
+    const remainingDays = targetDate.diff(currentDate, 'days');
+    if (remainingDays < 1) {
+      return translation.lastDay;
+    } else {
+      return `${remainingDays} ${translation.days}`;
     }
   }
 }

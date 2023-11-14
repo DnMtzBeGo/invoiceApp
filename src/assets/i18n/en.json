@@ -1507,6 +1507,13 @@
     }
   },
   "payments": {
+    "expiration":{
+      "paid": "Paid",
+      "expired": "Expired",
+      "day": "day",
+      "days": "days",
+      "lastDay": "Last day"
+    },
     "buttons": {
       "upload": "Upload payment"
     },
