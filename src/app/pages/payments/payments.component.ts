@@ -429,58 +429,6 @@ export class PaymentsComponent implements OnInit {
       this.openMessageModal(event?.element);
     }
   }
-/*
-  countdownFormatter(value: number, status: string): object {
-    const translation = this.translateService.instant(`payments.expiration`);
-
-    const currentDate = moment();
-    const targetDate = moment.unix(value / 1000);
-
-    if (currentDate.isAfter(targetDate)) {
-      const formattedDate = targetDate.format('DD/MM/YY');
-      //return `${translation.expired} (${formattedDate})`;
-       const due_date = {
-        value:
-          status === 'paid'
-            ? this.translateService.instant(`payments.expiration.paid`)
-            : `${translation.expired} (${formattedDate})`,
-        style: {
-          color: status === 'paid' ? '#38EB67' : '#EB4515',
-          'font-weight': 700
-        }
-      }
-      return due_date;
-    }
-
-    const remainingDays = targetDate.diff(currentDate, 'days');
-    if (remainingDays < 1) {
-      //return translation.lastDay;
-      const due_date = {
-        value:
-          status === 'paid'
-            ? this.translateService.instant(`payments.expiration.paid`)
-            : translation.lastDay,
-        style: {
-          color: status === 'paid' ? '#38EB67' : 'white',
-          'font-weight': 700
-        }
-      }
-      return due_date;
-    } else {
-      //return `${remainingDays} ${translation.days}`;
-      const due_date = {
-        value:
-          status === 'paid'
-            ? this.translateService.instant(`payments.expiration.paid`)
-            : `${remainingDays} ${translation.days}`,
-        style: {
-          color: status === 'paid' ? '#38EB67' : '#FFFB00',
-          'font-weight': 700
-        }
-      }
-      return due_date;
-    }
-  }*/
 
   countdownFormatter(value: number, status: string): object {
   const translation = this.translateService.instant(`payments.expiration`);
