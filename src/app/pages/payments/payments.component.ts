@@ -279,7 +279,9 @@ export class PaymentsComponent implements OnInit {
       backdropClass: ['brand-dialog-1'],
     });
 
-    dialogRef.afterClosed().subscribe((uploaded: boolean) => {});
+    dialogRef.afterClosed().subscribe((uploaded: boolean) => {
+      this.getPayments();
+    });
   }
 
   openUploadedModal() {
