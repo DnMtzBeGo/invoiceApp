@@ -1,8 +1,8 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
-import { ApiRestService } from '@begomx/ui-components';
 @Component({
   selector: 'app-messages-modal',
   templateUrl: './messages-modal.component.html',
@@ -20,7 +20,7 @@ export class MessagesModalComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     public dialogRef: MatDialogRef<MessagesModalComponent>,
-    private webService: ApiRestService,
+    private webService: AuthService,
     private notificationsService: NotificationsService
   ) {}
 
