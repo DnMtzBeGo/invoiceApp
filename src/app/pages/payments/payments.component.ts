@@ -41,7 +41,8 @@ export class PaymentsComponent implements OnInit {
     //{ id: 'account', label: '', sort: true },
     //{ id: 'swift', label: '', sort: true },
     { id: 'date_created', label: '', sort: true },
-    { id: 'payment_method', label: '' }
+    { id: 'payment_method', label: '' },
+    { id: 'last_message', label: '' }
   ];
 
   lang = {
@@ -429,6 +430,9 @@ export class PaymentsComponent implements OnInit {
         allDocVocuchers.upfront_vouchers = event?.element?.upfront_vouchers;
       }
       this.openViewVouchersModal(allDocVocuchers);
+    }
+    if (event?.column?.id === 'last_message') {
+      this.openMessageModal(event?.element);
     }
   }
 

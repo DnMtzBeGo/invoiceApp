@@ -1,7 +1,7 @@
 .payments-container {
     display: flex;
     flex-direction: column;
-    min-width: 400px;
+    min-width: 600px;
     max-height: 600px;
     justify-content: center;
     color: #ededed;
@@ -24,7 +24,7 @@
     }
 
     .payments-body {
-        max-width: 400px;
+        max-width: 600px;
         max-height: 500px;
         overflow-y: scroll;
         display: flex;
@@ -42,17 +42,23 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 30px;
+
+            .mat-form-field {
+                width: 100%;
+            }
         }
         .files-container {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            flex-direction: row;
+            justify-content: space-around;
+            gap: 30px;
 
             .files-subcontainer {
                 display: flex;
                 flex-direction: column;
                 margin-bottom: 20px;
+                width: 100%;
 
                 span {
                     margin-bottom: 5px;
@@ -64,6 +70,22 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 45px;
+        }
+    }
+    ::ng-deep {
+        bego-drag-drop {
+            @media screen and (min-width: 576px) {
+                .container.horizontal .default-upload bego-icon {
+                    --font-size: 30px !important;
+                }
+            }
+        }
+
+        .pue-container bego-button-toggle {
+            .toggle-container.medium {
+                height: 56px;
+                width: 220px;
+            }
         }
     }
 }

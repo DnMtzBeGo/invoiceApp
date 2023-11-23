@@ -1535,7 +1535,8 @@
       "carrier_credit_days": "Credit days",
       "pdf": "PDF",
       "xml": "XML",
-      "payment_method": "Payment type"
+      "payment_method": "Payment type",
+      "last_message": "Last message"
     },
     "paginator": {
       "total": "Total",
@@ -1563,10 +1564,10 @@
       "view_vouchers": "View voucher files",
       "view_upfronts": "View preview files",
       "view_bank": "Bank details",
-      "view_message": "Open Chat"
+      "view_message": "Open chat"
     },
     "upload-modal": {
-      "title": "Upload data",
+      "title": "Upload Payment",
       "send-btn": "Send",
       "order-number": "Order number",
       "reference-number": "Reference number (BGO)",
