@@ -8,14 +8,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { EditedModalComponent } from './components/edited-modal/edited-modal.component';
 import { FilesViewModalComponent } from './components/files-view-modal/files-view-modal.component';
 import { ListViewModalComponent } from './components/list-view-modal/list-view-modal.component';
+import { BankDetailsModalComponent } from './components/bank-details-modal/bank-details-modal.component';
+import { MessagesModalComponent } from './components/messages-modal/messages-modal.component';
 import * as moment from 'moment';
-
-interface Translations {
-  expired: string;
-  day: string;
-  days: string;
-  lastDay: string;
-}
 
 @Component({
   selector: 'app-payments',
@@ -42,10 +37,11 @@ export class PaymentsComponent implements OnInit {
     { id: 'vouchers_icon', label: 'vouchers_icon', input: 'icon' },
     { id: 'subtotal', label: '', sort: true },
     { id: 'total', label: '', sort: true },
-    { id: 'bank', label: '', filter: 'input', sort: true },
-    { id: 'account', label: '', sort: true },
-    { id: 'swift', label: '', sort: true },
-    { id: 'date_created', label: '', sort: true }
+    //{ id: 'bank', label: '', filter: 'input', sort: true },
+    //{ id: 'account', label: '', sort: true },
+    //{ id: 'swift', label: '', sort: true },
+    { id: 'date_created', label: '', sort: true },
+    { id: 'payment_method', label: '' }
   ];
 
   lang = {
@@ -83,6 +79,16 @@ export class PaymentsComponent implements OnInit {
       label: this.translate('view_upfronts', 'actions'),
       id: 'view_upfronts',
       icon: 'eye'
+    },
+    {
+      label: this.translate('view_message', 'actions'),
+      id: 'view_message',
+      icon: 'eye'
+    },
+    {
+      label: this.translate('view_bank', 'actions'),
+      id: 'view_bank',
+      icon: 'eye'
     }
   ];
 
@@ -104,21 +110,6 @@ export class PaymentsComponent implements OnInit {
   payments = [];
 
   loadingData: boolean = false;
-
-  translations: Record<string, Translations> = {
-    es: {
-      expired: 'Vencida',
-      day: 'día',
-      days: 'días',
-      lastDay: 'Último día'
-    },
-    en: {
-      expired: 'Expired',
-      day: 'day',
-      days: 'days',
-      lastDay: 'Last day'
-    }
-  };
 
   constructor(
     private webService: AuthService,
@@ -183,13 +174,16 @@ export class PaymentsComponent implements OnInit {
               label: '-'
             };
           }
+
           const actions = {
             enabled: false,
             options: {
               view_pdf: !!payment.files?.pdf,
               view_xml: !!payment.files?.xml,
               view_vouchers: payment?.vouchers,
-              view_upfronts: payment?.upfront_vouchers
+              view_upfronts: payment?.upfront_vouchers,
+              view_bank: payment?.bank,
+              view_message: true
             }
           };
 
@@ -199,6 +193,7 @@ export class PaymentsComponent implements OnInit {
             ...payment,
             actions,
             due_date,
+            payment_method: payment?.payment_method || '-',
             reference_number: payment?.reference_number || '-',
             carrier_credit_days: this.creditDays(payment.carrier_credit_days),
             date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
@@ -229,6 +224,12 @@ export class PaymentsComponent implements OnInit {
         break;
       case 'view_upfronts':
         this.openFilesViewModal(data, 'upfront_vouchers');
+        break;
+      case 'view_bank':
+        this.openBankDetailssModal(data);
+        break;
+      case 'view_message':
+        this.openMessageModal(data);
         break;
     }
   }
@@ -268,6 +269,18 @@ export class PaymentsComponent implements OnInit {
     });
   }
 
+  openMessageModal(data) {
+    const dialogRef = this.matDialog.open(MessagesModalComponent, {
+      data,
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1'],
+    });
+
+    dialogRef.afterClosed().subscribe((uploaded: boolean) => {});
+  }
+
   openUploadedModal() {
     const dialogRef = this.matDialog.open(EditedModalComponent, {
       data: {
@@ -293,6 +306,16 @@ export class PaymentsComponent implements OnInit {
 
   openViewVouchersModal(data) {
     const dialogRef = this.matDialog.open(ListViewModalComponent, {
+      data,
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1', 'no-padding', 'full-visible']
+    });
+  }
+
+  openBankDetailssModal(data) {
+    const dialogRef = this.matDialog.open(BankDetailsModalComponent, {
       data,
       restoreFocus: false,
       autoFocus: false,

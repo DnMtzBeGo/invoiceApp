@@ -1538,7 +1538,8 @@
       "date_created": "Creada",
       "carrier_credit_days": "Días de Credito",
       "pdf": "PDF",
-      "xml": "XML"
+      "xml": "XML",
+      "payment_method": "Tipo de pago"
     },
     "paginator": {
       "total": "Total",
@@ -1564,7 +1565,9 @@
       "view_xml": "Ver XML",
       "view_pdf": "Ver PDF",
       "view_vouchers": "Ver Comprobantes",
-      "view_upfronts": "Ver Adelantos"
+      "view_upfronts": "Ver Adelantos",
+      "view_bank": "Datos bancarios",
+      "view_message": "Abrir Chat"
     },
     "upload-modal": {
       "title": "Subir datos",
@@ -1594,6 +1597,17 @@
       "title": "Comprobantes",
       "not-vouchers": "Actualmente, no hay comprobantes disponibles para esta orden.",
       "not-upfront": "Actualmente, no hay adelantos disponibles para esta orden."
+    },
+    "bank-details-modal": {
+      "title": "Datos bancarios",
+      "bank": "Banco",
+      "account": "CLABE interbancaria",
+      "swift": "Número swift/ABA"
+    },
+    "chat-message-modal": {
+      "title": "Chat",
+      "not-meessage": "La conversación aún no ha comenzado.",
+      "btn-save": "Enviar"
     }
   }
 }

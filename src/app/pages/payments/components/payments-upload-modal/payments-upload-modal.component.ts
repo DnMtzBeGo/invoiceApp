@@ -15,6 +15,8 @@ export class PaymentsUploadModalComponent implements OnInit {
   reference_number: string = '';
   prices = { subtotal: 0, total: 0 };
 
+  payment_method = 'PUE';
+
   files = {
     pdf: {
       file: null,
@@ -144,12 +146,22 @@ export class PaymentsUploadModalComponent implements OnInit {
     this.checkValidated();
   }
 
+  onPaymentChange(value: Object) {
+    if (Boolean(value['enabled'])) {
+      this.payment_method = value['value'];
+    } else {
+      this.payment_method = value['value'];
+    }
+    this.checkValidated();
+  }
+
   onForeignPaymentChange(value: Object) {
     if (Boolean(value['enabled'])) {
       this.foreingPayment = true;
     } else {
       this.foreingPayment = false;
     }
+    this.checkValidated();
   }
 
   checkValidated() {
@@ -197,11 +209,12 @@ export class PaymentsUploadModalComponent implements OnInit {
 
     formData.append('order_number', this.order_number);
     formData.append('reference_number', this.reference_number);
-    formData.append('files', this.files.xml.file);
+    if (this.files.xml.file) formData.append('files', this.files.xml.file);
     if (this.files.pdf.file) formData.append('files', this.files.pdf.file);
     formData.append('total', this.prices.total.toString());
     formData.append('subtotal', this.prices.subtotal.toString());
     formData.append('foreign_payment', this.foreingPayment.toString());
+    formData.append('payment_method', this.payment_method);
 
     (await this.webService.uploadFilesSerivce(formData, 'carriers_payments', { apiVersion: 'v1.1' })).subscribe({
       next: () => {

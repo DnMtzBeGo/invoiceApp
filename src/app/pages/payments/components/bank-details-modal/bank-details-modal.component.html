@@ -1,0 +1,26 @@
+<div class="bank-details-container">
+  <div class="bank-details-header">
+    <h4 style="margin-bottom: 0rem; font-size: 20px">{{ 'payments.bank-details-modal.title' | translate }}</h4>
+    <div class="close-btn">
+      <mat-icon (click)="close()">close</mat-icon>
+    </div>
+  </div>
+  <div class="bank-details-body">
+    <ul class="list-details">
+      <li>
+        <span class="title">{{ 'payments.bank-details-modal.bank' | translate }}:</span>
+        <span class="value">{{data.bank}}</span>
+      </li>
+
+      <li>
+        <span class="title">{{ 'payments.bank-details-modal.account' | translate }}:</span>
+        <span class="value">{{data.account}}</span>
+      </li>
+
+      <li>
+        <span class="title">{{ 'payments.bank-details-modal.swift' | translate }}:</span>
+        <span class="value">{{data.swift}}</span>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     min-width: 400px;
-    // min-height: 400px;
+    max-height: 600px;
     justify-content: center;
     color: #ededed;
 
@@ -25,8 +25,11 @@
 
     .payments-body {
         max-width: 400px;
+        max-height: 500px;
+        overflow-y: scroll;
         display: flex;
         flex-direction: column;
+        padding: 10px;
 
         .foreing-container {
             display: flex;
@@ -39,12 +42,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 10px;
         }
         .files-container {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            margin-bottom: 45px;
 
             .files-subcontainer {
                 display: flex;
@@ -55,6 +58,12 @@
                     margin-bottom: 5px;
                 }
             }
+        }
+        .pdd-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 45px;
         }
     }
 }
