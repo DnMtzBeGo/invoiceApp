@@ -1604,7 +1604,8 @@
     "chat-message-modal": {
       "title": "Chat",
       "not-meessage": "The conversation hasn't started yet.",
-      "btn-save": "Send"
+      "btn-save": "Send",
+      "placeholder-message": "Leave a message" 
     }
   }
 }
