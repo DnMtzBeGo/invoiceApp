@@ -1609,7 +1609,8 @@
     "chat-message-modal": {
       "title": "Chat",
       "not-meessage": "La conversación aún no ha comenzado.",
-      "btn-save": "Enviar"
+      "btn-save": "Enviar",
+      "placeholder-message": "Escribe tu mensaje" 
     }
   }
 }
