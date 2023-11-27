@@ -110,7 +110,7 @@ export class PaymentsComponent implements OnInit {
 
   payments = [];
 
-  loadingData: boolean = false;
+  loadingData: boolean = true;
 
   constructor(
     private webService: AuthService,
@@ -149,7 +149,7 @@ export class PaymentsComponent implements OnInit {
       ...(match && { match })
     }).toString();
 
-    (await this.webService.apiRestGet(`carriers_payments/?${queryParams}`, { loader: 'false', apiVersion: 'v1.1' })).subscribe({
+    (await this.webService.apiRestGet(`carriers_payments/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
       next: ({ result: { result, total } }) => {
         this.page.total = total;
         this.payments = result.map((payment) => {
@@ -376,6 +376,10 @@ export class PaymentsComponent implements OnInit {
     if (event === 'reloadTable') {
       this.getPayments();
     }
+  }
+
+  clickReload(){
+    this.getPayments();
   }
 
   validateVouchers(event) {

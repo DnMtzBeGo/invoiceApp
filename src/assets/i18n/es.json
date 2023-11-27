@@ -1519,7 +1519,8 @@
       "lastDay": "Último día"
     },
     "buttons": {
-      "upload": "Subir pago"
+      "upload": "Subir pago",
+      "message": "Ver mensajes nuevos"
     },
     "table": {
       "title": "Control de Pagos",

@@ -1515,7 +1515,8 @@
       "lastDay": "Last day"
     },
     "buttons": {
-      "upload": "Upload payment"
+      "upload": "Upload payment",
+      "message": "View new messages"
     },
     "table": {
       "title": "Payments",

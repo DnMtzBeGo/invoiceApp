@@ -16,6 +16,7 @@ export class MessagesModalComponent implements OnInit {
   message: string = '';
   validated: boolean = false;
   loaderOnInit: boolean = true;
+  private chatRef: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -26,6 +27,12 @@ export class MessagesModalComponent implements OnInit {
 
   async ngOnInit() {
     await this.getNotes(this.data._id);
+    this.chatRef = setInterval(() => {
+      this.getNotes(this.data._id);
+    }, 30000);
+  }
+  ngOnDestroy() {
+    clearInterval(this.chatRef);
   }
 
   async getNotes(payment_id: string) {
@@ -54,6 +61,7 @@ export class MessagesModalComponent implements OnInit {
         this.message = '';
         this.textArea.defaultValue = '';
         this.notes = [...this.notes, result];
+        this.getNotes(this.data._id);
         
         setTimeout(() => {
           this.scrollToBottom();
