@@ -1,43 +1,100 @@
 .payments-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+
+  .page-header {
+    margin: 24px 54px 24px 54px;
     display: flex;
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
+    justify-content: space-between;
 
-    .page-header {
-        margin: 24px 54px 24px 54px;
-        display: flex;
-        justify-content: space-between;
+    h1 {
+      font-weight: 400;
+      font-size: 38.4px;
+      color: #b9b9b9;
+      line-height: 1;
+      letter-spacing: -0.2186px;
+    }
 
-        h1 {
-            font-weight: 400;
-            font-size: 38.4px;
-            color: #b9b9b9;
-            line-height: 1;
-            letter-spacing: -0.2186px;
+    ::ng-deep {
+      .mat-form-field-wrapper {
+        padding-bottom: 0;
+      }
+
+      .mat-form-field-label-wrapper {
+        transform: none !important;
+      }
+    }
+  }
+
+  bego-table-multiple-selection {
+    ::ng-deep {
+      .mat-form-field-label-wrapper {
+        transform: none !important;
+      }
+      .cdk-column-vouchers_icon {
+        bego-icon {
+          ::ng-deep {
+            i {
+              font-weight: bold;
+              font-size: 20px;
+            }
+          }
         }
+      }
 
+      td.mat-column-last_message span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        width: 120px;
+        cursor: pointer;
+        transition: all 0.2s ease-in;
+
+        &:hover {
+          color: #ffcc00;
+        }
+      }
+    }
+  }
+
+  .code-select-wrapper {
+    min-width: 161px;
+    margin-bottom: 15px;
+  }
+
+  .buttons-external {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: #ffcc00;
+    .refresh-paragraph {
+      text-decoration: underline;
+      transition: all 300ms;
+      bego-icon {
         ::ng-deep {
-            .mat-form-field-wrapper {
-                padding-bottom: 0;
-            }
-
-            .mat-form-field-label-wrapper {
-                transform: none !important;
-            }
+          i {
+            color: #ffcc00;
+          }
         }
-    }
+      }
 
-    bego-table {
-        ::ng-deep {
-            .mat-form-field-label-wrapper {
-                transform: none !important;
+      &:hover {
+        cursor: pointer;
+        color: #ffcc00;
+        bego-icon {
+          ::ng-deep {
+            i {
+                color: #fff;
             }
+          }
         }
+      }
     }
-
-    .code-select-wrapper {
-        min-width: 161px;
-        margin-bottom: 15px;
-    }
+  }
 }

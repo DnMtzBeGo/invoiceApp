@@ -6,19 +6,25 @@
     <!-- <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'payments.buttons.upload' | translate }}</button> -->
   </div>
 
-  <bego-table
-    [lang]="lang"
+  <bego-table-multiple-selection
     [loading]="loadingData"
+    [lang]="lang"
     [columns]="columns"
     [values]="payments"
     [page]="page"
     [actions]="actions"
     [filter]="true"
     [debounce]="1000"
+    [selectRowCheck]="selectRow"
     (filterEmitter)="filterData($event)"
     (selectedActionEmitter)="selectingAction($event)"
+    (reloadTable)="handleReload($event)"
     (sortColumnEmitter)="sortingTable($event)"
-    (pageChangeEmitter)="changingPage($event)">
-    <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'payments.buttons.upload' | translate }}</button>
-  </bego-table>
+    (pageChangeEmitter)="changingPage($event)"
+    (actionColumn)="selectColumn($event)">
+    <div class="buttons-external">
+      <label class="refresh-paragraph" (click)="clickReload()">{{ 'payments.buttons.message' | translate }}</label>
+      <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'payments.buttons.upload' | translate }}</button>
+    </div>
+  </bego-table-multiple-selection>
 </div>

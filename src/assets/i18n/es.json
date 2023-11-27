@@ -1511,13 +1511,22 @@
     }
   },
   "payments": {
+    "expiration":{
+      "paid": "Pagada",
+      "expired": "Vencida",
+      "day": "día",
+      "days": "días",
+      "lastDay": "Último día"
+    },
     "buttons": {
-      "upload": "Subir pago"
+      "upload": "Subir pago",
+      "message": "Ver mensajes nuevos"
     },
     "table": {
       "title": "Control de Pagos",
       "order_number": "Orden",
       "reference_number": "Número de referencia BGO",
+      "vouchers_icon": "Vouchers",
       "due_date": "Vencimiento",
       "folio": "Factura",
       "razon_social": "Razón Social",
@@ -1530,7 +1539,9 @@
       "date_created": "Creada",
       "carrier_credit_days": "Días de Credito",
       "pdf": "PDF",
-      "xml": "XML"
+      "xml": "XML",
+      "payment_method": "Tipo de pago",
+      "last_message": "Último mensaje"
     },
     "paginator": {
       "total": "Total",
@@ -1555,11 +1566,13 @@
     "actions": {
       "view_xml": "Ver XML",
       "view_pdf": "Ver PDF",
-      "view_vouchers": "Ver Comprobantes",
-      "view_upfronts": "Ver Adelantos"
+      "view_vouchers": "Ver comprobantes",
+      "view_upfronts": "Ver adelantos",
+      "view_bank": "Datos bancarios",
+      "view_message": "Abrir chat"
     },
     "upload-modal": {
-      "title": "Subir datos",
+      "title": "Subir Pago",
       "send-btn": "Enviar",
       "order-number": "Orden",
       "reference-number": "Número de referencia BGO",
@@ -1581,6 +1594,23 @@
     "upfront_vouchers": {
       "title": "Adelantos",
       "subtitle": "Podrás observar algunos de los adelantos que se han subido a esta orden."
+    },
+    "view-modal-files": {
+      "title": "Comprobantes",
+      "not-vouchers": "Actualmente, no hay comprobantes disponibles para esta orden.",
+      "not-upfront": "Actualmente, no hay adelantos disponibles para esta orden."
+    },
+    "bank-details-modal": {
+      "title": "Datos bancarios",
+      "bank": "Banco",
+      "account": "CLABE interbancaria",
+      "swift": "Número swift/ABA"
+    },
+    "chat-message-modal": {
+      "title": "Chat",
+      "not-meessage": "La conversación aún no ha comenzado.",
+      "btn-save": "Enviar",
+      "placeholder-message": "Escribe tu mensaje" 
     }
   }
 }

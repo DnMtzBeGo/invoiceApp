@@ -7,6 +7,10 @@ import { PaymentsUploadModalComponent } from './components/payments-upload-modal
 import { TranslateService } from '@ngx-translate/core';
 import { EditedModalComponent } from './components/edited-modal/edited-modal.component';
 import { FilesViewModalComponent } from './components/files-view-modal/files-view-modal.component';
+import { ListViewModalComponent } from './components/list-view-modal/list-view-modal.component';
+import { BankDetailsModalComponent } from './components/bank-details-modal/bank-details-modal.component';
+import { MessagesModalComponent } from './components/messages-modal/messages-modal.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-payments',
@@ -27,15 +31,18 @@ export class PaymentsComponent implements OnInit {
   columns: any[] = [
     { id: 'order_number', label: '', filter: 'input', sort: true },
     { id: 'reference_number', label: '', filter: 'input' },
-    { id: 'due_date', label: '', pipe: 'countdown', sort: true },
+    { id: 'due_date', label: '', input: 'style', sort: true },
     { id: 'razon_social', label: '', filter: 'input', sort: true },
     { id: 'status', label: '', filter: 'selector', options: this.statusOptions, sort: true },
+    { id: 'vouchers_icon', label: 'vouchers_icon', input: 'icon' },
     { id: 'subtotal', label: '', sort: true },
     { id: 'total', label: '', sort: true },
-    { id: 'bank', label: '', filter: 'input', sort: true },
-    { id: 'account', label: '', sort: true },
-    { id: 'swift', label: '', sort: true },
-    { id: 'date_created', label: '', sort: true }
+    //{ id: 'bank', label: '', filter: 'input', sort: true },
+    //{ id: 'account', label: '', sort: true },
+    //{ id: 'swift', label: '', sort: true },
+    { id: 'date_created', label: '', sort: true },
+    { id: 'payment_method', label: '' },
+    { id: 'last_message', label: '' }
   ];
 
   lang = {
@@ -73,6 +80,16 @@ export class PaymentsComponent implements OnInit {
       label: this.translate('view_upfronts', 'actions'),
       id: 'view_upfronts',
       icon: 'eye'
+    },
+    {
+      label: this.translate('view_message', 'actions'),
+      id: 'view_message',
+      icon: 'eye'
+    },
+    {
+      label: this.translate('view_bank', 'actions'),
+      id: 'view_bank',
+      icon: 'eye'
     }
   ];
 
@@ -85,9 +102,15 @@ export class PaymentsComponent implements OnInit {
     match: ''
   };
 
+  selectRow: any = {
+    showColumnSelection: false,
+    selectionLimit: 0,
+    keyPrimaryRow: 'concept'
+  };
+
   payments = [];
 
-  loadingData: boolean = false;
+  loadingData: boolean = true;
 
   constructor(
     private webService: AuthService,
@@ -126,17 +149,34 @@ export class PaymentsComponent implements OnInit {
       ...(match && { match })
     }).toString();
 
-    (await this.webService.apiRestGet(`carriers_payments/?${queryParams}`, { loader: 'false', apiVersion: 'v1.1' })).subscribe({
+    (await this.webService.apiRestGet(`carriers_payments/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
       next: ({ result: { result, total } }) => {
         this.page.total = total;
         this.payments = result.map((payment) => {
+          const due_date =  this.countdownFormatter(payment?.due_date, payment?.status);
+            
+          const validDoc = this.validateVouchers(payment);
+          if (validDoc) {
+            payment.vouchers_icon = {
+              icon: 'document',
+              label: ''
+            };
+          } else {
+            payment.vouchers_icon = {
+              icon: '',
+              label: '-'
+            };
+          }
+
           const actions = {
             enabled: false,
             options: {
               view_pdf: !!payment.files?.pdf,
               view_xml: !!payment.files?.xml,
               view_vouchers: payment?.vouchers,
-              view_upfronts: payment?.upfront_vouchers
+              view_upfronts: payment?.upfront_vouchers,
+              view_bank: payment?.bank,
+              view_message: true
             }
           };
 
@@ -145,6 +185,8 @@ export class PaymentsComponent implements OnInit {
           return {
             ...payment,
             actions,
+            due_date,
+            payment_method: payment?.payment_method || '-',
             reference_number: payment?.reference_number || '-',
             carrier_credit_days: this.creditDays(payment.carrier_credit_days),
             date_created: this.datePipe.transform(payment.date_created, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
@@ -175,6 +217,12 @@ export class PaymentsComponent implements OnInit {
         break;
       case 'view_upfronts':
         this.openFilesViewModal(data, 'upfront_vouchers');
+        break;
+      case 'view_bank':
+        this.openBankDetailssModal(data);
+        break;
+      case 'view_message':
+        this.openMessageModal(data);
         break;
     }
   }
@@ -214,6 +262,20 @@ export class PaymentsComponent implements OnInit {
     });
   }
 
+  openMessageModal(data) {
+    const dialogRef = this.matDialog.open(MessagesModalComponent, {
+      data,
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1'],
+    });
+
+    dialogRef.afterClosed().subscribe((uploaded: boolean) => {
+      this.getPayments();
+    });
+  }
+
   openUploadedModal() {
     const dialogRef = this.matDialog.open(EditedModalComponent, {
       data: {
@@ -233,7 +295,27 @@ export class PaymentsComponent implements OnInit {
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1', 'no-padding', 'full-visible']
+    });
+  }
+
+  openViewVouchersModal(data) {
+    const dialogRef = this.matDialog.open(ListViewModalComponent, {
+      data,
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1', 'no-padding', 'full-visible']
+    });
+  }
+
+  openBankDetailssModal(data) {
+    const dialogRef = this.matDialog.open(BankDetailsModalComponent, {
+      data,
+      restoreFocus: false,
+      autoFocus: false,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1', 'no-padding', 'full-visible']
     });
   }
 
@@ -289,4 +371,105 @@ export class PaymentsComponent implements OnInit {
   searchStatus(search) {
     return this.statusOptions.find((status) => status.value === search).id;
   }
+
+  handleReload(event: any) {
+    if (event === 'reloadTable') {
+      this.getPayments();
+    }
+  }
+
+  clickReload(){
+    this.getPayments();
+  }
+
+  validateVouchers(event) {
+    let validDoc = false;
+    if (event?.vouchers) {
+      let contador = 0;
+
+      for (let i = 0; i < event?.vouchers.length; i++) {
+        if (event?.vouchers[i] !== null && event?.vouchers[i] !== undefined) {
+          contador++;
+        }
+      }
+      if (contador > 0) {
+        validDoc = true;
+      } else {
+        validDoc = false;
+      }
+    }
+    if (event?.upfront_vouchers) {
+      let contador = 0;
+
+      for (let i = 0; i < event?.upfront_vouchers.length; i++) {
+        if (event?.upfront_vouchers[i] !== null && event?.upfront_vouchers[i] !== undefined) {
+          contador++;
+        }
+      }
+      if (contador > 0) {
+        validDoc = true;
+      } else {
+        validDoc = false;
+      }
+    }
+    return validDoc;
+  }
+
+  selectColumn(event) {
+    if (event?.column?.id === 'vouchers_icon') {
+      let allDocVocuchers: any = {
+        vouchers: [],
+        upfront_vouchers: []
+      };
+      if (event?.element?.vouchers) {
+        allDocVocuchers.vouchers = event?.element?.vouchers;
+      }
+      if (event?.element?.upfront_vouchers) {
+        allDocVocuchers.upfront_vouchers = event?.element?.upfront_vouchers;
+      }
+      this.openViewVouchersModal(allDocVocuchers);
+    }
+    if (event?.column?.id === 'last_message') {
+      this.openMessageModal(event?.element);
+    }
+  }
+
+  countdownFormatter(value: number, status: string): object {
+  const translation = this.translateService.instant(`payments.expiration`);
+  const currentDate = moment();
+  const targetDate = moment.unix(value / 1000);
+
+  let due_date: any;
+
+  if (currentDate.isAfter(targetDate)) {
+    due_date = {
+      value: status === 'paid'
+        ? this.translateService.instant(`payments.expiration.paid`)
+        : `${translation.expired} (${targetDate.format('DD/MM/YY')})`,
+      style: {
+        color: status === 'paid' ? '#38EB67' : '#EB4515', 
+        'font-weight': 700
+      }
+    };
+  } else {
+    let remainingDays = targetDate.diff(currentDate, 'days');
+    
+    const value = status === 'paid'
+      ? this.translateService.instant(`payments.expiration.paid`)
+      : remainingDays < 1
+        ? translation.lastDay
+        : `${remainingDays} ${translation.days}`;
+
+    due_date = {
+      value: value,
+      style: {
+        color: status === 'paid' ? '#38EB67' : remainingDays <= 2 ? '#FFFB00' : '#FFFFFF',
+        'font-weight': 700
+      }
+    };
+  }
+
+  return due_date;
+}
+
 }
