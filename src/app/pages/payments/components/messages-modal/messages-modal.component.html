@@ -1,0 +1,42 @@
+<div class="payments-container">
+  <div class="payments-header">
+    <h4 class="payment-title">{{ 'payments.chat-message-modal.title' | translate }}</h4>
+    <div class="close-btn">
+      <mat-icon (click)="close(false)">close</mat-icon>
+    </div>
+  </div>
+  <div class="payments-body">
+    <div class="notes-container" #scroll>
+      <ng-container *ngIf="loaderOnInit; else completLoader">
+        <div class="loader-on-init">
+          <div class="loader"></div>
+        </div>
+      </ng-container>
+      <ng-template #completLoader>
+        <ng-container *ngIf="notes.length; else noNotes">
+          <div class="note-subcontainer" *ngFor="let note of notes">
+            <p class="note-header">
+              <span class="note-user">{{ note.created_by }} </span>
+              <span class="note-date">{{ note.date_created | date: 'short' }}</span>
+            </p>
+            <p class="note-text">
+              {{ note.message }}
+            </p>
+          </div>
+        </ng-container>
+        <ng-template #noNotes>
+          <span class="no-notes"> {{ 'payments.chat-message-modal.not-meessage' | translate }}</span>
+        </ng-template></ng-template
+      >
+    </div>
+
+    <div class="textarea-input-row">
+      <textarea #text [placeholder]="'payments.chat-message-modal.placeholder-message' | translate" (input)="getDataFromInput($event)" [defaultValue]="message" [value]="message">
+      </textarea>
+    </div>
+  </div>
+
+  <button mat-flat-button [ngClass]="['brand-btn-2']" class="send-btn" [disabled]="!message.trim()" (click)="addNote()">
+    {{ 'payments.chat-message-modal.btn-save' | translate }}
+  </button>
+</div>

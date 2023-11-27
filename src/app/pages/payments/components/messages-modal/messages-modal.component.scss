@@ -1,0 +1,197 @@
+@import '../../../../../styles.scss';
+
+.payments-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 400px;
+    justify-content: center;
+    padding-bottom: 20px;
+    color: #ededed;
+
+    .payments-header {
+        position: relative;
+        text-align: center;
+        margin-bottom: 2rem;
+
+        .payment-title {
+            margin-bottom: 0rem;
+            font-size: 20px;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 10px;
+            top: 0px;
+            cursor: pointer;
+
+            mat-icon {
+                color: rgb(150, 150, 150);
+            }
+        }
+    }
+
+    .payments-body {
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+
+        .notes-container {
+            max-height: 200px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+
+            .loader-on-init{
+                height: 200px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .loader {
+                    width: 60px;
+                    height: 60px;
+                    border: 5px solid white;
+                    border-radius: 50%;
+                  
+                    animation: spin 10s ease-in-out;
+                    animation-iteration-count: infinite;
+                    transition-duration: 0.1s;
+                  }
+                  
+                  .loader:hover {
+                    scale: 0.80;
+                  }
+                  
+                  .loader:active {
+                    scale: 1.1;
+                  }
+                  
+                  @keyframes spin {
+                    0% {
+                      transform: rotate(0deg);
+                      border-bottom: solid 3px transparent;
+                      border-top: solid 3px transparent;
+                    }
+                    50% {
+                      transform: rotate(1800deg);
+                      border: 3px solid white;
+                      border-left: solid 3px transparent;
+                      border-right: solid 3px transparent;
+                    }
+                    100% {
+                      /*Reversed spinning*/
+                      transform: rotate(0deg);
+                      border-bottom: solid 3px transparent;
+                      border-top: solid 3px transparent;
+                    }
+                  }
+            }
+
+            .note-subcontainer {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 20px;
+
+                .note-header {
+                    margin-bottom: 5px;
+                }
+
+                .note-text {
+                    width: fit-content;
+                    border-radius: 8px;
+                    background: #515151;
+                    padding: 10px;
+                    margin: 0;
+                }
+
+                .note-user {
+                    width: fit-content;
+                    margin-right: 5px;
+                    font-size: 10px;
+                    color: #fffb00;
+                }
+
+                .note-date {
+                    width: fit-content;
+                    font-size: 10px;
+                }
+            }
+
+            .no-notes {
+                margin-bottom: 15px;
+            }
+        }
+
+        .textarea-input-row {
+            height: 90px;
+            margin-bottom: 60px;
+            margin-top: 10px;
+            textarea {
+                border-radius: 20px !important;
+                padding: 20px;
+                resize: none;
+                font-size: 14px;
+                width: 100%;
+                background: transparent;
+                color: #fff;
+                border: 1px solid #e8e8e8;
+                font-family: "Avenir";
+                outline: none;
+            }
+            ::ng-deep {
+                bego-text-area {
+                    .text-area-container {
+                        display: flex;
+                    }
+
+                    textarea {
+                        border-radius: 20px !important;
+                        padding: 20px;
+                        resize: none;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+
+        .edit-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            input {
+                text-transform: uppercase;
+            }
+        }
+        .files-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 45px;
+
+            .files-subcontainer {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 20px;
+
+                span {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+
+    .send-btn {
+        min-width: 155px;
+        min-height: 40px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: #fffb00;
+        border-bottom-right-radius: 20px;
+
+        &:disabled {
+            background-color: #515151;
+            color: #fff;
+        }
+    }
+}

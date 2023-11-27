@@ -1515,7 +1515,8 @@
       "lastDay": "Last day"
     },
     "buttons": {
-      "upload": "Upload payment"
+      "upload": "Upload payment",
+      "message": "View new messages"
     },
     "table": {
       "title": "Payments",
@@ -1534,7 +1535,9 @@
       "date_created": "Uploaded",
       "carrier_credit_days": "Credit days",
       "pdf": "PDF",
-      "xml": "XML"
+      "xml": "XML",
+      "payment_method": "Payment type",
+      "last_message": "Last message"
     },
     "paginator": {
       "total": "Total",
@@ -1558,10 +1561,14 @@
     },
     "actions": {
       "view_xml": "View XML",
-      "view_pdf": "View PDF"
+      "view_pdf": "View PDF",
+      "view_vouchers": "View voucher files",
+      "view_upfronts": "View preview files",
+      "view_bank": "Bank details",
+      "view_message": "Open chat"
     },
     "upload-modal": {
-      "title": "Upload data",
+      "title": "Upload Payment",
       "send-btn": "Send",
       "order-number": "Order number",
       "reference-number": "Reference number (BGO)",
@@ -1588,6 +1595,18 @@
       "title": "Vouchers",
       "not-vouchers": "Currently, there are no vouchers available for this order.",
       "not-upfront": "Currently, there are no upfront payments available for this order."    
+    },
+    "bank-details-modal": {
+      "title": "Bank details",
+      "bank": "Bank",
+      "account": "Account number",
+      "swift": "Number swift/ABA"
+    },
+    "chat-message-modal": {
+      "title": "Chat",
+      "not-meessage": "The conversation hasn't started yet.",
+      "btn-save": "Send",
+      "placeholder-message": "Leave a message" 
     }
   }
 }
