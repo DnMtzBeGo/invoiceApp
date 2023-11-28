@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  version: 'v1.0.0',
+  version: 'v1.1.0',
   website_url: 'https://bego.ai/',
   URL_BASE: 'https://dev.bego.ai/v1.0/',
   //URL_BASE: 'https://rocket.bego.ai/v1.0/',
