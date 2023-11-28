@@ -6,16 +6,17 @@
     </div>
   </div>
   <div class="payments-body">
-    <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ 'payments.upload-modal.order-number' | translate }}</mat-label>
-      <input matInput [(ngModel)]="order_number" (input)="checkValidated()" maxlength="8" />
-    </mat-form-field>
+    <div class="price-container">
+      <mat-form-field appearance="outline" class="brand-field-1">
+        <mat-label>{{ 'payments.upload-modal.order-number' | translate }}</mat-label>
+        <input matInput [(ngModel)]="order_number" (input)="checkValidated()" maxlength="8" />
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ 'payments.upload-modal.reference-number' | translate }}</mat-label>
-      <input matInput [(ngModel)]="reference_number" (input)="checkValidated()" [textMask]="bgoOptions" />
-    </mat-form-field>
-
+      <mat-form-field appearance="outline" class="brand-field-1">
+        <mat-label>{{ 'payments.upload-modal.reference-number' | translate }}</mat-label>
+        <input matInput [(ngModel)]="reference_number" (input)="checkValidated()" [textMask]="bgoOptions" />
+      </mat-form-field>
+    </div>
     <div class="price-container">
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>Subtotal</mat-label>
@@ -39,9 +40,14 @@
           (blur)="onInputBlur($event, 'total')" />
       </mat-form-field>
     </div>
-    <div class="foreing-container">
-      <bego-button-toggle [simple]="true" (statusChanged)="onForeignPaymentChange($event)"></bego-button-toggle>
-      <span>{{ 'payments.upload-modal.label_foreign_payment' | translate }}</span>
+    <div class="files-container">
+      <div class="foreing-container">
+        <bego-button-toggle [simple]="true" (statusChanged)="onForeignPaymentChange($event)"></bego-button-toggle>
+        <span>{{ 'payments.upload-modal.label_foreign_payment' | translate }}</span>
+      </div>
+      <div class="foreing-container pue-container">
+        <bego-button-toggle [first]="{value: 'PUE', label: 'PUE'}" [second]="{value: 'PDD', label: 'PDD'}" (statusChanged)="onPaymentChange($event)"></bego-button-toggle>
+      </div>
     </div>
     <div class="files-container">
       <div class="files-subcontainer" *ngIf="!foreingPayment">

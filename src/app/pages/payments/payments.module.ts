@@ -4,7 +4,7 @@ import { PaymentsComponent } from './payments.component';
 import { PaymentsRoutingModule } from './payments-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { BegoDragDropModule, BegoTableModule, BegoAlertModule, BegoDragDropDocumentsModule, BegoButtonToggleModule, BegoTableMultipleSelectionModule, BegoTextAreaModule} from '@begomx/ui-components';
+import { BegoDragDropModule, BegoTableModule, BegoAlertModule, BegoDragDropDocumentsModule, BegoButtonToggleModule, BegoTableMultipleSelectionModule, BegoTextAreaModule, BegoIconsModule} from '@begomx/ui-components';
 
 import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
@@ -37,6 +37,7 @@ import { MessagesModalComponent } from './components/messages-modal/messages-mod
     BegoTableModule,
     BegoTableMultipleSelectionModule,
     BegoDragDropDocumentsModule,
+    BegoIconsModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,

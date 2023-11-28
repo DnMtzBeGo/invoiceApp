@@ -1519,7 +1519,8 @@
       "lastDay": "Último día"
     },
     "buttons": {
-      "upload": "Subir pago"
+      "upload": "Subir pago",
+      "message": "Ver mensajes nuevos"
     },
     "table": {
       "title": "Control de Pagos",
@@ -1539,7 +1540,8 @@
       "carrier_credit_days": "Días de Credito",
       "pdf": "PDF",
       "xml": "XML",
-      "payment_method": "Tipo de pago"
+      "payment_method": "Tipo de pago",
+      "last_message": "Último mensaje"
     },
     "paginator": {
       "total": "Total",
@@ -1564,13 +1566,13 @@
     "actions": {
       "view_xml": "Ver XML",
       "view_pdf": "Ver PDF",
-      "view_vouchers": "Ver Comprobantes",
-      "view_upfronts": "Ver Adelantos",
+      "view_vouchers": "Ver comprobantes",
+      "view_upfronts": "Ver adelantos",
       "view_bank": "Datos bancarios",
-      "view_message": "Abrir Chat"
+      "view_message": "Abrir chat"
     },
     "upload-modal": {
-      "title": "Subir datos",
+      "title": "Subir Pago",
       "send-btn": "Enviar",
       "order-number": "Orden",
       "reference-number": "Número de referencia BGO",
@@ -1607,7 +1609,8 @@
     "chat-message-modal": {
       "title": "Chat",
       "not-meessage": "La conversación aún no ha comenzado.",
-      "btn-save": "Enviar"
+      "btn-save": "Enviar",
+      "placeholder-message": "Escribe tu mensaje" 
     }
   }
 }

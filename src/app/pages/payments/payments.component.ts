@@ -41,7 +41,8 @@ export class PaymentsComponent implements OnInit {
     //{ id: 'account', label: '', sort: true },
     //{ id: 'swift', label: '', sort: true },
     { id: 'date_created', label: '', sort: true },
-    { id: 'payment_method', label: '' }
+    { id: 'payment_method', label: '' },
+    { id: 'last_message', label: '' }
   ];
 
   lang = {
@@ -109,7 +110,7 @@ export class PaymentsComponent implements OnInit {
 
   payments = [];
 
-  loadingData: boolean = false;
+  loadingData: boolean = true;
 
   constructor(
     private webService: AuthService,
@@ -148,20 +149,12 @@ export class PaymentsComponent implements OnInit {
       ...(match && { match })
     }).toString();
 
-    (await this.webService.apiRestGet(`carriers_payments/?${queryParams}`, { loader: 'false', apiVersion: 'v1.1' })).subscribe({
+    (await this.webService.apiRestGet(`carriers_payments/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
       next: ({ result: { result, total } }) => {
         this.page.total = total;
         this.payments = result.map((payment) => {
-          const due_date = {
-            value:
-              payment?.status === 'paid'
-                ? this.translateService.instant(`payments.expiration.paid`)
-                : this.countdownFormatter(payment.due_date),
-            style: {
-              color: payment?.status === 'paid' ? '#38EB67' : '#EB4515',
-              'font-weight': 700
-            }
-          };
+          const due_date =  this.countdownFormatter(payment?.due_date, payment?.status);
+            
           const validDoc = this.validateVouchers(payment);
           if (validDoc) {
             payment.vouchers_icon = {
@@ -278,7 +271,9 @@ export class PaymentsComponent implements OnInit {
       backdropClass: ['brand-dialog-1'],
     });
 
-    dialogRef.afterClosed().subscribe((uploaded: boolean) => {});
+    dialogRef.afterClosed().subscribe((uploaded: boolean) => {
+      this.getPayments();
+    });
   }
 
   openUploadedModal() {
@@ -383,6 +378,10 @@ export class PaymentsComponent implements OnInit {
     }
   }
 
+  clickReload(){
+    this.getPayments();
+  }
+
   validateVouchers(event) {
     let validDoc = false;
     if (event?.vouchers) {
@@ -430,24 +429,47 @@ export class PaymentsComponent implements OnInit {
       }
       this.openViewVouchersModal(allDocVocuchers);
     }
-  }
-
-  countdownFormatter(value: number): string {
-    const translation = this.translateService.instant(`payments.expiration`);
-
-    const currentDate = moment();
-    const targetDate = moment.unix(value / 1000);
-
-    if (currentDate.isAfter(targetDate)) {
-      const formattedDate = targetDate.format('DD/MM/YY');
-      return `${translation.expired} (${formattedDate})`;
-    }
-
-    const remainingDays = targetDate.diff(currentDate, 'days');
-    if (remainingDays < 1) {
-      return translation.lastDay;
-    } else {
-      return `${remainingDays} ${translation.days}`;
+    if (event?.column?.id === 'last_message') {
+      this.openMessageModal(event?.element);
     }
   }
+
+  countdownFormatter(value: number, status: string): object {
+  const translation = this.translateService.instant(`payments.expiration`);
+  const currentDate = moment();
+  const targetDate = moment.unix(value / 1000);
+
+  let due_date: any;
+
+  if (currentDate.isAfter(targetDate)) {
+    due_date = {
+      value: status === 'paid'
+        ? this.translateService.instant(`payments.expiration.paid`)
+        : `${translation.expired} (${targetDate.format('DD/MM/YY')})`,
+      style: {
+        color: status === 'paid' ? '#38EB67' : '#EB4515', 
+        'font-weight': 700
+      }
+    };
+  } else {
+    let remainingDays = targetDate.diff(currentDate, 'days');
+    
+    const value = status === 'paid'
+      ? this.translateService.instant(`payments.expiration.paid`)
+      : remainingDays < 1
+        ? translation.lastDay
+        : `${remainingDays} ${translation.days}`;
+
+    due_date = {
+      value: value,
+      style: {
+        color: status === 'paid' ? '#38EB67' : remainingDays <= 2 ? '#FFFB00' : '#FFFFFF',
+        'font-weight': 700
+      }
+    };
+  }
+
+  return due_date;
+}
+
 }

@@ -7,8 +7,8 @@
   </div>
 
   <bego-table-multiple-selection
-    [lang]="lang"
     [loading]="loadingData"
+    [lang]="lang"
     [columns]="columns"
     [values]="payments"
     [page]="page"
@@ -22,6 +22,9 @@
     (sortColumnEmitter)="sortingTable($event)"
     (pageChangeEmitter)="changingPage($event)"
     (actionColumn)="selectColumn($event)">
-    <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'payments.buttons.upload' | translate }}</button>
+    <div class="buttons-external">
+      <label class="refresh-paragraph" (click)="clickReload()">{{ 'payments.buttons.message' | translate }}</label>
+      <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'payments.buttons.upload' | translate }}</button>
+    </div>
   </bego-table-multiple-selection>
 </div>
