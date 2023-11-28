@@ -153,8 +153,18 @@ export class PaymentsComponent implements OnInit {
       next: ({ result: { result, total } }) => {
         this.page.total = total;
         this.payments = result.map((payment) => {
-          const due_date =  this.countdownFormatter(payment?.due_date, payment?.status);
-            
+          let due_date: any = {
+            value: '-',
+            style: {
+              color: '#FFFFFF',
+              'font-weight': 700
+            }
+          };
+
+          if (payment?.due_date) {
+            due_date = this.countdownFormatter(payment?.due_date, payment?.status);
+          }
+
           const validDoc = this.validateVouchers(payment);
           if (validDoc) {
             payment.vouchers_icon = {
@@ -268,7 +278,7 @@ export class PaymentsComponent implements OnInit {
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,
-      backdropClass: ['brand-dialog-1'],
+      backdropClass: ['brand-dialog-1']
     });
 
     dialogRef.afterClosed().subscribe((uploaded: boolean) => {
@@ -378,7 +388,7 @@ export class PaymentsComponent implements OnInit {
     }
   }
 
-  clickReload(){
+  clickReload() {
     this.getPayments();
   }
 
@@ -435,41 +445,42 @@ export class PaymentsComponent implements OnInit {
   }
 
   countdownFormatter(value: number, status: string): object {
-  const translation = this.translateService.instant(`payments.expiration`);
-  const currentDate = moment();
-  const targetDate = moment.unix(value / 1000);
+    const translation = this.translateService.instant(`payments.expiration`);
+    const currentDate = moment();
+    const targetDate = moment.unix(value / 1000);
 
-  let due_date: any;
+    let due_date: any;
 
-  if (currentDate.isAfter(targetDate)) {
-    due_date = {
-      value: status === 'paid'
-        ? this.translateService.instant(`payments.expiration.paid`)
-        : `${translation.expired} (${targetDate.format('DD/MM/YY')})`,
-      style: {
-        color: status === 'paid' ? '#38EB67' : '#EB4515', 
-        'font-weight': 700
-      }
-    };
-  } else {
-    let remainingDays = targetDate.diff(currentDate, 'days');
-    
-    const value = status === 'paid'
-      ? this.translateService.instant(`payments.expiration.paid`)
-      : remainingDays < 1
-        ? translation.lastDay
-        : `${remainingDays} ${translation.days}`;
+    if (currentDate.isAfter(targetDate)) {
+      due_date = {
+        value:
+          status === 'paid'
+            ? this.translateService.instant(`payments.expiration.paid`)
+            : `${translation.expired} (${targetDate.format('DD/MM/YY')})`,
+        style: {
+          color: status === 'paid' ? '#38EB67' : '#EB4515',
+          'font-weight': 700
+        }
+      };
+    } else {
+      let remainingDays = targetDate.diff(currentDate, 'days');
 
-    due_date = {
-      value: value,
-      style: {
-        color: status === 'paid' ? '#38EB67' : remainingDays <= 2 ? '#FFFB00' : '#FFFFFF',
-        'font-weight': 700
-      }
-    };
+      const value =
+        status === 'paid'
+          ? this.translateService.instant(`payments.expiration.paid`)
+          : remainingDays < 1
+          ? translation.lastDay
+          : `${remainingDays} ${translation.days}`;
+
+      due_date = {
+        value: value,
+        style: {
+          color: status === 'paid' ? '#38EB67' : remainingDays <= 2 ? '#FFFB00' : '#FFFFFF',
+          'font-weight': 700
+        }
+      };
+    }
+
+    return due_date;
   }
-
-  return due_date;
-}
-
 }
