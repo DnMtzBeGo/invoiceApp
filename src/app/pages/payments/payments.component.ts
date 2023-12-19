@@ -98,7 +98,7 @@ export class PaymentsComponent implements OnInit {
   searchQueries = {
     limit: 10,
     page: 1,
-    sort: JSON.stringify({ due_date: -1 }),
+    sort: JSON.stringify({ date_created: -1 }),
     match: ''
   };
 
