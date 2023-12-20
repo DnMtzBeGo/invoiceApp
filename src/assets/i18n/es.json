@@ -1574,7 +1574,7 @@
     "upload-modal": {
       "title": "Subir Pago",
       "send-btn": "Enviar",
-      "order-number": "Orden",
+      "order-number": "Orden o NCO",
       "reference-number": "Número de referencia BGO",
       "invalid-file": "Archivo inválido",
       "select-file": "Selecciona un archivo",

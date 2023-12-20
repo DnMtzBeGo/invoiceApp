@@ -210,7 +210,7 @@ export class PaymentsUploadModalComponent implements OnInit {
       },
       error: ({ error: { error } }) => {
         const { errors, message } = error;
-        this.errorAlert(error.hasOwnProperty('errors') ? errors[0].message[this.lang] : message);
+        this.errorAlert(error.message[this.lang]);
       }
     });
   }
