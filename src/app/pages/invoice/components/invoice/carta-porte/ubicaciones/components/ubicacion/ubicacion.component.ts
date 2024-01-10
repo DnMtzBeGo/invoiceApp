@@ -129,7 +129,7 @@ export class UbicacionComponent implements OnInit {
   }
 
   getFormattedUbicacion() {
-    const ubicacion = Object.assign({}, this.ubicacionesForm.value);
+    const ubicacion: any = Object.assign({}, this.ubicacionesForm.value);
     ubicacion.domicilio = this.locationComponentInfo;
 
     if (ubicacion.tipo_ubicacion == 'Origen') delete ubicacion.distancia_recorrida;

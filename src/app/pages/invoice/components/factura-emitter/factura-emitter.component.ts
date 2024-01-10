@@ -48,7 +48,7 @@ export class FacturaEmitterComponent implements OnInit {
     this.regimen_fiscal = result;
     if (this.editData) {
       this.isEditing = !!this.editData?._id;
-      this.emitterAttributesForm.patchValue(this.editData);
+      this.emitterAttributesForm.patchValue(this.editData as any);
       this.emitterAttributesForm.get('archivo_key_pswd').patchValue('');
     }
     this.emitterAttributesForm.statusChanges.subscribe((val) => {

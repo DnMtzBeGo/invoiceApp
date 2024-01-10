@@ -63,7 +63,7 @@ export class MercanciasComponent implements OnInit {
       });
     });
 
-    this.mercanciasForm.controls.unidad_peso.valueChanges.subscribe((inputValue) => {
+    this.mercanciasForm.controls.unidad_peso.valueChanges.subscribe((inputValue: any) => {
       if (inputValue) {
         this.filteredUnidadPeso = this.unidadPeso?.filter((e) => {
           const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();

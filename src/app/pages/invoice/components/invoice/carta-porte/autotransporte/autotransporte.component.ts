@@ -5,7 +5,6 @@ import { Remolques } from 'src/app/pages/invoice/models/invoice/carta-porte/remo
 import { SubtiposRemolques } from 'src/app/pages/invoice/models/invoice/carta-porte/subtipos-remolques';
 import { CataloguesListService } from '../services/catalogues-list.service';
 import { CartaPorteInfoService } from '../services/carta-porte-info.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 const REMOLQUES_DATA: Remolques[] = [];
 
@@ -80,7 +79,7 @@ export class AutotransporteComponent implements OnInit {
   setCatalogsFields() {
     this.autotransporteForm.patchValue(this.autotransporteForm.value);
 
-    this.autotransporteForm.controls.permisoSCT.valueChanges.subscribe((inputValue) => {
+    this.autotransporteForm.controls.permisoSCT.valueChanges.subscribe((inputValue: any) => {
       if (inputValue) {
         this.filteredPermisosSCT = this.permisosSCT?.filter((e) => {
           const currentValue = `${e.clave} ${e.descripcion}`.toLowerCase();
@@ -91,7 +90,7 @@ export class AutotransporteComponent implements OnInit {
       }
     });
 
-    this.autotransporteForm.controls.identificacionVehicularConfig.valueChanges.subscribe((inputValue) => {
+    this.autotransporteForm.controls.identificacionVehicularConfig.valueChanges.subscribe((inputValue: any) => {
       if (inputValue) {
         this.filteredIdentificacionVehicular = this.identificacionVehicular?.filter((e) => {
           const currentValue = `${e.clave} ${e.descripcion}`.toLowerCase();
@@ -104,7 +103,7 @@ export class AutotransporteComponent implements OnInit {
       }
     });
 
-    this.autotransporteForm.controls.remolquesConfig.valueChanges.subscribe((inputValue) => {
+    this.autotransporteForm.controls.remolquesConfig.valueChanges.subscribe((inputValue: any) => {
       if (inputValue) {
         this.filteredRemolquesConfig = this.remolquesConfig?.filter((e) => {
           const currentValue = `${e.clave} ${e.descripcion}`.toLowerCase();

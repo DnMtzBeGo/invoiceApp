@@ -1,14 +1,13 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadFilesComponent } from '../upload-files/upload-files.component';
 
-export interface ReceviedPicture{
+export interface ReceviedPicture {
   file: File;
   //index of file in picture list
   i: number;
   //the dialog of the uplaodFiles component
-  dialog?: any
+  dialog?: any;
 }
 
 @Component({
@@ -17,29 +16,26 @@ export interface ReceviedPicture{
   styleUrls: ['./pictures-grid.component.scss']
 })
 export class PicturesGridComponent implements OnInit {
-
   @Input() pictures: File[];
   @Input() obligatoryImgs: number;
   @Output() onFileInput = new EventEmitter<ReceviedPicture>();
 
-  constructor(private matDialog: MatDialog) { }
+  constructor(private matDialog: MatDialog) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   openFileEditor(flag: boolean) {
-    if(!flag) return;
+    if (!flag) return;
     const dialog = this.matDialog.open(UploadFilesComponent, {
       data: {
         places: 5,
         obligatoryImages: this.obligatoryImgs,
         files: this.pictures,
-        handleFileInput: (receivedPicture: ReceviedPicture) =>{
-          this.onFileInput.emit({...receivedPicture, dialog});
+        handleFileInput: (receivedPicture: ReceviedPicture) => {
+          this.onFileInput.emit({ ...receivedPicture, dialog });
         }
       },
       backdropClass: ['brand-dialog-1', 'no-padding']
     });
   }
-
 }

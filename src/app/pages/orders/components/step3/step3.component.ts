@@ -23,13 +23,13 @@ interface Catalog {
 const enum Catalogs {
   Cargo = 'sat_cp_claves_productos_servicios',
   Packaging = 'sat_cp_tipos_de_embalaje',
-  Hazardous = 'sat_cp_material_peligroso',
+  Hazardous = 'sat_cp_material_peligroso'
 }
 
 @Component({
-  selector: "app-step3",
-  templateUrl: "./step3.component.html",
-  styleUrls: ["./step3.component.scss"],
+  selector: 'app-step3',
+  templateUrl: './step3.component.html',
+  styleUrls: ['./step3.component.scss']
 })
 export class Step3Component implements OnInit {
   @Input() creationTime: any;
@@ -43,7 +43,7 @@ export class Step3Component implements OnInit {
   @Output() validFormStep3: EventEmitter<boolean> = new EventEmitter();
   @Output() cargoWeightEdited: EventEmitter<void> = new EventEmitter();
 
-  events: string = "DD / MM / YY";
+  events: string = 'DD / MM / YY';
   editWeight: boolean = false;
 
   datepicker: Date = new Date();
@@ -52,8 +52,8 @@ export class Step3Component implements OnInit {
   maxTime: Date = new Date();
   creationDatePickupLabel: string;
 
-  cargoType: CargoType = "general";
-  hazardousType: string = "select-catergory";
+  cargoType: CargoType = 'general';
+  hazardousType: string = 'select-catergory';
   hazardousFile!: File;
 
   destroyPicker: boolean = false;
@@ -73,20 +73,20 @@ export class Step3Component implements OnInit {
 
   calendar: any;
   step3Form = new FormGroup({
-    hazardous_material: new FormControl(""),
-    packaging: new FormControl(""),
+    hazardous_material: new FormControl(''),
+    packaging: new FormControl(''),
     hazardousFile: new FormControl(this.hazardousFile),
-    hazardous_type: new FormControl(""),
-    hazardousUn: new FormControl(""),
-    cargo_goods: new FormControl(""),
-    datepickup: new FormControl(""),
-    timepickup: new FormControl("", Validators.required),
+    hazardous_type: new FormControl(''),
+    hazardousUn: new FormControl(''),
+    cargo_goods: new FormControl(''),
+    datepickup: new FormControl(''),
+    timepickup: new FormControl('', Validators.required),
     unitType: new FormControl(this.unitsData.first.value, Validators.required),
     cargoWeight: new FormControl([1000]),
     cargoType: new FormControl(this.cargoType, Validators.required),
-    description: new FormControl("", Validators.required),
-    commodity_quantity: new FormControl(""),
-    satUnitType: new FormControl("")
+    description: new FormControl('', Validators.required),
+    commodity_quantity: new FormControl(''),
+    satUnitType: new FormControl('')
   });
 
   satUnitData: Option = {
@@ -104,7 +104,7 @@ export class Step3Component implements OnInit {
     labelBrowse: this.translateService.instant('orders.upload-file.label-browse'),
     labelOr: this.translateService.instant('orders.upload-file.label-or'),
     btnBrowse: this.translateService.instant('orders.upload-file.btn-browse'),
-    labelMax: this.translateService.instant('orders.upload-file.label-max'),
+    labelMax: this.translateService.instant('orders.upload-file.label-max')
   };
 
   cargoCatalog: Catalog[] = [];
@@ -116,31 +116,31 @@ export class Step3Component implements OnInit {
 
   get cargoDescription() {
     if (!this.orderWithCP) {
-      return this.step3Form.get('description')!.value
+      return this.step3Form.get('description')!.value;
     }
 
     const quantity = this.step3Form.get('commodity_quantity').value;
     const unitType = this.step3Form.get('satUnitType').value;
     const description = this.step3Form.get('description').value;
 
-    return [
-      unitType && `Qty ${quantity} units`,
-      unitType,
-      description,
-    ].filter(Boolean).join('\n')
+    return [unitType && `Qty ${quantity} units`, unitType, description].filter(Boolean).join('\n');
   }
-
 
   constructor(private translateService: TranslateService, public dialog: MatDialog, private apiRestService: AuthService) {
     this.minTime.setHours(1);
     this.minTime.setMinutes(0);
 
-    this.step3Form.get("timepickup")!.setValue(new Date());
+    const isoDate = new Date();
+    const isoDateString = isoDate.toISOString();
+
+    this.step3Form.get('timepickup').setValue(isoDateString);
+
+    // this.step3Form.get("timepickup")!.setValue(new Date());
   }
 
   ngOnInit(): void {
     this.step3Form.statusChanges.subscribe((val) => {
-      if (val === "VALID") {
+      if (val === 'VALID') {
         this.validFormStep3.emit(true);
       } else {
         this.validFormStep3.emit(false);
@@ -148,11 +148,11 @@ export class Step3Component implements OnInit {
     });
 
     this.handleCargoTypeChange();
-    this.step3Form.get("cargoType")!.valueChanges.subscribe((val) => {
+    this.step3Form.get('cargoType')!.valueChanges.subscribe((val) => {
       this.handleCargoTypeChange();
     });
 
-    this.step3Form.get("timepickup")!.valueChanges.subscribe((val) => {
+    this.step3Form.get('timepickup')!.valueChanges.subscribe((val) => {
       // if(val===null) {
       // }
       // let value = val.moment().hour();
@@ -169,7 +169,7 @@ export class Step3Component implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.hasOwnProperty('hazardousFileAWS') && changes.hazardousFileAWS.currentValue.hasOwnProperty('url')) {
+    if (changes.hasOwnProperty('hazardousFileAWS') && changes.hazardousFileAWS.currentValue.hasOwnProperty('url')) {
       this.generateScreenshot(changes.hazardousFileAWS.currentValue.url);
     }
 
@@ -179,49 +179,40 @@ export class Step3Component implements OnInit {
       changes.draftData.currentValue.pickup &&
       changes.draftData.currentValue.cargo
     ) {
-
-      if(changes.draftData.currentValue.cargo.type) {
+      if (changes.draftData.currentValue.cargo.type) {
         this.cargoType = changes.draftData.currentValue.cargo.type;
-        this.step3Form.get("cargoType")!.setValue(changes.draftData.currentValue.cargo.type);
-        this.step3Form
-        .get("cargo_goods")
-        .setValue(changes.draftData.currentValue.cargo['cargo_goods']);
+        this.step3Form.get('cargoType')!.setValue(changes.draftData.currentValue.cargo.type);
+        this.step3Form.get('cargo_goods').setValue(changes.draftData.currentValue.cargo['cargo_goods']);
         this.satUnitData.value = changes.draftData.currentValue.cargo.unit_type;
-        if(changes.draftData.currentValue.cargo.type === 'hazardous') {
-          this.step3Form.get("hazardous_type").setValue(changes.draftData.currentValue.cargo.hazardous_type);
-          this.step3Form
-          .get('packaging')
-          .setValue(changes.draftData.currentValue.cargo.packaging);
-          this.step3Form
-          .get('hazardous_material')
-          .setValue(changes.draftData.currentValue.cargo.hazardous_material);
+        if (changes.draftData.currentValue.cargo.type === 'hazardous') {
+          this.step3Form.get('hazardous_type').setValue(changes.draftData.currentValue.cargo.hazardous_type);
+          this.step3Form.get('packaging').setValue(changes.draftData.currentValue.cargo.packaging);
+          this.step3Form.get('hazardous_material').setValue(changes.draftData.currentValue.cargo.hazardous_material);
         }
-
       }
 
       if (changes.draftData.currentValue.pickup.startDate !== null) {
         this.draftDate = changes.draftData.currentValue.pickup.startDate;
       }
-      this.step3Form.get("unitType")!.setValue(changes.draftData.currentValue.cargo["53_48"]);
+      this.step3Form.get('unitType')!.setValue(changes.draftData.currentValue.cargo['53_48']);
       if (changes.draftData.currentValue.cargo.weigth) {
-        this.step3Form
-          .get("cargoWeight")!
-          .setValue(changes.draftData.currentValue.cargo.weigth);
+        this.step3Form.get('cargoWeight')!.setValue(changes.draftData.currentValue.cargo.weigth);
         this.editWeight = true;
       }
 
-      this.step3Form
-        .get("description")!
-        .setValue(changes.draftData.currentValue.cargo.description);
+      this.step3Form.get('description')!.setValue(changes.draftData.currentValue.cargo.description);
     }
 
     if (changes.creationdatepickup && changes.creationdatepickup.currentValue) {
       const date = changes.creationdatepickup.currentValue;
       this.step3Form.value.datepickup = date;
-      this.creationDatePickupLabel = moment(new Date(date), "MM-DD-YYYY").format(
-        "MMMM DD YYYY"
-      );
-      this.step3Form.get("timepickup").setValue(new Date(date));
+      this.creationDatePickupLabel = moment(new Date(date), 'MM-DD-YYYY').format('MMMM DD YYYY');
+
+      const isoDate = new Date();
+      const isoDateString = isoDate.toISOString();
+
+      this.step3Form.get('timepickup').setValue(isoDateString);
+      // this.step3Form.get("timepickup").setValue(new Date(date));
     }
 
     if (changes.editCargoWeightNow && changes.editCargoWeightNow.currentValue) {
@@ -232,9 +223,9 @@ export class Step3Component implements OnInit {
   }
 
   handleCargoTypeChange(): void {
-    const hazardousType = this.step3Form.get("hazardous_type")!;
-    const hazardousFile = this.step3Form.get("hazardousFile")!;
-    const cargoType: CargoType = this.step3Form.get("cargoType")!.value;
+    const hazardousType = this.step3Form.get('hazardous_type')!;
+    const hazardousFile = this.step3Form.get('hazardousFile')!;
+    const cargoType: CargoType = this.step3Form.get('cargoType')!.value;
 
     if (cargoType === 'general') {
       hazardousType.clearValidators();
@@ -246,8 +237,8 @@ export class Step3Component implements OnInit {
       this.step3Form.get('hazardous_type').reset();
 
       if (this.orderWithCP) {
-        this.step3Form.get("packaging").reset();
-        this.step3Form.get("hazardous_material").reset();
+        this.step3Form.get('packaging').reset();
+        this.step3Form.get('hazardous_material').reset();
       }
     } else {
       const validators = [Validators.required];
@@ -260,7 +251,7 @@ export class Step3Component implements OnInit {
   }
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-    this.events = moment(new Date(`${event.value}`), "MM-DD-YYYY").format("MMMM DD YYYY");
+    this.events = moment(new Date(`${event.value}`), 'MM-DD-YYYY').format('MMMM DD YYYY');
   }
 
   selectedUnits(unit: any): void {
@@ -269,15 +260,16 @@ export class Step3Component implements OnInit {
 
   editUnits(): void {
     const dialogRef = this.dialog.open(CargoWeightComponent, {
-      panelClass: "bego-modal",
-      backdropClass: "backdrop",
+      panelClass: 'bego-modal',
+      backdropClass: 'backdrop',
       data: {
-        units: this.step3Form.get("cargoWeight")!.value,
-      },
+        units: this.step3Form.get('cargoWeight')!.value
+      }
     });
 
-    dialogRef.afterClosed().subscribe((result) => { if (result) {
-        this.step3Form.get("cargoWeight")!.setValue(result);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.step3Form.get('cargoWeight')!.setValue(result);
         this.editWeight = true;
         this.cargoWeightEdited.emit();
       }
@@ -312,22 +304,22 @@ export class Step3Component implements OnInit {
   }
 
   timepickerValid(data: any) {
-    this.lastTime = this.step3Form.controls["timepickup"].value || this.lastTime;
+    this.lastTime = this.step3Form.controls['timepickup'].value || this.lastTime;
     if (!data && !this.firstLoad) {
       this.destroyPicker = true;
       setTimeout(() => {
         this.destroyPicker = false;
         this.firstLoad = true;
-        this.step3Form.controls["timepickup"].setValue(this.lastTime);
+        this.step3Form.controls['timepickup'].setValue(this.lastTime);
       }, 0);
     }
     this.firstLoad = false;
   }
 
   addUnitDetailsFields() {
-    console.log("se crearon campos");
-    this.step3Form.addControl("commodity_quantity", new FormControl(""));
-    this.step3Form.addControl("satUnitType", new FormControl(""));
+    console.log('se crearon campos');
+    this.step3Form.addControl('commodity_quantity', new FormControl(''));
+    this.step3Form.addControl('satUnitType', new FormControl(''));
   }
 
   showUnitDetailsModal() {
@@ -337,13 +329,13 @@ export class Step3Component implements OnInit {
     const modalData = {
       qty: this.step3Form.value.commodity_quantity,
       satUnit: this.satUnitData,
-      description: this.step3Form.value.description,
+      description: this.step3Form.value.description
     };
     const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
-      panelClass: "bego-modal",
-      backdropClass: "backdrop",
+      panelClass: 'bego-modal',
+      backdropClass: 'backdrop',
       disableClose: true,
-      data: modalData,
+      data: modalData
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -351,7 +343,7 @@ export class Step3Component implements OnInit {
           description: result.description,
           commodity_quantity: result.qty,
           satUnitType: result.value
-        })
+        });
         this.satUnitData = { value: result.value, displayValue: result.displayValue };
       }
     });
@@ -360,22 +352,22 @@ export class Step3Component implements OnInit {
   public generateScreenshot(url: any) {
     let img = new Image();
     let elem = document.body;
-    this.screenshotCanvas = <HTMLCanvasElement> document.getElementById("canvas-edit");
-    let ctx = this.screenshotCanvas.getContext("2d");
+    this.screenshotCanvas = <HTMLCanvasElement>document.getElementById('canvas-edit');
+    let ctx = this.screenshotCanvas.getContext('2d');
     let pixelRatio = window.devicePixelRatio;
     const offsetWidth = elem.offsetWidth * pixelRatio;
     const offsetHeight = elem.offsetHeight * pixelRatio;
-    const posX = (window.scrollX) * pixelRatio;
-    const posY = (window.scrollY) * pixelRatio;
+    const posX = window.scrollX * pixelRatio;
+    const posY = window.scrollY * pixelRatio;
     this.screenshotCanvas.width = 512;
     this.screenshotCanvas.height = 512;
-    img.crossOrigin = "anonymous";
+    img.crossOrigin = 'anonymous';
     img.src = url;
     img.onload = () => {
       ctx.drawImage(img, posX, posY, offsetWidth, offsetHeight, 0, 0, offsetWidth, offsetHeight);
-      let resultFinal = this.screenshotCanvas.toDataURL("image/png", 100);
+      let resultFinal = this.screenshotCanvas.toDataURL('image/png', 100);
       this.transformToFile(resultFinal);
-    }
+    };
   }
 
   public transformToFile(data: any) {
@@ -383,45 +375,47 @@ export class Step3Component implements OnInit {
     this.thumbnailMap.push(resultBase64[1]);
     const rawData = atob(resultBase64[1]);
     const bytes = new Array(rawData.length);
-    for(let i = 0; i < rawData.length; i++) {
+    for (let i = 0; i < rawData.length; i++) {
       bytes[i] = rawData.charCodeAt(i);
     }
     const arr = new Uint8Array(bytes);
-    const blob = new Blob([arr], { type: 'image/png '});
+    const blob = new Blob([arr], { type: 'image/png ' });
     this.setHazardousAWSFile(blob);
   }
 
   setHazardousAWSFile(blob: Blob) {
     this.thumbnailMapFile.push(blob);
-    this.step3Form.get("hazardousFile")!.setValue(blob);
+    // this.step3Form.get("hazardousFile")!.setValue(blob);
+    const file = new File([blob], 'AWS file');
+
+    this.step3Form.get('hazardousFile')!.setValue(file);
     this.fileInfo = {
       name: 'AWS file',
       date: new Date(),
-      size: blob.size,
-    }
+      size: blob.size
+    };
   }
 
-
   private async getCatalogs(catalog: string, query?: string): Promise<Catalog[]> {
-    const params = new URLSearchParams()
-    if (query) params.set('q', query)
+    const params = new URLSearchParams();
+    if (query) params.set('q', query);
 
-    const req = await this.apiRestService.apiRestGet(`invoice/catalogs/query/${catalog}?${params.toString()}`)
+    const req = await this.apiRestService.apiRestGet(`invoice/catalogs/query/${catalog}?${params.toString()}`);
 
     return new Promise((resolve, reject) => {
       req.subscribe(({ result }) => {
         const catalog = result.map((item: any) => ({
           value: item.code,
           displayValue: `${item.code} - ${item.description}`
-        }))
+        }));
 
-        resolve(catalog)
+        resolve(catalog);
       }),
-      (err: any) => {
-        console.error(err)
-        reject(err)
-      }
-    })
+        (err: any) => {
+          console.error(err);
+          reject(err);
+        };
+    });
   }
 
   async getCargoTypeList(query?: string) {
@@ -445,7 +439,7 @@ export class Step3Component implements OnInit {
     const catalog = Object.entries(list).map(([key, value]) => ({
       value: key,
       displayValue: value
-    }))
+    }));
 
     this.categoryCatalog = catalog;
     this.filteredCategoryCatalog = catalog;
