@@ -3,11 +3,19 @@
     <!-- <mat-slide-toggle formControlName="transp_internac">{{
       "invoice.transporte.transporte-internacional" | translate
     }}</mat-slide-toggle> -->
-    <div>
-      <button mat-icon-button class="bego-icon icon icon-truck" type="button"></button>
-      <button mat-icon-button class="bego-icon icon icon-ship" type="button" disabled></button>
-      <button mat-icon-button class="bego-icon icon icon-airplane" type="button" disabled></button>
-      <button mat-icon-button class="bego-icon icon icon-train" type="button" disabled></button>
+    <div class="transport-button">
+      <button mat-icon-button class="bego-icon icon icon-truck" type="button">
+        <bego-icon icon="begon-truck"></bego-icon>
+      </button>
+      <button mat-icon-button class="bego-icon icon icon-ship" type="button" disabled>
+        <bego-icon icon="begon-ship"></bego-icon>
+      </button>
+      <button mat-icon-button class="bego-icon icon icon-airplane" type="button" disabled>
+        <bego-icon icon="begon-airplane"></bego-icon>
+      </button>
+      <button mat-icon-button class="bego-icon icon icon-train" type="button" disabled>
+        <bego-icon icon="begon-train"></bego-icon>
+      </button>
     </div>
     <mat-button-toggle-group #group="matButtonToggleGroup" class="container-row-b" formControlName="transp_internac">
       <mat-button-toggle mat-fab value="No" aria-label="Nacional"> Nacional </mat-button-toggle>

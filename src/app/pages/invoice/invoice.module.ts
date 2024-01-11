@@ -80,6 +80,7 @@ import { LocationComponent } from "./components/location/location.component";
 import { NotificationsService } from "src/app/shared/services/notifications.service";
 import { TwoDigitDecimaNumberDirective } from "../shared/directives/decimal.directive";
 import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/tooltip-help.module";
+import { BegoIconsModule } from "@begomx/ui-components";
 
 @NgModule({
   declarations: [
@@ -153,7 +154,8 @@ import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/toolti
     TextMaskModule,
     NgxPaginationModule,
     NgxMatColorPickerModule,
-    TooltipHelpModule
+    TooltipHelpModule,
+    BegoIconsModule
   ],
   exports: [
     // MODALS

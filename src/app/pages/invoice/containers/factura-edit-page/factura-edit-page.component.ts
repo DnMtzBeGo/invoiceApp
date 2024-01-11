@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { of, timer, Subject, merge, from, combineLatest, NEVER, Observable, asapScheduler, animationFrameScheduler } from 'rxjs';
 import {
@@ -270,7 +270,8 @@ export class FacturaEditPageComponent implements OnInit {
     private route: ActivatedRoute,
     private matDialog: MatDialog,
     private translateService: TranslateService,
-    private cataloguesListService: CataloguesListService
+    private cataloguesListService: CataloguesListService,
+    private cd: ChangeDetectorRef
   ) {
     this.cataloguesListService.countriesSubject.subscribe((data: any[]) => {
       this.paisCatalogue = data;
@@ -365,7 +366,9 @@ export class FacturaEditPageComponent implements OnInit {
       map((emisor) => ({
         ...emisor,
         tipoPersona: getTipoPersona(emisor.rfc)
-      })),
+      })),tap(() => {
+        this.cd.markForCheck();
+      }),
       share()
     );
 
@@ -470,7 +473,9 @@ export class FacturaEditPageComponent implements OnInit {
         withLatestFrom(searchAction$),
         map(([requestData, search]: any) => ({
           [search.type]: requestData
-        }))
+        })),tap(() => {
+          this.cd.markForCheck();
+        })
       ),
       cancelSearchAction$.pipe(mapTo({}))
     );
@@ -519,7 +524,9 @@ export class FacturaEditPageComponent implements OnInit {
           }),
           repeatWhen(() => this.formEmitter.pipe(ofType('direcciones:reload')))
         )
-      ),
+      ),tap(() => {
+        this.cd.markForCheck();
+      }),
       share()
     );
 
@@ -587,6 +594,7 @@ export class FacturaEditPageComponent implements OnInit {
         ) {
           this.vm.form.lugar_de_expedicion = {};
         }
+        this.cd.markForCheck();
       })
     );
 
@@ -887,7 +895,9 @@ export class FacturaEditPageComponent implements OnInit {
       this.apiRestService.apiRestGet('invoice/catalogs/countries', {
         loader: 'false'
       })
-    ).pipe(mergeAll(), pluck('result'), startWith(null));
+    ).pipe(mergeAll(), pluck('result'), startWith(null),tap(() => {
+      this.cd.markForCheck();
+    }),);
   }
 
   fetchEstados = (pais?: string) => {

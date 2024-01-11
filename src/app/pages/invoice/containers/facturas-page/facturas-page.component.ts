@@ -3,6 +3,7 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   ViewEncapsulation,
+  ChangeDetectorRef
 } from "@angular/core";
 import {
   interval,
@@ -135,7 +136,8 @@ export class FacturasPageComponent implements OnInit {
     private matDialog: MatDialog,
     private apiRestService: AuthService,
     private translateService: TranslateService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -194,7 +196,9 @@ export class FacturasPageComponent implements OnInit {
             factura.tipo_de_comprobante,
           status_: facturaStatus[factura.status] || factura.status,
         }))
-      ),
+      ),tap(() => {
+        this.cd.markForCheck();
+      }),
       share()
     );
 
