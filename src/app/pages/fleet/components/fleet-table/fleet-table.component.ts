@@ -2,7 +2,8 @@ import { Component, Input, OnInit, ViewChild, OnChanges, AfterViewInit, Output, 
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+
 import { Router } from '@angular/router';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { Paginator, TableFactura } from '../../../invoice/models';

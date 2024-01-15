@@ -14,7 +14,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { OrderCardComponent } from './components/order-card/order-card.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoOrdersYetComponent } from './components/no-orders-yet/no-orders-yet.component';
-import { MatButtonModule } from '@angular/material/button';
+// import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { DownloadInvoicesComponent } from './components/download-invoices/download-invoices.component';
 import { MatIconModule } from '@angular/material/icon';
 import { EditCnBtnComponent } from './components/edit-cn-btn/edit-cn-btn.component';
@@ -26,6 +27,7 @@ import { ChooseFleetElementComponent } from './components/choose-fleet-element/c
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { BegoBodyModule } from 'src/app/shared/components/bego-body/bego-body.module';
 import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.module';
+import { AppMaterialModule } from 'src/app/material';
 @NgModule({
   declarations: [
     HistoryComponent,
@@ -40,7 +42,7 @@ import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.mo
     EditCnBtnComponent,
     EditOrderFleetComponent,
     FleetAssetCardComponent,
-    ChooseFleetElementComponent,
+    ChooseFleetElementComponent
   ],
   imports: [
     CommonModule,
@@ -49,15 +51,24 @@ import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.mo
     PriceDetailsModule,
     DropDownModule,
     TranslateModule,
-    MatTabsModule,
-    MatButtonModule,
-    MatIconModule,
     CircularAvatarModule,
     SimpleAvatarModule,
     ButtonModule,
     BegoBodyModule,
-    BegoTabsModule
+    BegoTabsModule,
+    AppMaterialModule
   ],
-  exports: [OrderCardComponent, OrderInfoComponent, EditCnBtnComponent, DriverStatusCardComponent, EditOrderFleetComponent, ChooseFleetElementComponent, DownloadInvoicesComponent, DropDownModule, PickupDropoffInfoComponent, OrderEvidenceComponent]
+  exports: [
+    OrderCardComponent,
+    OrderInfoComponent,
+    EditCnBtnComponent,
+    DriverStatusCardComponent,
+    EditOrderFleetComponent,
+    ChooseFleetElementComponent,
+    DownloadInvoicesComponent,
+    DropDownModule,
+    PickupDropoffInfoComponent,
+    OrderEvidenceComponent
+  ]
 })
-export class HistoryModule { }
+export class HistoryModule {}

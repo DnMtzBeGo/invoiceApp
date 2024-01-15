@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import EmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
@@ -76,19 +77,17 @@ export class FleetEditTruckComponent implements OnInit {
 
     await this.fillCataloguesFromDb();
     let changesAction = this.onTruckInfoUpdated;
-    if(this.router.url !== '/fleet/trucks/new'){
+    if (this.router.url !== '/fleet/trucks/new') {
       const { id } = this.route.snapshot.params;
       await this.getTruckInfo({ id });
-  
+
       await this.getInsuranceFile({ id });
-    }else{
+    } else {
       changesAction = this.onTruckInfoChanged;
-      this.fleetId =( await this.getFleetOverview())._id;
+      this.fleetId = (await this.getFleetOverview())._id;
     }
 
     this.truckDetailsForm.valueChanges.subscribe(changesAction);
-
-
   }
 
   setAutocompleteValue = (catalogueName: string, selectedCode: string): string => {
@@ -111,7 +110,7 @@ export class FleetEditTruckComponent implements OnInit {
   }
 
   openFileEditor(flag: boolean) {
-    if(!flag) return;
+    if (!flag) return;
     const dialog = this.matDialog.open(UploadFilesComponent, {
       data: {
         places: 5,
@@ -125,18 +124,16 @@ export class FleetEditTruckComponent implements OnInit {
           reader.readAsDataURL(file);
           reader.onload = () => {
             fileInfo.url = reader.result as string;
-            if(newTruck)this.pictures[i] = {url: fileInfo.url};
+            if (newTruck) this.pictures[i] = { url: fileInfo.url };
           };
 
-          if(newTruck){
+          if (newTruck) {
             this.newTruckPictures[i] = file;
             this.onTruckInfoChanged();
-          }else{
-            (await this.updatePicture(file,i)).subscribe(
-              (resp) => {
-                fileInfo.uploadPercentage = (resp.loaded / resp.total) * 100;
-              }
-            );
+          } else {
+            (await this.updatePicture(file, i)).subscribe((resp) => {
+              fileInfo.uploadPercentage = (resp.loaded / resp.total) * 100;
+            });
           }
         }
       },
@@ -185,10 +182,10 @@ export class FleetEditTruckComponent implements OnInit {
     this.truckDetailsForm.patchValue(values);
   }
 
-  resetOption({target}: {target: HTMLInputElement}, catalog: any[], formControlName: string){
-      const selectedValue = catalog.find(e=>e.code == this.truckDetailsForm.value[formControlName] );
-      target.value = selectedValue ?  this.displayFn(selectedValue): '';
-      this.truckDetailsForm.get(formControlName).markAsTouched();
+  resetOption({ target }: { target: HTMLInputElement }, catalog: any[], formControlName: string) {
+    const selectedValue = catalog.find((e) => e.code == this.truckDetailsForm.value[formControlName]);
+    target.value = selectedValue ? this.displayFn(selectedValue) : '';
+    this.truckDetailsForm.get(formControlName).markAsTouched();
   }
 
   async fillCataloguesFromDb(): Promise<any> {
@@ -242,8 +239,7 @@ export class FleetEditTruckComponent implements OnInit {
   }
 
   async updateInsuranceFile(file: File) {
-
-    if(this.router.url == '/fleet/trucks/new'){
+    if (this.router.url == '/fleet/trucks/new') {
       this.insuranceFile = file;
       this.onTruckInfoChanged();
 
@@ -269,10 +265,10 @@ export class FleetEditTruckComponent implements OnInit {
     });
   }
 
-  async saveChanges(){
-    if(this.router.url == '/fleet/trucks/new'){
+  async saveChanges() {
+    if (this.router.url == '/fleet/trucks/new') {
       this.createTruck();
-    }else{
+    } else {
       this.updateChanges();
     }
   }
@@ -287,7 +283,7 @@ export class FleetEditTruckComponent implements OnInit {
     });
   }
 
-  async createTruck(){
+  async createTruck() {
     const formData = new FormData();
     formData.append('id_fleet', this.fleetId);
 
@@ -295,23 +291,23 @@ export class FleetEditTruckComponent implements OnInit {
     newTruckInfo.year = parseInt(newTruckInfo.year);
 
     //add properties received props to formdata
-    Object.keys(newTruckInfo).forEach(key=>{
-      formData.append(key, newTruckInfo[key])
+    Object.keys(newTruckInfo).forEach((key) => {
+      formData.append(key, newTruckInfo[key]);
     });
 
-    this.newTruckPictures.forEach((file: File,i: number) => {
+    this.newTruckPictures.forEach((file: File, i: number) => {
       formData.append('pictures', file, i.toString());
     });
 
     formData.append('files', this.insuranceFile);
     // , {apiVersion: 'v1.1'}
-    (await this.webService.uploadFilesSerivce(formData, 'trucks/create', {apiVersion: 'v1.1'})).subscribe(() => {
+    (await this.webService.uploadFilesSerivce(formData, 'trucks/create', { apiVersion: 'v1.1' })).subscribe(() => {
       this.router.navigateByUrl('fleet/trucks');
     });
   }
 
-  async getFleetOverview(){
-    return (await (await this.webService.apiRest('','fleet/overview')).toPromise()).result;
+  async getFleetOverview() {
+    return (await (await this.webService.apiRest('', 'fleet/overview')).toPromise()).result;
   }
 
   onTruckInfoUpdated = () => {
@@ -321,14 +317,14 @@ export class FleetEditTruckComponent implements OnInit {
    * Called only when creating a new truck
    */
   onTruckInfoChanged = () => {
-   const enoughPictures = this.newTruckPictures.length >= 3;
+    const enoughPictures = this.newTruckPictures.length >= 3;
     this.disableSaveBtn = this.truckDetailsForm.status == 'INVALID' || !enoughPictures || !this.insuranceFile;
-  }
+  };
 
   valuesFormChanged(): boolean {
     const changes = this.truckDetailsForm.value;
     for (let key of Object.keys(changes)) {
-      const originalValue =this.originalInfo[key];
+      const originalValue = this.originalInfo[key];
       const change = changes[key];
       if (originalValue != change && originalValue && change) {
         return true;
@@ -350,7 +346,7 @@ export class FleetEditTruckComponent implements OnInit {
    * @param i The index of the picture that will be changed
    * @returns the observable with the values of the progress of the uplaod
    */
-  private async updatePicture(file: File, i: number): Promise<Observable<any>>{
+  private async updatePicture(file: File, i: number): Promise<Observable<any>> {
     const formData = new FormData();
     formData.append('id_truck', this.route.snapshot.params.id);
     formData.append('pictures', file, i.toString());
@@ -364,41 +360,42 @@ export class FleetEditTruckComponent implements OnInit {
       loader: 'false'
     };
 
-    return (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_pictures', requestOptions, appBehaviourOptions));
-
+    return await this.webService.uploadFilesSerivce(formData, 'trucks/upload_pictures', requestOptions, appBehaviourOptions);
   }
 
-  arePlatesValid = ({value}: FormControl): ValidationErrors | null=>{
+  arePlatesValid = ({ value }: FormControl): ValidationErrors | null => {
     let platesRegex = /^[^(?!.*\s)-]{5,7}$/;
-    return platesRegex.test(value) ?  null: { errors: true};
-  }
+    return platesRegex.test(value) ? null : { errors: true };
+  };
 
-  displayFn(element: any): string{
+  displayFn(element: any): string {
     return `${element.code} - ${element.description}`;
   }
 
-  selectedValueAutoComplete(input: string, catalogName: string): Observable<string>{
-    return new Observable<string>((observer: Observer<string>)=>{
-      this.truckDetailsForm.get(input)?.valueChanges.subscribe((value)=>{
-        const catalog = this.catalogs.find(e=>e.name == catalogName);
-        const selectedElement = catalog.documents.find(e=>e.code == value);
-        if(selectedElement)
-          observer.next(this.displayFn(selectedElement));
+  selectedValueAutoComplete(input: string, catalogName: string): Observable<string> {
+    return new Observable<string>((observer: Observer<string>) => {
+      this.truckDetailsForm.get(input)?.valueChanges.subscribe((value) => {
+        const catalog = this.catalogs.find((e) => e.name == catalogName);
+        const selectedElement = catalog.documents.find((e) => e.code == value);
+        if (selectedElement) observer.next(this.displayFn(selectedElement));
       });
-  
     });
-  } 
-
-  public createDateOptions(): any[] {
-    const range = (start: number, end: number) => Array((end) - (start) + 1).fill(0).map((_, idx) => start + idx);
-    return range(1980, new Date().getFullYear() + 1).reverse().map(value => ({text: String(value), value }));
   }
 
-  public async handleFileInput({ file, i, dialog }: ReceviedPicture){
+  public createDateOptions(): any[] {
+    const range = (start: number, end: number) =>
+      Array(end - start + 1)
+        .fill(0)
+        .map((_, idx) => start + idx);
+    return range(1980, new Date().getFullYear() + 1)
+      .reverse()
+      .map((value) => ({ text: String(value), value }));
+  }
 
-    const acceptedFiles = ['image/jpeg', 'image/jpg', 'image/png']
+  public async handleFileInput({ file, i, dialog }: ReceviedPicture) {
+    const acceptedFiles = ['image/jpeg', 'image/jpg', 'image/png'];
 
-    if(!acceptedFiles.includes(file.type)){
+    if (!acceptedFiles.includes(file.type)) {
       this.notificationsService.showErrorToastr(this.translateService.instant('fleet.only-imgs'));
       return;
     }
@@ -410,18 +407,16 @@ export class FleetEditTruckComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = () => {
       fileInfo.url = reader.result as string;
-      if(newTruck)this.pictures[i] = {url: fileInfo.url};
+      if (newTruck) this.pictures[i] = { url: fileInfo.url };
     };
 
-    if(newTruck){
+    if (newTruck) {
       this.newTruckPictures[i] = file;
       this.onTruckInfoChanged();
-    }else{
-      (await this.updatePicture(file,i)).subscribe(
-        (resp) => {
-          fileInfo.uploadPercentage = (resp.loaded / resp.total) * 100;
-        }
-      );
+    } else {
+      (await this.updatePicture(file, i)).subscribe((resp) => {
+        fileInfo.uploadPercentage = (resp.loaded / resp.total) * 100;
+      });
     }
   }
 }

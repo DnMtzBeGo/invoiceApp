@@ -11,12 +11,12 @@ import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { ClickStopPropagationDirective } from '../../../../shared/directives/click-stop-propagation.directive';
 
-import { MatButtonModule } from '@angular/material/button';
+// import { MatButtonModule } from '@angular/material/button';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatSelectModule } from '@angular/material/select';
 import { FiscalDocumentItemComponent } from './components/fiscal-document-item/fiscal-document-item.component';
 import { BegoAlertModule } from 'src/app/shared/components/bego-alert/bego-alert.module';
+import { AppMaterialModule } from 'src/app/material';
 
 export function playerFactory() {
   return player;
@@ -26,12 +26,10 @@ export function playerFactory() {
   imports: [
     CommonModule,
     UploadFiscalDocsRoutingModule,
-    MatButtonModule,
     ButtonModule,
     BegoAlertModule,
     TranslateModule,
     DragFileBarModule,
-    MatSelectModule,
     // NgCircleProgressModule.forRoot({
     //   maxPercent: 100,
     //   radius: 50,
@@ -48,7 +46,8 @@ export function playerFactory() {
     //   clockwise: false,
     //   startFromZero: false
     // }),
-    LottieModule.forRoot({ player: playerFactory })
+    LottieModule.forRoot({ player: playerFactory }),
+    AppMaterialModule
   ],
   exports: []
 })

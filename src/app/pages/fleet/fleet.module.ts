@@ -19,9 +19,22 @@ import { FleetEditTrailerComponent } from './containers/fleet-edit-trailer/fleet
 import { PicturesGridComponent } from './components/pictures-grid/pictures-grid.component';
 import { FleetInviteDriverComponent } from './containers/fleet-invite-driver/fleet-invite-driver.component';
 import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
+import { AppMaterialModule } from 'src/app/material';
 
 @NgModule({
-  declarations: [FleetWidgetComponent, FleetPageComponent, FleetBrowserComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent, FleetEditTruckComponent,FleetTableComponent, FleetEditTrailerComponent, PicturesGridComponent, FleetInviteDriverComponent],
+  declarations: [
+    FleetWidgetComponent,
+    FleetPageComponent,
+    FleetBrowserComponent,
+    MemberCardComponent,
+    TruckCardComponent,
+    TrailerCardComponent,
+    FleetEditTruckComponent,
+    FleetTableComponent,
+    FleetEditTrailerComponent,
+    PicturesGridComponent,
+    FleetInviteDriverComponent
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -35,7 +48,8 @@ import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input
     UploadFilesModule,
     ButtonModule,
     DragFileBarModule,
-    BegoPhoneInputModule
+    BegoPhoneInputModule,
+    AppMaterialModule
   ]
 })
 export class FleetModule {}

@@ -1,18 +1,20 @@
-import { Component, Inject, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from "@angular/material/dialog";
-import { TranslateService } from "@ngx-translate/core";
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA
+} from '@angular/material/legacy-dialog';
+
+import { TranslateService } from '@ngx-translate/core';
 // import { ApiRestService } from "src/app/core/services";
-import { AuthService } from "src/app/shared/services/auth.service";
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
-  selector: "app-series-new",
-  templateUrl: "./series-new.component.html",
-  styleUrls: ["./series-new.component.scss"],
+  selector: 'app-series-new',
+  templateUrl: './series-new.component.html',
+  styleUrls: ['./series-new.component.scss']
 })
 export class SeriesNewComponent implements OnInit {
   public imageSrc: any;
@@ -22,14 +24,14 @@ export class SeriesNewComponent implements OnInit {
   public logoFile: any;
 
   public seriesForm = new FormGroup({
-    tipo_comprobante: new FormControl("", Validators.required),
-    serie: new FormControl("", Validators.required),
-    folio: new FormControl("", Validators.required),
-    color: new FormControl(""),
+    tipo_comprobante: new FormControl('', Validators.required),
+    serie: new FormControl('', Validators.required),
+    folio: new FormControl('', Validators.required),
+    color: new FormControl('')
   });
 
   public imageForm = new FormGroup({
-    file: new FormControl(""),
+    file: new FormControl('')
   });
 
   private isEditing: boolean = false;
@@ -45,9 +47,9 @@ export class SeriesNewComponent implements OnInit {
     this.isEditing = Object.keys(this.seriesData).length > 1;
 
     if (this.isEditing) {
-      this.seriesForm.controls["tipo_comprobante"].disable();
-      this.seriesForm.controls["serie"].disable();
-      this.seriesForm.controls["folio"].disable();
+      this.seriesForm.controls['tipo_comprobante'].disable();
+      this.seriesForm.controls['serie'].disable();
+      this.seriesForm.controls['folio'].disable();
     }
 
     if (this.seriesData) {
@@ -62,7 +64,7 @@ export class SeriesNewComponent implements OnInit {
   public closeModal() {
     this.matDialogRef.close({
       success: true,
-      message: "",
+      message: ''
     });
   }
 
@@ -70,7 +72,7 @@ export class SeriesNewComponent implements OnInit {
     const inputNode = event.target;
     this.logoFile = inputNode.files[0];
 
-    if (typeof FileReader !== "undefined") {
+    if (typeof FileReader !== 'undefined') {
       const reader = new FileReader();
 
       reader.onload = (e: any) => {
@@ -83,57 +85,40 @@ export class SeriesNewComponent implements OnInit {
 
   public async save() {
     const formData = new FormData();
-    const type = this.isEditing ? "update" : "create";
-    formData.append("emisor", this.seriesData.emisor);
+    const type = this.isEditing ? 'update' : 'create';
+    formData.append('emisor', this.seriesData.emisor);
     if (!this.isEditing) {
-    formData.append("serie", this.seriesForm.get("serie").value);
-      formData.append(
-        "tipo_comprobante",
-        this.seriesForm.get("tipo_comprobante").value
-      );
-      formData.append("folio", this.seriesForm.get("folio").value);
+      formData.append('serie', this.seriesForm.get('serie').value);
+      formData.append('tipo_comprobante', this.seriesForm.get('tipo_comprobante').value);
+      formData.append('folio', this.seriesForm.get('folio').value);
     }
-    formData.append("color", this.seriesForm.get("color").value);
+    formData.append('color', this.seriesForm.get('color').value);
     if (this.logoFile) {
-      formData.append("logo", this.logoFile);
+      formData.append('logo', this.logoFile);
     }
-    if (this.isEditing) formData.append("_id", this.seriesData._id);
+    if (this.isEditing) formData.append('_id', this.seriesData._id);
 
-    (
-      await this.apiRestService.uploadFilesSerivce(
-        formData,
-        "invoice/series/" + type,
-        {}
-      )
-    ).subscribe(
+    (await this.apiRestService.uploadFilesSerivce(formData, 'invoice/series/' + type, {})).subscribe(
       (res) => {
         this.matDialogRef.close({
           success: true,
-          message: this.translateService.instant(
-            "invoice.serie-new.close-" + type + "-success"
-          ),
+          message: this.translateService.instant('invoice.serie-new.close-' + type + '-success'),
           data: {
-            _id: res.result?._id,
-          },
+            _id: res.result?._id
+          }
         });
       },
       (err) => {
         this.matDialogRef.close({
           success: false,
-          message: this.translateService.instant(
-            "invoice.serie-new.close-error"
-          ),
+          message: this.translateService.instant('invoice.serie-new.close-error')
         });
       }
     );
   }
 
   public async getReceiptTypes() {
-    (
-      await this.apiRestService.apiRestGet(
-        "invoice/catalogs/tipos-de-comprobante"
-      )
-    ).subscribe(
+    (await this.apiRestService.apiRestGet('invoice/catalogs/tipos-de-comprobante')).subscribe(
       (res) => {
         this.receiptTypes = res.result.filter((result) => result.enabled);
       },

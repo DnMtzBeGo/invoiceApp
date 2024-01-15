@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit } from "@angular/core";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 @Component({
-  selector: "app-info-modal",
-  templateUrl: "./info-modal.component.html",
-  styleUrls: ["./info-modal.component.scss"],
+  selector: 'app-info-modal',
+  templateUrl: './info-modal.component.html',
+  styleUrls: ['./info-modal.component.scss']
 })
 export class InfoModalComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data) {}
@@ -12,7 +11,7 @@ export class InfoModalComponent implements OnInit {
   ngOnInit(): void {}
 
   isString(value: any): boolean {
-    return typeof value === "string";
+    return typeof value === 'string';
   }
 
   runCustomAction() {

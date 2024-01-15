@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { CargoWeight } from '../../interfaces/cargo-weight'
+import { CargoWeight } from '../../interfaces/cargo-weight';
 
 @Component({
   selector: 'app-cargo-weight',
@@ -15,9 +15,9 @@ export class CargoWeightComponent implements OnInit {
     {
       textBtn: this.translateService.instant('orders.btn-save'),
       textEmit: 'close',
-      activated: true,
+      activated: true
     }
-  ]
+  ];
 
   constructor(
     public dialogRef: MatDialogRef<CargoWeightComponent>,

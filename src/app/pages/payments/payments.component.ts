@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { DatePipe, CurrencyPipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { EditedModalComponent } from './components/edited-modal/edited-modal.component';

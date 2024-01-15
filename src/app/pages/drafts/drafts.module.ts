@@ -5,15 +5,13 @@ import { DraftsRoutingModule } from './drafts-routing.module';
 import { MapModule } from 'src/app/shared/components/map/map.module';
 import { DraftsComponent } from './drafts.component';
 import { DraftListModule } from './components/draft-list/draft-list.module';
-import { ButtonModule,
- } from 'src/app/shared/components/button/button.module';
+import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { InputSearchModule } from 'src/app/shared/components/input-search/input-search.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { AppMaterialModule } from 'src/app/material';
 
 @NgModule({
-  declarations: [
-    DraftsComponent
-  ],
+  declarations: [DraftsComponent],
   imports: [
     CommonModule,
     DraftsRoutingModule,
@@ -21,7 +19,8 @@ import { TranslateModule } from '@ngx-translate/core';
     DraftListModule,
     ButtonModule,
     InputSearchModule,
-    TranslateModule  
+    TranslateModule,
+    AppMaterialModule
   ]
 })
-export class DraftsModule { }
+export class DraftsModule {}

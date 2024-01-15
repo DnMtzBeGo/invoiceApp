@@ -726,17 +726,17 @@
   },
   "invoice": {
     "invoices": {
-        "title": "Facturas",
-        "filters": "Filtros",
-        "series": "Series",
-        "emisor-btn": "Emisores",
-        "new-invoice": "Nueva Factura",
-        "template-placeholder": "Buscar Template",
-        "template-open": "Abrir Template",
-        "template-new": "Nuevo Template",
-        "noemisor-title": "Atención",
-        "noemisor-message": "Se debe dar de alta a un Emisor antes de comenzar a Facturar",
-        "noemisor-confirm": "Crear ahora"
+      "title": "Facturas",
+      "filters": "Filtros",
+      "series": "Series",
+      "emisor-btn": "Emisores",
+      "new-invoice": "Nueva Factura",
+      "template-placeholder": "Buscar Template",
+      "template-open": "Abrir Template",
+      "template-new": "Nuevo Template",
+      "noemisor-title": "Atención",
+      "noemisor-message": "Se debe dar de alta a un Emisor antes de comenzar a Facturar",
+      "noemisor-confirm": "Crear ahora"
     },
     "invoice-table": {
       "emision": "Emisión",
@@ -769,6 +769,17 @@
       "delete-message": "¿Estas seguro que deseas eliminar esta Factura? Esta acción no se puede deshacer.",
       "delete-success": "Factura borrada!",
       "delete-error": "Error borrando Factura"
+    },
+    "table": {
+      "plataforma": "",
+      "fecha_emision": "Emisión",
+      "emisor": "Emisor",
+      "receptor": "Receptor",
+      "serie": "Serie",
+      "tipo": "Tipo",
+      "status": "Status",
+      "subtotal": "Subtotal",
+      "total": "Total"
     },
     "filters": {
       "apply": "Aplicar",
@@ -1511,7 +1522,7 @@
     }
   },
   "payments": {
-    "expiration":{
+    "expiration": {
       "paid": "Pagada",
       "expired": "Vencida",
       "day": "día",
@@ -1610,7 +1621,18 @@
       "title": "Chat",
       "not-meessage": "La conversación aún no ha comenzado.",
       "btn-save": "Enviar",
-      "placeholder-message": "Escribe tu mensaje" 
+      "placeholder-message": "Escribe tu mensaje"
     }
+  },
+  "paginator": {
+    "total": "Total",
+    "of": "de",
+    "nextPage": "Siguiente",
+    "prevPage": "Anterior",
+    "itemsPerPage": "Items por página"
+  },
+  "filter": {
+    "input": "Buscar...",
+    "selector": "Buscar..."
   }
 }

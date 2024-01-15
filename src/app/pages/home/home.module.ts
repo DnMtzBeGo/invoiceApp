@@ -8,11 +8,10 @@ import { OrdersModule } from '../orders/orders.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CheckoutModule } from '../orders/components/checkout/checkout.module';
 import { ProfileModule } from '../profile/profile.module';
+import { AppMaterialModule } from 'src/app/material';
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-  ],
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,
@@ -21,7 +20,7 @@ import { ProfileModule } from '../profile/profile.module';
     OrdersModule,
     CheckoutModule,
     ProfileModule,
-    MatTabsModule,
+    AppMaterialModule
   ]
 })
-export class HomeModule { }
+export class HomeModule {}

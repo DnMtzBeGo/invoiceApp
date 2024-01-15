@@ -1,18 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from "@angular/material/dialog";
-import { TranslateService } from "@ngx-translate/core";
-import { AuthService } from "src/app/shared/services/auth.service";
-import { NotificationsService } from "src/app/shared/services/notifications.service";
-import { FacturaEmitterComponent } from "../../components/factura-emitter/factura-emitter.component";
+import { Component, OnInit } from '@angular/core';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { FacturaEmitterComponent } from '../../components/factura-emitter/factura-emitter.component';
 
 @Component({
-  selector: "app-emisores",
-  templateUrl: "./emisores.component.html",
-  styleUrls: ["./emisores.component.scss"],
+  selector: 'app-emisores',
+  templateUrl: './emisores.component.html',
+  styleUrls: ['./emisores.component.scss']
 })
 export class EmisoresComponent implements OnInit {
   dataSource: unknown[];
@@ -31,7 +27,7 @@ export class EmisoresComponent implements OnInit {
   }
 
   public async getEmisores() {
-    (await this.apiRestService.apiRestGet("invoice/emitters")).subscribe(
+    (await this.apiRestService.apiRestGet('invoice/emitters')).subscribe(
       (res) => {
         this.dataSource = res.result.documents;
       },
@@ -46,7 +42,7 @@ export class EmisoresComponent implements OnInit {
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,
-      backdropClass: ["brand-dialog-1"],
+      backdropClass: ['brand-dialog-1']
     });
     dialogRef.afterClosed().subscribe((result?) => {
       if (result?.success === true) {

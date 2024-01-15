@@ -10,7 +10,6 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, from, of, throwError, combineLatest, merge, Subject } from 'rxjs';
 import {
   mergeAll,

@@ -19,7 +19,7 @@ import {
   pluck,
   distinctUntilChanged,
 } from "rxjs/operators";
-import { MatDialog } from "@angular/material/dialog";
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router, ActivatedRoute } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { AuthService } from "src/app/shared/services/auth.service";

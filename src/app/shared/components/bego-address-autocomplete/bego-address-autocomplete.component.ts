@@ -9,7 +9,7 @@ import {
   ElementRef,
 } from "@angular/core";
 import { FormBuilder, FormControl, Validators } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { Observable } from "rxjs";
 import { PinComponent } from "src/app/shared/components/pin/pin.component";

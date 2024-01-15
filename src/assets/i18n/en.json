@@ -26,8 +26,8 @@
     "next-step": "Next Step",
     "create": "Order created successfully",
     "create-order": "Create Order",
-    "continue-to-dropoff":"Continue to Dropoff",
-    "proceed-checkout":"Proceed to checkout",
+    "continue-to-dropoff": "Continue to Dropoff",
+    "proceed-checkout": "Proceed to checkout",
     "phone_text": "Phone",
     "cargo-weight": {
       "title": "Add your cargo weight",
@@ -770,6 +770,17 @@
       "delete-success": "Factura borrada!",
       "delete-error": "Error borrando Factura"
     },
+    "table": {
+      "plataforma": "",
+      "fecha_emision": "Emisión",
+      "emisor": "Emisor",
+      "receptor": "Receptor",
+      "serie": "Serie",
+      "tipo": "Tipo",
+      "status": "Status",
+      "subtotal": "Subtotal",
+      "total": "Total"
+    },
     "filters": {
       "apply": "Aplicar",
       "fechas": "Dates",
@@ -1507,7 +1518,7 @@
     }
   },
   "payments": {
-    "expiration":{
+    "expiration": {
       "paid": "Paid",
       "expired": "Expired",
       "day": "day",
@@ -1594,7 +1605,7 @@
     "view-modal-files": {
       "title": "Vouchers",
       "not-vouchers": "Currently, there are no vouchers available for this order.",
-      "not-upfront": "Currently, there are no upfront payments available for this order."    
+      "not-upfront": "Currently, there are no upfront payments available for this order."
     },
     "bank-details-modal": {
       "title": "Bank details",
@@ -1606,7 +1617,18 @@
       "title": "Chat",
       "not-meessage": "The conversation hasn't started yet.",
       "btn-save": "Send",
-      "placeholder-message": "Leave a message" 
+      "placeholder-message": "Leave a message"
     }
+  },
+  "paginator": {
+    "total": "Total",
+    "of": "of",
+    "nextPage": "Next",
+    "prevPage": "Prev",
+    "itemsPerPage": "Items per page"
+  },
+  "filter": {
+    "input": "Search...",
+    "selector": "Search..."
   }
 }
