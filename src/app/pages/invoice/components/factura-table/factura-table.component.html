@@ -13,19 +13,18 @@
   </mat-card-title> -->
 
   <mat-card-content class="factura-table__content">
-    <!-- [values]="fleetsTableData" -->
-    <!-- [page]="newPageData"
-     -->
     <bego-table
       [loading]="loading"
       [columns]="columns"
       [debounce]="1000"
       [lang]="lang"
+      [page]="newPageData"
       [values]="orderTableData"
       [actions]="actions"
+      (pageChangeEmitter)="changingPage($event)"
       (selectedActionEmitter)="selectingAction($event)">
     </bego-table>
-    <!-- (pageChangeEmitter)="changingPage($event)" -->
+
     <!--  -->
     <!-- <mat-progress-bar
       [style.display]="loading ? 'block' : 'none'"

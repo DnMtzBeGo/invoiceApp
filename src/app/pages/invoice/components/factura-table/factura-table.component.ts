@@ -84,7 +84,6 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   public ngOnChanges(): void {
     this.handleUpdateTable();
-    console.log('values: ', this.orderTableData);
   }
 
   public async ngOnInit() {
@@ -107,6 +106,14 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
       this.dataSource = new MatTableDataSource<TableFactura>(this.orderTableData);
       this.dataSource.sort = this.sort;
     }
+
+    this.newPageData = {
+      index: this.page.pageIndex,
+      total: this.page.total,
+      size: this.page.pageSize
+    };
+
+    console.log('page: ', this.page, this.loading);
   }
 
   public pageChangeEmiter(page: number = 1) {
