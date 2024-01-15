@@ -8,7 +8,7 @@
   font-weight: 600;
 
   &:not(.mat-button-disabled):hover {
-    outline: 1px solid #FFE000;
+    outline: 1px solid #ffe000;
   }
 
   &.mat-button-disabled {
@@ -17,9 +17,9 @@
 }
 
 .mat-flat-button.brand-btn-2 {
-  background: #FFE000;
-  border: 2px solid #FFE000;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 4px 4px 4px #FFEA52, inset -4px -4px 4px #E1C600;
+  background: #ffe000;
+  border: 2px solid #ffe000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 4px 4px 4px #ffea52, inset -4px -4px 4px #e1c600;
   border-radius: 8px;
   color: #040b11;
   font-size: 14px;
@@ -34,7 +34,7 @@
 }
 
 .mat-mini-fab.brand-btn-2 {
-  background: #FFE000;
+  background: #ffe000;
   color: #040b11;
   display: inline-flex;
   align-items: center;
@@ -64,7 +64,7 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 19px;
-    font-family: "Avenir";
+    font-family: 'Avenir';
   }
 
   input.mat-input-element,
@@ -76,7 +76,7 @@
 
   mat-label,
   .mat-radio-label .mat-radio-label-content {
-    font-family: "Avenir";
+    font-family: 'Avenir';
     color: #c1c7d0;
   }
 
@@ -94,7 +94,7 @@
       font-weight: 500;
       font-size: 14px;
       line-height: 19px;
-      font-family: "Avenir";
+      font-family: 'Avenir';
     }
   }
 
@@ -105,7 +105,7 @@
   }
 
   .mat-form-field-outline-thick {
-    color: #FFE000cc;
+    color: #ffe000cc;
 
     .mat-form-field-outline-start,
     .mat-form-field-outline-end,
@@ -124,7 +124,7 @@
   }
 
   &.mat-form-field.mat-focused .mat-select-arrow {
-    color: #FFE000;
+    color: #ffe000;
   }
 
   &.mat-form-field-disabled {
@@ -151,7 +151,7 @@
     }
   }
 
-  &[readonly="true"] {
+  &[readonly='true'] {
     .mat-form-field-outline {
       display: none;
     }
@@ -187,8 +187,7 @@
 
 .mat-menu-panel.brand-menu-1 {
   background: #0a0f14;
-  box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24,
-    inset -2px -2px 4px #050d14;
+  box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
   border-radius: 8px;
 
   .mat-menu-item {
@@ -216,8 +215,7 @@
   padding: 12px 14px;
   color: #ededed;
   background: linear-gradient(270deg, #090d12 5.77%, #0a0f14 100%);
-  box-shadow: 0px 4px 4px rgb(0 0 0 / 70%), inset 0px -4px 4px rgb(0 0 0 / 25%),
-    inset 0px 4px 6px #1c232a;
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 70%), inset 0px -4px 4px rgb(0 0 0 / 25%), inset 0px 4px 6px #1c232a;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 300;
@@ -233,8 +231,7 @@
   padding: 12px 14px;
   color: #ededed;
   background: linear-gradient(270deg, #090d12 5.77%, #0a0f14 100%);
-  box-shadow: 0px 4px 4px rgb(0 0 0 / 70%), inset 0px -4px 4px rgb(0 0 0 / 25%),
-    inset 0px 4px 6px #1c232a;
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 70%), inset 0px -4px 4px rgb(0 0 0 / 25%), inset 0px 4px 6px #1c232a;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 300;
@@ -252,7 +249,7 @@
   }
 
   .mat-progress-bar-fill::after {
-    background-color: #FFE000;
+    background-color: #ffe000;
   }
 }
 
@@ -264,7 +261,7 @@
 
 .mat-progress-spinner.brand-spinner-2 {
   circle {
-    stroke: #FFE000;
+    stroke: #ffe000;
   }
 }
 
@@ -275,7 +272,7 @@ ngx-mat-select-search.brand-select-search-1 {
     font-weight: 500;
     font-size: 14px;
     line-height: 19px;
-    font-family: "Avenir";
+    font-family: 'Avenir';
   }
 }
 
@@ -317,7 +314,7 @@ ngx-mat-select-search.brand-select-search-1 {
   &.mat-active,
   &.mat-active.mat-selected {
     background: rgba(255, 255, 255, 0.03);
-    border-left: 1px solid #FFE000;
+    border-left: 1px solid #ffe000;
   }
 
   &[disabled] {
@@ -341,12 +338,11 @@ ngx-mat-select-search.brand-select-search-1 {
       background: #0a0f14;
       box-shadow: inset 4px 4px 5px #1a1e24, inset -4px -4px 4px #050d14;
       border-radius: 8px 8px 24px 8px;
-      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5))
-        drop-shadow(0px -8px 8px rgba(0, 0, 0, 0.5));
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5)) drop-shadow(0px -8px 8px rgba(0, 0, 0, 0.5));
     }
   }
 
-  &.no-padding{
+  &.no-padding {
     & + * {
       .mat-dialog-container {
         padding: 0px;
@@ -377,8 +373,7 @@ ngx-mat-select-search.brand-select-search-1 {
       background: #0a0f14;
       box-shadow: inset 4px 4px 5px #1a1e24, inset -4px -4px 4px #050d14;
       border-radius: 8px;
-      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5))
-        drop-shadow(0px -8px 8px rgba(0, 0, 0, 0.5));
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5)) drop-shadow(0px -8px 8px rgba(0, 0, 0, 0.5));
     }
   }
 }
@@ -394,7 +389,7 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 
   .mat-header-cell {
-    font-family: "Avenir";
+    font-family: 'Avenir';
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -406,7 +401,7 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 
   .mat-cell {
-    font-family: "Avenir";
+    font-family: 'Avenir';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -418,12 +413,7 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 
   tbody tr:nth-child(2n) {
-    background: linear-gradient(
-      90.03deg,
-      rgba(13, 18, 23, 0.4) 0.86%,
-      rgba(35, 37, 40, 0.163875) 51.72%,
-      rgba(83, 88, 94, 0.08) 99.51%
-    );
+    background: linear-gradient(90.03deg, rgba(13, 18, 23, 0.4) 0.86%, rgba(35, 37, 40, 0.163875) 51.72%, rgba(83, 88, 94, 0.08) 99.51%);
   }
 }
 
@@ -433,7 +423,7 @@ snack-bar-container.brand-snackbar-1 {
   box-shadow: inset 3px 3px 8px 3px #111416;
 
   .mat-simple-snackbar span {
-    color: #FFE000;
+    color: #ffe000;
   }
 }
 
@@ -459,6 +449,5 @@ snack-bar-container.brand-snackbar-1 {
 }
 
 .brand-filter-1 {
-  filter: invert(78%) sepia(16%) saturate(7050%) hue-rotate(1deg)
-    brightness(106%) contrast(103%);
+  filter: invert(78%) sepia(16%) saturate(7050%) hue-rotate(1deg) brightness(106%) contrast(103%);
 }
