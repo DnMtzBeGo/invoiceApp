@@ -175,7 +175,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
     if (factura == void 0) return;
 
     window
-      .fetch(this.URL_BASE + 'invoice/preview_consignment_note', {
+      .fetch(this.URL_BASE + 'invoice/preview', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

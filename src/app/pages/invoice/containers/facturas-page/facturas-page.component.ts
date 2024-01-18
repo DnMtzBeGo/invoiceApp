@@ -1,80 +1,47 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ViewEncapsulation,
-} from "@angular/core";
-import {
-  interval,
-  merge,
-  timer,
-  from,
-  Subject,
-  combineLatest,
-  asapScheduler,
-  of,
-} from "rxjs";
+import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { merge, timer, from, Subject, combineLatest, of } from 'rxjs';
 import {
   mapTo,
   mergeAll,
   pluck,
   debounceTime,
   share,
-  observeOn,
   repeatWhen,
   switchMap,
-  delay,
   map,
-  catchError,
   withLatestFrom,
   tap,
   distinctUntilChanged,
   skip,
   filter,
   takeUntil,
-  startWith,
-} from "rxjs/operators";
-import { MatDialog } from "@angular/material/dialog";
-import { TranslateService } from "@ngx-translate/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { NotificationsService } from "src/app/shared/services/notifications.service";
-import { routes } from "../../consts";
-import { Paginator } from "../../models";
-import {
-  FacturaFiltersComponent,
-  ActionConfirmationComponent,
-} from "../../modals";
-import { FacturaEmitterComponent } from "../../components/factura-emitter/factura-emitter.component";
-import { reactiveComponent } from "src/app/shared/utils/decorators";
-import { ofType, oof } from "src/app/shared/utils/operators.rx";
-import {
-  arrayToObject,
-  object_compare,
-  clone,
-} from "src/app/shared/utils/object";
-import { AuthService } from "src/app/shared/services/auth.service";
+  startWith
+} from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { routes } from '../../consts';
+import { Paginator } from '../../models';
+import { FacturaFiltersComponent, ActionConfirmationComponent } from '../../modals';
+import { FacturaEmitterComponent } from '../../components/factura-emitter/factura-emitter.component';
+import { reactiveComponent } from 'src/app/shared/utils/decorators';
+import { ofType, oof } from 'src/app/shared/utils/operators.rx';
+import { arrayToObject, object_compare, clone } from 'src/app/shared/utils/object';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
-const filterParams = new Set([
-  "fec_inicial",
-  "fec_final",
-  "emisor",
-  "receptor",
-  "tipo_de_comprobante",
-  "uuid",
-  "status",
-]);
+const filterParams = new Set(['fec_inicial', 'fec_final', 'emisor', 'receptor', 'tipo_de_comprobante', 'uuid', 'status']);
 
 const status2observe = new Set([2, 4]);
 const observeTime = 5000;
-const shouldObserve = (facturas) =>
-  facturas.some((factura) => status2observe.has(factura.status));
+const shouldObserve = (facturas) => facturas.some((factura) => status2observe.has(factura.status));
 
 @Component({
-  selector: "app-facturas-page",
-  templateUrl: "./facturas-page.component.html",
-  styleUrls: ["./facturas-page.component.scss"],
+  selector: 'app-facturas-page',
+  templateUrl: './facturas-page.component.html',
+  styleUrls: ['./facturas-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class FacturasPageComponent implements OnInit {
   public routes: typeof routes = routes;
@@ -100,7 +67,7 @@ export class FacturasPageComponent implements OnInit {
     defaultEmisor?: unknown[];
     template?: string;
     searchAction?: {
-      type: "template";
+      type: 'template';
       search: string;
     };
     searchLoading?: boolean;
@@ -109,24 +76,13 @@ export class FacturasPageComponent implements OnInit {
     };
   };
 
-  facturasEmitter = new Subject<
-    [
-      (
-        | "refresh"
-        | "filters:set"
-        | "template:search"
-        | "template:set"
-        | "refresh:defaultEmisor"
-      ),
-      unknown?
-    ]
-  >();
+  facturasEmitter = new Subject<['refresh' | 'filters:set' | 'template:search' | 'template:set' | 'refresh:defaultEmisor', unknown?]>();
 
   paginator: Paginator = {
     pageIndex: +this.route.snapshot.queryParams.page || 1,
     pageSize: +this.route.snapshot.queryParams.limit || 10,
     pageTotal: 1,
-    pageSearch: "",
+    pageSearch: ''
   };
 
   constructor(
@@ -134,33 +90,24 @@ export class FacturasPageComponent implements OnInit {
     public route: ActivatedRoute,
     private matDialog: MatDialog,
     private apiRestService: AuthService,
-    private translateService: TranslateService,
-    private notificationsService: NotificationsService
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
-    const loadDataAction$ = merge(
-      oof(""),
-      this.facturasEmitter.pipe(ofType("refresh"))
-    );
+    const loadDataAction$ = merge(oof(''), this.facturasEmitter.pipe(ofType('refresh')));
 
     const tiposComprobante$ = this.fetchTipoComprobante().pipe(share());
 
     const facturaStatus$ = this.fetchFacturaStatus().pipe(share());
 
-    const params$ = merge(
-      oof(this.route.snapshot.queryParams),
-      this.route.queryParams.pipe(skip(1), debounceTime(500))
-    ).pipe(
+    const params$ = merge(oof(this.route.snapshot.queryParams), this.route.queryParams.pipe(skip(1), debounceTime(500))).pipe(
       distinctUntilChanged(object_compare),
       map((params: any) => ({
         ...params,
         limit: +params.limit || this.paginator.pageSize,
         page: +params.page || this.paginator.pageIndex,
-        fec_inicial: params.fec_inicial
-          ? this.decodeFecha(params.fec_inicial)
-          : null,
-        fec_final: params.fec_final ? this.decodeFecha(params.fec_final) : null,
+        fec_inicial: params.fec_inicial ? this.decodeFecha(params.fec_inicial) : null,
+        fec_final: params.fec_final ? this.decodeFecha(params.fec_final) : null
       })),
       tap((params) => {
         this.paginator.pageSize = Number(params.limit);
@@ -169,87 +116,68 @@ export class FacturasPageComponent implements OnInit {
       share()
     );
 
-    const facturasRequest$ = combineLatest([loadDataAction$, params$]).pipe(
-      pluck("1"),
-      share()
-    );
+    const facturasRequest$ = combineLatest([loadDataAction$, params$]).pipe(pluck('1'), share());
 
     const facturas$ = combineLatest(
-      tiposComprobante$.pipe(map(arrayToObject("clave", "descripcion"))),
-      facturaStatus$.pipe(map(arrayToObject("clave", "nombre"))),
+      tiposComprobante$.pipe(map(arrayToObject('clave', 'descripcion'))),
+      facturaStatus$.pipe(map(arrayToObject('clave', 'nombre'))),
       facturasRequest$.pipe(
         switchMap(this.fetchFacturas),
         tap((result) => {
           this.paginator.pageTotal = result.pages;
           this.paginator.total = result.size;
         }),
-        pluck("invoices")
+        pluck('invoices')
       )
     ).pipe(
       map(([tiposComprobante, facturaStatus, facturas]: any) =>
         facturas.map((factura: any) => ({
           ...factura,
-          tipo_de_comprobante_:
-            tiposComprobante[factura.tipo_de_comprobante] ||
-            factura.tipo_de_comprobante,
-          status_: facturaStatus[factura.status] || factura.status,
+          tipo_de_comprobante_: tiposComprobante[factura.tipo_de_comprobante] || factura.tipo_de_comprobante,
+          status_: facturaStatus[factura.status] || factura.status
         }))
       ),
       share()
     );
 
-    const facturasLoading$ = merge(
-      facturasRequest$.pipe(mapTo(true)),
-      facturas$.pipe(mapTo(false))
-    );
+    const facturasLoading$ = merge(facturasRequest$.pipe(mapTo(true)), facturas$.pipe(mapTo(false)));
 
     const refreshTimer$ = facturas$.pipe(
       switchMap((facturas) =>
         shouldObserve(facturas)
           ? timer(observeTime).pipe(
               mapTo(1),
-              tap(() => this.facturasEmitter.next(["refresh"]))
+              tap(() => this.facturasEmitter.next(['refresh']))
             )
           : of(0)
       )
     );
 
     // EMISORES
-    const defaultEmisor$ = this.fetchEmisores().pipe(
-      repeatWhen(() =>
-        this.facturasEmitter.pipe(ofType("refresh:defaultEmisor"))
-      )
-    );
+    const defaultEmisor$ = this.fetchEmisores().pipe(repeatWhen(() => this.facturasEmitter.pipe(ofType('refresh:defaultEmisor'))));
 
     //TEMPLATES
-    const emptySearch = (search: any) => search.search === "";
+    const emptySearch = (search: any) => search.search === '';
     const validSearch = (search: any) => !emptySearch(search);
 
-    const template$ = oof("");
+    const template$ = oof('');
 
     const searchAction$ = merge(
       this.facturasEmitter.pipe(
-        ofType("template:search"),
-        map((search: string) => ({ type: "template" as const, search }))
+        ofType('template:search'),
+        map((search: string) => ({ type: 'template' as const, search }))
       )
     ).pipe(share());
 
-    const cancelSearchAction$ = merge(
-      searchAction$.pipe(filter(emptySearch)),
-      this.facturasEmitter.pipe(ofType("template:set"))
-    );
+    const cancelSearchAction$ = merge(searchAction$.pipe(filter(emptySearch)), this.facturasEmitter.pipe(ofType('template:set')));
 
     const validSearch$ = searchAction$.pipe(
       filter(validSearch),
-      switchMap((search) =>
-        timer(500).pipe(takeUntil(cancelSearchAction$), mapTo(search))
-      )
+      switchMap((search) => timer(500).pipe(takeUntil(cancelSearchAction$), mapTo(search)))
     );
 
     const searchRequest$ = validSearch$.pipe(
-      switchMap((search) =>
-        this.searchTemplate(search).pipe(takeUntil(cancelSearchAction$))
-      ),
+      switchMap((search) => this.searchTemplate(search).pipe(takeUntil(cancelSearchAction$))),
       share()
     );
 
@@ -264,7 +192,7 @@ export class FacturasPageComponent implements OnInit {
       searchRequest$.pipe(
         withLatestFrom(searchAction$),
         map(([requestData, search]: any) => ({
-          [search.type]: requestData,
+          [search.type]: requestData
         }))
       ),
       cancelSearchAction$.pipe(mapTo({}))
@@ -281,7 +209,7 @@ export class FacturasPageComponent implements OnInit {
       template: template$,
       searchAction: searchAction$,
       searchLoading: searchLoading$,
-      receptorSearch: receptorSearch$,
+      receptorSearch: receptorSearch$
     });
   }
 
@@ -292,10 +220,8 @@ export class FacturasPageComponent implements OnInit {
     const fechas =
       (params.fec_inicial &&
         params.fec_final && {
-          fec_inicial: params.fec_inicial ? String(params.fec_inicial) : "",
-          fec_final: params.fec_final
-            ? (params.fec_final.setHours(23, 59, 59), String(params.fec_final))
-            : "",
+          fec_inicial: params.fec_inicial ? String(params.fec_inicial) : '',
+          fec_final: params.fec_final ? (params.fec_final.setHours(23, 59, 59), String(params.fec_final)) : ''
         }) ||
       {};
 
@@ -303,34 +229,35 @@ export class FacturasPageComponent implements OnInit {
     delete params.fec_final;
 
     return from(
-      this.apiRestService.apiRestGet("invoice", {
-        loader: "false",
+      this.apiRestService.apiRestGet('invoice', {
+        loader: 'false',
         ...params,
-        ...fechas,
+        ...fechas
       })
-    ).pipe(mergeAll(), pluck("result"));
+    ).pipe(mergeAll(), pluck('result'));
   };
 
   fetchTipoComprobante() {
     return from(
-      this.apiRestService.apiRestGet("invoice/catalogs/tipos-de-comprobante", {
-        loader: "false",
+      this.apiRestService.apiRestGet('invoice/catalogs/tipos-de-comprobante', {
+        loader: 'false'
       })
-    ).pipe(mergeAll(), pluck("result"));
+    ).pipe(mergeAll(), pluck('result'));
   }
 
   fetchFacturaStatus = () => {
     return from(
-      this.apiRestService.apiRestGet("invoice/catalogs/statuses", {
-        loader: "false",
+      this.apiRestService.apiRestGet('invoice/catalogs/statuses', {
+        loader: 'false',
+        minimal: 1
       })
-    ).pipe(mergeAll(), pluck("result"));
+    ).pipe(mergeAll(), pluck('result'));
   };
 
   fetchEmisores() {
     return from(
-      this.apiRestService.apiRestGet("invoice/emitters", {
-        loader: "false",
+      this.apiRestService.apiRestGet('invoice/emitters', {
+        loader: 'false'
       })
     ).pipe(
       mergeAll(),
@@ -348,12 +275,12 @@ export class FacturasPageComponent implements OnInit {
     );
   }
 
-  searchTemplate(search: { type: "template"; search: string }) {
+  searchTemplate(search: { type: 'template'; search: string }) {
     const endpoints = {
-      template: "invoice/get_drafts",
+      template: 'invoice/get_drafts'
     };
     const keys = {
-      template: "search",
+      template: 'search'
     };
 
     return from(
@@ -361,14 +288,14 @@ export class FacturasPageComponent implements OnInit {
         JSON.stringify({
           pagination: {
             size: 10,
-            page: 1,
+            page: 1
           },
-          [keys[search.type]]: search.search,
+          [keys[search.type]]: search.search
         }),
         endpoints[search.type],
-        { loader: "false" }
+        { loader: 'false' }
       )
-    ).pipe(mergeAll(), pluck("result"));
+    ).pipe(mergeAll(), pluck('result'));
   }
 
   // MODALS
@@ -379,16 +306,16 @@ export class FacturasPageComponent implements OnInit {
       data: {
         tiposComprobante: this.vm.tiposComprobante,
         facturaStatus: this.vm.facturaStatus,
-        params: clone(this.vm.params),
+        params: clone(this.vm.params)
       },
       restoreFocus: false,
       autoFocus: false,
       // panelClass: [""],
       // hasBackdrop: true,
-      backdropClass: ["brand-dialog-1", "dialog-filters"],
+      backdropClass: ['brand-dialog-1', 'dialog-filters'],
       position: {
-        top: "12.5rem",
-      },
+        top: '12.5rem'
+      }
     });
 
     // TODO: false/positive when close event
@@ -401,9 +328,9 @@ export class FacturasPageComponent implements OnInit {
         relativeTo: this.route,
         queryParams: {
           ...params,
-          page: 1,
+          page: 1
         },
-        queryParamsHandling: "merge",
+        queryParamsHandling: 'merge'
       });
     });
   }
@@ -411,18 +338,12 @@ export class FacturasPageComponent implements OnInit {
   noEmisorAlert() {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
-        modalTitle: this.translateService.instant(
-          "invoice.invoices.noemisor-title"
-        ),
-        modalMessage: this.translateService.instant(
-          "invoice.invoices.noemisor-message"
-        ),
-        confirm: this.translateService.instant(
-          "invoice.invoices.noemisor-confirm"
-        ),
+        modalTitle: this.translateService.instant('invoice.invoices.noemisor-title'),
+        modalMessage: this.translateService.instant('invoice.invoices.noemisor-message'),
+        confirm: this.translateService.instant('invoice.invoices.noemisor-confirm')
       },
       restoreFocus: false,
-      backdropClass: ["brand-dialog-1"],
+      backdropClass: ['brand-dialog-1']
     });
 
     // TODO: false/positive when close event
@@ -437,12 +358,12 @@ export class FacturasPageComponent implements OnInit {
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,
-      backdropClass: ["brand-dialog-1"],
+      backdropClass: ['brand-dialog-1']
     });
 
     dialogRef.afterClosed().subscribe((result?) => {
       if (result?.success === true) {
-        this.facturasEmitter.next(["refresh:defaultEmisor"]);
+        this.facturasEmitter.next(['refresh:defaultEmisor']);
       }
     });
   }
@@ -461,7 +382,5 @@ export class FacturasPageComponent implements OnInit {
   };
 
   filtersCount = (params = {}) =>
-    Object.keys(params).filter(
-      (filterName) => filterParams.has(filterName) && params[filterName]
-    ).length || null;
+    Object.keys(params).filter((filterName) => filterParams.has(filterName) && params[filterName]).length || null;
 }

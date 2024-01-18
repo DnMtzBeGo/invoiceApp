@@ -1138,7 +1138,7 @@
       "transporte": "Transporte",
       "ubicaciones": "Ubicaciones",
       "mercancias": "Mercancías",
-      "figura-transporte": "Figura del Transporte",
+      "figura-transporte": "Figura de Transporte",
 
       "success-title": "Carta porte",
       "success-message": "La carta porte se ha guardado de manera satisfactoria",
@@ -1237,7 +1237,7 @@
       "table-pedimento": "Pedimento"
     },
     "figura": {
-      "figura-transporte": "Figura del transporte",
+      "figura-transporte": "Figura de Transporte",
       "tipo-figura": "Tipo de Figura",
       "rfc-figura": "RFC",
       "residencia-figura": "Residencia Fiscal",
