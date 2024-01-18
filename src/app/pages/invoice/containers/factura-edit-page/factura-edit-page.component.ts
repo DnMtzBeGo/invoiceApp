@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { of, timer, Subject, merge, from, combineLatest, NEVER, Observable, asapScheduler, animationFrameScheduler } from 'rxjs';
+import { of, timer, Subject, merge, from, combineLatest, Observable, asapScheduler, animationFrameScheduler } from 'rxjs';
 import {
   observeOn,
   mapTo,
   tap,
   filter,
-  debounceTime,
   switchMap,
   share,
   map,
@@ -18,7 +17,6 @@ import {
   distinctUntilChanged,
   take,
   scan,
-  catchError,
   repeatWhen
 } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
@@ -377,6 +375,9 @@ export class FacturaEditPageComponent implements OnInit {
       ),
       form$
     ).pipe(map(facturaPermissions), pluck('readonly'), distinctUntilChanged());
+
+    this.fetchCatalogosSAT().subscribe((c) => console.log(c));
+
     const catalogos$ = this.fetchCatalogosSAT().pipe(simpleFilters(this.formEmitter.pipe(ofType('catalogos:search'), share())), share());
     const helpTooltips$ = this.fetchHelpTooltips();
     const series$ = emisor$.pipe(
@@ -834,8 +835,6 @@ export class FacturaEditPageComponent implements OnInit {
   }
 
   fetchCatalogosSAT() {
-    // h7xma29J$
-    // AUZM911206E49
     return from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(mergeAll(), pluck('result'), map(optimizeInvoiceCatalog));
   }
 
