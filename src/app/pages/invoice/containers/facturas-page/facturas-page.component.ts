@@ -1,17 +1,14 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
-import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of } from 'rxjs';
+import { merge, timer, from, Subject, combineLatest, of } from 'rxjs';
 import {
   mapTo,
   mergeAll,
   pluck,
   debounceTime,
   share,
-  observeOn,
   repeatWhen,
   switchMap,
-  delay,
   map,
-  catchError,
   withLatestFrom,
   tap,
   distinctUntilChanged,
@@ -23,7 +20,6 @@ import {
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { routes } from '../../consts';
 import { Paginator } from '../../models';
 import { FacturaFiltersComponent, ActionConfirmationComponent } from '../../modals';
@@ -83,12 +79,7 @@ export class FacturasPageComponent implements OnInit {
 
   facturasEmitter = new Subject<['refresh' | 'filters:set' | 'template:search' | 'template:set' | 'refresh:defaultEmisor', unknown?]>();
 
-  paginator: Paginator = {
-    pageIndex: +this.route.snapshot.queryParams.page || 1,
-    pageSize: +this.route.snapshot.queryParams.limit || 10,
-    pageTotal: 1,
-    pageSearch: ''
-  };
+  public paginator: Paginator;
 
   p = facturaPermissions;
 
@@ -98,10 +89,16 @@ export class FacturasPageComponent implements OnInit {
     private matDialog: MatDialog,
     private apiRestService: AuthService,
     private translateService: TranslateService,
-    private notificationsService: NotificationsService,
     private cd: ChangeDetectorRef,
     private datePipe: DatePipe
-  ) {}
+  ) {
+    this.paginator = {
+      pageIndex: +this.route.snapshot.queryParams.page || 1,
+      pageSize: +this.route.snapshot.queryParams.limit || 10,
+      pageTotal: 1,
+      pageSearch: ''
+    };
+  }
 
   ngOnInit(): void {
     const loadDataAction$ = merge(oof(''), this.facturasEmitter.pipe(ofType('refresh')));
