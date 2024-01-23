@@ -20,20 +20,7 @@ export class Step4Component implements OnInit {
   cfdiOptions: any[] = [];
   taxRegimeOptions: any[] = [];
 
-  step4Form: FormGroup = this.formBuilder.group({
-    address: ['', Validators.required],
-    company: ['', Validators.required],
-    rfc: [
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(12),
-        Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/)
-      ])
-    ],
-    cfdi: ['', Validators.required],
-    tax_regime: ['', Validators.required]
-  });
+  step4Form: FormGroup;
 
   pickupContent: BegoCheckoutCardContent[] = [
     { propertyName: 'Full name', value: '' },
@@ -133,7 +120,22 @@ export class Step4Component implements OnInit {
     private cfdiService: CfdiService,
     private apiRestService: AuthService,
     private stepperService: StepperService
-  ) {}
+  ) {
+    this.step4Form = this.formBuilder.group({
+      address: ['', Validators.required],
+      company: ['', Validators.required],
+      rfc: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(12),
+          Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/)
+        ])
+      ],
+      cfdi: ['', Validators.required],
+      tax_regime: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.fetchCFDI();
@@ -149,8 +151,8 @@ export class Step4Component implements OnInit {
 
     this.updateCardTitles();
     this.translateService.onLangChange.subscribe(() => {
-      this.updateCardTitles()
-    })
+      this.updateCardTitles();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {

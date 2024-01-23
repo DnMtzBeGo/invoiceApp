@@ -1,42 +1,35 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { GoogleLocation } from "src/app/shared/interfaces/google-location";
-import { Router, NavigationEnd } from "@angular/router";
-import {
-  Subscription,
-  of,
-  Subject,
-  merge,
-  fromEvent,
-  interval
-} from "rxjs";
-import { tap, filter, mapTo, exhaustMap, takeUntil, catchError } from 'rxjs/operators'
-import { AuthService } from "src/app/shared/services/auth.service";
-import { PlacesService } from "src/app/shared/services/places.service";
-import { GoogleMapsService } from "src/app/shared/services/google-maps/google-maps.service";
-import { HeaderService } from "./services/header.service";
-import { ofType } from "src/app/shared/utils/operators.rx";
+import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription, of, Subject, merge, fromEvent, interval } from 'rxjs';
+import { tap, filter, mapTo, exhaustMap, takeUntil, catchError } from 'rxjs/operators';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { PlacesService } from 'src/app/shared/services/places.service';
+import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
+import { HeaderService } from './services/header.service';
+import { ofType } from 'src/app/shared/utils/operators.rx';
 import { CustomMarker } from './custom.marker';
-import { OrderPreview } from "../orders/orders.component";
+import { OrderPreview } from '../orders/orders.component';
 
 declare var google: any;
 // 10 seconds for refreshing map markers
 const markersRefreshTime = 1000 * 20;
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.scss"],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   @Input() locations: GoogleLocation = {
-    pickup: "",
-    dropoff: "",
-    pickupLat: "",
-    pickupLng: "",
-    dropoffLat: "",
-    dropoffLng: "",
+    pickup: '',
+    dropoff: '',
+    pickupLat: '',
+    pickupLng: '',
+    dropoffLat: '',
+    dropoffLng: '',
     pickupPostalCode: 0,
-    dropoffPostalCode: 0,
+    dropoffPostalCode: 0
   };
   datepickup: number;
   datedropoff: number;
@@ -45,14 +38,14 @@ export class HomeComponent implements OnInit {
   headerTransparent: boolean = true;
   showOrderDetails: boolean = false;
 
-  public typeMap: string = "home";
+  public typeMap: string = 'home';
   public imageFromGoogle: any;
   public membersToAssigned: object = {};
   public userWantCP: boolean = false;
   public haveNotFleetMembers: boolean = false;
   public haveFleetMembersErrors: Array<string> = [];
 
-  savedPlaces$ = this.placesService.places$;
+  public savedPlaces$;
 
   // members map logic
   geocoder = new google.maps.Geocoder();
@@ -96,15 +89,15 @@ export class HomeComponent implements OnInit {
     private webService: AuthService,
     public placesService: PlacesService,
     private googlemaps: GoogleMapsService,
-    private headerStyle: HeaderService,
-    private elementRef: ElementRef
+    private headerStyle: HeaderService
   ) {
+    this.placesService.places$;
     this.headerStyle.changeHeader(this.headerTransparent);
     this.subs.add(
       this.router.events.subscribe((res) => {
-        if (res instanceof NavigationEnd && res.url === "/home") {
+        if (res instanceof NavigationEnd && res.url === '/home') {
           let data = this.router.getCurrentNavigation()?.extras.state;
-          if (data && data.hasOwnProperty("draft")) {
+          if (data && data.hasOwnProperty('draft')) {
             this.draftData = data.draft;
             this.locations.pickup = data.draft.pickup.address;
             this.locations.dropoff = data.draft.dropoff.address;
@@ -116,17 +109,12 @@ export class HomeComponent implements OnInit {
             this.locations.dropoffPostalCode = data.draft.dropoff.zip_code;
             this.locations.place_id_pickup = data.draft.pickup.place_id_pickup;
             this.locations.place_id_dropoff = data.draft.dropoff.place_id_dropoff;
-            this.typeMap = "draft";
-            window.requestAnimationFrame(() =>
-              this.googlemaps.updateDataLocations(this.locations)
-            );
+            this.typeMap = 'draft';
+            window.requestAnimationFrame(() => this.googlemaps.updateDataLocations(this.locations));
             /* this.showNewOrderCard(); */
           } else {
-            window.requestAnimationFrame(() =>
-              this.mapEmitter.next(['center'])
-            );
+            window.requestAnimationFrame(() => this.mapEmitter.next(['center']));
           }
-
         }
       })
     );
@@ -137,23 +125,25 @@ export class HomeComponent implements OnInit {
 
     // Set the name of the hidden property and the change event for visibility
     let visibilityChange;
-    if (typeof (document as any).hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
-      visibilityChange = "visibilitychange";
-    } else if (typeof (document as any).msHidden !== "undefined") {
-      visibilityChange = "msvisibilitychange";
-    } else if (typeof (document as any).webkitHidden !== "undefined") {
-      visibilityChange = "webkitvisibilitychange";
+    if (typeof (document as any).hidden !== 'undefined') {
+      // Opera 12.10 and Firefox 18 and later support
+      visibilityChange = 'visibilitychange';
+    } else if (typeof (document as any).msHidden !== 'undefined') {
+      visibilityChange = 'msvisibilitychange';
+    } else if (typeof (document as any).webkitHidden !== 'undefined') {
+      visibilityChange = 'webkitvisibilitychange';
     }
 
-    const pauseApp$ = fromEvent(document, visibilityChange)
-      .pipe(filter(() => document.visibilityState === "hidden"));
-    const resumeApp$ = fromEvent(document, visibilityChange)
-      .pipe(filter(() => document.visibilityState === "visible"));
+    const pauseApp$ = fromEvent(document, visibilityChange).pipe(filter(() => document.visibilityState === 'hidden'));
+    const resumeApp$ = fromEvent(document, visibilityChange).pipe(filter(() => document.visibilityState === 'visible'));
 
     this.subs.add(
       merge(
         this.mapEmitter.pipe(ofType('center'), mapTo(false)),
-        resumeApp$.pipe(filter(() => this.showFleetMap), mapTo(false)),
+        resumeApp$.pipe(
+          filter(() => this.showFleetMap),
+          mapTo(false)
+        ),
         this.mapEmitter.pipe(
           ofType('startReload'),
           exhaustMap(() =>
@@ -166,8 +156,8 @@ export class HomeComponent implements OnInit {
                   this.mapEmitter.pipe(
                     ofType('center'),
                     tap(() => {
-                      this.isMapDirty = false
-                    }),
+                      this.isMapDirty = false;
+                    })
                   )
                 )
               )
@@ -188,17 +178,17 @@ export class HomeComponent implements OnInit {
       destinations: [
         {
           type: 'pickup',
-          location: await this.getLocationId(this.locations.place_id_pickup),
+          location: await this.getLocationId(this.locations.place_id_pickup)
         },
         {
           type: 'dropoff',
-          location: await this.getLocationId(this.locations.place_id_dropoff),
-        },
+          location: await this.getLocationId(this.locations.place_id_dropoff)
+        }
       ],
       stamp: this.userWantCP,
       type: 'FTL',
       target: 'carriers',
-      origin: 'web',
+      origin: 'web'
     };
 
     const req = await this.webService.apiRest(JSON.stringify(draftPayload), 'orders/create_draft', { apiVersion: 'v1.1' });
@@ -215,15 +205,11 @@ export class HomeComponent implements OnInit {
   private async getLocationId(place_id: string): Promise<string> {
     const payload = { place_id };
 
-    const req = await this.webService.apiRestPut(
-      JSON.stringify(payload),
-      'orders/locations',
-      { apiVersion: 'v1.1', loader: false, }
-    )
+    const req = await this.webService.apiRestPut(JSON.stringify(payload), 'orders/locations', { apiVersion: 'v1.1', loader: false });
 
     const res = await req.toPromise();
-    return res.result._id
-  };
+    return res.result._id;
+  }
 
   updateLocations(data: GoogleLocation) {
     this.locations = data;
@@ -244,7 +230,7 @@ export class HomeComponent implements OnInit {
   }
 
   public getMembersToAssignedOrder(event: Event) {
-    this.membersToAssigned = {...event};
+    this.membersToAssigned = { ...event };
   }
 
   public getUserWantCP(event: boolean) {
@@ -257,9 +243,8 @@ export class HomeComponent implements OnInit {
         loader: cleanRefresh ? 'false' : 'true'
       })
     )
-    .pipe(catchError(()=>of({})))
-    .subscribe(
-      (res) => {
+      .pipe(catchError(() => of({})))
+      .subscribe((res) => {
         if (res.status === 200 && res.result) {
           // When members exist on the fleet, it saves them on this array
           this.markersFromService = [];
@@ -286,7 +271,7 @@ export class HomeComponent implements OnInit {
           this.haveNotFleetMembers = !res.result.trailers || !res.result.trucks;
 
           if (res.result.hasOwnProperty('errors') && res.result.errors.length > 0) {
-           this.haveFleetMembersErrors = res.result.errors;
+            this.haveFleetMembersErrors = res.result.errors;
           }
         }
 
@@ -302,15 +287,13 @@ export class HomeComponent implements OnInit {
         if (userRole && this.markersFromService.length > 0) {
           this.initMap(cleanRefresh);
           this.showFleetMap = true;
-        }
-        else {
+        } else {
           this.showFleetMap = false;
           // this.showMap(cleanRefresh);
         }
 
         if (userRole && userRole !== 1) this.mapEmitter.next(['startReload']);
-      }
-    );
+      });
   }
 
   // showMap(cleanRefresh: boolean) {
@@ -406,21 +389,20 @@ export class HomeComponent implements OnInit {
           // console.log('zoom:', this.zoom);
         });
 
-        this.mapRef.nativeElement
-          .addEventListener(
-            'mousewheel',
-            (event) => {
-              // zoom in
-              if (this.map.getZoom() + 1 <= this.maxZoom && !(event.deltaY > 1)) {
-                this.isMapDirty = true;
-              }
-              // zoom out
-              else if (event.deltaY > 1) {
-                this.isMapDirty = true;
-              }
-            },
-            true
-          );
+        this.mapRef.nativeElement.addEventListener(
+          'mousewheel',
+          (event) => {
+            // zoom in
+            if (this.map.getZoom() + 1 <= this.maxZoom && !(event.deltaY > 1)) {
+              this.isMapDirty = true;
+            }
+            // zoom out
+            else if (event.deltaY > 1) {
+              this.isMapDirty = true;
+            }
+          },
+          true
+        );
       });
     }
 
@@ -431,7 +413,7 @@ export class HomeComponent implements OnInit {
         : new google.maps.Map(this.mapRef.nativeElement, {
             zoom: this.zoom,
             maxZoom: this.maxZoom,
-            mapId: "893ce2d924d01422",
+            mapId: '893ce2d924d01422',
             disableDefaultUI: true,
             backgroundColor: '#040b12',
             keyboardShortcuts: false,
@@ -451,14 +433,10 @@ export class HomeComponent implements OnInit {
 
     for (var i = 0; i < this.markersFromService.length; i++) {
       let changePic = this.markersFromService[i].icon.split('');
-      if (changePic[changePic.length - 1] === '/')
-        this.markersFromService[i].icon = '../assets/images/user-outline.svg';
+      if (changePic[changePic.length - 1] === '/') this.markersFromService[i].icon = '../assets/images/user-outline.svg';
 
       const marker = new CustomMarker(
-        new google.maps.LatLng(
-          this.markersFromService[i].position.lat,
-          this.markersFromService[i].position.lng
-        ),
+        new google.maps.LatLng(this.markersFromService[i].position.lat, this.markersFromService[i].position.lng),
         this.map,
         this.markersFromService[i].icon,
         this.markersFromService[i].state,

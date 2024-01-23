@@ -61,28 +61,7 @@ export class OrdersComponent implements OnInit {
   requestScreenshotOrderMap: FormData = new FormData();
 
   creationTime: any;
-  ordersSteps: Step[] = [
-    {
-      text: '1',
-      nextBtnTxt: this.translateService.instant('orders.next-step')
-    },
-    {
-      text: '2',
-      nextBtnTxt: this.translateService.instant('orders.next-step')
-    },
-    {
-      text: '3',
-      nextBtnTxt: this.translateService.instant('orders.next-step')
-    },
-    {
-      text: '4',
-      nextBtnTxt: this.translateService.instant('orders.next-step')
-    },
-    {
-      text: '5',
-      nextBtnTxt: this.translateService.instant('orders.create-order')
-    }
-  ];
+  ordersSteps: Step[];
 
   hazardousFile?: File;
   hazardousFileAWS: object = {};
@@ -185,6 +164,9 @@ export class OrdersComponent implements OnInit {
   public thumbnailMap: Array<any> = [];
   public thumbnailMapFile: Array<any> = [];
 
+  public typeOrder: string;
+  public btnStatusNext: boolean = false;
+
   @ViewChild(BegoStepper) stepperRef: BegoStepper;
   @ViewChild(BegoMarks) marksRef: BegoMarks;
 
@@ -215,13 +197,35 @@ export class OrdersComponent implements OnInit {
     private alertService: AlertService,
     private dialog: MatDialog
   ) {
+    this.ordersSteps = [
+      {
+        text: '1',
+        nextBtnTxt: this.translateService.instant('orders.next-step')
+      },
+      {
+        text: '2',
+        nextBtnTxt: this.translateService.instant('orders.next-step')
+      },
+      {
+        text: '3',
+        nextBtnTxt: this.translateService.instant('orders.next-step')
+      },
+      {
+        text: '4',
+        nextBtnTxt: this.translateService.instant('orders.next-step')
+      },
+      {
+        text: '5',
+        nextBtnTxt: this.translateService.instant('orders.create-order')
+      }
+    ];
+
     this.subscription = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
       this.updateStepTexts();
     });
-  }
 
-  typeOrder: string = this.translateService.instant('orders.title-pickup');
-  btnStatusNext: boolean = false;
+    this.typeOrder = this.translateService.instant('orders.title-pickup');
+  }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({

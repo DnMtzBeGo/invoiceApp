@@ -72,22 +72,7 @@ export class Step3Component implements OnInit {
   };
 
   calendar: any;
-  step3Form = new FormGroup({
-    hazardous_material: new FormControl(''),
-    packaging: new FormControl(''),
-    hazardousFile: new FormControl(this.hazardousFile),
-    hazardous_type: new FormControl(''),
-    hazardousUn: new FormControl(''),
-    cargo_goods: new FormControl(''),
-    datepickup: new FormControl(''),
-    timepickup: new FormControl('', Validators.required),
-    unitType: new FormControl(this.unitsData.first.value, Validators.required),
-    cargoWeight: new FormControl([1000]),
-    cargoType: new FormControl(this.cargoType, Validators.required),
-    description: new FormControl('', Validators.required),
-    commodity_quantity: new FormControl(''),
-    satUnitType: new FormControl('')
-  });
+  public step3Form: FormGroup;
 
   satUnitData: Option = {
     value: '',
@@ -100,12 +85,7 @@ export class Step3Component implements OnInit {
 
   fileInfo: any = null;
 
-  fileLang = {
-    labelBrowse: this.translateService.instant('orders.upload-file.label-browse'),
-    labelOr: this.translateService.instant('orders.upload-file.label-or'),
-    btnBrowse: this.translateService.instant('orders.upload-file.btn-browse'),
-    labelMax: this.translateService.instant('orders.upload-file.label-max')
-  };
+  public fileLang;
 
   cargoCatalog: Catalog[] = [];
   packagingCatalog: Catalog[] = [];
@@ -127,6 +107,30 @@ export class Step3Component implements OnInit {
   }
 
   constructor(private translateService: TranslateService, public dialog: MatDialog, private apiRestService: AuthService) {
+    this.step3Form = new FormGroup({
+      hazardous_material: new FormControl(''),
+      packaging: new FormControl(''),
+      hazardousFile: new FormControl(this.hazardousFile),
+      hazardous_type: new FormControl(''),
+      hazardousUn: new FormControl(''),
+      cargo_goods: new FormControl(''),
+      datepickup: new FormControl(''),
+      timepickup: new FormControl('', Validators.required),
+      unitType: new FormControl(this.unitsData.first.value, Validators.required),
+      cargoWeight: new FormControl([1000]),
+      cargoType: new FormControl(this.cargoType, Validators.required),
+      description: new FormControl('', Validators.required),
+      commodity_quantity: new FormControl(''),
+      satUnitType: new FormControl('')
+    });
+
+    this.fileLang = {
+      labelBrowse: this.translateService.instant('orders.upload-file.label-browse'),
+      labelOr: this.translateService.instant('orders.upload-file.label-or'),
+      btnBrowse: this.translateService.instant('orders.upload-file.btn-browse'),
+      labelMax: this.translateService.instant('orders.upload-file.label-max')
+    };
+
     this.minTime.setHours(1);
     this.minTime.setMinutes(0);
 
