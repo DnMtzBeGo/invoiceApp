@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { CartaPorteInfoService } from '../invoice/carta-porte/services/carta-porte-info.service';
@@ -8,7 +8,7 @@ import { CataloguesListService } from '../invoice/carta-porte/services/catalogue
   templateUrl: './commodity.component.html',
   styleUrls: ['./commodity.component.scss']
 })
-export class CommodityComponent implements OnInit {
+export class CommodityComponent implements OnChanges {
   @ViewChild(MatTable) table: MatTable<any>;
   @Input() dataCoin: any;
   @Input() commodityInfo: any;
@@ -60,7 +60,7 @@ export class CommodityComponent implements OnInit {
     });
   }
 
-  setCatalogsFields() {
+  public setCatalogsFields() {
     //Obtener Autocomplete de Bienes Transportados
     this.commodity.controls.bienesTransportados.valueChanges.subscribe(async (val: string) => {
       if (val !== '') {
@@ -110,9 +110,7 @@ export class CommodityComponent implements OnInit {
     });
   }
 
-  async ngOnInit() {}
-
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
+  public async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes.commodityInfo && this.commodityInfo) {
       const {
         bienes_transp,

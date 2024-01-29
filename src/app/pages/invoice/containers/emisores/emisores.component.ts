@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { FacturaEmitterComponent } from '../../components/factura-emitter/factura-emitter.component';
 
 @Component({
@@ -13,12 +11,7 @@ import { FacturaEmitterComponent } from '../../components/factura-emitter/factur
 export class EmisoresComponent implements OnInit {
   dataSource: unknown[];
 
-  constructor(
-    public dialog: MatDialog,
-    private notificationsService: NotificationsService,
-    private apiRestService: AuthService,
-    private translateService: TranslateService
-  ) {
+  constructor(public dialog: MatDialog, private apiRestService: AuthService) {
     this.getEmisores();
   }
 

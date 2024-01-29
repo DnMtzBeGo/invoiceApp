@@ -112,8 +112,6 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
       total: this.page.total,
       size: this.page.pageSize
     };
-
-    console.log('page: ', this.page, this.loading);
   }
 
   public pageChangeEmiter(page: number = 1) {

@@ -1,15 +1,5 @@
-import { of, merge, NEVER, noop, from } from "rxjs";
-import {
-  exhaustMap,
-  pluck,
-  share,
-  mapTo,
-  filter,
-  delay,
-  tap,
-  switchMap,
-  catchError,
-} from "rxjs/operators";
+import { of, merge, NEVER, noop, from } from 'rxjs';
+import { map, exhaustMap, share, filter, delay, tap, switchMap, catchError } from 'rxjs/operators';
 
 const notNull = (val) => val != void 0;
 
@@ -23,7 +13,7 @@ export function makeRequestStream({
   afterSuccess = noop,
   afterSuccessDelay = noop,
   afterError = noop,
-  unwrapData = "result",
+  unwrapData = 'result'
 }: any) {
   fetch$ = fetch$.pipe(share());
 
@@ -34,7 +24,7 @@ export function makeRequestStream({
           return of(
             error.error?.result ??
               error.error ?? {
-                message: error.statusText ?? error.message,
+                message: error.statusText ?? error.message
               }
           );
         })
@@ -43,23 +33,19 @@ export function makeRequestStream({
     share()
   );
 
-  const loading$ = merge(
-    of(false),
-    fetch$.pipe(mapTo(true)),
-    request$.pipe(mapTo(false))
-  );
+  const loading$ = merge(of(false), fetch$.pipe(map(() => true)), request$.pipe(map(() => false)));
 
   const data$ = merge(
     request$.pipe(
       filter((requestData) => requestData[unwrapData] != void 0),
-      pluck(unwrapData),
+      map((unwrapData) => unwrapData),
       tap(afterSuccess)
     ),
-    merge(fetch$, reset$).pipe(mapTo(void 0))
+    merge(fetch$, reset$).pipe(map(() => void 0))
   ).pipe(share());
 
   const error$ = merge(
-    merge(fetch$, reset$).pipe(mapTo(void 0)),
+    merge(fetch$, reset$).pipe(map(() => void 0)),
     request$.pipe(
       filter((requestData) => requestData[unwrapData] == void 0),
       tap(afterError)
@@ -70,15 +56,25 @@ export function makeRequestStream({
     switchMap(() =>
       merge(
         of(void 0),
-        data$.pipe(filter(notNull), mapTo(true)),
+        data$.pipe(
+          filter(notNull),
+          map(() => true)
+        ),
         data$.pipe(
           filter(notNull),
           delay(successDelay),
           tap(afterSuccessDelay),
-          mapTo(void 0)
+          map(() => void 0)
         ),
-        error$.pipe(filter(notNull), mapTo(false)),
-        error$.pipe(filter(notNull), delay(errorDelay), mapTo(void 0))
+        error$.pipe(
+          filter(notNull),
+          map(() => false)
+        ),
+        error$.pipe(
+          filter(notNull),
+          delay(errorDelay),
+          map(() => void 0)
+        )
       )
     )
   );
@@ -87,7 +83,7 @@ export function makeRequestStream({
     loading$,
     data$,
     error$,
-    success$,
+    success$
   };
 }
 

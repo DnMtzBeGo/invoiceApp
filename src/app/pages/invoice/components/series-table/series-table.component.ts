@@ -3,7 +3,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { SerieAttributesInterface } from '../../models/invoice/series';
@@ -28,7 +27,6 @@ export class SeriesTableComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private notificationsService: NotificationsService,
-    private router: Router,
     private apiRestService: AuthService,
     private translateService: TranslateService
   ) {}

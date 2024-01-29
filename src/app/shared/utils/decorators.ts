@@ -1,5 +1,5 @@
 // import { ɵmarkDirty as markDirty } from "@angular/core";
-import { Observable, NEVER, ReplaySubject, from, concat } from 'rxjs';
+import { Observable, ReplaySubject, from, concat } from 'rxjs';
 import { mergeMap, tap, takeUntil } from 'rxjs/operators';
 
 type ObservableDictionary<T> = {

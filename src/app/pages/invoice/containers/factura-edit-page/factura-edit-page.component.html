@@ -1880,7 +1880,7 @@
         <div
           style="grid-column: span 2; color: #fa3c00; font-size: 0.7rem; align-self: flex-end; flex: 1; text-align: right"
           [style.white-space]="vm.form?.error?.length > 0 ? 'pre-line' : 'initial'">
-          {{ showError(vm.formError) || (vm.form?.error?.length > 0 && !vm.readonly ? showError(vm.form) : '') }}
+          {{ showError(vm.formError) || (vm.form?.error?.length > 0 && !vm.readonly ? showError(vm.form ) : '') }}
         </div>
 
         <div *ngIf="model === 'factura'" style="grid-column: span 2">

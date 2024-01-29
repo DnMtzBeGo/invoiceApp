@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { of, timer, Subject, merge, from, combineLatest, NEVER, Observable, asapScheduler, animationFrameScheduler } from 'rxjs';
+import { of, timer, Subject, merge, from, combineLatest, Observable, asapScheduler, animationFrameScheduler } from 'rxjs';
 import {
   observeOn,
-  mapTo,
   tap,
   filter,
-  debounceTime,
   switchMap,
   share,
   map,
@@ -14,12 +12,10 @@ import {
   takeUntil,
   mergeAll,
   startWith,
-  pluck,
   distinctUntilChanged,
   take,
   scan,
-  catchError,
-  repeatWhen
+  repeat
 } from 'rxjs/operators';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -66,6 +62,128 @@ import { SeriesNewComponent } from '../../components/series-new/series-new.compo
 import { BegoSliderDotsOpts } from 'src/app/shared/components/bego-slider-dots/bego-slider-dots.component';
 import { CataloguesListService } from '../../components/invoice/carta-porte/services/catalogues-list.service';
 
+interface VM {
+  // "receptor" | "emisor" | "conceptos" | "complementos";
+  tab?: string;
+  form?: {
+    _id?: string;
+    status?: number;
+    created_at?: string;
+    error?: any[];
+    order?: string;
+    // rfc
+    rfc: string;
+    nombre: string;
+
+    num_reg_id_trib?: string;
+    residencia_fiscal?: string;
+
+    usoCFDI: string;
+    regimen_fiscal: string;
+    // direccion
+    direccion: any;
+    // emisor
+    emisor: {
+      _id?: string;
+      rfc: string;
+      nombre: string;
+      regimen_fiscal: string;
+    };
+    lugar_de_expedicion: any;
+    tipo_de_comprobante: string;
+    moneda: string;
+    tipo_de_cambio?: string;
+    metodo_de_pago: string;
+    forma_de_pago: string;
+    condiciones_de_pago: string;
+    info_extra: string;
+    // conceptos
+    conceptos: unknown[];
+    // documentos relacionados
+    tipo_de_relacion: string;
+    documentos_relacionados: unknown[];
+    // serie
+    serie: string;
+    // links
+    files?: {
+      xml?: string;
+      pdf?: string;
+      pdf_cancelado?: string;
+      xml_acuse?: string;
+    };
+    // template
+    name?: string;
+  };
+  emisor?: {
+    rfc: string;
+    nombre: string;
+    tipoPersona?: 'fisica' | 'moral';
+  };
+  readonly?: boolean;
+  catalogos?: {
+    regimen_fiscal?: unknown[];
+    monedas?: unknown[];
+    metodos_de_pago?: unknown[];
+    formas_de_pago?: unknown[];
+    tipos_de_impuesto?: unknown[];
+    unidades_de_medida?: unknown[];
+    tipos_de_comprobante?: unknown[];
+    tipos_de_relacion?: unknown[];
+    usos_cfdi?: unknown[];
+  };
+  helpTooltips?: any;
+  lugaresExpedicion?: unknown[];
+  series?: unknown[];
+  paises?: unknown[];
+  facturaStatus?: unknown;
+  searchAction?: {
+    type: 'rfc' | 'nombre' | 'rfcEmisor' | 'nombreEmisor' | 'concepto_nombre' | 'cve_sat';
+    search: string;
+    rfc?: string;
+  };
+  receptorSearch?: {
+    rfc?: unknown[];
+    nombre?: unknown[];
+    rfcEmisor?: unknown[];
+    nombreEmisor?: unknown[];
+    concepto_nombre?: unknown[];
+    cve_sat?: unknown[];
+  };
+  tipoPersona?: 'fisica' | 'moral';
+  searchLoading?: boolean;
+  direcciones?: unknown[];
+  direccion?: any;
+  estados?: unknown[];
+  municipios?: unknown[];
+  colonias?: unknown[];
+  tipo_de_comprobante?: any;
+  impuesto?: any;
+  concepto?: {
+    clave: string;
+    nombre: string;
+    cve_sat: string;
+    unidad_de_medida: string;
+    cantidad: number;
+    valor_unitario: number;
+    descuento: number;
+    descripcion: string;
+    impuestos: {
+      cve_sat: string;
+      tipo_factor: string;
+      es_retencion: boolean;
+      tasa_cuota: number;
+    }[];
+    _edit?: number;
+  };
+  conceptos?: unknown[];
+  uuid?: string;
+  formMode?: any;
+  isCartaporte?: any;
+  formLoading?: boolean;
+  formError?: any;
+  formSuccess?: any;
+}
+
 @Component({
   selector: 'app-factura-edit-page',
   templateUrl: './factura-edit-page.component.html',
@@ -79,131 +197,11 @@ export class FacturaEditPageComponent implements OnInit {
   public token = localStorage.getItem('token') || '';
   public tabs = ['receptor', 'emisor', 'conceptos', 'serie', 'complementos'];
 
-  $rx = reactiveComponent(this);
+  public $rx = reactiveComponent(this);
 
-  vm: {
-    // "receptor" | "emisor" | "conceptos" | "complementos";
-    tab?: string;
-    form?: {
-      _id?: string;
-      status?: number;
-      created_at?: string;
-      error?: any[];
-      order?: string;
-      // rfc
-      rfc: string;
-      nombre: string;
+  public vm: VM;
 
-      num_reg_id_trib?: string;
-      residencia_fiscal?: string;
-
-      usoCFDI: string;
-      regimen_fiscal: string;
-      // direccion
-      direccion: any;
-      // emisor
-      emisor: {
-        _id?: string;
-        rfc: string;
-        nombre: string;
-        regimen_fiscal: string;
-      };
-      lugar_de_expedicion: any;
-      tipo_de_comprobante: string;
-      moneda: string;
-      tipo_de_cambio?: string;
-      metodo_de_pago: string;
-      forma_de_pago: string;
-      condiciones_de_pago: string;
-      info_extra: string;
-      // conceptos
-      conceptos: unknown[];
-      // documentos relacionados
-      tipo_de_relacion: string;
-      documentos_relacionados: unknown[];
-      // serie
-      serie: string;
-      // links
-      files?: {
-        xml?: string;
-        pdf?: string;
-        pdf_cancelado?: string;
-        xml_acuse?: string;
-      };
-      // template
-      name?: string;
-    };
-    emisor?: {
-      rfc: string;
-      nombre: string;
-      tipoPersona?: 'fisica' | 'moral';
-    };
-    readonly?: boolean;
-    catalogos?: {
-      regimen_fiscal?: unknown[];
-      monedas?: unknown[];
-      metodos_de_pago?: unknown[];
-      formas_de_pago?: unknown[];
-      tipos_de_impuesto?: unknown[];
-      unidades_de_medida?: unknown[];
-      tipos_de_comprobante?: unknown[];
-      tipos_de_relacion?: unknown[];
-      usos_cfdi?: unknown[];
-    };
-    helpTooltips?: any;
-    lugaresExpedicion?: unknown[];
-    series?: unknown[];
-    paises?: unknown[];
-    facturaStatus?: unknown;
-    searchAction?: {
-      type: 'rfc' | 'nombre' | 'rfcEmisor' | 'nombreEmisor' | 'concepto_nombre' | 'cve_sat';
-      search: string;
-      rfc?: string;
-    };
-    receptorSearch?: {
-      rfc?: unknown[];
-      nombre?: unknown[];
-      rfcEmisor?: unknown[];
-      nombreEmisor?: unknown[];
-      concepto_nombre?: unknown[];
-      cve_sat?: unknown[];
-    };
-    tipoPersona?: 'fisica' | 'moral';
-    searchLoading?: boolean;
-    direcciones?: unknown[];
-    direccion?: any;
-    estados?: unknown[];
-    municipios?: unknown[];
-    colonias?: unknown[];
-    tipo_de_comprobante?: any;
-    impuesto?: any;
-    concepto?: {
-      clave: string;
-      nombre: string;
-      cve_sat: string;
-      unidad_de_medida: string;
-      cantidad: number;
-      valor_unitario: number;
-      descuento: number;
-      descripcion: string;
-      impuestos: {
-        cve_sat: string;
-        tipo_factor: string;
-        es_retencion: boolean;
-        tasa_cuota: number;
-      }[];
-      _edit?: number;
-    };
-    conceptos?: unknown[];
-    uuid?: string;
-    formMode?: any;
-    isCartaporte?: any;
-    formLoading?: boolean;
-    formError?: any;
-    formSuccess?: any;
-  };
-
-  formEmitter = new Subject<
+  public formEmitter = new Subject<
     [
       (
         | 'tab'
@@ -243,7 +241,7 @@ export class FacturaEditPageComponent implements OnInit {
 
   id;
   mode: 'create' | 'update';
-  model: 'factura' | 'template' = this.route.snapshot?.data.model;
+  public model: 'factura' | 'template';
   sliderDotsOpts: BegoSliderDotsOpts = {
     totalElements: this.tabs.length,
     value: 0
@@ -273,6 +271,8 @@ export class FacturaEditPageComponent implements OnInit {
     private cataloguesListService: CataloguesListService,
     private cd: ChangeDetectorRef
   ) {
+    this.model = this.route.snapshot?.data.model;
+
     this.cataloguesListService.countriesSubject.subscribe((data: any[]) => {
       this.paisCatalogue = data;
     });
@@ -334,7 +334,7 @@ export class FacturaEditPageComponent implements OnInit {
         // tap((form) => this.sendEmailFactura(form._id)),
         // tap((form) => this.cancelarFactura(form._id)),
         // tap((form) => this.deleteFactura(form._id)),
-        pluck('emisor'),
+        map((d) => d?.emisor),
         filter(Boolean)
         // tap(({ rfc }) =>
         //   this.emisorConceptos({
@@ -366,7 +366,8 @@ export class FacturaEditPageComponent implements OnInit {
       map((emisor) => ({
         ...emisor,
         tipoPersona: getTipoPersona(emisor.rfc)
-      })),tap(() => {
+      })),
+      tap(() => {
         this.cd.markForCheck();
       }),
       share()
@@ -379,12 +380,16 @@ export class FacturaEditPageComponent implements OnInit {
         }))
       ),
       form$
-    ).pipe(map(facturaPermissions), pluck('readonly'), distinctUntilChanged());
+    ).pipe(
+      map(facturaPermissions),
+      map((d) => d?.readonly),
+      distinctUntilChanged()
+    );
     const catalogos$ = this.fetchCatalogosSAT().pipe(simpleFilters(this.formEmitter.pipe(ofType('catalogos:search'), share())), share());
     const helpTooltips$ = this.fetchHelpTooltips();
     const series$ = emisor$.pipe(
-      pluck('_id'),
-      switchMap((emisorId) => this.fetchSeries(emisorId).pipe(repeatWhen(() => this.formEmitter.pipe(ofType('series:reload')))))
+      map((d) => d['_id']),
+      switchMap((emisorId) => this.fetchSeries(emisorId).pipe(repeat({ delay: () => this.formEmitter.pipe(ofType('series:reload')) })))
     );
     const paises$ = this.fetchPaises();
     const facturaStatus$ = this.fetchFacturaStatus().pipe(map(arrayToObject('clave', 'nombre')), share());
@@ -453,7 +458,12 @@ export class FacturaEditPageComponent implements OnInit {
 
     const validSearch$ = searchAction$.pipe(
       filter(validSearch),
-      switchMap((search) => timer(500).pipe(takeUntil(cancelSearchAction$), mapTo(search)))
+      switchMap((search) =>
+        timer(500).pipe(
+          takeUntil(cancelSearchAction$),
+          map(() => search)
+        )
+      )
     );
 
     const searchRequest$ = validSearch$.pipe(
@@ -463,9 +473,9 @@ export class FacturaEditPageComponent implements OnInit {
 
     const searchLoading$ = merge(
       oof(false),
-      validSearch$.pipe(mapTo(true)),
-      searchRequest$.pipe(mapTo(false)),
-      cancelSearchAction$.pipe(mapTo(false))
+      validSearch$.pipe(map(() => true)),
+      searchRequest$.pipe(map(() => false)),
+      cancelSearchAction$.pipe(map(() => false))
     );
 
     const receptorSearch$ = merge(
@@ -473,15 +483,16 @@ export class FacturaEditPageComponent implements OnInit {
         withLatestFrom(searchAction$),
         map(([requestData, search]: any) => ({
           [search.type]: requestData
-        })),tap(() => {
+        })),
+        tap(() => {
           this.cd.markForCheck();
         })
       ),
-      cancelSearchAction$.pipe(mapTo({}))
+      cancelSearchAction$.pipe(map(() => {}))
     );
 
     const receptorRFC$ = merge(
-      form$.pipe(pluck('rfc')),
+      form$.pipe(map((d) => d?.rfc)),
       this.formEmitter.pipe(ofType('rfc:search')),
       this.formEmitter.pipe(ofType('rfc:set'), map(normalizeRFC))
     ).pipe(share());
@@ -498,7 +509,7 @@ export class FacturaEditPageComponent implements OnInit {
       // }),
       switchMap((rfc) =>
         this.fetchDirecciones(rfc).pipe(
-          tap((direcciones) => {
+          tap((direcciones: any[]) => {
             // auto select direccion
             if (!this.vm.form?.direccion?._id && direcciones?.length === 1) {
               this.formEmitter.next(['direccion:select', direcciones[0]]);
@@ -522,16 +533,17 @@ export class FacturaEditPageComponent implements OnInit {
               // this.formEmitter.next(['direccion:select', fromDirecciones]);
             }
           }),
-          repeatWhen(() => this.formEmitter.pipe(ofType('direcciones:reload')))
+          repeat({ delay: () => this.formEmitter.pipe(ofType('direcciones:reload')) })
         )
-      ),tap(() => {
+      ),
+      tap(() => {
         this.cd.markForCheck();
       }),
       share()
     );
 
     const direccion$ = merge(
-      form$.pipe(pluck('direccion')),
+      form$.pipe(map((d) => d?.direccion)),
       this.formEmitter.pipe(
         ofType('direccion:select'),
         map((direccion: object) => (this.vm.form.direccion = clone(direccion)))
@@ -539,7 +551,10 @@ export class FacturaEditPageComponent implements OnInit {
     );
 
     const estados$ = merge(
-      direccion$.pipe(pluck('pais'), distinctUntilChanged()),
+      direccion$.pipe(
+        map((d) => d?.pais),
+        distinctUntilChanged()
+      ),
       this.formEmitter.pipe(
         ofType('pais:select'),
         tap(() => {
@@ -554,7 +569,10 @@ export class FacturaEditPageComponent implements OnInit {
     ).pipe(switchMap(this.fetchEstados));
 
     const municipios$ = merge(
-      direccion$.pipe(pluck('estado'), distinctUntilChanged()),
+      direccion$.pipe(
+        map((d) => d?.estado),
+        distinctUntilChanged()
+      ),
       this.formEmitter.pipe(
         ofType('estado:select'),
         tap(() => {
@@ -567,7 +585,10 @@ export class FacturaEditPageComponent implements OnInit {
     ).pipe(switchMap(this.fetchMunicipios));
 
     const colonias$ = merge(
-      direccion$.pipe(pluck('cp'), distinctUntilChanged()),
+      direccion$.pipe(
+        map((d) => d?.cp),
+        distinctUntilChanged()
+      ),
       this.formEmitter.pipe(
         ofType('cp:input'),
         tap(() => {
@@ -578,11 +599,11 @@ export class FacturaEditPageComponent implements OnInit {
 
     //EMISOR
     const lugaresExpedicion$ = emisor$.pipe(
-      pluck('rfc'),
+      map((d) => d?.rfc),
       switchMap((rfc) =>
-        this.fetchLugaresExpedicion(rfc).pipe(repeatWhen(() => this.formEmitter.pipe(ofType('lugaresExpedicion:reload'))))
+        this.fetchLugaresExpedicion(rfc).pipe(repeat({ delay: () => this.formEmitter.pipe(ofType('lugaresExpedicion:reload')) }))
       ),
-      tap((lugaresExpedicion) => {
+      tap((lugaresExpedicion: any[]) => {
         if (!this.vm.form?.lugar_de_expedicion?._id && lugaresExpedicion?.length === 1) {
           this.vm.form.lugar_de_expedicion = lugaresExpedicion[0];
         }
@@ -600,7 +621,13 @@ export class FacturaEditPageComponent implements OnInit {
 
     const tipo_de_comprobante$ = combineLatest(
       catalogos$.pipe(take(1)),
-      merge(form$.pipe(pluck('tipo_de_comprobante'), filter(Boolean)), this.formEmitter.pipe(ofType('tipo_de_comprobante:select')))
+      merge(
+        form$.pipe(
+          map((d) => d?.tipo_de_comprobante),
+          filter(Boolean)
+        ),
+        this.formEmitter.pipe(ofType('tipo_de_comprobante:select'))
+      )
     ).pipe(
       map(([catalogos, tipo_de_comprobante]: any) => catalogos.tipos_de_comprobante.find(({ clave }) => clave === tipo_de_comprobante))
     );
@@ -633,7 +660,7 @@ export class FacturaEditPageComponent implements OnInit {
           this.formEmitter.pipe(
             ofType('conceptos:edit'),
             observeOn(animationFrameScheduler),
-            pluck('1'),
+            map((d) => d[1]),
             map((concepto: any) => () => ({
               _edit: 1,
               ...concepto
@@ -668,7 +695,7 @@ export class FacturaEditPageComponent implements OnInit {
     );
 
     const conceptos$ = form$.pipe(
-      pluck('conceptos'),
+      map((d) => d?.conceptos),
       switchMap((conceptos) =>
         merge(
           of(1).pipe(map(() => (state) => clone(conceptos))),
@@ -686,9 +713,13 @@ export class FacturaEditPageComponent implements OnInit {
               this.resetConceptoControls();
             })
           ),
-          merge(this.formEmitter.pipe(ofType('conceptos:remove')), this.formEmitter.pipe(ofType('conceptos:edit'), pluck('0'))).pipe(
-            map((index) => (state) => state.filter((_, i) => i !== index))
-          )
+          merge(
+            this.formEmitter.pipe(ofType('conceptos:remove')),
+            this.formEmitter.pipe(
+              ofType('conceptos:edit'),
+              map((d) => d[0])
+            )
+          ).pipe(map((index) => (state) => state.filter((_, i) => i !== index)))
         ).pipe(
           scan((state, f) => f(state), []),
           tap((conceptos) => (this.vm.form.conceptos = conceptos))
@@ -700,7 +731,10 @@ export class FacturaEditPageComponent implements OnInit {
     const uuid$ = of('');
 
     //FORM SUBMIT
-    const formMode$ = this.formEmitter.pipe(ofType('submit'), pluck('1'));
+    const formMode$ = this.formEmitter.pipe(
+      ofType('submit'),
+      map((d) => d[1])
+    );
     const isCartaporte$ = this.formEmitter.pipe(
       ofType('submit'),
       map((submit) => submit[3] === 'cartaporte')
@@ -730,6 +764,7 @@ export class FacturaEditPageComponent implements OnInit {
         }
       },
       afterError: () => {
+        this.cd.markForCheck();
         // window.scrollTo({
         //   top: 9999999,
         //   behavior: "smooth",
@@ -767,7 +802,7 @@ export class FacturaEditPageComponent implements OnInit {
       formLoading: formLoading$,
       formError: formError$,
       formSuccess: formSuccess$
-    });
+    }) as VM;
   }
 
   onReceiverRfcChanged(event: any) {
@@ -844,7 +879,11 @@ export class FacturaEditPageComponent implements OnInit {
   fetchCatalogosSAT() {
     // h7xma29J$
     // AUZM911206E49
-    return from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(mergeAll(), pluck('result'), map(optimizeInvoiceCatalog));
+    return from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(
+      mergeAll(),
+      map((d) => d?.result),
+      map(optimizeInvoiceCatalog)
+    );
   }
 
   fetchHelpTooltips() {
@@ -856,11 +895,17 @@ export class FacturaEditPageComponent implements OnInit {
       this.apiRestService.apiRestGet('invoice/catalogs/statuses', {
         loader: 'false'
       })
-    ).pipe(mergeAll(), pluck('result'));
+    ).pipe(
+      mergeAll(),
+      map((d) => d?.result)
+    );
   };
 
   fetchDefaultEmisor = () => {
-    return from(this.apiRestService.apiRest('', 'invoice/config')).pipe(mergeAll(), pluck('result', 'emisor'));
+    return from(this.apiRestService.apiRest('', 'invoice/config')).pipe(
+      mergeAll(),
+      map((d) => d?.result?.emisor)
+    );
   };
 
   fetchLugaresExpedicion = (rfc: string) => {
@@ -876,7 +921,11 @@ export class FacturaEditPageComponent implements OnInit {
               loader: 'false'
             }
           )
-        ).pipe(mergeAll(), pluck('result'), startWith(null));
+        ).pipe(
+          mergeAll(),
+          map((d) => d?.result),
+          startWith(null)
+        );
   };
 
   fetchSeries = (id: string) => {
@@ -887,7 +936,11 @@ export class FacturaEditPageComponent implements OnInit {
             loader: 'false',
             emisor: id
           })
-        ).pipe(mergeAll(), pluck('result', 'series'), startWith(null));
+        ).pipe(
+          mergeAll(),
+          map((d) => d?.result?.series),
+          startWith(null)
+        );
   };
 
   fetchPaises() {
@@ -895,9 +948,14 @@ export class FacturaEditPageComponent implements OnInit {
       this.apiRestService.apiRestGet('invoice/catalogs/countries', {
         loader: 'false'
       })
-    ).pipe(mergeAll(), pluck('result'), startWith(null),tap(() => {
-      this.cd.markForCheck();
-    }),);
+    ).pipe(
+      mergeAll(),
+      map((d) => d?.result),
+      startWith(null),
+      tap(() => {
+        this.cd.markForCheck();
+      })
+    );
   }
 
   fetchEstados = (pais?: string) => {
@@ -908,7 +966,11 @@ export class FacturaEditPageComponent implements OnInit {
             loader: 'false',
             pais
           })
-        ).pipe(mergeAll(), pluck('result'), startWith(null));
+        ).pipe(
+          mergeAll(),
+          map((d) => d?.result),
+          startWith(null)
+        );
   };
 
   fetchMunicipios = (estado?: string) => {
@@ -919,7 +981,11 @@ export class FacturaEditPageComponent implements OnInit {
             loader: 'false',
             estado
           })
-        ).pipe(mergeAll(), pluck('result'), startWith(null));
+        ).pipe(
+          mergeAll(),
+          map((d) => d?.result),
+          startWith(null)
+        );
   };
 
   fetchColonias = (cp?: string) => {
@@ -930,7 +996,11 @@ export class FacturaEditPageComponent implements OnInit {
             loader: 'false',
             cp
           })
-        ).pipe(mergeAll(), pluck('result'), startWith(null));
+        ).pipe(
+          mergeAll(),
+          map((d) => d?.result),
+          startWith(null)
+        );
   };
 
   searchReceptor(search) {
@@ -959,7 +1029,10 @@ export class FacturaEditPageComponent implements OnInit {
           limit: 10,
           only_enabled: 1
         })
-      ).pipe(mergeAll(), pluck('result', 'documents'));
+      ).pipe(
+        mergeAll(),
+        map((d) => d?.result?.documents)
+      );
     }
 
     if (['cve_sat'].includes(search.type)) {
@@ -969,7 +1042,10 @@ export class FacturaEditPageComponent implements OnInit {
           [keys[search.type]]: search.search,
           limit: 15
         })
-      ).pipe(mergeAll(), pluck('result', 'productos_servicios'));
+      ).pipe(
+        mergeAll(),
+        map((d) => d?.result?.productos_servicios)
+      );
     }
 
     if (['concepto_nombre'].includes(search.type)) {
@@ -983,7 +1059,10 @@ export class FacturaEditPageComponent implements OnInit {
           endpoints[search.type],
           { loader: 'false' }
         )
-      ).pipe(mergeAll(), pluck('result', 'result'));
+      ).pipe(
+        mergeAll(),
+        map((d) => d?.result?.result)
+      );
     }
 
     return from(
@@ -996,7 +1075,10 @@ export class FacturaEditPageComponent implements OnInit {
         endpoints[search.type],
         { loader: 'false' }
       )
-    ).pipe(mergeAll(), pluck('result'));
+    ).pipe(
+      mergeAll(),
+      map((d) => d?.result)
+    );
   }
 
   fetchDirecciones = (rfc?) => {
@@ -1010,7 +1092,11 @@ export class FacturaEditPageComponent implements OnInit {
             'invoice/branch-offices',
             { loader: 'false' }
           )
-        ).pipe(mergeAll(), pluck('result'), startWith(null));
+        ).pipe(
+          mergeAll(),
+          map((d) => d?.result),
+          startWith(null)
+        );
   };
 
   submitFactura = ([mode, saveMode, factura]) => {

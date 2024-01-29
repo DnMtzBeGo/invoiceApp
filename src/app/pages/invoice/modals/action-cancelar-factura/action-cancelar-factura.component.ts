@@ -31,7 +31,7 @@ export class ActionCancelarFacturaComponent implements OnInit {
       uuid_relacion: string;
     };
     motivos?: unknown[];
-    formLoading?: boolean;
+    formLoading?: unknown;
     formError?: any;
     formSuccess?: any;
   };

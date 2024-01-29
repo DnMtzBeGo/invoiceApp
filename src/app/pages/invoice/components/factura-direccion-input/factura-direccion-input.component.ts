@@ -1,30 +1,6 @@
-import {
-  Component,
-  OnInit,
-  Inject,
-  ViewEncapsulation,
-  ChangeDetectionStrategy,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
-import { Observable, from, of, throwError, combineLatest, merge, Subject } from 'rxjs';
-import {
-  mergeAll,
-  pluck,
-  catchError,
-  distinctUntilChanged,
-  skip,
-  debounceTime,
-  share,
-  switchMap,
-  tap,
-  map,
-  mapTo,
-  startWith
-} from 'rxjs/operators';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Observable, from, of, merge, Subject } from 'rxjs';
+import { mergeAll, pluck, distinctUntilChanged, share, switchMap, tap, map, startWith } from 'rxjs/operators';
 import { reactiveComponent } from 'src/app/shared/utils/decorators';
 import { ofType, oof } from 'src/app/shared/utils/operators.rx';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -35,7 +11,7 @@ import { FacturaDireccion, FacturaPais, FacturaEstado, FacturaMunicipio, Factura
   templateUrl: './factura-direccion-input.component.html',
   styleUrls: ['./factura-direccion-input.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class FacturaDireccionInputComponent implements OnInit {
   $rx = reactiveComponent(this);
