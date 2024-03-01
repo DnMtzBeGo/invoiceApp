@@ -261,7 +261,6 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() public loading: boolean = true;
 
   public changingPage({ index, size }: any) {
-    console.log('page changes: ', index, size);
     this.page.pageIndex = index;
     this.newPageData.index = index;
     if (this.newPageData.size !== size) {
@@ -331,7 +330,7 @@ export class FacturaTableComponent implements OnInit, OnChanges, AfterViewInit {
       id: 'send_by_email',
       label: '',
       translate: 'send-by-email',
-      icon: 'mail'
+      icon: 'email'
     },
     {
       id: 'cancel_invoice',
