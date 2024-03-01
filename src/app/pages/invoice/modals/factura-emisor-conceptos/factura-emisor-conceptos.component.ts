@@ -309,7 +309,7 @@ export class FacturaEmisorConceptosComponent implements OnInit {
     //IMPUESTOS
     const impuestos$ = form$.pipe(
       filter(Boolean),
-      map((d) => d?.impuestos),
+      map((d) => d['impuestos']),
       switchMap((impuestos) =>
         merge(
           of(1).pipe(map(() => (state) => clone(impuestos))),

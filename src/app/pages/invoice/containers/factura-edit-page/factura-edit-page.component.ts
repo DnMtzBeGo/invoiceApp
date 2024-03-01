@@ -15,7 +15,8 @@ import {
   distinctUntilChanged,
   take,
   scan,
-  repeat
+  repeat,
+  repeatWhen
 } from 'rxjs/operators';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -389,7 +390,7 @@ export class FacturaEditPageComponent implements OnInit {
     const helpTooltips$ = this.fetchHelpTooltips();
     const series$ = emisor$.pipe(
       map((d) => d['_id']),
-      switchMap((emisorId) => this.fetchSeries(emisorId).pipe(repeat({ delay: () => this.formEmitter.pipe(ofType('series:reload')) })))
+      switchMap((emisorId) => this.fetchSeries(emisorId).pipe(repeatWhen(() => this.formEmitter.pipe(ofType('series:reload')))))
     );
     const paises$ = this.fetchPaises();
     const facturaStatus$ = this.fetchFacturaStatus().pipe(map(arrayToObject('clave', 'nombre')), share());
@@ -509,7 +510,7 @@ export class FacturaEditPageComponent implements OnInit {
       // }),
       switchMap((rfc) =>
         this.fetchDirecciones(rfc).pipe(
-          tap((direcciones: any[]) => {
+          tap((direcciones: unknown[]) => {
             // auto select direccion
             if (!this.vm.form?.direccion?._id && direcciones?.length === 1) {
               this.formEmitter.next(['direccion:select', direcciones[0]]);
@@ -518,7 +519,7 @@ export class FacturaEditPageComponent implements OnInit {
             else if (
               this.vm.form?.direccion?._id &&
               direcciones != void 0 &&
-              !direcciones.find((direccion) => direccion._id === this.vm.form?.direccion?._id)
+              !direcciones.find((direccion) => direccion['_id'] === this.vm.form?.direccion?._id)
             ) {
               // this.formEmitter.next(['direccion:select', {}]);
             }
@@ -527,13 +528,13 @@ export class FacturaEditPageComponent implements OnInit {
             let fromDirecciones;
             if (
               this.vm.form?.direccion?._id &&
-              (fromDirecciones = direcciones?.find((direccion) => direccion._id === this.vm.form?.direccion?._id)) &&
+              (fromDirecciones = direcciones?.find((direccion) => direccion['_id'] === this.vm.form?.direccion?._id)) &&
               !object_compare(this.vm.form?.direccion, fromDirecciones)
             ) {
               // this.formEmitter.next(['direccion:select', fromDirecciones]);
             }
           }),
-          repeat({ delay: () => this.formEmitter.pipe(ofType('direcciones:reload')) })
+          repeatWhen(() => this.formEmitter.pipe(ofType('direcciones:reload')))
         )
       ),
       tap(() => {
@@ -601,7 +602,7 @@ export class FacturaEditPageComponent implements OnInit {
     const lugaresExpedicion$ = emisor$.pipe(
       map((d) => d?.rfc),
       switchMap((rfc) =>
-        this.fetchLugaresExpedicion(rfc).pipe(repeat({ delay: () => this.formEmitter.pipe(ofType('lugaresExpedicion:reload')) }))
+        this.fetchLugaresExpedicion(rfc).pipe(repeatWhen(() => this.formEmitter.pipe(ofType('lugaresExpedicion:reload'))))
       ),
       tap((lugaresExpedicion: any[]) => {
         if (!this.vm.form?.lugar_de_expedicion?._id && lugaresExpedicion?.length === 1) {
