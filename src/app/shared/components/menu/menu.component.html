@@ -51,14 +51,14 @@
       <bego-button class="btn-menu icon icon-drafts icon-only"></bego-button>
       {{ "menu.drafts" | translate }}
     </div> -->
-    <!-- <div
+    <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/history' }"
       (click)="goTo('history')"
     >
       <bego-button class="btn-menu icon icon-history icon-only"></bego-button>
       {{ "menu.history" | translate }}
-    </div> -->
+    </div>
     <div class="menu-option" [ngClass]="{ selected: router.url == '/payments' }" (click)="goTo('payments')">
       <bego-button class="btn-menu icon icon-invoice icon-only"></bego-button>
       {{ 'menu.payments' | translate }}
