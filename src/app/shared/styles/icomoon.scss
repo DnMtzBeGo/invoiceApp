@@ -85,6 +85,7 @@ $icon-edit: '\e941';
 $icon-download: '\e936';
 $icon-shared: '\e937';
 $icon-invoices: '\e923';
+$icon-tags: '\e935';
 
 .icon {
   font-family: '#{$icomoon-font-family}' !important;
@@ -522,6 +523,11 @@ $icon-invoices: '\e923';
   &.icon-shared {
     &:before {
       content: $icon-shared;
+    }
+  }
+  &.icon-tags {
+    &:before {
+      content: $icon-tags;
     }
   }
 }

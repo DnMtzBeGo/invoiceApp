@@ -10,6 +10,7 @@ import { BegoAlertModule } from 'src/app/shared/components/bego-alert/bego-alert
 import { BegoAddressAutocompleteModule } from 'src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module';
 import { HistoryModule as HistoryModule1 } from 'src/app/pages/history/history.module';
 import { AppMaterialModule } from 'src/app/material';
+import { TagsModule } from 'src/app/pages/tags/tags.module';
 
 // import { VerificationModalComponent } from '../verification-modal/verification-modal.component';
 
@@ -28,7 +29,8 @@ import { AppMaterialModule } from 'src/app/material';
     BegoAlertModule,
     BegoAddressAutocompleteModule,
     HistoryModule1,
-    AppMaterialModule
+    AppMaterialModule,
+    TagsModule
   ]
 })
 export class HistoryModule {}

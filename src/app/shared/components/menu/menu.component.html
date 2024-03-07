@@ -68,6 +68,11 @@
       <bego-button class="btn-menu icon icon-invoices icon-only"></bego-button>
       {{ 'menu.invoice' | translate }}
     </div>
+
+    <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/tags') }" (click)="goTo('tags')">
+      <bego-button class="btn-menu icon icon-tags icon-only"></bego-button>
+      {{ 'menu.tags' | translate }}
+    </div>
     <!-- <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/contact-support' }"

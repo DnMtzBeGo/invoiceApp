@@ -1624,6 +1624,47 @@
       "placeholder-message": "Escribe tu mensaje"
     }
   },
+  "tags": {
+    "form": {
+      "title": "Crear Tag",
+      "edit_title": "Editar Tag",
+      "tag_name": "Nombre del tag"
+    },
+    "buttons": {
+      "create": "Agregar tag"
+    },
+    "table": {
+      "title": "Tags",
+      "columns": {
+        "name": "Nombre",
+        "number_of_drivers": "Núm. conductores",
+        "creation_date": "Fec. de Creación",
+        "modified_date": "Fec. de Modificación"
+      }
+    },
+    "drivers_table": {
+      "title": "Selecciona los conductores para el tag",
+      "columns": {
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "phone": "Teléfono",
+        "verified": "Verificado"
+      }
+    },
+    "filter": {
+      "input": "Buscar...",
+      "selector": "Buscar..."
+    },
+    "actions": {
+      "view_xml": "Ver XML"
+    },
+    "edited-modal": {
+      "done": "Hecho",
+      "cancel": "Cancel",
+      "title": "¡Listo!",
+      "failed": "Hubo un error, intente más tarde"
+    }
+  },
   "paginator": {
     "total": "Total",
     "of": "de",

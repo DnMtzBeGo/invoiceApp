@@ -1,0 +1,29 @@
+<div class="tags-container">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'tags.table.title' | translate }}</h1>
+    </div>
+    <!-- <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'tags.buttons.upload' | translate }}</button> -->
+  </div>
+
+  <bego-table-multiple-selection
+    [loading]="loadingData"
+    [lang]="lang"
+    [columns]="columns"
+    [values]="tags"
+    [page]="page"
+    [actions]="actions"
+    [filter]="true"
+    [debounce]="1000"
+    [selectRowCheck]="selectedRow"
+    (filterEmitter)="filterData($event)"
+    (selectedActionEmitter)="selectingAction($event)"
+    (reloadTable)="handleReload($event)"
+    (sortColumnEmitter)="sortingTable($event)"
+    (pageChangeEmitter)="changePage($event)"
+    (actionColumn)="selectColumn($event)">
+    <div class="buttons-external">
+      <a mat-flat-button [routerLink]="'/tags/create'" class="brand-btn-2">{{ 'tags.buttons.create' | translate }}</a>
+    </div>
+  </bego-table-multiple-selection>
+</div>

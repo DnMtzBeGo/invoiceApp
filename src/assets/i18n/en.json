@@ -1627,6 +1627,50 @@
     "prevPage": "Prev",
     "itemsPerPage": "Items per page"
   },
+  "tags": {
+    "form": {
+      "title": "Create Tag",
+      "edit_title": "Edit Tag",
+      "tag_name": "Tagname"
+    },
+    "buttons": {
+      "create": "Add tag"
+    },
+    "table": {
+      "title": "Tags",
+      "columns": {
+        "name": "Name",
+        "number_of_drivers": "Number of drivers",
+        "creation_date": "Created",
+        "modified_date": "Modified"
+      }
+    },
+    "drivers_table": {
+      "title": "Select the drivers that you want to tag",
+      "columns": {
+        "name": "Name",
+        "email": "E-mail",
+        "phone": "Phone number",
+        "verified": "Verified"
+      }
+    },
+    "filter": {
+      "input": "Search...",
+      "selector": "Search..."
+    },
+    "status": {
+      "cancel": "Cancel"
+    },
+    "actions": {
+      "view_xml": "View XML"
+    },
+    "edited-modal": {
+      "done": "Done",
+      "cancel": "Cancel",
+      "title": "Success!",
+      "failed": "There was an error, try again later"
+    }
+  },
   "filter": {
     "input": "Search...",
     "selector": "Search..."
