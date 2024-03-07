@@ -7,13 +7,9 @@
       <!-- <bego-button class="icon icon-bego-text"></bego-button> -->
     </div>
 
-    <div
-      class="menu-option"
-      [ngClass]="{ selected: router.url == '/home' }"
-      (click)="goTo('home')"
-    >
+    <div class="menu-option" [ngClass]="{ selected: router.url == '/home' }" (click)="goTo('home')">
       <bego-button class="btn-menu icon icon-home icon-only"></bego-button>
-      {{ "menu.home" | translate }}
+      {{ 'menu.home' | translate }}
     </div>
 
     <!-- <div 
@@ -25,14 +21,10 @@
       {{ "menu.home" | translate }}
     </div> -->
 
-    <!-- <div
-      class="menu-option"
-      [ngClass]="{ selected: router.url.startsWith('/fleet') }"
-      (click)="goTo('fleet')"
-    >
+    <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/fleet') }" (click)="goTo('fleet')">
       <bego-button class="btn-menu icon icon-fleet icon-only"></bego-button>
-      {{ "menu.fleet" | translate }}
-    </div> -->
+      {{ 'menu.fleet' | translate }}
+    </div>
 
     <!-- <div
       class="menu-option"
@@ -51,13 +43,9 @@
       <bego-button class="btn-menu icon icon-drafts icon-only"></bego-button>
       {{ "menu.drafts" | translate }}
     </div> -->
-    <div
-      class="menu-option"
-      [ngClass]="{ selected: router.url == '/history' }"
-      (click)="goTo('history')"
-    >
+    <div class="menu-option" [ngClass]="{ selected: router.url == '/history' }" (click)="goTo('history')">
       <bego-button class="btn-menu icon icon-history icon-only"></bego-button>
-      {{ "menu.history" | translate }}
+      {{ 'menu.history' | translate }}
     </div>
     <div class="menu-option" [ngClass]="{ selected: router.url == '/payments' }" (click)="goTo('payments')">
       <bego-button class="btn-menu icon icon-invoice icon-only"></bego-button>

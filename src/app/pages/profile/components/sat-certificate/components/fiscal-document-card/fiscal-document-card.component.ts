@@ -37,7 +37,6 @@ export class FiscalDocumentCardComponent extends FiscalBaseComponent {
     },
 
     drop: (event: any) => {
-      console.log('drop');
       event.preventDefault();
       this.removeDragFileEventListener();
       const { files } = event.dataTransfer;
@@ -96,20 +95,14 @@ export class FiscalDocumentCardComponent extends FiscalBaseComponent {
   }
 
   onCardClicked() {
-    console.log(this);
-    //if (!this.fiscalDocumentsService.fileInfo[this.index]?.fileIsSelected) {
-
     this.fileInput.nativeElement.click();
-    //} else if (!this.fiscalDocumentsService.fileInfo[this.index].uploadFileStatus?.documentIsBeingUploaded) {
-    //this.openFile();
-    //}
   }
 
   afterFileUploaded = (): Promise<void> => {
     this.showCheckmarkComponent = true;
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log(' afterFileUploadedwaited 2 secs b4 moving on');
+        //console.log(' afterFileUploadedwaited 2 secs b4 moving on');
         this.showCheckmarkComponent = false;
         resolve();
       }, 2000);
@@ -145,7 +138,7 @@ export class FiscalDocumentCardComponent extends FiscalBaseComponent {
   }
 
   fileInputChanged() {
-    console.log('fileInputChanged');
+    // console.log('fileInputChanged');
     const { files } = this.fileInput.nativeElement;
     //this.uploadFile(files[0]);
     this.setSelectedFile(files[0], this.fileInput.nativeElement);
