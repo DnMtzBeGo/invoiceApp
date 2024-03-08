@@ -22,24 +22,7 @@ export class FleetEditTruckComponent implements OnInit {
   @ViewChild('sliderRef') sliderRef: ElementRef;
   public slider: EmblaCarouselType;
 
-  constructor(
-    private translateService: TranslateService,
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService,
-    private matDialog: MatDialog,
-    private webService: AuthService,
-    private notificationsService: NotificationsService
-  ) {
-    this.route.params;
-  }
-
-  public fleetTabs = [
-    this.translateService.instant('fleet.trucks.truck_details'),
-    this.translateService.instant('fleet.trucks.truck_settings'),
-    this.translateService.instant('fleet.trucks.truck_insurance')
-  ];
+  public fleetTabs: string[];
 
   public truckDetailsForm: FormGroup;
   public pictures: UploadFileInfo[] = [];
@@ -58,6 +41,25 @@ export class FleetEditTruckComponent implements OnInit {
   private originalInfo: any;
   private fleetId: string;
   private newTruckPictures: File[] = [];
+
+  constructor(
+    private translateService: TranslateService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService,
+    private matDialog: MatDialog,
+    private webService: AuthService,
+    private notificationsService: NotificationsService
+  ) {
+    this.route.params;
+
+    this.fleetTabs = [
+      this.translateService.instant('fleet.trucks.truck_details'),
+      this.translateService.instant('fleet.trucks.truck_settings'),
+      this.translateService.instant('fleet.trucks.truck_insurance')
+    ];
+  }
 
   async ngOnInit(): Promise<void> {
     this.truckDetailsForm = this.formBuilder.group({
@@ -159,15 +161,17 @@ export class FleetEditTruckComponent implements OnInit {
     const payload = { id_truck: id };
 
     const { result } = await (await this.authService.apiRest(JSON.stringify(payload), '/trucks/get_files')).toPromise();
-    this.insuranceFile = result.files[0];
-    this.insuranceFile.size = Math.max(this.insuranceFile.size * 0.000001, 0.01).toFixed(2) + 'MB';
+    if (result.files[0]) {
+      this.insuranceFile = result.files[0];
+      this.insuranceFile.size = Math.max(this.insuranceFile.size * 0.000001, 0.01).toFixed(2) + 'MB';
 
-    const destructuredUrl = this.insuranceFile.url.split('/');
-    const fileName = destructuredUrl[destructuredUrl.length - 1];
-    const splittedName = fileName.split('.');
+      const destructuredUrl = this.insuranceFile.url.split('/');
+      const fileName = destructuredUrl[destructuredUrl.length - 1];
+      const splittedName = fileName.split('.');
 
-    this.insuranceFile.fileType = splittedName[splittedName.length - 1];
-    this.insuranceFile.name = fileName;
+      this.insuranceFile.fileType = splittedName[splittedName.length - 1];
+      this.insuranceFile.name = fileName;
+    }
   }
 
   getCatalogue(catalogueName: string) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity } from 'rxjs';
 import {
   mapTo,
@@ -6,16 +6,12 @@ import {
   pluck,
   debounceTime,
   share,
-  observeOn,
   repeatWhen,
   switchMap,
-  delay,
   map,
-  catchError,
   withLatestFrom,
   tap,
   distinctUntilChanged,
-  skip,
   filter,
   takeUntil,
   startWith
@@ -25,7 +21,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { routes } from '../../consts';
 import { Paginator } from '../../../invoice/models';
 import { FacturaFiltersComponent, ActionConfirmationComponent } from '../../../invoice/modals';
@@ -36,6 +31,33 @@ import { arrayToObject, object_compare, clone } from 'src/app/shared/utils/objec
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 const filterParams = new Set(['search']);
+
+const resolvers = {
+  members: {
+    endpoint: 'fleets/:fleetId/members',
+    pluck: 'data',
+    lang: 'members',
+    sortBy: ['member_meta.date_created', 'member.nickname'],
+    sortInit: ['member_meta.date_created', 'desc'],
+    withFleetId: true
+  },
+  trucks: {
+    endpoint: 'fleets/:fleetId/trucks',
+    pluck: 'data',
+    lang: 'trucks',
+    sortBy: ['date_created', 'attributes.brand'],
+    sortInit: ['date_created', 'desc'],
+    withFleetId: false
+  },
+  trailers: {
+    endpoint: 'fleets/:fleetId/trailers',
+    pluck: 'data',
+    lang: 'trailers',
+    sortBy: ['date_created', 'trailer_number'],
+    sortInit: ['date_created', 'desc'],
+    withFleetId: false
+  }
+};
 
 @Component({
   selector: 'app-fleet-browser',
@@ -49,11 +71,11 @@ export class FleetBrowserComponent implements OnInit {
 
   $rx = reactiveComponent(this);
 
-  private filtersDialogRef;
+  private filtersDialogRef: FacturaFiltersComponent | any;
 
-  showSelectPage: boolean = false;
+  public showSelectPage: boolean = false;
 
-  vm!: {
+  public vm!: {
     fleetId?: number;
     // list | grid
     view?: any;
@@ -85,35 +107,16 @@ export class FleetBrowserComponent implements OnInit {
     ['queryParams' | 'refresh' | 'template:search' | 'template:set' | 'refresh:defaultEmisor' | 'view:set', unknown?]
   >();
 
-  model: 'members' | 'trucks' | 'trailers' = this.route.snapshot.data.model;
+  model: 'members' | 'trucks' | 'trailers';
 
   view = window.localStorage.getItem('app-fleet-browser-view') ?? 'grid';
 
-  private _resolver = resolvers[this.route.snapshot.data.model];
-  resolver = {
-    ...this._resolver,
-    sortBy: this._resolver.sortBy.flatMap((key) =>
-      ['desc', 'asc'].map((sort) => ({
-        key,
-        sort,
-        value: [key, sort].join(':')
-      }))
-    )
-  };
+  private _resolver;
+  public resolver;
 
-  paginatorDefaults = {
-    grid: { sizeOptions: [6, 9, 12], default: 6 },
-    list: { sizeOptions: [6, 9, 12, 50, 100], default: 6 }
-    // list: { sizeOptions: [5, 10, 20, 50, 100], default: 5 }
-  };
+  public paginatorDefaults;
 
-  paginator: Paginator = {
-    pageIndex: +this.route.snapshot.queryParams.page || 1,
-    pageSize: +this.route.snapshot.queryParams.limit || this.paginatorDefaults[this.view].default || 10,
-    pageTotal: 1,
-    pageSearch: '',
-    total: 0
-  };
+  public paginator: Paginator;
 
   constructor(
     public router: Router,
@@ -121,9 +124,37 @@ export class FleetBrowserComponent implements OnInit {
     private matDialog: MatDialog,
     private apiRestService: AuthService,
     public translateService: TranslateService,
-    private notificationsService: NotificationsService,
-    private location: Location
-  ) {}
+    private location: Location,
+    private cd: ChangeDetectorRef
+  ) {
+    this.model = this.route.snapshot.data.model;
+
+    this._resolver = resolvers[this.route.snapshot.data.model];
+    this.resolver = {
+      ...this._resolver,
+      sortBy: this._resolver.sortBy.flatMap((key) =>
+        ['desc', 'asc'].map((sort) => ({
+          key,
+          sort,
+          value: [key, sort].join(':')
+        }))
+      )
+    };
+
+    this.paginatorDefaults = {
+      grid: { sizeOptions: [6, 9, 12], default: 6 },
+      list: { sizeOptions: [6, 9, 12, 50, 100], default: 6 }
+      // list: { sizeOptions: [5, 10, 20, 50, 100], default: 5 }
+    };
+
+    this.paginator = {
+      pageIndex: +this.route.snapshot.queryParams.page || 1,
+      pageSize: +this.route.snapshot.queryParams.limit || this.paginatorDefaults[this.view].default || 10,
+      pageTotal: 1,
+      pageSearch: '',
+      total: 0
+    };
+  }
 
   ngOnInit(): void {
     const fleetId$ = this.fetchFleetId().pipe(share());
@@ -153,6 +184,8 @@ export class FleetBrowserComponent implements OnInit {
       tap((params) => {
         this.paginator.pageSize = Number(params.limit);
         this.paginator.pageIndex = Number(params.page);
+
+        this.cd.markForCheck();
       }),
       share()
     );
@@ -184,6 +217,9 @@ export class FleetBrowserComponent implements OnInit {
           return factura;
         })
       ),
+      tap(() => {
+        this.cd.markForCheck();
+      }),
       share()
     );
 
@@ -277,7 +313,10 @@ export class FleetBrowserComponent implements OnInit {
         this.paginator.pageTotal = result.pagination?.pages || 1;
         this.paginator.total = result.pagination?.size ?? 0;
       }),
-      this.resolver.pluck ? pluck(this.resolver.pluck) : identity
+      this.resolver.pluck ? pluck(this.resolver.pluck) : identity,
+      tap(() => {
+        this.cd.markForCheck();
+      })
     );
   };
 
@@ -452,30 +491,3 @@ export class FleetBrowserComponent implements OnInit {
       .map((_, i) => from + i);
   };
 }
-
-const resolvers = {
-  members: {
-    endpoint: 'fleets/:fleetId/members',
-    pluck: 'data',
-    lang: 'members',
-    sortBy: ['member_meta.date_created', 'member.nickname'],
-    sortInit: ['member_meta.date_created', 'desc'],
-    withFleetId: true
-  },
-  trucks: {
-    endpoint: 'fleets/:fleetId/trucks',
-    pluck: 'data',
-    lang: 'trucks',
-    sortBy: ['date_created', 'attributes.brand'],
-    sortInit: ['date_created', 'desc'],
-    withFleetId: false
-  },
-  trailers: {
-    endpoint: 'fleets/:fleetId/trailers',
-    pluck: 'data',
-    lang: 'trailers',
-    sortBy: ['date_created', 'trailer_number'],
-    sortInit: ['date_created', 'desc'],
-    withFleetId: false
-  }
-};
