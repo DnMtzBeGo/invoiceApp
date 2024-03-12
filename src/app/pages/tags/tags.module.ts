@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { TagsComponent } from './tags.component';
 import { TagsRoutingModule } from './tags-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,6 +17,7 @@ import { TagsFormModule } from './components/tags-form/tags-form.module';
     TagsFormModule,
     AppMaterialModule
   ],
-  declarations: [TagsComponent]
+  declarations: [TagsComponent],
+  providers: [DatePipe]
 })
 export class TagsModule {}

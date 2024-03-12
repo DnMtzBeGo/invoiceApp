@@ -1630,24 +1630,31 @@
       "edit_title": "Editar Tag",
       "tag_name": "Nombre del tag"
     },
+    "validation": {
+      "carriers_required": "Debe seleccionar al menos un conductor",
+      "name_required": "El nombre para el tag es obligatorio"
+    },
     "buttons": {
-      "create": "Agregar tag"
+      "create": "Agregar tag",
+      "save": "Guardar"
     },
     "table": {
       "title": "Tags",
       "columns": {
+        "_id": "",
         "name": "Nombre",
         "number_of_drivers": "Núm. conductores",
-        "creation_date": "Fec. de Creación",
-        "modified_date": "Fec. de Modificación"
+        "date_created": "Fec. de Creación",
+        "last_update": "Fec. de Modificación"
       }
     },
     "drivers_table": {
       "title": "Selecciona los conductores para el tag",
       "columns": {
-        "name": "Nombre",
+        "_id": "",
+        "nickname": "Nombre",
         "email": "Correo electrónico",
-        "phone": "Teléfono",
+        "telephone": "Teléfono",
         "verified": "Verificado"
       }
     },
@@ -1656,7 +1663,9 @@
       "selector": "Buscar..."
     },
     "actions": {
-      "view_xml": "Ver XML"
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "send_message": "Send message"
     },
     "edited-modal": {
       "done": "Hecho",

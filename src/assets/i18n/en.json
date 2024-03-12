@@ -1633,24 +1633,31 @@
       "edit_title": "Edit Tag",
       "tag_name": "Tagname"
     },
+    "validation": {
+      "carriers_required": "Choose almost one driver",
+      "name_required": "Tag name is required"
+    },
     "buttons": {
-      "create": "Add tag"
+      "create": "Add tag",
+      "save": "Save"
     },
     "table": {
       "title": "Tags",
       "columns": {
+        "_id": "",
         "name": "Name",
         "number_of_drivers": "Number of drivers",
-        "creation_date": "Created",
-        "modified_date": "Modified"
+        "date_created": "Created",
+        "last_update": "Modified"
       }
     },
     "drivers_table": {
       "title": "Select the drivers that you want to tag",
       "columns": {
-        "name": "Name",
+        "_id": "",
+        "nickname": "Name",
         "email": "E-mail",
-        "phone": "Phone number",
+        "telephone": "Phone number",
         "verified": "Verified"
       }
     },
@@ -1658,11 +1665,10 @@
       "input": "Search...",
       "selector": "Search..."
     },
-    "status": {
-      "cancel": "Cancel"
-    },
     "actions": {
-      "view_xml": "View XML"
+      "edit": "Edit",
+      "delete": "Delete",
+      "send_message": "Send message"
     },
     "edited-modal": {
       "done": "Done",

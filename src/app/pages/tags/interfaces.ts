@@ -29,6 +29,9 @@ export interface Lang {
   selected: string;
   paginator: LangPaginator;
   filter: LangFilter;
+  selectRow?: {
+    selectAll?: string;
+  };
 }
 
 export interface LangFilter {
@@ -55,4 +58,26 @@ export interface SearchQuery {
   page: number;
   sort: string;
   match: string;
+}
+
+export interface TagFormParams {
+  tag_id?: string;
+}
+
+export interface Tag {
+  _id?: string;
+  name: string;
+  carriers?: string[];
+  date_created?: string | number;
+  last_update?: string | number;
+  number_of_drivers?: number;
+}
+
+export interface TagDriver {
+  selection_check?: boolean;
+  _id: string;
+  nickname: string;
+  email: string;
+  telephone?: string;
+  thumbnail?: string;
 }

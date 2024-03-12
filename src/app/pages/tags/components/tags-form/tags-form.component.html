@@ -2,22 +2,27 @@
   <div class="page-header">
     <div>
       <h1>
-        {{ !this.tag_id ? ('tags.form.title' | translate) : ('tags.form.edit_title' | translate) + this.tag_id }}
+        {{ !this.tag_id ? ('tags.form.title' | translate) : ('tags.form.edit_title' | translate) }}
       </h1>
     </div>
   </div>
 
-  <div class="form">
+  <form class="form" novalidate [formGroup]="tagsForm" (ngSubmit)="save()">
     <div class="flex">
       <label>{{ 'tags.form.tag_name' | translate }}</label>
-      <mat-form-field appearance="outline" class="brand-field-1">
-        <input matInput [(ngModel)]="name" />
+      <mat-form-field class="brand-field-1">
+        <input matInput formControlName="name" id="name" />
+        <mat-error *ngIf="getError('name', 'required')">{{ 'tags.validation.name_required' | translate }}</mat-error>
       </mat-form-field>
     </div>
 
-    <p class="table-title">{{ 'tags.drivers_table.title' | translate }}</p>
+    <p class="table-title">
+      {{ 'tags.drivers_table.title' | translate }}
+      <input matInput formControlName="carriers" id="carriers" hidden />
+      <mat-error *ngIf="getError('carriers', 'required')">{{ 'tags.validation.carriers_required' | translate }}</mat-error>
+    </p>
     <bego-table-multiple-selection
-      [loading]="loadingData"
+      [loading]="loadingTableData"
       [lang]="lang"
       [columns]="columns"
       [values]="drivers"
@@ -28,10 +33,14 @@
       [selectRowCheck]="selectedRow"
       (filterEmitter)="filterData($event)"
       (selectedActionEmitter)="selectingAction($event)"
+      (selectorRowsCheckEmitter)="rowSelected($event)"
       (reloadTable)="handleReload($event)"
       (sortColumnEmitter)="sortingTable($event)"
       (pageChangeEmitter)="changePage($event)"
       (actionColumn)="selectColumn($event)">
+      <div class="buttons-external">
+        <button mat-flat-button type="submit" class="brand-btn-2">{{ 'tags.buttons.save' | translate }}</button>
+      </div>
     </bego-table-multiple-selection>
-  </div>
+  </form>
 </div>
