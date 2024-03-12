@@ -69,28 +69,30 @@ export class SendMessageModalComponent implements OnInit, AfterViewInit {
   }
 
   public async send(): Promise<void> {
-    this.disableSend();
+    if (this.sendMessageForm.valid) {
+      this.disableSend();
 
-    const { controls } = this.sendMessageForm;
+      const { controls } = this.sendMessageForm;
 
-    const message: Message = {
-      tags_ids: [this.data.tag_id],
-      sms: controls['type'].value === 'sms',
-      app: controls['type'].value === 'push',
-      title: controls['title'].value,
-      message: controls['message'].value
-    };
+      const message: Message = {
+        tags_ids: [this.data.tag_id],
+        sms: controls['type'].value === 'sms',
+        app: controls['type'].value === 'push',
+        title: controls['title'].value,
+        message: controls['message'].value
+      };
 
-    (await this.apiService.apiRest(JSON.stringify(message), `managers_tags/send_notification`, { apiVersion: 'v1.1' })).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.enableSend();
-      },
-      error: (error: any) => {
-        console.log('saving tag', error);
-        this.enableSend();
-      }
-    });
+      (await this.apiService.apiRest(JSON.stringify(message), `managers_tags/send_notification`, { apiVersion: 'v1.1' })).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.enableSend();
+        },
+        error: (error: any) => {
+          console.log('saving tag', error);
+          this.enableSend();
+        }
+      });
+    }
   }
 
   private disableSend(): void {
