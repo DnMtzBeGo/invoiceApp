@@ -1,0 +1,54 @@
+<div [ngClass]="'send-message-dialog'">
+  <div class="flex top">
+    <h2>
+      {{ 'tags.send_message.dialog_title' | translate }}
+      <p>
+        {{ data.tag_name }} tag: <span>{{ data.tag_name }}</span>
+      </p>
+    </h2>
+
+    <div class="close-btn">
+      <mat-icon (click)="close()">close</mat-icon>
+    </div>
+  </div>
+  <form class="form" (ngSubmit)="send()" novalidate [formGroup]="sendMessageForm">
+    <div class="content">
+      <div class="flex">
+        <label>{{ 'tags.send_message.title' | translate }}</label>
+
+        <mat-form-field class="w-full">
+          <input #firstInput matInput formControlName="title" id="title" />
+          <mat-error *ngIf="getError('title', 'required')">{{ 'tags.send_message.validation.title_required' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="flex">
+        <div>
+          <label class="message-label">{{ 'tags.send_message.message' | translate }}</label>
+        </div>
+
+        <mat-form-field class="w-full">
+          <textarea rows="8" matInput formControlName="message" id="message"></textarea>
+          <mat-error *ngIf="getError('message', 'required')">{{ 'tags.send_message.validation.message_required' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="flex">
+        <div class="w-full">
+          <label class="type-label">{{ 'tags.send_message.choose_type' | translate }}</label>
+        </div>
+        <mat-radio-group formControlName="type" id="type">
+          <mat-radio-button value="SMS">{{ 'tags.send_message.sms' | translate }}</mat-radio-button>
+          <mat-radio-button value="PUSH">{{ 'tags.send_message.push' | translate }}</mat-radio-button>
+        </mat-radio-group>
+        <mat-error *ngIf="getError('type', 'required')">
+          {{ 'tags.send_message.validation.type_required' | translate }}
+        </mat-error>
+      </div>
+    </div>
+
+    <div class="w-full bottom">
+      <button [disabled]="sendButtonDisabled" mat-flat-button class="brand-btn-2">{{ 'tags.send_message.send' | translate }}</button>
+    </div>
+  </form>
+</div>

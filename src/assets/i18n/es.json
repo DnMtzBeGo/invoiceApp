@@ -1625,6 +1625,20 @@
     }
   },
   "tags": {
+    "send_message": {
+      "dialog_title": "Enviar mensaje",
+      "message": "Contenido del mensaje",
+      "title": "Título del mensaje",
+      "choose_type": "Elija el tipo de mensaje",
+      "sms": "Mensaje SMS",
+      "push": "Notificación push",
+      "send": "Enviar mensaje",
+      "validation": {
+        "title_required": "El título del mensaje es obligatorio",
+        "message_required": "Debe incluir un mensaje",
+        "type_required": "Por favor elija el tipo de mensaje"
+      }
+    },
     "form": {
       "title": "Crear Tag",
       "edit_title": "Editar Tag",

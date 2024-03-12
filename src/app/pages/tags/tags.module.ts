@@ -3,9 +3,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { TagsComponent } from './tags.component';
 import { TagsRoutingModule } from './tags-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { BegoTableModule, BegoTableMultipleSelectionModule } from '@begomx/ui-components';
+import { BegoAlertModule, BegoTableModule, BegoTableMultipleSelectionModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
 import { TagsFormModule } from './components/tags-form/tags-form.module';
+import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -15,9 +18,11 @@ import { TagsFormModule } from './components/tags-form/tags-form.module';
     BegoTableMultipleSelectionModule,
     TagsRoutingModule,
     TagsFormModule,
-    AppMaterialModule
+    AppMaterialModule,
+    MatDialogModule,
+    ReactiveFormsModule
   ],
-  declarations: [TagsComponent],
+  declarations: [TagsComponent, SendMessageModalComponent],
   providers: [DatePipe]
 })
 export class TagsModule {}

@@ -1628,6 +1628,20 @@
     "itemsPerPage": "Items per page"
   },
   "tags": {
+    "send_message": {
+      "dialog_title": "Send Message",
+      "message": "Content",
+      "title": "Title",
+      "choose_type": "Please choose message type",
+      "sms": "SMS Message",
+      "push": "Push notification",
+      "send": "Send message",
+      "validation": {
+        "title_required": "Message title is required",
+        "message_required": "Please add the message contents",
+        "type_required": "Please choose the message type"
+      }
+    },
     "form": {
       "title": "Create Tag",
       "edit_title": "Edit Tag",

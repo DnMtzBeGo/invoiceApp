@@ -4,6 +4,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { Action, Column, Lang, Page, SearchQuery, SelectedRow, StatusOptions, Tag } from './interfaces';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
 
 @Component({
   selector: 'app-tags',
@@ -24,7 +26,8 @@ export class TagsComponent implements OnInit {
     private readonly router: Router,
     private readonly apiService: AuthService,
     private readonly translateService: TranslateService,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly matDialog: MatDialog
   ) {
     this.loadingTableData = true;
 
@@ -37,7 +40,9 @@ export class TagsComponent implements OnInit {
     .fetchTags();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    //this.openSendMessageModal('1');
+  }
 
   setLang(): TagsComponent {
     this.lang = {
@@ -74,8 +79,20 @@ export class TagsComponent implements OnInit {
     return this;
   }
 
-  translate(word: string, type: string): string {
+  public translate(word: string, type: string): string {
     return this.translateService.instant(type === 'paginator' ? `${type}.${word}` : `tags.${type}.${word}`);
+  }
+
+  public openSendMessageModal(tag_id: string, tag_name: string) {
+    const dialogRef = this.matDialog.open(SendMessageModalComponent, {
+      data: { tag_id, tag_name },
+      restoreFocus: false,
+      autoFocus: true,
+      disableClose: true,
+      backdropClass: ['brand-dialog-1']
+    });
+
+    dialogRef.afterClosed().subscribe((edited: string) => {});
   }
 
   // #region Table methods
@@ -150,6 +167,9 @@ export class TagsComponent implements OnInit {
     switch (type) {
       case 'edit':
         this.router.navigate([`/tags/edit/${data._id}`]);
+        break;
+      case 'send_message':
+        this.openSendMessageModal(data._id, data.name);
         break;
       case 'delete':
         console.log('action is not implemented yet!');

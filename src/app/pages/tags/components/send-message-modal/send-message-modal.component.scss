@@ -1,0 +1,65 @@
+.send-message-dialog {
+  background-color: #000;
+  padding: 20px;
+  min-width: 480px;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+
+    h2 {
+      p {
+        font-style: italic;
+        font-size: 14px;
+        span {
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  input,
+  textarea {
+    padding: 3px;
+  }
+
+  input:focus,
+  textarea:focus {
+    background-color: #111;
+  }
+
+  .w-full {
+    width: 100% !important;
+  }
+
+  mat-radio-button {
+    display: block;
+
+    &:first-child {
+      margin-bottom: 10px;
+    }
+  }
+
+  .bottom {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  .type-label,
+  .message-label {
+    margin: 15px 0px 0px !important;
+    display: block;
+  }
+
+  .type-label {
+    margin: 15px 0px 20px !important;
+  }
+}

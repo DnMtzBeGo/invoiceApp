@@ -159,7 +159,7 @@ export class TagsFormComponent implements OnInit {
     return this;
   }
 
-  translate(word: string, type: string) {
+  public translate(word: string, type: string) {
     return this.translateService.instant(type === 'paginator' ? `${type}.${word}` : `tags.${type}.${word}`);
   }
 
