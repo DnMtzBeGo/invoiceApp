@@ -101,9 +101,9 @@ export class TagsComponent implements OnInit {
     this.columns = [
       { id: '_id', label: ' ', input: 'style' },
       { id: 'name', label: '', filter: 'input', sort: true },
-      { id: 'number_of_drivers', label: '', filter: 'input' },
+      { id: 'number_of_drivers', label: '', sort: true },
       { id: 'date_created', label: '', sort: true },
-      { id: 'last_update', label: '', filter: 'input', sort: true }
+      { id: 'last_update', label: '', sort: true }
     ];
 
     return this;
@@ -216,11 +216,12 @@ export class TagsComponent implements OnInit {
     if (translated) this.tags = [];
 
     const { limit = '10', page = '1', sort, match } = this.searchQuery;
+    console.log(match);
     const queryParams = new URLSearchParams({
       limit: limit.toString(),
       page: page.toString(),
       ...(sort && { sort }),
-      ...(match && { match })
+      ...(match && { search: JSON.parse(match)['name'] })
     }).toString();
 
     (await this.apiService.apiRestGet(`managers_tags/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
