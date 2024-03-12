@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { Action, Column, Lang, Page, SearchQuery, SelectedRow, StatusOptions } from './interfaces';
+import { Action, Column, Lang, Page, SearchQuery, SelectedRow, StatusOptions, Tag } from './interfaces';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-tags',
@@ -10,18 +12,34 @@ import { Action, Column, Lang, Page, SearchQuery, SelectedRow, StatusOptions } f
 })
 export class TagsComponent implements OnInit {
   public selectedRow: SelectedRow;
-  public loadingData: boolean;
+  public loadingTableData: boolean;
   public lang: Lang;
   public columns: Column[];
-  public statusOptions: StatusOptions[];
   public actions: Action[];
   public page: Page;
-  public tags: any[];
+  public tags: Tag[];
   public searchQuery: SearchQuery;
 
-  constructor(private apiService: AuthService, private translateService: TranslateService) {
-    this.loadingData = true;
+  constructor(
+    private readonly router: Router,
+    private readonly apiService: AuthService,
+    private readonly translateService: TranslateService,
+    private readonly datePipe: DatePipe
+  ) {
+    this.loadingTableData = true;
 
+    // prettier-ignore
+    this.configureTableColumns()
+    .configureTableActions()
+    .configurePagination()
+    .configureSelectedRow()
+    .setLang()
+    .fetchTags();
+  }
+
+  ngOnInit() {}
+
+  setLang(): TagsComponent {
     this.lang = {
       selected: 'en',
       paginator: {
@@ -37,49 +55,6 @@ export class TagsComponent implements OnInit {
       }
     };
 
-    //#region table contents and config
-    this.columns = [
-      { id: 'columns.name', label: '', filter: 'input', sort: true },
-      { id: 'columns.number_of_drivers', label: '', filter: 'input' },
-      { id: 'columns.creation_date', label: '', input: 'style', sort: true },
-      { id: 'columns.modified_date', label: '', filter: 'input', sort: true }
-    ];
-
-    this.statusOptions = [{ label: 'Cancel', value: 'cancel', id: 1 }];
-
-    this.actions = [
-      // {
-      //   label: this.translate('view_vouchers', 'actions'),
-      //   id: 'view_vouchers',
-      //   icon: 'eye'
-      // }
-    ];
-
-    this.page = { size: 0, index: 0, total: 0 };
-
-    this.searchQuery = {
-      limit: 10,
-      page: 1,
-      sort: JSON.stringify({ date_created: -1 }),
-      match: ''
-    };
-
-    this.selectedRow = {
-      showColumnSelection: false,
-      selectionLimit: 0,
-      keyPrimaryRow: 'concept'
-    };
-
-    // TODO fetchtags
-    this.tags = [];
-
-    //#endregion table contents and config
-    this.setLang();
-  }
-
-  ngOnInit() {}
-
-  setLang() {
     this.lang.paginator = {
       total: this.translate('total', 'paginator'),
       totalOf: this.translate('of', 'paginator'),
@@ -93,49 +68,115 @@ export class TagsComponent implements OnInit {
       selector: this.translate('selector', 'filter')
     };
 
-    this.statusOptions.forEach((status) => (status.label = this.translate(status.value, 'status')));
-    this.columns.forEach((column) => (column.label = this.translate(column.id, `table`)));
+    this.columns.forEach((column) => (column.label = this.translate(`columns.${column.id}`, `table`)));
     this.actions.forEach((action) => (action.label = this.translate(action.id, 'actions')));
+
+    return this;
   }
 
-  translate(word: string, type: string) {
+  translate(word: string, type: string): string {
     return this.translateService.instant(type === 'paginator' ? `${type}.${word}` : `tags.${type}.${word}`);
   }
 
   // #region Table methods
-  filterData({ active, search, type }) {
-    if (active) {
-      if (type === 'status') this.searchQuery.match = JSON.stringify({ status: this.searchStatus(search) });
-      else this.searchQuery.match = JSON.stringify({ [type]: search });
-    } else this.searchQuery.match = '';
+
+  private configureTableColumns(): TagsComponent {
+    this.columns = [
+      { id: '_id', label: ' ', input: 'style' },
+      { id: 'name', label: '', filter: 'input', sort: true },
+      { id: 'number_of_drivers', label: '', filter: 'input' },
+      { id: 'date_created', label: '', sort: true },
+      { id: 'last_update', label: '', filter: 'input', sort: true }
+    ];
+
+    return this;
+  }
+
+  private configureTableActions(): TagsComponent {
+    this.actions = [
+      {
+        label: this.translate('edit', 'actions'),
+        id: 'edit',
+        icon: 'edit'
+      },
+      {
+        label: this.translate('send_message', 'actions'),
+        id: 'send_message',
+        icon: 'email'
+      },
+      {
+        label: this.translate('delete', 'actions'),
+        id: 'delete',
+        icon: 'trash'
+      }
+    ];
+
+    return this;
+  }
+
+  private configurePagination(): TagsComponent {
+    this.page = { size: 0, index: 0, total: 0 };
+
+    this.searchQuery = {
+      limit: 10,
+      page: 1,
+      sort: JSON.stringify({ date_created: -1 }),
+      match: ''
+    };
+
+    return this;
+  }
+
+  private configureSelectedRow(): TagsComponent {
+    this.selectedRow = {
+      showColumnSelection: false,
+      selectionLimit: 0,
+      keyPrimaryRow: 'concept'
+    };
+
+    return this;
+  }
+
+  public filterData({ active, search, type }) {
+    if (active) this.searchQuery.match = JSON.stringify({ [type]: search });
+    else this.searchQuery.match = '';
+
     this.page.index = 1;
     this.searchQuery.page = 1;
     this.fetchTags();
   }
 
-  selectingAction({ type, data }: any) {
+  public selectingAction({ type, data }: any) {
     switch (type) {
+      case 'edit':
+        this.router.navigate([`/tags/edit/${data._id}`]);
+        break;
+      case 'delete':
+        console.log('action is not implemented yet!');
+        break;
+      default:
+        console.log(`Action '${type}' has no a handler`);
     }
   }
 
-  handleReload(event: any) {
+  public handleReload(event: any) {
     if (event === 'reloadTable') {
       this.fetchTags();
     }
   }
 
-  clickReload() {
+  public clickReload() {
     this.fetchTags();
   }
 
-  sortingTable({ type, asc }: any) {
+  public sortingTable({ type, asc }: any) {
     this.searchQuery.sort = JSON.stringify({ [type]: asc ? -1 : 1 });
     this.page.index = 1;
     this.searchQuery.page = 1;
     this.fetchTags();
   }
 
-  changePage({ index, size }: any) {
+  public changePage({ index, size }: any) {
     this.searchQuery.page = index;
     if (this.searchQuery.limit !== size) {
       this.page.index = 1;
@@ -145,16 +186,16 @@ export class TagsComponent implements OnInit {
     this.fetchTags();
   }
 
-  selectColumn($event) {
+  public selectColumn($event) {
     console.log($event);
   }
 
-  async fetchTags(translated: boolean = false) {
-    this.loadingData = true;
+  public async fetchTags(translated: boolean = false) {
+    this.loadingTableData = true;
 
     if (translated) this.tags = [];
 
-    const { limit, page, sort, match } = this.searchQuery;
+    const { limit = '10', page = '1', sort, match } = this.searchQuery;
     const queryParams = new URLSearchParams({
       limit: limit.toString(),
       page: page.toString(),
@@ -162,47 +203,38 @@ export class TagsComponent implements OnInit {
       ...(match && { match })
     }).toString();
 
-    (await this.apiService.apiRestGet(`tags/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
-      next: ({ result: { result, total } }) => {
-        this.page.total = total;
-        this.tags = result.map((tag) => {
-          let due_date: any = {
-            value: '-',
-            style: {
-              color: '#FFFFFF',
-              'font-weight': 700
-            }
-          };
+    (await this.apiService.apiRestGet(`managers_tags/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
+      next: ({ result: { result, page = '1', size = '10' } }) => {
+        this.page.size = +limit;
+        this.page.total = page * size;
+        this.page.index = page;
 
+        // setting result
+        this.tags = result.map((tag: Tag) => {
           const actions = {
-            enabled: false,
+            enabled: true,
             options: {
-              view_upfronts: tag?.upfront_vouchers,
-              view_bank: tag?.bank,
-              view_message: true
+              edit: true,
+              delete: true,
+              send_message: true
             }
           };
-
-          actions.enabled = Object.values(actions.options).includes(true);
 
           return {
             ...tag,
-            actions,
-            due_date,
-            status: this.translate(tag.status, 'status')
+            number_of_drivers: tag.carriers,
+            date_created: this.datePipe.transform(tag.date_created, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
+            last_update: this.datePipe.transform(tag.last_update, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
+            actions
           };
         });
-        this.loadingData = false;
+        this.loadingTableData = false;
       },
       error: (err: any) => {
         console.error(err);
-        this.loadingData = false;
+        this.loadingTableData = false;
       }
     });
-  }
-
-  searchStatus(search: string) {
-    return this.statusOptions.find((status) => status.value === search).id;
   }
 
   // #endregion Table methods
