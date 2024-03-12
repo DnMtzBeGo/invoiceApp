@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Action, Column, Lang, Page, SearchQuery, SelectedRow, StatusOptions, Tag, TagDriver, TagFormParams } from '../../interfaces';
@@ -11,7 +11,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './tags-form.component.html',
   styleUrls: ['./tags-form.component.scss']
 })
-export class TagsFormComponent implements OnInit {
+export class TagsFormComponent implements OnInit, AfterViewInit {
+  @ViewChild('firstInput', { static: false, read: ElementRef }) firstInput: ElementRef;
+
   public tag_id: string;
   public selectedRow: SelectedRow;
   public loadingTableData: boolean;
@@ -22,19 +24,10 @@ export class TagsFormComponent implements OnInit {
   public page: Page;
   public searchQuery: SearchQuery;
 
-  // TODO type tag
   public tag: Tag = { name: '', carriers: [] };
-  // TODO type driver
   public drivers: TagDriver[];
 
-  // Form fields
-
   public tagsForm: FormGroup;
-
-  // manager tags
-  // titulo mensaje sms o push
-
-  public name: string;
 
   constructor(
     private readonly apiService: AuthService,
@@ -58,11 +51,17 @@ export class TagsFormComponent implements OnInit {
     this.setLang();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.tagsForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(1)]),
       carriers: new FormControl(' ', [Validators.required])
     });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.firstInput.nativeElement.focus();
+    }, 500);
   }
 
   public getError = (controlName: string, errorName: string) => {
