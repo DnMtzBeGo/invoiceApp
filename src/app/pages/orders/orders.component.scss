@@ -97,6 +97,14 @@
       display: flex;
       flex-direction: column;
 
+      &.small {
+        max-width: 900px;
+
+        .order-stepper-wrapper {
+          max-width: 380px;
+        }
+      }
+
       .order-stepper-wrapper {
         padding: 50px 57px;
       }

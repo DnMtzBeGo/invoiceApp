@@ -1,0 +1,34 @@
+<div class="step2">
+  <h3 class="formgroup-title-required">Personal Information</h3>
+
+  <form [formGroup]="form">
+    <bego-input>
+      <span>Full Name*</span>
+      <input uiInput type="text" placeholder="Type full name" formControlName="name" />
+    </bego-input>
+    <bego-input>
+      <bego-phone-code-select
+        theme="secondary"
+        [selectedPhoneCode]="form.controls.phone_code.value"
+        [flag]="form.controls.phone_flag.value"
+        (sendValues)="updatePhoneCode($event)"></bego-phone-code-select>
+      <input
+        uiInput
+        type="tel"
+        [attr.mask]="form.controls.phone_flag.value"
+        placeholder="Type phone number"
+        formControlName="phone_number" />
+    </bego-input>
+    <bego-input>
+      <span>Email*</span>
+      <input uiInput type="email" placeholder="email@gmail.com" formControlName="email" />
+    </bego-input>
+    <div class="details">
+      <span>Aditional Details</span>
+      <bego-text-area
+        customPlaceholder="Additional Notes"
+        [defaultValue]="form.controls.aditional_details.value"
+        (sendData)="updateDetails($event)"></bego-text-area>
+    </div>
+  </form>
+</div>

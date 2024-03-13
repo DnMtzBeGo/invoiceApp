@@ -38,6 +38,8 @@ export class HomeComponent implements OnInit {
   headerTransparent: boolean = true;
   showOrderDetails: boolean = false;
 
+  orderType = 'FTL';
+
   public typeMap: string = 'home';
   public imageFromGoogle: any;
   public membersToAssigned: object = {};
@@ -186,7 +188,7 @@ export class HomeComponent implements OnInit {
         }
       ],
       stamp: this.userWantCP,
-      type: 'FTL',
+      type: this.orderType,
       target: 'carriers',
       origin: 'web'
     };

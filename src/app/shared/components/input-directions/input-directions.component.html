@@ -8,6 +8,16 @@
     ]"
   >
     <div *ngIf="!haveFleetMembers">
+      <div class="fleet-type">
+        <h3>Select your transport</h3>
+        <bego-button-toggle
+          [noPadding]="true"
+          [enabled]="orderType === orderTypeList[1].value"
+          [first]="orderTypeList[0]"
+          [second]="orderTypeList[1]"
+          (statusChanged)="setOrderType($event)"
+          ></bego-button-toggle>
+      </div>
       <div class="directions" [ngClass]="hideMap ? 'hide-line' : ''">
         <div
           class="input-container"
@@ -250,89 +260,123 @@
               ></timepicker>
             </div>
 
-            <div class="eta-container">
-              <p>{{ "home.fleet-assignment.aprox-time" | translate }}</p>
-              <p>{{ aproxETA }} hrs</p>
-            </div>
+            <ng-container *ngIf="orderType !== 'OCL'">
+              <div class="eta-container">
+                <p>{{ "home.fleet-assignment.aprox-time" | translate }}</p>
+                <p>{{ aproxETA }} hrs</p>
+              </div>
 
-            <div class="cp-toggle-container">
-              <p>{{ "home.fleet-assignment.cp-order" | translate }}</p>
-              <mat-slide-toggle (change)="orderWithCP()" [checked]="userWantCP">
-              </mat-slide-toggle>
-            </div>
+              <div class="cp-toggle-container">
+                <p>{{ "home.fleet-assignment.cp-order" | translate }}</p>
+                <mat-slide-toggle (change)="orderWithCP()" [checked]="userWantCP">
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
           </form>
         </div>
       </div>
 
       <div class="fleet-info-container" *ngIf="isDatesSelected">
-        <div class="fleet-drivers-row">
-          <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
-          <div class="drivers-container">
-            <ng-container *ngFor="let driver of drivers; let i = index">
+        <ng-container *ngIf="orderType === 'OCL'; else notOcl">
+          <div class="fleet-drivers-row">
+            <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
+            <div class="drivers-container">
               <app-circular-avatar
+                *ngFor="let driver of drivers.slice(0, 4)"
                 [data]="driver"
                 [userWantCP]="userWantCP"
                 fleetMember="drivers"
-                *ngIf="i < 4"
                 (click)="selectMembersForOrder(driver, 'drivers')"
               >
               </app-circular-avatar>
-            </ng-container>
-            <div
-              class="rest-of-members"
-              *ngIf="drivers.length > 4"
-              (click)="showFleetContainer('drivers')"
-            >
-              <p>+{{ drivers.length - 4 }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="fleet-trucks-row">
-          <p>{{ "home.fleet-assignment.available-trucks" | translate }}</p>
-          <div class="trucks-container">
-            <ng-container *ngFor="let truck of trucks; let i = index">
-              <app-circular-avatar
-                [data]="truck"
-                [userWantCP]="userWantCP"
-                fleetMember="trucks"
-                *ngIf="i < 4"
-                (click)="selectMembersForOrder(truck, 'trucks')"
+              <div
+                class="rest-of-members"
+                *ngIf="drivers.length > 4"
+                (click)="showFleetContainer('drivers')"
               >
-              </app-circular-avatar>
-            </ng-container>
-            <div
-              class="rest-of-members"
-              *ngIf="trucks.length > 4"
-              (click)="showFleetContainer('trucks')"
-            >
-              <p>+{{ trucks.length - 4 }}</p>
+                <p>+{{ drivers.length - 4 }}</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="fleet-trailers-row">
-          <p>{{ "home.fleet-assignment.available-trailers" | translate }}</p>
-          <div class="trailers-container">
-            <ng-container *ngFor="let trailer of trailers; let i = index">
-              <app-circular-avatar
-                [data]="trailer"
-                [userWantCP]="userWantCP"
-                fleetMember="trailers"
-                *ngIf="i < 4"
-                (click)="selectMembersForOrder(trailer, 'trailers')"
+          <!-- <div class="fleet-trucks-row"> -->
+          <!--   <p>Without vehicle</p> -->
+          <!--   <div class="drivers-container"> -->
+          <!--     <app-circular-avatar [data]="walkingData" (click)="selectMembersForOrder(driver, 'drivers')"></app-circular-avatar> -->
+          <!--   </div> -->
+          <!-- </div> -->
+
+        </ng-container>
+        <ng-template #notOcl>
+          <div class="fleet-drivers-row">
+            <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
+            <div class="drivers-container">
+              <ng-container *ngFor="let driver of drivers; let i = index">
+                <app-circular-avatar
+                  [data]="driver"
+                  [userWantCP]="userWantCP"
+                  fleetMember="drivers"
+                  *ngIf="i < 4"
+                  (click)="selectMembersForOrder(driver, 'drivers')"
+                >
+                </app-circular-avatar>
+              </ng-container>
+              <div
+                class="rest-of-members"
+                *ngIf="drivers.length > 4"
+                (click)="showFleetContainer('drivers')"
               >
-              </app-circular-avatar>
-            </ng-container>
-            <div
-              class="rest-of-members"
-              *ngIf="trailers.length > 4"
-              (click)="showFleetContainer('trailers')"
-            >
-              <p>+{{ trailers.length - 4 }}</p>
+                <p>+{{ drivers.length - 4 }}</p>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div class="fleet-trucks-row">
+            <p>{{ "home.fleet-assignment.available-trucks" | translate }}</p>
+            <div class="trucks-container">
+              <ng-container *ngFor="let truck of trucks; let i = index">
+                <app-circular-avatar
+                  [data]="truck"
+                  [userWantCP]="userWantCP"
+                  fleetMember="trucks"
+                  *ngIf="i < 4"
+                  (click)="selectMembersForOrder(truck, 'trucks')"
+                >
+                </app-circular-avatar>
+              </ng-container>
+              <div
+                class="rest-of-members"
+                *ngIf="trucks.length > 4"
+                (click)="showFleetContainer('trucks')"
+              >
+                <p>+{{ trucks.length - 4 }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="fleet-trailers-row">
+            <p>{{ "home.fleet-assignment.available-trailers" | translate }}</p>
+            <div class="trailers-container">
+              <ng-container *ngFor="let trailer of trailers; let i = index">
+                <app-circular-avatar
+                  [data]="trailer"
+                  [userWantCP]="userWantCP"
+                  fleetMember="trailers"
+                  *ngIf="i < 4"
+                  (click)="selectMembersForOrder(trailer, 'trailers')"
+                >
+                </app-circular-avatar>
+              </ng-container>
+              <div
+                class="rest-of-members"
+                *ngIf="trailers.length > 4"
+                (click)="showFleetContainer('trailers')"
+              >
+                <p>+{{ trailers.length - 4 }}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
       </div>
 
       <!--  <bego-button 

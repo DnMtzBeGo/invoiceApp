@@ -11,6 +11,7 @@ import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/
 import { FleetMembersModule } from 'src/app/shared/components/fleet-members/fleet-members.module';
 import { MemberCardSelectionModule } from 'src/app/shared/components/member-card-selection/member-card-selection.module';
 import { AppMaterialModule } from 'src/app/material';
+import { BegoButtonToggleModule } from '@begomx/ui-components';
 
 @NgModule({
   declarations: [InputDirectionsComponent],
@@ -26,7 +27,8 @@ import { AppMaterialModule } from 'src/app/material';
     CircularAvatarModule,
     FleetMembersModule,
     MemberCardSelectionModule,
-    AppMaterialModule
+    AppMaterialModule,
+    BegoButtonToggleModule,
   ],
   exports: [InputDirectionsComponent]
 })

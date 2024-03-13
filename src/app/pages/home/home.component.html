@@ -15,6 +15,7 @@
       <app-orders
         [(cardIsOpen)]="showOrderDetails"
         (stepChange)="onStepChange($event)"
+        [orderType]="orderType"
         [draftData]="draftData"
         [locations]="locations"
         [datepickup]="datepickup"
@@ -30,6 +31,7 @@
     <div class="input-directions">
       <app-input-directions
         *ngIf="showSidebar"
+        [(orderType)]="orderType"
         (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
         [showMapPreview]="showOrderDetails"
         (showNewOrderCard)="showNewOrderCard()"

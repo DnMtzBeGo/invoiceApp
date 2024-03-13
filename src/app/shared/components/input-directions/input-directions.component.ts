@@ -61,6 +61,9 @@ export class InputDirectionsComponent implements OnInit {
   @Output() sendAssignedMermbers = new EventEmitter<any>();
   @Output() sendUserWantCP = new EventEmitter<any>();
 
+  @Input() orderType: string;
+  @Output() orderTypeChange = new EventEmitter<string>();
+
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
   events: string = "DD / MM / YY";
@@ -89,6 +92,11 @@ export class InputDirectionsComponent implements OnInit {
   public provisionalPickupLocation: string = "";
   public provisionalDropoffLocation: string = "";
   public userWantCP: boolean = false;
+
+  orderTypeList = [
+    { label: 'FTL', value: 'FTL' },
+    { label: 'OCL', value: 'OCL' },
+  ];
 
   orderForm = new FormGroup({
     datepickup: new FormControl(this.events, Validators.required),
@@ -522,7 +530,12 @@ export class InputDirectionsComponent implements OnInit {
     this.isDatesSelected = true;
     this.showScroll = true;
 
-    this.getETA(this.locations);
+    if (this.orderType === 'OCL') {
+      this.getFleetListDetails();
+    } else {
+      this.getETA(this.locations);
+    }
+
     this.updateDatepickup.emit(this.fromDate);
   }
 
@@ -617,8 +630,10 @@ export class InputDirectionsComponent implements OnInit {
     }
     if (
       this.selectMembersToAssign.hasOwnProperty("drivers") &&
-      this.selectMembersToAssign.hasOwnProperty("trucks") &&
-      this.selectMembersToAssign.hasOwnProperty("trailers")
+      (this.orderType === 'OCL' || (
+        this.selectMembersToAssign.hasOwnProperty("trucks") &&
+        this.selectMembersToAssign.hasOwnProperty("trailers")
+      ))
     ) {
       this.canGoToSteps = true;
     }
@@ -720,5 +735,16 @@ export class InputDirectionsComponent implements OnInit {
         selectCallback({ place_id: result.data.place_id });
       }
     });
+  }
+
+  setOrderType(data: { enabled: boolean, value: string }) {
+    this.orderTypeChange.emit(data.value);
+
+    this.canGoToSteps =
+      this.pickupSelected &&
+      this.dropoffSelected &&
+      this.fromDate &&
+      this.selectMembersToAssign.hasOwnProperty('drivers') &&
+      (data.value === 'OCL' || ['trucks', 'trailers'].every((key) => this.selectMembersToAssign.hasOwnProperty(key)));
   }
 }
