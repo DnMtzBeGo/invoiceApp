@@ -1625,6 +1625,15 @@
     }
   },
   "tags": {
+    "created": "Se creó el tag correctamente",
+    "updated": "Se actualizó el tag correctamente",
+    "confirm_dialog": {
+      "done": "Ok"
+    },
+    "delete_dialog": {
+      "done": "Si, eliminar",
+      "cancel": "Cancelar"
+    },
     "send_message": {
       "dialog_title": "Enviar mensaje",
       "message": "Contenido del mensaje",

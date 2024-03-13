@@ -1628,6 +1628,15 @@
     "itemsPerPage": "Items per page"
   },
   "tags": {
+    "created": "The tag has been created successfully",
+    "updated": "The tag has been updated successfully",
+    "confirm_dialog": {
+      "done": "Ok"
+    },
+    "delete_dialog": {
+      "done": "Si, eliminar",
+      "cancel": "Cancelar"
+    },
     "send_message": {
       "dialog_title": "Send Message",
       "message": "Content",
