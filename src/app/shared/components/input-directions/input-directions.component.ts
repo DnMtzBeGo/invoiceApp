@@ -78,6 +78,7 @@ export class InputDirectionsComponent implements OnInit {
   drivers: Array<object> = [];
   trucks: Array<object> = [];
   trailers: Array<object> = [];
+  walkingData: any = null;
   selectMembersToAssign: any = {};
   fleetData: any;
   isDatesSelected: boolean = false;
@@ -588,6 +589,13 @@ export class InputDirectionsComponent implements OnInit {
         this.drivers = result.drivers;
         this.trucks = result.trucks;
         this.trailers = result.trailers;
+        this.walkingData = {
+          availability: true,
+          model: 'Walking',
+          photo: '/assets/images/walking.svg',
+          isSelected: false,
+          _id: '',
+        }
       },
       (error) => {
         console.log("Something went wrong", error.error);
@@ -628,15 +636,19 @@ export class InputDirectionsComponent implements OnInit {
         iterator["isSelected"] = false;
       }
     }
-    if (
-      this.selectMembersToAssign.hasOwnProperty("drivers") &&
-      (this.orderType === 'OCL' || (
-        this.selectMembersToAssign.hasOwnProperty("trucks") &&
-        this.selectMembersToAssign.hasOwnProperty("trailers")
-      ))
-    ) {
-      this.canGoToSteps = true;
+    this.canGoToSteps = this.isMembersSelected();
+  }
+
+  public selectOCLVehicle(vehicle: any) {
+    if (this.selectMembersToAssign.vehicle) {
+      this.selectMembersToAssign.vehicle.isSelected = false;
     }
+
+    vehicle.isSelected = true;
+    this.selectMembersToAssign.vehicle = vehicle;
+
+    this.sendAssignedMermbers.emit({ ...this.selectMembersToAssign });
+    this.canGoToSteps = this.isMembersSelected();
   }
 
   public showFleetContainer(memberType: keyof this) {
@@ -744,7 +756,12 @@ export class InputDirectionsComponent implements OnInit {
       this.pickupSelected &&
       this.dropoffSelected &&
       this.fromDate &&
-      this.selectMembersToAssign.hasOwnProperty('drivers') &&
-      (data.value === 'OCL' || ['trucks', 'trailers'].every((key) => this.selectMembersToAssign.hasOwnProperty(key)));
+      this.isMembersSelected(data.value);
+  }
+
+  isMembersSelected(type: string = this.orderType): boolean {
+    const requiredMembers = type === 'OCL' ? ['drivers', 'vehicle'] : ['drivers', 'trucks', 'trailers'];
+
+    return requiredMembers.every((key) => this.selectMembersToAssign.hasOwnProperty(key));
   }
 }

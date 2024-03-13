@@ -299,14 +299,15 @@
             </div>
           </div>
 
-          <!-- <div class="fleet-trucks-row"> -->
-          <!--   <p>Without vehicle</p> -->
-          <!--   <div class="drivers-container"> -->
-          <!--     <app-circular-avatar [data]="walkingData" (click)="selectMembersForOrder(driver, 'drivers')"></app-circular-avatar> -->
-          <!--   </div> -->
-          <!-- </div> -->
+          <div class="fleet-trucks-row" *ngIf="walkingData">
+            <p>Without vehicle</p>
+            <div class="drivers-container">
+              <app-circular-avatar [data]="walkingData" (click)="selectOCLVehicle(walkingData)"></app-circular-avatar>
+            </div>
+          </div>
 
         </ng-container>
+
         <ng-template #notOcl>
           <div class="fleet-drivers-row">
             <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>

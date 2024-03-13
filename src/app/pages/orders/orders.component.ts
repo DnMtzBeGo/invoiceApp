@@ -193,10 +193,7 @@ export class OrdersComponent implements OnInit {
     private router: Router,
     private alertService: AlertService,
     private dialog: MatDialog
-  ) {
-    globalThis.r = this.router;
-    console.log(this.router);
-  }
+  ) {}
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
