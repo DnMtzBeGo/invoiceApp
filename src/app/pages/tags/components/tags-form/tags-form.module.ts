@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TagsFormComponent } from './tags-form.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BegoTableModule, BegoTableMultipleSelectionModule } from '@begomx/ui-components';
+import { BegoAlertModule, BegoTableModule, BegoTableMultipleSelectionModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
 
 @NgModule({
@@ -14,7 +14,8 @@ import { AppMaterialModule } from 'src/app/material';
     BegoTableModule,
     BegoTableMultipleSelectionModule,
     TranslateModule,
-    AppMaterialModule
+    AppMaterialModule,
+    BegoAlertModule
   ],
   declarations: [TagsFormComponent]
 })

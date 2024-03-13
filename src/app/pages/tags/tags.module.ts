@@ -20,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     TagsFormModule,
     AppMaterialModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BegoAlertModule
   ],
   declarations: [TagsComponent, SendMessageModalComponent],
   providers: [DatePipe]

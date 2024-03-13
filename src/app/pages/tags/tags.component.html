@@ -6,6 +6,21 @@
     <!-- <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'tags.buttons.upload' | translate }}</button> -->
   </div>
 
+  <div class="dialog-container" *ngIf="alertContent">
+    <bego-alert
+      class="alert"
+      [simple]="false"
+      [lang]="{
+        done: ('tags.delete_dialog.done' | translate),
+        cancel: ('tags.delete_dialog.cancel' | translate)
+      }"
+      (closeEmitter)="closeDeleteDialog($event)">
+      <div class="alert-content">
+        {{ alertContent }}
+      </div>
+    </bego-alert>
+  </div>
+
   <bego-table-multiple-selection
     [loading]="loadingTableData"
     [lang]="lang"

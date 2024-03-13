@@ -13,6 +13,7 @@ import { SendMessageModalComponent } from './components/send-message-modal/send-
   styleUrls: ['./tags.component.scss']
 })
 export class TagsComponent implements OnInit {
+  public activeTagId: string;
   public selectedRow: SelectedRow;
   public loadingTableData: boolean;
   public lang: Lang;
@@ -21,6 +22,7 @@ export class TagsComponent implements OnInit {
   public page: Page;
   public tags: Tag[];
   public searchQuery: SearchQuery;
+  public alertContent: string = '';
 
   constructor(
     private readonly router: Router,
@@ -40,9 +42,7 @@ export class TagsComponent implements OnInit {
     .fetchTags();
   }
 
-  ngOnInit() {
-    //this.openSendMessageModal('1');
-  }
+  ngOnInit() {}
 
   setLang(): TagsComponent {
     this.lang = {
@@ -173,30 +173,31 @@ export class TagsComponent implements OnInit {
         break;
       case 'delete':
         console.log('action is not implemented yet!');
+        this.openDeleteDialog(data.name, data._id);
         break;
       default:
         console.log(`Action '${type}' has no a handler`);
     }
   }
 
-  public handleReload(event: any) {
+  public handleReload(event: any): void {
     if (event === 'reloadTable') {
       this.fetchTags();
     }
   }
 
-  public clickReload() {
+  public clickReload(): void {
     this.fetchTags();
   }
 
-  public sortingTable({ type, asc }: any) {
+  public sortingTable({ type, asc }: any): void {
     this.searchQuery.sort = JSON.stringify({ [type]: asc ? -1 : 1 });
     this.page.index = 1;
     this.searchQuery.page = 1;
     this.fetchTags();
   }
 
-  public changePage({ index, size }: any) {
+  public changePage({ index, size }: any): void {
     this.searchQuery.page = index;
     if (this.searchQuery.limit !== size) {
       this.page.index = 1;
@@ -206,11 +207,11 @@ export class TagsComponent implements OnInit {
     this.fetchTags();
   }
 
-  public selectColumn($event) {
+  public selectColumn($event): void {
     console.log($event);
   }
 
-  public async fetchTags(translated: boolean = false) {
+  public async fetchTags(translated: boolean = false): Promise<void> {
     this.loadingTableData = true;
 
     if (translated) this.tags = [];
@@ -256,6 +257,28 @@ export class TagsComponent implements OnInit {
         this.loadingTableData = false;
       }
     });
+  }
+
+  public openDeleteDialog(tag_name: string, tag_id: string): void {
+    this.alertContent = `Quiere eliminar el tag "${tag_name}"`;
+    this.activeTagId = tag_id;
+  }
+
+  public async closeDeleteDialog($event: string): Promise<void> {
+    if ($event === 'ok') {
+      console.log('se borra');
+      (await this.apiService.apiRestDelete(`managers_tags/${this.activeTagId}`, { apiVersion: 'v1.1' })).subscribe({
+        next: (d) => {
+          this.fetchTags();
+        },
+        error: (e) => {
+          console.log('Deleting tag', e);
+        }
+      });
+    }
+
+    this.alertContent = '';
+    this.activeTagId = '';
   }
 
   // #endregion Table methods

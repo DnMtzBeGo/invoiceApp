@@ -6,6 +6,11 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+interface AlerLang {
+  title: string;
+  subtitle: string;
+}
+
 @Component({
   selector: 'app-tags-form',
   templateUrl: './tags-form.component.html',
@@ -14,6 +19,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class TagsFormComponent implements OnInit, AfterViewInit {
   @ViewChild('firstInput', { static: false, read: ElementRef }) firstInput: ElementRef;
 
+  public alertContent: AlerLang;
   public tag_id: string;
   public selectedRow: SelectedRow;
   public loadingTableData: boolean;
@@ -104,7 +110,7 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
       if (!this.tag_id) {
         (await this.apiService.apiRest(JSON.stringify(this.tag), `managers_tags`, { apiVersion: 'v1.1' })).subscribe({
           next: (data) => {
-            if (data.result?._id) this.router.navigate(['/tags']);
+            if (data.result?._id) this.openDialog(this.translate('created', 'tags'));
           },
           error: (error: any) => {
             console.log('saving tag', error);
@@ -112,8 +118,8 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
         });
       } else {
         (await this.apiService.apiRestPut(JSON.stringify(this.tag), `managers_tags/${this.tag_id}`, { apiVersion: 'v1.1' })).subscribe({
-          next: () => {
-            this.router.navigate(['/tags']);
+          next: (d) => {
+            this.openDialog(this.translate('updated', 'tags'));
           },
           error: (error: any) => {
             console.log('updating tag', error);
@@ -159,6 +165,8 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   }
 
   public translate(word: string, type: string) {
+    if (type == 'tags') return this.translateService.instant(`${type}.${word}`);
+
     return this.translateService.instant(type === 'paginator' ? `${type}.${word}` : `tags.${type}.${word}`);
   }
 
@@ -322,4 +330,21 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     this.tagsForm.controls['carriers'].setValue(JSON.stringify(this.tag.carriers).replace('[]', ''));
   }
   // #endregion Table methods
+
+  public openDialog(message: string): void {
+    this.alertContent = {
+      title: message,
+      subtitle: ''
+    };
+  }
+
+  public async closeDialog($event: string): Promise<void> {
+    if ($event === 'ok') {
+      this.alertContent = {
+        title: null,
+        subtitle: null
+      };
+      this.router.navigate(['/tags']);
+    }
+  }
 }
