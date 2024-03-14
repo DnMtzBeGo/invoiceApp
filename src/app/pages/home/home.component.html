@@ -62,7 +62,11 @@
   </div>
 </div>
 
-<bego-modal *ngIf="showCompleteModal" image="vehicle" [lang]="{ done: 'Awesome' }" (closeEmitter)="showCompleteModal = false">
-  <h1>Vehicle saved</h1>
-  <p>Your vehicle has been successfully added to the fleet section</p>
+<bego-modal
+  *ngIf="showCompleteModal"
+  image="vehicle"
+  [lang]="{ done: 'orders.complete-modal.done-btn' | translate }"
+  (closeEmitter)="showCompleteModal = false">
+  <h1>{{ 'orders.complete-modal.title' | translate }}</h1>
+  <p>{{ 'orders.complete-modal.description' | translate }}</p>
 </bego-modal>

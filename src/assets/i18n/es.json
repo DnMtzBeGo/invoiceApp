@@ -133,6 +133,10 @@
       "label-or": "o",
       "btn-browse": "Selecciona tu archivo",
       "label-max": "maximo"
+    },
+    "complete-modal": {
+      "title": "¡Orden lista!",
+      "description": "Su orden ha sido creada exitosamente"
     }
   },
   "checkout": {

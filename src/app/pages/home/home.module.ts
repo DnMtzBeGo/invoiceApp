@@ -10,11 +10,13 @@ import { CheckoutModule } from '../orders/components/checkout/checkout.module';
 import { ProfileModule } from '../profile/profile.module';
 import { AppMaterialModule } from 'src/app/material';
 import { BegoModalModule } from '@begomx/ui-components';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [HomeComponent],
   imports: [
     CommonModule,
+    TranslateModule,
     HomeRoutingModule,
     MapModule,
     InputDirectionsModule,

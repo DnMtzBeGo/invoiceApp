@@ -3,8 +3,8 @@
 
   <form [formGroup]="form">
     <bego-input>
-      <span>Full Name*</span>
-      <input uiInput type="text" placeholder="Type full name" formControlName="name" />
+      <span>{{ 'orders.title-fullname' | translate }}*</span>
+      <input uiInput type="text" [placeholder]="'orders.placeholder-fullname' | translate" formControlName="name" />
     </bego-input>
     <bego-input>
       <bego-phone-code-select
@@ -16,7 +16,7 @@
         uiInput
         type="tel"
         [attr.mask]="form.controls.phone_flag.value"
-        placeholder="Type phone number"
+        [placeholder]="'orders.placeholder-phone' | translate"
         formControlName="phone_number" />
     </bego-input>
     <bego-input>
@@ -24,10 +24,14 @@
       <input uiInput type="email" placeholder="email@gmail.com" formControlName="email" />
     </bego-input>
     <bego-input>
-      <span>Reference*</span>
-      <input uiInput type="text" placeholder="Type your referece" formControlName="reference" />
+      <span>{{ 'orders.title-reference' | translate }}*</span>
+      <input uiInput type="text" [placeholder]="'orders.placeholder-reference' | translate" formControlName="reference" />
     </bego-input>
 
-    <bego-calendar-time *ngIf="cardIsOpen" [disabled]="true" [defaultDate]="form.controls.date.value" (changeValue)="updateDate($event)"></bego-calendar-time>
+    <bego-calendar-time
+      *ngIf="cardIsOpen"
+      [disabled]="true"
+      [defaultDate]="form.controls.date.value"
+      (changeValue)="updateDate($event)"></bego-calendar-time>
   </form>
 </div>

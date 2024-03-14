@@ -134,6 +134,11 @@
       "label-or": "or",
       "btn-browse": "Choose your file",
       "label-max": "max"
+    },
+    "complete-modal": {
+      "title": "Order ready!",
+      "description": "Your order has been created successfully",
+      "done-btn": "Awesome"
     }
   },
   "checkout": {
