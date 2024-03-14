@@ -19,6 +19,7 @@ interface AlerLang {
 export class TagsFormComponent implements OnInit, AfterViewInit {
   @ViewChild('firstInput', { static: false, read: ElementRef }) firstInput: ElementRef;
 
+  public tablePrimaryKey: string = '_id';
   public alertContent: AlerLang;
   public tag_id: string;
   public selectedRow: SelectedRow;
@@ -173,8 +174,8 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   // #region Table methods
   private configureTableColumns(): TagsFormComponent {
     this.columns = [
-      { id: '_id', label: '', input: 'style' },
-      // { id: 'thumbnail', label: '', filter: 'input' },
+      { id: '_id', label: '', hide: true },
+      { id: 'thumbnail', label: '', input: 'thumbnail' },
       { id: 'nickname', label: '', filter: 'input', sort: true },
       { id: 'email', label: '', filter: 'input' },
       { id: 'telephone', label: '', filter: 'input', sort: true },
@@ -212,7 +213,7 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     this.selectedRow = {
       showColumnSelection: true,
       selectionLimit: 0,
-      keyPrimaryRow: 'concept'
+      keyPrimaryRow: this.tablePrimaryKey
     };
     return this;
   }
@@ -318,10 +319,6 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
         this.loadingTableData = false;
       }
     });
-  }
-
-  searchStatus(search: string) {
-    return this.statusOptions.find((status) => status.value === search).id;
   }
 
   public rowSelected($event) {
