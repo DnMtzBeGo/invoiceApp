@@ -9,6 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CheckoutModule } from '../orders/components/checkout/checkout.module';
 import { ProfileModule } from '../profile/profile.module';
 import { AppMaterialModule } from 'src/app/material';
+import { BegoModalModule } from '@begomx/ui-components';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -20,7 +21,8 @@ import { AppMaterialModule } from 'src/app/material';
     OrdersModule,
     CheckoutModule,
     ProfileModule,
-    AppMaterialModule
+    AppMaterialModule,
+    BegoModalModule
   ]
 })
 export class HomeModule {}

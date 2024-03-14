@@ -678,7 +678,7 @@ export class OrdersComponent implements OnInit {
 
     // cleanup page
     await this.router.navigate(['/fleet'], { skipLocationChange: true });
-    await this.router.navigate(['/home']);
+    await this.router.navigate(['/home'], { state: { showCompleteModal: true } });
   }
 
   async confirmOrder() {

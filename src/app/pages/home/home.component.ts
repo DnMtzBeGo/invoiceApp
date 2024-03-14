@@ -85,6 +85,7 @@ export class HomeComponent implements OnInit {
   subs = new Subscription();
 
   showSidebar = true;
+  showCompleteModal = false;
 
   constructor(
     private router: Router,
@@ -98,7 +99,12 @@ export class HomeComponent implements OnInit {
     this.subs.add(
       this.router.events.subscribe((res) => {
         if (res instanceof NavigationEnd && res.url === '/home') {
-          let data = this.router.getCurrentNavigation()?.extras.state;
+          const data = this.router.getCurrentNavigation()?.extras.state;
+
+          if (data.showCompleteModal) {
+            this.showCompleteModal = data.showCompleteModal;
+          }
+
           if (data && data.hasOwnProperty('draft')) {
             this.draftData = data.draft;
             this.locations.pickup = data.draft.pickup.address;

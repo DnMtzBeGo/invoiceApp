@@ -115,3 +115,23 @@ bego-map {
     position: absolute;
     inset: 0;
 }
+
+bego-modal {
+  ::ng-deep .modal {
+    gap: 34px;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 500;
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+    }
+
+    p {
+      max-width: 28ch;
+    }
+  }
+}
