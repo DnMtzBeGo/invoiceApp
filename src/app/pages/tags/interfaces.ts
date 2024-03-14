@@ -17,6 +17,7 @@ export interface Column {
   input?: string;
   sort?: boolean;
   options?: StatusOptions[];
+  hide?: boolean;
 }
 
 export interface Page {

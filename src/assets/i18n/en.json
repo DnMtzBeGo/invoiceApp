@@ -1654,7 +1654,8 @@
     "form": {
       "title": "Create Tag",
       "edit_title": "Edit Tag",
-      "tag_name": "Tagname"
+      "tag_name": "Tag name",
+      "tag_name_placeholder": "Type tag name"
     },
     "validation": {
       "carriers_required": "Choose almost one driver",
@@ -1681,7 +1682,8 @@
         "nickname": "Name",
         "email": "E-mail",
         "telephone": "Phone number",
-        "verified": "Verified"
+        "verified": "Verified",
+        "thumbnail": " "
       }
     },
     "filter": {

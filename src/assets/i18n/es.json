@@ -1651,7 +1651,8 @@
     "form": {
       "title": "Crear Tag",
       "edit_title": "Editar Tag",
-      "tag_name": "Nombre del tag"
+      "tag_name": "Nombre del Tag",
+      "tag_name_placeholder": "Ingrese el nombre del tag"
     },
     "validation": {
       "carriers_required": "Debe seleccionar al menos un conductor",
@@ -1678,7 +1679,8 @@
         "nickname": "Nombre",
         "email": "Correo electrónico",
         "telephone": "Teléfono",
-        "verified": "Verificado"
+        "verified": "Verificado",
+        "thumbnail": "dsad"
       }
     },
     "filter": {

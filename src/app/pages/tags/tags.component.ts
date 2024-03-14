@@ -148,7 +148,7 @@ export class TagsComponent implements OnInit {
     this.selectedRow = {
       showColumnSelection: false,
       selectionLimit: 0,
-      keyPrimaryRow: 'concept'
+      keyPrimaryRow: '_id'
     };
 
     return this;
