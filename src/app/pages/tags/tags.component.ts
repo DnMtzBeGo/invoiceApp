@@ -80,7 +80,7 @@ export class TagsComponent implements OnInit {
   }
 
   public translate(word: string, type: string): string {
-    return this.translateService.instant(type === 'paginator' ? `${type}.${word}` : `tags.${type}.${word}`);
+    return this.translateService.instant(type === 'paginator' ? `${type}.${word}` : `tags.${type ? type + '.' : ''}${word}`);
   }
 
   public openSendMessageModal(tag_id: string, tag_name: string) {
@@ -261,7 +261,7 @@ export class TagsComponent implements OnInit {
   }
 
   public openDeleteDialog(tag_name: string, tag_id: string): void {
-    this.alertContent = `Quiere eliminar el tag "${tag_name}"`;
+    this.alertContent = this.translate('confirm_delete_question', '') + `"${tag_name}"?`;
     this.activeTagId = tag_id;
   }
 

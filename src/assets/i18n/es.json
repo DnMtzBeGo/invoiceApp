@@ -1635,6 +1635,7 @@
       "done": "Si, eliminar",
       "cancel": "Cancelar"
     },
+    "confirm_delete_question": "¿Quiere eliminar el tag ",
     "send_message": {
       "dialog_title": "Enviar mensaje",
       "message": "Contenido del mensaje",

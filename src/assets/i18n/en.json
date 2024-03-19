@@ -1633,6 +1633,7 @@
     "confirm_dialog": {
       "done": "Ok"
     },
+    "confirm_delete_question": "Do you really want to remove the tag ",
     "delete_dialog": {
       "done": "Si, eliminar",
       "cancel": "Cancelar"
