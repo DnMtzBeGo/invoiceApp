@@ -19,6 +19,7 @@ interface AlerLang {
 export class TagsFormComponent implements OnInit, AfterViewInit {
   @ViewChild('firstInput', { static: false, read: ElementRef }) firstInput: ElementRef;
 
+  public saveButtonEnabled: boolean = true;
   public tablePrimaryKey: string = '_id';
   public alertContent: AlerLang;
   public tag_id: string;
@@ -100,6 +101,7 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   }
 
   public async save() {
+    this.saveButtonEnabled = false;
     this.tagsForm.controls['carriers'].setValue(this.tagsForm.controls['carriers'].value.trim());
 
     if (this.tagsForm.valid) {
@@ -115,6 +117,9 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
           },
           error: (error: any) => {
             console.log('saving tag', error);
+          },
+          complete: () => {
+            this.saveButtonEnabled = true;
           }
         });
       } else {
@@ -124,10 +129,13 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
           },
           error: (error: any) => {
             console.log('updating tag', error);
+          },
+          complete: () => {
+            this.saveButtonEnabled = true;
           }
         });
       }
-    }
+    } else this.saveButtonEnabled = true;
   }
 
   private setLang(): TagsFormComponent {
@@ -274,10 +282,11 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
         this.tag = result;
         this.tagsForm.controls['name'].setValue(result.name);
         this.tagsForm.controls['carriers'].setValue(JSON.stringify(result.carriers).replace('[]', ''));
-        this.loadingTableData = false;
       },
       error: (err: any) => {
         console.error('fetching tag', err);
+      },
+      complete: () => {
         this.loadingTableData = false;
       }
     });
@@ -312,10 +321,11 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
             actions
           };
         });
-        this.loadingTableData = false;
       },
       error: (err: any) => {
         console.error('fetching drivers', err);
+      },
+      complete: () => {
         this.loadingTableData = false;
       }
     });

@@ -250,10 +250,11 @@ export class TagsComponent implements OnInit {
             actions
           };
         });
-        this.loadingTableData = false;
       },
       error: (err: any) => {
         console.error(err);
+      },
+      complete: () => {
         this.loadingTableData = false;
       }
     });

@@ -53,7 +53,9 @@
       (pageChangeEmitter)="changePage($event)"
       (actionColumn)="selectColumn($event)">
       <div class="buttons-external">
-        <button mat-flat-button type="submit" class="brand-btn-2">{{ 'tags.buttons.save' | translate }}</button>
+        <button [disabled]="!saveButtonEnabled" mat-flat-button type="submit" class="brand-btn-2">
+          {{ 'tags.buttons.save' | translate }}
+        </button>
       </div>
     </bego-table-multiple-selection>
   </form>
