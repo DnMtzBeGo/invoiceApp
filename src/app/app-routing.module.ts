@@ -8,6 +8,9 @@ import { ContactComponent } from "./pages/contact/contact.component";
 const routes: Routes = [
   {
     path: "home",
+    data: {
+      breadcrumb: 'Home'
+    },
     loadChildren: () =>
       import("./pages/home/home.module").then((m) => m.HomeModule),
   },
@@ -42,6 +45,14 @@ const routes: Routes = [
     path: 'drafts',
     loadChildren: () =>
       import('./pages/drafts/drafts.module').then((m) => m.DraftsModule)
+  },
+  {
+    path: 'polygons',
+    data: {
+      breadcrumb: 'Polygons'
+    },
+    loadChildren: () =>
+      import('./pages/polygons/polygons.module').then((m) => m.PolygonsModule)
   },
   {
     path: "profile",

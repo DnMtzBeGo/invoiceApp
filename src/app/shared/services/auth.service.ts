@@ -138,4 +138,36 @@ export class AuthService {
     }
     return this.http.put<any>(url + method, requestJson, { headers, params });
   }
+
+  public async apiRestGetRocket(method: string, options: object = {}): Promise<Observable<any>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
+      'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+    const { URL_BASE_ROCKET } = environment;
+    const params = await this.getOptions(options);
+    let splitUrl, url;
+  
+    if (options && options['apiVersion']) {
+      splitUrl = environment.URL_BASE_ROCKET.split('/');
+      splitUrl[splitUrl.length - 2] = options['apiVersion'];
+      url = splitUrl.join('/');
+    } else {
+      url = environment.URL_BASE_ROCKET;
+    }
+  
+    // console.log('route', params.get('route'));
+    // if (!params.get('route')) {
+    //   params.delete('route');
+    // }
+  
+    return this.http.get<any>(url + method, {
+      headers,
+      params
+    });
+  }
 }
+

@@ -1,0 +1,14 @@
+
+.input-bego {
+  border-radius: 50px;
+  border: 1.5px solid #000;
+  
+  background: linear-gradient(66deg, rgba(8, 12, 15, 0.5) 5.1%, rgba(85, 85, 85, 0.00) 100%), linear-gradient(66deg, rgba(8, 12, 15, 0.50) 5.1%, rgba(85, 85, 85, 0.00) 100%);
+  backdrop-filter: blur(20px);
+  font-size: 18px;
+  color: #EDEDED;
+
+  &::placeholder {
+    color: #828282;
+  }
+}

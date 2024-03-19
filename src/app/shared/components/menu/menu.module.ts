@@ -4,7 +4,9 @@ import { MenuComponent } from './menu.component';
 import { ButtonModule } from '../button/button.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
-
+import {
+  BegoIconsModule
+} from '@begomx/ui-components';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
     ButtonModule,
     TranslateModule,
     MatIconModule,
+    BegoIconsModule
   ],
   exports: [
     MenuComponent

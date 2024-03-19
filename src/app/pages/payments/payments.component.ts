@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { HeaderService } from '../home/services/header.service';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
@@ -24,6 +25,9 @@ interface Action {
   styleUrls: ['./payments.component.scss']
 })
 export class PaymentsComponent implements OnInit {
+
+  public headerTransparent: boolean = false;
+
   statusOptions = [
     { label: 'Cancel', value: 'cancel', id: -3 },
     { label: 'Rejected', value: 'rejected', id: -2 },
@@ -88,6 +92,7 @@ export class PaymentsComponent implements OnInit {
   public loadingData: boolean = true;
 
   constructor(
+    private headerStyle: HeaderService,
     private webService: AuthService,
     private notificationsService: NotificationsService,
     private matDialog: MatDialog,
@@ -95,6 +100,7 @@ export class PaymentsComponent implements OnInit {
     private currencyPipe: CurrencyPipe,
     private translateService: TranslateService
   ) {
+    this.headerStyle.changeHeader(this.headerTransparent);
     this.lang.selected = localStorage.getItem('lang') || 'en';
 
     this.actions = [

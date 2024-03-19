@@ -1634,5 +1634,37 @@
   "filter": {
     "input": "Buscar...",
     "selector": "Buscar..."
+  },
+  "polygons": {
+    "actions": {
+      "rename": "Renombrar",
+      "edit ": "Actualizar puntos",
+      "delete": "Borrar"
+    },
+    "paginator": {
+      "total": "Total",
+      "of": "de",
+      "nextPage": "Siguiente",
+      "prevPage": "Anterior",
+      "itemsPerPage": "Items por página"
+    },
+    "filter": {
+      "input": "Buscar...",
+      "selector": "Buscar..."
+    },
+    "table": {
+      "name": "Nombre",
+      "date_created": "Fecha de creación"
+    },
+    "buttons": {
+      "create": "Crear Polygon"
+    },
+    "create-polygon": {
+      "title": "Crear un Polígono",
+      "title-success":"Polígono creado exitosamente",
+      "input-placeholder": "Escribe un nombre",
+      "button-accept": "Aceptar",
+      "button-success": "Ok"
+    }
   }
 }

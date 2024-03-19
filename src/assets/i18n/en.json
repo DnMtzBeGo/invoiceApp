@@ -1630,5 +1630,37 @@
   "filter": {
     "input": "Search...",
     "selector": "Search..."
+  },
+  "polygons": {
+    "actions": {
+      "rename": "Rename",
+      "edit ": "Upgrade Geometry",
+      "delete": "Delete"
+    },
+    "paginator": {
+      "total": "Total",
+      "of": "of",
+      "nextPage": "Next",
+      "prevPage": "Prev",
+      "itemsPerPage": "Items per page"
+    },
+    "filter": {
+      "input": "Search...",
+      "selector": "Search..."
+    },
+    "table": {
+      "name": "Name",
+      "date_created": "Date created"
+    },
+    "buttons": {
+      "create": "Create New Polygon"
+    },
+    "create-polygon": {
+      "title": "Create new Polygon",
+      "title-success":"Polygon successfully created",
+      "input-placeholder": "Type polygon name",
+      "button-accept": "Accept",
+      "button-success": "Awesome"
+    }
   }
 }
