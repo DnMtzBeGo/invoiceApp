@@ -18,6 +18,11 @@
     }
   }
 
+  /* hides refresh table button */
+  ::ng-deep .refresh-table {
+    display: none;
+  }
+
   .buttons-external {
     display: flex;
     flex-direction: row;
