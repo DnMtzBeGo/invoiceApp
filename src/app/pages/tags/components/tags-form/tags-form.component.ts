@@ -19,7 +19,7 @@ interface AlerLang {
 export class TagsFormComponent implements OnInit, AfterViewInit {
   @ViewChild('firstInput', { static: false, read: ElementRef }) firstInput: ElementRef;
 
-  public saveButtonEnabled: boolean = true;
+  public saveButtonEnabled: boolean = false;
   public tablePrimaryKey: string = '_id';
   public alertContent: AlerLang;
   public tag_id: string;
@@ -101,7 +101,7 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   }
 
   public async save() {
-    this.saveButtonEnabled = false;
+    this.disableSaveButton();
     this.tagsForm.controls['carriers'].setValue(this.tagsForm.controls['carriers'].value.trim());
 
     if (this.tagsForm.valid) {
@@ -119,7 +119,7 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
             console.log('saving tag', error);
           },
           complete: () => {
-            this.saveButtonEnabled = true;
+            this.enableSaveButton();
           }
         });
       } else {
@@ -334,7 +334,11 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   public rowSelected($event) {
     this.tag.carriers = $event.map((driver: TagDriver) => (driver.selection_check ? driver._id : false));
 
-    this.tagsForm.controls['carriers'].setValue(JSON.stringify(this.tag.carriers).replace('[]', ''));
+    const json = JSON.stringify(this.tag.carriers).replace('[]', '');
+    this.tagsForm.controls['carriers'].setValue(json);
+
+    if (json && this.tagsForm.controls['name'].value) this.enableSaveButton();
+    else this.disableSaveButton();
   }
   // #endregion Table methods
 
@@ -353,5 +357,12 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
       };
       this.router.navigate(['/tags']);
     }
+  }
+
+  private disableSaveButton(): void {
+    this.saveButtonEnabled = false;
+  }
+  private enableSaveButton(): void {
+    this.saveButtonEnabled = true;
   }
 }
