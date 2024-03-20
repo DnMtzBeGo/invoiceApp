@@ -19,6 +19,11 @@
     }
   }
 
+  /* hides refresh table button */
+  ::ng-deep .refresh-table {
+    display: none;
+  }
+
   .form {
     display: flex;
     flex-direction: column;
