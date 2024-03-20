@@ -64,6 +64,9 @@ export class InputDirectionsComponent implements OnInit {
   @Input() orderType: string;
   @Output() orderTypeChange = new EventEmitter<string>();
 
+  @Input() isPrime = false;
+
+  lang = localStorage.getItem('lang') || 'en';
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
   events: string = "DD / MM / YY";

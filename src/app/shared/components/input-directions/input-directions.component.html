@@ -8,7 +8,7 @@
     ]"
   >
     <div *ngIf="!haveFleetMembers">
-      <div class="fleet-type">
+      <div class="fleet-type" *ngIf="isPrime">
         <h3>Select your transport</h3>
         <bego-button-toggle
           [noPadding]="true"

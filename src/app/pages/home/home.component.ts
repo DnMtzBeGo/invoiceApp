@@ -88,6 +88,8 @@ export class HomeComponent implements OnInit {
   showSidebar = true;
   showCompleteModal = false;
 
+  isPrime = false;
+
   constructor(
     private router: Router,
     private webService: AuthService,
@@ -257,6 +259,8 @@ export class HomeComponent implements OnInit {
       .pipe(catchError(() => of({})))
       .subscribe((res) => {
         if (res.status === 200 && res.result) {
+          this.isPrime = res.result.subscription
+
           // When members exist on the fleet, it saves them on this array
           this.markersFromService = [];
           res.result.members.forEach((row) => {
