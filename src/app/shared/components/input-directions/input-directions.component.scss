@@ -81,6 +81,10 @@
   left: -303px;
   top: -80px;
   position: absolute;
+
+  .mdc-button__label {
+    color: #fff;
+  }
 }
 
 .assigned-date-time-row {
@@ -98,7 +102,11 @@
 }
 
 .input-calendar {
-    width: 100%;
+  width: 100%;
+
+  ::ng-deep .mat-form-field-underline {
+    display: none;
+  }
 }
 
 .btn-input-calendar {
