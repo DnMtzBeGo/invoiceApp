@@ -19,7 +19,7 @@
     </bego-alert>
   </div>
 
-  <form class="form" novalidate [formGroup]="tagsForm" (ngSubmit)="save()">
+  <form class="form" novalidate [formGroup]="tagsForm">
     <div class="flex">
       <label class="input-label">{{ 'tags.form.tag_name' | translate }}</label>
       <mat-form-field class="brand-field-1">
@@ -53,7 +53,7 @@
       (pageChangeEmitter)="changePage($event)"
       (actionColumn)="selectColumn($event)">
       <div class="buttons-external">
-        <button [disabled]="!saveButtonEnabled" mat-flat-button type="submit" class="brand-btn-2">
+        <button [disabled]="!saveButtonEnabled" mat-flat-button (click)="save()" type="button" class="brand-btn-2">
           {{ 'tags.buttons.save' | translate }}
         </button>
       </div>
