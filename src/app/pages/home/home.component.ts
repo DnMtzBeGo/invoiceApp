@@ -10,6 +10,7 @@ import { HeaderService } from './services/header.service';
 import { ofType } from 'src/app/shared/utils/operators.rx';
 import { CustomMarker } from './custom.marker';
 import { OrderPreview } from '../orders/orders.component';
+import { Location } from '@angular/common';
 
 declare var google: any;
 // 10 seconds for refreshing map markers
@@ -92,7 +93,8 @@ export class HomeComponent implements OnInit {
     private webService: AuthService,
     public placesService: PlacesService,
     private googlemaps: GoogleMapsService,
-    private headerStyle: HeaderService
+    private headerStyle: HeaderService,
+    private location: Location
   ) {
     this.placesService.places$;
     this.headerStyle.changeHeader(this.headerTransparent);
@@ -101,8 +103,9 @@ export class HomeComponent implements OnInit {
         if (res instanceof NavigationEnd && res.url === '/home') {
           const data = this.router.getCurrentNavigation()?.extras.state;
 
-          if (data.showCompleteModal) {
+          if (data?.showCompleteModal) {
             this.showCompleteModal = data.showCompleteModal;
+            this.location.replaceState('');
           }
 
           if (data && data.hasOwnProperty('draft')) {
