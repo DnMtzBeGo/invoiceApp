@@ -29,6 +29,8 @@
 }
 
 .fleet-info-container {
+  padding-bottom: 80px;
+
   .fleet-drivers-row {
     margin-top: 30px;
 
@@ -43,6 +45,10 @@
 
     > p {
       margin: 0 0 14px 33px;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
     }
   }
 
@@ -570,4 +576,10 @@ app-member-card-selection:nth-last-of-type(1) {
 
 .prueba {
   width: 100%;
+}
+
+.fleet-prime-row {
+  p::first-letter {
+    text-transform: capitalize;
+  }
 }

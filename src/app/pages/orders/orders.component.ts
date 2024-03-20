@@ -704,8 +704,7 @@ export class OrdersComponent implements OnInit {
       const req = await this.auth.apiRest(JSON.stringify(payload), 'orders/assign_order', { apiVersion: 'v1.1' });
       return req.toPromise();
     } else {
-      // TODO: get this value from previous modal
-      payload.vehicle_id = '';
+      payload.vehicle_id = this.membersToAssigned.vehicle._id;
       const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/ocl/assign_order', { apiVersion: 'v1.1' });
       return req.toPromise();
     }

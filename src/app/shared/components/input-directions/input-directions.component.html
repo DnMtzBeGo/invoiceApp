@@ -284,7 +284,6 @@
               <app-circular-avatar
                 *ngFor="let driver of drivers.slice(0, 4)"
                 [data]="driver"
-                [userWantCP]="userWantCP"
                 fleetMember="drivers"
                 (click)="selectMembersForOrder(driver, 'drivers')"
               >
@@ -302,7 +301,28 @@
           <div class="fleet-trucks-row" *ngIf="walkingData">
             <p>Without vehicle</p>
             <div class="drivers-container">
-              <app-circular-avatar [data]="walkingData" (click)="selectOCLVehicle(walkingData)"></app-circular-avatar>
+              <app-circular-avatar fleetMember="vehicle" [data]="walkingData" (click)="selectMembersForOrder(walkingData, 'vehicle')"></app-circular-avatar>
+            </div>
+          </div>
+
+          <div class="fleet-trucks-row" *ngFor="let vehicleGroup of vehicle">
+            <p>{{ vehicleGroup.name }}</p>
+
+            <div class="drivers-container">
+              <ng-container></ng-container>
+              <app-circular-avatar
+                *ngFor="let vehicle of vehicleGroup.vehicles?.slice(0, 4)"
+                fleetMember="trucks"
+                [data]="vehicle"
+                (click)="selectMembersForOrder(vehicle, 'vehicle')"
+              ></app-circular-avatar>
+              <div
+                class="rest-of-members"
+                *ngIf="vehicleGroup.vehicles?.length > 4"
+                (click)="showFleetContainer('vehicle')"
+              >
+                <p>+{{ vehicleGroup.vehicles.length - 4 }}</p>
+              </div>
             </div>
           </div>
 

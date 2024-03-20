@@ -78,6 +78,7 @@ export class InputDirectionsComponent implements OnInit {
   drivers: Array<object> = [];
   trucks: Array<object> = [];
   trailers: Array<object> = [];
+  vehicle: Array<object> = [];
   walkingData: any = null;
   selectMembersToAssign: any = {};
   fleetData: any;
@@ -572,10 +573,11 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   async getFleetListDetails() {
-    let requestAvailavilityFleetMembers = {
+    const requestAvailavilityFleetMembers = {
       fromDate: this.fromDate,
       toDate: this.toDate,
     };
+
     (
       await this.auth.apiRest(
         JSON.stringify(requestAvailavilityFleetMembers),
@@ -585,22 +587,63 @@ export class InputDirectionsComponent implements OnInit {
     ).subscribe(
       ({ result }) => {
         this.canGoToSteps = false;
-        this.selectMembersToAssign = {};
-        this.drivers = result.drivers;
+        this.selectMembersToAssign.trucks = null;
+        this.selectMembersToAssign.trailers = null;
         this.trucks = result.trucks;
         this.trailers = result.trailers;
-        this.walkingData = {
-          availability: true,
-          model: 'Walking',
-          photo: '/assets/images/walking.svg',
-          isSelected: false,
-          _id: '',
-        }
       },
       (error) => {
         console.log("Something went wrong", error.error);
       }
     );
+
+    this.getDrivers();
+    this.getVehicles();
+  }
+
+  async getDrivers() {
+    const q = new URLSearchParams();
+    q.set('fromDate', String(this.fromDate));
+    q.set('toDate', String(this.toDate));
+
+    const req = await this.auth.apiRestGet(`orders/drivers_availability?${q.toString()}`, { apiVersion: 'v1.1' });
+    const { result } = await req.toPromise();
+
+    this.selectMembersToAssign.drivers = null;
+    this.drivers = result;
+  }
+
+  async getVehicles() {
+    const q = new URLSearchParams();
+    q.set('fromDate', String(this.fromDate));
+    q.set('toDate', String(this.toDate));
+
+    const { result: categories } = await (await this.auth.apiRestGet('orders/vehicles', { apiVersion: 'v1.1' })).toPromise();
+
+    const requests = categories.map(async (group) => {
+      const { result: vehicles } = await (await this.auth.apiRestGet(`orders/vehicles/${group.name}?${q.toString()}`, { apiVersion: 'v1.1' })).toPromise();
+
+      if (!vehicles.length) return;
+
+      return {
+        name: group.name,
+        vehicles
+      };
+    });
+
+    const vehicles = (await Promise.allSettled(requests))
+      .filter((data) => data.status === 'fulfilled' && data.value)
+      .map((data: any) => data.value);
+
+    this.vehicle = vehicles;
+    this.selectMembersToAssign.vehicle = null;
+    this.walkingData = {
+      availability: true,
+      model: 'Walking',
+      photo: '/assets/images/walking.svg',
+      isSelected: false,
+      _id: null,
+    }
   }
 
   private async canCreateOrders() {
@@ -613,7 +656,6 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   public selectMembersForOrder(member: any, typeMember: keyof this) {
-    let obj = this[typeMember] as any;
     if (this.userWantCP && !member.can_stamp) {
       return this.showAlert(
         this.translateService.instant(
@@ -628,25 +670,13 @@ export class InputDirectionsComponent implements OnInit {
           `home.alerts.not-available-${String(typeMember)}`
         )
       );
+
+    if (this.selectMembersToAssign[typeMember]) {
+      this.selectMembersToAssign[typeMember].isSelected = false;
+    }
+
     member["isSelected"] = true;
     this.selectMembersToAssign[typeMember] = member;
-    this.sendAssignedMermbers.emit({ ...this.selectMembersToAssign });
-    for (const [i, iterator] of obj.entries()) {
-      if (iterator._id != member._id) {
-        iterator["isSelected"] = false;
-      }
-    }
-    this.canGoToSteps = this.isMembersSelected();
-  }
-
-  public selectOCLVehicle(vehicle: any) {
-    if (this.selectMembersToAssign.vehicle) {
-      this.selectMembersToAssign.vehicle.isSelected = false;
-    }
-
-    vehicle.isSelected = true;
-    this.selectMembersToAssign.vehicle = vehicle;
-
     this.sendAssignedMermbers.emit({ ...this.selectMembersToAssign });
     this.canGoToSteps = this.isMembersSelected();
   }
