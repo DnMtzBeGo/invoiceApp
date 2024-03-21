@@ -3,7 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { TagsComponent } from './tags.component';
 import { TagsRoutingModule } from './tags-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { BegoAlertModule, BegoTableModule, BegoTableMultipleSelectionModule } from '@begomx/ui-components';
+import { BegoAlertModule, BegoIconsModule, BegoTableModule, BegoTableMultipleSelectionModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
 import { TagsFormModule } from './components/tags-form/tags-form.module';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
@@ -21,7 +21,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppMaterialModule,
     MatDialogModule,
     ReactiveFormsModule,
-    BegoAlertModule
+    BegoAlertModule,
+    BegoIconsModule
   ],
   declarations: [TagsComponent, SendMessageModalComponent],
   providers: [DatePipe]

@@ -19,6 +19,14 @@
     }
   }
 
+  ::ng-deep .chibi {
+    height: 198px !important;
+    background-image: url('../../../../../assets/images/tags/chubi_tags.svg') !important;
+    background-size: 198px 177px !important;
+    background-position-x: center;
+    top: -73px !important;
+  }
+
   /* hides refresh table button */
   ::ng-deep .refresh-table {
     display: none;

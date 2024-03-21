@@ -309,11 +309,16 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
       next: ({ result: { result, size = '10', page = '1' } }) => {
         this.page = { total: +size * +page, index: page, size: limit };
 
+        let hascheckedTags: boolean = false;
         this.drivers = result.map((driver: TagDriver) => {
           const actions = {
             enabled: true,
             options: {}
           };
+
+          if (this.tag.carriers.includes(driver._id)) {
+            hascheckedTags = true;
+          }
 
           return {
             selection_check: this.tag.carriers.includes(driver._id),
@@ -321,6 +326,8 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
             actions
           };
         });
+
+        if (hascheckedTags) this.enableSaveButton();
       },
       error: (err: any) => {
         console.error('fetching drivers', err);
