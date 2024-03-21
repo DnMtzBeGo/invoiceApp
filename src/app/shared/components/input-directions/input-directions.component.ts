@@ -66,7 +66,8 @@ export class InputDirectionsComponent implements OnInit {
 
   @Input() isPrime = false;
 
-  lang = localStorage.getItem('lang') || 'en';
+  lang = 'en';
+  langListener = null;
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
   events: string = "DD / MM / YY";
@@ -203,9 +204,18 @@ export class InputDirectionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.canCreateOrders();
+
+    this.langListener = this.translateService.onLangChange.subscribe((lang) => {
+      this.lang = lang.lang;
+
+      if (this.walkingData) {
+        this.walkingData.attributes.vehicle_number = this.translateService.instant('orders.prime.walking');
+      }
+    });
   }
 
   ngOnDestroy(): void {
+    this.langListener.unsubscribe();
     this.subscription.unsubscribe();
   }
 
@@ -623,13 +633,14 @@ export class InputDirectionsComponent implements OnInit {
 
     const { result: categories } = await (await this.auth.apiRestGet('orders/vehicles', { apiVersion: 'v1.1' })).toPromise();
 
-    const requests = categories.map(async (group) => {
-      const { result: vehicles } = await (await this.auth.apiRestGet(`orders/vehicles/${group.name}?${q.toString()}`, { apiVersion: 'v1.1' })).toPromise();
+    const requests = [...(categories?.public || []), ...(categories?.private || [])].map(async (group) => {
+      if (!group.has_vehicles) return;
 
-      if (!vehicles.length) return;
+      const { result: vehicles } = await (await this.auth.apiRestGet(`orders/vehicles/${group._id}?${q.toString()}`, { apiVersion: 'v1.1' })).toPromise();
 
       return {
         name: group.name,
+        translations: group.translations,
         vehicles
       };
     });
@@ -642,8 +653,8 @@ export class InputDirectionsComponent implements OnInit {
     this.selectMembersToAssign.vehicle = null;
     this.walkingData = {
       availability: true,
-      model: 'Walking',
       photo: '/assets/images/walking.svg',
+      attributes: { vehicle_number: this.translateService.instant('orders.prime.walking') },
       isSelected: false,
       _id: null,
     }

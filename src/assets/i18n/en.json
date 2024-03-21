@@ -139,6 +139,10 @@
       "title": "Order ready!",
       "description": "Your order has been created successfully",
       "done-btn": "Awesome"
+    },
+    "prime": {
+      "no-vehicle": "Without vehicle",
+      "walking": "Walking"
     }
   },
   "checkout": {
