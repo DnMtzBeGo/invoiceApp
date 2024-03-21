@@ -4,6 +4,14 @@
   height: 100%;
   flex-direction: column;
 
+  ::ng-deep .chibi {
+    height: 198px !important;
+    background-image: url('../../../assets/images/tags/chubi_tags.svg') !important;
+    background-size: 198px 177px !important;
+    background-position-x: center;
+    top: -73px !important;
+  }
+
   .page-header {
     margin: 24px 54px 24px 10px;
     display: flex;
@@ -72,8 +80,20 @@
       z-index: 202;
 
       .alert-content {
+        text-align: center;
         padding: 25%;
         font-size: 18px;
+
+        .simple-title {
+          font-family: Avenir;
+          font-style: normal;
+          font-weight: 700;
+          font-size: 30px;
+          line-height: 35px;
+          text-align: center;
+          color: #fff;
+          margin: 0 0 28px;
+        }
       }
     }
   }

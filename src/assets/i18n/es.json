@@ -1632,11 +1632,14 @@
       "done": "Ok"
     },
     "delete_dialog": {
+      "title": "Eliminar tag",
       "done": "Si, eliminar",
       "cancel": "Cancelar"
     },
     "confirm_delete_question": "¿Quiere eliminar el tag ",
     "send_message": {
+      "sent_message_title": "Mensajes",
+      "sent_message": "El mensaje ha sido enviado correctamente!",
       "dialog_title": "Enviar mensaje",
       "message": "Contenido del mensaje",
       "title": "Título del mensaje",

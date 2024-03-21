@@ -1636,9 +1636,12 @@
     "confirm_delete_question": "Do you really want to remove the tag ",
     "delete_dialog": {
       "done": "Si, eliminar",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "title": "Delete tag"
     },
     "send_message": {
+      "sent_message_title": "Messages",
+      "sent_message": "The message has been sent successfully!",
       "dialog_title": "Send Message",
       "message": "Content",
       "title": "Title",

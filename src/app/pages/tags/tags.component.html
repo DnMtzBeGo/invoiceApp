@@ -16,8 +16,24 @@
       }"
       (closeEmitter)="closeDeleteDialog($event)">
       <div class="alert-content">
+        <h1 class="simple-title">{{ 'tags.delete_dialog.title' | translate }}</h1>
         {{ alertContent }}
       </div>
+    </bego-alert>
+  </div>
+
+  <div class="dialog-container" *ngIf="sentMessageSuccessfullyDialogContent">
+    <bego-alert
+      class="alert"
+      [simple]="true"
+      (closeEmitter)="closeSendMessageSuccessfullyDialog($event)"
+      [lang]="{
+        done: ('tags.confirm_dialog.done' | translate),
+      }"
+      [alertLang]="{
+        title: ('tags.send_message.sent_message_title' | translate),
+        subtitle: sentMessageSuccessfullyDialogContent
+      }">
     </bego-alert>
   </div>
 

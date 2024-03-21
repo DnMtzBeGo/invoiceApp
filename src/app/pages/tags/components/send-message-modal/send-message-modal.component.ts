@@ -29,6 +29,7 @@ interface DialogData {
 export class SendMessageModalComponent implements OnInit, AfterViewInit {
   @ViewChild('firstInput', { static: false, read: ElementRef }) firstInput: ElementRef;
 
+  public typeForm: FormGroup;
   public sendMessageForm: FormGroup;
   public lang: DialogLang;
   public sendButtonDisabled: boolean = false;
@@ -45,9 +46,10 @@ export class SendMessageModalComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.sendMessageForm = new FormGroup({
       title: new FormControl('', [Validators.required, Validators.minLength(1)]),
-      message: new FormControl('', [Validators.required]),
-      type: new FormControl('SMS', [Validators.required])
+      message: new FormControl('', [Validators.required])
     });
+
+    this.typeForm = new FormGroup({ sms: new FormControl(true), push: new FormControl('') });
   }
 
   ngAfterViewInit() {
@@ -70,28 +72,31 @@ export class SendMessageModalComponent implements OnInit, AfterViewInit {
 
   public async send(): Promise<void> {
     if (this.sendMessageForm.valid) {
-      this.disableSend();
-
       const { controls } = this.sendMessageForm;
+      const { controls: typeControls } = this.typeForm;
 
-      const message: Message = {
-        tags_ids: [this.data.tag_id],
-        sms: controls['type'].value === 'sms',
-        app: controls['type'].value === 'push',
-        title: controls['title'].value,
-        message: controls['message'].value
-      };
+      if (typeControls['sms'].value || typeControls['sms'].value) {
+        this.disableSend();
+        const message: Message = {
+          tags_ids: [this.data.tag_id],
+          sms: typeControls['sms'].value,
+          app: typeControls['push'].value,
+          title: controls['title'].value,
+          message: controls['message'].value
+        };
 
-      (await this.apiService.apiRest(JSON.stringify(message), `managers_tags/send_notification`, { apiVersion: 'v1.1' })).subscribe({
-        next: (data) => {
-          console.log(data);
-          this.enableSend();
-        },
-        error: (error: any) => {
-          console.log('saving tag', error);
-          this.enableSend();
-        }
-      });
+        (await this.apiService.apiRest(JSON.stringify(message), `managers_tags/send_notification`, { apiVersion: 'v1.1' })).subscribe({
+          next: (data) => {
+            this.close(true);
+          },
+          error: (error: any) => {
+            console.log('saving tag', error);
+          },
+          complete: () => {
+            this.enableSend();
+          }
+        });
+      }
     }
   }
 
@@ -107,7 +112,11 @@ export class SendMessageModalComponent implements OnInit, AfterViewInit {
     return this.sendMessageForm.controls[controlName].hasError(errorName);
   }
 
-  public close() {
-    this.dialogRef.close();
+  public getTypeCheckboxError(): boolean {
+    if (this.typeForm.controls) return !this.typeForm.controls['sms'].value && !this.typeForm.controls['sms'].value;
+  }
+
+  public close(sent: boolean = false) {
+    this.dialogRef.close(sent);
   }
 }

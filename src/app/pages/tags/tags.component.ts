@@ -13,6 +13,7 @@ import { SendMessageModalComponent } from './components/send-message-modal/send-
   styleUrls: ['./tags.component.scss']
 })
 export class TagsComponent implements OnInit {
+  public sentMessageSuccessfullyDialogContent: string = '';
   public activeTagId: string;
   public selectedRow: SelectedRow;
   public loadingTableData: boolean;
@@ -92,7 +93,9 @@ export class TagsComponent implements OnInit {
       backdropClass: ['brand-dialog-1']
     });
 
-    dialogRef.afterClosed().subscribe((edited: string) => {});
+    dialogRef.afterClosed().subscribe((sent: boolean) => {
+      if (sent) this.sentMessageSuccessfullyDialogContent = this.translate('sent_message', 'send_message');
+    });
   }
 
   // #region Table methods
@@ -263,6 +266,12 @@ export class TagsComponent implements OnInit {
   public openDeleteDialog(tag_name: string, tag_id: string): void {
     this.alertContent = this.translate('confirm_delete_question', '') + `"${tag_name}"?`;
     this.activeTagId = tag_id;
+  }
+
+  public async closeSendMessageSuccessfullyDialog($event: string): Promise<void> {
+    if ($event === 'ok') {
+      this.sentMessageSuccessfullyDialogContent = '';
+    }
   }
 
   public async closeDeleteDialog($event: string): Promise<void> {
