@@ -129,6 +129,7 @@ export class PaymentsUploadModalComponent implements OnInit {
           }
           this.changeRenderInput('subtotal');
           this.changeRenderInput('total');
+          this.checkValidated();
         },
         (err) => {
           console.log(err);
