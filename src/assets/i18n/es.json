@@ -1340,6 +1340,10 @@
       "gray": "Gris",
       "grey": "Gris"
     },
+    "color-picker": {
+      "change": "Cambiar?",
+      "other": "Otro?"
+    },
     "only-imgs": "Sólo se aceptan imágenes",
     "choose-invitation": {
       "txt_choose": "Elige una opción",

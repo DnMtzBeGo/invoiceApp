@@ -1337,6 +1337,10 @@
       "gray": "Gray",
       "grey": "Gray"
     },
+    "color-picker": {
+      "change": "Change?",
+      "other": "Other?"
+    },
     "only-imgs": "Only images supported",
     "choose-invitation": {
       "txt_choose": "Choose one option",
