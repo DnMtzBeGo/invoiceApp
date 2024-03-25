@@ -1,0 +1,23 @@
+<div class="polygon-filter-container">
+  <div class="filter-btn" [ngClass]="{ 'active-filter': activeFilter }" (click)="activeFilter = !activeFilter">
+    <bego-icon icon="begon-filter"></bego-icon>
+    <span>Filter</span>
+  </div>
+
+  <div class="filter-btn" [ngClass]="{ 'active-filter': activeFilter }" (click)="presentShareModal()">
+    <bego-icon icon="begon-shared"></bego-icon>
+    <span>Share</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <mat-checkbox class="active-checkbox" color="yellow">Active drivers the last 24 hours</mat-checkbox>
+</div>
+
+<bego-polygon-filter
+  [ngClass]="{ 'open-filter': activeFilter }"
+  [drivers]="drivers"
+  [polygons]="polygons"
+  [tags]="tags"
+  (scrolledToBottom)="loadMoreData($event)"
+  (actionEmitter)="selectedAction($event)"></bego-polygon-filter>

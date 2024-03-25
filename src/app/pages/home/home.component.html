@@ -1,13 +1,12 @@
 <div class="map map-container">
-  <div #map [ngClass]="[!showFleetMap || showOrderDetails ? 'map-faded-out' : '']"
-     class="google-map transparent">
-  </div>
+  <app-polygon-filter class="polygon-filter"></app-polygon-filter>
+
+  <div #map [ngClass]="[!showFleetMap || showOrderDetails ? 'map-faded-out' : '']" class="google-map transparent"></div>
   <bego-map
     [hide]="showOrderDetails"
     [typeMap]="typeMap"
     [headerTransparent]="headerTransparent"
-    (createGoogleImage)="getGoogleImageMap($event)"
-  >
+    (createGoogleImage)="getGoogleImageMap($event)">
   </bego-map>
 
   <div class="new-order-wrapper">
@@ -22,8 +21,7 @@
         [imageFromGoogle]="imageFromGoogle"
         [membersToAssigned]="membersToAssigned"
         [userWantCP]="userWantCP"
-        [orderPreview]="orderPreview"
-      >
+        [orderPreview]="orderPreview">
       </app-orders>
     </div>
 
@@ -42,8 +40,7 @@
         (sendUserWantCP)="getUserWantCP($event)"
         [drafts]="draftData"
         [haveFleetMembers]="haveNotFleetMembers"
-        [haveFleetMembersErrors]="haveFleetMembersErrors"
-      >
+        [haveFleetMembersErrors]="haveFleetMembersErrors">
       </app-input-directions>
 
       <button
@@ -52,8 +49,7 @@
         (click)="mapEmitter.next(['center'])"
         [ngClass]="{
           'reset-up': userRole && showFleetMap && !showOrderDetails
-        }"
-      >
+        }">
         <i class="icon icon-gps"></i>
       </button>
     </div>

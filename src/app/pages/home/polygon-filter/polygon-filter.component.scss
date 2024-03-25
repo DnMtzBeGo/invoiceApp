@@ -1,0 +1,93 @@
+.polygon-filter-container {
+  z-index: 1000;
+  // width: 438px;
+  padding-inline: 50px;
+  height: 59px;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  background: linear-gradient(66.07deg, rgba(8, 12, 15, 0.5) 5.1%, rgba(85, 85, 85, 0) 100%);
+  backdrop-filter: blur(20px);
+  pointer-events: auto;
+
+  &::before {
+    border-radius: inherit;
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(133.09deg, rgba(8, 12, 15, 0.85) 24.22%, rgba(23, 29, 35, 0.85) 94.67%);
+    z-index: -1;
+    padding: 1px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .filter-btn {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 35px;
+    padding-right: 28px;
+    color: #ededed;
+
+    bego-icon {
+      --color: #ededed;
+      margin-right: 22px;
+    }
+
+    &.active-filter {
+      color: #ffee00;
+      bego-icon {
+        --color: #ffee00;
+        margin-right: 22px;
+      }
+    }
+  }
+
+  .divider {
+    width: 1px;
+    height: 100%;
+    background: #535556;
+  }
+
+  .active-checkbox {
+    margin-left: 27px;
+    font-family: Avenir;
+    font-size: 13px;
+    font-weight: 800;
+    color: #ededed;
+
+    --mdc-theme-text-primary-on-background: #ffee00;
+    --mdc-checkbox-unselected-icon-color: #ffee00;
+    --mdc-checkbox-unselected-focus-icon-color: #ffee00;
+    --mdc-checkbox-unselected-hover-icon-color: #ffee00;
+    --mdc-checkbox-unselected-pressed-icon-color: #ffee00;
+
+    --mdc-checkbox-selected-checkmark-color: white;
+    --mdc-checkbox-selected-icon-color: black;
+    --mdc-checkbox-selected-focus-icon-color: black;
+    --mdc-checkbox-selected-hover-icon-color: black;
+    --mdc-checkbox-selected-pressed-icon-color: black;
+
+    ::ng-deep &.mat-mdc-checkbox-checked .mdc-checkbox__background {
+      border-color: #ffee00 !important;
+    }
+  }
+}
+
+bego-polygon-filter {
+  display: none;
+  position: absolute;
+  top: 100px;
+  left: 0px;
+}
+
+.open-filter {
+  display: block;
+}
