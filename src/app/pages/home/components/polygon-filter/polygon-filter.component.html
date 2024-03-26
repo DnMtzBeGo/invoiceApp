@@ -1,10 +1,10 @@
 <div class="polygon-filter-container">
-  <div class="filter-btn" [ngClass]="{ 'active-filter': activeFilter }" (click)="activeFilter = !activeFilter">
+  <div class="action-btn" [ngClass]="{ 'active-btn': activeFilter }" (click)="activeFilter = !activeFilter">
     <bego-icon icon="begon-filter"></bego-icon>
     <span>Filter</span>
   </div>
 
-  <div class="filter-btn" [ngClass]="{ 'active-filter': activeFilter }" (click)="presentShareModal()">
+  <div class="action-btn" [ngClass]="{ 'active-btn': heatmap ? options.start_date : options.date }" (click)="openShareModal()">
     <bego-icon icon="begon-shared"></bego-icon>
     <span>Share</span>
   </div>

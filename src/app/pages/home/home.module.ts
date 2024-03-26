@@ -9,7 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CheckoutModule } from '../orders/components/checkout/checkout.module';
 import { ProfileModule } from '../profile/profile.module';
 import { AppMaterialModule } from 'src/app/material';
-import { PolygonFilterModule } from './polygon-filter/polygon-filter.module';
+import { PolygonFilterModule } from './components/polygon-filter/polygon-filter.module';
 
 @NgModule({
   declarations: [HomeComponent],

@@ -1,17 +1,29 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { ShareReportModalComponent } from '../share-report-modal/share-report-modal.component';
 
-export interface Option {
+interface Option {
   id: string;
   name: string;
   selected?: boolean;
   avatar?: string;
 }
 
-export interface Column {
+interface Column {
   loading: boolean;
   scrolleable: boolean;
   options: Option[];
+}
+
+interface ShareData {
+  drivers: string[];
+  polygons: string[];
+  tags: string[];
+  start_date?: string;
+  end_date?: string;
+  date?: string;
+  type?: string;
 }
 
 @Component({
@@ -22,12 +34,32 @@ export interface Column {
 export class PolygonFilter implements OnInit {
   @Output() getCoordinates = new EventEmitter<any>();
 
-  drivers = { loading: false, options: [], scrolleable: true };
-  polygons = { loading: false, options: [], scrolleable: true };
-  tags = { loading: false, options: [], scrolleable: true };
-
   activeFilter: boolean = false;
-  constructor(private apiRestService: AuthService) {}
+  heatmap: boolean = false;
+
+  drivers = {
+    loading: false,
+    options: [],
+    scrolleable: true
+  };
+  polygons = {
+    loading: false,
+    options: [],
+    scrolleable: true
+  };
+  tags = {
+    loading: false,
+    options: [],
+    scrolleable: true
+  };
+
+  options: ShareData = {
+    drivers: [],
+    tags: [],
+    polygons: []
+  };
+
+  constructor(private apiRestService: AuthService, private matDialog: MatDialog) {}
 
   async ngOnInit() {
     await this.getInitData();
@@ -65,7 +97,7 @@ export class PolygonFilter implements OnInit {
 
   async selectedAction(event: any) {
     const { action, heatmap } = event;
-
+    this.heatmap = heatmap;
     switch (action) {
       case 'apply':
         if (heatmap) await this.getHeatmap(event);
@@ -95,6 +127,7 @@ export class PolygonFilter implements OnInit {
     ).subscribe({
       next: ({ result }) => {
         console.log('heatmap: ', result);
+        this.saveOptions(options, 'heatmap');
         this.getCoordinates.emit({ type: 'heatmap', ...result });
         this.activeFilter = false;
       }
@@ -116,11 +149,42 @@ export class PolygonFilter implements OnInit {
     ).subscribe({
       next: ({ result }) => {
         console.log('dispersion: ', result);
+        this.saveOptions(options, 'dispersion');
         this.getCoordinates.emit({ type: 'dispersion', ...result });
         this.activeFilter = false;
       }
     });
   }
 
-  presentShareModal(){}
+  saveOptions(options, type: 'heatmap' | 'dispersion') {
+    console.log('options: ', options);
+    this.options = {
+      drivers: options.drivers.map(({ _id }) => _id),
+      polygons: options.polygons.map(({ _id }) => _id),
+      tags: options.tags.map(({ _id }) => _id),
+      ...(type === 'heatmap'
+        ? {
+            start_date: options.start_date,
+            end_date: options.end_date
+          }
+        : {
+            date: options.start_date
+          })
+    };
+  }
+
+  openShareModal() {
+    if (this.heatmap ? !this.options.start_date : !this.options.date) return;
+
+    const dialogRef = this.matDialog.open(ShareReportModalComponent, {
+      data: {
+        options: this.options,
+        heatmap: this.heatmap
+      },
+      restoreFocus: false,
+      backdropClass: ['brand-ui-dialog-2']
+    });
+
+    dialogRef.afterClosed().subscribe((res?) => {});
+  }
 }
