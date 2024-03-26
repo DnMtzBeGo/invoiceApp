@@ -35,12 +35,9 @@ export class ShareReportModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: Data,
     public dialogRef: MatDialogRef<ShareReportModalComponent>,
     private apiRestService: AuthService
-  ) {
-    console.log('open share modal: ', data);
-  }
+  ) {}
 
   async sendReport() {
-    console.log('try send report: ', this.fullname, this.email);
     if (!this.fullname && !this.email) return;
 
     const requestJson = JSON.stringify({
@@ -53,22 +50,18 @@ export class ShareReportModalComponent {
       ]
     });
 
-    console.log('sending report: ', requestJson);
-
     (
       await this.apiRestService.apiRest(requestJson, `polygons/${this.data.heatmap ? 'heatmaps' : 'dispersion'}/share_report`, {
         apiVersion: 'v1.1'
       })
     ).subscribe({
-      next: ({ result }) => {
-        console.log('dispersion: ', result);
+      next: () => {
         this.sended = true;
       }
     });
   }
 
   async actions(action: string) {
-    console.log('actions: ', action);
     if (action === 'done' && !this.sended) await this.sendReport();
     if (action === 'done' && this.sended) this.done();
   }
@@ -78,10 +71,6 @@ export class ShareReportModalComponent {
   }
 
   back() {
-    this.dialogRef.close();
-  }
-
-  close() {
     this.dialogRef.close();
   }
 }

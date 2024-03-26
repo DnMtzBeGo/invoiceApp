@@ -4,7 +4,10 @@
     <span>Filter</span>
   </div>
 
-  <div class="action-btn" [ngClass]="{ 'active-btn': heatmap ? options.start_date : options.date }" (click)="openShareModal()">
+  <div
+    class="action-btn"
+    [ngClass]="{ 'active-btn': heatmap ? options.start_date : options.date, 'disabled-btn': heatmap ? !options.start_date : !options.date }"
+    (click)="openShareModal()">
     <bego-icon icon="begon-shared"></bego-icon>
     <span>Share</span>
   </div>

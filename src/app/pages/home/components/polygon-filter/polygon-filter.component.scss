@@ -38,6 +38,7 @@
 
     span {
       text-decoration: underline;
+      text-underline-offset: 2px;
     }
 
     bego-icon {
@@ -53,6 +54,14 @@
         --color: #ffee00;
         margin-right: 22px;
       }
+    }
+  }
+
+  .disabled-btn {
+    color: #313336;
+
+    bego-icon {
+      --color: #313336;
     }
   }
 
