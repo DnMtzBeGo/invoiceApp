@@ -1,7 +1,7 @@
 declare var google: any;
 
 export class CustomMarker extends google.maps.OverlayView {
-  constructor(latlng, map, imageSrc, state, title = 'ok') {
+  constructor(latlng, map, imageSrc, state, title = 'ok', includeInfoWindow = true) {
     super();
     this.latlng_ = latlng;
     this.imageSrc = imageSrc;
@@ -10,6 +10,7 @@ export class CustomMarker extends google.maps.OverlayView {
     this.setMap(map);
     this.state = state;
     this.title = title;
+    this.infoWindow = includeInfoWindow ? new google.maps.InfoWindow() : null;
   }
 
   draw() {
@@ -40,6 +41,12 @@ export class CustomMarker extends google.maps.OverlayView {
         console.log(this.title);
       });
 
+      google.maps.event.addDomListener(div, 'click', () => {
+        if (this.infoWindow) {
+          this.openInfoWindow();
+        }
+      });
+
       // Then add the overlay to the DOM
       var panes = this.getPanes();
       panes.overlayImage.appendChild(div);
@@ -62,5 +69,25 @@ export class CustomMarker extends google.maps.OverlayView {
 
   getPosition() {
     return this.latlng_;
+  }
+
+  openInfoWindow() {
+    if (!this.infoWindow) return;
+    // Aquí puedes pasar el HTML personalizado o cualquier contenido que desees mostrar en el infoventana
+    const content = `
+      <div class="info-window-content">
+        <h3>${this.title}</h3>
+        <p>state: !row.connected
+        ? 'inactive'
+        : row.availability === 1
+        ? 'available'
+        : row.availability === 2
+        ? 'unavailable'
+        : 'unavailable'</p>
+      </div>
+    `;
+
+    this.infoWindow.setContent(content);
+    this.infoWindow.open(this.getMap(), this);
   }
 }

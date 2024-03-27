@@ -1,5 +1,7 @@
 <bego-modal
+  [ngClass]="{ 'first-step': !sended }"
   [enabledBack]="!sended"
+  [activatedDone]="sended || (fullname && email)"
   (backEmitter)="back()"
   (closeEmitter)="actions($event)"
   [lang]="lang"

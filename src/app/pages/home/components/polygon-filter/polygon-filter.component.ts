@@ -33,6 +33,7 @@ interface ShareData {
 })
 export class PolygonFilter implements OnInit {
   @Output() getCoordinates = new EventEmitter<any>();
+  @Output() clearedFilter = new EventEmitter<any>();
 
   activeFilter: boolean = false;
   heatmap: boolean = false;
@@ -72,19 +73,22 @@ export class PolygonFilter implements OnInit {
 
     (await this.apiRestService.apiRestGet('carriers/get_drivers?page=1', { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
-        (result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }))),
-          (this.drivers = { loading: false, options: result, scrolleable: false });
+        result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }));
+        // for (let i = 0; i < 5; i++) result.push(result[0]);
+        this.drivers = { loading: false, options: result, scrolleable: false };
       }
     });
 
     (await this.apiRestService.apiRestGet('managers_tags', { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
+        // for (let i = 0; i < 5; i++) result.push(result[0]);
         this.tags = { loading: false, options: result, scrolleable: false };
       }
     });
 
-    (await this.apiRestService.apiRestGet('polygons?page=1&limit=2', { apiVersion: 'v1.1', loader: false })).subscribe({
+    (await this.apiRestService.apiRestGet('polygons?page=1&limit=5', { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
+        // for (let i = 0; i < 5; i++) result.push(result[0]);
         this.polygons = { loading: false, options: result, scrolleable: false };
       }
     });
@@ -96,6 +100,7 @@ export class PolygonFilter implements OnInit {
   }
 
   async selectedAction(event: any) {
+    console.log('selected action: ', event);
     const { action, heatmap } = event;
     this.heatmap = heatmap;
     switch (action) {
@@ -107,6 +112,9 @@ export class PolygonFilter implements OnInit {
       case 'cancel':
         this.activeFilter = false;
 
+      case 'clear':
+        this.clearedFilter.emit();
+        console.log('cleared filter');
       default:
         break;
     }

@@ -164,7 +164,13 @@ export class HomeComponent implements OnInit {
             )
           )
         )
-      ).subscribe(this.getFleetDetails.bind(this))
+      )
+        .pipe(
+          // Agregar pausa basada en la variable global pauseFlag
+          filter(() => !this.creatingForms)
+        )
+        .subscribe(this.getFleetDetails.bind(this))
+      // ).subscribe(this.getFleetDetails.bind(this))
     );
   }
 
@@ -248,6 +254,8 @@ export class HomeComponent implements OnInit {
         if (res.status === 200 && res.result) {
           // When members exist on the fleet, it saves them on this array
           this.markersFromService = [];
+
+          console.log('Members: ', res.result.members);
           res.result.members.forEach((row) => {
             if (row.location) {
               this.markersFromService.push({
@@ -429,6 +437,7 @@ export class HomeComponent implements OnInit {
       marker.setMap(null);
       marker.remove();
     });
+
     this.googleMarkers = [];
 
     for (var i = 0; i < this.markersFromService.length; i++) {
@@ -458,5 +467,92 @@ export class HomeComponent implements OnInit {
 
   onStepChange(step: number) {
     this.showSidebar = !this.showOrderDetails || step < 3;
+  }
+
+  creatingForms: boolean = false;
+  heatmap: any;
+  polygons: any = [];
+  getCoordinates({ type, geometry, locations }: any) {
+    this.creatingForms = true;
+    console.log('polygons: ', geometry.features);
+    this.clearMap();
+    if (type === 'heatmap') this.addHeatmap(locations);
+    this.createPolygons(geometry.features);
+  }
+
+  createForms(cleanRefresh: boolean) {
+    console.log('cleanRefresh: ', cleanRefresh);
+  }
+
+  addHeatmap(heatmapData) {
+    this.heatmap = new google.maps.visualization.HeatmapLayer({
+      data: this.coordinatesToLatLng(heatmapData),
+      dissipating: false,
+      map: this.map,
+      radius: 0.3
+    });
+  }
+
+  createPolygons(geometry) {
+    const bounds = new google.maps.LatLngBounds();
+
+    geometry.forEach((polygon) => {
+      console.log('init geometry: ', polygon.geometry);
+      const coordinates = polygon.geometry.coordinates[0].map((coord) => {
+        return { lat: coord[1], lng: coord[0] };
+      });
+
+      const newPolygon = new google.maps.Polygon({
+        paths: coordinates,
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        strokeColor: '#FFBE00',
+        fillColor: 'rgba(0,0,0,0)',
+        fillOpacity: 0.35,
+        editable: false,
+        draggable: false
+      });
+
+      newPolygon.setMap(this.map);
+      this.polygons.push(newPolygon);
+
+      coordinates.forEach((coordinate) => {
+        bounds.extend(coordinate);
+      });
+
+      this.map.fitBounds(bounds);
+    });
+  }
+
+  clearMap(): void {
+    // Limpiar heatmap
+
+    this.googleMarkers?.forEach((marker) => {
+      marker.setMap(null);
+      marker.remove();
+    });
+
+    this.googleMarkers = [];
+
+    if (this.heatmap) {
+      this.heatmap.setMap(null);
+    }
+
+    // Limpiar polígonos almacenados en el arreglo local
+    if (this.polygons) {
+      this.polygons.forEach((polygon) => {
+        polygon.setMap(null);
+      });
+    }
+  }
+
+  coordinatesToLatLng(data: any[]): any[] {
+    return data.map((coord) => new google.maps.LatLng(coord.lat, coord.lng));
+  }
+
+  clearedFilter() {
+    this.clearMap();
+    this.creatingForms = false;
+    this.getFleetDetails(true);
   }
 }

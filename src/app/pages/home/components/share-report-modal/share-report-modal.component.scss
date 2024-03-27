@@ -1,3 +1,8 @@
+.first-step {
+  --modalWidth: 714px;
+  --modalHeight: 521px;
+}
+
 .share-report-container {
   display: flex;
   flex-direction: column;
@@ -23,7 +28,6 @@
     text-align: center;
     color: #ffffff;
     margin-bottom: 50px;
-    // margin-bottom: 100px;
   }
 
   .input-container {

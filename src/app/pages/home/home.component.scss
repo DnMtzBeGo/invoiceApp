@@ -29,7 +29,7 @@
 
 .polygon-filter {
   position: absolute;
-  top: 50px; 
+  top: 50px;
   left: 50px;
   z-index: 100;
 }
@@ -120,4 +120,54 @@
 bego-map {
   position: absolute;
   inset: 0;
+}
+
+::ng-deep {
+  .info-window-content {
+    font-family: Arial, sans-serif;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+
+    color: #ededed;
+    font-family: 'Avenir';
+
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-window-content h3 {
+    margin-top: 0;
+  }
+
+  .info-window-content p {
+    margin-bottom: 0;
+  }
+
+  .gm-style-iw {
+    background: #040b11 !important;
+    padding: 0 !important;
+  }
+
+  .gm-style-iw-d {
+    overflow: auto !important;
+  }
+
+  .gm-ui-hover-effect {
+    border: none;
+    outline: none;
+    top: 0px !important;
+
+    span {
+      filter: invert(100%);
+      margin: 0 !important;
+      padding: 8px !important;
+    }
+
+    &:hover {
+      border: none;
+      outline: none;
+    }
+  }
 }

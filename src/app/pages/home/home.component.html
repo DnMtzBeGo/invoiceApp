@@ -1,7 +1,11 @@
 <div class="map map-container">
-  <app-polygon-filter class="polygon-filter"></app-polygon-filter>
+  <app-polygon-filter
+    class="polygon-filter"
+    (getCoordinates)="getCoordinates($event)"
+    (clearedFilter)="clearedFilter()"></app-polygon-filter>
 
   <div #map [ngClass]="[!showFleetMap || showOrderDetails ? 'map-faded-out' : '']" class="google-map transparent"></div>
+
   <bego-map
     [hide]="showOrderDetails"
     [typeMap]="typeMap"
