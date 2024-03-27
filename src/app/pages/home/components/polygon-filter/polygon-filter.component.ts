@@ -100,24 +100,29 @@ export class PolygonFilter implements OnInit {
   }
 
   async selectedAction(event: any) {
-    console.log('selected action: ', event);
     const { action, heatmap } = event;
 
     switch (action) {
       case 'apply':
         this.heatmap = heatmap;
-        console.log('apply action');
         if (heatmap) await this.getHeatmap(event);
         else await this.getDispersion(event);
         break;
 
       case 'cancel':
-        console.log('cancel: ', this.heatmap, this.options);
         this.activeFilter = false;
         break;
 
       case 'clear':
-        console.log('cleared filter');
+        this.options = {
+          drivers: [],
+          tags: [],
+          polygons: [],
+          start_date: null,
+          end_date: null,
+          date: null
+        };
+
         this.clearedFilter.emit();
         break;
 
@@ -140,7 +145,6 @@ export class PolygonFilter implements OnInit {
       })
     ).subscribe({
       next: ({ result }) => {
-        console.log('heatmap: ', result);
         this.saveOptions(options, 'heatmap');
         this.getCoordinates.emit({ type: 'heatmap', ...result });
         this.activeFilter = false;
@@ -162,7 +166,6 @@ export class PolygonFilter implements OnInit {
       })
     ).subscribe({
       next: ({ result }) => {
-        console.log('dispersion: ', result);
         this.saveOptions(options, 'dispersion');
         this.getCoordinates.emit({ type: 'dispersion', ...result });
         this.activeFilter = false;
@@ -171,7 +174,6 @@ export class PolygonFilter implements OnInit {
   }
 
   saveOptions(options, type: 'heatmap' | 'dispersion') {
-    console.log('options: ', options);
     this.options = {
       drivers: options.drivers.map(({ _id }) => _id),
       polygons: options.polygons.map(({ _id }) => _id),

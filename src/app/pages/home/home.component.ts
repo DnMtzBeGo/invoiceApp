@@ -255,7 +255,6 @@ export class HomeComponent implements OnInit {
           // When members exist on the fleet, it saves them on this array
           this.markersFromService = [];
 
-          console.log('Members: ', res.result.members);
           res.result.members.forEach((row) => {
             if (row.location) {
               this.markersFromService.push({
@@ -496,7 +495,6 @@ export class HomeComponent implements OnInit {
     const bounds = new google.maps.LatLngBounds();
 
     geometry.forEach((polygon) => {
-      console.log('init geometry: ', polygon.geometry);
       const coordinates = polygon.geometry.coordinates[0].map((coord) => {
         return { lat: coord[1], lng: coord[0] };
       });
