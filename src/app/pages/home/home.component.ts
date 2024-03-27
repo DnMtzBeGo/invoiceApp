@@ -472,16 +472,13 @@ export class HomeComponent implements OnInit {
   creatingForms: boolean = false;
   heatmap: any;
   polygons: any = [];
-  getCoordinates({ type, geometry, locations }: any) {
+
+  getCoordinates({ type, geometry, locations, members }: any) {
     this.creatingForms = true;
-    console.log('polygons: ', geometry.features);
     this.clearMap();
     if (type === 'heatmap') this.addHeatmap(locations);
+    else this.addDispersion(members);
     this.createPolygons(geometry.features);
-  }
-
-  createForms(cleanRefresh: boolean) {
-    console.log('cleanRefresh: ', cleanRefresh);
   }
 
   addHeatmap(heatmapData) {
@@ -494,6 +491,8 @@ export class HomeComponent implements OnInit {
   }
 
   createPolygons(geometry) {
+    if (!geometry?.length) return;
+
     const bounds = new google.maps.LatLngBounds();
 
     geometry.forEach((polygon) => {
@@ -524,9 +523,41 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  clearMap(): void {
-    // Limpiar heatmap
+  addDispersion(members) {
+    if (!members?.length) return;
 
+    members.forEach((row) => {
+      if (row.location) {
+        this.markersFromService.push({
+          title: row._id,
+          position: {
+            lat: row.location.lat,
+            lng: row.location.lng
+          },
+          icon: row.thumbnail
+        });
+      }
+    });
+
+    this.googleMarkers = [];
+
+    for (var i = 0; i < this.markersFromService.length; i++) {
+      let changePic = this.markersFromService[i].icon.split('');
+      if (changePic[changePic.length - 1] === '/') this.markersFromService[i].icon = '../assets/images/user-outline.svg';
+
+      const marker = new CustomMarker(
+        new google.maps.LatLng(this.markersFromService[i].position.lat, this.markersFromService[i].position.lng),
+        this.map,
+        this.markersFromService[i].icon,
+        this.markersFromService[i].state,
+        this.markersFromService[i].title
+      );
+
+      this.googleMarkers.push(marker);
+    }
+  }
+
+  clearMap(): void {
     this.googleMarkers?.forEach((marker) => {
       marker.setMap(null);
       marker.remove();
@@ -534,11 +565,8 @@ export class HomeComponent implements OnInit {
 
     this.googleMarkers = [];
 
-    if (this.heatmap) {
-      this.heatmap.setMap(null);
-    }
+    if (this.heatmap) this.heatmap.setMap(null);
 
-    // Limpiar polígonos almacenados en el arreglo local
     if (this.polygons) {
       this.polygons.forEach((polygon) => {
         polygon.setMap(null);
@@ -553,6 +581,6 @@ export class HomeComponent implements OnInit {
   clearedFilter() {
     this.clearMap();
     this.creatingForms = false;
-    this.getFleetDetails(true);
+    this.getFleetDetails(false);
   }
 }

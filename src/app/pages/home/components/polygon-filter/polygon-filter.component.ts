@@ -71,7 +71,7 @@ export class PolygonFilter implements OnInit {
     this.polygons.loading = true;
     this.tags.loading = true;
 
-    (await this.apiRestService.apiRestGet('carriers/get_drivers?page=1', { apiVersion: 'v1.1', loader: false })).subscribe({
+    (await this.apiRestService.apiRestGet('carriers/get_drivers?page=1&limit=5', { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
         result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }));
         // for (let i = 0; i < 5; i++) result.push(result[0]);
@@ -79,7 +79,7 @@ export class PolygonFilter implements OnInit {
       }
     });
 
-    (await this.apiRestService.apiRestGet('managers_tags', { apiVersion: 'v1.1', loader: false })).subscribe({
+    (await this.apiRestService.apiRestGet('managers_tags?page=1&limit=5', { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
         // for (let i = 0; i < 5; i++) result.push(result[0]);
         this.tags = { loading: false, options: result, scrolleable: false };
@@ -102,19 +102,25 @@ export class PolygonFilter implements OnInit {
   async selectedAction(event: any) {
     console.log('selected action: ', event);
     const { action, heatmap } = event;
-    this.heatmap = heatmap;
+
     switch (action) {
       case 'apply':
+        this.heatmap = heatmap;
+        console.log('apply action');
         if (heatmap) await this.getHeatmap(event);
         else await this.getDispersion(event);
         break;
 
       case 'cancel':
+        console.log('cancel: ', this.heatmap, this.options);
         this.activeFilter = false;
+        break;
 
       case 'clear':
-        this.clearedFilter.emit();
         console.log('cleared filter');
+        this.clearedFilter.emit();
+        break;
+
       default:
         break;
     }
