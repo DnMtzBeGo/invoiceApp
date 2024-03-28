@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -38,18 +38,39 @@ export class SendMessageModalComponent implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public dialogRef: MatDialogRef<SendMessageModalComponent>,
     private readonly apiService: AuthService,
-    private readonly translateService: TranslateService
+    private readonly translateService: TranslateService,
+    private readonly formBuilder: FormBuilder
   ) {
     this.setLang();
   }
 
   ngOnInit() {
-    this.sendMessageForm = new FormGroup({
+    this.sendMessageForm = this.formBuilder.group({
       title: new FormControl('', [Validators.required, Validators.minLength(1)]),
-      message: new FormControl('', [Validators.required])
+      message: new FormControl('', [Validators.required, Validators.minLength(1)])
     });
 
-    this.typeForm = new FormGroup({ sms: new FormControl(true), push: new FormControl('') });
+    this.typeForm = this.formBuilder.group({ sms: new FormControl(true), push: new FormControl('') });
+
+    this.isFormReadyToSend();
+    this.onChanges();
+  }
+
+  private onChanges(): void {
+    this.sendMessageForm.valueChanges.subscribe(() => this.isFormReadyToSend());
+
+    this.typeForm.valueChanges.subscribe((val) => {
+      this.isFormReadyToSend();
+    });
+  }
+
+  public isFormReadyToSend(): void {
+    if (this.sendMessageForm.valid && this.isSelectedMessageType()) this.enableSend();
+    else this.disableSend();
+  }
+
+  private isSelectedMessageType(): boolean {
+    return this.typeForm.get('sms').value || this.typeForm.get('push').value;
   }
 
   ngAfterViewInit() {
@@ -101,11 +122,11 @@ export class SendMessageModalComponent implements OnInit, AfterViewInit {
   }
 
   private disableSend(): void {
-    this.sendButtonDisabled = false;
+    this.sendButtonDisabled = true;
   }
 
   private enableSend(): void {
-    this.sendButtonDisabled = true;
+    this.sendButtonDisabled = false;
   }
 
   public getError(controlName: string, errorName: string): boolean {

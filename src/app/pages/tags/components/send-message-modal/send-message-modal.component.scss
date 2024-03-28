@@ -1,5 +1,5 @@
 .send-message-dialog {
-  background-color: #000;
+  background-color: #111;
   padding: 20px;
   min-width: 480px;
 
@@ -8,9 +8,12 @@
     justify-content: space-between;
 
     h2 {
+      width: 100%;
       p {
+        padding-top: 10px;
         font-style: italic;
         font-size: 14px;
+        text-align: center;
         span {
           text-transform: uppercase;
         }
@@ -37,17 +40,18 @@
     width: 100% !important;
   }
 
-  .mat-checkbox-group {
-    ::ng-deep .mat-checkbox {
-      display: block;
-    }
-
-    ::ng-deep .mat-checkbox-frame {
-      border: 1px solid #fff;
-    }
-
+  .checkbox-group {
     &:first-child {
       margin-bottom: 10px;
+    }
+
+    mat-checkbox {
+      display: block;
+      ::ng-deep {
+        .mat-checkbox-inner-container {
+          border: 1px solid #fff;
+        }
+      }
     }
   }
 
