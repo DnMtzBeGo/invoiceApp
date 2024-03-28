@@ -90,7 +90,8 @@ export class TagsComponent implements OnInit {
       restoreFocus: false,
       autoFocus: true,
       disableClose: true,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
+      panelClass: 'rounded-panel'
     });
 
     dialogRef.afterClosed().subscribe((sent: boolean) => {

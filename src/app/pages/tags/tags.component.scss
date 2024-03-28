@@ -1,3 +1,11 @@
+::ng-deep .rounded-panel {
+  mat-dialog-container {
+    .mdc-dialog__surface {
+      border-radius: 25px;
+    }
+  }
+}
+
 .tags-container {
   display: flex;
   width: 100%;
