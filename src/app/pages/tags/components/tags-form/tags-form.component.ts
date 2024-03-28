@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Action, Column, Lang, Page, SearchQuery, SelectedRow, StatusOptions, Tag, TagDriver, TagFormParams } from '../../interfaces';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 interface AlerLang {
   title: string;
@@ -41,7 +41,8 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     private readonly apiService: AuthService,
     private readonly translateService: TranslateService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly formBuilder: FormBuilder
   ) {
     this.loadingTableData = true;
     this.drivers = [];
@@ -60,9 +61,17 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.tagsForm = new FormGroup({
+    this.tagsForm = this.formBuilder.group({
       name: new FormControl('', [Validators.required, Validators.minLength(1)]),
       carriers: new FormControl(' ', [Validators.required])
+    });
+
+    this.onChanges();
+  }
+
+  onChanges(): void {
+    this.tagsForm.get('name').valueChanges.subscribe(() => {
+      this.isFormReadyToSend();
     });
   }
 
@@ -241,14 +250,6 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public handleReload($event: any) {
-    if ($event === 'reloadTable') this.fetchDrivers();
-  }
-
-  public clickReload() {
-    this.fetchTag();
-  }
-
   public sortingTable({ type, asc }: any) {
     this.searchQuery.sort = JSON.stringify({ [type]: asc ? -1 : 1 });
     this.page.index = 1;
@@ -340,13 +341,17 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
 
   public rowSelected($event) {
     this.tag.carriers = $event.map((driver: TagDriver) => (driver.selection_check ? driver._id : false));
+    this.isFormReadyToSend();
+  }
 
+  private isFormReadyToSend(): void {
     const json = JSON.stringify(this.tag.carriers).replace('[]', '');
     this.tagsForm.controls['carriers'].setValue(json);
 
     if (json && this.tagsForm.controls['name'].value) this.enableSaveButton();
     else this.disableSaveButton();
   }
+
   // #endregion Table methods
 
   public openDialog(message: string): void {
