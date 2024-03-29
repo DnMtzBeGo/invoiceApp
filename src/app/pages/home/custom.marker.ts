@@ -1,7 +1,7 @@
 declare var google: any;
 
 export class CustomMarker extends google.maps.OverlayView {
-  constructor(latlng, map, imageSrc, state, title = 'ok', includeInfoWindow = true) {
+  constructor(latlng, map, imageSrc, state, title = 'ok', includeInfoWindow = true, extraData = '') {
     super();
     this.latlng_ = latlng;
     this.imageSrc = imageSrc;
@@ -10,6 +10,7 @@ export class CustomMarker extends google.maps.OverlayView {
     this.setMap(map);
     this.state = state;
     this.title = title;
+    this.extraData = extraData;
     this.infoWindow = includeInfoWindow ? new google.maps.InfoWindow() : null;
   }
 
@@ -77,13 +78,7 @@ export class CustomMarker extends google.maps.OverlayView {
     const content = `
       <div class="info-window-content">
         <h3>${this.title}</h3>
-        <p>state: !row.connected
-        ? 'inactive'
-        : row.availability === 1
-        ? 'available'
-        : row.availability === 2
-        ? 'unavailable'
-        : 'unavailable'</p>
+        <p>${this.extraData}</p>
       </div>
     `;
 

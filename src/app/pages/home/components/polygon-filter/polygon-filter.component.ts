@@ -60,35 +60,44 @@ export class PolygonFilter implements OnInit {
     polygons: []
   };
 
+  pages = {
+    drivers: 0,
+    polygons: 0,
+    tags: 0,
+  };
+
   constructor(private apiRestService: AuthService, private matDialog: MatDialog) {}
 
   async ngOnInit() {
-    await this.getInitData();
-  }
-
-  async getInitData() {
     this.drivers.loading = true;
     this.polygons.loading = true;
     this.tags.loading = true;
 
-    (await this.apiRestService.apiRestGet('carriers/get_drivers?page=1&limit=5', { apiVersion: 'v1.1', loader: false })).subscribe({
+    await this.getDrivers();
+    await this.getPolygons();
+    await this.getTags();
+  }
+
+  async getDrivers(page: number = 1) {
+    (await this.apiRestService.apiRestGet(`carriers/get_drivers?page=${page}&limit=5`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
         result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }));
-        // for (let i = 0; i < 5; i++) result.push(result[0]);
         this.drivers = { loading: false, options: result, scrolleable: false };
       }
     });
+  }
 
-    (await this.apiRestService.apiRestGet('managers_tags?page=1&limit=5', { apiVersion: 'v1.1', loader: false })).subscribe({
+  async getTags(page: number = 1) {
+    (await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=5`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
-        // for (let i = 0; i < 5; i++) result.push(result[0]);
         this.tags = { loading: false, options: result, scrolleable: false };
       }
     });
+  }
 
-    (await this.apiRestService.apiRestGet('polygons?page=1&limit=5', { apiVersion: 'v1.1', loader: false })).subscribe({
+  async getPolygons(page: number = 1) {
+    (await this.apiRestService.apiRestGet(`polygons?page=${page}&limit=5`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
-        // for (let i = 0; i < 5; i++) result.push(result[0]);
         this.polygons = { loading: false, options: result, scrolleable: false };
       }
     });

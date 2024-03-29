@@ -524,15 +524,17 @@ export class HomeComponent implements OnInit {
   addDispersion(members) {
     if (!members?.length) return;
 
-    members.forEach((row) => {
-      if (row.location) {
+    members.forEach((member) => {
+      console.log('miembro: ', member);
+      if (member.location) {
         this.markersFromService.push({
-          title: row._id,
+          title: member.nickname,
+          extraData: member.email,
           position: {
-            lat: row.location.lat,
-            lng: row.location.lng
+            lat: member.location.lat,
+            lng: member.location.lng
           },
-          icon: row.thumbnail
+          icon: member.thumbnail
         });
       }
     });
@@ -547,9 +549,13 @@ export class HomeComponent implements OnInit {
         new google.maps.LatLng(this.markersFromService[i].position.lat, this.markersFromService[i].position.lng),
         this.map,
         this.markersFromService[i].icon,
-        this.markersFromService[i].state,
-        this.markersFromService[i].title
+        null,
+        this.markersFromService[i].title,
+        true,
+        this.markersFromService[i].extraData
       );
+
+      console.log('creating marker', marker);
 
       this.googleMarkers.push(marker);
     }
@@ -561,6 +567,7 @@ export class HomeComponent implements OnInit {
       marker.remove();
     });
 
+    this.markersFromService = [];
     this.googleMarkers = [];
 
     if (this.heatmap) this.heatmap.setMap(null);
