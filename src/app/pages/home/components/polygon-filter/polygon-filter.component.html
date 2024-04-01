@@ -17,7 +17,7 @@
 
   <div class="divider"></div>
 
-  <mat-checkbox class="active-checkbox" color="yellow">Active drivers the last 24 hours</mat-checkbox>
+  <mat-checkbox class="active-checkbox" color="yellow" (change)="checkedActive($event)">Active drivers the last 24 hours</mat-checkbox>
 </div>
 
 <bego-polygon-filter

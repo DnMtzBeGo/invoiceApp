@@ -57,14 +57,19 @@ export class PolygonFilter implements OnInit {
   options: ShareData = {
     drivers: [],
     tags: [],
-    polygons: []
+    polygons: [],
+    start_date: null,
+    end_date: null,
+    date: null
   };
 
   pages = {
-    drivers: 0,
-    polygons: 0,
-    tags: 0,
+    drivers: { actual: 0, total: 0 },
+    polygons: { actual: 0, total: 0 },
+    tags: { actual: 0, total: 0 }
   };
+
+  activeDrivers: boolean = false;
 
   constructor(private apiRestService: AuthService, private matDialog: MatDialog) {}
 
@@ -79,7 +84,7 @@ export class PolygonFilter implements OnInit {
   }
 
   async getDrivers(page: number = 1) {
-    (await this.apiRestService.apiRestGet(`carriers/get_drivers?page=${page}&limit=5`, { apiVersion: 'v1.1', loader: false })).subscribe({
+    (await this.apiRestService.apiRestGet(`carriers/get_drivers?page=${page}&limit=10`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
         result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }));
         this.drivers = { loading: false, options: result, scrolleable: false };
@@ -88,7 +93,7 @@ export class PolygonFilter implements OnInit {
   }
 
   async getTags(page: number = 1) {
-    (await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=5`, { apiVersion: 'v1.1', loader: false })).subscribe({
+    (await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=10`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
         this.tags = { loading: false, options: result, scrolleable: false };
       }
@@ -96,8 +101,10 @@ export class PolygonFilter implements OnInit {
   }
 
   async getPolygons(page: number = 1) {
-    (await this.apiRestService.apiRestGet(`polygons?page=${page}&limit=5`, { apiVersion: 'v1.1', loader: false })).subscribe({
-      next: ({ result: { result } }) => {
+    if (this.pages.polygons.total === page) return;
+    (await this.apiRestService.apiRestGet(`polygons?page=${page}&limit=10`, { apiVersion: 'v1.1', loader: false })).subscribe({
+      next: ({ result: { result, pages } }) => {
+        if (page === 1) this.pages.polygons = pages;
         this.polygons = { loading: false, options: result, scrolleable: false };
       }
     });
@@ -106,6 +113,7 @@ export class PolygonFilter implements OnInit {
   loadMoreData(column: string) {
     console.log(`Cargar más datos para ${column}`);
     this[column].loading = true;
+    if (column === 'polygon') this.getPolygons();
   }
 
   async selectedAction(event: any) {
@@ -131,6 +139,7 @@ export class PolygonFilter implements OnInit {
           end_date: null,
           date: null
         };
+        this.activeDrivers = false;
 
         this.clearedFilter.emit();
         break;
@@ -162,11 +171,13 @@ export class PolygonFilter implements OnInit {
   }
 
   async getDispersion(options: any) {
+    // console.log('options: ', options);
     const queryParams = new URLSearchParams({
       drivers: JSON.stringify(options.drivers.map(({ _id }) => _id)),
       tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
       polygons: JSON.stringify(options.polygons.map(({ _id }) => _id)),
-      date: options.start_date
+      date: options.start_date,
+      include_older_locations: JSON.stringify(this.activeDrivers)
     }).toString();
 
     (
@@ -211,5 +222,11 @@ export class PolygonFilter implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res?) => {});
+  }
+
+  checkedActive({ checked }: any) {
+    this.activeDrivers = checked;
+    // if (this.heatmap) this.getHeatmap(this.options);
+    // else this.getDispersion(this.options);
   }
 }

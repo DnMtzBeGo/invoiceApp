@@ -1,7 +1,9 @@
 .polygon-filter-container {
   z-index: 1000;
   // width: 438px;
-  padding-inline: 50px;
+  // padding-inline: 50px;
+  padding-left: 20px;
+  padding-right: 50px;
   height: 59px;
   border-radius: 40px;
   display: flex;
@@ -13,7 +15,7 @@
 
   &::before {
     border-radius: inherit;
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(133.09deg, rgba(8, 12, 15, 0.85) 24.22%, rgba(23, 29, 35, 0.85) 94.67%);
@@ -92,6 +94,11 @@
 
     ::ng-deep &.mat-mdc-checkbox-checked .mdc-checkbox__background {
       border-color: #ffee00 !important;
+    }
+    ::ng-deep {
+      .mat-datepicker-content:before {
+        background: none;
+      }
     }
   }
 }

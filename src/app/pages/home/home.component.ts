@@ -504,8 +504,8 @@ export class HomeComponent implements OnInit {
         strokeOpacity: 0.8,
         strokeWeight: 2,
         strokeColor: '#FFBE00',
-        fillColor: 'rgba(0,0,0,0)',
-        fillOpacity: 0.35,
+        fillColor: '#FFBE00',
+        fillOpacity: 0.15,
         editable: false,
         draggable: false
       });
