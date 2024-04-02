@@ -805,7 +805,6 @@ export class InputDirectionsComponent implements OnInit {
 
   isMembersSelected(type: string = this.orderType): boolean {
     const requiredMembers = type === 'OCL' ? ['drivers', 'vehicle'] : ['drivers', 'trucks', 'trailers'];
-
-    return requiredMembers.every((key) => this.selectMembersToAssign.hasOwnProperty(key));
+    return requiredMembers.every((key) => Boolean(this.selectMembersToAssign[key]));
   }
 }
