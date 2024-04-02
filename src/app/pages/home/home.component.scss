@@ -4,27 +4,34 @@
 .new-order-wrapper{
     display: flex;
     pointer-events: none;
+    justify-content: center;
+    gap: 60px;
 
     $spacing-top: 125px;
     $directions-width: 400px;
-    $spacing-right: 20px;
 
     .new-order-details{
-        max-width: calc(100% - #{$directions-width + $spacing-right});
+        display: flex;
+        justify-content: center;
+        max-width: 900px;
         pointer-events: none;
         margin-top: $spacing-top;
 
         &.full {
-            max-width: 100%;
+            max-width: calc(100%  - 80px - #{$directions-width});
         }
     }
 
     .input-directions{
-        position: fixed;
-        top: $spacing-top;
-        right: $spacing-right;
         width: $directions-width;
+        margin-top: $spacing-top;
+        margin-right: 20px;
+        flex-shrink: 0;
         z-index: 2;
+
+        &.hide {
+            display: none;
+        }
     }
 }
 

@@ -1,3 +1,7 @@
+:host {
+  width: 100%;
+}
+
 .new-order-container {
   height: 100%;
   color: #ededed;
@@ -97,9 +101,7 @@
       display: flex;
       flex-direction: column;
 
-      &.small {
-        max-width: 900px;
-
+      &.ocl {
         .order-stepper-wrapper {
           max-width: 380px;
         }

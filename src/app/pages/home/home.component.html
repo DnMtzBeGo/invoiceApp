@@ -11,7 +11,7 @@
   </bego-map>
 
   <div class="new-order-wrapper">
-    <div class="new-order-details" [ngClass]="{ full: !showSidebar }">
+    <div class="new-order-details" [ngClass]="{ full: !showOrderDetails }">
       <app-orders
         [(cardIsOpen)]="showOrderDetails"
         (stepChange)="onStepChange($event)"
@@ -28,9 +28,8 @@
       </app-orders>
     </div>
 
-    <div class="input-directions">
+    <div class="input-directions" [class.hide]="!showSidebar">
       <app-input-directions
-        *ngIf="showSidebar"
         [(orderType)]="orderType"
         [isPrime]="isPrime"
         (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
