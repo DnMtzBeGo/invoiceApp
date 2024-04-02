@@ -43,8 +43,8 @@ export class OrderEvidenceComponent implements OnInit {
     if(changes.orderData){
       
       this.signature = null;
-      if(this.orderData.signature && this.orderData.signature.type == 'Buffer'){
-        this.signature = this.base64(this.orderData.signature.data);
+      if(this.orderData?.evidence?.signature?.type === 'Buffer'){
+        this.signature = this.base64(this.orderData?.evidence?.signature?.data);
       }
 
     }

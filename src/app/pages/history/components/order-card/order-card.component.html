@@ -5,8 +5,8 @@
   <div class="draft-info">
       <div class="drafts-data-header">
         <div class="order-date-info">
-          <div>{{order.pickup?.startDate | date: 'dd/MM/yyyy'}}</div>
-          <div>{{order.pickup?.startDate | date: 'shortTime'}}</div>
+          <div>{{order.destinations[0]?.start_date | date: 'dd/MM/yyyy'}}</div>
+          <div>{{order.destinations[0]?.start_date | date: 'shortTime'}}</div>
           <div>#{{order.order_number}}</div>
         </div>
         <div class="earning-order-info">
@@ -18,11 +18,11 @@
       <div class="drafts-data-body">
           <div class="drafts-addresses">
               <label>{{ 'history.history_detail.pickup' | translate }}</label>
-              <div class="addresses">{{order['pickup'].address}}</div>
+              <div class="addresses">{{order.destinations[0].address}}</div>
           </div>
           <div class="drafts-addresses">
               <label>{{ 'history.history_detail.dropoff' | translate }}</label>
-              <div class="addresses">{{order.dropoff?.address}}</div>
+              <div class="addresses">{{order.destinations[1].address}}</div>
           </div>
       </div>
       <div class="order-status">
