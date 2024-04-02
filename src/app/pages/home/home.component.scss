@@ -1,4 +1,4 @@
-@import 'src/styles';
+@import "src/styles";
 
 .new-order-wrapper {
   display: flex;
@@ -24,6 +24,24 @@
     right: $spacing-right;
     width: $directions-width;
     z-index: 2;
+    transition: all 0.3s;
+  }
+
+  .applied-filter {
+    transition: translateX 0.3s;
+    // transform: translateX(420px);
+  }
+
+  .back {
+    position: absolute;
+    width: 49px;
+    height: 139px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url("../../../assets/images/back.svg");
+    top: calc(50% - 60px);
+    left: -48px;
+    background-size: calc(100% + 2px) 100%;
   }
 }
 
@@ -130,7 +148,7 @@ bego-map {
     padding: 10px;
 
     color: #ededed;
-    font-family: 'Avenir';
+    font-family: "Avenir";
 
     width: 300px;
     display: flex;

@@ -26,6 +26,8 @@ interface ShareData {
   type?: string;
 }
 
+const LIMIT = 6;
+
 @Component({
   selector: 'app-polygon-filter',
   templateUrl: './polygon-filter.component.html',
@@ -84,7 +86,9 @@ export class PolygonFilter implements OnInit {
   }
 
   async getDrivers(page: number = 1) {
-    (await this.apiRestService.apiRestGet(`carriers/get_drivers?page=${page}&limit=10`, { apiVersion: 'v1.1', loader: false })).subscribe({
+    (
+      await this.apiRestService.apiRestGet(`carriers/get_drivers?page=${page}&limit=${LIMIT}`, { apiVersion: 'v1.1', loader: false })
+    ).subscribe({
       next: ({ result: { result } }) => {
         result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }));
         this.drivers = { loading: false, options: result, scrolleable: false };
@@ -93,7 +97,7 @@ export class PolygonFilter implements OnInit {
   }
 
   async getTags(page: number = 1) {
-    (await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=10`, { apiVersion: 'v1.1', loader: false })).subscribe({
+    (await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=${LIMIT}`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result } }) => {
         this.tags = { loading: false, options: result, scrolleable: false };
       }
@@ -102,9 +106,13 @@ export class PolygonFilter implements OnInit {
 
   async getPolygons(page: number = 1) {
     if (this.pages.polygons.total === page) return;
-    (await this.apiRestService.apiRestGet(`polygons?page=${page}&limit=10`, { apiVersion: 'v1.1', loader: false })).subscribe({
+
+    (await this.apiRestService.apiRestGet(`polygons?page=${page}&limit=${LIMIT}`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result, pages } }) => {
-        if (page === 1) this.pages.polygons = pages;
+        if (page === 1) {
+          this.pages.polygons.total = pages;
+          this.pages.polygons.total = 1;
+        }
         this.polygons = { loading: false, options: result, scrolleable: false };
       }
     });

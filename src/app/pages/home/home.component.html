@@ -29,7 +29,8 @@
       </app-orders>
     </div>
 
-    <div class="input-directions">
+    <div class="input-directions" [ngClass]="{ 'applied-filter': creatingForms }">
+
       <app-input-directions
         *ngIf="showSidebar"
         (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
@@ -56,6 +57,10 @@
         }">
         <i class="icon icon-gps"></i>
       </button>
+
+      <div class="back">
+        <div class="invisible"></div>
+      </div>
     </div>
   </div>
 </div>
