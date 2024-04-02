@@ -265,7 +265,7 @@ section {
           display: flex;
           flex-direction: column;
 
-          > bego-button {
+          > app-button {
             width: 400px;
             position: fixed;
             bottom: calc(7vh)
@@ -513,7 +513,7 @@ section {
     }
 }
 
-bego-button {
+app-button {
     margin-top: auto ;
     cursor: pointer;
     pointer-events: initial;

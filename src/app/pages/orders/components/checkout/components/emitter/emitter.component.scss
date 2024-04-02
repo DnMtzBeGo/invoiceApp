@@ -17,7 +17,7 @@
         border: 1px dashed #1c232a;
         cursor: pointer;
         
-        bego-button{
+        app-button{
             color:#FFE000;
             margin-right: 15px;
             transform: scale(1.5);
@@ -43,11 +43,11 @@
             align-items: center;
         }
 
-        bego-button{
+        app-button{
             transform: scale(1.5);
         }
 
-        bego-button:last-child{
+        app-button:last-child{
             cursor: pointer;
         }
     }
