@@ -633,7 +633,7 @@ export class InputDirectionsComponent implements OnInit {
 
     const { result: categories } = await (await this.auth.apiRestGet('orders/vehicles', { apiVersion: 'v1.1' })).toPromise();
 
-    const requests = [...(categories?.public || []), ...(categories?.private || [])].map(async (group) => {
+    const requests = categories.map(async (group) => {
       if (!group.has_vehicles) return;
 
       const { result: vehicles } = await (await this.auth.apiRestGet(`orders/vehicles/${group._id}?${q.toString()}`, { apiVersion: 'v1.1' })).toPromise();
