@@ -1,0 +1,41 @@
+<div class="app-prime-card">
+  <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger>
+    <mat-icon>more_vert</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu" class="brand-menu-1">
+    <button mat-menu-item [routerLink]="[routes.EDIT_PRIME, { id: data._id }]">
+      <mat-icon class="icon icon-eye-open icon-only" style="font-size: 18px"></mat-icon>
+      <span>
+        {{ 'fleet.prime.see_details' | translate }}
+        {{ data.vehicle_type.translations?.[lang] || data.vehicle_type.type }}
+      </span>
+    </button>
+    <button mat-menu-item (click)="delete()">
+      <mat-icon class="icon icon-trash1 icon-only" style="font-size: 18px"></mat-icon>
+      <span>{{ 'fleet.btn_remove' | translate }}</span>
+    </button>
+  </mat-menu>
+
+  <div class="avatar">
+    <div class="avatar-1">
+      <img [src]="data.thumbnail && !data.thumbnail.endsWith('/') ? data.thumbnail : '../../../../assets/images/truck.svg'" />
+      <div class="avatar-color" [style.background]="data.attributes.color || 'transparent'"></div>
+    </div>
+  </div>
+
+  <p class="brand">
+    {{ data.attributes.brand }}
+  </p>
+
+  <div class="stats">
+    {{ data.attributes.vehicle_number }}
+  </div>
+
+  <div class="actions">
+    <button mat-flat-button class="brand-btn-2" [routerLink]="[routes.EDIT_PRIME, { id: data._id }]">
+      {{ 'fleet.prime.btn_view' | translate }}
+      {{ data.vehicle_type.translations?.[lang] || data.vehicle_type.type }}
+    </button>
+  </div>
+</div>

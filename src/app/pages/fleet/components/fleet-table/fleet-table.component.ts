@@ -26,7 +26,7 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
   public routes: typeof routes = routes;
   public URL_BASE = environment.URL_BASE;
 
-  @Input() model: 'members' | 'trucks' | 'trailers';
+  @Input() model: 'members' | 'trucks' | 'trailers' | 'prime';
 
   resolvers = {
     members: {
@@ -48,6 +48,13 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
       avatarFallback: '../../../../assets/images/trailer.svg',
       displayedColumns: ['avatar', 'plates', 'type', 'trailer_number', 'operations'],
       editUrl: routes.EDIT_TRAILER,
+      queryParams: false
+    },
+    prime: {
+      avatarRounded: '24px',
+      avatarFallback: '../../../../assets/images/trailer.svg',
+      displayedColumns: ['avatar', 'brand', 'vehicle_number', 'color', 'operations'],
+      editUrl: routes.EDIT_PRIME,
       queryParams: false
     }
   };

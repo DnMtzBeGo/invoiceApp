@@ -1,5 +1,5 @@
 <div class="fleet-container" [class]="['fleet-' + size]">
-  <div *ngIf="fleetDataLoaded" [@enterAnimation]>
+  <div *ngIf="fleetDataLoaded" [@enterAnimation] class="fleet-wrapper">
     <div class="fleet-title">
       <h2>{{ 'fleet.txt_fleet' | translate }}</h2>
       <h1 *ngIf="!editName">{{ fleetNameFromService }}</h1>
@@ -109,6 +109,38 @@
           </div>
         </div>
       </div>
+      <div class="fleet-special" *ngFor="let vehicleGroup of primeVehicles">
+        <div class="fleet-header">
+          <div>
+            <h2>{{ vehicleGroup.translations?.[lang] || vehicleGroup.name }}</h2>
+            <span>{{ vehicleGroup.vehicles.length }}</span>
+          </div>
+          <div [routerLink]="[routes.PRIME + '/' + vehicleGroup._id]">
+            {{ 'fleet.btn_view_all' | translate }}
+          </div>
+        </div>
+        <div class="fleet-bubbles" *ngIf="hasChange">
+          <div *ngIf="!vehicleGroup.vehicles.length" class="no-status" [routerLink]="[routes.PRIME]">
+            <img class="no-cover" src="../../assets/orders/trailer.svg" />
+          </div>
+          <div
+            class="no-status"
+            *ngFor="let vehicle of vehicleGroup.vehicles.slice(0, 4)"
+            [routerLink]="[routes.EDIT_PRIME, { id: vehicle._id }]">
+            <img src="../../../../assets/images/trailer.svg" />
+          </div>
+          <div *ngIf="vehicleGroup.vehicles.length > 4" class="remaining-bubbles" [routerLink]="[routes.PRIME]">
+            <span>+{{ vehicleGroup.vehicles?.length - 4 }}</span>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <app-button
+      *ngIf="size === 'md' && isPrime"
+      [routerLink]="[routes.PRIME]"
+      class="btn-yellow btn-new_vehicle"
+      [text]="'fleet.btn_new_vehicle' | translate"
+    ></app-button>
   </div>
 </div>

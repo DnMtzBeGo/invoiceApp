@@ -1377,6 +1377,7 @@
     "txt_showing": "Showing",
     "txt_of": "of",
     "btn_remove": "Remove",
+    "btn_new_vehicle": "Add new vehicle",
     "members": {
       "txt_header": "Team",
       "txt_search": "Search...",
@@ -1455,6 +1456,41 @@
         "type": "Type",
         "trailer_number": "Trailer number",
         "type-trailer-number": "Type trailer number"
+      }
+    },
+    "prime": {
+      "txt_header": "My",
+      "btn_add": "Add new",
+      "txt_search": "Search vehicle...",
+      "see_details": "See",
+      "btn_view": "View",
+      "btn_save": "Save",
+      "brand": "Model",
+      "year": "Year",
+      "vehicle_number": "Plates",
+      "nickname": "Nickname",
+      "placeholder": {
+        "brand": "Type your model",
+        "vehicle_number": "Type plates",
+        "nickname": "Type your nickname"
+      },
+      "sort_by": {
+        "name": "Name",
+        "date_created": "Creation date"
+      },
+      "table": {
+        "vehicle_number": "Vehicle number"
+      },
+      "category_modal": {
+        "title": "Add New Category",
+        "placeholder-category": "Type your category name",
+        "btn-open": "Add Category",
+        "btn-done": "Confirm"
+      },
+      "complete_modal": {
+        "done": "Awesome",
+        "title": "Vehicle saved",
+        "txt": "Your vehicle has been successfully added to the fleet section"
       }
     },
     "alerts": {

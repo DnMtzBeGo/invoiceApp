@@ -1380,6 +1380,7 @@
     "txt_showing": "Mostrando",
     "txt_of": "de",
     "btn_remove": "Remover",
+    "btn_new_vehicle": "Agregar nuevo vehículo",
     "members": {
       "txt_header": "Equipo",
       "txt_search": "Buscar...",
@@ -1458,6 +1459,41 @@
         "type": "Tipo",
         "trailer_number": "Número de Trailer",
         "type-trailer-number": "Escribe el número de trailer"
+      }
+    },
+    "prime": {
+      "txt_header": "Mis",
+      "btn_add": "Agregar",
+      "txt_search": "Buscar vehículo...",
+      "see_details": "Ver",
+      "btn_view": "Ver",
+      "btn_save": "Guardar",
+      "brand": "Modelo",
+      "year": "Año",
+      "vehicle_number": "Placas",
+      "nickname": "Nombre",
+      "placeholder": {
+        "brand": "Escribe el modelo",
+        "vehicle_number": "Escribe las placas",
+        "nickname": "Escribe el nombre"
+      },
+      "sort_by": {
+        "name": "Nombre",
+        "date_created": "Fecha creación"
+      },
+      "table": {
+        "vehicle_number": "Número de vehículo"
+      },
+      "category_modal": {
+        "title": "Añadir nueva categoria",
+        "placeholder-category": "Escribe el nombre de tu categoría",
+        "btn-open": "Crear categoría",
+        "btn-done": "Crear"
+      },
+      "complete_modal": {
+        "done": "Listo",
+        "title": "Vehículo salvado",
+        "txt": "Su vehículo ha sido agregado exitosamente a la sección de flota"
       }
     },
     "alerts": {

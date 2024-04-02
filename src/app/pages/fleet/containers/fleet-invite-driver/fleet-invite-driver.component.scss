@@ -18,6 +18,8 @@
       box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
       border-radius: 8px;
       color: #ededed;
+      max-height: 70vh;
+      overflow: auto;
       // min-width: 280px;
     }
   }
