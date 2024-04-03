@@ -396,6 +396,12 @@ export class HomeComponent implements OnInit {
           // console.log('zoom:', this.zoom);
         });
 
+        google.maps.event.addListener(this.map, 'zoom_changed', () => {
+          this.circles.forEach((circle) => {
+            circle.setRadius(this.calculateCircleRadius(this.map.getZoom()));
+          });
+        });
+
         this.mapRef.nativeElement.addEventListener(
           'mousewheel',
           (event) => {
@@ -471,9 +477,12 @@ export class HomeComponent implements OnInit {
   creatingForms: boolean = false;
   openOrderMenu: boolean = false;
   heatmap: any;
+  centerCoords: any;
   polygons: any = [];
+  circles: any = [];
 
   getCoordinates({ type, geometry, locations, members }: any) {
+    this.centerCoords = { type, geometry, locations, members };
     this.creatingForms = true;
     this.clearMap();
     if (type === 'heatmap') this.addHeatmap(locations);
@@ -505,9 +514,9 @@ export class HomeComponent implements OnInit {
         paths: coordinates,
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        strokeColor: '#FFBE00',
-        fillColor: '#FFBE00',
-        fillOpacity: 0.15,
+        strokeColor: '#FFEE00',
+        fillColor: '#FFEE00',
+        fillOpacity: 0.2,
         editable: false,
         draggable: false
       });
@@ -517,6 +526,19 @@ export class HomeComponent implements OnInit {
 
       coordinates.forEach((coordinate) => {
         bounds.extend(coordinate);
+
+        const circle = new google.maps.Circle({
+          strokeColor: '#FFEE00',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FFEE00',
+          fillOpacity: 1,
+          map: this.map,
+          center: coordinate,
+          radius: this.calculateCircleRadius(this.map.getZoom())
+        });
+
+        this.circles.push(circle);
       });
 
       this.map.fitBounds(bounds);
@@ -580,6 +602,13 @@ export class HomeComponent implements OnInit {
       });
     }
 
+    if (this.circles) {
+      this.circles.forEach((circle) => {
+        circle.setMap(null);
+      });
+      this.circles = []; // Limpiar el array de referencias a los círculos
+    }
+
     this.openOrderMenu = true;
   }
 
@@ -591,5 +620,9 @@ export class HomeComponent implements OnInit {
     this.clearMap();
     this.creatingForms = false;
     this.getFleetDetails(false);
+  }
+
+  calculateCircleRadius(zoomLevel: number): number {
+    return 25000 - 1500 * zoomLevel;
   }
 }
