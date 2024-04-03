@@ -469,6 +469,7 @@ export class HomeComponent implements OnInit {
   }
 
   creatingForms: boolean = false;
+  openOrderMenu: boolean = false;
   heatmap: any;
   polygons: any = [];
 
@@ -478,6 +479,7 @@ export class HomeComponent implements OnInit {
     if (type === 'heatmap') this.addHeatmap(locations);
     else this.addDispersion(members);
     this.createPolygons(geometry.features);
+    this.openOrderMenu = false;
   }
 
   addHeatmap(heatmapData) {
@@ -577,6 +579,8 @@ export class HomeComponent implements OnInit {
         polygon.setMap(null);
       });
     }
+
+    this.openOrderMenu = true;
   }
 
   coordinatesToLatLng(data: any[]): any[] {

@@ -1,4 +1,4 @@
-@import "src/styles";
+@import 'src/styles';
 
 .new-order-wrapper {
   display: flex;
@@ -28,8 +28,8 @@
   }
 
   .applied-filter {
-    transition: translateX 0.3s;
-    // transform: translateX(420px);
+    // transition: translateX 0.3s;
+    transform: translateX(420px);
   }
 
   .back {
@@ -38,10 +38,24 @@
     height: 139px;
     background-size: cover;
     background-repeat: no-repeat;
-    background-image: url("../../../assets/images/back.svg");
+    background-image: url('../../../assets/images/back.svg');
     top: calc(50% - 60px);
     left: -48px;
     background-size: calc(100% + 2px) 100%;
+    pointer-events: all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .invisible {
+      margin-left: 4px;
+      width: 34px;
+      height: 25px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 }
 
@@ -148,7 +162,7 @@ bego-map {
     padding: 10px;
 
     color: #ededed;
-    font-family: "Avenir";
+    font-family: 'Avenir';
 
     width: 300px;
     display: flex;
