@@ -7,17 +7,19 @@
   <div
     class="action-btn"
     [ngClass]="{
-      'active-btn': heatmap ? options.start_date : options.date,
-      'disabled-btn': heatmap ? !options.start_date : !options.date
+      'active-btn': options.start_date,
+      'disabled-btn': !options.start_date
     }"
     (click)="openShareModal()">
     <bego-icon icon="begon-shared"></bego-icon>
     <span>Share</span>
   </div>
 
-  <div class="divider"></div>
+  <ng-container *ngIf="!heatmap && options?.start_date">
+    <div class="divider"></div>
 
-  <mat-checkbox class="active-checkbox" color="yellow" (change)="checkedActive($event)">Active drivers the last 24 hours</mat-checkbox>
+    <mat-checkbox class="active-checkbox" color="yellow" (change)="checkedActive($event)">Active drivers the last 24 hours</mat-checkbox>
+  </ng-container>
 </div>
 
 <bego-polygon-filter

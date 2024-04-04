@@ -14,6 +14,9 @@ import { OrderPreview } from '../orders/orders.component';
 declare var google: any;
 // 10 seconds for refreshing map markers
 const markersRefreshTime = 1000 * 20;
+const baseRadius = 25000;
+const zoomFactor = 2000;
+const minRadius = 500;
 
 @Component({
   selector: 'app-home',
@@ -623,6 +626,7 @@ export class HomeComponent implements OnInit {
   }
 
   calculateCircleRadius(zoomLevel: number): number {
-    return 25000 - 1500 * zoomLevel;
+    let radius = baseRadius - zoomFactor * zoomLevel;
+    return Math.max(radius, minRadius);
   }
 }

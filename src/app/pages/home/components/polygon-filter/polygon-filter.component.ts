@@ -76,9 +76,8 @@ export class PolygonFilter implements OnInit {
   constructor(private apiRestService: AuthService, private matDialog: MatDialog) {}
 
   async ngOnInit() {
-    this.drivers.loading = true;
-    this.polygons.loading = true;
-    this.tags.loading = true;
+    // this.polygons.loading = true;
+    // this.tags.loading = true;
 
     await this.getDrivers();
     await this.getPolygons();
@@ -86,42 +85,90 @@ export class PolygonFilter implements OnInit {
   }
 
   async getDrivers(page: number = 1) {
+    if (this.drivers.loading) return;
+
+    this.drivers.loading = true;
+
     (
       await this.apiRestService.apiRestGet(`carriers/get_drivers?page=${page}&limit=${LIMIT}`, { apiVersion: 'v1.1', loader: false })
     ).subscribe({
-      next: ({ result: { result } }) => {
-        result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }));
-        this.drivers = { loading: false, options: result, scrolleable: false };
-      }
-    });
-  }
+      next: ({ result: { result, pages } }) => {
+        if (page === 1) {
+          this.pages.drivers.total = pages;
+          this.pages.drivers.actual = 1;
+          console.log('seteando drivers: ', pages, this.pages.drivers);
+        }
 
-  async getTags(page: number = 1) {
-    (await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=${LIMIT}`, { apiVersion: 'v1.1', loader: false })).subscribe({
-      next: ({ result: { result } }) => {
-        this.tags = { loading: false, options: result, scrolleable: false };
+        result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }));
+
+        this.drivers = {
+          loading: false,
+          options: [...this.drivers.options, ...result],
+          scrolleable: page < pages
+        };
+      },
+      error: (err) => console.error(err),
+      complete: () => {
+        this.drivers.loading = false;
       }
     });
   }
 
   async getPolygons(page: number = 1) {
-    if (this.pages.polygons.total === page) return;
+    if (this.polygons.loading) return;
+
+    this.polygons.loading = true;
 
     (await this.apiRestService.apiRestGet(`polygons?page=${page}&limit=${LIMIT}`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result, pages } }) => {
         if (page === 1) {
           this.pages.polygons.total = pages;
-          this.pages.polygons.total = 1;
+          this.pages.polygons.actual = 1;
+          console.log('seteando polygons: ', pages, this.pages.polygons);
         }
-        this.polygons = { loading: false, options: result, scrolleable: false };
+
+        this.polygons = {
+          loading: false,
+          options: [...this.polygons.options, ...result],
+          scrolleable: page < pages
+        };
+      },
+      error: (err) => console.error(err),
+      complete: () => {
+        this.polygons.loading = false;
+      }
+    });
+  }
+
+  async getTags(page: number = 1) {
+    if (this.tags.loading) return;
+
+    this.tags.loading = true;
+
+    (await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=${LIMIT}`, { apiVersion: 'v1.1', loader: false })).subscribe({
+      next: ({ result: { result, pages } }) => {
+        // this.tags = { loading: false, options: result, scrolleable: false };
+
+        if (page === 1) {
+          this.pages.tags.total = pages;
+          this.pages.tags.actual = 1;
+          console.log('seteando tags: ', pages, this.pages.tags);
+        }
+
+        this.tags = {
+          loading: false,
+          options: [...this.tags.options, ...result],
+          scrolleable: page < pages
+        };
       }
     });
   }
 
   loadMoreData(column: string) {
-    console.log(`Cargar más datos para ${column}`);
-    this[column].loading = true;
-    if (column === 'polygon') this.getPolygons();
+    this.pages[column].actual += 1;
+    if (column === 'drivers') this.getDrivers(this.pages.drivers.actual);
+    if (column === 'polygons') this.getPolygons(this.pages.polygons.actual);
+    if (column === 'tags') this.getTags(this.pages.tags.actual);
   }
 
   async selectedAction(event: any) {
@@ -171,22 +218,24 @@ export class PolygonFilter implements OnInit {
       })
     ).subscribe({
       next: ({ result }) => {
-        this.saveOptions(options, 'heatmap');
-        this.getCoordinates.emit({ type: 'heatmap', ...result });
+        // this.saveOptions(options, 'heatmap');
+        this.options = options;
+        this.activeDrivers = false;
         this.activeFilter = false;
+        this.getCoordinates.emit({ type: 'heatmap', ...result });
       }
     });
   }
 
   async getDispersion(options: any) {
-    // console.log('options: ', options);
-    const queryParams = new URLSearchParams({
+    const newOptions = {
       drivers: JSON.stringify(options.drivers.map(({ _id }) => _id)),
       tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
       polygons: JSON.stringify(options.polygons.map(({ _id }) => _id)),
       date: options.start_date,
       include_older_locations: JSON.stringify(this.activeDrivers)
-    }).toString();
+    };
+    const queryParams = new URLSearchParams(newOptions).toString();
 
     (
       await this.apiRestService.apiRestGet(`polygons/dispersion?${queryParams}`, {
@@ -194,27 +243,11 @@ export class PolygonFilter implements OnInit {
       })
     ).subscribe({
       next: ({ result }) => {
-        this.saveOptions(options, 'dispersion');
-        this.getCoordinates.emit({ type: 'dispersion', ...result });
+        this.options = options;
         this.activeFilter = false;
+        this.getCoordinates.emit({ type: 'dispersion', ...result });
       }
     });
-  }
-
-  saveOptions(options, type: 'heatmap' | 'dispersion') {
-    this.options = {
-      drivers: options.drivers.map(({ _id }) => _id),
-      polygons: options.polygons.map(({ _id }) => _id),
-      tags: options.tags.map(({ _id }) => _id),
-      ...(type === 'heatmap'
-        ? {
-            start_date: options.start_date,
-            end_date: options.end_date
-          }
-        : {
-            date: options.start_date
-          })
-    };
   }
 
   openShareModal() {
@@ -232,9 +265,11 @@ export class PolygonFilter implements OnInit {
     dialogRef.afterClosed().subscribe((res?) => {});
   }
 
-  checkedActive({ checked }: any) {
-    this.activeDrivers = checked;
-    // if (this.heatmap) this.getHeatmap(this.options);
-    // else this.getDispersion(this.options);
+  checkedActive(event: any) {
+    this.activeDrivers = event.checked;
+
+    if (this.activeFilter || !this.options?.start_date) return;
+
+    this.getDispersion(this.options);
   }
 }
