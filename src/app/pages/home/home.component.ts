@@ -221,7 +221,6 @@ export class HomeComponent implements OnInit {
   }
 
   updateLocation() {
-    console.log('cleaning map');
     if (this.creatingForms) {
       this.clearMap();
       this.polygonFilter.clearFilters();
@@ -567,7 +566,6 @@ export class HomeComponent implements OnInit {
     if (!members?.length) return;
 
     members.forEach((member) => {
-      console.log('miembro: ', member);
       if (member.location) {
         this.markersFromService.push({
           title: member.nickname,
@@ -596,8 +594,6 @@ export class HomeComponent implements OnInit {
         true,
         this.markersFromService[i].extraData
       );
-
-      console.log('creating marker', marker);
 
       this.googleMarkers.push(marker);
     }
@@ -635,6 +631,7 @@ export class HomeComponent implements OnInit {
   }
 
   clearedFilter() {
+    if (!this.creatingForms && (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input)) return;
     this.clearMap();
     this.creatingForms = false;
     this.getFleetDetails(false);
