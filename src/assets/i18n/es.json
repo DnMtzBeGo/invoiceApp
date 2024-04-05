@@ -1656,8 +1656,11 @@
     "form": {
       "title": "Crear Tag",
       "edit_title": "Editar Tag",
-      "tag_name": "Nombre del Tag",
-      "tag_name_placeholder": "Ingrese el nombre del tag"
+      "add_drivers_title": "Agregar conductores",
+      "edit_drivers_title": "Editar conductores",
+      "tag_name": "Nombre del Tag:",
+      "tag_name_placeholder": "Ingrese el nombre del tag",
+      "tag_edit_placeholder": "Ingrese el nuevo nombre del tag"
     },
     "validation": {
       "carriers_required": "Debe seleccionar al menos un conductor",
@@ -1665,7 +1668,8 @@
     },
     "buttons": {
       "create": "Agregar tag",
-      "save": "Guardar"
+      "save": "Guardar",
+      "finish": "Finalizar"
     },
     "table": {
       "title": "Tags",
