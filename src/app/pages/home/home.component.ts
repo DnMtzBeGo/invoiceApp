@@ -10,6 +10,8 @@ import { HeaderService } from './services/header.service';
 import { ofType } from 'src/app/shared/utils/operators.rx';
 import { CustomMarker } from './custom.marker';
 import { OrderPreview } from '../orders/orders.component';
+import { PolygonFilter } from './components/polygon-filter/polygon-filter.component';
+import { InputDirectionsComponent } from 'src/app/shared/components/input-directions/input-directions.component';
 
 declare var google: any;
 // 10 seconds for refreshing map markers
@@ -24,6 +26,8 @@ const minRadius = 500;
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  @ViewChild(PolygonFilter) polygonFilter: PolygonFilter;
+  @ViewChild(InputDirectionsComponent) inputDirections: InputDirectionsComponent;
   @Input() locations: GoogleLocation = {
     pickup: '',
     dropoff: '',
@@ -168,12 +172,8 @@ export class HomeComponent implements OnInit {
           )
         )
       )
-        .pipe(
-          // Agregar pausa basada en la variable global pauseFlag
-          filter(() => !this.creatingForms)
-        )
+        .pipe(filter(() => !this.creatingForms))
         .subscribe(this.getFleetDetails.bind(this))
-      // ).subscribe(this.getFleetDetails.bind(this))
     );
   }
 
@@ -218,6 +218,15 @@ export class HomeComponent implements OnInit {
 
     const res = await req.toPromise();
     return res.result._id;
+  }
+
+  updateLocation() {
+    console.log('cleaning map');
+    if (this.creatingForms) {
+      this.clearMap();
+      this.polygonFilter.clearFilters();
+      this.creatingForms = false;
+    }
   }
 
   updateLocations(data: GoogleLocation) {
@@ -485,6 +494,8 @@ export class HomeComponent implements OnInit {
   circles: any = [];
 
   getCoordinates({ type, geometry, locations, members }: any) {
+    // this.inputDirections.ClearAutocompleteDropoff();
+    // this.inputDirections.ClearAutocompletePickup();
     this.centerCoords = { type, geometry, locations, members };
     this.creatingForms = true;
     this.clearMap();

@@ -53,6 +53,8 @@ export class InputDirectionsComponent implements OnInit {
   @Output("showNewOrderCard") showNewOrderCard = new EventEmitter<void>();
   @Output("updateLocations") updateLocations =
     new EventEmitter<GoogleLocation>();
+  @Output("updateLocation") updateLocation =
+    new EventEmitter();
   @Output("updateDatepickup") updateDatepickup = new EventEmitter<number>();
   @Output("updateDropOffDate") updateDropOffDate = new EventEmitter<number>();
   @Output("inputPlace") inputPlaceEmmiter = new EventEmitter<
@@ -241,6 +243,7 @@ export class InputDirectionsComponent implements OnInit {
       )
     ).subscribe(
       async (res) => { 
+        this.updateLocation.emit()
         this.pickupSelected = true;
         this.autocompletePickup.input = res.result.address;
         this.locations.pickup = res.result.address;
@@ -282,6 +285,7 @@ export class InputDirectionsComponent implements OnInit {
       )
     ).subscribe(
       async (res) => {
+        this.updateLocation.emit()
         this.dropoffSelected = true;
         // console.log(res);
         this.autocompleteDropoff.input = res.result.address;
