@@ -1,7 +1,7 @@
 <bego-modal
   [ngClass]="{ 'first-step': !sended }"
   [enabledBack]="!sended"
-  [activatedDone]="sended || (fullname && email)"
+  [activatedDone]="sended || validForm"
   (backEmitter)="back()"
   (closeEmitter)="actions($event)"
   [lang]="lang"
@@ -16,15 +16,15 @@
     <span class="title">Personal report</span>
     <p class="subtitle">Enter the email you want to send an updated report</p>
 
-    <div class="input-container">
+    <div class="input-container" [formGroup]="shareForm">
       <div class="input">
         <span>Full Name*</span>
-        <input type="text" placeholder="Type full name" [(ngModel)]="fullname" />
+        <input type="text" placeholder="Type full name" formControlName="name" />
       </div>
 
       <div class="input">
         <span>Email*</span>
-        <input type="text" placeholder="email@gmail.com" [(ngModel)]="email" />
+        <input type="text" placeholder="email@gmail.com" formControlName="email" />
       </div>
     </div>
   </div>

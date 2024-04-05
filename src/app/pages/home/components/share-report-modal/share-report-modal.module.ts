@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShareReportModalComponent } from './share-report-modal.component';
 import { BegoModalModule } from '@begomx/ui-components';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [ShareReportModalComponent],
-  imports: [CommonModule, BegoModalModule, FormsModule],
+  imports: [CommonModule, BegoModalModule, ReactiveFormsModule],
   exports: [ShareReportModalComponent]
 })
 export class ShareReportModalModule {}

@@ -186,17 +186,7 @@ export class PolygonFilter implements OnInit {
         break;
 
       case 'clear':
-        this.options = {
-          drivers: [],
-          tags: [],
-          polygons: [],
-          start_date: null,
-          end_date: null,
-          date: null
-        };
-        this.activeDrivers = false;
-
-        this.clearedFilter.emit();
+        this.clearFilters();
         break;
 
       default:
@@ -251,7 +241,7 @@ export class PolygonFilter implements OnInit {
   }
 
   openShareModal() {
-    if (this.heatmap ? !this.options.start_date : !this.options.date) return;
+    if (!this.options.start_date) return;
 
     const dialogRef = this.matDialog.open(ShareReportModalComponent, {
       data: {
@@ -271,5 +261,19 @@ export class PolygonFilter implements OnInit {
     if (this.activeFilter || !this.options?.start_date) return;
 
     this.getDispersion(this.options);
+  }
+
+  clearFilters() {
+    this.options = {
+      drivers: [],
+      tags: [],
+      polygons: [],
+      start_date: null,
+      end_date: null,
+      date: null
+    };
+    this.activeDrivers = false;
+
+    this.clearedFilter.emit();
   }
 }

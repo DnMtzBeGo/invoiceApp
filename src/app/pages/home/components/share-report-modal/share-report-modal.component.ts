@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -24,28 +25,41 @@ interface Options {
 })
 export class ShareReportModalComponent {
   sended: boolean = false;
+  shareForm: FormGroup;
+  validForm: boolean = false;
+
   lang = {
     done: this.sended ? 'Awesome' : 'Send'
   };
 
-  fullname: string = '';
-  email: string = '';
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Data,
     public dialogRef: MatDialogRef<ShareReportModalComponent>,
-    private apiRestService: AuthService
-  ) {}
+    private apiRestService: AuthService,
+    private formBuilder: FormBuilder
+  ) {
+    this.shareForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]]
+    });
+
+    this.shareForm.valueChanges.subscribe(() => {
+      this.validForm = this.shareForm.valid;
+    });
+  }
 
   async sendReport() {
-    if (!this.fullname && !this.email) return;
+    if (!this.shareForm.valid) return;
+
+    const { start_date, ...options } = this.data.options;
 
     const requestJson = JSON.stringify({
-      ...this.data.options,
+      ...options,
+      ...(this.data.heatmap ? { start_date } : { date: start_date }),
       invitations: [
         {
-          email: this.email,
-          name: this.fullname
+          email: this.shareForm.get('email').value,
+          name: this.shareForm.get('name').value
         }
       ]
     });
@@ -57,7 +71,8 @@ export class ShareReportModalComponent {
     ).subscribe({
       next: () => {
         this.sended = true;
-      }
+      },
+      error: (err) => console.error(err)
     });
   }
 
