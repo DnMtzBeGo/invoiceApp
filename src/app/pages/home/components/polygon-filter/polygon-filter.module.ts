@@ -4,9 +4,10 @@ import { PolygonFilter } from './polygon-filter.component';
 import { BegoIconsModule, BegoPolygonFilterModule } from '@begomx/ui-components';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ShareReportModalModule } from '../share-report-modal/share-report-modal.module';
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   declarations: [PolygonFilter],
-  imports: [CommonModule, BegoIconsModule, BegoPolygonFilterModule, MatCheckboxModule, ShareReportModalModule],
+  imports: [CommonModule, BegoIconsModule, BegoPolygonFilterModule, MatCheckboxModule, ShareReportModalModule, TranslateModule],
   exports: [PolygonFilter]
 })
 export class PolygonFilterModule {}

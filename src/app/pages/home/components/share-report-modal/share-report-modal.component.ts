@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 interface Data {
@@ -28,15 +29,12 @@ export class ShareReportModalComponent {
   shareForm: FormGroup;
   validForm: boolean = false;
 
-  lang = {
-    done: this.sended ? 'Awesome' : 'Send'
-  };
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Data,
     public dialogRef: MatDialogRef<ShareReportModalComponent>,
     private apiRestService: AuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService
   ) {
     this.shareForm = this.formBuilder.group({
       name: ['', Validators.required],

@@ -4,26 +4,26 @@
   [activatedDone]="sended || validForm"
   (backEmitter)="back()"
   (closeEmitter)="actions($event)"
-  [lang]="lang"
+  [lang]="{ done: ('home.polygon-filter.share.' + (this.sended ? 'sended.done' : 'form.send') | translate) }"
   [image]="sended ? 'email' : ''"
   [simple]="
     sended && {
-      title: 'Email Sent!',
-      subtitle: 'Your email was sent successfully, check your inbox to view the content.'
+      title: 'home.polygon-filter.share.sended.title' | translate,
+      subtitle: 'home.polygon-filter.share.sended.subtitle' | translate
     }
   ">
   <div class="share-report-container" *ngIf="!sended">
-    <span class="title">Personal report</span>
-    <p class="subtitle">Enter the email you want to send an updated report</p>
+    <span class="title">{{ 'home.polygon-filter.share.form.title' | translate }}</span>
+    <p class="subtitle">{{ 'home.polygon-filter.share.form.subtitle' | translate }}</p>
 
     <div class="input-container" [formGroup]="shareForm">
       <div class="input">
-        <span>Full Name*</span>
-        <input type="text" placeholder="Type full name" formControlName="name" />
+        <span>{{ 'home.polygon-filter.share.form.name' | translate }}</span>
+        <input type="text" [placeholder]="'home.polygon-filter.share.form.placeholder' | translate" formControlName="name" />
       </div>
 
       <div class="input">
-        <span>Email*</span>
+        <span>{{ 'home.polygon-filter.share.form.email' | translate }}</span>
         <input type="text" placeholder="email@gmail.com" formControlName="email" />
       </div>
     </div>

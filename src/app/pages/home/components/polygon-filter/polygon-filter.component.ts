@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ShareReportModalComponent } from '../share-report-modal/share-report-modal.component';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Option {
   id: string;
@@ -73,11 +74,36 @@ export class PolygonFilter implements OnInit {
 
   activeDrivers: boolean = false;
 
-  constructor(private apiRestService: AuthService, private matDialog: MatDialog) {}
+  activeLang: string = 'en';
+
+  filterLang = {
+    title: '',
+    column: {
+      drivers: '',
+      polygons: '',
+      tags: '',
+      empty: ''
+    },
+    date: '',
+    heatmap: {
+      title: '',
+      yes: '',
+      no: ''
+    },
+    actions: {
+      clear: '',
+      cancel: '',
+      apply: ''
+    }
+  };
+
+  constructor(private apiRestService: AuthService, private matDialog: MatDialog, private translateService: TranslateService) {}
 
   async ngOnInit() {
-    // this.polygons.loading = true;
-    // this.tags.loading = true;
+    this.setFilterLang();
+    this.translateService.onLangChange.subscribe(async () => {
+      this.setFilterLang();
+    });
 
     await this.getDrivers();
     await this.getPolygons();
@@ -275,5 +301,29 @@ export class PolygonFilter implements OnInit {
     this.activeDrivers = false;
 
     this.clearedFilter.emit();
+  }
+
+  setFilterLang() {
+    const path = 'home.polygon-filter.filter.';
+    this.filterLang = {
+      title: this.translateService.instant(path + 'title'),
+      column: {
+        drivers: this.translateService.instant(path + 'column.drivers'),
+        polygons: this.translateService.instant(path + 'column.polygons'),
+        tags: this.translateService.instant(path + 'column.tags'),
+        empty: this.translateService.instant(path + 'column.empty')
+      },
+      date: this.translateService.instant(path + 'date'),
+      heatmap: {
+        title: this.translateService.instant(path + 'heatmap.title'),
+        yes: this.translateService.instant(path + 'heatmap.yes'),
+        no: this.translateService.instant(path + 'heatmap.no')
+      },
+      actions: {
+        clear: this.translateService.instant(path + 'actions.clear'),
+        cancel: this.translateService.instant(path + 'actions.cancel'),
+        apply: this.translateService.instant(path + 'actions.apply')
+      }
+    };
   }
 }
