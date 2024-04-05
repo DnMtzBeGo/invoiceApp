@@ -494,8 +494,12 @@ export class HomeComponent implements OnInit {
   circles: any = [];
 
   getCoordinates({ type, geometry, locations, members }: any) {
-    // this.inputDirections.ClearAutocompleteDropoff();
-    // this.inputDirections.ClearAutocompletePickup();
+    if (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input) {
+      this.showFleetMap = true;
+      this.inputDirections.ClearAutocompleteDropoff();
+      this.inputDirections.ClearAutocompletePickup();
+    }
+
     this.centerCoords = { type, geometry, locations, members };
     this.creatingForms = true;
     this.clearMap();
