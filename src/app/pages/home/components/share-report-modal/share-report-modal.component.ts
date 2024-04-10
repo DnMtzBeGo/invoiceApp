@@ -33,8 +33,7 @@ export class ShareReportModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: Data,
     public dialogRef: MatDialogRef<ShareReportModalComponent>,
     private apiRestService: AuthService,
-    private formBuilder: FormBuilder,
-    private translateService: TranslateService
+    private formBuilder: FormBuilder
   ) {
     this.shareForm = this.formBuilder.group({
       name: ['', Validators.required],

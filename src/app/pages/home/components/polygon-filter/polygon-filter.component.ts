@@ -4,29 +4,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ShareReportModalComponent } from '../share-report-modal/share-report-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 
-interface Option {
-  id: string;
-  name: string;
-  selected?: boolean;
-  avatar?: string;
-}
-
-interface Column {
-  loading: boolean;
-  scrolleable: boolean;
-  options: Option[];
-}
-
-interface ShareData {
-  drivers: string[];
-  polygons: string[];
-  tags: string[];
-  start_date?: string;
-  end_date?: string;
-  date?: string;
-  type?: string;
-}
-
 const LIMIT = 6;
 
 @Component({
@@ -57,7 +34,7 @@ export class PolygonFilter implements OnInit {
     scrolleable: true
   };
 
-  options: ShareData = {
+  options = {
     drivers: [],
     tags: [],
     polygons: [],
@@ -122,7 +99,6 @@ export class PolygonFilter implements OnInit {
         if (page === 1) {
           this.pages.drivers.total = pages;
           this.pages.drivers.actual = 1;
-          console.log('seteando drivers: ', pages, this.pages.drivers);
         }
 
         result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }));
@@ -150,7 +126,6 @@ export class PolygonFilter implements OnInit {
         if (page === 1) {
           this.pages.polygons.total = pages;
           this.pages.polygons.actual = 1;
-          console.log('seteando polygons: ', pages, this.pages.polygons);
         }
 
         this.polygons = {
@@ -173,12 +148,9 @@ export class PolygonFilter implements OnInit {
 
     (await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=${LIMIT}`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result: { result, pages } }) => {
-        // this.tags = { loading: false, options: result, scrolleable: false };
-
         if (page === 1) {
           this.pages.tags.total = pages;
           this.pages.tags.actual = 1;
-          console.log('seteando tags: ', pages, this.pages.tags);
         }
 
         this.tags = {
@@ -269,9 +241,16 @@ export class PolygonFilter implements OnInit {
   openShareModal() {
     if (!this.options.start_date) return;
 
+    const options = {
+      ...this.options,
+      drivers: this.options.drivers.map(({ _id }) => _id),
+      polygons: this.options.polygons.map(({ _id }) => _id),
+      tags: this.options.tags.map(({ _id }) => _id)
+    };
+
     const dialogRef = this.matDialog.open(ShareReportModalComponent, {
       data: {
-        options: this.options,
+        options,
         heatmap: this.heatmap
       },
       restoreFocus: false,
