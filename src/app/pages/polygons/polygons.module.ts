@@ -11,9 +11,10 @@ import {
   BegoModalModule
 } from '@begomx/ui-components';
 import { CreatePolygonComponent } from './components/create-polygon/create-polygon.component';
+import { DeletePolygonComponent } from './components/delete-polygon/delete-polygon.component';
 
 @NgModule({
-  declarations: [PolygonsComponent, CreatePolygonComponent],
+  declarations: [PolygonsComponent, CreatePolygonComponent, DeletePolygonComponent],
   imports: [
     CommonModule,
     PolygonsRoutingModule,

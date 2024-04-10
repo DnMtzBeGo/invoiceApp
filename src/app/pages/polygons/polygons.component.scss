@@ -183,6 +183,7 @@
   &.map-faded-out{
       opacity: 0;
       pointer-events: none;
+      left: -133px;
       // display: none;
   }
 
@@ -336,4 +337,8 @@
     text-align: center;
     width: 100%;
     padding: 0px 108px;
+}
+
+::ng-deep .mat-dialog-container {
+  background: transparent
 }

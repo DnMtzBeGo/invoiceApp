@@ -1638,7 +1638,7 @@
   "polygons": {
     "actions": {
       "rename": "Renombrar",
-      "edit ": "Actualizar puntos",
+      "edit": "Actualizar puntos",
       "delete": "Borrar"
     },
     "paginator": {

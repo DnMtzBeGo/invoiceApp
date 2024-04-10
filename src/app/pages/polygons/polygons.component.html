@@ -1,11 +1,6 @@
 <div style="position:relative;width: 100%;height: 100vh;">
   <div #map id="map" style="width: 100%; height: 100%; z-index: 1;"></div>
-  <app-breadcrumbs></app-breadcrumbs>
-  <bego-modal [ngClass]="[!showModal ? 'hide-modal' : '']" [backdrop]="backdrop" [icon]="icon" [enabledClose]="true" (clickOut)="clickOut()" (backEmitter)="back()" (closeEmitter)="actionss($event)">
-    <div class="content">
-      <app-create-polygon></app-create-polygon>
-    </div>
-  </bego-modal>
+  <!-- <app-breadcrumbs></app-breadcrumbs> -->
   <div class="polygons" [ngClass]="[!showFleetMap ? 'slide-out-left' : '']">
     <div class="page-header">
       <h1>Polygons</h1>
@@ -16,13 +11,16 @@
       [columns]="columns"
       [values]="polygons"
       [page]="page"
+      [actions]="actions"
       [filter]="true"
       [debounce]="1000"
       [selectRowCheck]="selectRow"
       (filterEmitter)="filterData($event)"
+      (selectedActionEmitter)="selectingAction($event)"
       (reloadTable)="handleReload($event)"
       (sortColumnEmitter)="sortingTable($event)"
-      (pageChangeEmitter)="changingPage($event)">
+      (pageChangeEmitter)="changingPage($event)"
+      (actionColumn)="selectColumn($event)">
       <div class="buttons-external">
         <button mat-flat-button class="brand-btn-2" (click)="openPolygonMap()">{{ 'polygons.buttons.create' | translate }}</button>
       </div>

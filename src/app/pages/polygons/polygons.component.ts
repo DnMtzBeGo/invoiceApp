@@ -2,7 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderService } from '../home/services/header.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { CreatePolygonComponent } from './components/create-polygon/create-polygon.component';
 // import { DatePipe } from '@angular/common';
 import * as L from 'leaflet';
 import 'leaflet-draw';
@@ -89,6 +91,7 @@ export class PolygonsComponent implements OnInit {
     private headerStyle: HeaderService,
     private webService: AuthService,
     private translateService: TranslateService,
+    private dialog: MatDialog,
     // private datePipe: DatePipe,
   ) {
     this.lang.selected = localStorage.getItem('lang') || 'en';
@@ -104,7 +107,7 @@ export class PolygonsComponent implements OnInit {
       {
         label: this.translate('edit', 'actions'),
         id: 'edit',
-        icon: 'edit'
+        icon: 'exchange'
       },
       {
         label: this.translate('delete', 'actions'),
@@ -189,10 +192,19 @@ export class PolygonsComponent implements OnInit {
     this.drawControl = new L.Control.Draw(options);
     this.map.addControl(this.drawControl);
 
+    this.map.on(L.Draw.Event.CREATED, (e) => {
+      var layer = e.layer;
+      this.drawnItems.addLayer(layer);
+    });
+
     // Maneja los eventos de dibujo
     this.map.on('draw:created', (event: any) => {
+      var data = this.drawnItems.toGeoJSON();
+      console.log(data)
       const layer = event.layer;
       this.drawnItems.addLayer(layer);
+      this.openModalCreation(data);
+
     });
   }
 
@@ -222,22 +234,20 @@ export class PolygonsComponent implements OnInit {
             }
           };
 
-          // const actions = {
-          //   enabled: false,
-          //   options: {
-          //     rename: !!payment.files?.pdf,
-          //     edit: !!payment.files?.xml,
-          //     delete: payment?.vouchers,
-          //   }
-          // };
+          const actions = {
+            enabled: true,
+            options: {
+              rename: true,
+              edit: true,
+              delete: true
+            }
+          };
 
-          // actions.enabled = Object.values(actions.options).includes(true);
+          actions.enabled = Object.values(actions.options).includes(true);
           console.log(polygons)
           return {
             ...polygons,
-            // actions,
-
-            // date_created: this.datePipe.transform(polygons.date_created, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
+            actions
           };
         });
         this.loadingData = false;
@@ -277,20 +287,6 @@ export class PolygonsComponent implements OnInit {
     }
   }
 
-  // selectingAction({ type, data }: any) {
-  //   switch (type) {
-  //     case 'view_pdf':
-  //       this.openFile(data, 'pdf');
-  //       break;
-  //     case 'view_xml':
-  //       this.openFile(data, 'xml');
-  //       break;
-  //     case 'view_vouchers':
-  //       this.openFilesViewModal(data, 'vouchers');
-  //       break;
-  //   }
-  // }
-
   filterData({ active, search, type }) {
     if (active) {
       this.searchQueries.match = JSON.stringify({ [type]: search });
@@ -302,6 +298,32 @@ export class PolygonsComponent implements OnInit {
 
   clickReload() {
     this.getPolygons();
+  }
+
+  selectColumn(event) {
+    if (event?.column?.id === 'rename') {
+      // this.openViewVouchersModal(allDocVocuchers);
+    }
+    if (event?.column?.id === 'edit') {
+      // this.openMessageModal(event?.element);
+    }
+    if (event?.column?.id === 'delete') {
+      // this.openMessageModal(event?.element);
+    }
+  }
+
+  selectingAction({ type, data }: any) {
+    switch (type) {
+      case 'rename':
+        this.openModalCreation(data);
+        break;
+      case 'edit':
+        // this.openFile(data, 'xml');
+        break;
+      case 'delete':
+        // this.openFilesViewModal(data, 'vouchers');
+        break;
+    }
   }
 
   setLang() {
@@ -333,18 +355,40 @@ export class PolygonsComponent implements OnInit {
     }
   }
 
-  clickOut() {
-    console.log('Clicked out');
+  private async createPolygons(name, geometry) {
+    geometry.features = geometry.features.slice(-1);
+
+    let createPolygonRequest = {
+      name,
+      geometry
+    };
+
+    (await this.webService.apiRestRocket(JSON.stringify(createPolygonRequest), 'polygons', { apiVersion: 'v1.1' })).subscribe(
+      (res) => {
+        this.drawnItems.clearLayers();
+        this.showFleetMap = true;
+        this.handleReload('reloadTable');
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
   }
 
-  back() {
-    console.log('back');
-  }
+  // MODALS
+  public openModalCreation(data): void {
+    const dialogRef = this.dialog.open(CreatePolygonComponent, {
+      data: data
+    });
 
-  actionss(e) {
-    if (e == 'cancel') {
-      this.showModal = false;
-    }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result['data'] != 'cancel') {
+        this.createPolygons(result['data'], data);
+      } else {
+        this.drawnItems.clearLayers();
+      }
+    });
   }
 
 }

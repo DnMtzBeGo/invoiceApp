@@ -1634,7 +1634,7 @@
   "polygons": {
     "actions": {
       "rename": "Rename",
-      "edit ": "Upgrade Geometry",
+      "edit": "Upgrade Geometry",
       "delete": "Delete"
     },
     "paginator": {

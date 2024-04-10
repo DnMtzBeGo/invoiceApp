@@ -169,5 +169,31 @@ export class AuthService {
       params
     });
   }
+
+  public async apiRestRocket(requestJson: string, method: string, options: any = {}): Promise<Observable<any>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
+      'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
+      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
+    });
+
+    const URL_BASE_ROCKET = environment.URL_BASE_ROCKET;
+    const params = await this.getOptions(options);
+    let splitUrl, url;
+
+    if (options && options['apiVersion']) {
+      splitUrl = URL_BASE_ROCKET.split('/');
+      splitUrl[splitUrl.length - 2] = options['apiVersion'];
+      url = splitUrl.join('/');
+    } else {
+      url = URL_BASE_ROCKET;
+    }
+    return this.http.post<any>(url + method, requestJson, {
+      headers,
+      params
+    });
+  }
 }
 
