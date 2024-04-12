@@ -31,6 +31,8 @@ import { HomeComponent } from "../../../pages/home/home.component";
 import { AlertService } from "src/app/shared/services/alert.service";
 import { PinComponent } from "src/app/shared/components/pin/pin.component";
 import * as moment from "moment";
+import { NotificationsService } from "../../services/notifications.service";
+import { SavedLocationsService } from "../../services/saved-locations.service";
 
 declare var google: any;
 
@@ -45,7 +47,6 @@ export class InputDirectionsComponent implements OnInit {
   @ViewChild("btnOrder", { static: false }) public btnOrder!: ElementRef;
 
   @Input("typeMap") public typeMap?: string;
-  @Input("savedPlaces") savedPlaces: Set<string> | null = new Set();
   @Input() drafts: Array<object> = [];
   @Input() haveFleetMembers: boolean = false;
   @Input() haveFleetMembersErrors: Array <string> = [];
@@ -134,12 +135,9 @@ export class InputDirectionsComponent implements OnInit {
   autocompleteItemsPickup: any[] = [];
   GoogleAutocomplete: any;
 
-  savedLocationsOthers: any = [];
-  activeInput: string = "";
+  activeInput: 'pickup' | 'dropoff' = 'pickup';
   activeHome: boolean = false;
   activeWork: boolean = false;
-  selectedPickup: boolean = false;
-  selectedDropoff: boolean = false;
   invalidAddressPickup: boolean = false;
   invalidAddressDropoff: boolean = false;
   userCanCreateOrders: boolean = false;
@@ -185,9 +183,11 @@ export class InputDirectionsComponent implements OnInit {
     private googlemaps: GoogleMapsService,
     private cdr: ChangeDetectorRef,
     private alertservice: AlertService,
+    private notificationService: NotificationsService,
     private translateService: TranslateService,
     @Inject(HomeComponent) public parent: HomeComponent,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    public savedLocations: SavedLocationsService,
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.subscription = this.googlemaps.previewMapStatus.subscribe((data) => {
@@ -205,13 +205,19 @@ export class InputDirectionsComponent implements OnInit {
   ngOnInit(): void {
     this.canCreateOrders();
 
+    this.orderTypeList[1].label = this.translateService.instant('fleet.prime.ocl');
+
     this.langListener = this.translateService.onLangChange.subscribe((lang) => {
       this.lang = lang.lang;
+
+      this.orderTypeList[1].label = this.translateService.instant('fleet.prime.ocl');
 
       if (this.walkingData) {
         this.walkingData.attributes.vehicle_number = this.translateService.instant('orders.prime.walking');
       }
     });
+
+    this.savedLocations.loadLocations();
   }
 
   ngOnDestroy(): void {
@@ -250,110 +256,102 @@ export class InputDirectionsComponent implements OnInit {
     }
   }
 
-  selectSearchResultPickup = async (item: any) => {
+  async selectSearchResultPickup(item: any) {
+    if (!item) return;
+
     if (this.parent.showOrderDetails) {
       this.showMapPreview = true;
       this.dropoffSelected = true;
     }
 
-    const placeId = item.place_id;
-    (
-      await this.auth.apiRest(
-        `{ "place_id" : "${placeId}" }`,
-        "orders/place_details"
-      )
-    ).subscribe(
-      async (res) => { 
-        this.pickupSelected = true;
-        this.autocompletePickup.input = res.result.address;
-        this.locations.pickup = res.result.address;
-        this.locations.pickupLat = res.result.location.lat;
-        this.locations.pickupLng = res.result.location.lng;
-        this.locations.pickupPostalCode = parseInt(res.result.zip_code);
-        this.autocompleteItemsPickup = [];
-        this.startMarker.position = new google.maps.LatLng(
-          this.locations.pickupLat,
-          this.locations.pickupLng
-        );
-        this.locations.place_id_pickup = placeId;
-        this.selectedPickup = true;
-        if (this.autocompleteDropoff.input !== "") {
-          this.googlemaps.updateDataLocations(this.locations);
-          this.updateLocations.emit(this.locations);
-          this.hideMap = false;
-        } else {
-          this.searchDropOff.nativeElement.focus();
-        }
+    const payload = {
+      place_id: item.place_id,
+    };
+
+    (await this.auth.apiRest(JSON.stringify(payload), 'orders/place_details')).subscribe({
+      next: ({ result }) => {
+        this.setAutoCompletePickup(item.place_id, result);
       },
-      async (res) => {
+      error: () => {
         this.ClearAutocompletePickup();
-        console.log("Fetch Error", res.error);
+        this.notificationService.showErrorToastr(this.translateService.instant('location.txt_invalidDriection'));
       }
-    );
+    });
   };
 
-  selectSearchResultDropoff = async (item: any) => {
+  async selectSearchResultDropoff(item: any) {
+    if (!item) return;
+
     if (this.parent.showOrderDetails) {
       this.showMapPreview = true;
       this.pickupSelected = true;
     }
-    const placeId = item.place_id;
-    (
-      await this.auth.apiRest(
-        `{ "place_id" : "${placeId}" }`,
-        "orders/place_details"
-      )
-    ).subscribe(
-      async (res) => {
-        this.dropoffSelected = true;
-        // console.log(res);
-        this.autocompleteDropoff.input = res.result.address;
-        this.locations.dropoff = res.result.address;
-        this.locations.dropoffLat = res.result.location.lat;
-        this.locations.dropoffLng = res.result.location.lng;
-        this.locations.dropoffPostalCode = parseInt(res.result.zip_code);
-        this.autocompleteItemsDropoff = [];
-        this.endMarker.position = new google.maps.LatLng(
-          this.locations.dropoffLat,
-          this.locations.dropoffLng
-        );
-        this.locations.place_id_dropoff = placeId;
-        this.selectedDropoff = true;
-        if (this.autocompletePickup.input !== "") {
-          this.googlemaps.updateDataLocations(this.locations);
-          this.updateLocations.emit(this.locations);
-          this.hideMap = false;
-        } else {
-          this.searchPickup.nativeElement.focus();
-        }
+
+    const payload = {
+      place_id: item.place_id,
+    };
+
+    (await this.auth.apiRest(JSON.stringify(payload), 'orders/place_details')).subscribe({
+      next: ({ result }) => {
+        this.setAutoCompleteDropoff(item.place_id, result);
       },
-      async (res) => {
+      error: () => {
         this.ClearAutocompleteDropoff();
-        console.log("Fetch Error", res.error);
+        this.notificationService.showErrorToastr(this.translateService.instant('location.txt_invalidDriection'));
       }
-      );
+    });
   };
 
-  selectFirstResult(event, selectFuncion, items) {
-    if (event.key != 'Enter' || !items?.[0]) return;
-    event.preventDefault();
-    selectFuncion.call(this, items[0]);
+  setAutoCompletePickup(placeId: string, data: any) {
+    this.pickupSelected = true;
+    this.autocompletePickup.input = data.address;
+    this.locations.pickup = data.address;
+    this.locations.pickupLat = data.location.lat;
+    this.locations.pickupLng = data.location.lng;
+    this.locations.pickupPostalCode = parseInt(data.zip_code);
+    this.autocompleteItemsPickup = [];
+    this.locations.place_id_pickup = placeId;
+
+    this.startMarker.position = new google.maps.LatLng(
+      this.locations.pickupLat,
+      this.locations.pickupLng
+    );
+
+    this.handleUpdateLocations();
   }
 
-  focusOutInputPickup() {
-    this.activeInput = "pickup";
-    if (this.locations.pickupPostalCode < 1) {
-      this.autocompletePickup.input = "";
-      this.invalidAddressPickup = false;
-    }
+  setAutoCompleteDropoff(placeId: string, data: any) {
+    this.dropoffSelected = true;
+    this.autocompleteDropoff.input = data.address;
+    this.locations.dropoff = data.address;
+    this.locations.dropoffLat = data.location.lat;
+    this.locations.dropoffLng = data.location.lng;
+    this.locations.dropoffPostalCode = parseInt(data.zip_code);
+    this.autocompleteItemsDropoff = [];
+    this.locations.place_id_dropoff = placeId;
+
+    this.endMarker.position = new google.maps.LatLng(
+      this.locations.dropoffLat,
+      this.locations.dropoffLng
+    );
+
+    this.handleUpdateLocations();
   }
 
-  focusOutInputDropoff() {
-    this.activeInput = "dropoff";
-    if (this.locations.dropoffPostalCode < 1) {
-      this.autocompleteDropoff.input = "";
-      this.invalidAddressDropoff = false;
+  handleUpdateLocations() {
+    if (this.autocompletePickup.input === '') {
+      this.searchPickup.nativeElement.focus();
+      return
     }
+
+    if (this.autocompleteDropoff.input === '') {
+      this.searchDropOff.nativeElement.focus();
+      return
+    }
+
+    this.googlemaps.updateDataLocations(this.locations);
+    this.updateLocations.emit(this.locations);
+    this.hideMap = false;
   }
 
   ClearAutocompleteDropoff() {
@@ -380,21 +378,10 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.pickupPostalCode = 0;
   }
 
-  closeAutoCompletePickup() {
-    this.autocompleteItemsPickup = [];
-    this.selectedPickup = false;
-    this.invalidAddressPickup = false;
-  }
-
-  closeAutoCompleteDropoff() {
-    this.autocompleteItemsDropoff = [];
-    this.selectedDropoff = false;
-    this.invalidAddressDropoff = false;
-  }
-
   UpdateSearchResultsDropoff(e: any) {
     this.showMapPreview = false;
     this.dropoffSelected = false;
+    this.savedLocations.show = false;
 
     this.autocompleteDropoff.input = e.target.value;
     if (this.autocompleteDropoff.input == "") {
@@ -426,6 +413,7 @@ export class InputDirectionsComponent implements OnInit {
   UpdateSearchResultsPickup(e: any) {
     this.showMapPreview = false;
     this.pickupSelected = false;
+    this.savedLocations.show = false;
 
     this.autocompletePickup.input = e.target.value;
     if (this.autocompletePickup.input === "") {
@@ -468,21 +456,6 @@ export class InputDirectionsComponent implements OnInit {
     this.canGoToSteps = false;
     this.changeLocations = false;
     this.hideType = "";
-  }
-
-  togglePlace(placeId: string, event: MouseEvent): void {
-    const isIconAddress = (event.target as HTMLElement)?.closest(
-      ".list-icon-address"
-    );
-
-    if (!isIconAddress) return;
-
-    event.stopPropagation();
-
-    this.inputPlaceEmmiter.emit([
-      !this.savedPlaces?.has(placeId) ? "add" : "delete",
-      placeId,
-    ]);
   }
 
   cancelChangeLocations() {
@@ -783,12 +756,13 @@ export class InputDirectionsComponent implements OnInit {
       data: geocodeRequest,
       restoreFocus: false,
       autoFocus: false,
+      panelClass: 'pin-modal-container',
       backdropClass: ["brand-dialog-map"],
     });
 
     dialogRef.afterClosed().subscribe((result?) => {
       if (result?.success === true) {
-        selectCallback({ place_id: result.data.place_id });
+        selectCallback.call(this, { place_id: result.data.place_id });
       }
     });
   }
@@ -806,5 +780,24 @@ export class InputDirectionsComponent implements OnInit {
   isMembersSelected(type: string = this.orderType): boolean {
     const requiredMembers = type === 'OCL' ? ['drivers', 'vehicle'] : ['drivers', 'trucks', 'trailers'];
     return requiredMembers.every((key) => Boolean(this.selectMembersToAssign[key]));
+  }
+
+  showFavoriteLocations() {
+    this.autocompleteItemsPickup = [];
+    this.invalidAddressPickup = false;
+    this.autocompleteItemsDropoff = [];
+    this.invalidAddressDropoff = false;
+
+    this.savedLocations.show = true;
+  }
+
+  pickSavedLocation(location: any) {
+    this.savedLocations.show = true;
+
+    if (this.activeInput === 'pickup') {
+      this.selectSearchResultPickup(location);
+    } else {
+      this.selectSearchResultDropoff(location);
+    }
   }
 }

@@ -28,11 +28,10 @@
             #pickup
             type="text"
             [(ngModel)]="autocompletePickup.input"
-            (keyup)="UpdateSearchResultsPickup($event)"
-            (keydown)="selectFirstResult($event, selectSearchResultPickup, autocompleteItemsPickup)"
+            (input)="UpdateSearchResultsPickup($event)"
+            (keydown.enter)="selectSearchResultPickup(autocompleteItemsPickup[0])"
             [placeholder]="'location.placeholder' | translate"
             (focusin)="activeInput = 'pickup'"
-            (focusout)="activeInput = ''"
           />
           <i
             class="icon icon-close"
@@ -49,11 +48,10 @@
             #dropoff
             type="text"
             [(ngModel)]="autocompleteDropoff.input"
-            (keyup)="UpdateSearchResultsDropoff($event)"
-            (keydown)="selectFirstResult($event, selectSearchResultDropoff, autocompleteItemsDropoff)"
+            (input)="UpdateSearchResultsDropoff($event)"
+            (keydown.enter)="selectSearchResultDropoff(autocompleteItemsDropoff[0])"
             [placeholder]="'location.placeholder' | translate"
             (focusin)="activeInput = 'dropoff'"
-            (focusout)="activeInput = ''"
           />
           <i
             class="icon icon-close"
@@ -69,41 +67,41 @@
         </div>
         <app-button class="btn-list" text="My Saved Locations"></app-button>
     </div> -->
-      <div
-        class="list-address-container"
-        [hidden]="
-          (autocompleteItemsDropoff.length == 0 ||
-            autocompleteItemsPickup.length !== 0) &&
-          activeInput != 'dropoff'
+      <button
+        class="item-favorites"
+        *ngIf="!savedLocations.show && (!pickupSelected || !dropoffSelected)"
+        (click)="showFavoriteLocations()">
+        <div class="icon"></div>
+        My saved locations
+      </button>
+
+      <button
+        *ngIf="!savedLocations.show"
+        class="item-pin"
+        (click)="setLocationPin(
+          selectSearchResultPickup,
+          locations.pickupLat &&
+            locations.pickupLng && {
+              lat: locations.pickupLat,
+              lng: locations.pickupLng
+            }
+          )
         "
       >
+        <div class="icon"></div>
+        {{ "location.label_pin" | translate }}
+      </button>
+
+      <div class="list-address-container">
         <div
-          class="item-pin"
-          (mousedown)="
-            setLocationPin(
-              selectSearchResultDropoff,
-              locations.dropoffLat &&
-                locations.dropoffLng && {
-                  lat: locations.dropoffLat,
-                  lng: locations.dropoffLng
-                }
-            )
-          "
+          *ngFor="let item of activeInput === 'pickup' ? autocompleteItemsPickup : autocompleteItemsDropoff"
+          (click)="activeInput === 'pickup' ? selectSearchResultPickup(item) : selectSearchResultDropoff(item)"
         >
           <div class="item-location">
-            <div class="list-icon-pin"></div>
-            <div class="list-map">{{ "location.label_pin" | translate }}</div>
-          </div>
-        </div>
-        <div
-          *ngFor="let item of autocompleteItemsDropoff"
-          (click)="selectSearchResultDropoff(item)"
-        >
-          <div class="item-location">
-            <div class="list-icon-address">
+            <div class="list-icon-address" (click)="!savedLocations.isSaved(item) && savedLocations.openModal(item)">
               <img
                 [src]="
-                  savedPlaces?.has(item.place_id)
+                  savedLocations.isSaved(item)
                     ? '/assets/images/maps/marker-fav-on.svg'
                     : '/assets/images/maps/marker-fav-off.svg'
                 "
@@ -117,58 +115,44 @@
           </div>
         </div>
       </div>
-      <div
-        class="list-address-container"
-        [hidden]="
-          (autocompleteItemsPickup.length == 0 ||
-            autocompleteItemsDropoff.length !== 0) &&
-          activeInput != 'pickup'
-        "
-      >
-        <div
-          detail="false"
-          class="item-pin"
-          (mousedown)="
-            setLocationPin(
-              selectSearchResultPickup,
-              locations.pickupLat &&
-                locations.pickupLng && {
-                  lat: locations.pickupLat,
-                  lng: locations.pickupLng
-                }
-            )
-          "
-        >
-          <div class="item-location">
-            <div class="list-icon-pin"></div>
-            <div class="list-map">{{ "location.label_pin" | translate }}</div>
-          </div>
+      <div class="favorites-menu" *ngIf="savedLocations.show && (!pickupSelected || !dropoffSelected)">
+        <div class="header">
+          <h3 class="title">My saved locations</h3>
+          <input
+            type="text"
+            [ngModel]="savedLocations.filterInput | async"
+            (ngModelChange)="savedLocations.filterInput.next($event)"
+            placeholder="Search location"
+          >
         </div>
-        <div
-          *ngFor="let item of autocompleteItemsPickup"
-          (click)="selectSearchResultPickup(item)"
-        >
-          <div class="item-location">
-            <div
-              class="list-icon-address"
-              (click)="togglePlace(item.place_id, $event)"
-            >
-              <img
-                [src]="
-                  savedPlaces?.has(item.place_id)
-                    ? '/assets/images/maps/marker-fav-on.svg'
-                    : '/assets/images/maps/marker-fav-off.svg'
-                "
-                alt="Location marker icon"
-              />
-            </div>
-            <div class="list-address">
-              <span>{{ item.description | splitGoogleAddress }},</span>
-              {{ item.description | splitGoogleAddressSecond }}
-            </div>
+
+        <div class="item" *ngFor="let location of savedLocations.locations; index as i" (click)="pickSavedLocation(location)">
+          <div class="icon"></div>
+
+          <div class="location">
+            <div class="alias">{{ location.name }}</div>
+            <div class="address">{{ location.address }}</div>
           </div>
+
+          <button class="action-btn" [matMenuTriggerFor]="menu" #menuTrigger (click)="$event.stopPropagation()">
+            <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
+          </button>
+
+          <mat-menu #menu="matMenu" class="brand-menu-1">
+            <button mat-menu-item class="menu-option" (click)="savedLocations.openModal(location)">
+              <bego-icon icon="begon-edit-fintech"></bego-icon>
+              <span>Edit location</span>
+            </button>
+            <button mat-menu-item class="menu-option" (click)="savedLocations.remove(location)">
+              <bego-icon icon="begon-trash1"></bego-icon>
+              <span>Delete location</span>
+            </button>
+          </mat-menu>
         </div>
+
+        <bego-button size="small" class="btn-back" [activated]="true" (click)="savedLocations.show = false">Back</bego-button>
       </div>
+
       <div class="list-address-container" *ngIf="invalidAddressPickup">
         <!-- <div detail='false' >
           <div class='item-location'>

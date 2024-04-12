@@ -1462,6 +1462,7 @@
       }
     },
     "prime": {
+      "ocl": "Otro",
       "txt_header": "Mis",
       "btn_add": "Agregar",
       "txt_search": "Buscar vehículo...",

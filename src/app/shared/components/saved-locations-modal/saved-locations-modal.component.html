@@ -1,0 +1,26 @@
+<bego-modal
+  image="chibi-bego"
+  class="save-location-modal"
+  [enabledCancel]="!saved"
+  [lang]="saved ? { done: 'Awesome' } : { done: 'Confirm', cancel: 'Cancel' }"
+  (closeEmitter)="close($event)">
+  <div class="container">
+    <ng-container *ngIf="!saved; else savedModal">
+      <h3>Address Name</h3>
+      <div class="field">
+        <label class="input-box">
+          <input autofocus type="text" placeholder="Type your address name" [(ngModel)]="name" />
+        </label>
+
+        <span class="error" *ngIf="error">
+          {{ error[lang] || error }}
+        </span>
+      </div>
+    </ng-container>
+
+    <ng-template #savedModal>
+      <h3>Awesome!</h3>
+      <p>Your location has been saved and has been added to your favorite locations</p>
+    </ng-template>
+  </div>
+</bego-modal>

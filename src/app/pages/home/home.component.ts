@@ -48,8 +48,6 @@ export class HomeComponent implements OnInit {
   public haveNotFleetMembers: boolean = false;
   public haveFleetMembersErrors: Array<string> = [];
 
-  public savedPlaces$;
-
   // members map logic
   geocoder = new google.maps.Geocoder();
   mapEmitter = new Subject<['startReload' | 'center' | 'hideFleetMap']>();

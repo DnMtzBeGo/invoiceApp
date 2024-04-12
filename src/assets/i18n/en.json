@@ -1459,6 +1459,7 @@
       }
     },
     "prime": {
+      "ocl": "Other",
       "txt_header": "My",
       "btn_add": "Add new",
       "txt_search": "Search vehicle...",
@@ -1555,7 +1556,7 @@
   },
   "pin": {
     "title": "Confirm your address",
-    "btn": "Set Destination",
+    "btn": "Confirm",
     "placeholder": "Destination, Destination",
     "address": {
       "title": "Edit Address",

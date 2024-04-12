@@ -38,10 +38,6 @@
 // copied from _home.scss
 ::ng-deep {
     .map {
-      &.map-container {
-        position: relative;
-      }
-
       .customMarker {
         position: absolute;
         cursor: pointer;

@@ -39,7 +39,6 @@
         (updateDatepickup)="updateDatepickup($event)"
         (updateDropOffDate)="updateDropOffDate($event)"
         [typeMap]="typeMap"
-        [savedPlaces]="savedPlaces$ | async"
         (inputPlace)="placesService.emitter.next($event)"
         (sendUserWantCP)="getUserWantCP($event)"
         [drafts]="draftData"
