@@ -1,4 +1,4 @@
-<section class="menu" [ngClass]="{ open: menuIsOpen }">
+<section class="menu" [ngClass]="{ open: menuIsOpen }" *ngIf="primeService.loaded.isStopped">
   <div class="menu-options">
     <div class="logo-container">
       <div>
@@ -61,7 +61,7 @@
       {{ 'menu.invoice' | translate }}
     </div>
 
-    <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/tags') }" (click)="goTo('tags')">
+    <div class="menu-option" *ngIf="primeService.isPrime" [ngClass]="{ selected: router.url.startsWith('/tags') }" (click)="goTo('tags')">
       <bego-icon icon="begon-tag ui-icon"></bego-icon>
       {{ 'menu.tags' | translate }}
     </div>

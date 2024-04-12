@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { environment } from "src/environments/environment";
+import { PrimeService } from "../../services/prime.service";
 
 @Component({
   selector: "bego-menu",
@@ -13,7 +14,7 @@ export class MenuComponent implements OnInit {
 
   menuIsOpen: boolean = false;
 
-  constructor(public router: Router) {}
+  constructor(public router: Router, public primeService: PrimeService) {}
 
   ngOnInit(): void {}
 

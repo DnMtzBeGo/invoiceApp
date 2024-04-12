@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
+import { PrimeService } from 'src/app/shared/services/prime.service';
 
 @Component({
   selector: 'app-tags',
@@ -30,7 +31,8 @@ export class TagsComponent implements OnInit {
     private readonly apiService: AuthService,
     private readonly translateService: TranslateService,
     private readonly datePipe: DatePipe,
-    private readonly matDialog: MatDialog
+    private readonly matDialog: MatDialog,
+    public readonly primeService: PrimeService
   ) {
     this.loadingTableData = true;
 
@@ -43,7 +45,19 @@ export class TagsComponent implements OnInit {
     .fetchTags();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.primeService.loaded.isStopped) {
+      this.handleMustRedirect();
+    } else {
+      this.primeService.loaded.subscribe(() => this.handleMustRedirect())
+    }
+  }
+
+  handleMustRedirect() {
+    if (!this.primeService.isPrime) {
+      this.router.navigate(['/home']);
+    }
+  }
 
   setLang(): TagsComponent {
     this.lang = {
