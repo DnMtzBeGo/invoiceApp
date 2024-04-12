@@ -1,15 +1,29 @@
-<bego-modal [ngClass]="[!showModal ? 'hide-modal' : '']" [backdrop]="backdrop" [icon]="icon" [lang]="langmodal" [activatedDone]="activatedDone" [enabledClose]="true" (closeEmitter)="actions($event)">
+<bego-modal
+  [ngClass]="[!showModal ? 'hide-modal' : '']"
+  [backdrop]="backdrop"
+  [icon]="icon"
+  [lang]="langmodal"
+  [activatedDone]="activatedDone"
+  [enabledClose]="true"
+  (closeEmitter)="actions($event)">
   <div class="content">
     <h2 *ngIf="!showSuccess">{{ 'polygons.create-polygon.title' | translate }}</h2>
     <h2 *ngIf="showSuccess">Polygon created correctly</h2>
-    <div class="input-content" *ngIf="!showSuccess">
+    <div class="input-content" *ngIf="!showSuccess" [formGroup]="polygonForm">
+      <input
+        type="text"
+        class="input-bego"
+        [placeholder]="'polygons.create-polygon.input-placeholder' | translate"
+        formControlName="name" />
+    </div>
+    <!-- <div class="input-content" *ngIf="!showSuccess">
       <input
       type="text" class="input-bego"
       [placeholder]="'polygons.create-polygon.input-placeholder' | translate"
       (change)="getNameFromInput($event)"
       [value]="polygonName"
       >
-    </div>
+    </div> -->
     <p *ngIf="showSuccess">Your Polygon has been created correctly on the map and has been added to filters.</p>
   </div>
 </bego-modal>

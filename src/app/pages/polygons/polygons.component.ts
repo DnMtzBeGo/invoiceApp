@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { HeaderService } from '../home/services/header.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -20,7 +19,6 @@ interface Action {
   templateUrl: './polygons.component.html',
   styleUrls: ['./polygons.component.scss']
 })
-
 export class PolygonsComponent implements OnInit {
   private map: any;
   private drawnItems: any;
@@ -39,7 +37,7 @@ export class PolygonsComponent implements OnInit {
   simple = {
     title: 'Polygon created correctly',
     subtitle: 'Your Polygon has been created correctly on the map and has been added to filters.'
-  }
+  };
 
   //////// Variables fot Bego Table
 
@@ -60,11 +58,11 @@ export class PolygonsComponent implements OnInit {
 
   public columns: any[] = [
     { id: 'name', label: '', filter: 'input' },
-    { id: 'date_created', label: '' },
+    { id: 'date_created', label: '' }
   ];
 
   public actions: Action[];
-  
+
   public page = { size: 0, index: 0, total: 0 };
 
   public searchQueries = {
@@ -73,7 +71,7 @@ export class PolygonsComponent implements OnInit {
     // sort: JSON.stringify({ date_created: -1 }),
     match: ''
   };
-  
+
   public selectRow: any = {
     showColumnSelection: false,
     selectionLimit: 0,
@@ -86,13 +84,11 @@ export class PolygonsComponent implements OnInit {
 
   //////// Variables fot Bego Table
 
-
   constructor(
     private headerStyle: HeaderService,
     private webService: AuthService,
     private translateService: TranslateService,
-    private dialog: MatDialog,
-    // private datePipe: DatePipe,
+    private dialog: MatDialog // private datePipe: DatePipe,
   ) {
     this.lang.selected = localStorage.getItem('lang') || 'en';
     this.headerStyle.changeHeader(this.headerTransparent);
@@ -117,10 +113,9 @@ export class PolygonsComponent implements OnInit {
     ];
 
     this.setLang();
+  }
 
-   }
-
-   async ngOnInit() {
+  async ngOnInit() {
     this.translateService.onLangChange.subscribe(async ({ lang }) => {
       this.lang.selected = lang;
       this.setLang();
@@ -143,7 +138,7 @@ export class PolygonsComponent implements OnInit {
     var center = [19.566321, -99.211206];
 
     // Create the map
-    this.map = L.map('map', { 
+    this.map = L.map('map', {
       zoomControl: true,
       maxZoom: 21,
       attributionControl: false
@@ -153,10 +148,10 @@ export class PolygonsComponent implements OnInit {
     this.map.zoomControl.remove();
 
     L.control
-    .zoom({
-      position: 'bottomleft'
-    })
-    .addTo(this.map);
+      .zoom({
+        position: 'bottomleft'
+      })
+      .addTo(this.map);
 
     // Añade la capa base (puedes cambiar el proveedor de mapa según necesites)
     L.tileLayer('http://{s}.google.com/vt/lyrt=t,h&x={x}&y={y}&z={z}', {
@@ -200,11 +195,10 @@ export class PolygonsComponent implements OnInit {
     // Maneja los eventos de dibujo
     this.map.on('draw:created', (event: any) => {
       var data = this.drawnItems.toGeoJSON();
-      console.log(data)
+      console.log(data);
       const layer = event.layer;
       this.drawnItems.addLayer(layer);
       this.openModalCreation(data);
-
     });
   }
 
@@ -223,7 +217,7 @@ export class PolygonsComponent implements OnInit {
 
     (await this.webService.apiRestGetRocket(`polygons/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
       next: ({ result: { result, total } }) => {
-        console.log(result)
+        console.log(result);
         this.page.total = total;
         this.polygons = result.map((polygons) => {
           let due_date: any = {
@@ -244,7 +238,7 @@ export class PolygonsComponent implements OnInit {
           };
 
           actions.enabled = Object.values(actions.options).includes(true);
-          console.log(polygons)
+          console.log(polygons);
           return {
             ...polygons,
             actions
@@ -373,16 +367,18 @@ export class PolygonsComponent implements OnInit {
         console.log(error);
       }
     );
-
   }
 
   // MODALS
   public openModalCreation(data): void {
+    // console.log('rename: ', data);
+    // return;
     const dialogRef = this.dialog.open(CreatePolygonComponent, {
       data: data
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log('close dialog: ', result);
       if (result && result['data'] != 'cancel') {
         this.createPolygons(result['data'], data);
       } else {
@@ -390,5 +386,4 @@ export class PolygonsComponent implements OnInit {
       }
     });
   }
-
 }

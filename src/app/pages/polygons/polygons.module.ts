@@ -4,14 +4,10 @@ import { PolygonsComponent } from './polygons.component';
 import { PolygonsRoutingModule } from './polygons-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { BreadcrumbsModule } from 'src/app/shared/components/breadcrumbs/breadcrumbs.module';
-import {
-  BegoAlertModule,
-  BegoIconsModule,
-  BegoTableMultipleSelectionModule,
-  BegoModalModule
-} from '@begomx/ui-components';
+import { BegoAlertModule, BegoIconsModule, BegoTableMultipleSelectionModule, BegoModalModule } from '@begomx/ui-components';
 import { CreatePolygonComponent } from './components/create-polygon/create-polygon.component';
 import { DeletePolygonComponent } from './components/delete-polygon/delete-polygon.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [PolygonsComponent, CreatePolygonComponent, DeletePolygonComponent],
@@ -23,7 +19,8 @@ import { DeletePolygonComponent } from './components/delete-polygon/delete-polyg
     TranslateModule,
     BegoTableMultipleSelectionModule,
     BreadcrumbsModule,
-    BegoModalModule
+    BegoModalModule,
+    ReactiveFormsModule
   ]
 })
-export class PolygonsModule { }
+export class PolygonsModule {}
