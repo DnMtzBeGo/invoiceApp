@@ -1680,5 +1680,21 @@
   "filter": {
     "input": "Search...",
     "selector": "Search..."
+  },
+  "saved-locations": {
+    "my-locations": "My saved locations",
+    "search": "Search location",
+    "opt-edit": "Edit location",
+    "opt-delete": "Delete location",
+    "btn-back": "Back",
+    "modal": {
+      "title-form": "Address Name",
+      "title-complete": "Awesome!",
+      "placeholder": "Type your address name",
+      "complete-msg": "Your location has been saved and has been added to your favorite locations",
+      "btn-done": "Awesome",
+      "btn-confirm": "Confirm",
+      "btn-cancel": "Cancel"
+    }
   }
 }

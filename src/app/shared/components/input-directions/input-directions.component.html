@@ -72,7 +72,7 @@
         *ngIf="!savedLocations.show && (!pickupSelected || !dropoffSelected)"
         (click)="showFavoriteLocations()">
         <div class="icon"></div>
-        My saved locations
+        {{ 'saved-locations.my-locations' | translate }}
       </button>
 
       <button
@@ -117,12 +117,12 @@
       </div>
       <div class="favorites-menu" *ngIf="savedLocations.show && (!pickupSelected || !dropoffSelected)">
         <div class="header">
-          <h3 class="title">My saved locations</h3>
+          <h3 class="title">{{ 'saved-locations.my-locations' | translate }}</h3>
           <input
             type="text"
+            [placeholder]="'saved-locations.search' | translate"
             [ngModel]="savedLocations.filterInput | async"
             (ngModelChange)="savedLocations.filterInput.next($event)"
-            placeholder="Search location"
           >
         </div>
 
@@ -141,16 +141,18 @@
           <mat-menu #menu="matMenu" class="brand-menu-1">
             <button mat-menu-item class="menu-option" (click)="savedLocations.openModal(location)">
               <bego-icon icon="begon-edit-fintech"></bego-icon>
-              <span>Edit location</span>
+              <span>{{ 'saved-locations.opt-edit' | translate }}</span>
             </button>
             <button mat-menu-item class="menu-option" (click)="savedLocations.remove(location)">
               <bego-icon icon="begon-trash1"></bego-icon>
-              <span>Delete location</span>
+              <span>{{ 'saved-locations.opt-delete' | translate }}</span>
             </button>
           </mat-menu>
         </div>
 
-        <bego-button size="small" class="btn-back" [activated]="true" (click)="savedLocations.show = false">Back</bego-button>
+        <bego-button size="small" class="btn-back" [activated]="true" (click)="savedLocations.show = false">
+          {{'saved-locations.btn-back' | translate}}
+        </bego-button>
       </div>
 
       <div class="list-address-container" *ngIf="invalidAddressPickup">

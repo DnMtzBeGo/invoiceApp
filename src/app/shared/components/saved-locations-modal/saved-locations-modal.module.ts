@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SavedLocationsModalComponent } from './saved-locations-modal.component';
 import { BegoModalModule } from '@begomx/ui-components';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -12,6 +13,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     BegoModalModule,
     FormsModule,
+    TranslateModule
   ]
 })
 export class SavedLocationsModalModule { }

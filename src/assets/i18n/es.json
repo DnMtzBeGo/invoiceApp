@@ -1683,5 +1683,21 @@
   "filter": {
     "input": "Buscar...",
     "selector": "Buscar..."
+  },
+  "saved-locations": {
+    "my-locations": "Mis ubicaciones guardadas",
+    "search": "Buscar ubicación",
+    "opt-edit": "Editar ubicación",
+    "opt-delete": "Eliminar ubicación",
+    "btn-back": "Regresar",
+    "modal": {
+      "title-form": "Nombre de la dirección",
+      "title-complete": "Guardado!",
+      "placeholder": "Escriba el nombre de su dirección",
+      "complete-msg": "Su ubicación ha sido guardada y agregada a sus ubicaciones favoritas.",
+      "btn-done": "Asombroso",
+      "btn-confirm": "Guardar",
+      "btn-cancel": "Cancelar"
+    }
   }
 }
