@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit {
     this.headerStyle.changeHeader(this.headerTransparent);
     this.subs.add(
       this.router.events.subscribe((res) => {
-        if (res instanceof NavigationEnd && res.url === '/home') {
+        if (res instanceof NavigationEnd && res.url.startsWith('/home')) {
           let data = this.router.getCurrentNavigation()?.extras.state;
           if (data && data.hasOwnProperty('draft')) {
             this.draftData = data.draft;
