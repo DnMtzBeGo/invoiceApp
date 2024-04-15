@@ -376,7 +376,7 @@ export class TagsComponent implements OnInit {
     try {
       const updatedTag = { name: editedTagName };
 
-      (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
+      (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/rename/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
         next: (data) => {
           if (data.result?._id) this.openDialog(this.translate('created', 'tags'));
         },
