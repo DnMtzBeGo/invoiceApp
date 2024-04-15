@@ -49,15 +49,21 @@
         [haveFleetMembers]="haveNotFleetMembers"
         [haveFleetMembersErrors]="haveFleetMembersErrors">
       </app-input-directions>
-
       <button
         id="reset"
         *ngIf="!showOrderDetails"
         (click)="creatingForms ? getCoordinates(centerCoords) : mapEmitter.next(['center'])"
-        [ngClass]="{
-          'reset-up': userRole && showFleetMap && !showOrderDetails
-        }">
+        [ngClass]="{ 'reset-up': userRole && showFleetMap && !showOrderDetails }"
+        [@slideInFromBottom]
+      >
         <i class="icon icon-gps"></i>
+      </button>
+
+      <button
+          class="btn-traffic"
+          (click)="toggleTraffic()"
+          [@slideInFromBottom]>
+          <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg"/>
       </button>
 
       <div class="back" [ngStyle]="{ display: creatingForms ? 'flex' : 'none' }">

@@ -13,6 +13,8 @@ import { OrderPreview } from '../orders/orders.component';
 import { Location } from '@angular/common';
 import { PolygonFilter } from './components/polygon-filter/polygon-filter.component';
 import { InputDirectionsComponent } from 'src/app/shared/components/input-directions/input-directions.component';
+import { trigger, style, animate, transition } from '@angular/animations';
+
 
 declare var google: any;
 // 10 seconds for refreshing map markers
@@ -24,11 +26,20 @@ const minRadius = 500;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  animations: [
+    trigger('slideInFromBottom', [
+      transition('void => *', [
+        style({ transform: 'translateY(100%)' }),
+        animate('500ms ease-out')
+      ])
+    ])
+  ]
 })
 export class HomeComponent implements OnInit {
   @ViewChild(PolygonFilter) polygonFilter: PolygonFilter;
   @ViewChild(InputDirectionsComponent) inputDirections: InputDirectionsComponent;
+  mostrarBoton = false;
   @Input() locations: GoogleLocation = {
     pickup: '',
     dropoff: '',
@@ -139,6 +150,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    setTimeout(() => {
+      this.mostrarBoton = true;
+    }, 8000);
     // this.showNewOrderCard();
 
     // Set the name of the hidden property and the change event for visibility
@@ -653,5 +668,36 @@ export class HomeComponent implements OnInit {
   calculateCircleRadius(zoomLevel: number): number {
     let radius = baseRadius - zoomFactor * zoomLevel;
     return Math.max(radius, minRadius);
+  }
+
+  trafficLayer: google.maps.TrafficLayer;
+  isTrafficActive: boolean = false;
+
+  toggleTraffic() {
+    this.isTrafficActive = !this.isTrafficActive;
+
+    const btnTraffic = document.querySelector('.btn-traffic');
+
+    if (this.isTrafficActive) {
+      btnTraffic.classList.add('active');
+    } else {
+      btnTraffic.classList.remove('active');
+    }
+  
+    const map = this.map;
+  
+    if (this.isTrafficActive) {
+      if (map) {
+        const trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
+      
+        this.trafficLayer = trafficLayer;
+      }
+    } else {
+      if (this.trafficLayer) {
+        this.trafficLayer.setMap(null);
+        this.trafficLayer = null;
+      }
+    }
   }
 }
