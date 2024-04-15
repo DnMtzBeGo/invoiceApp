@@ -60,6 +60,7 @@
       </button>
 
       <button
+          *ngIf="!showOrderDetails"
           class="btn-traffic"
           (click)="toggleTraffic()"
           [@slideInFromBottom]>

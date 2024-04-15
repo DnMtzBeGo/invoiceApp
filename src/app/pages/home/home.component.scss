@@ -2,7 +2,6 @@
 
 .new-order-wrapper {
   display: flex;
-  pointer-events: none;
   justify-content: center;
   gap: 60px;
 
@@ -233,7 +232,6 @@ bego-modal {
 }
 
 .btn-traffic {
-  z-index: 999;
   position: absolute;
   color: #ededed;
   bottom: 60px;
