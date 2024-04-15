@@ -1504,6 +1504,46 @@
       "not-available-drivers": "Este operador no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad.",
       "not-available-trucks": "Este camión no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad.",
       "not-available-trailers": "Esta caja no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad."
+    },
+    "polygon-filter": {
+      "btn-filter": "Filter",
+      "btn-share": "Share",
+      "btn-active-24": "Active drivers the last 24 hours",
+      "filter": {
+        "title": "Filters",
+        "column": {
+          "drivers": "Drivers",
+          "polygons": "Polygon",
+          "tags": "Tags",
+          "empty": ""
+        },
+        "date": "Date",
+        "heatmap": {
+          "title": "Do yo want Heatmap?",
+          "yes": "YES",
+          "no": "NO"
+        },
+        "actions": {
+          "clear": "Clear",
+          "cancel": "Cancel",
+          "apply": "Apply"
+        }
+      },
+      "share": {
+        "sended": {
+          "title": "Email Sent!",
+          "subtitle": "Your email was sent successfully, check your inbox to view the content.",
+          "done": "Awesome"
+        },
+        "form": {
+          "title": "Personal report",
+          "subtitle": "Enter the email you want to send an updated report",
+          "name": "Full Name*",
+          "email": "Email*",
+          "placeholder": "Type full name",
+          "send": "Send"
+        }
+      }
     }
   },
   "small-display-modal": {
