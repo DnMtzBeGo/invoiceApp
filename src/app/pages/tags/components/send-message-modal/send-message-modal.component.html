@@ -1,0 +1,57 @@
+<div [ngClass]="'send-message-dialog'">
+  <div class="flex top">
+    <h2>
+      {{ 'tags.send_message.dialog_title' | translate }}
+      <p>
+        tag: <span>{{ data.tag_name }}</span>
+      </p>
+    </h2>
+
+    <div class="close-btn">
+      <mat-icon (click)="close()">close</mat-icon>
+    </div>
+  </div>
+  <form class="form" (ngSubmit)="send()" novalidate [formGroup]="sendMessageForm">
+    <div class="content">
+      <div class="flex">
+        <label>{{ 'tags.send_message.title' | translate }}</label>
+
+        <mat-form-field class="w-full">
+          <input #firstInput matInput formControlName="title" id="title" />
+          <mat-error *ngIf="getError('title', 'required')">{{ 'tags.send_message.validation.title_required' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="flex">
+        <div>
+          <label class="message-label">{{ 'tags.send_message.message' | translate }}</label>
+        </div>
+
+        <mat-form-field class="w-full">
+          <textarea rows="8" matInput formControlName="message" id="message"></textarea>
+          <mat-error *ngIf="getError('message', 'required')">{{ 'tags.send_message.validation.message_required' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="flex">
+        <div class="w-full">
+          <label class="type-label">{{ 'tags.send_message.choose_type' | translate }}</label>
+        </div>
+        <div class="checkbox-group" [formGroup]="typeForm">
+          <mat-checkbox formControlName="sms">{{ 'tags.send_message.sms' | translate }}</mat-checkbox>
+          <mat-checkbox formControlName="push">{{ 'tags.send_message.push' | translate }}</mat-checkbox>
+        </div>
+        <mat-error *ngIf="getTypeCheckboxError()">
+          {{ 'tags.send_message.validation.type_required' | translate }}
+        </mat-error>
+      </div>
+    </div>
+
+    <div class="w-full bottom">
+      <button [disabled]="sendButtonDisabled" mat-flat-button class="brand-btn-2">
+        <bego-icon icon="begon-send"></bego-icon>
+        {{ 'tags.send_message.send' | translate }}
+      </button>
+    </div>
+  </form>
+</div>

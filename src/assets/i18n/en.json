@@ -1667,6 +1667,89 @@
     "prevPage": "Prev",
     "itemsPerPage": "Items per page"
   },
+  "tags": {
+    "created": "The tag has been created successfully",
+    "updated": "The tag has been updated successfully",
+    "confirm_dialog": {
+      "done": "Ok"
+    },
+    "confirm_delete_question": "Do you really want to remove the tag ",
+    "delete_dialog": {
+      "done": "Si, eliminar",
+      "cancel": "Cancelar",
+      "title": "Delete tag"
+    },
+    "send_message": {
+      "sent_message_title": "Messages",
+      "sent_message": "The message has been sent successfully!",
+      "dialog_title": "Send Message",
+      "message": "Content",
+      "title": "Title",
+      "choose_type": "Please choose message type",
+      "sms": "SMS Message",
+      "push": "Push notification",
+      "send": "Send message",
+      "validation": {
+        "title_required": "Message title is required",
+        "message_required": "Please add the message contents",
+        "type_required": "Please choose the message type"
+      }
+    },
+    "form": {
+      "title": "Create Tag",
+      "edit_title": "Edit Tag",
+      "add_drivers_title": "Add drivers",
+      "edit_drivers_title": "Edit drivers",
+      "tag_name": "Tag name:",
+      "tag_name_placeholder": "Type tag name",
+      "tag_edit_placeholder": "Type new tag name"
+    },
+    "validation": {
+      "carriers_required": "Choose almost one driver",
+      "name_required": "Tag name is required"
+    },
+    "buttons": {
+      "create": "Add tag",
+      "save": "Save",
+      "finish": "Finish"
+    },
+    "table": {
+      "title": "Tags",
+      "columns": {
+        "_id": "",
+        "name": "Name",
+        "number_of_drivers": "Number of drivers",
+        "date_created": "Created",
+        "last_update": "Modified"
+      }
+    },
+    "drivers_table": {
+      "title": "Select the drivers that you want to tag",
+      "columns": {
+        "_id": "",
+        "nickname": "Name",
+        "email": "E-mail",
+        "telephone": "Phone number",
+        "verified": "Verified",
+        "thumbnail": " "
+      }
+    },
+    "filter": {
+      "input": "Search...",
+      "selector": "Search..."
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "send_message": "Send message"
+    },
+    "edited-modal": {
+      "done": "Done",
+      "cancel": "Cancel",
+      "title": "Success!",
+      "failed": "There was an error, try again later"
+    }
+  },
   "filter": {
     "input": "Search...",
     "selector": "Search..."

@@ -118,24 +118,45 @@ export class AuthService {
     });
   }
 
-  public async apiRestPut(requestJson: string, method: string, options: {[key: string]: any} = {}): Promise<Observable<any>> {
+  public async apiRestPut(requestJson: string, method: string, options: { [key: string]: any } = {}): Promise<Observable<any>> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Acceontrol-Allow-Headers': 'Content-Type, Accept',
       'Access-Css-Control-Allow-Methods': 'PUT',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    })
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
     const params = await this.getOptions(options);
 
     let url: string;
-    if(options && options["apiVersion"]) {
-      const splitUrl = environment.URL_BASE.split("/");
-      splitUrl[splitUrl.length - 2] = options["apiVersion"];
-      url = splitUrl.join("/");
+    if (options && options['apiVersion']) {
+      const splitUrl = environment.URL_BASE.split('/');
+      splitUrl[splitUrl.length - 2] = options['apiVersion'];
+      url = splitUrl.join('/');
     } else {
       url = environment.URL_BASE;
     }
     return this.http.put<any>(url + method, requestJson, { headers, params });
+  }
+
+  public async apiRestDelete(method: string, options: { [key: string]: any } = {}): Promise<Observable<any>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
+      'Access-Css-Control-Allow-Methods': 'PUT',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+    const params = await this.getOptions(options);
+
+    let url: string;
+    if (options && options['apiVersion']) {
+      const splitUrl = environment.URL_BASE.split('/');
+      splitUrl[splitUrl.length - 2] = options['apiVersion'];
+      url = splitUrl.join('/');
+    } else {
+      url = environment.URL_BASE;
+    }
+    return this.http.delete<any>(url + method, { headers, params });
   }
 }
