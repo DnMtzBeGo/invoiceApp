@@ -120,6 +120,7 @@
       position: absolute;
       right: calc(100% + 10px);
       border: none;
+      bottom: 0;
       cursor: pointer;
       transition: all 0.5s ease-in-out;
       pointer-events: all;
@@ -233,10 +234,10 @@ bego-modal {
 
 .btn-traffic {
   z-index: 999;
-  position: fixed;
+  position: absolute;
   color: #ededed;
-  bottom: 100px;
-  left: calc(100% - 471px);
+  bottom: 60px;
+  right: calc(100% + 10px);
   cursor: pointer;
   border: none;
   border-radius: 30px;

@@ -59,19 +59,18 @@
         <i class="icon icon-gps"></i>
       </button>
 
+      <button
+          class="btn-traffic"
+          (click)="toggleTraffic()"
+          [@slideInFromBottom]>
+          <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg"/>
+      </button>
+
       <div class="back" [ngStyle]="{ display: creatingForms ? 'flex' : 'none' }">
         <div class="invisible" (click)="openOrderMenu = !openOrderMenu"></div>
       </div>
     </div>
   </div>
-
-  <button 
-      class="btn-traffic"
-      (click)="toggleTraffic()"
-      [@slideInFromBottom]>
-      <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg"/>    
-  </button> 
-   
 </div>
 
 <bego-modal
