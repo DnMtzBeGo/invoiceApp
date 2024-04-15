@@ -723,6 +723,7 @@
     "invoice": "Facturas",
     "support": "Soporte",
     "faq": "FAQs",
+    "tags": "Tags",
     "terms-conditions": "T & C",
     "log-out": "Salir"
   },
@@ -1712,6 +1713,89 @@
       "not-meessage": "La conversación aún no ha comenzado.",
       "btn-save": "Enviar",
       "placeholder-message": "Escribe tu mensaje"
+    }
+  },
+  "tags": {
+    "created": "Se creó el tag correctamente",
+    "updated": "Se actualizó el tag correctamente",
+    "confirm_dialog": {
+      "done": "Ok"
+    },
+    "delete_dialog": {
+      "title": "Eliminar tag",
+      "done": "Si, eliminar",
+      "cancel": "Cancelar"
+    },
+    "confirm_delete_question": "¿Quiere eliminar el tag ",
+    "send_message": {
+      "sent_message_title": "Mensajes",
+      "sent_message": "El mensaje ha sido enviado correctamente!",
+      "dialog_title": "Enviar mensaje",
+      "message": "Contenido del mensaje",
+      "title": "Título del mensaje",
+      "choose_type": "Elija el tipo de mensaje",
+      "sms": "Mensaje SMS",
+      "push": "Notificación push",
+      "send": "Enviar mensaje",
+      "validation": {
+        "title_required": "El título del mensaje es obligatorio",
+        "message_required": "Debe incluir un mensaje",
+        "type_required": "Por favor elija el tipo de mensaje"
+      }
+    },
+    "form": {
+      "title": "Crear Tag",
+      "edit_title": "Editar Tag",
+      "add_drivers_title": "Agregar conductores",
+      "edit_drivers_title": "Editar conductores",
+      "tag_name": "Nombre del Tag:",
+      "tag_name_placeholder": "Ingrese el nombre del tag",
+      "tag_edit_placeholder": "Ingrese el nuevo nombre del tag"
+    },
+    "validation": {
+      "carriers_required": "Debe seleccionar al menos un conductor",
+      "name_required": "El nombre para el tag es obligatorio"
+    },
+    "buttons": {
+      "create": "Agregar tag",
+      "save": "Guardar",
+      "finish": "Finalizar"
+    },
+    "table": {
+      "title": "Tags",
+      "columns": {
+        "_id": "",
+        "name": "Nombre",
+        "number_of_drivers": "Núm. conductores",
+        "date_created": "Fec. de Creación",
+        "last_update": "Fec. de Modificación"
+      }
+    },
+    "drivers_table": {
+      "title": "Selecciona los conductores para el tag",
+      "columns": {
+        "_id": "",
+        "nickname": "Nombre",
+        "email": "Correo electrónico",
+        "telephone": "Teléfono",
+        "verified": "Verificado",
+        "thumbnail": "dsad"
+      }
+    },
+    "filter": {
+      "input": "Buscar...",
+      "selector": "Buscar..."
+    },
+    "actions": {
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "send_message": "Enviar mensaje"
+    },
+    "edited-modal": {
+      "done": "Hecho",
+      "cancel": "Cancel",
+      "title": "¡Listo!",
+      "failed": "Hubo un error, intente más tarde"
     }
   },
   "paginator": {
