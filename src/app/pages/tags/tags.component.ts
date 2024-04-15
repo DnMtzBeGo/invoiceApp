@@ -314,7 +314,7 @@ export class TagsComponent implements OnInit {
   public async closeDeleteDialog($event: string): Promise<void> {
     if ($event === 'ok') {
       console.log('se borra');
-      (await this.apiService.apiRestDelete(`managers_tags/${this.activeTagId}`, { apiVersion: 'v1.1' })).subscribe({
+      (await this.apiService.apiRestDel(`managers_tags/${this.activeTagId}`, { apiVersion: 'v1.1' })).subscribe({
         next: (d) => {
           this.fetchTags();
         },

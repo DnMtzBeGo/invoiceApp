@@ -62,17 +62,17 @@
                 *ngIf="!hasCer; else elseBlockCer"
                 class="button-file"
                 (click)="fileInputCer.click()">
-                <bego-button class="icon icon-cloud-upload icon only"></bego-button> {{ 'checkout.upload' | translate }}
+                <app-button class="icon icon-cloud-upload icon only"></app-button> {{ 'checkout.upload' | translate }}
                 </button>
 
                 <ng-template #elseBlockCer>
                     <div class="fileUpload">
-                        <bego-button class="icon icon-document icon-only"></bego-button>
+                        <app-button class="icon icon-document icon-only"></app-button>
                         <div class="name">
                             <span>Certificate.cer</span>
                             <span>{{ cerDate | date: 'dd MMM yyyy' }} | {{ cerSize }} </span>
                         </div>
-                        <bego-button class="icon icon-trash icon-only" (click)="removeFile('cer')"></bego-button>
+                        <app-button class="icon icon-trash icon-only" (click)="removeFile('cer')"></app-button>
                     </div>
                 </ng-template>
 
@@ -96,17 +96,17 @@
                *ngIf="!hasKey; else elseBlockKey"
                class="button-file"
                (click)="fileInputKey.click()">
-               <bego-button class="icon icon-cloud-upload icon only"></bego-button> {{ 'checkout.upload' | translate }}
+               <app-button class="icon icon-cloud-upload icon only"></app-button> {{ 'checkout.upload' | translate }}
                </button>
 
                <ng-template #elseBlockKey>
                    <div class="fileUpload">
-                       <bego-button class="icon icon-document icon-only"></bego-button>
+                       <app-button class="icon icon-document icon-only"></app-button>
                        <div class="name">
                            <span>Key.key</span>
                            <span>{{ keyDate | date: 'dd MMM yyyy' }} | {{ keySize }} </span>
                        </div>
-                       <bego-button class="icon icon-trash icon-only" (click)="removeFile('key')"></bego-button>
+                       <app-button class="icon icon-trash icon-only" (click)="removeFile('key')"></app-button>
                    </div>
                </ng-template>
 

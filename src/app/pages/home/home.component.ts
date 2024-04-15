@@ -10,6 +10,7 @@ import { HeaderService } from './services/header.service';
 import { ofType } from 'src/app/shared/utils/operators.rx';
 import { CustomMarker } from './custom.marker';
 import { OrderPreview } from '../orders/orders.component';
+import { Location } from '@angular/common';
 import { PolygonFilter } from './components/polygon-filter/polygon-filter.component';
 import { InputDirectionsComponent } from 'src/app/shared/components/input-directions/input-directions.component';
 
@@ -45,14 +46,14 @@ export class HomeComponent implements OnInit {
   headerTransparent: boolean = true;
   showOrderDetails: boolean = false;
 
+  orderType = 'FTL';
+
   public typeMap: string = 'home';
   public imageFromGoogle: any;
   public membersToAssigned: object = {};
   public userWantCP: boolean = false;
   public haveNotFleetMembers: boolean = false;
   public haveFleetMembersErrors: Array<string> = [];
-
-  public savedPlaces$;
 
   // members map logic
   geocoder = new google.maps.Geocoder();
@@ -90,20 +91,30 @@ export class HomeComponent implements OnInit {
   subs = new Subscription();
 
   showSidebar = true;
+  showCompleteModal = false;
+
+  isPrime = false;
 
   constructor(
     private router: Router,
     private webService: AuthService,
     public placesService: PlacesService,
     private googlemaps: GoogleMapsService,
-    private headerStyle: HeaderService
+    private headerStyle: HeaderService,
+    private location: Location
   ) {
     this.placesService.places$;
     this.headerStyle.changeHeader(this.headerTransparent);
     this.subs.add(
       this.router.events.subscribe((res) => {
         if (res instanceof NavigationEnd && res.url.startsWith('/home')) {
-          let data = this.router.getCurrentNavigation()?.extras.state;
+          const data = this.router.getCurrentNavigation()?.extras.state;
+
+          if (data?.showCompleteModal) {
+            this.showCompleteModal = data.showCompleteModal;
+            this.location.replaceState('');
+          }
+
           if (data && data.hasOwnProperty('draft')) {
             this.draftData = data.draft;
             this.locations.pickup = data.draft.pickup.address;
@@ -195,7 +206,7 @@ export class HomeComponent implements OnInit {
         }
       ],
       stamp: this.userWantCP,
-      type: 'FTL',
+      type: this.orderType,
       target: 'carriers',
       origin: 'web'
     };
@@ -263,6 +274,8 @@ export class HomeComponent implements OnInit {
       .pipe(catchError(() => of({})))
       .subscribe((res) => {
         if (res.status === 200 && res.result) {
+          this.isPrime = res.result.subscription
+
           // When members exist on the fleet, it saves them on this array
           this.markersFromService = [];
 

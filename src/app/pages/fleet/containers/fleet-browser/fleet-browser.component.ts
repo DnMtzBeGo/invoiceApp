@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
-import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity } from 'rxjs';
+import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity, Subscription } from 'rxjs';
 import {
   mapTo,
   mergeAll,
@@ -14,7 +14,8 @@ import {
   distinctUntilChanged,
   filter,
   takeUntil,
-  startWith
+  startWith,
+  finalize
 } from 'rxjs/operators';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
@@ -56,6 +57,20 @@ const resolvers = {
     sortBy: ['date_created', 'trailer_number'],
     sortInit: ['date_created', 'desc'],
     withFleetId: false
+  },
+  primeList: {
+    endpoint: 'orders/vehicles',
+    lang: 'prime',
+    sortBy: ['name'],
+    sortInit: ['name', 'desc']
+  },
+  prime: {
+    endpoint: 'orders/vehicles/:id',
+    newUrl: routes.NEW_PRIME,
+    lang: 'prime',
+    sortBy: ['date_created', 'name'],
+    sortInit: ['date_created', 'desc'],
+    withFleetId: true
   }
 };
 
@@ -107,7 +122,9 @@ export class FleetBrowserComponent implements OnInit {
     ['queryParams' | 'refresh' | 'template:search' | 'template:set' | 'refresh:defaultEmisor' | 'view:set', unknown?]
   >();
 
-  model: 'members' | 'trucks' | 'trailers';
+  model: 'members' | 'trucks' | 'trailers' | 'primeList' | 'prime';
+
+  lang = 'en';
 
   view = window.localStorage.getItem('app-fleet-browser-view') ?? 'grid';
 
@@ -117,6 +134,21 @@ export class FleetBrowserComponent implements OnInit {
   public paginatorDefaults;
 
   public paginator: Paginator;
+
+  listeners: Subscription[] = [];
+
+  selectedCategory = '';
+  categoryModal = {
+    show: false,
+    mode: 'new',
+    type: '',
+    error: null
+  };
+
+  category = {
+    name: '',
+    translations: {}
+  };
 
   constructor(
     public router: Router,
@@ -154,6 +186,16 @@ export class FleetBrowserComponent implements OnInit {
       pageSearch: '',
       total: 0
     };
+
+    this.listeners.push(this.route.params.subscribe((ev) => {
+      if (this.router.url.includes(routes.PRIME) && ev.id) {
+        this.ngOnInit();
+      }
+    }));
+
+    this.listeners.push(this.translateService.onLangChange.subscribe((lang) => {
+      this.lang = lang.lang;
+    }));
   }
 
   ngOnInit(): void {
@@ -286,8 +328,16 @@ export class FleetBrowserComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.listeners.forEach(l => l.unsubscribe());
+  }
+
   // API calls
   fetchFleetId = () => {
+    if (this.model === 'prime') {
+      return of(this.route.snapshot.params.id);
+    }
+
     return from(
       this.apiRestService.apiRest('', 'fleet/overview', {
         loader: 'false'
@@ -299,6 +349,61 @@ export class FleetBrowserComponent implements OnInit {
     const payload = {
       ...params
     };
+
+    if (this.model === 'primeList') {
+      return from(this.apiRestService.apiRestGet(this.resolver.endpoint, { apiVersion: 'v1.1', ...this.vm.params })).pipe(
+        mergeAll(),
+        pluck('result'),
+        map((res) => {
+          this.paginator.pageTotal = res.pagination?.pages || 1;
+          this.paginator.total = res.pagination?.size ?? 0;
+          return res.data;
+        }),
+        finalize(() => {
+          this.cd.markForCheck();
+        })
+      );
+    }
+
+    if (this.model === 'prime') {
+      from(this.apiRestService.apiRestGet('orders/vehicles', { apiVersion: 'v1.1' }))
+        .pipe(
+          mergeAll(),
+          pluck('result'),
+          tap((res) => {
+            const category = res.find(c => c._id === this.route.snapshot.params.id);
+
+            this.category = {
+              name: category.name,
+              translations: category.translations
+            };
+
+            console.log(this.category, category);
+
+            this.cd.markForCheck();
+          })
+        )
+        .subscribe();
+
+      return from(
+        this.apiRestService.apiRestGet(this.resolver.endpoint.replace(':id', this.route.snapshot.params.id), {
+          apiVersion: 'v1.1',
+          ...this.vm.params
+        })
+      ).pipe(
+        mergeAll(),
+        pluck('result'),
+        map((res) => {
+          this.paginator.pageTotal = res.pagination?.pages || 1;
+          this.paginator.total = res.pagination?.size ?? 0;
+
+          return res.data;
+        }),
+        finalize(() => {
+          this.cd.markForCheck();
+        })
+      );
+    }
 
     return from(
       this.apiRestService.apiRestGet(this.resolver.endpoint.replace(':fleetId', this.vm.fleetId), {
@@ -470,6 +575,58 @@ export class FleetBrowserComponent implements OnInit {
     //   queryParamsHandling: 'merge',
     //   replaceUrl: true
     // })
+  }
+
+  openCategoryModal(mode: 'new' | 'edit', data?: any) {
+    if (data) {
+      this.selectedCategory = data._id;
+      this.categoryModal.type = data.name;
+    }
+
+    this.categoryModal.show = true;
+    this.categoryModal.mode = mode;
+  }
+
+  async handleCloseCategoryModal(type?: 'done' | string) {
+    const status = this.categoryModal;
+
+    if (type !== 'done') {
+      this.resetCategoryModal();
+      return;
+    }
+
+    if (!status.type) return;
+
+    const payload = { type: status.type };
+
+    const apiCall =
+      status.mode === 'new'
+        ? this.apiRestService.apiRest(JSON.stringify(payload), 'api/vehicle_types', { apiVersion: 'vehicle-service' })
+        : this.apiRestService.apiRestPut(JSON.stringify(payload), `api/vehicle_types/${this.selectedCategory}`, {
+            apiVersion: 'vehicle-service'
+          });
+
+    (await apiCall).subscribe({
+      next: () => {
+        this.resetCategoryModal();
+        this.facturasEmitter.next(['refresh']);
+      },
+      error: ({ error }) => {
+        status.error = error.error;
+        this.cd.markForCheck();
+      }
+    });
+  }
+
+  resetCategoryModal(show?: boolean) {
+    this.categoryModal = {
+      show,
+      mode: 'new',
+      type: '',
+      error: null
+    };
+
+    this.cd.markForCheck();
   }
 
   //UTILS

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Renderer2, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'bego-button',
+  selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss']
 })

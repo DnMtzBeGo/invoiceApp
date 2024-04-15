@@ -7,8 +7,6 @@ import {
   Output,
   EventEmitter,
   SimpleChanges,
-  ViewChildren,
-  QueryList
 } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -57,11 +55,14 @@ export class OrdersComponent implements OnInit {
   @Input() imageFromGoogle: any;
   @Input() membersToAssigned: any;
   @Input() userWantCP: boolean = false;
+  @Input() orderType: string;
+
   screenshotOrderMap: any;
   requestScreenshotOrderMap: FormData = new FormData();
 
   creationTime: any;
   ordersSteps: Step[];
+  ordersStepsOCL: Step[];
 
   hazardousFile?: File;
   hazardousFileAWS: object = {};
@@ -138,6 +139,7 @@ export class OrdersComponent implements OnInit {
   secondFormGroup!: FormGroup;
 
   stepsValidate = [false, false, false, false, false];
+  stepsValidateOCL = [false, false];
 
   private subscription: Subscription;
 
@@ -183,11 +185,6 @@ export class OrdersComponent implements OnInit {
     autoHeight: true
   };
 
-  @ViewChildren('step') stepsRef: QueryList<any>;
-  resizeObserver = new ResizeObserver(() => {
-    this.stepperRef.controller.swiper.updateAutoHeight();
-  });
-
   constructor(
     private translateService: TranslateService,
     private _formBuilder: FormBuilder,
@@ -196,36 +193,7 @@ export class OrdersComponent implements OnInit {
     private router: Router,
     private alertService: AlertService,
     private dialog: MatDialog
-  ) {
-    this.ordersSteps = [
-      {
-        text: '1',
-        nextBtnTxt: this.translateService.instant('orders.next-step')
-      },
-      {
-        text: '2',
-        nextBtnTxt: this.translateService.instant('orders.next-step')
-      },
-      {
-        text: '3',
-        nextBtnTxt: this.translateService.instant('orders.next-step')
-      },
-      {
-        text: '4',
-        nextBtnTxt: this.translateService.instant('orders.next-step')
-      },
-      {
-        text: '5',
-        nextBtnTxt: this.translateService.instant('orders.create-order')
-      }
-    ];
-
-    this.subscription = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
-      this.updateStepTexts();
-    });
-
-    this.typeOrder = this.translateService.instant('orders.title-pickup');
-  }
+  ) {}
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
@@ -235,6 +203,7 @@ export class OrdersComponent implements OnInit {
       secondCtrl: ['', Validators.required]
     });
 
+    this.updateStepTexts();
     this.subscription = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
       this.updateStepTexts();
     });
@@ -242,18 +211,19 @@ export class OrdersComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.marksRef.controller = this.stepperRef.controller;
-
-    this.stepsRef.forEach((el) => {
-      this.resizeObserver.observe(el.nativeElement);
-    });
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.resizeObserver.disconnect();
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.orderType) {
+      Promise.resolve().then(() => {
+        this.marksRef.controller = this.stepperRef.controller;
+      });
+    }
+
     if (this.imageFromGoogle && !this.sendMap) {
       this.screenshotOrderMap = new File(this.imageFromGoogle, 'image');
       this.requestScreenshotOrderMap.set('map', this.screenshotOrderMap);
@@ -303,36 +273,36 @@ export class OrdersComponent implements OnInit {
   }
 
   updateStatus() {
-    this.updateStepTexts();
+    this.updateTitleText();
 
-    if (this.currentStepIndex < 4) {
-      this.btnStatusNext = false;
-    } else {
+    if (this.stepperRef?.controller.isLastStep()) {
       this.btnStatusNext = !this.validateForm();
+    } else {
+      this.btnStatusNext = false;
     }
-
-    this.ordersSteps.forEach((e, i) => {
-      e.validated = this.stepsValidate[i];
-    });
 
     this.stepChange.emit(this.currentStepIndex);
   }
 
   validateForm() {
-    return this.stepsValidate.slice(0, -1).every(Boolean);
+    const validate = this.orderType === 'FTL' ? this.stepsValidate.slice(0, -1) : this.stepsValidateOCL;
+
+    return validate.every(Boolean);
   }
 
   nextSlide() {
-    if (this.currentStepIndex === 4 && this.validateForm()) {
-      this.isOrderWithCP ? this.checkCPFields() : this.completeOrder();
-    }
+    if (!this.stepperRef.controller.isLastStep()) {
+      if (this.orderType === 'FTL' && this.currentStepIndex === 2 && !this.hasEditedCargoWeight) {
+        this.editCargoWeightNow = true;
+      }
 
-    if (this.currentStepIndex === 2 && !this.hasEditedCargoWeight) {
-      this.editCargoWeightNow = true;
-    }
-
-    if (this.currentStepIndex < 4) {
-      this.currentStepIndex = this.currentStepIndex + 1;
+      this.currentStepIndex += 1;
+    } else if (this.validateForm()) {
+      if (this.isOrderWithCP && this.orderType === 'FTL') {
+        this.checkCPFields();
+      } else {
+        this.completeOrder();
+      }
     }
   }
 
@@ -347,7 +317,7 @@ export class OrdersComponent implements OnInit {
   }
 
   jumpStepTitle() {
-    this.updateStepTexts();
+    this.updateTitleText();
   }
 
   getStep1FormData(data: any) {
@@ -464,6 +434,42 @@ export class OrdersComponent implements OnInit {
     this.stepsValidate[4] = valid;
     if (valid) this.sendInvoice();
     this.updateStatus();
+  }
+
+  validStepOCL(idx: number, valid: boolean) {
+    this.stepsValidateOCL[idx] = valid;
+    this.updateStatus();
+  }
+
+  updateStep1OCL(data: any) {
+    Object.assign(this.orderData, {
+      reference_number: data.reference,
+      pickup: {
+        startDate: data.date,
+        contact_info: {
+          name: data.name,
+          telephone: `${data.phone_code} ${data.phone_number}`,
+          country_code: data.phone_flag,
+          email: data.email
+        }
+      }
+    });
+
+    this.sendPickup();
+  }
+
+  updateStep2OCL(data: any) {
+    Object.assign(this.orderData.dropoff, {
+      extra_notes: data.aditional_details,
+      contact_info: {
+        name: data.name,
+        email: data.email,
+        telephone: `${data.phone_code} ${data.phone_number}`,
+        country_code: data.phone_flag
+      }
+    });
+
+    this.sendDropoff();
   }
 
   async sendPickup() {
@@ -668,11 +674,11 @@ export class OrdersComponent implements OnInit {
   async completeOrder() {
     await this.confirmOrder();
     await this.assignOrder();
-    await this.uploadScreenShotOrderMap();
+    if (this.orderType === 'FTL') await this.uploadScreenShotOrderMap();
 
     // cleanup page
-    await this.router.navigate(['/'], { skipLocationChange: true });
-    await this.router.navigate(['/home']);
+    await this.router.navigate(['/fleet'], { skipLocationChange: true });
+    await this.router.navigate(['/home'], { state: { showCompleteModal: true } });
   }
 
   async confirmOrder() {
@@ -686,16 +692,22 @@ export class OrdersComponent implements OnInit {
   }
 
   async assignOrder() {
-    const assignPayload = {
+    const payload: any = {
       order_id: this.orderPreview.order_id,
       carrier_id: this.membersToAssigned.drivers._id,
-      id_truck: this.membersToAssigned.trucks._id,
-      id_trailer: this.membersToAssigned.trailers._id
     };
 
-    const req = await this.auth.apiRest(JSON.stringify(assignPayload), 'orders/assign_order', { apiVersion: 'v1.1' });
+    if (this.orderType === 'FTL') {
+      payload.id_truck = this.membersToAssigned.trucks._id;
+      payload.id_trailer = this.membersToAssigned.trailers._id;
 
-    return req.toPromise();
+      const req = await this.auth.apiRest(JSON.stringify(payload), 'orders/assign_order', { apiVersion: 'v1.1' });
+      return req.toPromise();
+    } else {
+      payload.vehicle_id = this.membersToAssigned.vehicle._id;
+      const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/ocl/assign_order', { apiVersion: 'v1.1' });
+      return req.toPromise();
+    }
   }
 
   public async uploadScreenShotOrderMap() {
@@ -754,29 +766,33 @@ export class OrdersComponent implements OnInit {
     this.hasEditedCargoWeight = true;
   }
 
+  updateTitleText() {
+    const keys = [
+      'orders.title-pickup',
+      'orders.title-dropoff',
+      'orders.title-cargo-info',
+      'orders.title-summary',
+      'orders.title-summary'
+    ];
+
+    this.typeOrder = this.translateService.instant(keys[this.currentStepIndex]);
+  }
+
   updateStepTexts() {
-    switch (this.currentStepIndex) {
-      case 0:
-        this.typeOrder = this.translateService.instant('orders.title-pickup');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-        break;
-      case 1:
-        this.typeOrder = this.translateService.instant('orders.title-dropoff');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-        break;
-      case 2:
-        this.typeOrder = this.translateService.instant('orders.title-cargo-info');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-        break;
-      case 3:
-        this.typeOrder = this.translateService.instant('orders.title-summary');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-        break;
-      case 4:
-        this.typeOrder = this.translateService.instant('orders.title-summary');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.create-order');
-        break;
-    }
+    this.ordersSteps = [
+      { text: '1', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '2', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '3', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '4', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '5', nextBtnTxt: this.translateService.instant('orders.create-order') }
+    ];
+
+    this.ordersStepsOCL = [
+      { text: '1', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '2', nextBtnTxt: this.translateService.instant('orders.create-order') }
+    ];
+
+    this.updateTitleText();
   }
 
   private removeEmpty(obj: any) {

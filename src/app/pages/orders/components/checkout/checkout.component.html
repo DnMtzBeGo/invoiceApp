@@ -15,7 +15,7 @@
     <div>
       <!-- only show cards if selected tab is 'summary'-->
       <div class="previewBox" (click)="getInvoicePreview()" *ngIf="currentStepIndex == checkoutSteps.length - 1">
-        <bego-button class="icon icon-document icon-only"></bego-button>
+        <app-button class="icon icon-document icon-only"></app-button>
         <div class="name">
           <span *ngIf="summaryData.order_number">{{ summaryData.order_number }}.pdf</span>
           <span *ngIf="!summaryData.order_number">{{ 'checkout.preview' | translate }}.pdf</span>

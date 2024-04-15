@@ -1250,3 +1250,9 @@ input[type='number'] {
     filter: grayscale(1);
   }
 }
+
+.saved-locations-modal {
+  .mat-dialog-container {
+    background: none;
+  }
+}

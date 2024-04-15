@@ -1,0 +1,17 @@
+<div class="color-picker">
+  <button *ngIf="value" class="selected" [style]="{ borderColor: value }" (click)="pickColor('')">
+    <div class="color-opt" [style]="getColorStyle(value)"></div>
+    <span>{{ rgbToHex(value) }}</span>
+  </button>
+
+  <ng-container *ngIf="!value && !showPicker">
+    <button *ngFor="let c of colorOptions" class="color-opt" (click)="pickColor(c.color, c.name)" [style]="getColorStyle(c.color)"></button>
+  </ng-container>
+
+  <canvas #canvas width="212" height="10" class="picker-canvas" [class.hide]="value || !showPicker" (click)="pickCustom($event)"></canvas>
+
+  <label class="custom">
+    <span>{{ (value ? 'fleet.color-picker.change' : 'fleet.color-picker.other') | translate }}</span>
+    <button class="color-opt palette" (click)="toggleCustom()"></button>
+  </label>
+</div>

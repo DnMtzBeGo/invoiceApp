@@ -133,6 +133,14 @@
       "label-or": "o",
       "btn-browse": "Selecciona tu archivo",
       "label-max": "maximo"
+    },
+    "complete-modal": {
+      "title": "¡Orden lista!",
+      "description": "Su orden ha sido creada exitosamente"
+    },
+    "prime": {
+      "no-vehicle": "Sin vehículo",
+      "walking": "Caminando"
     }
   },
   "checkout": {
@@ -567,6 +575,7 @@
     "btn-es": "ES"
   },
   "location": {
+    "title": "Selecciona tu transporte",
     "label_pickup": "Recolección",
     "label_dropoff": "Entrega",
     "label_pin": "Fijar la ubicación en el mapa",
@@ -1333,6 +1342,10 @@
       "gray": "Gris",
       "grey": "Gris"
     },
+    "color-picker": {
+      "change": "Cambiar?",
+      "other": "Otro?"
+    },
     "only-imgs": "Sólo se aceptan imágenes",
     "choose-invitation": {
       "txt_choose": "Elige una opción",
@@ -1369,6 +1382,7 @@
     "txt_showing": "Mostrando",
     "txt_of": "de",
     "btn_remove": "Remover",
+    "btn_new_vehicle": "Agregar nuevo vehículo",
     "members": {
       "txt_header": "Equipo",
       "txt_search": "Buscar...",
@@ -1447,6 +1461,42 @@
         "type": "Tipo",
         "trailer_number": "Número de Trailer",
         "type-trailer-number": "Escribe el número de trailer"
+      }
+    },
+    "prime": {
+      "ocl": "Otro",
+      "txt_header": "Mis",
+      "btn_add": "Agregar",
+      "txt_search": "Buscar vehículo...",
+      "see_details": "Ver",
+      "btn_view": "Ver",
+      "btn_save": "Guardar",
+      "brand": "Modelo",
+      "year": "Año",
+      "vehicle_number": "Placas",
+      "nickname": "Nombre",
+      "placeholder": {
+        "brand": "Escribe el modelo",
+        "vehicle_number": "Escribe las placas",
+        "nickname": "Escribe el nombre"
+      },
+      "sort_by": {
+        "name": "Nombre",
+        "date_created": "Fecha creación"
+      },
+      "table": {
+        "vehicle_number": "Número de vehículo"
+      },
+      "category_modal": {
+        "title": "Añadir nueva categoria",
+        "placeholder-category": "Escribe el nombre de tu categoría",
+        "btn-open": "Crear categoría",
+        "btn-done": "Crear"
+      },
+      "complete_modal": {
+        "done": "Listo",
+        "title": "Vehículo salvado",
+        "txt": "Su vehículo ha sido agregado exitosamente a la sección de flota"
       }
     },
     "alerts": {
@@ -1758,5 +1808,21 @@
   "filter": {
     "input": "Buscar...",
     "selector": "Buscar..."
+  },
+  "saved-locations": {
+    "my-locations": "Mis ubicaciones guardadas",
+    "search": "Buscar ubicación",
+    "opt-edit": "Editar ubicación",
+    "opt-delete": "Eliminar ubicación",
+    "btn-back": "Regresar",
+    "modal": {
+      "title-form": "Nombre de la dirección",
+      "title-complete": "Guardado!",
+      "placeholder": "Escriba el nombre de su dirección",
+      "complete-msg": "Su ubicación ha sido guardada y agregada a sus ubicaciones favoritas.",
+      "btn-done": "Asombroso",
+      "btn-confirm": "Guardar",
+      "btn-cancel": "Cancelar"
+    }
   }
 }

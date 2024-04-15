@@ -1,5 +1,6 @@
 <div class="map map-container">
   <app-polygon-filter
+    *ngIf="!showOrderDetails"
     class="polygon-filter"
     (getCoordinates)="getCoordinates($event)"
     (clearedFilter)="clearedFilter()"></app-polygon-filter>
@@ -14,10 +15,11 @@
   </bego-map>
 
   <div class="new-order-wrapper">
-    <div class="new-order-details" [ngClass]="{ full: !showSidebar }">
+    <div class="new-order-details" [ngClass]="{ full: !showOrderDetails }">
       <app-orders
         [(cardIsOpen)]="showOrderDetails"
         (stepChange)="onStepChange($event)"
+        [orderType]="orderType"
         [draftData]="draftData"
         [locations]="locations"
         [datepickup]="datepickup"
@@ -29,18 +31,18 @@
       </app-orders>
     </div>
 
-    <div class="input-directions" [ngClass]="{ 'applied-filter': creatingForms && !openOrderMenu }">
+    <div class="input-directions" [ngClass]="{ 'applied-filter': creatingForms && !openOrderMenu }" [class.hide]="!showSidebar">
       <app-input-directions
-        *ngIf="showSidebar"
+        [(orderType)]="orderType"
+        [isPrime]="isPrime"
         (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
         [showMapPreview]="showOrderDetails"
         (showNewOrderCard)="showNewOrderCard()"
-        (updateLocation)="updateLocation($event)"
+        (updateLocation)="updateLocation()"
         (updateLocations)="updateLocations($event)"
         (updateDatepickup)="updateDatepickup($event)"
         (updateDropOffDate)="updateDropOffDate($event)"
         [typeMap]="typeMap"
-        [savedPlaces]="savedPlaces$ | async"
         (inputPlace)="placesService.emitter.next($event)"
         (sendUserWantCP)="getUserWantCP($event)"
         [drafts]="draftData"
@@ -64,3 +66,12 @@
     </div>
   </div>
 </div>
+
+<bego-modal
+  *ngIf="showCompleteModal"
+  image="vehicle"
+  [lang]="{ done: 'orders.complete-modal.done-btn' | translate }"
+  (closeEmitter)="showCompleteModal = false">
+  <h1>{{ 'orders.complete-modal.title' | translate }}</h1>
+  <p>{{ 'orders.complete-modal.description' | translate }}</p>
+</bego-modal>

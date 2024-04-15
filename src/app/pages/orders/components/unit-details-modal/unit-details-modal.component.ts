@@ -29,20 +29,22 @@ export class UnitDetailsModalComponent implements OnInit {
   selected: Option = { value: '', displayValue: '' };
   unitsCatalog: Option[] = [];
 
-  actionButtons = [
-    {
-      textBtn: this.translateService.instant('orders.btn-save'),
-      textEmit: 'close',
-      activated: true,
-    }
-  ]
+  actionButtons: any
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: UnitDetailsModalData,
     private apiRestService: AuthService,
     private translateService: TranslateService,
     public dialogRef: MatDialogRef<UnitDetailsModalComponent>
-  ) {}
+  ) {
+    this.actionButtons = [
+      {
+        textBtn: this.translateService.instant('orders.btn-save'),
+        textEmit: 'close',
+        activated: true,
+      }
+    ]
+  }
 
   ngOnInit(): void {
     this.getCatalog();
