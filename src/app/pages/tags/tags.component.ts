@@ -7,7 +7,7 @@ import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
 import { PrimeService } from 'src/app/shared/services/prime.service';
-import { FormGroup } from '@angular/forms';import { PrimeService } from 'src/app/shared/services/prime.service';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
