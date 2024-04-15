@@ -5,6 +5,7 @@ import { Action, Column, Lang, Page, SearchQuery, SelectedRow, StatusOptions, Ta
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import {MatSnackBar } from '@angular/material/snack-bar';
 
 interface AlerLang {
   title: string;
@@ -17,9 +18,10 @@ interface AlerLang {
   styleUrls: ['./tags-form.component.scss']
 })
 export class TagsFormComponent implements OnInit, AfterViewInit {
+  tagName: string;
+  
   @ViewChild('firstInput', { static: false, read: ElementRef }) firstInput: ElementRef;
 
-  public saveButtonEnabled: boolean = false;
   public tablePrimaryKey: string = '_id';
   public alertContent: AlerLang;
   public tag_id: string;
@@ -42,7 +44,8 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     private readonly translateService: TranslateService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly snackBar: MatSnackBar
   ) {
     this.loadingTableData = true;
     this.drivers = [];
@@ -61,6 +64,11 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.tagName = params['tagName'];
+      this.tag_id = params['tagId'];
+    });
+
     this.tagsForm = this.formBuilder.group({
       name: new FormControl('', [Validators.required, Validators.minLength(1)]),
       carriers: new FormControl(' ', [Validators.required])
@@ -71,7 +79,6 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
 
   onChanges(): void {
     this.tagsForm.get('name').valueChanges.subscribe(() => {
-      this.isFormReadyToSend();
     });
   }
 
@@ -98,7 +105,6 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe({
       next: (params: TagFormParams) => {
         const { tag_id } = params;
-
         if (tag_id) this.tag_id = tag_id;
       },
       error: (error: any) => {
@@ -107,44 +113,6 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     });
 
     return this;
-  }
-
-  public async save() {
-    this.disableSaveButton();
-    this.tagsForm.controls['carriers'].setValue(this.tagsForm.controls['carriers'].value.trim());
-
-    if (this.tagsForm.valid) {
-      this.tag = {
-        name: this.tagsForm.controls['name'].value,
-        carriers: JSON.parse(this.tagsForm.controls['carriers'].value)
-      };
-
-      if (!this.tag_id) {
-        (await this.apiService.apiRest(JSON.stringify(this.tag), `managers_tags`, { apiVersion: 'v1.1' })).subscribe({
-          next: (data) => {
-            if (data.result?._id) this.openDialog(this.translate('created', 'tags'));
-          },
-          error: (error: any) => {
-            console.log('saving tag', error);
-          },
-          complete: () => {
-            this.enableSaveButton();
-          }
-        });
-      } else {
-        (await this.apiService.apiRestPut(JSON.stringify(this.tag), `managers_tags/${this.tag_id}`, { apiVersion: 'v1.1' })).subscribe({
-          next: (d) => {
-            this.openDialog(this.translate('updated', 'tags'));
-          },
-          error: (error: any) => {
-            console.log('updating tag', error);
-          },
-          complete: () => {
-            this.saveButtonEnabled = true;
-          }
-        });
-      }
-    } else this.saveButtonEnabled = true;
   }
 
   private setLang(): TagsFormComponent {
@@ -328,7 +296,7 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
           };
         });
 
-        if (hascheckedTags) this.enableSaveButton();
+        ;
       },
       error: (err: any) => {
         console.error('fetching drivers', err);
@@ -339,42 +307,47 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public rowSelected($event) {
-    this.tag.carriers = $event.map((driver: TagDriver) => (driver.selection_check ? driver._id : false));
-    this.isFormReadyToSend();
-  }
-
-  private isFormReadyToSend(): void {
-    const json = JSON.stringify(this.tag.carriers).replace('[]', '');
-    this.tagsForm.controls['carriers'].setValue(json);
-
-    if (json && this.tagsForm.controls['name'].value) this.enableSaveButton();
-    else this.disableSaveButton();
-  }
-
-  // #endregion Table methods
-
-  public openDialog(message: string): void {
-    this.alertContent = {
-      title: message,
-      subtitle: ''
+  public async rowSelected($event: any[]) {
+    const selectedDriverIds: string[] = $event
+      .filter((driver: TagDriver) => driver.selection_check)
+      .map((driver: TagDriver) => driver._id);
+  
+    this.tag.carriers = selectedDriverIds;
+  
+    const putRequest = async () => {
+      try {
+        const response = (await this.apiService.apiRestPut(JSON.stringify(this.tag), `managers_tags/${this.tag_id}`, { apiVersion: 'v1.1' })).subscribe();
+  
+        if (response) {
+          if (selectedDriverIds.length > 0) {
+            this.showToast('Conductor(es) agregado(s) correctamente');
+          } else {
+            this.showToast('Conductor(es) eliminado(s) correctamente');
+          }
+        } else {
+          throw new Error('Error');
+        }
+      } catch (error) {
+        this.showToast('Error' + error.message);
+      }
     };
+  
+    setTimeout(() => {
+      putRequest();
+    }, 3000);
   }
-
-  public async closeDialog($event: string): Promise<void> {
-    if ($event === 'ok') {
-      this.alertContent = {
-        title: null,
-        subtitle: null
-      };
-      this.router.navigate(['/tags']);
-    }
+  
+  // #endregion Table methods
+  public showToast(message: string): void {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
   }
-
-  private disableSaveButton(): void {
-    this.saveButtonEnabled = false;
+  
+  finish() {
+    this.router.navigate(['/tags']);
   }
-  private enableSaveButton(): void {
-    this.saveButtonEnabled = true;
-  }
+  
 }

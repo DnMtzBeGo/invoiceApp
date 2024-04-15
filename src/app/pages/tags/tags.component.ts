@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-tags',
@@ -25,6 +26,22 @@ export class TagsComponent implements OnInit {
   public searchQuery: SearchQuery;
   public alertContent: string = '';
 
+  public saveButtonEnabled: boolean = true;
+  public tagsForm: FormGroup;
+
+  private disableSaveButton(): void {
+    this.saveButtonEnabled = false;
+  }
+
+  private enableSaveButton(): void {
+    this.saveButtonEnabled = true;
+  }
+
+  public openDialog(message: string): void {
+
+  }
+
+
   constructor(
     private readonly router: Router,
     private readonly apiService: AuthService,
@@ -43,7 +60,9 @@ export class TagsComponent implements OnInit {
     .fetchTags();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.translateService.onLangChange.subscribe(() => this.setLang());
+  }
 
   setLang(): TagsComponent {
     this.lang = {
@@ -170,7 +189,9 @@ export class TagsComponent implements OnInit {
   public selectingAction({ type, data }: any) {
     switch (type) {
       case 'edit':
-        this.router.navigate([`/tags/edit/${data._id}`]);
+        this.showEditInput = true;
+        this.editedTagName = data.name;
+        this.activeTagId = data._id;
         break;
       case 'send_message':
         this.openSendMessageModal(data._id, data.name);
@@ -248,7 +269,7 @@ export class TagsComponent implements OnInit {
 
           return {
             ...tag,
-            number_of_drivers: tag.carriers,
+            number_of_drivers: tag.carriers.length,
             date_created: this.datePipe.transform(tag.date_created, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
             last_update: this.datePipe.transform(tag.last_update, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
             actions
@@ -292,5 +313,84 @@ export class TagsComponent implements OnInit {
     this.activeTagId = '';
   }
 
-  // #endregion Table methods
+  showTagInput: boolean = false;
+  showEditInput: boolean = false;
+  tagName: string = '';
+  editedTagName: string = '';
+
+  public async createTagName() {
+    const tagName = this.tagName.trim();
+    
+    if (tagName && tagName.length >= 1) {
+      console.log('create tag name', tagName, this.activeTagId)
+      
+        const tag = {
+            name: tagName
+        };
+
+        try {
+            const data = await (await this.apiService.apiRest(JSON.stringify(tag), `managers_tags`, { apiVersion: 'v1.1' })).toPromise();
+
+            if (data && data.result && data.result._id) {
+                this.openDialog(this.translate('created', 'tags'));
+                this.router.navigate(['/tags/create'], { queryParams: { tagName: tagName, tagId: data.result._id } });
+            }
+
+        } catch (error) {
+            console.log('Error creating tag:', error);
+        }
+      }
+    }
+
+  onModalClose(event: string) {
+    try {
+      if (event === 'cancel') {
+        this.tagName = '';
+        this.showTagInput = false;
+      } else if (event === 'done') {
+        this.createTagName();
+      } else {
+        console.error('Evento desconocido:', event);
+      }
+    } catch (error) {
+      console.error('Error al manejar el evento:', error);
+    }
+  }
+
+  public async editTagName(tagId: string, editedTagName: string) {
+    try {
+      const updatedTag = { name: editedTagName };
+
+      (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
+        next: (data) => {
+          if (data.result?._id) this.openDialog(this.translate('created', 'tags'));
+        },
+      })
+
+      const tagToUpdate = this.tags.find(tag => tag._id === tagId); 
+      if (tagToUpdate) {
+        tagToUpdate.name = editedTagName;
+      }
+      this.showEditInput = false;
+    } catch (error) {
+      console.error('Error al actualizar el nombre de la etiqueta:', error);
+    }
+  }
+  
+
+  onEditClose(event: string, tagId: string, editedTagName: string) {
+    try {
+      if (event === 'cancel') {
+          this.editedTagName = ''; // Restablece el campo de edición
+          this.showEditInput = false; // Oculta el modal de edición
+      } else if (event === 'done') {
+          this.editTagName(tagId, editedTagName); // Llama a la función para actualizar el nombre de la etiqueta
+      } else {
+          console.error('Evento desconocido:', event);
+      }
+    } catch (error) {
+      console.error('Error al manejar el evento:', error);
+    }
+  }
+// #endregion Table methods
 }

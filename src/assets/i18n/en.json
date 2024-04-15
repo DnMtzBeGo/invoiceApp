@@ -1658,8 +1658,11 @@
     "form": {
       "title": "Create Tag",
       "edit_title": "Edit Tag",
-      "tag_name": "Tag name",
-      "tag_name_placeholder": "Type tag name"
+      "add_drivers_title": "Add drivers",
+      "edit_drivers_title": "Edit drivers",
+      "tag_name": "Tag name:",
+      "tag_name_placeholder": "Type tag name",
+      "tag_edit_placeholder": "Type new tag name"
     },
     "validation": {
       "carriers_required": "Choose almost one driver",
@@ -1667,7 +1670,8 @@
     },
     "buttons": {
       "create": "Add tag",
-      "save": "Save"
+      "save": "Save",
+      "finish": "Finish"
     },
     "table": {
       "title": "Tags",

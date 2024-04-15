@@ -9,6 +9,8 @@ import { TagsFormModule } from './components/tags-form/tags-form.module';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { BegoModalModule } from '@begomx/ui-components';
 
 @NgModule({
   imports: [
@@ -22,7 +24,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDialogModule,
     ReactiveFormsModule,
     BegoAlertModule,
-    BegoIconsModule
+    BegoIconsModule,
+    FormsModule,
+    BegoModalModule
   ],
   declarations: [TagsComponent, SendMessageModalComponent],
   providers: [DatePipe]
