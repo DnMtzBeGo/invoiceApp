@@ -38,6 +38,7 @@ import { Router } from '@angular/router';
 })
 export class TimeoutInterceptor implements HttpInterceptor {
   private alertDisplayed: boolean = false;
+  loaderRequests = 0;
 
   constructor(
     private router: Router,
@@ -60,6 +61,7 @@ export class TimeoutInterceptor implements HttpInterceptor {
     if (request.method !== 'GET') {
       let showLoader = request.params.get('loader');
       if (showLoader === 'true') {
+        this.loaderRequests += 1;
         document.getElementById('loader')?.classList?.add('show-loader');
       }
       return next.handle(request).pipe(
@@ -90,10 +92,12 @@ export class TimeoutInterceptor implements HttpInterceptor {
         }),
         finalize(() => {
           if (showLoader === 'true') {
+            this.loaderRequests -= 1;
+
             setTimeout(() => {
-              document
-                .getElementById('loader')
-                ?.classList?.remove('show-loader');
+              if (!this.loaderRequests) {
+                document.getElementById('loader')?.classList?.remove('show-loader');
+              }
             }, 0);
           }
         })

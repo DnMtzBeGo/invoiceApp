@@ -1,14 +1,14 @@
-<section class="menu" [ngClass]="{ open: menuIsOpen }">
+<section class="menu" [ngClass]="{ open: menuIsOpen }" *ngIf="primeService.loaded.isStopped">
   <div class="menu-options">
     <div class="logo-container">
       <div>
         <img [src]="logo" class="logo" />
       </div>
-      <!-- <bego-button class="icon icon-bego-text"></bego-button> -->
+      <!-- <app-button class="icon icon-bego-text"></app-button> -->
     </div>
 
     <div class="menu-option" [ngClass]="{ selected: router.url == '/home' }" (click)="goTo('home')">
-      <bego-button class="btn-menu icon icon-home icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-home icon-only"></app-button>
       {{ 'menu.home' | translate }}
     </div>
 
@@ -17,12 +17,12 @@
       [ngClass]="{ selected: router.url == '/drafts' }"
       (click)="goTo('drafts')"
     >
-      <bego-button class="btn-menu icon icon-drafts icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-drafts icon-only"></app-button>
       {{ "menu.home" | translate }}
     </div> -->
 
     <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/fleet') }" (click)="goTo('fleet')">
-      <bego-button class="btn-menu icon icon-fleet icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-fleet icon-only"></app-button>
       {{ 'menu.fleet' | translate }}
     </div>
 
@@ -31,7 +31,7 @@
       [ngClass]="{ selected: router.url == '/calendar' }"
       (click)="goTo('calendar')"
     >
-      <bego-button class="btn-menu icon icon-calendar1 icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-calendar1 icon-only"></app-button>
       {{ "menu.calendar" | translate }}
     </div> -->
 
@@ -40,28 +40,33 @@
       [ngClass]="{ selected: router.url == '/drafts' }"
       (click)="goTo('drafts')"
     >
-      <bego-button class="btn-menu icon icon-drafts icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-drafts icon-only"></app-button>
       {{ "menu.drafts" | translate }}
     </div> -->
     <div class="menu-option" [ngClass]="{ selected: router.url == '/history' }" (click)="goTo('history')">
-      <bego-button class="btn-menu icon icon-history icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-history icon-only"></app-button>
       {{ 'menu.history' | translate }}
     </div>
     <div class="menu-option" [ngClass]="{ selected: router.url == '/payments' }" (click)="goTo('payments')">
-      <bego-button class="btn-menu icon icon-invoice icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-invoice icon-only"></app-button>
       {{ 'menu.payments' | translate }}
     </div>
-    <!-- <bego-button class="btn-menu icon icon-referals" (click)="goTo('referals')"></bego-button> -->
+    <!-- <app-button class="btn-menu icon icon-referals" (click)="goTo('referals')"></app-button> -->
     <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/invoice') }" (click)="goTo('invoice')">
-      <bego-button class="btn-menu icon icon-invoices icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-invoices icon-only"></app-button>
       {{ 'menu.invoice' | translate }}
+    </div>
+
+    <div class="menu-option" *ngIf="primeService.isPrime" [ngClass]="{ selected: router.url.startsWith('/tags') }" (click)="goTo('tags')">
+      <bego-icon icon="begon-tag ui-icon"></bego-icon>
+      {{ 'menu.tags' | translate }}
     </div>
     <!-- <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/contact-support' }"
       (click)="goTo('contact-support')"
     >
-      <bego-button class="btn-menu icon icon-chat icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-chat icon-only"></app-button>
       {{ "menu.support" | translate }}
     </div> -->
     <div class="separator"></div>
@@ -70,17 +75,17 @@
       [ngClass]="{ selected: router.url == '/faq' }"
       (click)="goTo('faq')"
     >
-      <bego-button class="btn-menu icon icon-faqs icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-faqs icon-only"></app-button>
       {{ "menu.faq" | translate }}
     </div> -->
     <div class="menu-option" (click)="terms()">
-      <bego-button class="btn-menu icon icon-terms icon-only"></bego-button>
+      <app-button class="btn-menu icon icon-terms icon-only"></app-button>
       {{ 'menu.terms-conditions' | translate }}
     </div>
 
     <div class="menu-option logout" (click)="logout()">
       <div style="overflow: hidden; display: flex; align-items: center; margin-right: 10px">
-        <bego-button class="btn-menu icon icon-logout icon-only"></bego-button>
+        <app-button class="btn-menu icon icon-logout icon-only"></app-button>
         {{ 'menu.log-out' | translate }}
       </div>
     </div>

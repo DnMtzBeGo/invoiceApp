@@ -8,6 +8,16 @@
     ]"
   >
     <div *ngIf="!haveFleetMembers">
+      <div class="fleet-type" *ngIf="isPrime">
+        <h3>{{ 'location.title' | translate }}</h3>
+        <bego-button-toggle
+          [noPadding]="true"
+          [enabled]="orderType === orderTypeList[1].value"
+          [first]="orderTypeList[0]"
+          [second]="orderTypeList[1]"
+          (statusChanged)="setOrderType($event)"
+          ></bego-button-toggle>
+      </div>
       <div class="directions" [ngClass]="hideMap ? 'hide-line' : ''">
         <div
           class="input-container"
@@ -18,11 +28,10 @@
             #pickup
             type="text"
             [(ngModel)]="autocompletePickup.input"
-            (keyup)="UpdateSearchResultsPickup($event)"
-            (keydown)="selectFirstResult($event, selectSearchResultPickup, autocompleteItemsPickup)"
+            (input)="UpdateSearchResultsPickup($event)"
+            (keydown.enter)="selectSearchResultPickup(autocompleteItemsPickup[0])"
             [placeholder]="'location.placeholder' | translate"
             (focusin)="activeInput = 'pickup'"
-            (focusout)="activeInput = ''"
           />
           <i
             class="icon icon-close"
@@ -39,11 +48,10 @@
             #dropoff
             type="text"
             [(ngModel)]="autocompleteDropoff.input"
-            (keyup)="UpdateSearchResultsDropoff($event)"
-            (keydown)="selectFirstResult($event, selectSearchResultDropoff, autocompleteItemsDropoff)"
+            (input)="UpdateSearchResultsDropoff($event)"
+            (keydown.enter)="selectSearchResultDropoff(autocompleteItemsDropoff[0])"
             [placeholder]="'location.placeholder' | translate"
             (focusin)="activeInput = 'dropoff'"
-            (focusout)="activeInput = ''"
           />
           <i
             class="icon icon-close"
@@ -54,46 +62,46 @@
       </div>
       <!-- <div class="saved-locations">
         <div class="container-buttons">
-            <bego-button class="btn-black icon icon-home" text="Home"></bego-button>
-            <bego-button class="btn-black icon icon-work" text="Work"></bego-button>
+            <app-button class="btn-black icon icon-home" text="Home"></app-button>
+            <app-button class="btn-black icon icon-work" text="Work"></app-button>
         </div>
-        <bego-button class="btn-list" text="My Saved Locations"></bego-button>
+        <app-button class="btn-list" text="My Saved Locations"></app-button>
     </div> -->
-      <div
-        class="list-address-container"
-        [hidden]="
-          (autocompleteItemsDropoff.length == 0 ||
-            autocompleteItemsPickup.length !== 0) &&
-          activeInput != 'dropoff'
+      <button
+        class="item-favorites"
+        *ngIf="!savedLocations.show && (!pickupSelected || !dropoffSelected)"
+        (click)="showFavoriteLocations()">
+        <div class="icon"></div>
+        {{ 'saved-locations.my-locations' | translate }}
+      </button>
+
+      <button
+        *ngIf="!savedLocations.show && (!pickupSelected || !dropoffSelected)"
+        class="item-pin"
+        (click)="setLocationPin(
+          selectSearchResultPickup,
+          locations.pickupLat &&
+            locations.pickupLng && {
+              lat: locations.pickupLat,
+              lng: locations.pickupLng
+            }
+          )
         "
       >
+        <div class="icon"></div>
+        {{ "location.label_pin" | translate }}
+      </button>
+
+      <div class="list-address-container">
         <div
-          class="item-pin"
-          (mousedown)="
-            setLocationPin(
-              selectSearchResultDropoff,
-              locations.dropoffLat &&
-                locations.dropoffLng && {
-                  lat: locations.dropoffLat,
-                  lng: locations.dropoffLng
-                }
-            )
-          "
+          *ngFor="let item of activeInput === 'pickup' ? autocompleteItemsPickup : autocompleteItemsDropoff"
+          (click)="activeInput === 'pickup' ? selectSearchResultPickup(item) : selectSearchResultDropoff(item)"
         >
           <div class="item-location">
-            <div class="list-icon-pin"></div>
-            <div class="list-map">{{ "location.label_pin" | translate }}</div>
-          </div>
-        </div>
-        <div
-          *ngFor="let item of autocompleteItemsDropoff"
-          (click)="selectSearchResultDropoff(item)"
-        >
-          <div class="item-location">
-            <div class="list-icon-address">
+            <div class="list-icon-address" (click)="!savedLocations.isSaved(item) && savedLocations.openModal(item)">
               <img
                 [src]="
-                  savedPlaces?.has(item.place_id)
+                  savedLocations.isSaved(item)
                     ? '/assets/images/maps/marker-fav-on.svg'
                     : '/assets/images/maps/marker-fav-off.svg'
                 "
@@ -107,58 +115,46 @@
           </div>
         </div>
       </div>
-      <div
-        class="list-address-container"
-        [hidden]="
-          (autocompleteItemsPickup.length == 0 ||
-            autocompleteItemsDropoff.length !== 0) &&
-          activeInput != 'pickup'
-        "
-      >
-        <div
-          detail="false"
-          class="item-pin"
-          (mousedown)="
-            setLocationPin(
-              selectSearchResultPickup,
-              locations.pickupLat &&
-                locations.pickupLng && {
-                  lat: locations.pickupLat,
-                  lng: locations.pickupLng
-                }
-            )
-          "
-        >
-          <div class="item-location">
-            <div class="list-icon-pin"></div>
-            <div class="list-map">{{ "location.label_pin" | translate }}</div>
-          </div>
+      <div class="favorites-menu" *ngIf="savedLocations.show && (!pickupSelected || !dropoffSelected)">
+        <div class="header">
+          <h3 class="title">{{ 'saved-locations.my-locations' | translate }}</h3>
+          <input
+            type="text"
+            [placeholder]="'saved-locations.search' | translate"
+            [ngModel]="savedLocations.filterInput | async"
+            (ngModelChange)="savedLocations.filterInput.next($event)"
+          >
         </div>
-        <div
-          *ngFor="let item of autocompleteItemsPickup"
-          (click)="selectSearchResultPickup(item)"
-        >
-          <div class="item-location">
-            <div
-              class="list-icon-address"
-              (click)="togglePlace(item.place_id, $event)"
-            >
-              <img
-                [src]="
-                  savedPlaces?.has(item.place_id)
-                    ? '/assets/images/maps/marker-fav-on.svg'
-                    : '/assets/images/maps/marker-fav-off.svg'
-                "
-                alt="Location marker icon"
-              />
-            </div>
-            <div class="list-address">
-              <span>{{ item.description | splitGoogleAddress }},</span>
-              {{ item.description | splitGoogleAddressSecond }}
-            </div>
+
+        <div class="item" *ngFor="let location of savedLocations.locations; index as i" (click)="pickSavedLocation(location)">
+          <div class="icon"></div>
+
+          <div class="location">
+            <div class="alias">{{ location.name }}</div>
+            <div class="address">{{ location.address }}</div>
           </div>
+
+          <button class="action-btn" [matMenuTriggerFor]="menu" #menuTrigger (click)="$event.stopPropagation()">
+            <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
+          </button>
+
+          <mat-menu #menu="matMenu" class="brand-menu-1">
+            <button mat-menu-item class="menu-option" (click)="savedLocations.openModal(location)">
+              <bego-icon icon="begon-edit-fintech"></bego-icon>
+              <span>{{ 'saved-locations.opt-edit' | translate }}</span>
+            </button>
+            <button mat-menu-item class="menu-option" (click)="savedLocations.remove(location)">
+              <bego-icon icon="begon-trash1"></bego-icon>
+              <span>{{ 'saved-locations.opt-delete' | translate }}</span>
+            </button>
+          </mat-menu>
         </div>
+
+        <bego-button size="small" class="btn-back" [activated]="true" (click)="savedLocations.show = false">
+          {{'saved-locations.btn-back' | translate}}
+        </bego-button>
       </div>
+
       <div class="list-address-container" *ngIf="invalidAddressPickup">
         <!-- <div detail='false' >
           <div class='item-location'>
@@ -250,114 +246,169 @@
               ></timepicker>
             </div>
 
-            <div class="eta-container">
-              <p>{{ "home.fleet-assignment.aprox-time" | translate }}</p>
-              <p>{{ aproxETA }} hrs</p>
-            </div>
+            <ng-container *ngIf="orderType !== 'OCL'">
+              <div class="eta-container">
+                <p>{{ "home.fleet-assignment.aprox-time" | translate }}</p>
+                <p>{{ aproxETA }} hrs</p>
+              </div>
 
-            <div class="cp-toggle-container">
-              <p>{{ "home.fleet-assignment.cp-order" | translate }}</p>
-              <mat-slide-toggle (change)="orderWithCP()" [checked]="userWantCP">
-              </mat-slide-toggle>
-            </div>
+              <div class="cp-toggle-container">
+                <p>{{ "home.fleet-assignment.cp-order" | translate }}</p>
+                <mat-slide-toggle (change)="orderWithCP()" [checked]="userWantCP">
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
           </form>
         </div>
       </div>
 
       <div class="fleet-info-container" *ngIf="isDatesSelected">
-        <div class="fleet-drivers-row">
-          <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
-          <div class="drivers-container">
-            <ng-container *ngFor="let driver of drivers; let i = index">
+        <ng-container *ngIf="orderType === 'OCL'; else notOcl">
+          <div class="fleet-drivers-row">
+            <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
+            <div class="drivers-container">
               <app-circular-avatar
+                *ngFor="let driver of drivers.slice(0, 4)"
                 [data]="driver"
-                [userWantCP]="userWantCP"
                 fleetMember="drivers"
-                *ngIf="i < 4"
                 (click)="selectMembersForOrder(driver, 'drivers')"
               >
               </app-circular-avatar>
-            </ng-container>
-            <div
-              class="rest-of-members"
-              *ngIf="drivers.length > 4"
-              (click)="showFleetContainer('drivers')"
-            >
-              <p>+{{ drivers.length - 4 }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="fleet-trucks-row">
-          <p>{{ "home.fleet-assignment.available-trucks" | translate }}</p>
-          <div class="trucks-container">
-            <ng-container *ngFor="let truck of trucks; let i = index">
-              <app-circular-avatar
-                [data]="truck"
-                [userWantCP]="userWantCP"
-                fleetMember="trucks"
-                *ngIf="i < 4"
-                (click)="selectMembersForOrder(truck, 'trucks')"
+              <div
+                class="rest-of-members"
+                *ngIf="drivers.length > 4"
+                (click)="showFleetContainer('drivers')"
               >
-              </app-circular-avatar>
-            </ng-container>
-            <div
-              class="rest-of-members"
-              *ngIf="trucks.length > 4"
-              (click)="showFleetContainer('trucks')"
-            >
-              <p>+{{ trucks.length - 4 }}</p>
+                <p>+{{ drivers.length - 4 }}</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="fleet-trailers-row">
-          <p>{{ "home.fleet-assignment.available-trailers" | translate }}</p>
-          <div class="trailers-container">
-            <ng-container *ngFor="let trailer of trailers; let i = index">
-              <app-circular-avatar
-                [data]="trailer"
-                [userWantCP]="userWantCP"
-                fleetMember="trailers"
-                *ngIf="i < 4"
-                (click)="selectMembersForOrder(trailer, 'trailers')"
-              >
-              </app-circular-avatar>
-            </ng-container>
-            <div
-              class="rest-of-members"
-              *ngIf="trailers.length > 4"
-              (click)="showFleetContainer('trailers')"
-            >
-              <p>+{{ trailers.length - 4 }}</p>
+          <div class="fleet-trucks-row" *ngIf="walkingData">
+            <p>{{ 'orders.prime.no-vehicle' | translate }}</p>
+            <div class="drivers-container">
+              <app-circular-avatar fleetMember="vehicle" [data]="walkingData" (click)="selectMembersForOrder(walkingData, 'vehicle')"></app-circular-avatar>
             </div>
           </div>
-        </div>
+
+          <div class="fleet-trucks-row" *ngFor="let vehicleGroup of vehicle">
+            <p>{{ vehicleGroup.translations?.[lang] || vehicleGroup.name }}</p>
+
+            <div class="drivers-container">
+              <ng-container></ng-container>
+              <app-circular-avatar
+                *ngFor="let vehicle of vehicleGroup.vehicles?.slice(0, 4)"
+                fleetMember="vehicle"
+                [data]="vehicle"
+                (click)="selectMembersForOrder(vehicle, 'vehicle')"
+              ></app-circular-avatar>
+              <div
+                class="rest-of-members"
+                *ngIf="vehicleGroup.vehicles?.length > 4"
+                (click)="showFleetContainer('vehicle')"
+              >
+                <p>+{{ vehicleGroup.vehicles.length - 4 }}</p>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+
+        <ng-template #notOcl>
+          <div class="fleet-drivers-row">
+            <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
+            <div class="drivers-container">
+              <ng-container *ngFor="let driver of drivers; let i = index">
+                <app-circular-avatar
+                  [data]="driver"
+                  [userWantCP]="userWantCP"
+                  fleetMember="drivers"
+                  *ngIf="i < 4"
+                  (click)="selectMembersForOrder(driver, 'drivers')"
+                >
+                </app-circular-avatar>
+              </ng-container>
+              <div
+                class="rest-of-members"
+                *ngIf="drivers.length > 4"
+                (click)="showFleetContainer('drivers')"
+              >
+                <p>+{{ drivers.length - 4 }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="fleet-trucks-row">
+            <p>{{ "home.fleet-assignment.available-trucks" | translate }}</p>
+            <div class="trucks-container">
+              <ng-container *ngFor="let truck of trucks; let i = index">
+                <app-circular-avatar
+                  [data]="truck"
+                  [userWantCP]="userWantCP"
+                  fleetMember="trucks"
+                  *ngIf="i < 4"
+                  (click)="selectMembersForOrder(truck, 'trucks')"
+                >
+                </app-circular-avatar>
+              </ng-container>
+              <div
+                class="rest-of-members"
+                *ngIf="trucks.length > 4"
+                (click)="showFleetContainer('trucks')"
+              >
+                <p>+{{ trucks.length - 4 }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="fleet-trailers-row">
+            <p>{{ "home.fleet-assignment.available-trailers" | translate }}</p>
+            <div class="trailers-container">
+              <ng-container *ngFor="let trailer of trailers; let i = index">
+                <app-circular-avatar
+                  [data]="trailer"
+                  [userWantCP]="userWantCP"
+                  fleetMember="trailers"
+                  *ngIf="i < 4"
+                  (click)="selectMembersForOrder(trailer, 'trailers')"
+                >
+                </app-circular-avatar>
+              </ng-container>
+              <div
+                class="rest-of-members"
+                *ngIf="trailers.length > 4"
+                (click)="showFleetContainer('trailers')"
+              >
+                <p>+{{ trailers.length - 4 }}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
       </div>
 
-      <!--  <bego-button 
+      <!--  <app-button 
         *ngIf="canGoToSteps"
         (click)="openNewOrderMenu()"
         class="btn-yellow"
         [text]="'location.btn-order' | translate">
-      </bego-button> -->
+      </-button> -->
 
-      <bego-button
+      <app-button
         *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
         [disabled]="!pickupSelected || !dropoffSelected || isDatesSelected"
         (click)="openNewOrderMenu()"
         class="btn-yellow"
         [text]="'location.btn-order' | translate"
       >
-      </bego-button>
+      </app-button>
 
-      <bego-button
+      <app-button
         *ngIf="hideMap"
         (click)="cancelChangeLocations()"
         class="btn-yellow cancel-locations"
         [text]="'orders.btn-cancel' | translate"
       >
-      </bego-button>
+      </app-button>
     </div>
 
     <div *ngIf="haveFleetMembers" class="cant-create-orders">
@@ -384,12 +435,12 @@
       ></app-member-card-selection>
     </ng-container>
 
-    <bego-button
+    <app-button
       *ngIf="showFleetMembersContainer"
       class="btn-yellow select-fleet-members"
       text="Seleccionar"
       (click)="closeFleetMembers(titleFleetMembers)"
     >
-    </bego-button>
+    </app-button>
   </app-fleet-members>
 </section>

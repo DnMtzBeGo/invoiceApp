@@ -1,0 +1,99 @@
+.app-prime-card {
+  position: relative;
+  padding: 24px 36px;
+  background: #0a0e12;
+  box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
+  border-radius: 8px;
+  --avatar-size: 100px;
+  --avatar-rounded: 23px;
+
+  > .mat-icon-button {
+    position: absolute;
+    right: 10px;
+    transform: translateY(-10px);
+  }
+
+  > .avatar {
+    margin-left: auto;
+    margin-right: auto;
+    width: var(--avatar-size);
+    max-width: var(--avatar-size);
+    height: var(--avatar-size);
+    max-height: var(--avatar-size);
+    border-radius: var(--avatar-rounded);
+    background: rgba(41, 49, 61, 0.24);
+    border: 1px solid #151a1f;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+
+    .avatar-1 {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: scale(0.85);
+      border-radius: var(--avatar-rounded);
+      background: #252d34;
+      border: 1px solid #1c232a;
+      box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+
+      .avatar-color {
+        position: absolute;
+        padding: 4px 6px;
+        width: 20px;
+        max-width: 20px;
+        height: 10px;
+        max-height: 10px;
+        font-family: 'Avenir';
+        font-style: normal;
+        font-weight: 300;
+        font-size: 9px;
+        display: flex;
+        align-items: center;
+        text-align: justify;
+        border-radius: 8px;
+        right: 0;
+        bottom: 5px;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        transform: scale(0.9);
+        border-radius: var(--avatar-rounded);
+        border: 2px solid #10161c;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+  }
+
+  > .brand {
+    margin-top: 18px;
+    min-height: 44px;
+    font-family: 'Avenir';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 16px;
+    text-align: center;
+    color: #ededed;
+  }
+
+  > .stats {
+    margin-top: 18px;
+    font-family: 'Avenir';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #e8e8e8;
+    text-align: center;
+
+    .dot {
+      font-weight: 700;
+      margin: 0 8px;
+    }
+  }
+
+  > .actions {
+    margin-top: 24px;
+    text-align: center;
+  }
+}

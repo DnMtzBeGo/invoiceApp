@@ -15,14 +15,14 @@
 
 
   <!-- photos-->
-  <div class="evidence-container" *ngIf="orderData?.pictures.length">
+  <div class="evidence-container" *ngIf="orderData?.evidence?.pictures.length">
 
     <div class="evidence-title">
       {{'history.history_detail.photos' | translate}}
     </div>
     
     <div class="photos-wrapper">
-      <div class="thumbnail" *ngFor="let photo of orderData?.pictures ">
+      <div class="thumbnail" *ngFor="let photo of orderData?.evidence?.pictures">
         <img [src]="photo" (click)="openPhoto(photo)">
       </div>
     </div>

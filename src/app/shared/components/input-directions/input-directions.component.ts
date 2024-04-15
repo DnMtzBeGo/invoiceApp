@@ -31,6 +31,8 @@ import { HomeComponent } from "../../../pages/home/home.component";
 import { AlertService } from "src/app/shared/services/alert.service";
 import { PinComponent } from "src/app/shared/components/pin/pin.component";
 import * as moment from "moment";
+import { NotificationsService } from "../../services/notifications.service";
+import { SavedLocationsService } from "../../services/saved-locations.service";
 
 declare var google: any;
 
@@ -45,7 +47,6 @@ export class InputDirectionsComponent implements OnInit {
   @ViewChild("btnOrder", { static: false }) public btnOrder!: ElementRef;
 
   @Input("typeMap") public typeMap?: string;
-  @Input("savedPlaces") savedPlaces: Set<string> | null = new Set();
   @Input() drafts: Array<object> = [];
   @Input() haveFleetMembers: boolean = false;
   @Input() haveFleetMembersErrors: Array <string> = [];
@@ -53,6 +54,8 @@ export class InputDirectionsComponent implements OnInit {
   @Output("showNewOrderCard") showNewOrderCard = new EventEmitter<void>();
   @Output("updateLocations") updateLocations =
     new EventEmitter<GoogleLocation>();
+  @Output("updateLocation") updateLocation =
+    new EventEmitter();
   @Output("updateDatepickup") updateDatepickup = new EventEmitter<number>();
   @Output("updateDropOffDate") updateDropOffDate = new EventEmitter<number>();
   @Output("inputPlace") inputPlaceEmmiter = new EventEmitter<
@@ -61,6 +64,13 @@ export class InputDirectionsComponent implements OnInit {
   @Output() sendAssignedMermbers = new EventEmitter<any>();
   @Output() sendUserWantCP = new EventEmitter<any>();
 
+  @Input() orderType: string;
+  @Output() orderTypeChange = new EventEmitter<string>();
+
+  @Input() isPrime = false;
+
+  lang = 'en';
+  langListener = null;
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
   events: string = "DD / MM / YY";
@@ -75,6 +85,8 @@ export class InputDirectionsComponent implements OnInit {
   drivers: Array<object> = [];
   trucks: Array<object> = [];
   trailers: Array<object> = [];
+  vehicle: Array<object> = [];
+  walkingData: any = null;
   selectMembersToAssign: any = {};
   fleetData: any;
   isDatesSelected: boolean = false;
@@ -89,6 +101,11 @@ export class InputDirectionsComponent implements OnInit {
   public provisionalPickupLocation: string = "";
   public provisionalDropoffLocation: string = "";
   public userWantCP: boolean = false;
+
+  orderTypeList = [
+    { label: 'FTL', value: 'FTL' },
+    { label: 'OCL', value: 'OCL' },
+  ];
 
   orderForm = new FormGroup({
     datepickup: new FormControl(this.events, Validators.required),
@@ -120,12 +137,9 @@ export class InputDirectionsComponent implements OnInit {
   autocompleteItemsPickup: any[] = [];
   GoogleAutocomplete: any;
 
-  savedLocationsOthers: any = [];
-  activeInput: string = "";
+  activeInput: 'pickup' | 'dropoff' = 'pickup';
   activeHome: boolean = false;
   activeWork: boolean = false;
-  selectedPickup: boolean = false;
-  selectedDropoff: boolean = false;
   invalidAddressPickup: boolean = false;
   invalidAddressDropoff: boolean = false;
   userCanCreateOrders: boolean = false;
@@ -171,9 +185,11 @@ export class InputDirectionsComponent implements OnInit {
     private googlemaps: GoogleMapsService,
     private cdr: ChangeDetectorRef,
     private alertservice: AlertService,
+    private notificationService: NotificationsService,
     private translateService: TranslateService,
     @Inject(HomeComponent) public parent: HomeComponent,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    public savedLocations: SavedLocationsService,
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.subscription = this.googlemaps.previewMapStatus.subscribe((data) => {
@@ -190,9 +206,24 @@ export class InputDirectionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.canCreateOrders();
+
+    this.orderTypeList[1].label = this.translateService.instant('fleet.prime.ocl');
+
+    this.langListener = this.translateService.onLangChange.subscribe((lang) => {
+      this.lang = lang.lang;
+
+      this.orderTypeList[1].label = this.translateService.instant('fleet.prime.ocl');
+
+      if (this.walkingData) {
+        this.walkingData.attributes.vehicle_number = this.translateService.instant('orders.prime.walking');
+      }
+    });
+
+    this.savedLocations.loadLocations();
   }
 
   ngOnDestroy(): void {
+    this.langListener.unsubscribe();
     this.subscription.unsubscribe();
   }
 
@@ -227,110 +258,104 @@ export class InputDirectionsComponent implements OnInit {
     }
   }
 
-  selectSearchResultPickup = async (item: any) => {
+  async selectSearchResultPickup(item: any) {
+    if (!item) return;
+
     if (this.parent.showOrderDetails) {
       this.showMapPreview = true;
       this.dropoffSelected = true;
     }
 
-    const placeId = item.place_id;
-    (
-      await this.auth.apiRest(
-        `{ "place_id" : "${placeId}" }`,
-        "orders/place_details"
-      )
-    ).subscribe(
-      async (res) => { 
-        this.pickupSelected = true;
-        this.autocompletePickup.input = res.result.address;
-        this.locations.pickup = res.result.address;
-        this.locations.pickupLat = res.result.location.lat;
-        this.locations.pickupLng = res.result.location.lng;
-        this.locations.pickupPostalCode = parseInt(res.result.zip_code);
-        this.autocompleteItemsPickup = [];
-        this.startMarker.position = new google.maps.LatLng(
-          this.locations.pickupLat,
-          this.locations.pickupLng
-        );
-        this.locations.place_id_pickup = placeId;
-        this.selectedPickup = true;
-        if (this.autocompleteDropoff.input !== "") {
-          this.googlemaps.updateDataLocations(this.locations);
-          this.updateLocations.emit(this.locations);
-          this.hideMap = false;
-        } else {
-          this.searchDropOff.nativeElement.focus();
-        }
+    const payload = {
+      place_id: item.place_id,
+    };
+
+    (await this.auth.apiRest(JSON.stringify(payload), 'orders/place_details')).subscribe({
+      next: ({ result }) => {
+        this.setAutoCompletePickup(item.place_id, result);
       },
-      async (res) => {
+      error: () => {
         this.ClearAutocompletePickup();
-        console.log("Fetch Error", res.error);
+        this.notificationService.showErrorToastr(this.translateService.instant('location.txt_invalidDriection'));
       }
-    );
+    });
   };
 
-  selectSearchResultDropoff = async (item: any) => {
+  async selectSearchResultDropoff(item: any) {
+    if (!item) return;
+
     if (this.parent.showOrderDetails) {
       this.showMapPreview = true;
       this.pickupSelected = true;
     }
-    const placeId = item.place_id;
-    (
-      await this.auth.apiRest(
-        `{ "place_id" : "${placeId}" }`,
-        "orders/place_details"
-      )
-    ).subscribe(
-      async (res) => {
-        this.dropoffSelected = true;
-        // console.log(res);
-        this.autocompleteDropoff.input = res.result.address;
-        this.locations.dropoff = res.result.address;
-        this.locations.dropoffLat = res.result.location.lat;
-        this.locations.dropoffLng = res.result.location.lng;
-        this.locations.dropoffPostalCode = parseInt(res.result.zip_code);
-        this.autocompleteItemsDropoff = [];
-        this.endMarker.position = new google.maps.LatLng(
-          this.locations.dropoffLat,
-          this.locations.dropoffLng
-        );
-        this.locations.place_id_dropoff = placeId;
-        this.selectedDropoff = true;
-        if (this.autocompletePickup.input !== "") {
-          this.googlemaps.updateDataLocations(this.locations);
-          this.updateLocations.emit(this.locations);
-          this.hideMap = false;
-        } else {
-          this.searchPickup.nativeElement.focus();
-        }
+
+    const payload = {
+      place_id: item.place_id,
+    };
+
+    (await this.auth.apiRest(JSON.stringify(payload), 'orders/place_details')).subscribe({
+      next: ({ result }) => {
+        this.setAutoCompleteDropoff(item.place_id, result);
       },
-      async (res) => {
+      error: () => {
         this.ClearAutocompleteDropoff();
-        console.log("Fetch Error", res.error);
+        this.notificationService.showErrorToastr(this.translateService.instant('location.txt_invalidDriection'));
       }
-      );
+    });
   };
 
-  selectFirstResult(event, selectFuncion, items) {
-    if (event.key != 'Enter' || !items?.[0]) return;
-    event.preventDefault();
-    selectFuncion.call(this, items[0]);
+  setAutoCompletePickup(placeId: string, data: any) {
+    this.pickupSelected = true;
+    this.autocompletePickup.input = data.address;
+    this.locations.pickup = data.address;
+    this.locations.pickupLat = data.location.lat;
+    this.locations.pickupLng = data.location.lng;
+    this.locations.pickupPostalCode = parseInt(data.zip_code);
+    this.autocompleteItemsPickup = [];
+    this.locations.place_id_pickup = placeId;
+
+    this.startMarker.position = new google.maps.LatLng(
+      this.locations.pickupLat,
+      this.locations.pickupLng
+    );
+
+    this.handleUpdateLocations();
   }
 
-  focusOutInputPickup() {
-    this.activeInput = "pickup";
-    if (this.locations.pickupPostalCode < 1) {
-      this.autocompletePickup.input = "";
-      this.invalidAddressPickup = false;
-    }
+  setAutoCompleteDropoff(placeId: string, data: any) {
+    this.dropoffSelected = true;
+    this.autocompleteDropoff.input = data.address;
+    this.locations.dropoff = data.address;
+    this.locations.dropoffLat = data.location.lat;
+    this.locations.dropoffLng = data.location.lng;
+    this.locations.dropoffPostalCode = parseInt(data.zip_code);
+    this.autocompleteItemsDropoff = [];
+    this.locations.place_id_dropoff = placeId;
+
+    this.endMarker.position = new google.maps.LatLng(
+      this.locations.dropoffLat,
+      this.locations.dropoffLng
+    );
+
+    this.handleUpdateLocations();
   }
 
-  focusOutInputDropoff() {
-    this.activeInput = "dropoff";
-    if (this.locations.dropoffPostalCode < 1) {
-      this.autocompleteDropoff.input = "";
-      this.invalidAddressDropoff = false;
+  handleUpdateLocations() {
+    this.updateLocation.emit()
+
+    if (this.autocompletePickup.input === '') {
+      this.searchPickup.nativeElement.focus();
+      return
     }
+
+    if (this.autocompleteDropoff.input === '') {
+      this.searchDropOff.nativeElement.focus();
+      return
+    }
+
+    this.googlemaps.updateDataLocations(this.locations);
+    this.updateLocations.emit(this.locations);
+    this.hideMap = false;
   }
 
   ClearAutocompleteDropoff() {
@@ -357,21 +382,10 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.pickupPostalCode = 0;
   }
 
-  closeAutoCompletePickup() {
-    this.autocompleteItemsPickup = [];
-    this.selectedPickup = false;
-    this.invalidAddressPickup = false;
-  }
-
-  closeAutoCompleteDropoff() {
-    this.autocompleteItemsDropoff = [];
-    this.selectedDropoff = false;
-    this.invalidAddressDropoff = false;
-  }
-
   UpdateSearchResultsDropoff(e: any) {
     this.showMapPreview = false;
     this.dropoffSelected = false;
+    this.savedLocations.show = false;
 
     this.autocompleteDropoff.input = e.target.value;
     if (this.autocompleteDropoff.input == "") {
@@ -403,6 +417,7 @@ export class InputDirectionsComponent implements OnInit {
   UpdateSearchResultsPickup(e: any) {
     this.showMapPreview = false;
     this.pickupSelected = false;
+    this.savedLocations.show = false;
 
     this.autocompletePickup.input = e.target.value;
     if (this.autocompletePickup.input === "") {
@@ -445,21 +460,6 @@ export class InputDirectionsComponent implements OnInit {
     this.canGoToSteps = false;
     this.changeLocations = false;
     this.hideType = "";
-  }
-
-  togglePlace(placeId: string, event: MouseEvent): void {
-    const isIconAddress = (event.target as HTMLElement)?.closest(
-      ".list-icon-address"
-    );
-
-    if (!isIconAddress) return;
-
-    event.stopPropagation();
-
-    this.inputPlaceEmmiter.emit([
-      !this.savedPlaces?.has(placeId) ? "add" : "delete",
-      placeId,
-    ]);
   }
 
   cancelChangeLocations() {
@@ -522,7 +522,12 @@ export class InputDirectionsComponent implements OnInit {
     this.isDatesSelected = true;
     this.showScroll = true;
 
-    this.getETA(this.locations);
+    if (this.orderType === 'OCL') {
+      this.getFleetListDetails();
+    } else {
+      this.getETA(this.locations);
+    }
+
     this.updateDatepickup.emit(this.fromDate);
   }
 
@@ -558,10 +563,11 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   async getFleetListDetails() {
-    let requestAvailavilityFleetMembers = {
+    const requestAvailavilityFleetMembers = {
       fromDate: this.fromDate,
       toDate: this.toDate,
     };
+
     (
       await this.auth.apiRest(
         JSON.stringify(requestAvailavilityFleetMembers),
@@ -571,8 +577,8 @@ export class InputDirectionsComponent implements OnInit {
     ).subscribe(
       ({ result }) => {
         this.canGoToSteps = false;
-        this.selectMembersToAssign = {};
-        this.drivers = result.drivers;
+        this.selectMembersToAssign.trucks = null;
+        this.selectMembersToAssign.trailers = null;
         this.trucks = result.trucks;
         this.trailers = result.trailers;
       },
@@ -580,6 +586,55 @@ export class InputDirectionsComponent implements OnInit {
         console.log("Something went wrong", error.error);
       }
     );
+
+    this.getDrivers();
+    this.getVehicles();
+  }
+
+  async getDrivers() {
+    const q = new URLSearchParams();
+    q.set('fromDate', String(this.fromDate));
+    q.set('toDate', String(this.toDate));
+
+    const req = await this.auth.apiRestGet(`orders/drivers_availability?${q.toString()}`, { apiVersion: 'v1.1' });
+    const { result } = await req.toPromise();
+
+    this.selectMembersToAssign.drivers = null;
+    this.drivers = result;
+  }
+
+  async getVehicles() {
+    const q = new URLSearchParams();
+    q.set('fromDate', String(this.fromDate));
+    q.set('toDate', String(this.toDate));
+
+    const { result: categories } = await (await this.auth.apiRestGet('orders/vehicles', { apiVersion: 'v1.1' })).toPromise();
+
+    const requests = categories.map(async (group) => {
+      if (!group.has_vehicles) return;
+
+      const { result: vehicles } = await (await this.auth.apiRestGet(`orders/vehicles/${group._id}?${q.toString()}`, { apiVersion: 'v1.1' })).toPromise();
+
+      return {
+        name: group.name,
+        translations: group.translations,
+        vehicles
+      };
+    });
+
+    const vehicles = (await Promise.allSettled(requests))
+      .filter((data) => data.status === 'fulfilled' && data.value)
+      .map((data: any) => data.value);
+
+    this.vehicle = vehicles;
+    this.selectMembersToAssign.vehicle = null;
+    this.walkingData = {
+      availability: true,
+      photo: '/assets/images/walking.svg',
+      attributes: { vehicle_number: this.translateService.instant('orders.prime.walking') },
+      isSelected: false,
+      _id: null,
+    }
   }
 
   private async canCreateOrders() {
@@ -592,7 +647,6 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   public selectMembersForOrder(member: any, typeMember: keyof this) {
-    let obj = this[typeMember] as any;
     if (this.userWantCP && !member.can_stamp) {
       return this.showAlert(
         this.translateService.instant(
@@ -607,21 +661,15 @@ export class InputDirectionsComponent implements OnInit {
           `home.alerts.not-available-${String(typeMember)}`
         )
       );
+
+    if (this.selectMembersToAssign[typeMember]) {
+      this.selectMembersToAssign[typeMember].isSelected = false;
+    }
+
     member["isSelected"] = true;
     this.selectMembersToAssign[typeMember] = member;
     this.sendAssignedMermbers.emit({ ...this.selectMembersToAssign });
-    for (const [i, iterator] of obj.entries()) {
-      if (iterator._id != member._id) {
-        iterator["isSelected"] = false;
-      }
-    }
-    if (
-      this.selectMembersToAssign.hasOwnProperty("drivers") &&
-      this.selectMembersToAssign.hasOwnProperty("trucks") &&
-      this.selectMembersToAssign.hasOwnProperty("trailers")
-    ) {
-      this.canGoToSteps = true;
-    }
+    this.canGoToSteps = this.isMembersSelected();
   }
 
   public showFleetContainer(memberType: keyof this) {
@@ -712,13 +760,48 @@ export class InputDirectionsComponent implements OnInit {
       data: geocodeRequest,
       restoreFocus: false,
       autoFocus: false,
+      panelClass: 'pin-modal-container',
       backdropClass: ["brand-dialog-map"],
     });
 
     dialogRef.afterClosed().subscribe((result?) => {
       if (result?.success === true) {
-        selectCallback({ place_id: result.data.place_id });
+        selectCallback.call(this, { place_id: result.data.place_id });
       }
     });
+  }
+
+  setOrderType(data: { enabled: boolean, value: string }) {
+    this.orderTypeChange.emit(data.value);
+
+    this.canGoToSteps =
+      this.pickupSelected &&
+      this.dropoffSelected &&
+      this.fromDate &&
+      this.isMembersSelected(data.value);
+  }
+
+  isMembersSelected(type: string = this.orderType): boolean {
+    const requiredMembers = type === 'OCL' ? ['drivers', 'vehicle'] : ['drivers', 'trucks', 'trailers'];
+    return requiredMembers.every((key) => Boolean(this.selectMembersToAssign[key]));
+  }
+
+  showFavoriteLocations() {
+    this.autocompleteItemsPickup = [];
+    this.invalidAddressPickup = false;
+    this.autocompleteItemsDropoff = [];
+    this.invalidAddressDropoff = false;
+
+    this.savedLocations.show = true;
+  }
+
+  pickSavedLocation(location: any) {
+    this.savedLocations.show = true;
+
+    if (this.activeInput === 'pickup') {
+      this.selectSearchResultPickup(location);
+    } else {
+      this.selectSearchResultDropoff(location);
+    }
   }
 }

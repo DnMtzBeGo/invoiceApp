@@ -1,0 +1,91 @@
+<div class="tags-container">
+  <div class="page-header">
+    <div>
+      <h1>{{ 'tags.table.title' | translate }}</h1>
+    </div>
+    <!-- <button mat-flat-button class="brand-btn-2" (click)="openUploaderModal()">{{ 'tags.buttons.upload' | translate }}</button> -->
+  </div>
+
+  <div class="dialog-container" *ngIf="alertContent">
+    <bego-alert
+      class="alert"
+      [simple]="false"
+      [lang]="{
+        done: ('tags.delete_dialog.done' | translate),
+        cancel: ('tags.delete_dialog.cancel' | translate)
+      }"
+      (closeEmitter)="closeDeleteDialog($event)">
+      <div class="alert-content">
+        <h1 class="simple-title">{{ 'tags.delete_dialog.title' | translate }}</h1>
+        {{ alertContent }}
+      </div>
+    </bego-alert>
+  </div>
+
+  <div class="dialog-container" *ngIf="sentMessageSuccessfullyDialogContent">
+    <bego-alert
+      class="alert"
+      [simple]="true"
+      (closeEmitter)="closeSendMessageSuccessfullyDialog($event)"
+      [lang]="{
+        done: ('tags.confirm_dialog.done' | translate),
+      }"
+      [alertLang]="{
+        title: ('tags.send_message.sent_message_title' | translate),
+        subtitle: sentMessageSuccessfullyDialogContent
+      }">
+    </bego-alert>
+  </div>
+
+  <bego-table-multiple-selection
+    [loading]="loadingTableData"
+    [lang]="lang"
+    [columns]="columns"
+    [values]="tags"
+    [page]="page"
+    [actions]="actions"
+    [filter]="true"
+    [debounce]="1000"
+    [selectRowCheck]="selectedRow"
+    (filterEmitter)="filterData($event)"
+    (selectedActionEmitter)="selectingAction($event)"
+    (reloadTable)="handleReload($event)"
+    (sortColumnEmitter)="sortingTable($event)"
+    (pageChangeEmitter)="changePage($event)"
+    (actionColumn)="selectColumn($event)">
+    <div class="buttons-external">
+      <button mat-flat-button class="brand-btn-2" (click)="showTagInput = true">{{ 'tags.buttons.create' | translate }}</button>
+      <bego-modal 
+      *ngIf="showTagInput"
+      [image]="'chibi-bego'"
+      [enabledClose]="true"
+      (closeEmitter)="onModalClose($event)"
+      [activatedDone]="tagName.length >= 1"
+      [lang]="{
+        done: ('tags.confirm_dialog.done' | translate),
+      }"
+      >
+      <div class="tag-input-container">
+        <h2>{{ 'tags.form.title' | translate }}</h2>
+        <input type="text" class="input-tag" placeholder="{{ 'tags.form.tag_name_placeholder' | translate }}" [(ngModel)]="tagName">
+      </div>
+      </bego-modal>
+
+      <bego-modal 
+      *ngIf="showEditInput"
+      [image]="'chibi-bego'"
+      [enabledClose]="true"
+      (closeEmitter)="onEditClose($event, activeTagId, editedTagName)"
+      [activatedDone]="editedTagName.length >= 1"
+      [lang]="{
+        done: ('tags.confirm_dialog.done' | translate),
+      }"
+      >
+      <div class="tag-input-container">
+        <h2>{{ 'tags.form.edit_title' | translate }}</h2>
+        <input type="text" class="input-tag" placeholder="{{ 'tags.form.tag_edit_placeholder' | translate }}" [(ngModel)]="editedTagName">
+      </div>
+      </bego-modal>
+    </div>
+  </bego-table-multiple-selection>
+</div>

@@ -8,17 +8,17 @@
         </div>
         <div class="order-number">{{'history.history_detail.order' | translate }} #{{orderInfo['order_number']}}</div>
         <div class="order-date">
-          {{ orderInfo?.[selectedRow]?.startDate | date: 'dd/MM/yyyy' }}
+          {{ selectedInfo?.start_date | date: 'dd/MM/yyyy' }}
           <i class="icon icon-dot"></i>
-          {{ orderInfo?.[selectedRow]?.startDate | date: 'shortTime' }}
+          {{ selectedInfo?.start_date | date: 'shortTime' }}
           {{ selectedRow === 'dropoff'
-            ? ' - ' + (orderInfo?.[selectedRow]?.endDate | date: 'shortTime')
+            ? ' - ' + (orderInfo?.[selectedRow]?.end_date | date: 'shortTime')
             : ''
           }}
         </div>
       </div>
       <div class="edit-cn-btn-wrapper">
-        <app-edit-cn-btn *ngIf="orderInfo.user_id == orderInfo.manager?._id" [progress]="orderInfo?.stampedPercentage"
+        <app-edit-cn-btn *ngIf="orderInfo.user_id == orderInfo.manager?._id && orderInfo.type !== 'OCL'" [progress]="orderInfo?.stampedPercentage"
           [orderId]="orderInfo._id"></app-edit-cn-btn>
       </div>
 
@@ -40,7 +40,7 @@
         <div (click)="changePickupDropoff('pickup')" class="pickup-status-address">
           <div class="pickup-address">
             <p class="pickup-title"> {{'history.history_detail.pickup'| translate }}</p>
-            <p class="pickup-text-address">{{orderInfo.pickup?.address}}</p>
+            <p class="pickup-text-address">{{orderInfo.destinations?.[0]?.address}}</p>
           </div>
           <div class="pickup-status">
             <div class="pickup-status-text">
@@ -53,7 +53,7 @@
         <div (click)="changePickupDropoff('dropoff')" class="dropoff-status-address">
           <div class="dropoff-address">
             <p class="dropoff-title">{{'history.history_detail.dropoff' | translate }}</p>
-            <p class="dropoff-text-address">{{orderInfo.dropoff?.address}}</p>
+            <p class="dropoff-text-address">{{orderInfo.destinations?.[1]?.address}}</p>
           </div>
           <div class="dropoff-status">
             <div class="dropoff-status-text">
@@ -123,7 +123,7 @@
   
 
   <!-- WE ARE NOT APPLYING RULES FOR MANAGERS-->
-  <app-download-invoices #downloadInvoicesRef *ngIf="orderInfo.user_id == orderInfo.manager?._id" [orderId]="orderInfo._id"
+  <app-download-invoices #downloadInvoicesRef *ngIf="orderInfo.user_id == orderInfo.manager?._id && orderInfo.type !== 'OCL'" [orderId]="orderInfo._id"
     [orderRefNumber]="orderInfo.order_number" [pdf]="true" [xml]="true"></app-download-invoices>
 
   <app-drop-down *ngIf="selectedRow === 'pickup'" [title]=" 'history.history_detail.pickup_info_tab' | translate ">
@@ -134,9 +134,9 @@
     <app-pickup-dropoff-info title="dropoff" [orderData]="orderInfo"></app-pickup-dropoff-info>
   </app-drop-down>
 
-  <app-order-evidence *ngIf=" orderInfo?.status >= 3" [orderData]="orderInfo?.[selectedRow]" [orderId]="orderInfo?._id"
+  <app-order-evidence *ngIf=" orderInfo?.status >= 3" [orderData]="selectedInfo" [orderId]="orderInfo?._id"
     [orderStatus]="orderInfo?.status"
-    [commentsText]="selectedRow == 'pickup' ? orderInfo?.cargo?.description : orderInfo?.dropoff?.extra_notes">
+    [commentsText]="selectedRow == 'pickup' ? orderInfo?.cargo?.description : orderInfo?.destinations?.[1]?.extra_notes">
   </app-order-evidence>
 
   <div class="earnings-card" *ngIf="orderInfo.pricing" >

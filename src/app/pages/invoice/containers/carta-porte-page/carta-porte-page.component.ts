@@ -8,6 +8,7 @@ import { InfoModalComponent } from '../../modals/info-modal/info-modal.component
 import { CartaPorteInfoService } from '../../components/invoice/carta-porte/services/carta-porte-info.service';
 import { SubtiposRemolques } from '../../models/invoice/carta-porte/subtipos-remolques';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { v4 as uuidv4 } from 'uuid';
 @Component({
   selector: 'app-carta-porte-page',
   templateUrl: './carta-porte-page.component.html',
@@ -35,7 +36,9 @@ export class CartaPortePageComponent {
     public apiRestService: AuthService,
     public matDialog: MatDialog,
     private translateService: TranslateService
-  ) {}
+  ) {
+    this.cartaPorteInfoService.id_ccp = '';
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.facturaInfo?.currentValue?.carta_porte) {
@@ -56,12 +59,29 @@ export class CartaPortePageComponent {
       this.cartaPorteDisabled = false;
       // console.log('El switch se apaga', this.cartaPorteDisabled);
     }
+    this.setIDCCP(this.cartaPorteDisabled, this.facturaInfo?.carta_porte?.id_ccp);
   }
 
   public cartaPorteStatus(event: MatSlideToggleChange) {
     if (event.checked) this.cartaPorteEnabled.push('carta_porte');
     else this.cartaPorteEnabled = [];
+
     this.facturaInfo.complementos = this.cartaPorteEnabled;
+
+    this.setIDCCP(event.checked, this.facturaInfo?.carta_porte?.id_ccp);
+  }
+
+  private setIDCCP(checked: boolean, forcedValue: string = ''): void {
+    if (checked) {
+      if (!this.cartaPorteInfoService.id_ccp) this.cartaPorteInfoService.id_ccp = this.genIDCCP();
+    } else this.cartaPorteInfoService.id_ccp = null;
+
+    if (forcedValue) {
+      this.cartaPorteInfoService.id_ccp = forcedValue;
+    }
+  }
+  private genIDCCP(): string {
+    return 'CCC' + uuidv4().substring(3, 36).toUpperCase();
   }
 
   async gatherInfo(): Promise<void> {
@@ -69,6 +89,7 @@ export class CartaPortePageComponent {
     this.cartaPorteInfoService.resetCartaPorteInfo();
     this.cartaPorteInfoService.infoRecolector.next(null);
     this.facturaInfo.carta_porte = this.cartaPorteInfoService.info;
+    this.facturaInfo.carta_porte.id_ccp = this.cartaPorteInfoService.id_ccp;
 
     this.facturaInfo.carta_porte.total_dist_rec = this.facturaInfo?.carta_porte.ubicaciones
       ?.filter((e) => e.tipo_ubicacion == 'Destino')

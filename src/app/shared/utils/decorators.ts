@@ -52,8 +52,7 @@ export function reactiveComponent(cmp: any) {
 
       concat(onInit$, updateSink$)
         .pipe(takeUntil(onDestroy$))
-        .subscribe(() => cmp);
-      // .subscribe(() => markDirty(cmp));
+        .subscribe(() => cmp.cdr?.markForCheck() || cmp.cd?.markForCheck());
 
       return sink;
     },

@@ -1,20 +1,25 @@
 <div class="map map-container">
-  <div #map [ngClass]="[!showFleetMap || showOrderDetails ? 'map-faded-out' : '']"
-     class="google-map transparent">
-  </div>
+  <app-polygon-filter
+    *ngIf="!showOrderDetails"
+    class="polygon-filter"
+    (getCoordinates)="getCoordinates($event)"
+    (clearedFilter)="clearedFilter()"></app-polygon-filter>
+
+  <div #map [ngClass]="[!showFleetMap || showOrderDetails ? 'map-faded-out' : '']" class="google-map transparent"></div>
+
   <bego-map
     [hide]="showOrderDetails"
     [typeMap]="typeMap"
     [headerTransparent]="headerTransparent"
-    (createGoogleImage)="getGoogleImageMap($event)"
-  >
+    (createGoogleImage)="getGoogleImageMap($event)">
   </bego-map>
 
   <div class="new-order-wrapper">
-    <div class="new-order-details" [ngClass]="{ full: !showSidebar }">
+    <div class="new-order-details" [ngClass]="{ full: !showOrderDetails }">
       <app-orders
         [(cardIsOpen)]="showOrderDetails"
         (stepChange)="onStepChange($event)"
+        [orderType]="orderType"
         [draftData]="draftData"
         [locations]="locations"
         [datepickup]="datepickup"
@@ -22,40 +27,41 @@
         [imageFromGoogle]="imageFromGoogle"
         [membersToAssigned]="membersToAssigned"
         [userWantCP]="userWantCP"
-        [orderPreview]="orderPreview"
-      >
+        [orderPreview]="orderPreview">
       </app-orders>
     </div>
 
-    <div class="input-directions">
+    <div class="input-directions" [ngClass]="{ 'applied-filter': creatingForms && !openOrderMenu }" [class.hide]="!showSidebar">
       <app-input-directions
-        *ngIf="showSidebar"
+        [(orderType)]="orderType"
+        [isPrime]="isPrime"
         (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
         [showMapPreview]="showOrderDetails"
         (showNewOrderCard)="showNewOrderCard()"
+        (updateLocation)="updateLocation()"
         (updateLocations)="updateLocations($event)"
         (updateDatepickup)="updateDatepickup($event)"
         (updateDropOffDate)="updateDropOffDate($event)"
         [typeMap]="typeMap"
-        [savedPlaces]="savedPlaces$ | async"
         (inputPlace)="placesService.emitter.next($event)"
         (sendUserWantCP)="getUserWantCP($event)"
         [drafts]="draftData"
         [haveFleetMembers]="haveNotFleetMembers"
-        [haveFleetMembersErrors]="haveFleetMembersErrors"
-      >
-      </app-input-directions>      
+        [haveFleetMembersErrors]="haveFleetMembersErrors">
+      </app-input-directions>
       <button
         id="reset"
         *ngIf="!showOrderDetails"
-        (click)="mapEmitter.next(['center'])"
-        [ngClass]="{
-          'reset-up': userRole && showFleetMap && !showOrderDetails
-        }"
+        (click)="creatingForms ? getCoordinates(centerCoords) : mapEmitter.next(['center'])"
+        [ngClass]="{ 'reset-up': userRole && showFleetMap && !showOrderDetails }"
         [@slideInFromBottom]
       >
         <i class="icon icon-gps"></i>
       </button>
+
+      <div class="back" [ngStyle]="{ display: creatingForms ? 'flex' : 'none' }">
+        <div class="invisible" (click)="openOrderMenu = !openOrderMenu"></div>
+      </div>
     </div>
   </div>
 
@@ -67,3 +73,12 @@
   </button> 
    
 </div>
+
+<bego-modal
+  *ngIf="showCompleteModal"
+  image="vehicle"
+  [lang]="{ done: 'orders.complete-modal.done-btn' | translate }"
+  (closeEmitter)="showCompleteModal = false">
+  <h1>{{ 'orders.complete-modal.title' | translate }}</h1>
+  <p>{{ 'orders.complete-modal.description' | translate }}</p>
+</bego-modal>

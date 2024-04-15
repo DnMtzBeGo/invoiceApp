@@ -37,7 +37,8 @@
   >
     <div class="map-footer">
       <div [title]="vm.center?.formatted_address">
-        <img src="../../../../assets/images/maps/pickup.svg" />
+        <div class="icon" [class.saved]="savedLocations.isSaved(vm.center)" (click)="saveLocation()"></div>
+
         <p>
           {{ splitGoogleAddress(vm.center?.formatted_address) }}
           <span>
@@ -45,13 +46,9 @@
           </span>
         </p>
       </div>
-      <button
-        mat-flat-button
-        class="brand-btn-2"
-        (click)="vm.center && sendAddress(vm.center)"
-      >
+      <bego-button size="small" [activated]="true" (click)="vm.center && sendAddress(vm.center)">
         {{ "pin.btn" | translate }}
-      </button>
+      </bego-button>
     </div>
   </div>
 </div>

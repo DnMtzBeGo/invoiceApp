@@ -23,11 +23,15 @@ export class EditOrderFleetComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void{
     const {driver, truck, trailer} = this.orderData;
+
     if(changes.orderData && this.orderData?._id){
-      this.driverData = {...driver, availability: false, photo: driver.thumbnail};
-      this.truckData = {...truck, availability: false, photo: truck.thumbnail};
-      this.trailerData = {...trailer, availability: false, photo: trailer.thumbnail};
+      this.driverData = {...driver, availability: false, photo: this.getImg(driver) };
+      this.truckData = {...truck, availability: false, photo: this.getImg(truck) };
+      this.trailerData = {...trailer, availability: false, photo: this.getImg(trailer) };
     }
   }
 
+  private getImg(el: any) {
+    return el.thumbnail || el?.profile_picture?.thumbnail;
+  }
 }

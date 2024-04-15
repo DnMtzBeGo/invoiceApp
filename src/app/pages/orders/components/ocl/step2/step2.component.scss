@@ -1,0 +1,44 @@
+.step2 {
+  margin: 30px 57px;
+}
+
+form {
+  margin: 40px 0 40px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+bego-input {
+  ::ng-deep .custom-input {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+  }
+
+  span {
+    white-space: nowrap;
+
+    &,
+    bego-phone-code-select {
+      width: 100px;
+      flex-shrink: 0;
+    }
+  }
+
+  input {
+    text-align: center;
+  }
+}
+
+.details {
+    bego-text-area {
+      display: block;
+      height: 130px;
+      margin-top: 25px;
+
+      ::ng-deep textarea {
+        border-radius: 80px;
+      }
+    }
+}
