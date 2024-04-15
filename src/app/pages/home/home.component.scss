@@ -28,6 +28,7 @@
     flex-shrink: 0;
     z-index: 2;
     transition: all 0.3s;
+    position: relative;
 
     &.hide {
       display: none;
@@ -117,7 +118,6 @@
 
     #reset {
       position: absolute;
-      bottom: -150px;
       right: calc(100% + 10px);
       border: none;
       cursor: pointer;
