@@ -54,6 +54,8 @@ export class InputDirectionsComponent implements OnInit {
   @Output("showNewOrderCard") showNewOrderCard = new EventEmitter<void>();
   @Output("updateLocations") updateLocations =
     new EventEmitter<GoogleLocation>();
+  @Output("updateLocation") updateLocation =
+    new EventEmitter();
   @Output("updateDatepickup") updateDatepickup = new EventEmitter<number>();
   @Output("updateDropOffDate") updateDropOffDate = new EventEmitter<number>();
   @Output("inputPlace") inputPlaceEmmiter = new EventEmitter<
@@ -339,6 +341,8 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   handleUpdateLocations() {
+    this.updateLocation.emit()
+
     if (this.autocompletePickup.input === '') {
       this.searchPickup.nativeElement.focus();
       return

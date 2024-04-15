@@ -378,6 +378,50 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 }
 
+.cdk-overlay-backdrop.brand-ui-dialog-1 {
+  &.cdk-overlay-backdrop-showing {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+  }
+
+  & + * {
+    .mat-dialog-container {
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 50px;
+      filter: none;
+      width: 566px;
+    }
+  }
+}
+
+.cdk-overlay-backdrop.brand-ui-dialog-2 {
+  &.cdk-overlay-backdrop-showing {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+  }
+
+  & + * {
+    .mat-dialog-container {
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 50px;
+      filter: none;
+
+      app-share-report-modal bego-modal {
+        ::ng-deep {
+          .modal {
+            width: 667px !important;
+            height: 521px !important;
+          }
+        }
+      }
+    }
+  }
+}
+
 .brand-table-1 {
   width: 100%;
   box-shadow: none;

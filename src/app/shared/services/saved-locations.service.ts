@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, throttleTime } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { NotificationsService } from './notifications.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { SavedLocationsModalComponent } from '../components/saved-locations-modal/saved-locations-modal.component';
 
@@ -16,12 +14,11 @@ export class SavedLocationsService {
   locations = [];
   rawLocations = [];
   filterInput = new Subject<string>();
+  locationsChange = new EventEmitter();
 
   constructor(
     private auth: AuthService,
-    private notificationService: NotificationsService,
-    private translateService: TranslateService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
   ) {
     this.loadLocations();
     this.setupInputFilter();
@@ -34,6 +31,7 @@ export class SavedLocationsService {
 
       this.locations = result;
       this.rawLocations = result;
+      this.locationsChange.emit();
     });
   }
 

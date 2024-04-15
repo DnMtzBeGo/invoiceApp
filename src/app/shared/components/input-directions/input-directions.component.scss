@@ -686,6 +686,8 @@ app-member-card-selection:nth-last-of-type(1) {
     }
 
     bego-icon {
+      display: grid;
+      place-items: center;
       width: $icon-size;
       height: $icon-size;
       --font-size: 16px;

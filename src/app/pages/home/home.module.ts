@@ -11,6 +11,7 @@ import { ProfileModule } from '../profile/profile.module';
 import { AppMaterialModule } from 'src/app/material';
 import { BegoModalModule } from '@begomx/ui-components';
 import { TranslateModule } from '@ngx-translate/core';
+import { PolygonFilterModule } from './components/polygon-filter/polygon-filter.module';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -24,7 +25,8 @@ import { TranslateModule } from '@ngx-translate/core';
     CheckoutModule,
     ProfileModule,
     AppMaterialModule,
-    BegoModalModule
+    BegoModalModule,
+    PolygonFilterModule
   ]
 })
 export class HomeModule {}

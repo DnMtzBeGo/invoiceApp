@@ -11,10 +11,15 @@ import { ofType } from 'src/app/shared/utils/operators.rx';
 import { CustomMarker } from './custom.marker';
 import { OrderPreview } from '../orders/orders.component';
 import { Location } from '@angular/common';
+import { PolygonFilter } from './components/polygon-filter/polygon-filter.component';
+import { InputDirectionsComponent } from 'src/app/shared/components/input-directions/input-directions.component';
 
 declare var google: any;
 // 10 seconds for refreshing map markers
 const markersRefreshTime = 1000 * 20;
+const baseRadius = 25000;
+const zoomFactor = 2000;
+const minRadius = 500;
 
 @Component({
   selector: 'app-home',
@@ -22,6 +27,8 @@ const markersRefreshTime = 1000 * 20;
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  @ViewChild(PolygonFilter) polygonFilter: PolygonFilter;
+  @ViewChild(InputDirectionsComponent) inputDirections: InputDirectionsComponent;
   @Input() locations: GoogleLocation = {
     pickup: '',
     dropoff: '',
@@ -100,7 +107,7 @@ export class HomeComponent implements OnInit {
     this.headerStyle.changeHeader(this.headerTransparent);
     this.subs.add(
       this.router.events.subscribe((res) => {
-        if (res instanceof NavigationEnd && res.url === '/home') {
+        if (res instanceof NavigationEnd && res.url.startsWith('/home')) {
           const data = this.router.getCurrentNavigation()?.extras.state;
 
           if (data?.showCompleteModal) {
@@ -175,7 +182,9 @@ export class HomeComponent implements OnInit {
             )
           )
         )
-      ).subscribe(this.getFleetDetails.bind(this))
+      )
+        .pipe(filter(() => !this.creatingForms))
+        .subscribe(this.getFleetDetails.bind(this))
     );
   }
 
@@ -222,6 +231,14 @@ export class HomeComponent implements OnInit {
     return res.result._id;
   }
 
+  updateLocation() {
+    if (this.creatingForms) {
+      this.clearMap();
+      this.polygonFilter.clearFilters();
+      this.creatingForms = false;
+    }
+  }
+
   updateLocations(data: GoogleLocation) {
     this.locations = data;
     this.showFleetMap = false;
@@ -261,6 +278,7 @@ export class HomeComponent implements OnInit {
 
           // When members exist on the fleet, it saves them on this array
           this.markersFromService = [];
+
           res.result.members.forEach((row) => {
             if (row.location) {
               this.markersFromService.push({
@@ -402,6 +420,12 @@ export class HomeComponent implements OnInit {
           // console.log('zoom:', this.zoom);
         });
 
+        google.maps.event.addListener(this.map, 'zoom_changed', () => {
+          this.circles.forEach((circle) => {
+            circle.setRadius(this.calculateCircleRadius(this.map.getZoom()));
+          });
+        });
+
         this.mapRef.nativeElement.addEventListener(
           'mousewheel',
           (event) => {
@@ -442,6 +466,7 @@ export class HomeComponent implements OnInit {
       marker.setMap(null);
       marker.remove();
     });
+
     this.googleMarkers = [];
 
     for (var i = 0; i < this.markersFromService.length; i++) {
@@ -471,5 +496,162 @@ export class HomeComponent implements OnInit {
 
   onStepChange(step: number) {
     this.showSidebar = !this.showOrderDetails || step < 3;
+  }
+
+  creatingForms: boolean = false;
+  openOrderMenu: boolean = false;
+  heatmap: any;
+  centerCoords: any;
+  polygons: any = [];
+  circles: any = [];
+
+  getCoordinates({ type, geometry, locations, members }: any) {
+    if (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input) {
+      this.showFleetMap = true;
+      this.inputDirections.ClearAutocompleteDropoff();
+      this.inputDirections.ClearAutocompletePickup();
+    }
+
+    this.centerCoords = { type, geometry, locations, members };
+    this.creatingForms = true;
+    this.clearMap();
+    if (type === 'heatmap') this.addHeatmap(locations);
+    else this.addDispersion(members);
+    this.createPolygons(geometry.features);
+    this.openOrderMenu = false;
+  }
+
+  addHeatmap(heatmapData) {
+    this.heatmap = new google.maps.visualization.HeatmapLayer({
+      data: this.coordinatesToLatLng(heatmapData),
+      dissipating: false,
+      map: this.map,
+      radius: 0.3
+    });
+  }
+
+  createPolygons(geometry) {
+    if (!geometry?.length) return;
+
+    const bounds = new google.maps.LatLngBounds();
+
+    geometry.forEach((polygon) => {
+      const coordinates = polygon.geometry.coordinates[0].map((coord) => {
+        return { lat: coord[1], lng: coord[0] };
+      });
+
+      const newPolygon = new google.maps.Polygon({
+        paths: coordinates,
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        strokeColor: '#FFEE00',
+        fillColor: '#FFEE00',
+        fillOpacity: 0.2,
+        editable: false,
+        draggable: false
+      });
+
+      newPolygon.setMap(this.map);
+      this.polygons.push(newPolygon);
+
+      coordinates.forEach((coordinate) => {
+        bounds.extend(coordinate);
+
+        const circle = new google.maps.Circle({
+          strokeColor: '#FFEE00',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FFEE00',
+          fillOpacity: 1,
+          map: this.map,
+          center: coordinate,
+          radius: this.calculateCircleRadius(this.map.getZoom())
+        });
+
+        this.circles.push(circle);
+      });
+
+      this.map.fitBounds(bounds);
+    });
+  }
+
+  addDispersion(members) {
+    if (!members?.length) return;
+
+    members.forEach((member) => {
+      if (member.location) {
+        this.markersFromService.push({
+          title: member.nickname,
+          extraData: member.email,
+          position: {
+            lat: member.location.lat,
+            lng: member.location.lng
+          },
+          icon: member.thumbnail
+        });
+      }
+    });
+
+    this.googleMarkers = [];
+
+    for (var i = 0; i < this.markersFromService.length; i++) {
+      let changePic = this.markersFromService[i].icon.split('');
+      if (changePic[changePic.length - 1] === '/') this.markersFromService[i].icon = '../assets/images/user-outline.svg';
+
+      const marker = new CustomMarker(
+        new google.maps.LatLng(this.markersFromService[i].position.lat, this.markersFromService[i].position.lng),
+        this.map,
+        this.markersFromService[i].icon,
+        null,
+        this.markersFromService[i].title,
+        true,
+        this.markersFromService[i].extraData
+      );
+
+      this.googleMarkers.push(marker);
+    }
+  }
+
+  clearMap(): void {
+    this.googleMarkers?.forEach((marker) => {
+      marker.setMap(null);
+      marker.remove();
+    });
+
+    this.markersFromService = [];
+    this.googleMarkers = [];
+
+    if (this.heatmap) this.heatmap.setMap(null);
+
+    if (this.polygons) {
+      this.polygons.forEach((polygon) => {
+        polygon.setMap(null);
+      });
+    }
+
+    if (this.circles) {
+      this.circles.forEach((circle) => {
+        circle.setMap(null);
+      });
+      this.circles = []; // Limpiar el array de referencias a los círculos
+    }
+
+    this.openOrderMenu = true;
+  }
+
+  coordinatesToLatLng(data: any[]): any[] {
+    return data.map((coord) => new google.maps.LatLng(coord.lat, coord.lng));
+  }
+
+  clearedFilter() {
+    if (!this.creatingForms && (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input)) return;
+    this.clearMap();
+    this.creatingForms = false;
+    this.getFleetDetails(false);
+  }
+
+  calculateCircleRadius(zoomLevel: number): number {
+    let radius = baseRadius - zoomFactor * zoomLevel;
+    return Math.max(radius, minRadius);
   }
 }

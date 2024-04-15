@@ -324,6 +324,8 @@ export class PinComponent implements OnInit {
       showUI: showUI$,
       effects: effects$,
     });
+
+    this.savedLocations.locationsChange.subscribe(() => this.cdr.markForCheck());
   }
 
   closeModal() {

@@ -76,7 +76,7 @@
       </button>
 
       <button
-        *ngIf="!savedLocations.show"
+        *ngIf="!savedLocations.show && (!pickupSelected || !dropoffSelected)"
         class="item-pin"
         (click)="setLocationPin(
           selectSearchResultPickup,
