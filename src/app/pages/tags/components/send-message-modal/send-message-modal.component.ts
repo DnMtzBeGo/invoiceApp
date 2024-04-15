@@ -9,7 +9,6 @@ interface DialogLang {
 }
 
 interface Message {
-  tags_ids: string[];
   sms: boolean;
   app: boolean;
   message: string;
@@ -99,14 +98,13 @@ export class SendMessageModalComponent implements OnInit, AfterViewInit {
       if (typeControls['sms'].value || typeControls['sms'].value) {
         this.disableSend();
         const message: Message = {
-          tags_ids: [this.data.tag_id],
-          sms: typeControls['sms'].value,
-          app: typeControls['push'].value,
+          sms: Boolean(typeControls['sms'].value),
+          app: Boolean(typeControls['push'].value),
           title: controls['title'].value,
           message: controls['message'].value
         };
 
-        (await this.apiService.apiRest(JSON.stringify(message), `managers_tags/send_notification`, { apiVersion: 'v1.1' })).subscribe({
+        (await this.apiService.apiRest(JSON.stringify(message), `managers_tags/send_notification/${this.data.tag_id}`, { apiVersion: 'v1.1' })).subscribe({
           next: (data) => {
             this.close(true);
           },
