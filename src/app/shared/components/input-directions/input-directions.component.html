@@ -9,7 +9,7 @@
   >
     <div *ngIf="!haveFleetMembers">
       <div class="fleet-type" *ngIf="isPrime">
-        <h3>Select your transport</h3>
+        <h3>{{ 'location.title' | translate }}</h3>
         <bego-button-toggle
           [noPadding]="true"
           [enabled]="orderType === orderTypeList[1].value"

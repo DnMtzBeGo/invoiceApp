@@ -576,6 +576,7 @@
     "btn-es": "SP"
   },
   "location": {
+    "title": "Select your transport",
     "label_pickup": "pickup",
     "label_dropoff": "dropoff",
     "label_pin": "Set location on map",
