@@ -52,6 +52,7 @@
     "source-map-support": "^0.5.21",
     "swiper": "^7.2.0",
     "tslib": "^2.0.0",
+    "uuid": "^9.0.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
