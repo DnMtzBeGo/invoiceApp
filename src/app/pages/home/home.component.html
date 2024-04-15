@@ -44,8 +44,7 @@
         [haveFleetMembers]="haveNotFleetMembers"
         [haveFleetMembersErrors]="haveFleetMembersErrors"
       >
-      </app-input-directions>
-
+      </app-input-directions>      
       <button
         id="reset"
         *ngIf="!showOrderDetails"
@@ -53,9 +52,18 @@
         [ngClass]="{
           'reset-up': userRole && showFleetMap && !showOrderDetails
         }"
+        [@slideInFromBottom]
       >
         <i class="icon icon-gps"></i>
       </button>
     </div>
   </div>
+
+  <button 
+      class="btn-traffic"
+      (click)="toggleTraffic()"
+      [@slideInFromBottom]>
+      <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg"/>    
+  </button> 
+   
 </div>

@@ -115,3 +115,31 @@ bego-map {
     position: absolute;
     inset: 0;
 }
+
+.btn-traffic {
+  z-index: 999;
+  position: fixed;
+  color: #ededed;
+  bottom: 90px;
+  left: calc(100% - 473px);
+  cursor: pointer;
+  border: none;
+  border-radius: 30px;
+
+  @keyframes slideInFromBottom {
+    from {
+      transform: translateY(-250px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  } 
+  
+  img {
+    filter: brightness(0) invert(1);
+  }
+}
+
+.btn-traffic.active img {
+  filter: none;
+}
