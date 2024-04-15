@@ -1,117 +1,205 @@
 @import 'src/styles';
 
+.new-order-wrapper {
+  display: flex;
+  pointer-events: none;
 
-.new-order-wrapper{
-    display: flex;
+  $spacing-top: 125px;
+  $directions-width: 400px;
+  $spacing-right: 20px;
+
+  .new-order-details {
+    max-width: calc(100% - #{$directions-width + $spacing-right});
     pointer-events: none;
+    margin-top: $spacing-top;
 
-    $spacing-top: 125px;
-    $directions-width: 400px;
-    $spacing-right: 20px;
-
-    .new-order-details{
-        max-width: calc(100% - #{$directions-width + $spacing-right});
-        pointer-events: none;
-        margin-top: $spacing-top;
-
-        &.full {
-            max-width: 100%;
-        }
+    &.full {
+      max-width: 100%;
     }
+  }
 
-    .input-directions{
-        position: fixed;
-        top: $spacing-top;
-        right: $spacing-right;
-        width: $directions-width;
-        z-index: 2;
+  .input-directions {
+    position: fixed;
+    top: $spacing-top;
+    right: $spacing-right;
+    width: $directions-width;
+    z-index: 2;
+    transition: all 0.3s;
+  }
+
+  .applied-filter {
+    // transition: translateX 0.3s;
+    transform: translateX(420px);
+  }
+
+  .back {
+    position: absolute;
+    width: 49px;
+    height: 139px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url('../../../assets/images/back.svg');
+    top: calc(50% - 60px);
+    left: -48px;
+    background-size: calc(100% + 2px) 100%;
+    pointer-events: all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .invisible {
+      margin-left: 4px;
+      width: 34px;
+      height: 25px;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
+  }
+}
+
+.polygon-filter {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  z-index: 100;
 }
 
 // copied from _home.scss
 ::ng-deep {
-    .map {
-      &.map-container {
-        position: relative;
+  .map {
+    &.map-container {
+      position: relative;
+    }
+
+    .customMarker {
+      position: absolute;
+      cursor: pointer;
+      background: $yellow-color;
+      width: 50px;
+      height: 50px;
+      /* -width/2 */
+      margin-left: -25px;
+      /* -height + arrow */
+      margin-top: -25px;
+      border-radius: 50%;
+      padding: 0px;
+
+      &.inactive-marker {
+        filter: grayscale(100%);
       }
 
-      .customMarker {
-        position: absolute;
-        cursor: pointer;
-        background: $yellow-color;
-        width: 50px;
-        height: 50px;
-        /* -width/2 */
-        margin-left: -25px;
-        /* -height + arrow */
-        margin-top: -25px;
-        border-radius: 50%;
-        padding: 0px;
-
-        &.inactive-marker {
-          filter: grayscale(100%);
-        }
-
-        &.available-marker {
-          background: #6dd400;
-        }
-
-        &.unavailable-marker {
-          background: #de473c;
-        }
+      &.available-marker {
+        background: #6dd400;
       }
 
-      .customMarker img {
-        width: 44px;
-        height: 44px;
-        margin: 3px;
-        border-radius: 50%;
-        background: #040b12;
-        object-fit: cover;
-      }
-
-      #reset {
-        position: absolute;
-        bottom: -150px;
-        right: calc(100% + 10px);
-        border: none;
-        cursor: pointer;
-        transition: all 0.5s ease-in-out;
-        pointer-events: all;
-
-        i {
-          font-size: 2rem;
-          color: #ededed;
-        }
-
-        &.reset-up {
-          bottom: 10px;
-        }
+      &.unavailable-marker {
+        background: #de473c;
       }
     }
+
+    .customMarker img {
+      width: 44px;
+      height: 44px;
+      margin: 3px;
+      border-radius: 50%;
+      background: #040b12;
+      object-fit: cover;
+    }
+
+    #reset {
+      position: absolute;
+      bottom: -150px;
+      right: calc(100% + 10px);
+      border: none;
+      cursor: pointer;
+      transition: all 0.5s ease-in-out;
+      pointer-events: all;
+
+      i {
+        font-size: 2rem;
+        color: #ededed;
+      }
+
+      &.reset-up {
+        bottom: 10px;
+      }
+    }
+  }
 }
 
 .google-map {
+  height: 100vh;
+  transition: opacity 0.5s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+
+  &.map-faded-out {
+    opacity: 0;
+    pointer-events: none;
+    // display: none;
+  }
+
+  &.transparent {
     height: 100vh;
-    transition: opacity 0.5s;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1;
-
-    &.map-faded-out{
-        opacity: 0;
-        pointer-events: none;
-        // display: none;
-    }
-
-    &.transparent {
-        height: 100vh;
-    }
+  }
 }
 
 bego-map {
-    position: absolute;
-    inset: 0;
+  position: absolute;
+  inset: 0;
+}
+
+::ng-deep {
+  .info-window-content {
+    font-family: Arial, sans-serif;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+
+    color: #ededed;
+    font-family: 'Avenir';
+
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-window-content h3 {
+    margin-top: 0;
+  }
+
+  .info-window-content p {
+    margin-bottom: 0;
+  }
+
+  .gm-style-iw {
+    background: #040b11 !important;
+    padding: 0 !important;
+  }
+
+  .gm-style-iw-d {
+    overflow: auto !important;
+  }
+
+  .gm-ui-hover-effect {
+    border: none;
+    outline: none;
+    top: 0px !important;
+
+    span {
+      filter: invert(100%);
+      margin: 0 !important;
+      padding: 8px !important;
+    }
+
+    &:hover {
+      border: none;
+      outline: none;
+    }
+  }
 }

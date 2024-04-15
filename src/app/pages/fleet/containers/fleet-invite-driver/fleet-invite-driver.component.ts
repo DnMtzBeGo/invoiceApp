@@ -11,22 +11,17 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./fleet-invite-driver.component.scss']
 })
 export class FleetInviteDriverComponent implements OnInit {
+  public form: FormGroup;
 
-  form = this._formBuilder.group({
-    drivers: this._formBuilder.array([])
-  });
-
-  phoneFlag = "mx";
-  phoneCode = "+52";
-  phoneNumber = "";
+  phoneFlag = 'mx';
+  phoneCode = '+52';
+  phoneNumber = '';
 
   invitationPath: string = '';
   validateInvitation: boolean = false;
   fleetId: string = '';
 
-  numDriverForm: FormGroup = this._formBuilder.group({
-    numDriver: ['', Validators.required],
-  });
+  public numDriverForm: FormGroup;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -35,34 +30,38 @@ export class FleetInviteDriverComponent implements OnInit {
     private webService: AuthService,
     private alertService: AlertService,
     private translateService: TranslateService
-  ) { 
+  ) {
+    this.form = this._formBuilder.group({
+      drivers: this._formBuilder.array([])
+    });
+
+    this.numDriverForm = this._formBuilder.group({
+      numDriver: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
-
     this.route.queryParams.subscribe((params: Params) => {
       this.fleetId = params['fleet_id'];
-   });
+    });
 
-    this.numDriverForm.get("numDriver").valueChanges.subscribe((value) => {
-      if(value < 21) {
-        if(value != '') {
-          if(value < this.drivers.length) {
-            for(let i = 0; value < this.drivers.length; i++ ) {
+    this.numDriverForm.get('numDriver').valueChanges.subscribe((value) => {
+      if (value < 21) {
+        if (value != '') {
+          if (value < this.drivers.length) {
+            for (let i = 0; value < this.drivers.length; i++) {
               this.deleteDriver();
             }
           } else {
-            
           }
         } else {
           this.numDriverForm.get('numDriver').setValue(this.drivers.length);
         }
       }
-      
     });
 
-    this.form.get("drivers").statusChanges.subscribe(value => {
-      if(value == 'VALID') {
+    this.form.get('drivers').statusChanges.subscribe((value) => {
+      if (value == 'VALID') {
         this.validateInvitation = true;
       } else {
         this.validateInvitation = false;
@@ -85,7 +84,6 @@ export class FleetInviteDriverComponent implements OnInit {
     //   }
     //   rfc.updateValueAndValidity();
     // });
-
 
     this.addDriver();
   }
@@ -114,11 +112,11 @@ export class FleetInviteDriverComponent implements OnInit {
   }
 
   get drivers() {
-    return this.form.controls["drivers"] as FormArray;
+    return this.form.controls['drivers'] as FormArray;
   }
 
   addDriver() {
-    if(this.drivers.length < 20) {
+    if (this.drivers.length < 20) {
       const driverForm = this._formBuilder.group({
         fullname: ['', Validators.required],
         email: ['', [Validators.required, this.mailValidator]],
@@ -133,7 +131,7 @@ export class FleetInviteDriverComponent implements OnInit {
   }
 
   deleteDriver() {
-    if((this.drivers.length) - 1 != 0) {
+    if (this.drivers.length - 1 != 0) {
       this.drivers.removeAt(this.drivers.length - 1);
       this.numDriverForm.get('numDriver').setValue(this.drivers.length);
     }
@@ -153,7 +151,7 @@ export class FleetInviteDriverComponent implements OnInit {
 
   phoneChangeValue(value: any, index: number) {
     let phone: string;
-    if(value.phoneNumber) {
+    if (value.phoneNumber) {
       phone = value.phoneCode;
       phone = phone.concat(' ');
       phone = phone.concat(value.phoneNumber);
@@ -166,24 +164,14 @@ export class FleetInviteDriverComponent implements OnInit {
     const phoneValue = (this.form.get('drivers') as FormArray).at(index).get('phone').value;
     const emailValue = (this.form.get('drivers') as FormArray).at(index).get('email').value;
     const phoneValid = (this.form.get('drivers') as FormArray).at(index).get('phone').valid;
-    if(phoneValid && emailValue == '') {
+    if (phoneValid && emailValue == '') {
       emailInput.clearValidators();
     }
-    
+
     if (emailValue == '' && phoneValue == '') {
-      emailInput.setValidators(
-        Validators.compose([
-          Validators.required,
-          this.mailValidator
-        ])
-      );
-      phoneInput.setValidators(
-        Validators.compose([
-          Validators.required
-        ])
-      );
-      
-    } 
+      emailInput.setValidators(Validators.compose([Validators.required, this.mailValidator]));
+      phoneInput.setValidators(Validators.compose([Validators.required]));
+    }
     emailInput.updateValueAndValidity();
     phoneInput.updateValueAndValidity();
   }
@@ -192,33 +180,25 @@ export class FleetInviteDriverComponent implements OnInit {
     this.invitationPath = value;
   }
 
-
   emailValid(validEmail: boolean, valueEmail: string, index: number) {
-
     const phone = (this.form.get('drivers') as FormArray).at(index).get('phone');
     const phoneValue = (this.form.get('drivers') as FormArray).at(index).get('phone').value;
     const emailInput = (this.form.get('drivers') as FormArray).at(index).get('email');
-    
-    if(validEmail && phoneValue == '') {
+
+    if (validEmail && phoneValue == '') {
       phone.clearValidators();
     }
-    
-    if(valueEmail == '' && phoneValue != '') {
+
+    if (valueEmail == '' && phoneValue != '') {
       emailInput.clearValidators();
     }
 
-    if(!validEmail && valueEmail != '' ) {
-      emailInput.setValidators(
-        Validators.compose([
-          Validators.required,
-          this.mailValidator
-        ])
-      );
+    if (!validEmail && valueEmail != '') {
+      emailInput.setValidators(Validators.compose([Validators.required, this.mailValidator]));
     }
 
     emailInput.updateValueAndValidity();
     phone.updateValueAndValidity();
-
   }
 
   async download() {
@@ -226,7 +206,6 @@ export class FleetInviteDriverComponent implements OnInit {
   }
 
   async sendInvitation() {
-
     let requestBody = {
       id_fleet: this.fleetId,
       invitations: []
@@ -243,34 +222,28 @@ export class FleetInviteDriverComponent implements OnInit {
     });
 
     // console.log(requestBody);
-    (
-      await this.webService.apiRest(
-        JSON.stringify(requestBody),
-        'fleet/send_invitation'
-      )
-    ).subscribe((res) => {
-      
-      if(res.result.rejected.length > 0) {
+    (await this.webService.apiRest(JSON.stringify(requestBody), 'fleet/send_invitation')).subscribe((res) => {
+      if (res.result.rejected.length > 0) {
         let sendMessage = this.translateService.instant('fleet.alerts.partial_sent.message');
         this.invitationsConfirm(sendMessage, res.result.rejected);
       } else {
         let sendMessage = this.translateService.instant('fleet.alerts.invitation_sent.message');
         this.invitationsConfirm(sendMessage);
       }
-      
     });
   }
 
-
   async invitationsConfirm(message, rejected?) {
-
-    let messageString = rejected?.map(function(x) {
-      return x;
-    }).join("<br>") || '';
+    let messageString =
+      rejected
+        ?.map(function (x) {
+          return x;
+        })
+        .join('<br>') || '';
 
     this.alertService.create({
       title: this.translateService.instant('fleet.alerts.invitation_sent.title'),
-      body: message + "<br>" + messageString,
+      body: message + '<br>' + messageString,
       handlers: [
         {
           text: this.translateService.instant('Ok'),
@@ -289,6 +262,5 @@ export class FleetInviteDriverComponent implements OnInit {
         }
       ]
     });
-
   }
 }

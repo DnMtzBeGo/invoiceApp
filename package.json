@@ -10,7 +10,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "low": "node --max-old-space-size=6144 ./node_modules/.bin/ng serve"
   },
   "private": true,
   "dependencies": {
@@ -28,7 +29,7 @@
     "@angular/platform-browser": "^15.2.10",
     "@angular/platform-browser-dynamic": "^15.2.10",
     "@angular/router": "^15.2.10",
-    "@begomx/ui-components": "^15.3.19",
+    "@begomx/ui-components": "^15.4.2",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "angular2-text-mask": "^9.0.0",
