@@ -78,15 +78,7 @@
       <button
         *ngIf="!savedLocations.show && (!pickupSelected || !dropoffSelected)"
         class="item-pin"
-        (click)="setLocationPin(
-          selectSearchResultPickup,
-          locations.pickupLat &&
-            locations.pickupLng && {
-              lat: locations.pickupLat,
-              lng: locations.pickupLng
-            }
-          )
-        "
+        (click)="setLocationPin()"
       >
         <div class="icon"></div>
         {{ "location.label_pin" | translate }}

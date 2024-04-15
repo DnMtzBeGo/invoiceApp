@@ -753,11 +753,17 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   // MODALS
-  setLocationPin(selectCallback, geocodeRequest?) {
-    // console.log("setLocationPin", geocodeRequest);
+  setLocationPin() {
+    const isPickup = this.activeInput === 'pickup';
+    const callback = isPickup ? this.selectSearchResultPickup : this.selectSearchResultDropoff;
+
+    const geocodeRequest = {
+      lat: isPickup ? this.locations.pickupLat : this.locations.dropoffLat,
+      lng: isPickup ? this.locations.pickupLng : this.locations.dropoffLng
+    }
 
     const dialogRef = this.matDialog.open(PinComponent, {
-      data: geocodeRequest,
+      data: geocodeRequest.lat && geocodeRequest.lng ? geocodeRequest : null,
       restoreFocus: false,
       autoFocus: false,
       panelClass: 'pin-modal-container',
@@ -766,7 +772,7 @@ export class InputDirectionsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result?) => {
       if (result?.success === true) {
-        selectCallback.call(this, { place_id: result.data.place_id });
+        callback.call(this, { place_id: result.data.place_id });
       }
     });
   }
