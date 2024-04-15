@@ -1153,7 +1153,7 @@
       "save-error": "Serie borrada"
     },
     "cp-page": {
-      "carta-porte": "Carta Porte 2.0",
+      "carta-porte": "Carta Porte 3.0",
       "btn-save": "Guardar",
 
       "transporte": "Transporte",
@@ -1201,6 +1201,8 @@
       "placa": "* Placa",
       "año-modelo": "* Año y Modelo",
       "año-modelo-error": "El año debe de ser mayor a 1900 y menor a 2099",
+
+      "vehicle_gross_weight": "Vehicle gross weight",
 
       "remolques": "Remolques"
     },
@@ -1250,6 +1252,14 @@
 
       "clave-material-peligroso": "Clave Material Peligroso",
       "embalaje": "Embalaje",
+
+      "cantidad_transporta": {
+        "title": "Transport Quantity",
+        "quantity": "Quantity",
+        "origin_id": "Origin ID",
+        "destination_id": "Destination ID",
+        "cves_transporte": "Transport codes"
+      },
 
       "pedimentos": "Pedimentos",
 

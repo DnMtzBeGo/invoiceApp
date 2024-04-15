@@ -1,0 +1,37 @@
+<div class="cantidad-transporta-item-wrapper" [formGroup]="form">
+  <div class="grid">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.commodity.cantidad_transporta.quantity' | translate }}</mat-label>
+      <input formControlName="cantidad" autocomplete="off" matInput />
+    </mat-form-field>
+    <div>&nbsp;</div>
+    <div>
+      <div
+        *ngIf="index || totalRows > 1"
+        class="remove-cantidad-transporta-btn"
+        (click)="removeItem()"
+        title="Eliminar renglón de cantidad transporta">
+        <div class="icon icon-plus"></div>
+        <span>Eliminar</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.commodity.cantidad_transporta.origin_id' | translate }}</mat-label>
+      <input formControlName="id_origen" autocomplete="off" matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.commodity.cantidad_transporta.destination_id' | translate }}</mat-label>
+      <input formControlName="id_destino" autocomplete="off" matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.commodity.cantidad_transporta.cves_transporte' | translate }}</mat-label>
+      <input formControlName="cves_transporte" autocomplete="off" matInput />
+    </mat-form-field>
+  </div>
+  <hr />
+</div>
