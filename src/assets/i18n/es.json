@@ -1699,7 +1699,7 @@
     "actions": {
       "edit": "Editar",
       "delete": "Eliminar",
-      "send_message": "Send message"
+      "send_message": "Enviar mensaje"
     },
     "edited-modal": {
       "done": "Hecho",

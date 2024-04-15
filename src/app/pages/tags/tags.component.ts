@@ -60,7 +60,9 @@ export class TagsComponent implements OnInit {
     .fetchTags();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.translateService.onLangChange.subscribe(() => this.setLang());
+  }
 
   setLang(): TagsComponent {
     this.lang = {
@@ -267,7 +269,7 @@ export class TagsComponent implements OnInit {
 
           return {
             ...tag,
-            number_of_drivers: tag.carriers,
+            number_of_drivers: tag.carriers.length,
             date_created: this.datePipe.transform(tag.date_created, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
             last_update: this.datePipe.transform(tag.last_update, 'MM/dd/yyyy HH:mm', '', this.lang.selected),
             actions
