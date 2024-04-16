@@ -46,6 +46,10 @@ export class CreatePolygonComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('initial modal data: ', this.data);
+    this.langmodal = {
+      done: this.translateService.instant(`polygons.create-polygon.button-accept`),
+      cancel: this.translateService.instant(`polygons.create-polygon.button-cancel`)
+    };
     if (this.data.name) this.polygonForm.get('name').setValue(this.data.name);
   }
 
@@ -60,6 +64,7 @@ export class CreatePolygonComponent implements OnInit {
       if (this.action === 'create') this.showSuccess = true;
       if (this.action === 'rename') await this.renamePolygon(name);
       if (this.action === 'delete') await this.deletePolygon();
+      this.langmodal = { ...this.langmodal, done: this.translateService.instant(`polygons.create-polygon.button-success`) };
     }
   }
 

@@ -1840,11 +1840,28 @@
       "create": "Create New Polygon"
     },
     "create-polygon": {
-      "title": "Create new Polygon",
-      "title-success": "Polygon successfully created",
+      "title": {
+        "create": "Create new Polygon",
+        "rename": "Rename Polygon",
+        "delete": "Delete Polygon"
+      },
+      "warn": {
+        "delete": "Are you sure you want delete the polygon?"
+      },
+      "title-success": {
+        "create": "Polygon successfully created",
+        "rename": "Polygon successfully renamed",
+        "delete": "Polygon successfully deleted"
+      },
+      "subtitle-success": {
+        "create": "Your Polygon has been created correctly on the map and has been added to filters.",
+        "rename": "Your Polygon has been renamed correctly",
+        "delete": "Your Polygon has been deleted correctly"
+      },
       "input-placeholder": "Type polygon name",
       "button-accept": "Accept",
-      "button-success": "Awesome"
+      "button-success": "Awesome",
+      "button-cancel": "Cancel"
     }
   },
   "saved-locations": {

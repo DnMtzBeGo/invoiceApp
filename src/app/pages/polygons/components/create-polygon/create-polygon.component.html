@@ -8,23 +8,25 @@
   [enabledClose]="true"
   (closeEmitter)="actions($event)">
   <div class="content">
-    <h2 *ngIf="!showSuccess">{{ 'polygons.create-polygon.title' | translate }}</h2>
+    <h2 *ngIf="!showSuccess">{{ 'polygons.create-polygon.title.' + action | translate }}</h2>
 
-    
     <div class="input-content" *ngIf="!showSuccess && action !== 'delete'" [formGroup]="polygonForm">
       <input
-      type="text"
-      class="input-bego"
-      [placeholder]="'polygons.create-polygon.input-placeholder' | translate"
-      formControlName="name" />
+        type="text"
+        class="input-bego"
+        [placeholder]="'polygons.create-polygon.input-placeholder' | translate"
+        formControlName="name" />
     </div>
-    
-    
+
+    <p *ngIf="!showSuccess && action === 'delete'">
+      {{ 'polygons.create-polygon.warn.delete' | translate }}
+    </p>
+
     <ng-container *ngIf="showSuccess">
-      <h2 *ngIf="showSuccess">Polygon created correctly</h2>
-      <p *ngIf="data.action === 'create'">Your Polygon has been created correctly on the map and has been added to filters.</p>
-      <p *ngIf="data.action === 'rename'">Your Polygon has been renamed correctly</p>
-      <p *ngIf="data.action === 'delete'">Your Polygon has been removed correctly</p>
+      <h2 *ngIf="showSuccess">{{ 'polygons.create-polygon.title-success.' + action | translate }}</h2>
+      <p>
+        {{ 'polygons.create-polygon.subtitle-success.' + action | translate }}
+      </p>
     </ng-container>
   </div>
 </bego-modal>

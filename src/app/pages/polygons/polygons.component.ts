@@ -7,6 +7,8 @@ import { CreatePolygonComponent } from './components/create-polygon/create-polyg
 // import { DatePipe } from '@angular/common';
 import * as L from 'leaflet';
 import 'leaflet-draw';
+import { PrimeService } from 'src/app/shared/services/prime.service';
+import { Router } from '@angular/router';
 
 interface Action {
   label: string;
@@ -85,40 +87,30 @@ export class PolygonsComponent implements OnInit {
   //////// Variables fot Bego Table
 
   constructor(
+    private readonly router: Router,
     private headerStyle: HeaderService,
     private webService: AuthService,
     private translateService: TranslateService,
-    private dialog: MatDialog // private datePipe: DatePipe,
+    private dialog: MatDialog, // private datePipe: DatePipe,
+    public readonly primeService: PrimeService
   ) {
     this.lang.selected = localStorage.getItem('lang') || 'en';
     this.headerStyle.changeHeader(this.headerTransparent);
-
-    // Bego Table Actions
-    this.actions = [
-      {
-        label: this.translate('rename', 'actions'),
-        id: 'rename',
-        icon: 'edit'
-      },
-      {
-        label: this.translate('edit', 'actions'),
-        id: 'edit',
-        icon: 'exchange'
-      },
-      {
-        label: this.translate('delete', 'actions'),
-        id: 'delete',
-        icon: 'trash1'
-      }
-    ];
 
     this.setLang();
   }
 
   async ngOnInit() {
+    if (this.primeService.loaded.isStopped) {
+      this.handleMustRedirect();
+    } else {
+      this.primeService.loaded.subscribe(() => this.handleMustRedirect());
+    }
+
     this.translateService.onLangChange.subscribe(async ({ lang }) => {
       this.lang.selected = lang;
       this.setLang();
+      console.log('translate: ', lang);
       await this.getPolygons(true);
     });
 
@@ -131,6 +123,10 @@ export class PolygonsComponent implements OnInit {
     // setTimeout(() => {
     //   this.showFleetMap = false;
     // }, 2000);
+  }
+
+  handleMustRedirect() {
+    if (!this.primeService.isPrime) this.router.navigate(['/home']);
   }
 
   private initializeMap(): void {
@@ -232,7 +228,7 @@ export class PolygonsComponent implements OnInit {
             enabled: true,
             options: {
               rename: true,
-              edit: true,
+              edit: false,
               delete: true
             }
           };
@@ -321,20 +317,41 @@ export class PolygonsComponent implements OnInit {
   }
 
   setLang() {
-    this.lang.paginator = {
-      total: this.translate('total', 'paginator'),
-      totalOf: this.translate('of', 'paginator'),
-      nextPage: this.translate('nextPage', 'paginator'),
-      prevPage: this.translate('prevPage', 'paginator'),
-      itemsPerPage: this.translate('itemsPerPage', 'paginator')
-    };
-
-    this.lang.filter = {
-      input: this.translate('input', 'filter'),
-      selector: this.translate('selector', 'filter')
+    this.lang = {
+      ...this.lang,
+      paginator: {
+        total: this.translate('total', 'paginator'),
+        totalOf: this.translate('of', 'paginator'),
+        nextPage: this.translate('nextPage', 'paginator'),
+        prevPage: this.translate('prevPage', 'paginator'),
+        itemsPerPage: this.translate('itemsPerPage', 'paginator')
+      },
+      filter: {
+        input: this.translate('input', 'filter'),
+        selector: this.translate('selector', 'filter')
+      }
     };
 
     this.columns.forEach((column) => (column.label = this.translate(column.id, 'table')));
+
+    // Bego Table Actions
+    this.actions = [
+      {
+        label: this.translate('rename', 'actions'),
+        id: 'rename',
+        icon: 'edit'
+      },
+      {
+        label: this.translate('edit', 'actions'),
+        id: 'edit',
+        icon: 'exchange'
+      },
+      {
+        label: this.translate('delete', 'actions'),
+        id: 'delete',
+        icon: 'trash1'
+      }
+    ];
   }
 
   public openPolygonMap() {

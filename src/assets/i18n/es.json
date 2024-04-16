@@ -1844,11 +1844,28 @@
       "create": "Crear Polygon"
     },
     "create-polygon": {
-      "title": "Crear un Polígono",
-      "title-success": "Polígono creado exitosamente",
+      "title": {
+        "create": "Crear un Polígono",
+        "rename": "Renombrar Polígono",
+        "delete": "Eliminar Polígono"
+      },
+      "warn": {
+        "delete": "¿Estás seguro de que quieres eliminar el polígono?"
+      },
+      "title-success": {
+        "create": "Polígono creado exitosamente",
+        "rename": "¡Hecho!",
+        "delete": "¡Hecho!"
+      },
+      "subtitle-success": {
+        "create": "Tu polígono se ha creado correctamente en el mapa y se ha agregado a los filtros.",
+        "rename": "Tu polígono ha sido renombrado correctamente",
+        "delete": "Tu polígono ha sido eliminado correctamente"
+      },
       "input-placeholder": "Escribe un nombre",
       "button-accept": "Aceptar",
-      "button-success": "Ok"
+      "button-success": "Ok",
+      "button-cancel": "Cancelar"
     }
   },
   "saved-locations": {
