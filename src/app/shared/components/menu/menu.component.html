@@ -43,6 +43,12 @@
       <app-button class="btn-menu icon icon-drafts icon-only"></app-button>
       {{ "menu.drafts" | translate }}
     </div> -->
+
+    <div class="menu-option" *ngIf="primeService.isPrime" [ngClass]="{ selected: router.url == '/polygons' }" (click)="goTo('polygons')">
+      <app-button class="btn-menu icon icon-history icon-only"></app-button>
+      Polygons
+    </div>
+
     <div class="menu-option" [ngClass]="{ selected: router.url == '/history' }" (click)="goTo('history')">
       <app-button class="btn-menu icon icon-history icon-only"></app-button>
       {{ 'menu.history' | translate }}
@@ -69,6 +75,8 @@
       <app-button class="btn-menu icon icon-chat icon-only"></app-button>
       {{ "menu.support" | translate }}
     </div> -->
+
+    <bego-icon icon="begon-tag"></bego-icon>
     <div class="separator"></div>
     <!-- <div
       class="menu-option"

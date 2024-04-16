@@ -7,8 +7,12 @@ import { ContactComponent } from './pages/contact/contact.component';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule)
+    path: "home",
+    data: {
+      breadcrumb: 'Home'
+    },
+    loadChildren: () =>
+      import("./pages/home/home.module").then((m) => m.HomeModule),
   },
   {
     path: 'calendar',
@@ -39,8 +43,17 @@ const routes: Routes = [
     loadChildren: () => import('./pages/drafts/drafts.module').then((m) => m.DraftsModule)
   },
   {
-    path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then((m) => m.ProfileModule)
+    path: 'polygons',
+    data: {
+      breadcrumb: 'Polygons'
+    },
+    loadChildren: () =>
+      import('./pages/polygons/polygons.module').then((m) => m.PolygonsModule)
+  },
+  {
+    path: "profile",
+    loadChildren: () =>
+      import("./pages/profile/profile.module").then((m) => m.ProfileModule),
     // children: [
     //   {
     //     path: '',

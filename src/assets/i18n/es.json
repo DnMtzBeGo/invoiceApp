@@ -1823,6 +1823,55 @@
     "input": "Buscar...",
     "selector": "Buscar..."
   },
+  "polygons": {
+    "actions": {
+      "rename": "Renombrar",
+      "edit": "Actualizar puntos",
+      "delete": "Borrar"
+    },
+    "paginator": {
+      "total": "Total",
+      "of": "de",
+      "nextPage": "Siguiente",
+      "prevPage": "Anterior",
+      "itemsPerPage": "Items por página"
+    },
+    "filter": {
+      "input": "Buscar...",
+      "selector": "Buscar..."
+    },
+    "table": {
+      "name": "Nombre",
+      "date_created": "Fecha de creación"
+    },
+    "buttons": {
+      "create": "Crear Polygon"
+    },
+    "create-polygon": {
+      "title": {
+        "create": "Crear un Polígono",
+        "rename": "Renombrar Polígono",
+        "delete": "Eliminar Polígono"
+      },
+      "warn": {
+        "delete": "¿Estás seguro de que quieres eliminar el polígono?"
+      },
+      "title-success": {
+        "create": "Polígono creado exitosamente",
+        "rename": "¡Hecho!",
+        "delete": "¡Hecho!"
+      },
+      "subtitle-success": {
+        "create": "Tu polígono se ha creado correctamente en el mapa y se ha agregado a los filtros.",
+        "rename": "Tu polígono ha sido renombrado correctamente",
+        "delete": "Tu polígono ha sido eliminado correctamente"
+      },
+      "input-placeholder": "Escribe un nombre",
+      "button-accept": "Aceptar",
+      "button-success": "Ok",
+      "button-cancel": "Cancelar"
+    }
+  },
   "saved-locations": {
     "my-locations": "Mis ubicaciones guardadas",
     "search": "Buscar ubicación",
