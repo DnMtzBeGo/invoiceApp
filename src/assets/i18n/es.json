@@ -575,7 +575,7 @@
     "btn-es": "ES"
   },
   "location": {
-    "title": "Selecciona tu transporte",
+    "title": "Tipo de orden",
     "label_pickup": "Recolección",
     "label_dropoff": "Entrega",
     "label_pin": "Fijar la ubicación en el mapa",
