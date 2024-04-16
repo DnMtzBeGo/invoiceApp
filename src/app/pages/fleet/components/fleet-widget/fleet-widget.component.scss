@@ -7,6 +7,14 @@
   --padding-top: 20px;
   --fleet-widget-size: 60px;
   --fleet-widget-margin: 30px 0px 60px;
+  display: flex;
+  height: 100%;
+
+  .fleet-wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
 
   &.fleet-sm {
     --fleet-widget-size: 45px;
@@ -280,5 +288,12 @@
         }
       }
     }
+  }
+
+  .btn-new_vehicle {
+    position: sticky;
+    bottom: -50px;
+    display: block;
+    margin: auto -40px -50px;
   }
 }

@@ -199,6 +199,15 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="vehicle_number">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 220px">
+          {{ 'fleet.prime.table.vehicle_number' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.attributes.vehicle_number }}
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="resolvers[model].displayedColumns"></tr>
 
       <tr mat-row *matRowDef="let row; columns: resolvers[model].displayedColumns"></tr>

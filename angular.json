@@ -30,7 +30,12 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@begomx/ui-components/assets",
+                "output": "/"
+              }
             ],
             "styles": [
               "src/styles.scss",

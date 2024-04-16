@@ -1,28 +1,18 @@
-import { _fixedSizeVirtualScrollStrategyFactory } from "@angular/cdk/scrolling";
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  OnInit,
-  ViewChild,
-  Output,
-  Input,
-  SimpleChange,
-  SimpleChanges,
-} from "@angular/core";
-import { Subject } from "rxjs";
-import { FileInfo } from "src/app/pages/profile/components/fiscal-docs/interfaces/FileInfo";
-import * as moment from "moment";
+import { _fixedSizeVirtualScrollStrategyFactory } from '@angular/cdk/scrolling';
+import { Component, ElementRef, EventEmitter, OnInit, ViewChild, Output, Input, SimpleChange, SimpleChanges } from '@angular/core';
+import { Subject } from 'rxjs';
+import { FileInfo } from 'src/app/pages/profile/components/fiscal-docs/interfaces/FileInfo';
+import * as moment from 'moment';
 
 @Component({
-  selector: "bego-drag-file-bar",
-  templateUrl: "./drag-file-bar.component.html",
-  styleUrls: ["./drag-file-bar.component.scss"],
+  selector: 'bego-drag-file-bar',
+  templateUrl: './drag-file-bar.component.html',
+  styleUrls: ['./drag-file-bar.component.scss']
 })
 export class DragFileBarComponent implements OnInit {
   @ViewChild('customTemplateRef') customTemplateRef: ElementRef;
-  @ViewChild("fileInput", { read: ElementRef, static: false }) fileInput!: ElementRef;
-  @ViewChild("uploadFilesBar", { read: ElementRef, static: false })
+  @ViewChild('fileInput', { read: ElementRef, static: false }) fileInput!: ElementRef;
+  @ViewChild('uploadFilesBar', { read: ElementRef, static: false })
   uploadFilesBar!: ElementRef;
 
   @Output() fileOutput = new EventEmitter<File>();
@@ -31,7 +21,8 @@ export class DragFileBarComponent implements OnInit {
   @Input() disabled?: boolean;
   @Input() fileFromAWS: object = {};
   //Files to be accepted
-  @Input() acceptFiles: string = "image/*, .pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/plain, application/pdf";
+  @Input() acceptFiles: string =
+    'image/*, .pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/plain, application/pdf';
   @Input() ignoreDrag: boolean = false;
   //used to know if to show loaded file once it's loaded
   @Input() displayFileLoaded: boolean = false;
@@ -46,19 +37,19 @@ export class DragFileBarComponent implements OnInit {
   dragListeners = {
     dragOverEvent: this.dragOverEvent.bind(this),
     dragLeaveEvent: this.dragLeaveEvent.bind(this),
-    dropListener: this.dropListener.bind(this),
+    dropListener: this.dropListener.bind(this)
   };
 
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.fileInput);
+    //console.log(this.fileInput);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('DESDE LOS CHANGES DE DRAG FILES', changes);
+    // console.log('DESDE LOS CHANGES DE DRAG FILES', changes);
     this.onChanges.next(changes);
-    if(changes.fileFromAWS?.currentValue.hasOwnProperty('url')) {
+    if (changes.fileFromAWS?.currentValue.hasOwnProperty('url')) {
       this.awsFile = true;
       let result = this.fileFromAWS['url'].split('/');
       this.awsFileName = result[result.length - 1];
@@ -68,24 +59,24 @@ export class DragFileBarComponent implements OnInit {
   }
 
   clickFileInputElement() {
-    console.log("clickFileInputElement");
+    //console.log('clickFileInputElement');
     this.fileInput.nativeElement.click();
   }
 
   dragOverEvent(event: any) {
     event.preventDefault();
-    event.target.classList.add("dragging-file");
+    event.target.classList.add('dragging-file');
   }
 
   dragLeaveEvent(event: any) {
     event.preventDefault();
-    event.target.classList.remove("dragging-file");
+    event.target.classList.remove('dragging-file');
   }
 
   dropListener(event: any) {
     event.preventDefault();
     this.fileInput.nativeElement.files = event.dataTransfer.files;
-    event.target.classList.remove("dragging-file");
+    event.target.classList.remove('dragging-file');
     this.selectFile();
   }
 
@@ -93,18 +84,18 @@ export class DragFileBarComponent implements OnInit {
     const uploadFilesBar = this.uploadFilesBar?.nativeElement;
 
     if (uploadFilesBar) {
-      uploadFilesBar.addEventListener("dragover", this.dragListeners.dragOverEvent);
-      uploadFilesBar.addEventListener("dragleave", this.dragListeners.dragLeaveEvent);
-      uploadFilesBar.addEventListener("drop", this.dragListeners.dropListener);
+      uploadFilesBar.addEventListener('dragover', this.dragListeners.dragOverEvent);
+      uploadFilesBar.addEventListener('dragleave', this.dragListeners.dragLeaveEvent);
+      uploadFilesBar.addEventListener('drop', this.dragListeners.dropListener);
     }
   }
 
   removeDragListeners() {
     const uploadFilesBar = this.uploadFilesBar.nativeElement;
 
-    uploadFilesBar.removeEventListener("dragover", this.dragListeners.dragOverEvent);
-    uploadFilesBar.removeEventListener("dragleave", this.dragListeners.dragLeaveEvent);
-    uploadFilesBar.removeEventListener("drop", this.dragListeners.dropListener);
+    uploadFilesBar.removeEventListener('dragover', this.dragListeners.dragOverEvent);
+    uploadFilesBar.removeEventListener('dragleave', this.dragListeners.dragLeaveEvent);
+    uploadFilesBar.removeEventListener('drop', this.dragListeners.dropListener);
   }
 
   ngAfterViewInit(): void {
@@ -129,28 +120,27 @@ export class DragFileBarComponent implements OnInit {
   selectFile(): void {
     const file = this.fileInput.nativeElement.files[0];
     this.fileInput.nativeElement.value = null;
-    const splitted = file.name.split(".");
+    const splitted = file.name.split('.');
     const extension = splitted.pop();
-    const text = splitted.join(".");
+    const text = splitted.join('.');
 
     this.fileInfo = {
       text,
       extension,
       key: file.name,
       file,
-      formattedSize: `${file.size / 1000} kb`,
+      formattedSize: `${file.size / 1000} kb`
     };
 
     file.size;
 
-    this.formattedDateUpdated = moment(file.lastModified).format("MMM dd YYYY");
+    this.formattedDateUpdated = moment(file.lastModified).format('MMM dd YYYY');
 
-    if(!this.ignoreDrag)
-      this.fileOutput.emit(file);
+    if (!this.ignoreDrag) this.fileOutput.emit(file);
   }
 
   removeFile(): void {
-    if(this.awsFile) {
+    if (this.awsFile) {
       this.awsFile = false;
     }
     this.fileInfo = undefined;

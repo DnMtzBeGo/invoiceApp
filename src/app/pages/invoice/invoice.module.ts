@@ -78,6 +78,7 @@ import { TwoDigitDecimaNumberDirective } from '../shared/directives/decimal.dire
 import { TooltipHelpModule } from 'src/app/shared/components/tooltip-help/tooltip-help.module';
 import { BegoIconsModule, BegoTableModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
+import { CantidadTransportaComponent } from './components/cantidad-transporta/cantidad-transporta.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { AppMaterialModule } from 'src/app/material';
     UbicacionesComponent,
     UbicacionComponent,
     CommodityComponent,
+    CantidadTransportaComponent,
     // InvoicePageComponent,
     // InvoiceTableComponent,
     EmisoresTableComponent,

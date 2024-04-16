@@ -10,7 +10,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "low": "node --max-old-space-size=6144 ./node_modules/.bin/ng serve"
   },
   "private": true,
   "dependencies": {
@@ -53,16 +54,17 @@
     "source-map-support": "^0.5.21",
     "swiper": "^7.2.0",
     "tslib": "^2.0.0",
+    "uuid": "^9.0.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^15.2.9",
-    "@angular/cli": "^15.2.9",
-    "@angular/compiler-cli": "^15.2.9",
+    "@angular-devkit/build-angular": "^15.2.10",
+    "@angular/cli": "^15.2.10",
+    "@angular/compiler-cli": "^15.2.10",
     "@ionic/angular": "^6.7.1",
     "@types/aos": "^3.0.3",
     "@types/jasmine": "~3.8.0",
-    "@types/node": "^12.20.33",
+    "@types/node": "^20.11.24",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.8.0",
     "jasmine-spec-reporter": "~5.0.0",

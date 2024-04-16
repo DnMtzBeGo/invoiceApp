@@ -92,7 +92,7 @@ export class MercanciasComponent implements OnInit {
     }
   }
 
-  addPedimento() {
+  addMerchandise() {
     this.commodities.push(1);
   }
 
@@ -103,6 +103,7 @@ export class MercanciasComponent implements OnInit {
   public sendDataToService() {
     return this.commodityRef.toArray().map((e) => {
       const info = e.commodity.value;
+
       const response = {
         clave_unidad: info.claveUnidad,
         peso_en_kg: info.peso,
@@ -117,14 +118,15 @@ export class MercanciasComponent implements OnInit {
         fraccion_arancelaria: info.fraccionArancelaria,
         moneda: info.moneda,
         cantidad: parseInt(info.cantidad),
-
-        pedimentos: info.pedimento
+        pedimentos: info.pedimento,
+        cantidad_transporta: info.cantidad_transporta
       };
 
       if (!info.materialPeligroso) {
         delete response.cve_material_peligroso;
         delete response.embalaje;
       }
+
       return response;
     });
   }
