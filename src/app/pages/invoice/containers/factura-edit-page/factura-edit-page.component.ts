@@ -878,8 +878,6 @@ export class FacturaEditPageComponent implements OnInit {
   }
 
   fetchCatalogosSAT() {
-    // h7xma29J$
-    // AUZM911206E49
     return from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(
       mergeAll(),
       map((d) => d?.result),
