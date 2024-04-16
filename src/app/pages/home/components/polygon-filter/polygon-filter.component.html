@@ -1,4 +1,4 @@
-<div class="polygon-filter-container">
+<div class="polygon-filter-container" *ngIf="isPrime()">
   <div class="action-btn" [ngClass]="{ 'active-btn': activeFilter }" (click)="activeFilter = !activeFilter">
     <bego-icon icon="begon-filter"></bego-icon>
     <span>{{ 'home.polygon-filter.btn-filter' | translate }}</span>

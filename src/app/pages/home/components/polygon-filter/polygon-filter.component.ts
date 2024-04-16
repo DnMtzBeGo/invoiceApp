@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ShareReportModalComponent } from '../share-report-modal/share-report-modal.component';
 import { TranslateService } from '@ngx-translate/core';
+import { PrimeService } from 'src/app/shared/services/prime.service';
 
 const LIMIT = 6;
 
@@ -74,7 +75,7 @@ export class PolygonFilter implements OnInit {
     }
   };
 
-  constructor(private apiRestService: AuthService, private matDialog: MatDialog, private translateService: TranslateService) {}
+  constructor(private apiRestService: AuthService, private matDialog: MatDialog, private translateService: TranslateService, public readonly primeService: PrimeService) {}
 
   async ngOnInit() {
     this.setFilterLang();
@@ -85,6 +86,10 @@ export class PolygonFilter implements OnInit {
     await this.getDrivers();
     await this.getPolygons();
     await this.getTags();
+  }
+
+  isPrime(): boolean {
+    return this.primeService.isPrime;
   }
 
   async getDrivers(page: number = 1) {
