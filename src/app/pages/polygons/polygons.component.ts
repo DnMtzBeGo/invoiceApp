@@ -211,7 +211,7 @@ export class PolygonsComponent implements OnInit {
       ...(match && { match })
     }).toString();
 
-    (await this.webService.apiRestGetRocket(`polygons/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
+    (await this.webService.apiRestGet(`polygons/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
       next: ({ result: { result, total } }) => {
         console.log(result);
         this.page.total = total;
@@ -374,7 +374,7 @@ export class PolygonsComponent implements OnInit {
       geometry
     };
 
-    (await this.webService.apiRestRocket(JSON.stringify(createPolygonRequest), 'polygons', { apiVersion: 'v1.1' })).subscribe(
+    (await this.webService.apiRest(JSON.stringify(createPolygonRequest), 'polygons', { apiVersion: 'v1.1' })).subscribe(
       (res) => {
         this.drawnItems.clearLayers();
         this.showFleetMap = true;
