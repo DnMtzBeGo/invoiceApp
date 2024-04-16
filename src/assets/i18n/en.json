@@ -1731,6 +1731,10 @@
   "tags": {
     "created": "The tag has been created successfully",
     "updated": "The tag has been updated successfully",
+    "driver": {
+      "added": "Driver added successfully",
+      "removed": "Driver removed successfully"
+    },
     "confirm_dialog": {
       "done": "Ok"
     },

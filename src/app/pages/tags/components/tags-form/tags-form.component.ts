@@ -307,36 +307,50 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public async rowSelected($event: any[]) {
-    const selectedDriverIds: string[] = $event
-      .filter((driver: TagDriver) => driver.selection_check)
-      .map((driver: TagDriver) => driver._id);
-  
+  savedCarriers = new Set<string>();
+
+  public async rowSelected($event: TagDriver[]) {
+    const selectedDriverIds = $event
+      .filter((driver) => driver.selection_check)
+      .map((driver) => driver._id);
+
     this.tag.carriers = selectedDriverIds;
-  
-    const putRequest = async () => {
-      try {
-        const response = (await this.apiService.apiRestPut(JSON.stringify(this.tag), `managers_tags/${this.tag_id}`, { apiVersion: 'v1.1' })).subscribe();
-  
-        if (response) {
-          if (selectedDriverIds.length > 0) {
-            this.showToast('Conductor(es) agregado(s) correctamente');
-          } else {
-            this.showToast('Conductor(es) eliminado(s) correctamente');
-          }
-        } else {
-          throw new Error('Error');
-        }
-      } catch (error) {
-        this.showToast('Error' + error.message);
-      }
-    };
-  
-    setTimeout(() => {
-      putRequest();
-    }, 3000);
+
+    const ids = new Set($event.map(i => i._id));
+    const isAdding = $event.length > this.savedCarriers.size;
+
+    if (isAdding) {
+      const toSave = [...ids].filter(id => !this.savedCarriers.has(id));
+
+      toSave.forEach(async (id) => {
+        await this.editTagMember(id, true);
+        this.savedCarriers.add(id)
+      });
+    } else {
+      const toRemove = [...this.savedCarriers].filter(id => !ids.has(id));
+
+      toRemove.forEach(async (id) => {
+        await this.editTagMember(id, false);
+        this.savedCarriers.delete(id)
+      });
+    }
   }
-  
+
+  async editTagMember(carrier_id: string, activate: boolean) {
+    const payload = {
+      carrier_id,
+      activate,
+      timestamp: Date.now(),
+    }
+
+    try {
+      await (await this.apiService.apiRestPut(JSON.stringify(payload), `managers_tags/tag_member/${this.tag_id}`, { apiVersion: 'v1.1' })).toPromise();
+      this.showToast(this.translateService.instant(`tags.driver.${activate ? 'added' : 'removed'}`));
+    } catch (e) {
+      this.showToast(`Error ${e.message}`)
+    }
+  }
+
   // #endregion Table methods
   public showToast(message: string): void {
     this.snackBar.open(message, 'Cerrar', {

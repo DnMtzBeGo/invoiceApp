@@ -1728,6 +1728,10 @@
   "tags": {
     "created": "Se creó el tag correctamente",
     "updated": "Se actualizó el tag correctamente",
+    "driver": {
+      "added": "Conductor agregado correctamente",
+      "removed": "Conductor eliminado correctamente"
+    },
     "confirm_dialog": {
       "done": "Ok"
     },
