@@ -18,7 +18,8 @@ export class CreatePolygonComponent implements OnInit {
   public icon: string = 'begon-polygon';
   public activatedDone = false;
   public langmodal = {
-    done: 'Awesome'
+    done: 'Awesome',
+    cancel: 'Cancel'
   };
 
   polygonForm: FormGroup;
@@ -54,13 +55,11 @@ export class CreatePolygonComponent implements OnInit {
     else {
       const name = this.polygonForm.get('name').value;
 
-      if (this.showSuccess) {
-        this.dialogRef.close({ name, action: this.action });
-      }
-
-      if (this.action === 'rename') await this.renamePolygon(name);
+      if (this.showSuccess) this.dialogRef.close({ name, action: this.action });
 
       if (this.action === 'create') this.showSuccess = true;
+      if (this.action === 'rename') await this.renamePolygon(name);
+      if (this.action === 'delete') await this.deletePolygon();
     }
   }
 
@@ -70,6 +69,17 @@ export class CreatePolygonComponent implements OnInit {
     const requestJson = JSON.stringify({ name });
 
     (await this.webService.apiRestPut(requestJson, `polygons/rename/${this.data._id}`, { apiVersion: 'v1.1' })).subscribe({
+      next: () => {
+        this.showSuccess = true;
+      },
+      error: (err) => {
+        // this.notificationsService.showErrorToastr('There was an error, try again later');
+      }
+    });
+  }
+
+  async deletePolygon() {
+    (await this.webService.apiRestDelete(`polygons/${this.data._id}`, { apiVersion: 'v1.1' })).subscribe({
       next: () => {
         this.showSuccess = true;
       },

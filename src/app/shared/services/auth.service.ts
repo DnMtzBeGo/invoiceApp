@@ -117,6 +117,37 @@ export class AuthService {
       params
     });
   }
+  
+  public async apiRestDelete(method: string, options: object = {}): Promise<Observable<any>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
+      'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+    const { URL_BASE } = environment;
+    const params = await this.getOptions(options);
+    let splitUrl, url;
+
+    if (options && options['apiVersion']) {
+      splitUrl = environment.URL_BASE.split('/');
+      splitUrl[splitUrl.length - 2] = options['apiVersion'];
+      url = splitUrl.join('/');
+    } else {
+      url = environment.URL_BASE;
+    }
+
+    // console.log('route', params.get('route'));
+    // if (!params.get('route')) {
+    //   params.delete('route');
+    // }
+
+    return this.http.delete<any>(url + method, {
+      headers,
+      params
+    });
+  }
 
   public async apiRestPut(requestJson: string, method: string, options: {[key: string]: any} = {}): Promise<Observable<any>> {
     const headers = new HttpHeaders({

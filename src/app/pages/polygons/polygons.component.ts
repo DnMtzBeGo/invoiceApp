@@ -315,7 +315,7 @@ export class PolygonsComponent implements OnInit {
         // this.openFile(data, 'xml');
         break;
       case 'delete':
-        // this.openFilesViewModal(data, 'vouchers');
+        this.openModalCreation(data, 'delete');
         break;
     }
   }
@@ -388,6 +388,10 @@ export class PolygonsComponent implements OnInit {
           ...polygon,
           ...(polygon._id === data._id && { name: result.name })
         }));
+      }
+
+      if (result.action === 'delete') {
+        this.polygons = this.polygons.filter((polygon) => polygon._id !== data._id);
       }
     });
   }
