@@ -10,7 +10,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./create-polygon.component.scss']
 })
 export class CreatePolygonComponent implements OnInit {
-  public polygonName: any = '';
   public showModal: boolean = false;
   public showSuccess: boolean = false;
 
@@ -24,6 +23,8 @@ export class CreatePolygonComponent implements OnInit {
 
   polygonForm: FormGroup;
 
+  action: string = '';
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CreatePolygonComponent>,
@@ -36,56 +37,45 @@ export class CreatePolygonComponent implements OnInit {
     });
 
     this.polygonForm.valueChanges.subscribe(() => {
-      console.log('change name: ', this.polygonForm.value, this.polygonForm.valid);
       this.activatedDone = this.polygonForm.valid;
     });
+
+    this.action = this.data.action;
   }
 
   ngOnInit(): void {
-    if (this.data.name) {
-      // this.polygonName = this.data.name;
-      this.polygonForm.get('name').setValue(this.data.name);
-    }
-  }
-
-  public getNameFromInput(e: Event): void {
-    if (e.target['value'] != '') {
-      this.activatedDone = true;
-    }
-    this.polygonName = e.target['value'];
+    console.log('initial modal data: ', this.data);
+    if (this.data.name) this.polygonForm.get('name').setValue(this.data.name);
   }
 
   public async actions(e: string) {
     console.log('selected action: ', e);
-    if (e == 'cancel') {
-      this.dialogRef.close();
-    } else {
+    if (e == 'cancel') this.dialogRef.close();
+    else {
       const name = this.polygonForm.get('name').value;
-      if (name && !this.showSuccess) {
-        // if (this.polygonName != '' && !this.showSuccess) {
-        if (this.data._id) {
-          await this.renamePolygon(name);
-          return;
-        }
 
-        this.showSuccess = true;
-      } else if (this.showSuccess) {
-        this.dialogRef.close({ data: this.polygonName });
+      if (this.showSuccess) {
+        this.dialogRef.close({ name, action: this.action });
       }
+
+      if (this.action === 'rename') await this.renamePolygon(name);
+
+      if (this.action === 'create') this.showSuccess = true;
     }
   }
 
   async renamePolygon(name: string) {
+    if (!name) return;
+
     const requestJson = JSON.stringify({ name });
 
     (await this.webService.apiRestPut(requestJson, `polygons/rename/${this.data._id}`, { apiVersion: 'v1.1' })).subscribe({
-      next: ({ result }) => {
+      next: () => {
         this.showSuccess = true;
       },
       error: (err) => {
         // this.notificationsService.showErrorToastr('There was an error, try again later');
-      },
-      complete: () => {}
+      }
     });
   }
 }

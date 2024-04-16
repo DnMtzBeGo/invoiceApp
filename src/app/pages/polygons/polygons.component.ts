@@ -198,7 +198,7 @@ export class PolygonsComponent implements OnInit {
       console.log(data);
       const layer = event.layer;
       this.drawnItems.addLayer(layer);
-      this.openModalCreation(data);
+      this.openModalCreation(data, 'create');
     });
   }
 
@@ -309,7 +309,7 @@ export class PolygonsComponent implements OnInit {
   selectingAction({ type, data }: any) {
     switch (type) {
       case 'rename':
-        this.openModalCreation(data);
+        this.openModalCreation(data, 'rename');
         break;
       case 'edit':
         // this.openFile(data, 'xml');
@@ -370,19 +370,24 @@ export class PolygonsComponent implements OnInit {
   }
 
   // MODALS
-  public openModalCreation(data): void {
-    // console.log('rename: ', data);
-    // return;
+  public openModalCreation(data, action): void {
     const dialogRef = this.dialog.open(CreatePolygonComponent, {
-      data: data
+      data: { ...data, action }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('close dialog: ', result);
-      if (result && result['data'] != 'cancel') {
-        this.createPolygons(result['data'], data);
-      } else {
+      if (!result) return;
+
+      if (result.action === 'create') {
+        this.createPolygons(result.name, data);
         this.drawnItems.clearLayers();
+      }
+
+      if (result.action === 'rename') {
+        this.polygons = this.polygons.map((polygon) => ({
+          ...polygon,
+          ...(polygon._id === data._id && { name: result.name })
+        }));
       }
     });
   }

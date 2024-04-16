@@ -16,14 +16,8 @@
         [placeholder]="'polygons.create-polygon.input-placeholder' | translate"
         formControlName="name" />
     </div>
-    <!-- <div class="input-content" *ngIf="!showSuccess">
-      <input
-      type="text" class="input-bego"
-      [placeholder]="'polygons.create-polygon.input-placeholder' | translate"
-      (change)="getNameFromInput($event)"
-      [value]="polygonName"
-      >
-    </div> -->
-    <p *ngIf="showSuccess">Your Polygon has been created correctly on the map and has been added to filters.</p>
+
+    <p *ngIf="showSuccess && data.action === 'create'">Your Polygon has been created correctly on the map and has been added to filters.</p>
+    <p *ngIf="showSuccess && data.action === 'rename'">Your Polygon has been renamed correctly</p>
   </div>
 </bego-modal>
