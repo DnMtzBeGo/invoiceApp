@@ -4,13 +4,13 @@
     <span>{{ 'home.polygon-filter.btn-filter' | translate }}</span>
   </div>
 
-  <div
-    class="action-btn"
-    [ngClass]="{
-      'active-btn': options.start_date,
-      'disabled-btn': !options.start_date
-    }"
-    (click)="openShareModal()">
+  <!-- TODO: pending to deploy to allow this -->
+  <!-- [ngClass]="{ -->
+  <!--   'active-btn': options.start_date, -->
+  <!--   'disabled-btn': !options.start_date -->
+  <!-- }" -->
+  <!-- (click)="openShareModal()"> -->
+  <div class="action-btn disabled-btn">
     <bego-icon icon="begon-shared"></bego-icon>
     <span>{{ 'home.polygon-filter.btn-share' | translate }}</span>
   </div>
