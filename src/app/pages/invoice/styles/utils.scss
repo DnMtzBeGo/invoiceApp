@@ -427,12 +427,12 @@ ngx-mat-select-search.brand-select-search-1 {
   box-shadow: none;
   background: initial;
 
-  .mat-header-cell,
-  .mat-cell {
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
     color: #ededed;
   }
 
-  .mat-header-cell {
+  .mat-mdc-header-cell {
     font-family: 'Avenir';
     font-style: normal;
     font-weight: 500;
@@ -444,7 +444,8 @@ ngx-mat-select-search.brand-select-search-1 {
     }
   }
 
-  .mat-cell {
+  .mat-mdc-cell {
+    border: none;
     font-family: 'Avenir';
     font-style: normal;
     font-weight: 400;
@@ -458,6 +459,7 @@ ngx-mat-select-search.brand-select-search-1 {
 
   tbody tr:nth-child(2n) {
     background: linear-gradient(90.03deg, rgba(13, 18, 23, 0.4) 0.86%, rgba(35, 37, 40, 0.163875) 51.72%, rgba(83, 88, 94, 0.08) 99.51%);
+    box-shadow: 0px 2px 16px 0px rgba(4, 4, 4, 1);
   }
 }
 
