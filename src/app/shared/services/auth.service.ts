@@ -109,6 +109,37 @@ export class AuthService {
       params
     });
   }
+  
+  public async apiRestDelete(method: string, options: object = {}): Promise<Observable<any>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
+      'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+    const { URL_BASE } = environment;
+    const params = await this.getOptions(options);
+    let splitUrl, url;
+
+    if (options && options['apiVersion']) {
+      splitUrl = environment.URL_BASE.split('/');
+      splitUrl[splitUrl.length - 2] = options['apiVersion'];
+      url = splitUrl.join('/');
+    } else {
+      url = environment.URL_BASE;
+    }
+
+    // console.log('route', params.get('route'));
+    // if (!params.get('route')) {
+    //   params.delete('route');
+    // }
+
+    return this.http.delete<any>(url + method, {
+      headers,
+      params
+    });
+  }
 
   public async apiRestPut(requestJson: string, method: string, options: { [key: string]: any } = {}): Promise<Observable<any>> {
     const headers = new HttpHeaders({
@@ -130,4 +161,84 @@ export class AuthService {
     }
     return this.http.put<any>(url + method, requestJson, { headers, params });
   }
+
+  public async apiRestDel(method: string, options: { [key: string]: any } = {}): Promise<Observable<any>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
+      'Access-Css-Control-Allow-Methods': 'PUT',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    const params = await this.getOptions(options);
+
+    let url: string;
+    if(options && options['apiVersion']) {
+      const splitUrl = environment.URL_BASE.split('/');
+      splitUrl[splitUrl.length - 2] = options['apiVersion'];
+      url = splitUrl.join('/');
+    } else {
+      url = environment.URL_BASE;
+    }
+
+    return this.http.delete(url + method, { headers, params });
+  }
+
+  public async apiRestGetRocket(method: string, options: object = {}): Promise<Observable<any>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
+      'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+    const { URL_BASE_ROCKET } = environment;
+    const params = await this.getOptions(options);
+    let splitUrl, url;
+  
+    if (options && options['apiVersion']) {
+      splitUrl = environment.URL_BASE_ROCKET.split('/');
+      splitUrl[splitUrl.length - 2] = options['apiVersion'];
+      url = splitUrl.join('/');
+    } else {
+      url = environment.URL_BASE_ROCKET;
+    }
+  
+    // console.log('route', params.get('route'));
+    // if (!params.get('route')) {
+    //   params.delete('route');
+    // }
+  
+    return this.http.get<any>(url + method, {
+      headers,
+      params
+    });
+  }
+
+  public async apiRestRocket(requestJson: string, method: string, options: any = {}): Promise<Observable<any>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Acceontrol-Allow-Headers': 'Content-Type, Accept',
+      'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
+      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
+    });
+
+    const URL_BASE_ROCKET = environment.URL_BASE_ROCKET;
+    const params = await this.getOptions(options);
+    let splitUrl, url;
+
+    if (options && options['apiVersion']) {
+      splitUrl = URL_BASE_ROCKET.split('/');
+      splitUrl[splitUrl.length - 2] = options['apiVersion'];
+      url = splitUrl.join('/');
+    } else {
+      url = URL_BASE_ROCKET;
+    }
+    return this.http.post<any>(url + method, requestJson, {
+      headers,
+      params
+    });
+  }
 }
+

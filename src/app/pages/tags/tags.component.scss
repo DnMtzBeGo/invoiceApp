@@ -1,0 +1,128 @@
+::ng-deep .rounded-panel {
+  mat-dialog-container {
+    .mdc-dialog__surface {
+      border-radius: 25px;
+    }
+  }
+}
+
+.tags-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+
+  ::ng-deep .chibi {
+    height: 198px !important;
+    background-image: url('../../../assets/images/tags/chubi_tags.svg') !important;
+    background-size: 198px 177px !important;
+    background-position-x: center;
+    top: -73px !important;
+  }
+
+  .page-header {
+    margin: 24px 54px 24px 10px;
+    display: flex;
+    justify-content: space-between;
+
+    h1 {
+      font-weight: 400;
+      font-size: 38.4px;
+      color: #b9b9b9;
+      line-height: 1;
+      letter-spacing: -0.2186px;
+    }
+  }
+
+  /* hides refresh table button */
+  ::ng-deep .refresh-table {
+    display: none;
+  }
+
+  .buttons-external {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    .refresh-paragraph {
+      text-decoration: underline;
+      transition: all 300ms;
+
+      &:hover {
+        cursor: pointer;
+        color: #ffcc00;
+
+        bego-icon {
+          ::ng-deep {
+            i {
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .dialog-container::before {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    content: '';
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 201;
+  }
+
+  .dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .alert {
+      background: #111 !important;
+      position: absolute;
+      top: 200px;
+      z-index: 202;
+
+      .alert-content {
+        text-align: center;
+        padding: 25%;
+        font-size: 18px;
+
+        .simple-title {
+          font-family: Avenir;
+          font-style: normal;
+          font-weight: 700;
+          font-size: 30px;
+          line-height: 35px;
+          text-align: center;
+          color: #fff;
+          margin: 0 0 28px;
+        }
+      }
+    }
+  }
+
+  .tag-input-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+
+    h2 {
+      font-size: 32px;
+    }
+
+    .input-tag {
+      color: #fff;
+      font-size: 22px;
+      text-align: center;
+    }
+  }
+
+}

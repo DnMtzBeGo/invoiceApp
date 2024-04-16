@@ -30,10 +30,17 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@begomx/ui-components/assets",
+                "output": "/"
+              }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/leaflet/dist/leaflet.css",
+              "./node_modules/leaflet-draw/dist/leaflet.draw.css"
             ],
             "scripts": [],
             "vendorChunk": true,

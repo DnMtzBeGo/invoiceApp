@@ -8,6 +8,7 @@ import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-ma
 import { HeaderService } from 'src/app/pages/home/services/header.service';
 import { ofType } from 'src/app/shared/utils/operators.rx';
 import { CustomMarker } from 'src/app/pages/home/custom.marker';
+import { Location } from '@angular/common';
 
 declare var google: any;
 // 10 seconds for refreshing map markers
@@ -55,18 +56,27 @@ export class FleetPageComponent implements OnInit {
   @ViewChild('map', { read: ElementRef, static: false }) mapRef!: ElementRef;
 
   subs = new Subscription();
+  showCompleteModal = false;
 
   constructor(
     private router: Router,
     private webService: AuthService,
     private googlemaps: GoogleMapsService,
     private headerStyle: HeaderService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private location: Location
   ) {
     this.subs.add(
       this.router.events.subscribe((res) => {
         if (res instanceof NavigationEnd && res.url === '/fleet') {
           window.requestAnimationFrame(() => this.mapEmitter.next(['center']));
+
+          const data = this.router.getCurrentNavigation()?.extras.state;
+
+          if (data?.showCompleteModal) {
+            this.showCompleteModal = data.showCompleteModal;
+            this.location.replaceState('/fleet');
+          }
         }
       })
     );

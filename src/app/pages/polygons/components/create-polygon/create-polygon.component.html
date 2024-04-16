@@ -1,0 +1,32 @@
+<bego-modal
+  [ngClass]="[!showModal ? 'hide-modal' : '']"
+  [backdrop]="backdrop"
+  [icon]="icon"
+  [lang]="langmodal"
+  [activatedDone]="activatedDone"
+  [enabledCancel]="!showSuccess && action === 'delete'"
+  [enabledClose]="true"
+  (closeEmitter)="actions($event)">
+  <div class="content">
+    <h2 *ngIf="!showSuccess">{{ 'polygons.create-polygon.title.' + action | translate }}</h2>
+
+    <div class="input-content" *ngIf="!showSuccess && action !== 'delete'" [formGroup]="polygonForm">
+      <input
+        type="text"
+        class="input-bego"
+        [placeholder]="'polygons.create-polygon.input-placeholder' | translate"
+        formControlName="name" />
+    </div>
+
+    <p *ngIf="!showSuccess && action === 'delete'">
+      {{ 'polygons.create-polygon.warn.delete' | translate }}
+    </p>
+
+    <ng-container *ngIf="showSuccess">
+      <h2 *ngIf="showSuccess">{{ 'polygons.create-polygon.title-success.' + action | translate }}</h2>
+      <p>
+        {{ 'polygons.create-polygon.subtitle-success.' + action | translate }}
+      </p>
+    </ng-container>
+  </div>
+</bego-modal>

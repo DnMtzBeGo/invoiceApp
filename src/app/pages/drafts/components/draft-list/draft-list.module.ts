@@ -7,22 +7,11 @@ import { InputSearchModule } from 'src/app/shared/components/input-search/input-
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TranslateModule } from '@ngx-translate/core';
+import { AppMaterialModule } from 'src/app/material';
 
 @NgModule({
-  declarations: [
-    DraftListComponent,
-    DateFormatterPipe
-  ],
-  imports: [
-    CommonModule,
-    ProgressBarModule,
-    InputSearchModule,
-    ButtonModule,
-    InfiniteScrollModule,
-    TranslateModule
-  ],
-  exports: [
-    DraftListComponent
-  ]
+  declarations: [DraftListComponent, DateFormatterPipe],
+  imports: [CommonModule, ProgressBarModule, InputSearchModule, ButtonModule, InfiniteScrollModule, TranslateModule, AppMaterialModule],
+  exports: [DraftListComponent]
 })
-export class DraftListModule { }
+export class DraftListModule {}

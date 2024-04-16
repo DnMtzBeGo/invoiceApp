@@ -32,11 +32,6 @@ import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 //import { NgCircleProgressModule } from 'ng-circle-progress';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { BegoAlertModule } from './shared/components/bego-alert/bego-alert.module';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { TimeoutInterceptor } from './shared/interceptors/timeout.interceptor';
@@ -47,6 +42,7 @@ import { SharedModule } from './shared/shared.module';
 import { SmallResolutionModalComponent } from './shared/components/small-resolution-modal/small-resolution-modal.component';
 import { IncompatibleBrowserModalComponent } from './shared/components/incompatible-browser-modal/incompatible-browser-modal.component';
 import { IonicModule } from '@ionic/angular';
+import { AppMaterialModule } from './material';
 
 export function playerFactory() {
   return player;
@@ -84,12 +80,9 @@ export function createTranslateLoader(http: HttpClient) {
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
     ReactiveFormsModule,
     FormsModule,
-    MatButtonModule,
-    MatIconModule,
+    AppMaterialModule,
     ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
@@ -118,7 +111,6 @@ export function createTranslateLoader(http: HttpClient) {
     MenuModule,
     BegoAlertModule,
     BrowserAnimationsModule,
-    MatSelectModule,
     LottieModule.forRoot({ player: playerFactory }),
     CalendarModule,
     SharedModule,

@@ -1,0 +1,34 @@
+<div class="fleet-edit-prime">
+  <form class="fields" [formGroup]="form">
+    <app-pictures-grid class="full" [pictures]="pictures" [obligatoryImgs]="requiredImgs" (onFileInput)="handleFileInput($event)"> </app-pictures-grid>
+
+    <bego-input class="full">
+      <span>{{ 'fleet.prime.brand' | translate }}</span>
+      <input uiInput type="text" [placeholder]="'fleet.prime.placeholder.brand' | translate" formControlName="brand" />
+    </bego-input>
+    <label class="date">
+      <span>{{ 'fleet.prime.year' | translate }}</span>
+      <select formControlName="year">
+        <option value="" disabled selected hidden>YYYY</option>
+        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+      </select>
+    </label>
+    <bego-input>
+      <span>{{ 'fleet.prime.vehicle_number' | translate }}</span>
+      <input uiInput type="text" [placeholder]="'fleet.prime.placeholder.vehicle_number' | translate" formControlName="vehicle_number" />
+    </bego-input>
+
+    <div class="color full">
+      <span>Color</span>
+      <bego-color-picker [value]="form.controls.color.value" (colorName)="form.controls.color.setValue($event)"></bego-color-picker>
+    </div>
+
+    <bego-button class="full save-btn" [activated]="form.valid && pictures.length >= requiredImgs" (click)="updateVehicle()">
+      {{ 'fleet.prime.btn_save' | translate }}
+    </bego-button>
+  </form>
+
+  <div class="sidebar">
+    <app-fleet-widget [size]="'sm'"></app-fleet-widget>
+  </div>
+</div>

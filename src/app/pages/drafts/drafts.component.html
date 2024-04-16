@@ -2,8 +2,8 @@
     <div class="draft-container"  [ngClass]="{'hidden' : showDraftList }">
         <div class="search-bar" *ngIf="draftData" [@enterAnimation]>
             <bego-input-search (inputData)="searchDraft($event)"></bego-input-search>
-            <bego-button class="btn-filter icon icon-filter" [text]="'draft.txt-filter' | translate" ></bego-button>
-            <bego-button class="icon icon-trash icon-only" (click)="deleteDraft()"></bego-button>
+            <app-button class="btn-filter icon icon-filter" [text]="'draft.txt-filter' | translate" ></app-button>
+            <app-button class="icon icon-trash icon-only" (click)="deleteDraft()"></app-button>
         </div>
         <draft-list
             [draftData]="draftData"
@@ -20,7 +20,7 @@
 
     <div class="map-container" [@enterAnimation] [ngClass]="{'hidden' : showDraftList }">
         <bego-map [typeMap]="'draft'"></bego-map>
-        <bego-button class="btn-yellow rounded active" *ngIf="!showDraftList" [text]="'draft.btn-order' | translate" (click)="continueOrder()"></bego-button>
+        <app-button class="btn-yellow rounded active" *ngIf="!showDraftList" [text]="'draft.btn-order' | translate" (click)="continueOrder()"></app-button>
     </div>
     
     <div class="no-draft-container" *ngIf="showDraftList" [@enterAnimation]>

@@ -42,6 +42,16 @@ mat-expansion-panel {
   }
 }
 
+.transport-button {
+  bego-icon {
+    ::ng-deep {
+      i {
+        font-weight: bold;
+        font-size: 30px;
+      }
+    }
+  }
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

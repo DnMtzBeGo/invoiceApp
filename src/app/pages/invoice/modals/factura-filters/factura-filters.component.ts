@@ -1,9 +1,19 @@
-import { Component, OnInit, Inject, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Router, ActivatedRoute } from '@angular/router';
-import { reactiveComponent } from 'src/app/shared/utils/decorators';
-import { oof } from 'src/app/shared/utils/operators.rx';
-import { groupStatus } from '../../containers/factura-edit-page/factura.core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+} from "@angular/core";
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { Router, ActivatedRoute } from "@angular/router";
+import { from, of, throwError, Subject } from "rxjs";
+import { mergeAll, pluck, catchError, tap } from "rxjs/operators";
+import { reactiveComponent } from "src/app/shared/utils/decorators";
+import { ofType, oof } from "src/app/shared/utils/operators.rx";
+import { makeRequestStream } from "src/app/shared/utils/http.rx";
+import { AuthService } from "src/app/shared/services/auth.service";
+import { groupStatus } from "../../containers/factura-edit-page/factura.core";
 
 const parseNumbers = (str?: string) => {
   str = str || '';

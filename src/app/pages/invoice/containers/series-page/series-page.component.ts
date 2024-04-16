@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { SeriesNewComponent } from '../../components/series-new/series-new.component';

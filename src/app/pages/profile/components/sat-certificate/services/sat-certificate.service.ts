@@ -64,7 +64,6 @@ export class FiscalDocumentsService {
    * @returns The list of files that have to be uploaded merged with the files gotten from the server
    */
   mergeResult(result: Array<any>, list: FileInfo[], prevList?: FileInfo[]): FileInfo[] {
-    console.log('calling mergeResult ');
     let formattedResult = result.map((e) => {
       let fileName = e.url.substring(e.url.lastIndexOf('/') + 1);
       let fileNameBrokenDown = fileName.split('.');
@@ -155,7 +154,7 @@ export class FiscalDocumentsService {
   }
 
   async requestVerification(userType: string) {
-    console.log('CALLING REQUEST VERIFICATION endpoint: ', `${userType}/request_verification`);
+    //console.log('CALLING REQUEST VERIFICATION endpoint: ', `${userType}/request_verification`);
     (await this.webService.apiRest('', `${userType}/request_verification`)).subscribe(
       (response: any) => {
         console.log(' request verification : ', response);

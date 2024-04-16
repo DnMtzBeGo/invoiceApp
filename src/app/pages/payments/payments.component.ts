@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { HeaderService } from '../home/services/header.service';
 import { DatePipe, CurrencyPipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { PaymentsUploadModalComponent } from './components/payments-upload-modal/payments-upload-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { EditedModalComponent } from './components/edited-modal/edited-modal.component';
@@ -12,12 +13,21 @@ import { BankDetailsModalComponent } from './components/bank-details-modal/bank-
 import { MessagesModalComponent } from './components/messages-modal/messages-modal.component';
 import * as moment from 'moment';
 
+interface Action {
+  label: string;
+  id: string;
+  icon: string;
+}
+
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss']
 })
 export class PaymentsComponent implements OnInit {
+
+  public headerTransparent: boolean = false;
+
   statusOptions = [
     { label: 'Cancel', value: 'cancel', id: -3 },
     { label: 'Rejected', value: 'rejected', id: -2 },
@@ -45,7 +55,7 @@ export class PaymentsComponent implements OnInit {
     { id: 'last_message', label: '' }
   ];
 
-  lang = {
+  public lang = {
     selected: 'en',
     paginator: {
       total: '',
@@ -60,59 +70,29 @@ export class PaymentsComponent implements OnInit {
     }
   };
 
-  actions = [
-    {
-      label: this.translate('view_pdf', 'actions'),
-      id: 'view_pdf',
-      icon: 'eye'
-    },
-    {
-      label: this.translate('view_xml', 'actions'),
-      id: 'view_xml',
-      icon: 'eye'
-    },
-    {
-      label: this.translate('view_vouchers', 'actions'),
-      id: 'view_vouchers',
-      icon: 'eye'
-    },
-    {
-      label: this.translate('view_upfronts', 'actions'),
-      id: 'view_upfronts',
-      icon: 'eye'
-    },
-    {
-      label: this.translate('view_message', 'actions'),
-      id: 'view_message',
-      icon: 'eye'
-    },
-    {
-      label: this.translate('view_bank', 'actions'),
-      id: 'view_bank',
-      icon: 'eye'
-    }
-  ];
+  public actions: Action[];
 
-  page = { size: 0, index: 0, total: 0 };
+  public page = { size: 0, index: 0, total: 0 };
 
-  searchQueries = {
+  public searchQueries = {
     limit: 10,
     page: 1,
     sort: JSON.stringify({ date_created: -1 }),
     match: ''
   };
 
-  selectRow: any = {
+  public selectRow: any = {
     showColumnSelection: false,
     selectionLimit: 0,
     keyPrimaryRow: 'concept'
   };
 
-  payments = [];
+  public payments = [];
 
-  loadingData: boolean = true;
+  public loadingData: boolean = true;
 
   constructor(
+    private headerStyle: HeaderService,
     private webService: AuthService,
     private notificationsService: NotificationsService,
     private matDialog: MatDialog,
@@ -120,7 +100,42 @@ export class PaymentsComponent implements OnInit {
     private currencyPipe: CurrencyPipe,
     private translateService: TranslateService
   ) {
+    this.headerStyle.changeHeader(this.headerTransparent);
     this.lang.selected = localStorage.getItem('lang') || 'en';
+
+    this.actions = [
+      {
+        label: this.translate('view_pdf', 'actions'),
+        id: 'view_pdf',
+        icon: 'eye'
+      },
+      {
+        label: this.translate('view_xml', 'actions'),
+        id: 'view_xml',
+        icon: 'eye'
+      },
+      {
+        label: this.translate('view_vouchers', 'actions'),
+        id: 'view_vouchers',
+        icon: 'eye'
+      },
+      {
+        label: this.translate('view_upfronts', 'actions'),
+        id: 'view_upfronts',
+        icon: 'eye'
+      },
+      {
+        label: this.translate('view_message', 'actions'),
+        id: 'view_message',
+        icon: 'eye'
+      },
+      {
+        label: this.translate('view_bank', 'actions'),
+        id: 'view_bank',
+        icon: 'eye'
+      }
+    ];
+
     this.setLang();
   }
 
@@ -287,7 +302,7 @@ export class PaymentsComponent implements OnInit {
   }
 
   openUploadedModal() {
-    const dialogRef = this.matDialog.open(EditedModalComponent, {
+    this.matDialog.open(EditedModalComponent, {
       data: {
         title: this.translate('title', 'edited-modal'),
         subtitle: this.translate('subtitle', 'edited-modal')
@@ -300,7 +315,7 @@ export class PaymentsComponent implements OnInit {
   }
 
   openFilesViewModal(data: any, modal_key: string) {
-    const dialogRef = this.matDialog.open(FilesViewModalComponent, {
+    this.matDialog.open(FilesViewModalComponent, {
       data: { ...data, modal_key },
       restoreFocus: false,
       autoFocus: false,
@@ -310,7 +325,7 @@ export class PaymentsComponent implements OnInit {
   }
 
   openViewVouchersModal(data) {
-    const dialogRef = this.matDialog.open(ListViewModalComponent, {
+    this.matDialog.open(ListViewModalComponent, {
       data,
       restoreFocus: false,
       autoFocus: false,
@@ -320,7 +335,7 @@ export class PaymentsComponent implements OnInit {
   }
 
   openBankDetailssModal(data) {
-    const dialogRef = this.matDialog.open(BankDetailsModalComponent, {
+    this.matDialog.open(BankDetailsModalComponent, {
       data,
       restoreFocus: false,
       autoFocus: false,

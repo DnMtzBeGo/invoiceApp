@@ -30,9 +30,7 @@ export class HistoryComponent implements OnInit {
   }
 
   public async getOrderById(orderId: string) {
-    let requestOrders = `{"order_id": "${orderId}"}`;
-
-    (await this.authService.apiRest(requestOrders, 'orders/get_by_id')).subscribe(res => {
+    (await this.authService.apiRest('', `carriers/orders/${orderId}`, { apiVersion: `v1.1` })).subscribe(res => {
       this.orderInfo = res.result;
     }, error => {
       console.log(error.error);

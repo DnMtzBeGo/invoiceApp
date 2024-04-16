@@ -1,19 +1,23 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { Router } from "@angular/router";
-import { from, of, throwError, Subject } from "rxjs";
-import { mergeAll, pluck, catchError } from "rxjs/operators";
-import { reactiveComponent } from "src/app/shared/utils/decorators";
-import { ofType, oof } from "src/app/shared/utils/operators.rx";
-import { makeRequestStream } from "src/app/shared/utils/http.rx";
-import { AuthService } from "src/app/shared/services/auth.service";
-import { NotificationsService } from "src/app/shared/services/notifications.service";
-import { routes } from "../../consts";
+import { Component, OnInit, Inject } from '@angular/core';
+import {
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA
+} from '@angular/material/legacy-dialog';
+import { Router } from '@angular/router';
+import { from, of, throwError, Subject } from 'rxjs';
+import { mergeAll, pluck, catchError } from 'rxjs/operators';
+import { reactiveComponent } from 'src/app/shared/utils/decorators';
+import { ofType, oof } from 'src/app/shared/utils/operators.rx';
+import { makeRequestStream } from 'src/app/shared/utils/http.rx';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { routes } from '../../consts';
 
 @Component({
-  selector: "app-action-cancelar-factura-confirmation",
-  templateUrl: "./action-cancelar-factura.component.html",
-  styleUrls: ["./action-cancelar-factura.component.scss"],
+  selector: 'app-action-cancelar-factura-confirmation',
+  templateUrl: './action-cancelar-factura.component.html',
+  styleUrls: ['./action-cancelar-factura.component.scss']
 })
 export class ActionCancelarFacturaComponent implements OnInit {
   public routes: typeof routes = routes;
@@ -27,12 +31,12 @@ export class ActionCancelarFacturaComponent implements OnInit {
       uuid_relacion: string;
     };
     motivos?: unknown[];
-    formLoading?: boolean;
+    formLoading?: unknown;
     formError?: any;
     formSuccess?: any;
   };
 
-  formEmitter = new Subject<["submit", unknown]>();
+  formEmitter = new Subject<['submit', unknown]>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -46,8 +50,8 @@ export class ActionCancelarFacturaComponent implements OnInit {
     //FORM
     const form$ = oof({
       invoice: this.data._id,
-      motivo_cancelacion: "",
-      uuid_relacion: "",
+      motivo_cancelacion: '',
+      uuid_relacion: ''
     });
 
     //CATALOGOS
@@ -57,9 +61,9 @@ export class ActionCancelarFacturaComponent implements OnInit {
     const {
       loading$: formLoading$,
       error$: formError$,
-      success$: formSuccess$,
+      success$: formSuccess$
     } = makeRequestStream({
-      fetch$: this.formEmitter.pipe(ofType("submit")),
+      fetch$: this.formEmitter.pipe(ofType('submit')),
       fetch: this.submitForm,
       afterSuccessDelay: () => {
         this.dialogRef.close();
@@ -67,7 +71,7 @@ export class ActionCancelarFacturaComponent implements OnInit {
       },
       afterError: (error) => {
         this.notificationsService.showErrorToastr(this.showError(error));
-      },
+      }
     });
 
     this.vm = this.$rx.connect({
@@ -75,21 +79,19 @@ export class ActionCancelarFacturaComponent implements OnInit {
       motivos: motivos$,
       formLoading: formLoading$,
       formError: formError$,
-      formSuccess: formSuccess$,
+      formSuccess: formSuccess$
     });
   }
 
   //API calls
   fetchMotivos() {
-    return from(
-      this.apiRestService.apiRestGet("invoice/cancelation-reasons")
-    ).pipe(mergeAll(), pluck("result"));
+    return from(this.apiRestService.apiRestGet('invoice/cancelation-reasons')).pipe(mergeAll(), pluck('result'));
   }
 
   submitForm = (form) => {
     return from(
-      this.apiRestService.apiRest(JSON.stringify(form), "invoice/cancel", {
-        loader: "false",
+      this.apiRestService.apiRest(JSON.stringify(form), 'invoice/cancel', {
+        loader: 'false'
       })
     ).pipe(mergeAll());
   };
@@ -98,6 +100,6 @@ export class ActionCancelarFacturaComponent implements OnInit {
   showError = (error: any) => {
     error = error?.message || error?.error;
 
-    return Array.isArray(error) ? error.map((e) => e.error).join(",\n") : error;
+    return Array.isArray(error) ? error.map((e) => e.error).join(',\n') : error;
   };
 }

@@ -1,6 +1,6 @@
-@import "../../styles/colors";
-@import "../../styles/font";
-@import "../../styles/variables";
+@import '../../styles/colors';
+@import '../../styles/font';
+@import '../../styles/variables';
 
 .factura-table-wrapper {
   padding-left: 0;
@@ -74,6 +74,23 @@
   &__content {
     overflow-x: scroll;
     position: relative;
+
+    // ::ng-deep {
+    bego-table {
+      .invoice-user {
+        --color: #ffe000;
+      }
+
+      .invoice-driver {
+        --color: #ededed;
+      }
+
+      .invoice-order,
+      .invoice-cfdi {
+        --color: #2568ef;
+      }
+    }
+    // }
   }
 
   &__table {
@@ -103,7 +120,7 @@
     padding: 5px 10px;
     font-size: 13px;
     box-sizing: border-box;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     font-weight: $fw-lighter;
     line-height: 1.75;
     letter-spacing: 0.457px;
@@ -120,7 +137,7 @@
     padding: 0 35px;
 
     .total {
-      font-family: "Avenir";
+      font-family: 'Avenir';
       font-size: 14px;
       letter-spacing: 0.5px;
       color: #ededed;
@@ -135,7 +152,7 @@
       a,
       button,
       .pagination-next {
-        font-family: "Avenir";
+        font-family: 'Avenir';
         font-size: 12px;
         font-weight: 500;
         color: #ededed;
@@ -161,7 +178,7 @@
       .pagination-previous a::before,
       .pagination-next.disabled::after,
       .pagination-next a::after {
-        font-family: "bego-icons-legacy" !important;
+        font-family: 'bego-icons-legacy' !important;
         font-style: normal;
         font-feature-settings: normal;
         font-variant: normal;
@@ -174,13 +191,13 @@
 
       .pagination-previous.disabled::before,
       .pagination-previous a::before {
-        content: "" !important;
+        content: '' !important;
         transform: translateY(1px);
       }
 
       .pagination-next.disabled::after,
       .pagination-next a::after {
-        content: "";
+        content: '';
         transform: translateY(1px);
       }
     }
@@ -218,7 +235,7 @@
 
     mat-label {
       margin-right: 1em;
-      font-family: "Avenir";
+      font-family: 'Avenir';
       font-style: normal;
       font-weight: 400;
       font-size: 14px;

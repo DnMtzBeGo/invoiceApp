@@ -1,0 +1,59 @@
+.color-picker {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .custom {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+  }
+
+  .picker-canvas {
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+
+.color-opt {
+  all: unset;
+  display: block;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+
+  &.palette {
+    background: no-repeat url('/assets/images/color-palette.svg') 0 0 / 100% 100%;
+  }
+}
+
+.selected {
+  all: unset;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 2px solid transparent;
+    border-color: inherit;
+    border-radius: 50px;
+  }
+
+  span {
+    margin-inline: 20px;
+  }
+}
+
+.hide {
+  display: none;
+}
+

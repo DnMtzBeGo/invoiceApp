@@ -1,19 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { of, timer, Subject, merge, from, Observable, forkJoin } from 'rxjs';
-import {
-  mapTo,
-  tap,
-  filter,
-  switchMap,
-  share,
-  map,
-  withLatestFrom,
-  takeUntil,
-  mergeAll,
-  pluck,
-  distinctUntilChanged
-} from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { tap, filter, switchMap, share, map, withLatestFrom, takeUntil, mergeAll, distinctUntilChanged } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -24,96 +11,99 @@ import { clone } from 'src/app/shared/utils/object';
 import { routes } from '../../consts';
 import { BegoSliderDotsOpts } from 'src/app/shared/components/bego-slider-dots/bego-slider-dots.component';
 
+interface VM {
+  // "receptor" | "precio" | "orden";
+  tab?: string;
+  form?: {
+    _id?: string;
+    status?: number;
+    invoice?: {
+      // receptor
+      receiver?: {
+        // direccion
+        address?: {
+          place_id?: string;
+          address?: string;
+        };
+        company?: string;
+        rfc?: string;
+        cfdi?: string;
+        tax_regime?: string;
+      };
+    };
+    pricing?: {
+      subtotal: number;
+      deferred_payment: boolean;
+    };
+    pickup?: {
+      contact_info?: {
+        rfc?: string;
+      };
+    };
+    dropoff?: {
+      contact_info?: {
+        rfc: string;
+      };
+    };
+    cargo?: {
+      cargo_goods: string;
+      commodity_quantity: number;
+      unit_type: string;
+      packaging: string;
+      hazardous_material: string;
+    };
+    // computed
+    metodo_de_pago?: string;
+  };
+  readonly?: boolean;
+  catalogos?: {
+    regimen_fiscal?: unknown[];
+    monedas?: unknown[];
+    metodos_de_pago?: unknown[];
+    formas_de_pago?: unknown[];
+    tipos_de_impuesto?: unknown[];
+    unidades_de_medida?: unknown[];
+    tipos_de_comprobante?: unknown[];
+    tipos_de_relacion?: unknown[];
+    usos_cfdi?: unknown[];
+    // carta porte
+    tipos_de_embalaje?: unknown[];
+  };
+  helpTooltips?: any;
+  searchAction?: {
+    type: 'rfc' | 'nombre' | 'cve_sat' | 'cve_material';
+    search: string;
+    rfc?: string;
+  };
+  receptorSearch?: {
+    rfc?: unknown[];
+    nombre?: unknown[];
+    cve_sat?: unknown[];
+    cve_material?: unknown[];
+  };
+  tipoPersona?: 'fisica' | 'moral';
+  searchLoading?: boolean;
+  formMode?: any;
+  formLoading?: unknown;
+  formError?: any;
+  formSuccess?: any;
+}
+
 @Component({
   selector: 'app-factura-order-edit-page',
   templateUrl: './factura-order-edit-page.component.html',
   styleUrls: ['./factura-edit-page.component.scss'],
   encapsulation: ViewEncapsulation.None
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FacturaOrderEditPageComponent implements OnInit {
   public routes: typeof routes = routes;
 
-  $rx = reactiveComponent(this);
+  public $rx = reactiveComponent(this);
 
-  vm: {
-    // "receptor" | "precio" | "orden";
-    tab?: string;
-    form?: {
-      _id?: string;
-      status?: number;
-      invoice?: {
-        // receptor
-        receiver?: {
-          // direccion
-          address?: {
-            place_id?: string;
-            address?: string;
-          };
-          company?: string;
-          rfc?: string;
-          cfdi?: string;
-          tax_regime?: string;
-        };
-      };
-      pricing?: {
-        subtotal: number;
-        deferred_payment: boolean;
-      };
-      pickup?: {
-        contact_info?: {
-          rfc?: string;
-        };
-      };
-      dropoff?: {
-        contact_info?: {
-          rfc: string;
-        };
-      };
-      cargo?: {
-        cargo_goods: string;
-        commodity_quantity: number;
-        unit_type: string;
-        packaging: string;
-        hazardous_material: string;
-      };
-      // computed
-      metodo_de_pago?: string;
-    };
-    readonly?: boolean;
-    catalogos?: {
-      regimen_fiscal?: unknown[];
-      monedas?: unknown[];
-      metodos_de_pago?: unknown[];
-      formas_de_pago?: unknown[];
-      tipos_de_impuesto?: unknown[];
-      unidades_de_medida?: unknown[];
-      tipos_de_comprobante?: unknown[];
-      tipos_de_relacion?: unknown[];
-      usos_cfdi?: unknown[];
-      // carta porte
-      tipos_de_embalaje?: unknown[];
-    };
-    helpTooltips?: any;
-    searchAction?: {
-      type: 'rfc' | 'nombre' | 'cve_sat' | 'cve_material';
-      search: string;
-      rfc?: string;
-    };
-    receptorSearch?: {
-      rfc?: unknown[];
-      nombre?: unknown[];
-      cve_sat?: unknown[];
-      cve_material?: unknown[];
-    };
-    tipoPersona?: 'fisica' | 'moral';
-    searchLoading?: boolean;
-    formMode?: any;
-    formLoading?: boolean;
-    formError?: any;
-    formSuccess?: any;
-  };
+  public vm: VM;
 
-  formEmitter = new Subject<
+  public formEmitter = new Subject<
     [
       (
         | 'tab'
@@ -131,11 +121,11 @@ export class FacturaOrderEditPageComponent implements OnInit {
     ]
   >();
 
-  id;
-  mode: 'create' | 'update';
-  model: 'order' = 'order';
-  tabs = ['receptor', 'precio', 'orden'];
-  sliderDotsOpts: BegoSliderDotsOpts = {
+  public id: string;
+  public mode: 'create' | 'update';
+  public model: 'order' = 'order';
+  public tabs = ['receptor', 'precio', 'orden'];
+  public sliderDotsOpts: BegoSliderDotsOpts = {
     totalElements: this.tabs.length,
     value: 0
     // valueChange: (slideIndex: number): void => {
@@ -148,11 +138,11 @@ export class FacturaOrderEditPageComponent implements OnInit {
     private router: Router,
     private apiRestService: AuthService,
     private route: ActivatedRoute,
-    private matDialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     //TAB
     const tab$ = merge(
       of(this.route.snapshot.queryParams.tab ?? 'receptor'),
@@ -196,7 +186,11 @@ export class FacturaOrderEditPageComponent implements OnInit {
         }))
       ),
       form$
-    ).pipe(map(orderPermissions), pluck('readonly'), distinctUntilChanged());
+    ).pipe(
+      map(orderPermissions),
+      map((d) => d?.readonly),
+      distinctUntilChanged()
+    );
     const catalogos$ = this.fetchCatalogosSAT().pipe(simpleFilters(this.formEmitter.pipe(ofType('catalogos:search'), share())), share());
     const helpTooltips$ = this.fetchHelpTooltips();
 
@@ -235,7 +229,12 @@ export class FacturaOrderEditPageComponent implements OnInit {
 
     const validSearch$ = searchAction$.pipe(
       filter(validSearch),
-      switchMap((search) => timer(500).pipe(takeUntil(cancelSearchAction$), mapTo(search)))
+      switchMap((search) =>
+        timer(500).pipe(
+          takeUntil(cancelSearchAction$),
+          map(() => search)
+        )
+      )
     );
 
     const searchRequest$ = validSearch$.pipe(
@@ -245,9 +244,9 @@ export class FacturaOrderEditPageComponent implements OnInit {
 
     const searchLoading$ = merge(
       oof(false),
-      validSearch$.pipe(mapTo(true)),
-      searchRequest$.pipe(mapTo(false)),
-      cancelSearchAction$.pipe(mapTo(false))
+      validSearch$.pipe(map(() => true)),
+      searchRequest$.pipe(map(() => false)),
+      cancelSearchAction$.pipe(map(() => false))
     );
 
     const receptorSearch$ = merge(
@@ -255,13 +254,16 @@ export class FacturaOrderEditPageComponent implements OnInit {
         withLatestFrom(searchAction$),
         map(([requestData, search]: any) => ({
           [search.type]: requestData
-        }))
+        })),
+        tap(() => {
+          this.cd.markForCheck();
+        })
       ),
-      cancelSearchAction$.pipe(mapTo({}))
+      cancelSearchAction$.pipe(map(() => {}))
     );
 
     const receptorRFC$ = merge(
-      form$.pipe(pluck('invoice', 'receiver', 'rfc')),
+      form$.pipe(map((d) => d?.invoice?.receiver?.rfc)),
       this.formEmitter.pipe(ofType('rfc:search')),
       this.formEmitter.pipe(ofType('rfc:set'), map(normalizeRFC))
     ).pipe(share());
@@ -269,7 +271,10 @@ export class FacturaOrderEditPageComponent implements OnInit {
     const tipoPersona$ = receptorRFC$.pipe(distinctUntilChanged(), map(getTipoPersona));
 
     //FORM SUBMIT
-    const formMode$ = this.formEmitter.pipe(ofType('submit'), pluck('1'));
+    const formMode$ = this.formEmitter.pipe(
+      ofType('submit'),
+      map((d) => d[1])
+    );
 
     const {
       loading$: formLoading$,
@@ -278,12 +283,13 @@ export class FacturaOrderEditPageComponent implements OnInit {
     } = makeRequestStream({
       fetch$: this.formEmitter.pipe(ofType('submit')),
       fetch: this.submitFactura,
-      afterSuccess: (data) => {},
-      afterSuccessDelay: (data) => {
+      afterSuccess: () => {},
+      afterSuccessDelay: () => {
         (this.route.snapshot.paramMap.get('redirectTo') && this.router.navigateByUrl(this.route.snapshot.paramMap.get('redirectTo'))) ||
           this.router.navigate([routes.FACTURAS]);
       },
       afterError: () => {
+        this.cd.markForCheck();
         // window.scrollTo({
         //   top: 9999999,
         //   behavior: "smooth",
@@ -305,10 +311,11 @@ export class FacturaOrderEditPageComponent implements OnInit {
       formLoading: formLoading$,
       formError: formError$,
       formSuccess: formSuccess$
-    });
+
+    }) as VM;
   }
 
-  createForm() {
+  public createForm() {
     return of({
       invoice: {
         receiver: {
@@ -347,7 +354,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
   }
 
   // API calls
-  fetchForm(_id) {
+  public fetchForm(_id) {
     return from(
       this.apiRestService.apiRest(
         JSON.stringify({
@@ -362,12 +369,18 @@ export class FacturaOrderEditPageComponent implements OnInit {
     );
   }
 
-  fetchCatalogosSAT() {
+  public fetchCatalogosSAT() {
     return forkJoin(
       // facturación
-      from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(mergeAll(), pluck('result')),
+      from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(
+        mergeAll(),
+        map((d) => d?.result)
+      ),
       // carta porte
-      from(this.apiRestService.apiRestGet('invoice/catalogs/consignment-note')).pipe(mergeAll(), pluck('result'))
+      from(this.apiRestService.apiRestGet('invoice/catalogs/consignment-note')).pipe(
+        mergeAll(),
+        map((d) => d?.result)
+      )
     ).pipe(map((catalogs) => Object.assign.apply(null, catalogs)));
   }
 
@@ -375,7 +388,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
     return oof(this.translateService.instant('invoice.tooltips'));
   }
 
-  searchReceptor(search) {
+  public searchReceptor(search) {
     const endpoints = {
       rfc: 'invoice/receivers',
       nombre: 'invoice/receivers/by-name',
@@ -399,10 +412,13 @@ export class FacturaOrderEditPageComponent implements OnInit {
         endpoints[search.type],
         { loader: 'false' }
       )
-    ).pipe(mergeAll(), pluck('result'));
+    ).pipe(
+      mergeAll(),
+      map((d) => d?.result)
+    );
   }
 
-  submitFactura = ([mode, saveMode, factura]) => {
+  public submitFactura = ([mode, saveMode, factura]) => {
     factura = clone(factura);
 
     const data = { orderInfo: toOrder(factura) };

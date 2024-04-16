@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { merge, timer, from, Subject, combineLatest, of } from 'rxjs';
 import {
   mapTo,
@@ -17,10 +17,9 @@ import {
   takeUntil,
   startWith
 } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { routes } from '../../consts';
 import { Paginator } from '../../models';
 import { FacturaFiltersComponent, ActionConfirmationComponent } from '../../modals';
@@ -29,6 +28,8 @@ import { reactiveComponent } from 'src/app/shared/utils/decorators';
 import { ofType, oof } from 'src/app/shared/utils/operators.rx';
 import { arrayToObject, object_compare, clone } from 'src/app/shared/utils/object';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { DatePipe } from '@angular/common';
+import { facturaPermissions } from '../factura-edit-page/factura.core';
 
 const filterParams = new Set(['fec_inicial', 'fec_final', 'emisor', 'receptor', 'tipo_de_comprobante', 'uuid', 'status']);
 
@@ -78,20 +79,26 @@ export class FacturasPageComponent implements OnInit {
 
   facturasEmitter = new Subject<['refresh' | 'filters:set' | 'template:search' | 'template:set' | 'refresh:defaultEmisor', unknown?]>();
 
-  paginator: Paginator = {
-    pageIndex: +this.route.snapshot.queryParams.page || 1,
-    pageSize: +this.route.snapshot.queryParams.limit || 10,
-    pageTotal: 1,
-    pageSearch: ''
-  };
+  public paginator: Paginator;
+
+  p = facturaPermissions;
 
   constructor(
     public router: Router,
     public route: ActivatedRoute,
     private matDialog: MatDialog,
     private apiRestService: AuthService,
-    private translateService: TranslateService
-  ) {}
+    private translateService: TranslateService,
+    private cd: ChangeDetectorRef,
+    private datePipe: DatePipe
+  ) {
+    this.paginator = {
+      pageIndex: +this.route.snapshot.queryParams.page || 1,
+      pageSize: +this.route.snapshot.queryParams.limit || 10,
+      pageTotal: 1,
+      pageSearch: ''
+    };
+  }
 
   ngOnInit(): void {
     const loadDataAction$ = merge(oof(''), this.facturasEmitter.pipe(ofType('refresh')));
@@ -133,10 +140,47 @@ export class FacturasPageComponent implements OnInit {
       map(([tiposComprobante, facturaStatus, facturas]: any) =>
         facturas.map((factura: any) => ({
           ...factura,
-          tipo_de_comprobante_: tiposComprobante[factura.tipo_de_comprobante] || factura.tipo_de_comprobante,
-          status_: facturaStatus[factura.status] || factura.status
+          plataforma: {
+            type: factura.source == 'orden' ? 'invoice-driver' : factura.source == 'factura' ? 'invoice-cfdi' : 'invoice-order',
+            label:
+              factura.source == 'orden'
+                ? this.translate('invoice.tooltips.invoice_source.drivers')
+                : factura.source == 'factura'
+                ? this.translate('invoice.tooltips.invoice_source.factura')
+                : this.translate('invoice.tooltips.invoice_source.ordenes')
+          },
+          fecha_emision: this.getDate(factura.fecha_emision),
+          serie: factura?.serie_label || factura?.serie,
+          emisor: `${factura.emisor?.nombre || ''}\n${factura.emisor?.rfc || ''}`,
+          receptor: `${factura.receptor?.nombre || ''}\n${factura.receptor?.rfc || ''}`,
+          tipo: tiposComprobante[factura.tipo_de_comprobante] || factura.tipo_de_comprobante,
+          // tipo_de_comprobante_: tiposComprobante[factura.tipo_de_comprobante] || factura.tipo_de_comprobante,
+          status: facturaStatus[factura.status] || factura.status,
+          // status: '',
+          subtotal: this.getCurrency(factura?.subtotal),
+          total: this.getCurrency(factura?.total),
+          actions: {
+            enabled: true,
+            options: {
+              edit_order_factura: this.p(factura).edit && !!factura.order,
+              edit_factura: this.p(factura).edit && !!!factura.order,
+              download_preview: this.p(factura).vistaprevia,
+              download_pdf: this.p(factura).pdf,
+              download_pdf_driver: this.p(factura).pdf_driver && factura.files?.pdf_driver,
+              download_pdf_cancelado: this.p(factura).pdf_cancelado,
+              download_xml: this.p(factura).xml,
+              download_xml_acuse: this.p(factura).xml_acuse,
+              duplicate: this.p(factura).duplicar,
+              send_by_email: this.p(factura).enviar_correo,
+              cancel_invoice: this.p(factura).cancelar,
+              delete_invoice: this.p(factura).eliminar
+            }
+          }
         }))
       ),
+      tap(() => {
+        this.cd.markForCheck();
+      }),
       share()
     );
 
@@ -248,8 +292,7 @@ export class FacturasPageComponent implements OnInit {
   fetchFacturaStatus = () => {
     return from(
       this.apiRestService.apiRestGet('invoice/catalogs/statuses', {
-        loader: 'false',
-        minimal: 1
+        loader: 'false'
       })
     ).pipe(mergeAll(), pluck('result'));
   };
@@ -383,4 +426,21 @@ export class FacturasPageComponent implements OnInit {
 
   filtersCount = (params = {}) =>
     Object.keys(params).filter((filterName) => filterParams.has(filterName) && params[filterName]).length || null;
+
+  translate = (text: string) => this.translateService.instant(text);
+
+  getDate = (date: string) => {
+    const parsedDate: Date = new Date(date);
+    if (isNaN(parsedDate.getTime())) return 'Invalid Date';
+
+    return this.datePipe.transform(parsedDate, 'MMM d, yy');
+  };
+  getCurrency = (price: number) =>
+    price
+      ? '$' +
+        price.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })
+      : '';
 }

@@ -1,0 +1,32 @@
+<div class="polygon-filter-container" *ngIf="isPrime()">
+  <div class="action-btn" [ngClass]="{ 'active-btn': activeFilter }" (click)="activeFilter = !activeFilter">
+    <bego-icon icon="begon-filter"></bego-icon>
+    <span>{{ 'home.polygon-filter.btn-filter' | translate }}</span>
+  </div>
+
+  <!-- TODO: pending to deploy to allow this -->
+  <!-- [ngClass]="{ -->
+  <!--   'active-btn': options.start_date, -->
+  <!--   'disabled-btn': !options.start_date -->
+  <!-- }" -->
+  <!-- (click)="openShareModal()"> -->
+  <div class="action-btn disabled-btn">
+    <bego-icon icon="begon-shared"></bego-icon>
+    <span>{{ 'home.polygon-filter.btn-share' | translate }}</span>
+  </div>
+
+  <ng-container *ngIf="!heatmap && options?.start_date">
+    <div class="divider"></div>
+
+    <mat-checkbox class="active-checkbox" color="yellow" (change)="checkedActive($event)">{{ 'home.polygon-filter.btn-active-24' | translate }}</mat-checkbox>
+  </ng-container>
+</div>
+
+<bego-polygon-filter
+  [ngClass]="{ 'open-filter': activeFilter }"
+  [drivers]="drivers"
+  [polygons]="polygons"
+  [tags]="tags"
+  [lang]="filterLang"
+  (scrolledToBottom)="loadMoreData($event)"
+  (actionEmitter)="selectedAction($event)"></bego-polygon-filter>

@@ -1,12 +1,14 @@
-import { Injectable } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { BehaviorSubject, Subject } from 'rxjs';
-import { InfoModalComponent } from "src/app/pages/invoice/modals/info-modal/info-modal.component";
+import { Injectable } from '@angular/core';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
+import { BehaviorSubject, Subject } from 'rxjs';
+import { InfoModalComponent } from 'src/app/pages/invoice/modals/info-modal/info-modal.component';
+import { v4 as uuidv4 } from 'uuid';
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class CartaPorteInfoService {
+  public id_ccp: string;
   public info: any;
   public infoRecolector = new Subject();
   public emitShowFraccion = new BehaviorSubject(false);
@@ -39,17 +41,17 @@ export class CartaPorteInfoService {
   showInvalidInfoModal(message: string) {
     this.matDialog.open(InfoModalComponent, {
       data: {
-        title: "La información es invalida",
-        message,
+        title: 'La información es invalida',
+        message
       },
-      restoreFocus: false,
+      restoreFocus: false
     });
   }
 
   resetCartaPorteInfo(): void {
     this.info = {
-      version: "2.0",
-      mercancias: {},
+      version: '3.0',
+      mercancias: {}
     };
   }
 
@@ -57,6 +59,6 @@ export class CartaPorteInfoService {
 
   showFraccionArancelaria(data: boolean) {
     this.emitShowFraccion.next(data);
-    return this.emitShowFraccion
+    return this.emitShowFraccion;
   }
 }

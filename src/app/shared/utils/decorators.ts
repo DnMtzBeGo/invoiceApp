@@ -1,6 +1,6 @@
-import { ɵmarkDirty as markDirty } from "@angular/core";
-import { Observable, NEVER, ReplaySubject, from, concat } from "rxjs";
-import { mergeMap, tap, takeUntil } from "rxjs/operators";
+// import { ɵmarkDirty as markDirty } from "@angular/core";
+import { Observable, ReplaySubject, from, concat } from 'rxjs';
+import { mergeMap, tap, takeUntil } from 'rxjs/operators';
 
 type ObservableDictionary<T> = {
   [P in keyof T]: Observable<T[P]>;
@@ -47,21 +47,17 @@ export function reactiveComponent(cmp: any) {
 
       const sourceKeys = Object.keys(sources) as (keyof T)[];
       const updateSink$ = from(sourceKeys).pipe(
-        mergeMap((sourceKey) =>
-          sources[sourceKey].pipe(
-            tap((sinkValue) => (sink[sourceKey] = sinkValue))
-          )
-        )
+        mergeMap((sourceKey) => sources[sourceKey].pipe(tap((sinkValue) => (sink[sourceKey] = sinkValue))))
       );
 
       concat(onInit$, updateSink$)
         .pipe(takeUntil(onDestroy$))
-        .subscribe(() => markDirty(cmp));
+        .subscribe(() => cmp.cdr?.markForCheck() || cmp.cd?.markForCheck());
 
       return sink;
     },
     onInit$,
     afterViewInit$,
-    onDestroy$,
+    onDestroy$
   };
 }

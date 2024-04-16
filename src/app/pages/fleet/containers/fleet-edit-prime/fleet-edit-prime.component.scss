@@ -1,0 +1,104 @@
+%input-base {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.fleet-edit-prime {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 90px;
+  align-items: center;
+  margin: 0 auto 90px;
+  max-width: 1280px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px;
+
+  app-pictures-grid {
+    display: block;
+    margin: 60px 0;
+  }
+
+  bego-input {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.35;
+
+    ::ng-deep .custom-input {
+      @extend %input-base;
+    }
+
+    span {
+      width: 100px;
+    }
+
+    input {
+      text-align: center;
+    }
+  }
+
+  .full {
+    grid-column: 1 / -1;
+  }
+
+  .date {
+    @extend %input-base;
+    @extend bego-input;
+
+    select {
+      width: 100%;
+      color: #fff;
+      border: none;
+      padding: 15px 0;
+      font: inherit;
+      text-align: center;
+      background: linear-gradient(
+          270deg,
+          rgba(0, 0, 0, 0.5) -5%,
+          var(--underline-color, rgba(205, 205, 205, 0.75)) 50%,
+          rgba(0, 0, 0, 0.5) 105%
+        )
+        no-repeat 0 100% / 100% 1px;
+
+      &:focus {
+        outline: none;
+      }
+
+      &:invalid {
+        color: #797979;
+      }
+
+      option {
+        background: #050a11;
+      }
+    }
+  }
+
+  .color {
+    @extend bego-input;
+    display: flex;
+    align-items: center;
+
+    bego-color-picker {
+      margin: auto;
+    }
+  }
+
+  .save-btn {
+    justify-self: flex-end;
+  }
+}
+
+.sidebar {
+  padding: 40px 25px;
+  background: #0b1117;
+  box-shadow: 0px 10px 10px #040b11, inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
+  border-radius: 8px;
+  color: #ededed;
+  max-height: 80vh;
+  overflow: auto;
+}

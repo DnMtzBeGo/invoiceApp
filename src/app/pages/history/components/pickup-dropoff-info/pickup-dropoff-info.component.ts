@@ -40,11 +40,13 @@ export class PickupDropoffInfoComponent implements OnInit {
   ngOnChanges(changes: any): void{
 
     if(this.orderData && this.title.length > 0) {
-      this.address = this.orderData[this.title]?.address;
-      this.dateOrder = this.orderData[this.title]?.startDate;
-      this.extraNotes = this.orderData[this.title]?.extra_notes;
-      this.phone = this.orderData[this.title]?.contact_info.telephone;
-      this.email = this.orderData[this.title]?.contact_info.email;
+      const selected = this.orderData?.destinations?.[this.title === 'pickup' ? 0 : 1];
+
+      this.address = selected?.address;
+      this.dateOrder = selected?.start_date;
+      this.extraNotes = selected?.extra_notes;
+      this.phone = selected?.contact_info.telephone;
+      this.email = selected?.contact_info.email;
       this.cargoType = this.orderData.cargo?.type;
     }
 

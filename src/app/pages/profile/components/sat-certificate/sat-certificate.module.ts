@@ -14,13 +14,10 @@ import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { ClickStopPropagationDirective } from '../../../../shared/directives/click-stop-propagation.directive';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatSelectModule } from '@angular/material/select';
 import { BegoAlertModule } from 'src/app/shared/components/bego-alert/bego-alert.module';
+import { AppMaterialModule } from 'src/app/material';
 
 export function playerFactory() {
   return player;
@@ -36,9 +33,6 @@ export function playerFactory() {
     DragFileBarModule,
     ObserversModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
     // NgCircleProgressModule.forRoot({
     //   maxPercent: 100,
     //   radius: 50,
@@ -55,7 +49,8 @@ export function playerFactory() {
     //   clockwise: false,
     //   startFromZero: false
     // }),
-    LottieModule.forRoot({ player: playerFactory })
+    LottieModule.forRoot({ player: playerFactory }),
+    AppMaterialModule
   ],
   exports: []
 })

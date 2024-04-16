@@ -3,13 +3,15 @@
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat.core();
+// @include mat.core();
+@include mat.all-legacy-component-typographies();
+@include mat.legacy-core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -32,10 +34,12 @@ $carriersDashboard-theme: mat.define-light-theme(
   )
 );
 
+@include mat.all-legacy-component-themes($carriersDashboard-theme);
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($carriersDashboard-theme);
+// @include mat.all-component-themes($carriersDashboard-theme);
 
 @import './app/shared/styles/cross-icon.scss';
 @import './app/shared/styles/icomoon.scss';
@@ -1002,7 +1006,7 @@ input.mat-input-element {
     display: contents;
 
     .alert-container {
-      background: linear-gradient(225deg, #080C0F 0%, rgba(46, 48, 49, 0.00) 100%);
+      background: linear-gradient(225deg, #080c0f 0%, rgba(46, 48, 49, 0) 100%);
       box-shadow: 0px 10px 9px rgba(0, 0, 0, 0.5), inset 4px 4px 4px #1c232a, inset -4px -4px 4px #040b11;
       backdrop-filter: blur(35px);
     }
@@ -1244,5 +1248,11 @@ input[type='number'] {
 
   > img {
     filter: grayscale(1);
+  }
+}
+
+.saved-locations-modal {
+  .mat-dialog-container {
+    background: none;
   }
 }

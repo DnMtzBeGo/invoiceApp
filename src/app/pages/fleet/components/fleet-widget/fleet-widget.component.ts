@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { routes } from '../../consts';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-fleet-widget',
@@ -27,6 +28,7 @@ export class FleetWidgetComponent implements OnInit {
   members: Array<any> = [];
   trucks: Array<any> = [];
   trailers: Array<Object> = [];
+  primeVehicles: Array<any> = [];
   hasTruck: boolean = false;
   hasChange: boolean = false;
   hasMembers: boolean = false;
@@ -37,7 +39,22 @@ export class FleetWidgetComponent implements OnInit {
   prevUrlTrucks: string;
   fleetDataLoaded: boolean = false;
 
-  constructor(private webService: AuthService, private translateService: TranslateService, private router: Router) {
+  lang = 'en';
+  langListener: Subscription;
+
+  isPrime = false;
+
+  constructor(
+    private webService: AuthService,
+    private translateService: TranslateService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.lang = this.translateService.currentLang;
+    this.langListener = this.translateService.onLangChange.subscribe((lang) => {
+      this.lang = lang.lang;
+    });
+
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd && ev.url === '/fleet') {
         this.prevUrlTrucks = ev.url;
@@ -48,6 +65,10 @@ export class FleetWidgetComponent implements OnInit {
   ngOnInit() {
     this.getFleetDetails();
     this.changeURL();
+  }
+
+  ngOnDestroy() {
+    this.langListener.unsubscribe();
   }
 
   async changeFleetName(newName: any) {
@@ -93,29 +114,68 @@ export class FleetWidgetComponent implements OnInit {
   }
 
   async getFleetDetails() {
-    (await this.webService.apiRest('', 'fleet/overview', { loader: 'false' })).subscribe(
-      async (res) => {
-        this.fleetDetails = res.result;
+    try {
+      const [fleets, vehicles]: any[] = await Promise.allSettled([
+        (await this.webService.apiRest('', 'fleet/overview', { loader: 'false' })).toPromise(),
+        this.getPrimeVehicles()
+      ]);
 
-        this.members = res.result.members || [];
-        if (this.members.length > 0) this.hasMembers = true;
+      const res = fleets?.value.result;
 
-        this.trucks = res.result.trucks || [];
-        this.hasChange = true;
-        if (this.trucks.length > 0) this.hasTruck = true;
+      this.primeVehicles = vehicles?.value;
+      this.fleetDetails = fleets?.value.result;
 
-        this.trailers = res.result.trailers || [];
+      this.members = res.members || [];
+      if (this.members.length > 0) this.hasMembers = true;
 
-        this.fleetNameFromService = res.result.name;
-        this.fleetName = this.fleetNameFromService;
+      this.trucks = res.trucks || [];
+      this.hasChange = true;
+      if (this.trucks.length > 0) this.hasTruck = true;
 
-        this.fleetDataLoaded = true;
-      },
-      async (err) => {
-        this.fleetDataLoaded = false;
-        console.log(err);
-      }
-    );
+      this.trailers = res.trailers || [];
+
+      this.fleetNameFromService = res.name;
+      this.fleetName = this.fleetNameFromService;
+
+      this.fleetDataLoaded = true;
+      this.cdr.markForCheck();
+    } catch (err) {
+      this.fleetDataLoaded = false;
+      console.log(err);
+    }
+  }
+
+  async getPrimeVehicles() {
+    const { result } = await (await this.webService.apiRest('', 'carriers/home')).pipe().toPromise();
+    this.isPrime = Boolean(result.subscription);
+
+    if (!this.isPrime) return [];
+
+    const q = new URLSearchParams([
+      ['fromDate', '0'],
+      ['toDate', '0']
+    ]);
+
+    const { result: categories } = await (await this.webService.apiRestGet('orders/vehicles', { apiVersion: 'v1.1' })).toPromise();
+
+    const requests = categories.map(async (group) => {
+      if (!group.has_vehicles) return;
+
+      const { result } = await (
+        await this.webService.apiRestGet(`orders/vehicles/${group._id}?${q.toString()}`, { apiVersion: 'v1.1' })
+      ).toPromise();
+
+      return {
+        ...group,
+        vehicles: result
+      };
+    });
+
+    const vehicles = (await Promise.allSettled(requests))
+      .filter((data) => data.status === 'fulfilled' && data.value)
+      .map((data: any) => data.value);
+
+    return vehicles;
   }
 
   changeURL() {

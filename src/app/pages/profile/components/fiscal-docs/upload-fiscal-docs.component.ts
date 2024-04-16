@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, ViewChild, ViewChildren, OnInit, Inject } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FiscalDocumentsService } from './services/fiscal-documents.service';
 import { FileInfo } from './interfaces/FileInfo';
@@ -14,7 +14,7 @@ type FileInterfaceFormats = 'cards' | 'list';
   selector: 'app-upload-fiscal-docs',
   templateUrl: './upload-fiscal-docs.component.html',
   styleUrls: ['./upload-fiscal-docs.component.scss'],
-  providers:  [FiscalDocumentsService]
+  providers: [FiscalDocumentsService]
 })
 export class UploadFiscalDocsComponent implements OnInit {
   selectedFormat: FileInterfaceFormats = 'cards';
@@ -45,8 +45,9 @@ export class UploadFiscalDocsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private alertService: AlertService,
     private translateService: TranslateService,
-    public route: ActivatedRoute
-  ) { }
+    public route: ActivatedRoute,
+    private cd: ChangeDetectorRef
+  ) {}
 
   /**
    * Function that helps refresh the list of files that

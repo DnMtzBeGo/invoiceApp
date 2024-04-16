@@ -24,17 +24,21 @@ export class PricingStepComponent implements OnInit {
     usd: { label: 'USD', value: 'usd' }
   };
 
-  pricingForm: FormGroup = this.formBuilder.group({
-    subtotal: [0, Validators.min(1)],
-    deferred_payment: [false],
-    currency: ['mxn']
-  });
+  public pricingForm: FormGroup;
 
   // helper to avoid calling `pricingStepFormData` each time `subtotal` changes
   // `formControlName` updates form in each keystroke, instead when blur input (deserved behavior)
-  dummyForm = this.formBuilder.group({ subtotal: [0] });
+  public dummyForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {
+    this.pricingForm = this.formBuilder.group({
+      subtotal: [0, Validators.min(1)],
+      deferred_payment: [false],
+      currency: ['mxn']
+    });
+
+    this.dummyForm = this.formBuilder.group({ subtotal: [0] });
+  }
 
   ngOnInit(): void {
     this.pricingForm.statusChanges.subscribe((status) => {
@@ -47,7 +51,7 @@ export class PricingStepComponent implements OnInit {
   }
 
   updateSubtotal() {
-    const { subtotal } = this.dummyForm.value
+    const { subtotal } = this.dummyForm.value;
     this.pricingForm.get('subtotal').setValue(subtotal);
   }
 
