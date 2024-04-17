@@ -226,7 +226,7 @@ export class PolygonFilter implements OnInit {
       tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
       polygons: JSON.stringify(options.polygons.map(({ _id }) => _id)),
       date: options.start_date,
-      include_older_locations: JSON.stringify(this.activeDrivers)
+      include_older_locations: JSON.stringify(!this.activeDrivers)
     };
     const queryParams = new URLSearchParams(newOptions).toString();
 
