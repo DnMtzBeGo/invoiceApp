@@ -7,6 +7,10 @@
   color: #ededed;
   overflow: hidden;
 
+  &.open {
+    height: auto;
+  }
+
   .order-header {
     padding: 20px 57px 0;
     img {

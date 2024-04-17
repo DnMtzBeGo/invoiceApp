@@ -13,11 +13,13 @@
     display: flex;
     justify-content: center;
     max-width: 900px;
+    max-height: 80vh;
     pointer-events: none;
     margin-top: $spacing-top;
 
     &.full {
       max-width: calc(100% - 80px - #{$directions-width});
+      max-height: auto;
     }
   }
 
