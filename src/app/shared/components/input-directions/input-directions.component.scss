@@ -77,16 +77,6 @@
   flex-direction: row;
 }
 
-::ng-deep .mat-datepicker-content {
-  left: -303px;
-  top: -80px;
-  position: absolute;
-
-  .mdc-button__label {
-    color: #fff;
-  }
-}
-
 .assigned-date-time-row {
   background: #0A0F14;
   box-shadow: 0px 10px 10px #040B11, inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
