@@ -1824,6 +1824,7 @@
     "selector": "Buscar..."
   },
   "polygons": {
+    "title": "Polígonos",
     "actions": {
       "rename": "Renombrar",
       "edit": "Actualizar puntos",
