@@ -6,8 +6,15 @@ import {
   ElementRef,
   ViewEncapsulation,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Output,
+  EventEmitter,
 } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import {
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA
+} from '@angular/material/legacy-dialog';
 import { TranslateService } from "@ngx-translate/core";
 import {
   from,
@@ -47,6 +54,7 @@ import {
   fromGpsWatchPermissions,
 } from "src/app/shared/utils/maps.rx";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { SavedLocationsService } from "../../services/saved-locations.service";
 
 declare var google;
 
@@ -61,6 +69,8 @@ const minZoom = 4;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PinComponent implements OnInit {
+  @Output() savePinLocation = new EventEmitter();
+
   $rx = reactiveComponent(this);
 
   geocoder = new google.maps.Geocoder();
@@ -92,7 +102,9 @@ export class PinComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private dialogRef: MatDialogRef<PinComponent>,
     private apiRestService: AuthService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    public savedLocations: SavedLocationsService,
+    public cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -312,6 +324,8 @@ export class PinComponent implements OnInit {
       showUI: showUI$,
       effects: effects$,
     });
+
+    this.savedLocations.locationsChange.subscribe(() => this.cdr.markForCheck());
   }
 
   closeModal() {
@@ -371,6 +385,13 @@ export class PinComponent implements OnInit {
       })
     );
   };
+
+  saveLocation() {
+    const location = this.vm.center;
+
+    if (this.savedLocations.isSaved(location)) return;
+    this.savedLocations.openModal(location);
+  }
 
   // UTILS
   log = (...args) => {

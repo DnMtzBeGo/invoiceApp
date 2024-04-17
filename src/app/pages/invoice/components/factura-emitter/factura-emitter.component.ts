@@ -1,9 +1,8 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { cloneObject } from 'src/app/shared/utils/clone-format';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { EmitterAttributesInterface } from '../../models/invoice/emisores';
 import { CataloguesListService } from '../invoice/carta-porte/services/catalogues-list.service';
@@ -37,27 +36,16 @@ export class FacturaEmitterComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public editData: EmitterAttributesInterface,
     private catalogListService: CataloguesListService,
     private notificationsService: NotificationsService
-  ) {
-    this.emitterAttributesForm.valueChanges.subscribe(() => {
-      //console.log(this.emitterAttributesForm.value);
-    });
-  }
+  ) {}
 
   async ngOnInit() {
     let result = await this.catalogListService.getCatalogue('regimen-fiscal');
     this.regimen_fiscal = result;
     if (this.editData) {
       this.isEditing = !!this.editData?._id;
-      this.emitterAttributesForm.patchValue(this.editData);
+      this.emitterAttributesForm.patchValue(this.editData as any);
       this.emitterAttributesForm.get('archivo_key_pswd').patchValue('');
     }
-    this.emitterAttributesForm.statusChanges.subscribe((val) => {
-      // if (val === 'VALID') {
-      //   console.log(val);
-      // } else {
-      //   console.log(val);
-      // }
-    });
   }
 
   public async saveEmisor() {
@@ -127,11 +115,8 @@ export class FacturaEmitterComponent implements OnInit {
         }
       };
 
-      if (type === 'archivo_key') {
-        reader.readAsDataURL(this.keyFile);
-      } else {
-        reader.readAsDataURL(this.cerFile);
-      }
+      if (type === 'archivo_key') reader.readAsDataURL(this.keyFile);
+      else reader.readAsDataURL(this.cerFile);
     }
   }
 

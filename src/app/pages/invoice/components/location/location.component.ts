@@ -76,7 +76,7 @@ export class LocationComponent implements OnInit {
     );
 
     this.domicilioForm.controls.estado.valueChanges.subscribe(
-      async (inputValue = "") => {
+      async (inputValue: any = "") => {
         this.filteredEstados = this.estados.filter((e) => {
           const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
           const input =
@@ -106,7 +106,7 @@ export class LocationComponent implements OnInit {
     );
 
     this.domicilioForm.controls.municipio.valueChanges.subscribe(
-      (inputValue = "") => {
+      (inputValue: any = "") => {
         this.filteredMunicipios = this.municipios.filter((e) => {
           const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
           const input =
@@ -119,7 +119,7 @@ export class LocationComponent implements OnInit {
     );
 
     this.domicilioForm.controls.colonia.valueChanges.subscribe(
-      (inputValue = "") => {
+      (inputValue: any = "") => {
         this.filteredColonias = this.colonias.filter((e) => {
           const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
           const input =
@@ -132,7 +132,7 @@ export class LocationComponent implements OnInit {
     );
 
     this.domicilioForm.controls.localidad.valueChanges.subscribe(
-      (inputValue = "") => {
+      (inputValue: any = "") => {
         this.filteredLocalidades = this.localidades.filter((e) => {
           const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
           const input =

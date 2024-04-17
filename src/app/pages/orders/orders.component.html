@@ -1,87 +1,89 @@
-<div class="new-order-container" #ordersRef>
+<div class="new-order-container" [class.open]="cardIsOpen" #ordersRef>
   <div class="new-order-wrapper" [ngClass]="cardIsOpen ? 'card-open' : ''">
-    <div class="steps-body">
+    <div class="steps-body" [class.ocl]="orderType === 'OCL'">
       <div class="order-header">
         <h1 (click)="jumpStepTitle()">{{ typeOrder }}</h1>
-        <h2 class="order-number">
-          {{ 'orders.title-order_number' | translate }}: #{{ orderPreview?.order_number }}
-        </h2>
+        <h2 class="order-number">{{ 'orders.title-order_number' | translate }}: #{{ orderPreview?.order_number }}</h2>
       </div>
 
       <bego-marks class="order-stepper-wrapper" type="number"></bego-marks>
 
-      <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions" (stepChange)="updateStatus()">
+      <bego-stepper
+        *ngIf="orderType === 'FTL'; else isOCL"
+        [withControls]="false"
+        [allowKeysMovement]="false"
+        [config]="stepperOptions"
+        (stepChange)="updateStatus()">
         <bego-step [completed]="stepsValidate[0]">
-          <div #step>
-            <app-step1
-              [locations]="locations"
-              (step1FormData)="getStep1FormData($event)"
-              (validFormStep1)="validStep1($event)"
-              [cardIsOpen]="cardIsOpen"
-              [draftData]="draftData"
-              [datePickup]="datepickup"
-              [orderWithCP]="isOrderWithCP"
-            ></app-step1>
-          </div>
+          <app-step1
+            [locations]="locations"
+            (step1FormData)="getStep1FormData($event)"
+            (validFormStep1)="validStep1($event)"
+            [cardIsOpen]="cardIsOpen"
+            [draftData]="draftData"
+            [datePickup]="datepickup"
+            [orderWithCP]="isOrderWithCP"></app-step1>
         </bego-step>
 
         <bego-step [completed]="stepsValidate[1]">
-          <div #step>
-            <app-step2
-              [locations]="locations"
-              (step2FormData)="getStep2FormData($event)"
-              (validFormStep2)="validStep2($event)"
-              [draftData]="draftData"
-              [orderWithCP]="isOrderWithCP"
-            ></app-step2>
-          </div>
+          <app-step2
+            [locations]="locations"
+            (step2FormData)="getStep2FormData($event)"
+            (validFormStep2)="validStep2($event)"
+            [draftData]="draftData"
+            [orderWithCP]="isOrderWithCP"></app-step2>
         </bego-step>
 
         <bego-step [completed]="stepsValidate[2]">
-          <div #step>
-            <app-step3
-              [creationdatepickup]="datepickup"
-              [creationTime]="creationTime"
-              (step3FormData)="getStep3FormData($event)"
-              (validFormStep3)="validStep3($event)"
-              [draftData]="draftData"
-              [orderWithCP]="isOrderWithCP"
-              [editCargoWeightNow]="editCargoWeightNow"
-              (cargoWeightEdited)="cargoWeightEdited()"
-              [hazardousFileAWS]="hazardousFileAWS"
-              [catalogsDescription]="catalogsDescription"
-            ></app-step3>
-          </div>
+          <app-step3
+            [creationdatepickup]="datepickup"
+            [creationTime]="creationTime"
+            (step3FormData)="getStep3FormData($event)"
+            (validFormStep3)="validStep3($event)"
+            [draftData]="draftData"
+            [orderWithCP]="isOrderWithCP"
+            [editCargoWeightNow]="editCargoWeightNow"
+            (cargoWeightEdited)="cargoWeightEdited()"
+            [hazardousFileAWS]="hazardousFileAWS"
+            [catalogsDescription]="catalogsDescription"></app-step3>
         </bego-step>
 
         <bego-step [completed]="stepsValidate[3]">
-          <div #step>
-            <app-pricing-step
-              (pricingStepFormData)="getPricingStepFormData($event)"
-              (validPricingStep)="validPricingStep($event)"
-            ></app-pricing-step>
-          </div>
+          <app-pricing-step
+            (pricingStepFormData)="getPricingStepFormData($event)"
+            (validPricingStep)="validPricingStep($event)"></app-pricing-step>
         </bego-step>
 
         <bego-step [completed]="stepsValidate[4]">
-          <div #step>
-            <app-step4
-              [orderData]="orderData"
-              (step4FormData)="getStep4FormData($event)"
-              (validFormStep4)="validStep4($event)"
-            ></app-step4>
-          </div>
+          <app-step4 [orderData]="orderData" (step4FormData)="getStep4FormData($event)" (validFormStep4)="validStep4($event)"></app-step4>
         </bego-step>
       </bego-stepper>
+
+      <ng-template #isOCL>
+        <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions" (stepChange)="updateStatus()">
+          <bego-step [completed]="stepsValidateOCL[0]">
+            <app-ocl-step1
+              [draftData]="draftData"
+              [datePickup]="datepickup"
+              [cardIsOpen]="cardIsOpen"
+              (statusChange)="validStepOCL(0, $event)"
+              (dataChange)="updateStep1OCL($event)"></app-ocl-step1>
+          </bego-step>
+
+          <bego-step [completed]="stepsValidateOCL[1]">
+            <app-ocl-step2 (statusChange)="validStepOCL(1, $event)" (dataChange)="updateStep2OCL($event)"></app-ocl-step2>
+          </bego-step>
+        </bego-stepper>
+      </ng-template>
 
       <div class="footer">
         <bego-button size="small" [activated]="true" background="none" (click)="prevSlide()" *ngIf="currentStepIndex">
           <i class="icon icon-arrow-left back-arrow-icon"></i>
-          {{ "orders.back" | translate }}
+          {{ 'orders.back' | translate }}
         </bego-button>
 
         <bego-button [activated]="!btnStatusNext" background="yellow" (click)="nextSlide()">
-          {{ ordersSteps[currentStepIndex].nextBtnTxt }}
+          {{ (orderType === 'FTL' ? ordersSteps : ordersStepsOCL)[currentStepIndex].nextBtnTxt }}
         </bego-button>
       </div>
     </div>

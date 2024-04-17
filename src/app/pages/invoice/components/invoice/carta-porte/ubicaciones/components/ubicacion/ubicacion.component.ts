@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, QueryList, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+
 import { TranslateService } from '@ngx-translate/core';
 import { InfoModalComponent } from '../../../../../../modals/info-modal/info-modal.component';
 import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
@@ -129,7 +130,7 @@ export class UbicacionComponent implements OnInit {
   }
 
   getFormattedUbicacion() {
-    const ubicacion = Object.assign({}, this.ubicacionesForm.value);
+    const ubicacion: any = Object.assign({}, this.ubicacionesForm.value);
     ubicacion.domicilio = this.locationComponentInfo;
 
     if (ubicacion.tipo_ubicacion == 'Origen') delete ubicacion.distancia_recorrida;

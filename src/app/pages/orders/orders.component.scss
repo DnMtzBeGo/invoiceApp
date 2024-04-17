@@ -1,7 +1,15 @@
+:host {
+  width: 100%;
+}
+
 .new-order-container {
   height: 100%;
   color: #ededed;
   overflow: hidden;
+
+  &.open {
+    height: auto;
+  }
 
   .order-header {
     padding: 20px 57px 0;
@@ -96,6 +104,12 @@
       height: 100%;
       display: flex;
       flex-direction: column;
+
+      &.ocl {
+        .order-stepper-wrapper {
+          max-width: 380px;
+        }
+      }
 
       .order-stepper-wrapper {
         padding: 50px 57px;

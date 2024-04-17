@@ -125,7 +125,7 @@ export class FiguraComponent implements OnInit {
       }
     });
 
-    this.figuraTransporteForm.controls.parteTransporte.valueChanges.subscribe((inputValue) => {
+    this.figuraTransporteForm.controls.parteTransporte.valueChanges.subscribe((inputValue: any) => {
       if (inputValue) {
         this.filteredParteTransporte = this.parteTransporte.filter((e) => {
           const currentValue = `${e.clave} ${e.descripcion}`.toLowerCase();
@@ -150,7 +150,7 @@ export class FiguraComponent implements OnInit {
       this.domicilioForm.patchValue({ estado: '' });
     });
 
-    this.domicilioForm.controls.estado.valueChanges.subscribe(async (inputValue = '') => {
+    this.domicilioForm.controls.estado.valueChanges.subscribe(async (inputValue: any = '') => {
       this.filteredEstados = this.estados.filter((e) => {
         const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
         const input = inputValue && typeof inputValue == 'object' ? `${inputValue.clave} ${inputValue.nombre}` : inputValue.toLowerCase();
@@ -169,11 +169,11 @@ export class FiguraComponent implements OnInit {
       }
       this.domicilioForm.patchValue({
         municipio: '',
-        localidades: ''
+        localidad: ''
       });
     });
 
-    this.domicilioForm.controls.municipio.valueChanges.subscribe((inputValue = '') => {
+    this.domicilioForm.controls.municipio.valueChanges.subscribe((inputValue: any = '') => {
       this.filteredMunicipios = this.municipios.filter((e) => {
         const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
         const input = inputValue && typeof inputValue == 'object' ? `${inputValue.clave} ${inputValue.nombre}` : inputValue.toLowerCase();
@@ -189,7 +189,7 @@ export class FiguraComponent implements OnInit {
       this.domicilioForm.patchValue({ colonia: '' });
     });
 
-    this.domicilioForm.controls.localidad.valueChanges.subscribe((inputValue = '') => {
+    this.domicilioForm.controls.localidad.valueChanges.subscribe((inputValue: any = '') => {
       this.filteredLocalidades = this.localidades.filter((e) => {
         const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
         const input = inputValue && typeof inputValue == 'object' ? `${inputValue.clave} ${inputValue.nombre}` : inputValue.toLowerCase();

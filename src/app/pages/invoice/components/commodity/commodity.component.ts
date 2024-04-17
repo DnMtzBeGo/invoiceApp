@@ -1,17 +1,27 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { CartaPorteInfoService } from '../invoice/carta-porte/services/carta-porte-info.service';
 import { CataloguesListService } from '../invoice/carta-porte/services/catalogues-list.service';
+import {
+  CantidadTansporta,
+  CantidadTansportaChangedEvent,
+  CantidadTransportaComponent
+} from '../cantidad-transporta/cantidad-transporta.component';
 @Component({
   selector: 'app-commodity',
   templateUrl: './commodity.component.html',
   styleUrls: ['./commodity.component.scss']
 })
-export class CommodityComponent implements OnInit {
+export class CommodityComponent implements OnChanges {
+  @ViewChildren(CantidadTransportaComponent) cantidadTransportaRef: QueryList<CantidadTransportaComponent>;
   @ViewChild(MatTable) table: MatTable<any>;
+
   @Input() dataCoin: any;
   @Input() commodityInfo: any;
+
+  public cantidadTransportaInfo: Array<CantidadTansporta>;
+  public cantidad_transporta: Array<CantidadTansporta> = [{ cantidad: '', id_origen: '', id_destino: '' }];
   public embalaje: Array<object> = [];
   public filteredBienesTransportados: any[] = [];
   public bienesTransportados: any[] = [];
@@ -23,7 +33,8 @@ export class CommodityComponent implements OnInit {
   public dataSourcePedimento: Array<object> = [];
   public displayedColumns: string[] = ['value', 'action'];
   public showFraccion: boolean = false;
-  public commodity: any = new FormGroup({
+
+  public commodity: FormGroup = new FormGroup({
     bienesTransportados: new FormControl(''),
     bienesTransportadosDescripcion: new FormControl(''),
     // claveSCTT: new FormControl(''),
@@ -38,10 +49,14 @@ export class CommodityComponent implements OnInit {
     embalaje: new FormControl(''),
     cantidad: new FormControl(''),
     fraccionArancelaria: new FormControl(''),
+    // prettier-ignore
     UUIDComercioExt: new FormControl(
       '',
-      Validators.compose([Validators.pattern(/^[a-f0-9A-F]{8}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{12}$/)])
-    )
+      Validators.compose([Validators.pattern(
+        /^[a-f0-9A-F]{8}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{12}$/
+      )])
+    ),
+    cantidad_transporta: new FormControl([])
   });
 
   constructor(private catalogListService: CataloguesListService, private cartaPorteInfoService: CartaPorteInfoService) {
@@ -60,7 +75,7 @@ export class CommodityComponent implements OnInit {
     });
   }
 
-  setCatalogsFields() {
+  public setCatalogsFields() {
     //Obtener Autocomplete de Bienes Transportados
     this.commodity.controls.bienesTransportados.valueChanges.subscribe(async (val: string) => {
       if (val !== '') {
@@ -110,51 +125,57 @@ export class CommodityComponent implements OnInit {
     });
   }
 
-  async ngOnInit() {}
-
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
+  public async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes.commodityInfo && this.commodityInfo) {
       const {
-        bienes_transp,
+        bienes_transp: bienesTransportados,
         cantidad,
-        clave_unidad,
+        clave_unidad: claveUnidad,
         dimensiones,
         moneda,
         pedimentos,
-        peso_en_kg,
-        valor_mercancia,
+        peso_en_kg: peso,
+        valor_mercancia: valorMercancia,
         embalaje,
         material_peligroso,
-        cve_material_peligroso,
-        fraccion_arancelaria
+        cve_material_peligroso: claveMaterialPeligroso,
+        fraccion_arancelaria: fraccionArancelaria,
+        cantidad_transporta
       } = this.commodityInfo;
       if (pedimentos) this.dataSourcePedimento = pedimentos;
-      if (bienes_transp) {
+      if (bienesTransportados) {
         this.bienesTransportados = await this.catalogListService.getCatalogue('consignment-note/productos-y-servicios', {
-          term: bienes_transp
+          term: bienesTransportados
         });
       }
-      if (cve_material_peligroso) {
+      if (claveMaterialPeligroso) {
         this.materialPeligroso = await this.catalogListService.getCatalogue('consignment-note/material-peligroso', {
-          term: cve_material_peligroso,
+          term: claveMaterialPeligroso,
           limit: 30
         });
       }
 
+      if (cantidad_transporta?.length) {
+        this.cantidad_transporta = cantidad_transporta;
+        this.cantidadTransportaInfo = [...cantidad_transporta];
+      } else {
+        this.cantidadTransportaInfo = [];
+      }
+
       this.commodity.patchValue({
-        bienesTransportados: bienes_transp,
-        // claveSCTT: new FormControl(''),
-        claveUnidad: clave_unidad,
-        dimensiones: dimensiones,
-        peso: peso_en_kg,
-        valorMercancia: valor_mercancia,
-        moneda: moneda,
+        bienesTransportados,
+        claveUnidad,
+        dimensiones,
+        peso,
+        valorMercancia,
+        moneda,
         pedimento: pedimentos,
         materialPeligroso: material_peligroso == 'Sí',
-        claveMaterialPeligroso: cve_material_peligroso,
-        embalaje: embalaje,
-        cantidad: cantidad,
-        fraccionArancelaria: fraccion_arancelaria
+        claveMaterialPeligroso,
+        embalaje,
+        cantidad,
+        fraccionArancelaria,
+        cantidad_transporta
       });
     }
   }
@@ -209,5 +230,31 @@ export class CommodityComponent implements OnInit {
         this.filteredMaterialPeligroso = this.materialPeligroso;
         break;
     }
+  }
+
+  public addCantidadTransportaRow(): void {
+    const cantidadTransportaObject = { cantidad: '', id_origen: '', id_destino: '' };
+
+    this.cantidad_transporta.push(cantidadTransportaObject);
+    this.cantidadTransportaInfo.push(cantidadTransportaObject);
+    this.updateCantidadTransportaInfo();
+  }
+
+  public removeCantidadTransportaRow(index: number): void {
+    this.cantidadTransportaInfo.splice(index, 1);
+    this.cantidad_transporta.splice(index, 1);
+    this.updateCantidadTransportaInfo();
+  }
+
+  public cantidadTransportaRowHasChanged($event: CantidadTansportaChangedEvent): void {
+    const { index, item } = $event;
+    if (item && Array.isArray(this.cantidadTransportaInfo)) {
+      this.cantidadTransportaInfo[index] = item;
+      this.updateCantidadTransportaInfo();
+    }
+  }
+
+  private updateCantidadTransportaInfo() {
+    this.commodity.controls['cantidad_transporta'].setValue(this.cantidadTransportaInfo);
   }
 }

@@ -27,6 +27,7 @@ export class CircularAvatarComponent implements OnInit, OnChanges {
         case 'trucks':
           this.fallbackImage = '../../../../assets/images/truck.svg';
           break;
+        case 'vehicle':
         case 'trailers':
           this.fallbackImage = '../../../../assets/images/trailer.svg';
           break;

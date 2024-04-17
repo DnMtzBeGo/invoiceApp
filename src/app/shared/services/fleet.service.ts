@@ -8,7 +8,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 
 type PlaceId = string;
 
-type Model = 'members' | 'trucks' | 'trailers';
+type Model = 'members' | 'trucks' | 'trailers' | 'primeList' | 'prime';
 type FleetId = string;
 type ID = string;
 
@@ -59,6 +59,12 @@ export class FleetService {
             'trailers/delete'
           )
         ).pipe(mergeAll())
+    },
+    primeList: {
+      delete: (_, id) => from(this.authService.apiRestDel(`api/vehicle_types/${id}`, { apiVersion: 'vehicle-service' })).pipe(mergeAll())
+    },
+    prime: {
+      delete: (_, id) => from(this.authService.apiRestDel(`api/vehicle/${id}`, { apiVersion: 'vehicle-service' })).pipe(mergeAll())
     }
   };
 
@@ -75,7 +81,7 @@ export class FleetService {
           // console.log(error);
           this.alertService.create({
             title: 'Error',
-            body: error?.error?.error?.[this.translateService.currentLang],
+            body: error?.error?.error?.[this.translateService.currentLang] || error?.error?.error,
             handlers: [
               {
                 text: 'ok',

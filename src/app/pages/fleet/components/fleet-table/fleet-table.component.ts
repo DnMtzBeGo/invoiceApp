@@ -2,7 +2,8 @@ import { Component, Input, OnInit, ViewChild, OnChanges, AfterViewInit, Output, 
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+
 import { Router } from '@angular/router';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { Paginator, TableFactura } from '../../../invoice/models';
@@ -25,7 +26,7 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
   public routes: typeof routes = routes;
   public URL_BASE = environment.URL_BASE;
 
-  @Input() model: 'members' | 'trucks' | 'trailers';
+  @Input() model: 'members' | 'trucks' | 'trailers' | 'prime';
 
   resolvers = {
     members: {
@@ -47,6 +48,13 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
       avatarFallback: '../../../../assets/images/trailer.svg',
       displayedColumns: ['avatar', 'plates', 'type', 'trailer_number', 'operations'],
       editUrl: routes.EDIT_TRAILER,
+      queryParams: false
+    },
+    prime: {
+      avatarRounded: '24px',
+      avatarFallback: '../../../../assets/images/trailer.svg',
+      displayedColumns: ['avatar', 'brand', 'vehicle_number', 'color', 'operations'],
+      editUrl: routes.EDIT_PRIME,
       queryParams: false
     }
   };

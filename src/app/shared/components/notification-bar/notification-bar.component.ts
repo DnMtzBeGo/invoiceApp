@@ -28,9 +28,11 @@ export class NotificationBarComponent implements OnInit {
     private profileInfoService: ProfileInfoService,
     private alertService: AlertService,
     private router: Router
-  ) {}
+  ) {
+    this.notificationsBarService.isVisible ? '' : 'hide';
+  }
 
-  isVisible: string = this.notificationsBarService.isVisible ? '' : 'hide';
+  public isVisible: string;
   socket: any = null;
   profilePic: string = '';
   profileName: string = '';

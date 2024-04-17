@@ -2,13 +2,8 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.permiso-sct' | translate }}</mat-label>
-      <input
-        type="search"
-        autocomplete="off"
-        formControlName="permisoSCT"
-        matInput
-        (search)="resetFilterList('permisoSCT')"
-        [matAutocomplete]="sctRef" />
+      <input type="search" autocomplete="off" formControlName="permisoSCT" matInput
+        (search)="resetFilterList('permisoSCT')" [matAutocomplete]="sctRef" />
 
       <mat-autocomplete #sctRef="matAutocomplete" [displayWith]="getOptionText.bind(this, 'permisosSCT')">
         <mat-option *ngFor="let option of filteredPermisosSCT" [value]="option.clave" class="brand-option-1">
@@ -22,6 +17,7 @@
       <input matInput [name]="'invoice.autotransporte.num-permiso-sct' | translate" formControlName="numeroSCT" />
     </mat-form-field>
   </div>
+
   <h6>{{ 'invoice.autotransporte.seguros' | translate }}</h6>
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
@@ -32,14 +28,20 @@
       <mat-label>{{ 'invoice.autotransporte.numero-civil' | translate }}</mat-label>
       <input matInput [name]="'invoice.autotransporte.numero-civil' | translate" formControlName="numeroCivil" />
     </mat-form-field>
+  </div>
+  <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.nombre-ambiental' | translate }}</mat-label>
-      <input matInput [name]="'invoice.autotransporte.nombre-ambiental' | translate" formControlName="nombreAmbiental" />
+      <input matInput [name]="'invoice.autotransporte.nombre-ambiental' | translate"
+        formControlName="nombreAmbiental" />
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.numero-ambiental' | translate }}</mat-label>
-      <input matInput [name]="'invoice.autotransporte.numero-ambiental' | translate" formControlName="numeroAmbiental" />
+      <input matInput [name]="'invoice.autotransporte.numero-ambiental' | translate"
+        formControlName="numeroAmbiental" />
     </mat-form-field>
+  </div>
+  <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.nombre-carga' | translate }}</mat-label>
       <input matInput [name]="'invoice.autotransporte.nombre-carga' | translate" formControlName="nombreCarga" />
@@ -50,24 +52,22 @@
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.prima-seguro' | translate }}</mat-label>
-      <input matInput [name]="'invoice.autotransporte.prima-seguro' | translate" formControlName="primaSeguro" appTwoDigitDecimaNumber />
+      <input matInput [name]="'invoice.autotransporte.prima-seguro' | translate" formControlName="primaSeguro"
+        appTwoDigitDecimaNumber />
     </mat-form-field>
   </div>
+
   <h6>{{ 'invoice.autotransporte.identificacion' | translate }}</h6>
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.configuracion' | translate }}</mat-label>
-      <input
-        type="search"
-        autocomplete="off"
-        formControlName="identificacionVehicularConfig"
-        matInput
+      <input type="search" autocomplete="off" formControlName="identificacionVehicularConfig" matInput
         (search)="resetFilterList('identificacionVehicularConfig')"
         [matAutocomplete]="identificacionVehicularConfigRef" />
-      <mat-autocomplete
-        #identificacionVehicularConfigRef="matAutocomplete"
+      <mat-autocomplete #identificacionVehicularConfigRef="matAutocomplete"
         [displayWith]="getOptionText.bind(this, 'identificacionVehicular')">
-        <mat-option *ngFor="let option of filteredIdentificacionVehicular" [value]="option.clave" class="brand-option-1">
+        <mat-option *ngFor="let option of filteredIdentificacionVehicular" [value]="option.clave"
+          class="brand-option-1">
           {{ option.clave }} - {{ option.descripcion }}
         </mat-option>
       </mat-autocomplete>
@@ -75,20 +75,27 @@
 
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.placa' | translate }}</mat-label>
-      <input
-        matInput
-        [name]="'invoice.autotransporte.placa' | translate"
-        formControlName="truckPlates"
-        (keypress)="omitSpecialChar($event)"
-        [maxlength]="7" />
+      <input matInput [name]="'invoice.autotransporte.placa' | translate" formControlName="truckPlates"
+        (keypress)="omitSpecialChar($event)" [maxlength]="7" />
       <mat-error>Las placas deben ser entre 5 a 7 caracteres</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.año-modelo' | translate }}</mat-label>
-      <input matInput type="number" [name]="'invoice.autotransporte.año-modelo' | translate" formControlName="truckModel" />
+      <input matInput type="number" [name]="'invoice.autotransporte.año-modelo' | translate"
+        formControlName="truckModel" />
       <mat-error>{{ 'invoice.autotransporte.año-modelo-error' | translate }}</mat-error>
     </mat-form-field>
   </div>
+
+  <div class="grid">
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.autotransporte.vehicle_gross_weight' | translate }}</mat-label>
+      <input matInput type="number" formControlName="vehicleGrossWeight" />
+    </mat-form-field>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+  </div>
+
   <h6>{{ 'invoice.autotransporte.remolques' | translate }}</h6>
   <mat-card>
     <div class="grid">
@@ -107,14 +114,10 @@
 
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>{{ 'invoice.autotransporte.configuracion' | translate }}</mat-label>
-        <input
-          type="search"
-          autocomplete="off"
-          formControlName="remolquesConfig"
-          matInput
-          (search)="resetFilterList('remolquesConfig')"
-          [matAutocomplete]="remolquesConfigRef" />
-        <mat-autocomplete #remolquesConfigRef="matAutocomplete" [displayWith]="getOptionText.bind(this, 'remolquesConfig')">
+        <input type="search" autocomplete="off" formControlName="remolquesConfig" matInput
+          (search)="resetFilterList('remolquesConfig')" [matAutocomplete]="remolquesConfigRef" />
+        <mat-autocomplete #remolquesConfigRef="matAutocomplete"
+          [displayWith]="getOptionText.bind(this, 'remolquesConfig')">
           <mat-option *ngFor="let option of filteredRemolquesConfig" [value]="option.clave" class="brand-option-1">
             {{ option.clave }} - {{ option.descripcion }}
           </mat-option>
@@ -123,12 +126,8 @@
 
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>{{ 'invoice.autotransporte.placa' | translate }}</mat-label>
-        <input
-          matInput
-          [name]="'invoice.autotransporte.placa' | translate"
-          formControlName="remolquesPlates"
-          (keypress)="omitSpecialChar($event)"
-          [maxlength]="7" />
+        <input matInput [name]="'invoice.autotransporte.placa' | translate" formControlName="remolquesPlates"
+          (keypress)="omitSpecialChar($event)" [maxlength]="7" />
       </mat-form-field>
       <!-- <button mat-mini-fab color="primary" aria-label="Add"> -->
       <!-- <button mat-mini-fab color="primary" aria-label="Add" (click)="addRemolque(mercanciasForm.get('pedimento').value)"> -->

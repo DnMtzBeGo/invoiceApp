@@ -1,0 +1,28 @@
+.cantidad-transporta-item-wrapper {
+  margin-bottom: 12px;
+
+  .remove-cantidad-transporta-btn {
+    display: flex;
+    gap: 8px;
+    justify-content: end;
+    align-items: center;
+    margin-bottom: 40px;
+    z-index: 2;
+    cursor: pointer;
+
+    .icon {
+      background: linear-gradient(180deg, #ffd200 0%, #ffbe00 100%);
+      color: #040b11;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  hr {
+    border: 1px solid #333;
+  }
+}

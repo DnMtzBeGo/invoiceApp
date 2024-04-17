@@ -30,6 +30,10 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   @ViewChild('viewPort', { static: true }) protected viewPort: any;
   @ViewChild('chooseFleetElementRef') public chooseElementRef: ChooseFleetElementComponent;
 
+  get selectedInfo() {
+    return this.orderInfo?.destinations?.[this.selectedRow === 'pickup' ? 0 : 1];
+  }
+
   ngOnInit(): void {
     this.language = localStorage.getItem('lang');
 

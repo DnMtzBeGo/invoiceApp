@@ -1,20 +1,16 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { RouterModule } from "@angular/router";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
-import { NgxPaginationModule } from "ngx-pagination";
-import { TextMaskModule } from "angular2-text-mask";
-import { TranslateModule } from "@ngx-translate/core";
+import { NgModule } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { TextMaskModule } from 'angular2-text-mask';
+import { TranslateModule } from '@ngx-translate/core';
 
-import { SharedModule } from "../../shared/shared.module";
-import {
-  MAT_COLOR_FORMATS,
-  NgxMatColorPickerModule,
-  NGX_MAT_COLOR_FORMATS,
-} from "@angular-material-components/color-picker";
+import { SharedModule } from '../../shared/shared.module';
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 
-import { InvoiceRoutingModule } from "./invoice-routing.module";
+import { InvoiceRoutingModule } from './invoice-routing.module';
 import {
   //   OrdersPageComponent,
   //   EditionPageComponent,
@@ -24,9 +20,9 @@ import {
   FacturasPageComponent,
   FacturaEditPageComponent,
   FacturaOrderEditPageComponent,
-  CartaPortePageComponent,
+  CartaPortePageComponent
   //   InvoicePageComponent,
-} from "./containers";
+} from './containers';
 import {
   //   OrderTableComponent,
   //   NewOrderComponent,
@@ -46,40 +42,43 @@ import {
   //   TruckSelectionTableComponent,
   //   TrailerSelectionTableComponent,
   //   RunAlgorithmComponent,
-  FacturaTableComponent,
+  FacturaTableComponent
   //   InvoiceTableComponent,
-} from "./components";
+} from './components';
 import {
   ActionConfirmationComponent,
   ActionCancelarFacturaComponent,
   ActionSendEmailFacturaComponent,
-  FacturaFiltersComponent,
+  FacturaFiltersComponent
   // PushNotificationComponent,
   // AddNoteComponent
-} from "./modals";
-import { FacturaEmitterComponent } from "./components/factura-emitter/factura-emitter.component";
-import { EmisoresComponent } from "./containers/emisores/emisores.component";
-import { AereoComponent } from "./components/invoice/carta-porte/aereo/aereo.component";
-import { AutotransporteComponent } from "./components/invoice/carta-porte/autotransporte/autotransporte.component";
-import { FerroviarioComponent } from "./components/invoice/carta-porte/ferroviario/ferroviario.component";
-import { FiguraTransporteComponent } from "./components/invoice/carta-porte/figura-transporte/figura-transporte.component";
-import { FiguraComponent } from "./components/invoice/carta-porte/figura-transporte/components/figura/figura.component";
-import { MaritimoComponent } from "./components/invoice/carta-porte/maritimo/maritimo.component";
-import { MercanciasComponent } from "./components/invoice/carta-porte/mercancias/mercancias.component";
-import { TransporteComponent } from "./components/invoice/carta-porte/transporte/transporte.component";
-import { UbicacionesComponent } from "./components/invoice/carta-porte/ubicaciones/ubicaciones.component";
-import { UbicacionComponent } from "./components/invoice/carta-porte/ubicaciones/components/ubicacion/ubicacion.component";
-import { CommodityComponent } from "./components/commodity/commodity.component";
-import { EmisoresTableComponent } from "./components/emisores-table/emisores-table.component";
-import { SeriesPageComponent } from "./containers/series-page/series-page.component";
-import { SeriesTableComponent } from "./components/series-table/series-table.component";
-import { SeriesNewComponent } from "./components/series-new/series-new.component";
-import { LocationComponent } from "./components/location/location.component";
+} from './modals';
+import { FacturaEmitterComponent } from './components/factura-emitter/factura-emitter.component';
+import { EmisoresComponent } from './containers/emisores/emisores.component';
+import { AereoComponent } from './components/invoice/carta-porte/aereo/aereo.component';
+import { AutotransporteComponent } from './components/invoice/carta-porte/autotransporte/autotransporte.component';
+import { FerroviarioComponent } from './components/invoice/carta-porte/ferroviario/ferroviario.component';
+import { FiguraTransporteComponent } from './components/invoice/carta-porte/figura-transporte/figura-transporte.component';
+import { FiguraComponent } from './components/invoice/carta-porte/figura-transporte/components/figura/figura.component';
+import { MaritimoComponent } from './components/invoice/carta-porte/maritimo/maritimo.component';
+import { MercanciasComponent } from './components/invoice/carta-porte/mercancias/mercancias.component';
+import { TransporteComponent } from './components/invoice/carta-porte/transporte/transporte.component';
+import { UbicacionesComponent } from './components/invoice/carta-porte/ubicaciones/ubicaciones.component';
+import { UbicacionComponent } from './components/invoice/carta-porte/ubicaciones/components/ubicacion/ubicacion.component';
+import { CommodityComponent } from './components/commodity/commodity.component';
+import { EmisoresTableComponent } from './components/emisores-table/emisores-table.component';
+import { SeriesPageComponent } from './containers/series-page/series-page.component';
+import { SeriesTableComponent } from './components/series-table/series-table.component';
+import { SeriesNewComponent } from './components/series-new/series-new.component';
+import { LocationComponent } from './components/location/location.component';
 
 // Services
-import { NotificationsService } from "src/app/shared/services/notifications.service";
-import { TwoDigitDecimaNumberDirective } from "../shared/directives/decimal.directive";
-import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/tooltip-help.module";
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { TwoDigitDecimaNumberDirective } from '../shared/directives/decimal.directive';
+import { TooltipHelpModule } from 'src/app/shared/components/tooltip-help/tooltip-help.module';
+import { BegoIconsModule, BegoTableModule } from '@begomx/ui-components';
+import { AppMaterialModule } from 'src/app/material';
+import { CantidadTransportaComponent } from './components/cantidad-transporta/cantidad-transporta.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +123,7 @@ import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/toolti
     UbicacionesComponent,
     UbicacionComponent,
     CommodityComponent,
+    CantidadTransportaComponent,
     // InvoicePageComponent,
     // InvoiceTableComponent,
     EmisoresTableComponent,
@@ -136,7 +136,7 @@ import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/toolti
     ActionCancelarFacturaComponent,
     ActionSendEmailFacturaComponent,
     FacturaFiltersComponent,
-    TwoDigitDecimaNumberDirective,
+    TwoDigitDecimaNumberDirective
   ],
   imports: [
     CommonModule,
@@ -144,7 +144,6 @@ import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/toolti
     // NgxPermissionsModule,
     InvoiceRoutingModule,
     SharedModule,
-    // AppMaterialModule,
     // CoreModule,
     RouterModule,
     ReactiveFormsModule,
@@ -153,7 +152,10 @@ import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/toolti
     TextMaskModule,
     NgxPaginationModule,
     NgxMatColorPickerModule,
-    TooltipHelpModule
+    TooltipHelpModule,
+    BegoIconsModule,
+    BegoTableModule,
+    AppMaterialModule
   ],
   exports: [
     // MODALS
@@ -161,11 +163,8 @@ import { TooltipHelpModule } from "src/app/shared/components/tooltip-help/toolti
     ActionCancelarFacturaComponent,
     ActionSendEmailFacturaComponent,
     FacturaFiltersComponent,
-    NgxMatColorPickerModule,
+    NgxMatColorPickerModule
   ],
-  providers: [
-    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },
-    NotificationsService,
-  ],
+  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }, NotificationsService, DatePipe]
 })
 export class InvoiceModule {}

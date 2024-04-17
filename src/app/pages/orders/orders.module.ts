@@ -1,35 +1,30 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { TranslateModule } from "@ngx-translate/core";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
-import { OrdersRoutingModule } from "./orders-routing.module";
-import { OrdersComponent } from "./orders.component";
+import { OrdersRoutingModule } from './orders-routing.module';
+import { OrdersComponent } from './orders.component';
 
-import { Step1Component } from "./components/step1/step1.component";
-import { Step2Component } from "./components/step2/step2.component";
-import { Step3Component } from "./components/step3/step3.component";
-import { Step4Component } from "./components/step4/step4.component";
-import { PricingStepComponent } from "./components/pricing-step/pricing-step.component";
+import { Step1Component } from './components/step1/step1.component';
+import { Step2Component } from './components/step2/step2.component';
+import { Step3Component } from './components/step3/step3.component';
+import { Step4Component } from './components/step4/step4.component';
+import { PricingStepComponent } from './components/pricing-step/pricing-step.component';
 
-import { DragFileBarModule } from "src/app/shared/components/drag-file-bar/drag-file-bar.module";
-import { StepperModule } from "src/app/shared/components/stepper/stepper.module";
+import { OclStep1Component } from './components/ocl/step1/step1.component';
+import { OclStep2Component } from './components/ocl/step2/step2.component';
 
-import { MatSelectModule } from "@angular/material/select";
-import { MatButtonModule } from "@angular/material/button";
-import { MatTabsModule } from "@angular/material/tabs";
-import { MatInputModule } from "@angular/material/input";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MomentDatePipe } from "src/app/shared/pipes/momentDate/moment-date.pipe";
-import { MatNativeDateModule, } from "@angular/material/core";
-import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
-import { BegoPhoneInputModule } from "src/app/shared/components/bego-phone-input/bego-phone-input.module";
-import { CargoWeightComponent } from "./components/cargo-weight/cargo-weight.component";
-import { MatDialogModule } from "@angular/material/dialog";
-import { GoogleAddressModule } from "src/app/shared/pipes/google-address/google-address.module";
-import { TimepickerModule } from "ngx-bootstrap/timepicker";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-file-bar.module';
+import { StepperModule } from 'src/app/shared/components/stepper/stepper.module';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MomentDatePipe } from 'src/app/shared/pipes/momentDate/moment-date.pipe';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
+import { CargoWeightComponent } from './components/cargo-weight/cargo-weight.component';
+import { GoogleAddressModule } from 'src/app/shared/pipes/google-address/google-address.module';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
 import { UnitDetailsModalComponent } from './components/unit-details-modal/unit-details-modal.component';
 import {
@@ -51,21 +46,22 @@ import {
   BegoStepModule,
   BegoStepperModule,
   BegoTextAreaModule,
-  BegoTextInputModule,
-} from "@begomx/ui-components";
+  BegoTextInputModule
+} from '@begomx/ui-components';
 import { CargoUnitsComponent } from './components/cargo-units/cargo-units.component';
-import { NgxCurrencyModule } from "ngx-currency";
+import { NgxCurrencyModule } from 'ngx-currency';
+import { AppMaterialModule } from 'src/app/material';
 
 export const MY_FORMATS = {
   parse: {
-    dateInput: "LL",
+    dateInput: 'LL'
   },
   display: {
-    dateInput: "LL",
-    monthYearLabel: "MMM YYYY",
-    dateA11yLabel: "LL",
-    monthYearA11yLabel: "MMMM YYYY",
-  },
+    dateInput: 'LL',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  }
 };
 
 @NgModule({
@@ -75,33 +71,28 @@ export const MY_FORMATS = {
     Step2Component,
     Step3Component,
     Step4Component,
+    OclStep1Component,
+    OclStep2Component,
     MomentDatePipe,
     CargoWeightComponent,
     ContinueModalComponent,
     UnitDetailsModalComponent,
     CargoUnitsComponent,
-    PricingStepComponent,
+    PricingStepComponent
   ],
   imports: [
     CommonModule,
     OrdersRoutingModule,
-    MatTabsModule,
-    MatSlideToggleModule,
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    MatButtonToggleModule,
-    MatInputModule,
-    MatDatepickerModule,
     // MatMomentDateModule,
     MatNativeDateModule,
     NgxMaterialTimepickerModule,
     DragFileBarModule,
     StepperModule,
-    MatSelectModule,
-    MatButtonModule,
     BegoPhoneInputModule,
-    MatDialogModule,
+    // MatDialogModule,
     GoogleAddressModule,
     NgxCurrencyModule,
     TimepickerModule.forRoot(),
@@ -124,8 +115,10 @@ export const MY_FORMATS = {
     BegoInputIncrementDecrementModule,
     BegoCheckoutCardModule,
     BegoRfcInputModule,
+    AppMaterialModule,
+    BegoPhoneCodeSelectModule,
   ],
-  exports: [OrdersComponent],
+  exports: [OrdersComponent]
   // providers: [
   //   {
   //     provide: DateAdapter,

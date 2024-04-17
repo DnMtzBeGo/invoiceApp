@@ -1,52 +1,35 @@
-<div class="files-wrapper" *ngIf="documentsToUpload" #fiscalDocsPage >
-
+<div class="files-wrapper" *ngIf="documentsToUpload" #fiscalDocsPage>
   <div class="header">
-
-    <div *ngIf="selectedFormat == 'list' ">
-
-    <mat-select 
-      [(value)]=" fiscalDocSelected "
-      (valueChange)="updateFiscalDocSelected($event)">
-
-        <mat-option value="select-document" [disabled]="true"> 
-            {{ 'fiscal-documents.select-document' | translate }}
+    <div *ngIf="selectedFormat == 'list'">
+      <mat-select [(value)]="fiscalDocSelected" (valueChange)="updateFiscalDocSelected($event)">
+        <mat-option value="select-document" [disabled]="true">
+          {{ 'fiscal-documents.select-document' | translate }}
         </mat-option>
 
         <mat-option *ngFor="let option of missingFiles" [value]="option.key">
           <span *ngIf="!option.fileIsOptional">*</span>
           {{ option.text | translate }}
         </mat-option>
-
-    </mat-select>
+      </mat-select>
       <div class="select-instructions">
-        {{'fiscal-documents.txt-select-item-required' |  translate }}
+        {{ 'fiscal-documents.txt-select-item-required' | translate }}
       </div>
-
-
     </div>
-    <div *ngIf="selectedFormat != 'list' ">
+    <div *ngIf="selectedFormat != 'list'">
       <!--This divs helps keeping menu-selector to the right-->
     </div>
 
     <div class="menu-selector">
-      <div 
-        class="tab"
-        [ngClass]=" selectedFormat == 'list' ? 'active': ''"
-        (click)="setSelectedFormat('list')">
-          <div class="icon icon-list1"></div>
+      <div class="tab" [ngClass]="selectedFormat == 'list' ? 'active' : ''" (click)="setSelectedFormat('list')">
+        <div class="icon icon-list1"></div>
       </div>
-      <div 
-        class="tab"
-        [ngClass]=" selectedFormat == 'cards' ? 'active': ''"
-        (click)="setSelectedFormat('cards')">
-          <div class="icon icon-cards"></div>
+      <div class="tab" [ngClass]="selectedFormat == 'cards' ? 'active' : ''" (click)="setSelectedFormat('cards')">
+        <div class="icon icon-cards"></div>
       </div>
     </div>
   </div>
 
-
-  <div [hidden]="selectedFormat == 'list'"  class="cards-files-wrapper">
-
+  <div [hidden]="selectedFormat == 'list'" class="cards-files-wrapper">
     <div class="cards-files">
       <div class="instructions">
         <div>
@@ -67,44 +50,29 @@
           (onFileUploaded)="refreshDocumentsToUpload()">
         </app-fiscal-document-card>
       </div>
-
     </div>
-
   </div>
 
   <div [hidden]="selectedFormat == 'cards'" class="list-files">
-    
-    <bego-drag-file-bar
-      [disabled]="missingFiles.length <= 0"
-      (fileOutput)="dragFileBarChanged($event)">
-    </bego-drag-file-bar>
-    
+    <bego-drag-file-bar [disabled]="missingFiles.length <= 0" (fileOutput)="dragFileBarChanged($event)"> </bego-drag-file-bar>
+
     <div class="fiscal-items-wrapper">
-      <div  *ngFor="let file of getSortedFilesList()">
+      <div *ngFor="let file of getSortedFilesList()">
         <app-fiscal-document-item
           #fiscalItems
           [hidden]="!file.fileIsSelected"
           [fileInfo]="file"
           [filesUploaded]="filesUploaded()"
           (onFileDeleted)="refreshDocumentsToUpload()"
-          (onFileUploaded)="refreshDocumentsToUpload()"
-          >
+          (onFileUploaded)="refreshDocumentsToUpload()">
         </app-fiscal-document-item>
       </div>
     </div>
-
   </div>
 
   <div class="save-btn-wrapper">
-    <button
-      mat-flat-button
-      class="brand-btn-2"
-      [disabled]="!verificationRequestAvailable()"
-      (click)="requestDocsVerification()">
+    <button mat-flat-button class="brand-btn-2" [disabled]="!verificationRequestAvailable()" (click)="requestDocsVerification()">
       {{ 'fiscal-documents.request-verification' | translate }}
     </button>
-
   </div>
-  
 </div>
-

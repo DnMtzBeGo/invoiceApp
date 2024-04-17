@@ -8,14 +8,11 @@ import { VerticalCardModule } from '../../shared/components/vertical-card/vertic
 import { DropDownModule } from '../../shared/components/drop-down/drop-down.module';
 import { AddRemoveCounterModule } from '../../shared/components/add-remove-counter/add-remove-counter.module';
 import { InputBorderRadiusBottomModule } from '../../shared/components/input-border-radius-bottom/input-border-radius-bottom.module';
-import { ButtonModule} from '../../shared/components/button/button.module';
-
+import { ButtonModule } from '../../shared/components/button/button.module';
+import { AppMaterialModule } from 'src/app/material';
 
 @NgModule({
-  declarations: [
-    TrackingComponent,
-    ModalTrackingComponent
-  ],
+  declarations: [TrackingComponent, ModalTrackingComponent],
   imports: [
     CommonModule,
     TrackingRoutingModule,
@@ -24,7 +21,8 @@ import { ButtonModule} from '../../shared/components/button/button.module';
     DropDownModule,
     AddRemoveCounterModule,
     InputBorderRadiusBottomModule,
-    ButtonModule
+    ButtonModule,
+    AppMaterialModule
   ]
 })
-export class TrackingModule { }
+export class TrackingModule {}

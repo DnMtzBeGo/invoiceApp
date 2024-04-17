@@ -5,7 +5,7 @@ import {
   ChangeDetectionStrategy,
   ViewEncapsulation,
 } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { Router, ActivatedRoute } from "@angular/router";
 import { from, of, throwError, Subject } from "rxjs";
 import { mergeAll, pluck, catchError, tap } from "rxjs/operators";
@@ -16,17 +16,17 @@ import { AuthService } from "src/app/shared/services/auth.service";
 import { groupStatus } from "../../containers/factura-edit-page/factura.core";
 
 const parseNumbers = (str?: string) => {
-  str = str || "";
-  if (str === "") return [];
-  return str.split(",").map(Number);
+  str = str || '';
+  if (str === '') return [];
+  return str.split(',').map(Number);
 };
 
 @Component({
-  selector: "app-factura-filters",
-  templateUrl: "./factura-filters.component.html",
-  styleUrls: ["./factura-filters.component.scss"],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+  selector: 'app-factura-filters',
+  templateUrl: './factura-filters.component.html',
+  styleUrls: ['./factura-filters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  encapsulation: ViewEncapsulation.None
 })
 export class FacturaFiltersComponent implements OnInit {
   $rx = reactiveComponent(this);
@@ -53,7 +53,6 @@ export class FacturaFiltersComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private dialogRef: MatDialogRef<FacturaFiltersComponent>,
-    private apiRestService: AuthService,
     public router: Router,
     public route: ActivatedRoute
   ) {}
@@ -62,8 +61,8 @@ export class FacturaFiltersComponent implements OnInit {
     //FORM
     const form$ = oof({
       invoice: this.data._id,
-      motivo_cancelacion: "",
-      uuid_relacion: "",
+      motivo_cancelacion: '',
+      uuid_relacion: ''
     });
 
     //CATALOGOS
@@ -77,7 +76,7 @@ export class FacturaFiltersComponent implements OnInit {
       form: form$,
       tiposComprobante: tiposComprobante$,
       facturaStatus: facturaStatus$,
-      params: params$,
+      params: params$
     });
   }
 
@@ -88,9 +87,7 @@ export class FacturaFiltersComponent implements OnInit {
 
   deselectRadio(event) {
     window.requestAnimationFrame(() => {
-      const el = event.target
-        ?.closest("mat-radio-group")
-        ?.querySelector("mat-radio-button.empty-radio input");
+      const el = event.target?.closest('mat-radio-group')?.querySelector('mat-radio-button.empty-radio input');
       el?.click();
     });
   }
@@ -103,7 +100,7 @@ export class FacturaFiltersComponent implements OnInit {
   showError = (error: any) => {
     error = error?.message || error?.error;
 
-    return Array.isArray(error) ? error.map((e) => e.error).join(",\n") : error;
+    return Array.isArray(error) ? error.map((e) => e.error).join(',\n') : error;
   };
 
   parseNumbers = parseNumbers;
