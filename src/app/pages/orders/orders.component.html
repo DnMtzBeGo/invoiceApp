@@ -1,4 +1,4 @@
-<div class="new-order-container" #ordersRef>
+<div class="new-order-container" [class.open]="cardIsOpen" #ordersRef>
   <div class="new-order-wrapper" [ngClass]="cardIsOpen ? 'card-open' : ''">
     <div class="steps-body" [class.ocl]="orderType === 'OCL'">
       <div class="order-header">
