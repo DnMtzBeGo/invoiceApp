@@ -57,7 +57,7 @@
 
       &::before {
         font-family: 'bego-icons-legacy';
-        content: '\e942';
+        content: '\e98d';
         color: white;
         position: absolute;
         font-size: 27px;
@@ -76,8 +76,25 @@
         box-sizing: content-box;
       }
     }
+    .leaflet-right .leaflet-draw-actions {
+      top: 3px !important;
+      right: 70px;
+      background: linear-gradient(180deg, #0C1116 0%, #191C1F 100%);
+      box-shadow: 0px 11px 6px 0px #040B11 inset;
+      height: 45px;
+      line-height: 45px;
+      border-radius: 50px;
+    }
+    .leaflet-draw-actions a {
+      background: transparent;
+      font-family: Avenir;
+      font-size: 14px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
   }
 }
+
 
 /* Effect 2 */
 .hi-icon-effect-2 .hi-icon {
@@ -274,12 +291,14 @@
   0% {
     -webkit-transform: translateX(0);
             transform: translateX(0);
+    z-index: 1;
     opacity: 1;
   }
   100% {
     -webkit-transform: translateX(-1000px);
             transform: translateX(-1000px);
     opacity: 0;
+    z-index: -1;
   }
 }
 @keyframes slide-out-left {
@@ -287,11 +306,13 @@
     -webkit-transform: translateX(0);
             transform: translateX(0);
     opacity: 1;
+    z-index: 1;
   }
   100% {
     -webkit-transform: translateX(-1000px);
             transform: translateX(-1000px);
     opacity: 0;
+    z-index: -1;
   }
 }
 

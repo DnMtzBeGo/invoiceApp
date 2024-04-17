@@ -3,7 +3,7 @@
   <!-- <app-breadcrumbs></app-breadcrumbs> -->
   <div class="polygons" [ngClass]="[!showFleetMap ? 'slide-out-left' : '']">
     <div class="page-header">
-      <h1>Polygons</h1>
+      <h1>{{ 'polygons.title' | translate }}</h1>
     </div>
     <bego-table-multiple-selection
       [loading]="loadingData"

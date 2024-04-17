@@ -1820,6 +1820,7 @@
     "selector": "Search..."
   },
   "polygons": {
+    "title": "Polygons",
     "actions": {
       "rename": "Rename",
       "edit": "Upgrade Geometry",

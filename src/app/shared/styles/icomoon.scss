@@ -72,20 +72,28 @@ $icon-pickup: '\e90c';
 $icon-plus: '\e90d';
 $icon-search: '\e90e';
 $icon-next: '\e90f';
-$icon-menu: '\e900';
-$icon-bell: '\e901';
-$icon-bego-text: '\e902';
-$icon-home: '\e903';
-$icon-drafts: '\e904';
-$icon-history: '\e905';
-$icon-referals: '\e906';
-$icon-chat: '\e907';
+$icon-menu: '\e901';
+$icon-bell: '\e902';
+$icon-bego-text: '\e903';
+$icon-home: '\e904';
+$icon-drafts: '\e905';
+$icon-history: '\e906';
+$icon-referals: '\e907';
+$icon-chat: '\e936';
 $icon-invoice: '\e938';
 $icon-edit: '\e941';
-$icon-download: '\e936';
-$icon-shared: '\e937';
+$icon-download: '\e937';
+$icon-shared: '\e961';
 $icon-invoices: '\e923';
 $icon-tags: '\e935';
+$icon-ballon: '\e991';
+$icon-sad: '\e990';
+$icon-happy: '\e992';
+$icon-crown: '\e993';
+$icon-tiktok: '\e980';
+$icon-polygon: '\e98d';
+$icon-heart: '\e98e';
+$icon-money: '\e95b';
 
 .icon {
   font-family: '#{$icomoon-font-family}' !important;
@@ -528,6 +536,46 @@ $icon-tags: '\e935';
   &.icon-tags {
     &:before {
       content: $icon-tags;
+    }
+  }
+  &.icon-ballon {
+    &:before {
+      content: $icon-ballon; 
+    }
+  }
+  &.icon-sad {
+    &:before {
+      content: $icon-sad; 
+    }
+  }
+  &.icon-happy {
+    &:before {
+      content: $icon-happy; 
+    }
+  }
+  &.icon-crown {
+    &:before {
+      content: $icon-crown; 
+    }
+  }
+  &.icon-tiktok {
+    &:before {
+      content: $icon-tiktok; 
+    }
+  }
+  &.icon-polygon {
+    &:before {
+      content: $icon-polygon; 
+    }
+  }
+  &.icon-heart {
+    &:before {
+      content: $icon-heart; 
+    }
+  }
+  &.icon-money {
+    &:before {
+      content: $icon-money; 
     }
   }
 }
