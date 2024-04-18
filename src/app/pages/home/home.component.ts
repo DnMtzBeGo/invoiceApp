@@ -14,6 +14,7 @@ import { Location } from '@angular/common';
 import { PolygonFilter } from './components/polygon-filter/polygon-filter.component';
 import { InputDirectionsComponent } from 'src/app/shared/components/input-directions/input-directions.component';
 import { trigger, style, animate, transition } from '@angular/animations';
+import { PrimeService } from 'src/app/shared/services/prime.service';
 
 
 declare var google: any;
@@ -112,7 +113,8 @@ export class HomeComponent implements OnInit {
     public placesService: PlacesService,
     private googlemaps: GoogleMapsService,
     private headerStyle: HeaderService,
-    private location: Location
+    private location: Location,
+    public primeService: PrimeService
   ) {
     this.placesService.places$;
     this.headerStyle.changeHeader(this.headerTransparent);
@@ -201,6 +203,14 @@ export class HomeComponent implements OnInit {
         .pipe(filter(() => !this.creatingForms))
         .subscribe(this.getFleetDetails.bind(this))
     );
+
+    if (this.primeService.loaded.isStopped) {
+      this.isPrime = this.primeService.isPrime;
+    } else {
+      this.primeService.loaded.subscribe(() => {
+        this.isPrime = this.primeService.isPrime;
+      })
+    }
   }
 
   ngOnDestroy(): void {

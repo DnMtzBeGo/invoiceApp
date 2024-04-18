@@ -33,6 +33,7 @@ import { PinComponent } from "src/app/shared/components/pin/pin.component";
 import * as moment from "moment";
 import { NotificationsService } from "../../services/notifications.service";
 import { SavedLocationsService } from "../../services/saved-locations.service";
+import { PrimeService } from "../../services/prime.service";
 
 declare var google: any;
 
@@ -67,7 +68,7 @@ export class InputDirectionsComponent implements OnInit {
   @Input() orderType: string;
   @Output() orderTypeChange = new EventEmitter<string>();
 
-  @Input() isPrime = false;
+  isPrime = false;
 
   lang = 'en';
   langListener = null;
@@ -190,7 +191,16 @@ export class InputDirectionsComponent implements OnInit {
     @Inject(HomeComponent) public parent: HomeComponent,
     private matDialog: MatDialog,
     public savedLocations: SavedLocationsService,
+    public primeService: PrimeService
   ) {
+    if (this.primeService.loaded.isStopped) {
+      this.isPrime = this.primeService.isPrime;
+    } else {
+      this.primeService.loaded.subscribe(() => {
+        this.isPrime = this.primeService.isPrime;
+      })
+    }
+
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.subscription = this.googlemaps.previewMapStatus.subscribe((data) => {
       if (data) {
