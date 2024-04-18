@@ -2,9 +2,13 @@
   <div class="wrapper">
     <div class="main">
       <div class="header">
-        <h1>
-          {{ 'fleet.' + resolver.lang + '.txt_header' | translate }}
-          <ng-container *ngIf="model === 'prime'">{{ category.translations?.[lang] || category.name }}</ng-container>
+        <h1 [ngSwitch]="model">
+          <ng-container *ngSwitchCase="'primeList'">{{ 'fleet.prime.txt_header_vehicles' | translate }}</ng-container>
+          <ng-container *ngSwitchCase="'prime'">
+            {{ 'fleet.' + resolver.lang + '.txt_header' | translate }} {{ category.translations?.[lang] || category.name }}
+          </ng-container>
+          <ng-container *ngSwitchDefault>{{ 'fleet.' + resolver.lang + '.txt_header' | translate }}</ng-container>
+
           <span>{{ paginator.total || '-' }}</span>
         </h1>
         <div class="actions">
