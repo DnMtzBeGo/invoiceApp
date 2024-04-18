@@ -1492,8 +1492,10 @@
         "nickname": "Escribe el nombre"
       },
       "sort_by": {
-        "name": "Nombre",
-        "date_created": "Fecha creación"
+        "type": "Nombre",
+        "_id": "Fecha creación",
+        "date_created": "Fecha creación",
+        "attributes.vehicle_number": "Placas"
       },
       "table": {
         "vehicle_number": "Número de vehículo"

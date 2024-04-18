@@ -1490,8 +1490,9 @@
       },
       "sort_by": {
         "type": "Name",
+        "_id": "Creation date",
         "date_created": "Creation date",
-        "attributes.vehicle_number": "Brand"
+        "attributes.vehicle_number": "Plates"
       },
       "table": {
         "vehicle_number": "Vehicle number"

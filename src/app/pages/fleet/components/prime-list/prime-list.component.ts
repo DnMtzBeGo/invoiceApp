@@ -16,6 +16,8 @@ export class PrimeListComponent {
   lang = 'en';
   selected = '';
 
+  defaultCover = '/assets/images/truck.svg';
+
   constructor(private translateService: TranslateService, private fleetService: FleetService) {
     this.lang = this.translateService.currentLang;
   }
@@ -35,7 +37,7 @@ export class PrimeListComponent {
   }
 
   setDefaultImg(img: HTMLImageElement) {
-    img.src = '/assets/images/truck.svg';
+    img.src = this.defaultCover;
     img.classList.add('default');
   }
 }
