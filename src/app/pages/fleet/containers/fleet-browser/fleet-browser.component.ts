@@ -61,14 +61,15 @@ const resolvers = {
   primeList: {
     endpoint: 'orders/vehicles',
     lang: 'prime',
-    sortBy: ['name'],
-    sortInit: ['name', 'desc']
+    // type instead name because in backend `type` is the real keyname of `name`
+    sortBy: ['type', '_id'],
+    sortInit: ['_id', 'desc']
   },
   prime: {
     endpoint: 'orders/vehicles/:id',
     newUrl: routes.NEW_PRIME,
     lang: 'prime',
-    sortBy: ['date_created', 'name'],
+    sortBy: ['date_created', 'attributes.vehicle_number'],
     sortInit: ['date_created', 'desc'],
     withFleetId: true
   }
@@ -217,12 +218,18 @@ export class FleetBrowserComponent implements OnInit {
 
     const params$ = merge(oof(this.route.snapshot.queryParams), this.facturasEmitter.pipe(ofType('queryParams'), debounceTime(500))).pipe(
       distinctUntilChanged(object_compare),
-      map((params: any) => ({
-        ...params,
-        limit: +params.limit || this.paginator.pageSize,
-        page: +params.page || this.paginator.pageIndex,
-        sort: params.sort || this.resolver.sortInit.join(':')
-      })),
+      map((params: any) => { {
+        const p = {
+          ...params,
+          limit: +params.limit || this.paginator.pageSize,
+          page: +params.page || this.paginator.pageIndex,
+          sort: params.sort || this.resolver.sortInit?.join(':')
+        }
+
+        if (p.sort === undefined) delete p.sort;
+
+        return p
+      } }),
       tap((params) => {
         this.paginator.pageSize = Number(params.limit);
         this.paginator.pageIndex = Number(params.page);
@@ -378,8 +385,6 @@ export class FleetBrowserComponent implements OnInit {
               translations: category.translations
             };
 
-            console.log(this.category, category);
-
             this.cd.markForCheck();
           })
         )
@@ -394,10 +399,10 @@ export class FleetBrowserComponent implements OnInit {
         mergeAll(),
         pluck('result'),
         map((res) => {
-          this.paginator.pageTotal = res.pagination?.pages || 1;
-          this.paginator.total = res.pagination?.size ?? 0;
+          this.paginator.pageTotal = res?.pagination?.pages || 1;
+          this.paginator.total = res?.pagination?.size ?? 0;
 
-          return res.data;
+          return res?.data || [];
         }),
         finalize(() => {
           this.cd.markForCheck();

@@ -427,11 +427,14 @@ ngx-mat-select-search.brand-select-search-1 {
   box-shadow: none;
   background: initial;
 
+  .mat-header-cell,
+  .mat-cell,
   .mat-mdc-header-cell,
   .mat-mdc-cell {
     color: #ededed;
   }
 
+  .mat-header-cell,
   .mat-mdc-header-cell {
     font-family: 'Avenir';
     font-style: normal;
@@ -444,6 +447,7 @@ ngx-mat-select-search.brand-select-search-1 {
     }
   }
 
+  .mat-cell,
   .mat-mdc-cell {
     border: none;
     font-family: 'Avenir';
