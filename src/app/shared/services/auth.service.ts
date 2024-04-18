@@ -12,6 +12,7 @@ export class AuthService {
 
   async getOptions(options: object) {
     const defaultValues: object = {
+      getLoader: 'false',
       loader: 'true',
       timeout: '30000',
       retry: '0',
@@ -109,7 +110,7 @@ export class AuthService {
       params
     });
   }
-  
+
   public async apiRestDelete(method: string, options: object = {}): Promise<Observable<any>> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -168,12 +169,12 @@ export class AuthService {
       'Access-Control-Allow-Origin': '*',
       'Acceontrol-Allow-Headers': 'Content-Type, Accept',
       'Access-Css-Control-Allow-Methods': 'PUT',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
+      Authorization: `Bearer ${localStorage.getItem('token')}`
     });
     const params = await this.getOptions(options);
 
     let url: string;
-    if(options && options['apiVersion']) {
+    if (options && options['apiVersion']) {
       const splitUrl = environment.URL_BASE.split('/');
       splitUrl[splitUrl.length - 2] = options['apiVersion'];
       url = splitUrl.join('/');
@@ -183,5 +184,4 @@ export class AuthService {
 
     return this.http.delete(url + method, { headers, params });
   }
-
 }
