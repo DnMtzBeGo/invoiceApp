@@ -399,10 +399,10 @@ export class FleetBrowserComponent implements OnInit {
         mergeAll(),
         pluck('result'),
         map((res) => {
-          this.paginator.pageTotal = res.pagination?.pages || 1;
-          this.paginator.total = res.pagination?.size ?? 0;
+          this.paginator.pageTotal = res?.pagination?.pages || 1;
+          this.paginator.total = res?.pagination?.size ?? 0;
 
-          return res.data;
+          return res?.data || [];
         }),
         finalize(() => {
           this.cd.markForCheck();
