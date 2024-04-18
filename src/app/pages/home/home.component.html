@@ -34,7 +34,6 @@
     <div class="input-directions" [ngClass]="{ 'applied-filter': creatingForms && !openOrderMenu }" [class.hide]="!showSidebar">
       <app-input-directions
         [(orderType)]="orderType"
-        [isPrime]="isPrime"
         (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
         [showMapPreview]="showOrderDetails"
         (showNewOrderCard)="showNewOrderCard()"

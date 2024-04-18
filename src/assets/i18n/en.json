@@ -1473,6 +1473,7 @@
     "prime": {
       "ocl": "Other",
       "txt_header": "My",
+      "txt_header_vehicles": "My vehicles",
       "btn_add": "Add new",
       "txt_search": "Search vehicle...",
       "see_details": "See",
@@ -1488,8 +1489,10 @@
         "nickname": "Type your nickname"
       },
       "sort_by": {
-        "name": "Name",
-        "date_created": "Creation date"
+        "type": "Name",
+        "_id": "Creation date",
+        "date_created": "Creation date",
+        "attributes.vehicle_number": "Plates"
       },
       "table": {
         "vehicle_number": "Vehicle number"

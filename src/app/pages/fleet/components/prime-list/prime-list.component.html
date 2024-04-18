@@ -5,7 +5,8 @@
     <picture>
       <img
         #img
-        [src]="'/assets/images/public_vehicles/' + category.name + '.png'"
+        [class.default]="!category.public"
+        [src]="category.public ? '/assets/images/public_vehicles/' + category.name + '.png' : defaultCover"
         (error)="setDefaultImg(img)"
         height="58"
         width="58"

@@ -1476,6 +1476,7 @@
     "prime": {
       "ocl": "Otro",
       "txt_header": "Mis",
+      "txt_header_vehicles": "Mis vehiculos",
       "btn_add": "Agregar",
       "txt_search": "Buscar vehículo...",
       "see_details": "Ver",
@@ -1491,8 +1492,10 @@
         "nickname": "Escribe el nombre"
       },
       "sort_by": {
-        "name": "Nombre",
-        "date_created": "Fecha creación"
+        "type": "Nombre",
+        "_id": "Fecha creación",
+        "date_created": "Fecha creación",
+        "attributes.vehicle_number": "Placas"
       },
       "table": {
         "vehicle_number": "Número de vehículo"
