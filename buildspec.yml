@@ -16,8 +16,15 @@ phases:
       - npm install
   build:
     commands:
-      - echo Starting production build...
-      - ng build --configuration production
+      - echo Starting build...
+      - |
+        if [ "$CODEBUILD_WEBHOOK_TRIGGER" = "branch/main" ]; then
+          echo "Running production build"
+          ng build --configuration production
+        else
+          echo "Running development build"
+          ng build
+        fi
 artifacts:
   files:
     - "**/*"
