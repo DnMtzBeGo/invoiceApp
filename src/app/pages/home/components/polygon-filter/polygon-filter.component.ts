@@ -229,13 +229,16 @@ export class PolygonFilter implements OnInit {
         this.activeDrivers = false;
         this.activeFilter = false;
         this.getCoordinates.emit({ type: 'heatmap', ...result });
-        /* if (!result?.locations.length) {
+        if (!result?.locations.length) {
           this.notificationsService.showErrorToastr(this.translateService.instant('home.polygon-filter.filter.no-results.heatmap'));
-        } */
+        }
         this.loading = false;
       },
       error: ({ error }) => {
         console.error(error);
+        this.loading = false;
+      },
+      complete: () => {
         this.loading = false;
       }
     });
@@ -255,20 +258,23 @@ export class PolygonFilter implements OnInit {
       await this.apiRestService.apiRestGet(`polygons/dispersion?${queryParams}`, {
         apiVersion: 'v1.1',
         getLoader: 'true',
-        timeout: '60000',
+        timeout: '60000'
       })
     ).subscribe({
       next: ({ result }) => {
         this.options = options;
         this.activeFilter = false;
         this.getCoordinates.emit({ type: 'dispersion', ...result });
-        /* if (!result?.members.length) {
+        if (!result?.members.length) {
           this.notificationsService.showErrorToastr(this.translateService.instant('home.polygon-filter.filter.no-results.dispersion'));
-        } */
+        }
         this.loading = false;
       },
       error: ({ error }) => {
         console.error(error);
+        this.loading = false;
+      },
+      complete: () => {
         this.loading = false;
       }
     });
