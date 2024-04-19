@@ -495,8 +495,9 @@ export class HomeComponent implements OnInit {
     this.googleMarkers = [];
 
     for (var i = 0; i < this.markersFromService.length; i++) {
-      let changePic = this.markersFromService[i].icon.split('');
-      if (changePic[changePic.length - 1] === '/') this.markersFromService[i].icon = '../assets/images/user-outline.svg';
+      if (!this.markersFromService[i].icon || this.markersFromService[i].icon.trim() === '') {
+          this.markersFromService[i].icon = '../assets/images/user-outline.svg';
+      }
 
       const marker = new CustomMarker(
         new google.maps.LatLng(this.markersFromService[i].position.lat, this.markersFromService[i].position.lng),
