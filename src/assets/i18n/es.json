@@ -1585,6 +1585,10 @@
           "clear": "Limpiar",
           "cancel": "Cancelar",
           "apply": "Aplicar"
+        },
+        "no-results": {
+          "dispersion": "No se encontraron resultados",
+          "heatmap": "No se encontraron resultados"
         }
       },
       "share": {

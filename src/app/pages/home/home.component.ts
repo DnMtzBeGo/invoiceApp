@@ -16,25 +16,16 @@ import { InputDirectionsComponent } from 'src/app/shared/components/input-direct
 import { trigger, style, animate, transition } from '@angular/animations';
 import { PrimeService } from 'src/app/shared/services/prime.service';
 
-
 declare var google: any;
 // 10 seconds for refreshing map markers
 const markersRefreshTime = 1000 * 20;
-const baseRadius = 25000;
-const zoomFactor = 2000;
-const minRadius = 500;
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   animations: [
-    trigger('slideInFromBottom', [
-      transition('void => *', [
-        style({ transform: 'translateY(100%)' }),
-        animate('500ms ease-out')
-      ])
-    ])
+    trigger('slideInFromBottom', [transition('void => *', [style({ transform: 'translateY(100%)' }), animate('500ms ease-out')])])
   ]
 })
 export class HomeComponent implements OnInit {
@@ -152,7 +143,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     setTimeout(() => {
       this.mostrarBoton = true;
     }, 8000);
@@ -209,7 +199,7 @@ export class HomeComponent implements OnInit {
     } else {
       this.primeService.loaded.subscribe(() => {
         this.isPrime = this.primeService.isPrime;
-      })
+      });
     }
   }
 
@@ -299,7 +289,7 @@ export class HomeComponent implements OnInit {
       .pipe(catchError(() => of({})))
       .subscribe((res) => {
         if (res.status === 200 && res.result) {
-          this.isPrime = res.result.subscription
+          this.isPrime = res.result.subscription;
 
           // When members exist on the fleet, it saves them on this array
           this.markersFromService = [];
@@ -445,12 +435,6 @@ export class HomeComponent implements OnInit {
           // console.log('zoom:', this.zoom);
         });
 
-        google.maps.event.addListener(this.map, 'zoom_changed', () => {
-          this.circles.forEach((circle) => {
-            circle.setRadius(this.calculateCircleRadius(this.map.getZoom()));
-          });
-        });
-
         this.mapRef.nativeElement.addEventListener(
           'mousewheel',
           (event) => {
@@ -582,15 +566,17 @@ export class HomeComponent implements OnInit {
       coordinates.forEach((coordinate) => {
         bounds.extend(coordinate);
 
-        const circle = new google.maps.Circle({
-          strokeColor: '#FFEE00',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#FFEE00',
-          fillOpacity: 1,
+        const circle = new google.maps.Marker({
+          position: coordinate,
           map: this.map,
-          center: coordinate,
-          radius: this.calculateCircleRadius(this.map.getZoom())
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 7,
+            fillColor: '#FFEE00',
+            fillOpacity: 1,
+            strokeColor: '#FFEE00',
+            strokeWeight: 2
+          }
         });
 
         this.circles.push(circle);
@@ -675,11 +661,6 @@ export class HomeComponent implements OnInit {
     this.getFleetDetails(false);
   }
 
-  calculateCircleRadius(zoomLevel: number): number {
-    let radius = baseRadius - zoomFactor * zoomLevel;
-    return Math.max(radius, minRadius);
-  }
-
   trafficLayer: google.maps.TrafficLayer;
   isTrafficActive: boolean = false;
 
@@ -693,14 +674,14 @@ export class HomeComponent implements OnInit {
     } else {
       btnTraffic.classList.remove('active');
     }
-  
+
     const map = this.map;
-  
+
     if (this.isTrafficActive) {
       if (map) {
         const trafficLayer = new google.maps.TrafficLayer();
         trafficLayer.setMap(map);
-      
+
         this.trafficLayer = trafficLayer;
       }
     } else {
