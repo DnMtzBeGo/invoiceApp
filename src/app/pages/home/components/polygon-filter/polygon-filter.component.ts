@@ -4,6 +4,7 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ShareReportModalComponent } from '../share-report-modal/share-report-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeService } from 'src/app/shared/services/prime.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 const LIMIT = 6;
 
@@ -75,7 +76,15 @@ export class PolygonFilter implements OnInit {
     }
   };
 
-  constructor(private apiRestService: AuthService, private matDialog: MatDialog, private translateService: TranslateService, public readonly primeService: PrimeService) {}
+  loading: boolean = false;
+
+  constructor(
+    private apiRestService: AuthService,
+    private matDialog: MatDialog,
+    private translateService: TranslateService,
+    public readonly primeService: PrimeService,
+    private notificationsService: NotificationsService
+  ) {}
 
   async ngOnInit() {
     this.setFilterLang();
@@ -179,6 +188,9 @@ export class PolygonFilter implements OnInit {
 
     switch (action) {
       case 'apply':
+        if (this.loading) break;
+        this.loading = true;
+
         this.heatmap = heatmap;
         if (heatmap) await this.getHeatmap(event);
         else await this.getDispersion(event);
@@ -207,15 +219,24 @@ export class PolygonFilter implements OnInit {
     }).toString();
     (
       await this.apiRestService.apiRestGet(`polygons/heatmaps?${queryParams}`, {
-        apiVersion: 'v1.1'
+        apiVersion: 'v1.1',
+        getLoader: 'true',
+        timeout: '60000'
       })
     ).subscribe({
       next: ({ result }) => {
-        // this.saveOptions(options, 'heatmap');
         this.options = options;
         this.activeDrivers = false;
         this.activeFilter = false;
         this.getCoordinates.emit({ type: 'heatmap', ...result });
+        /* if (!result?.locations.length) {
+          this.notificationsService.showErrorToastr(this.translateService.instant('home.polygon-filter.filter.no-results.heatmap'));
+        } */
+        this.loading = false;
+      },
+      error: ({ error }) => {
+        console.error(error);
+        this.loading = false;
       }
     });
   }
@@ -232,13 +253,23 @@ export class PolygonFilter implements OnInit {
 
     (
       await this.apiRestService.apiRestGet(`polygons/dispersion?${queryParams}`, {
-        apiVersion: 'v1.1'
+        apiVersion: 'v1.1',
+        getLoader: 'true',
+        timeout: '60000',
       })
     ).subscribe({
       next: ({ result }) => {
         this.options = options;
         this.activeFilter = false;
         this.getCoordinates.emit({ type: 'dispersion', ...result });
+        /* if (!result?.members.length) {
+          this.notificationsService.showErrorToastr(this.translateService.instant('home.polygon-filter.filter.no-results.dispersion'));
+        } */
+        this.loading = false;
+      },
+      error: ({ error }) => {
+        console.error(error);
+        this.loading = false;
       }
     });
   }
