@@ -220,7 +220,8 @@ export class PolygonFilter implements OnInit {
     (
       await this.apiRestService.apiRestGet(`polygons/heatmaps?${queryParams}`, {
         apiVersion: 'v1.1',
-        getLoader: 'true'
+        getLoader: 'true',
+        timeout: '60000'
       })
     ).subscribe({
       next: ({ result }) => {
@@ -253,7 +254,8 @@ export class PolygonFilter implements OnInit {
     (
       await this.apiRestService.apiRestGet(`polygons/dispersion?${queryParams}`, {
         apiVersion: 'v1.1',
-        getLoader: 'true'
+        getLoader: 'true',
+        timeout: '60000',
       })
     ).subscribe({
       next: ({ result }) => {
