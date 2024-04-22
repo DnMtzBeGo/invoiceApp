@@ -133,7 +133,7 @@ export class HomeComponent implements OnInit {
             this.locations.place_id_dropoff = data.draft.dropoff.place_id_dropoff;
             this.typeMap = 'draft';
             window.requestAnimationFrame(() => this.googlemaps.updateDataLocations(this.locations));
-            /* this.showNewOrderCard(); */
+            this.showNewOrderCard();
           } else {
             window.requestAnimationFrame(() => this.mapEmitter.next(['center']));
           }

@@ -18,11 +18,11 @@
                 <div class="drafts-data-body">
                     <div class="drafts-addresses">
                         <label>{{'draft.label_pickup' | translate}}</label>
-                        <div class="addresses">{{item.pickup.address}}</div>
+                        <div class="addresses">{{item.destinations[0].address}}</div>
                     </div>
                     <div class="drafts-addresses">
                         <label>{{'draft.label_dropoff' | translate}}</label>
-                        <div class="addresses">{{item.dropoff.address}}</div>
+                        <div class="addresses">{{item.destinations[1].address}}</div>
                     </div>
                 </div>
                 <div class="drafts-data-footer">
