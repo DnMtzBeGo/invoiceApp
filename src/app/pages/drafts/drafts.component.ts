@@ -117,7 +117,6 @@ export class DraftsComponent implements OnInit {
     if (drafts.length > 0) {
       this.draftData = drafts;
       const [draft] = drafts;
-      const [pickup, dropoff] = draft.destinations;
       this.setMapData(draft);
     } else {
       setTimeout(() => {
