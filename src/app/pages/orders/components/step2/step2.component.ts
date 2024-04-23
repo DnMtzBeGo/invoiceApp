@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BegoRfcInputInfoOutput } from '@begomx/ui-components';
+import { BegoRfcInputInfo, BegoRfcInputInfoOutput } from '@begomx/ui-components';
 import { TranslateService } from '@ngx-translate/core';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
@@ -37,6 +37,8 @@ export class Step2Component implements OnInit {
   public step2Form: FormGroup;
   public phoneValidator;
   public emailValidator;
+
+  public rfcComponentValues: Partial<BegoRfcInputInfo>;
 
   constructor(private formBuilder: FormBuilder, private googleService: GoogleMapsService, private translateService: TranslateService) {
     this.step2Form = this.formBuilder.group({
@@ -111,29 +113,30 @@ export class Step2Component implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     this.step2Form.get('orderWithCP').setValue(this.orderWithCP);
-    if (
-      changes.draftData &&
-      changes.draftData.currentValue &&
-      changes.draftData.currentValue.dropoff &&
-      changes.draftData.currentValue.dropoff.contact_info
-    ) {
-      const { dropoff } = changes.draftData.currentValue;
+    if (changes.draftData && changes.draftData.currentValue) {
+      const draft = changes.draftData.currentValue;
+      const [, dropoff] = draft.destinations;
 
       if (dropoff.contact_info.telephone) {
-        let [telephoneCode, ...telephone] = changes.draftData.currentValue.dropoff.contact_info.telephone.split(' ');
+        let [telephoneCode, ...telephone] = dropoff.contact_info.telephone.split(' ');
         telephone = telephone.join(' ');
         this.phoneCode = telephoneCode;
-        this.phoneFlag = changes.draftData.currentValue.dropoff.contact_info.country_code;
+        this.phoneFlag = dropoff.contact_info.country_code;
         this.phoneNumber = telephone;
         this.step2Form.get('phonenumber')!.setValue(telephone);
         this.step2Form.get('phoneCode')!.setValue(telephoneCode);
       }
 
-      this.step2Form.get('fullname')!.setValue(changes.draftData.currentValue.dropoff.contact_info.name);
-      this.step2Form.get('email')!.setValue(changes.draftData.currentValue.dropoff.contact_info.email);
-      this.step2Form.get('country_code')!.setValue(changes.draftData.currentValue.dropoff.contact_info.country_code);
+      this.step2Form.get('fullname')!.setValue(dropoff.contact_info.name);
+      this.step2Form.get('email')!.setValue(dropoff.contact_info.email);
+      this.step2Form.get('country_code')!.setValue(dropoff.contact_info.country_code);
 
       if (this.draftData['stamp']) {
+        if (dropoff.tax_information) {
+          this.rfcComponentValues = dropoff.tax_information;
+          this.step2Form.get('company_name').setValue(dropoff.tax_information.company_name);
+        }
+
         this.step2Form.get('rfc').setValue(dropoff.contact_info.rfc);
       }
     }
