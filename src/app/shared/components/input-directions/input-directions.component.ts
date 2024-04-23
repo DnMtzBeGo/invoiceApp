@@ -102,6 +102,7 @@ export class InputDirectionsComponent implements OnInit {
   public provisionalPickupLocation: string = "";
   public provisionalDropoffLocation: string = "";
   public userWantCP: boolean = false;
+  showSavedLocations = false;
 
   orderTypeList = [
     { label: 'FTL', value: 'FTL' },
@@ -395,7 +396,7 @@ export class InputDirectionsComponent implements OnInit {
   UpdateSearchResultsDropoff(e: any) {
     this.showMapPreview = false;
     this.dropoffSelected = false;
-    this.savedLocations.show = false;
+    this.showSavedLocations = false;
 
     this.autocompleteDropoff.input = e.target.value;
     if (this.autocompleteDropoff.input == "") {
@@ -427,7 +428,7 @@ export class InputDirectionsComponent implements OnInit {
   UpdateSearchResultsPickup(e: any) {
     this.showMapPreview = false;
     this.pickupSelected = false;
-    this.savedLocations.show = false;
+    this.showSavedLocations = false;
 
     this.autocompletePickup.input = e.target.value;
     if (this.autocompletePickup.input === "") {
@@ -808,11 +809,11 @@ export class InputDirectionsComponent implements OnInit {
     this.autocompleteItemsDropoff = [];
     this.invalidAddressDropoff = false;
 
-    this.savedLocations.show = true;
+    this.showSavedLocations = true;
   }
 
   pickSavedLocation(location: any) {
-    this.savedLocations.show = true;
+    this.showSavedLocations = true;
 
     if (this.activeInput === 'pickup') {
       this.selectSearchResultPickup(location);

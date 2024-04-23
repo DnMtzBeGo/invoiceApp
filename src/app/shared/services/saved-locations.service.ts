@@ -1,6 +1,4 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { map, throttleTime } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { SavedLocationsModalComponent } from '../components/saved-locations-modal/saved-locations-modal.component';
@@ -9,19 +7,12 @@ import { SavedLocationsModalComponent } from '../components/saved-locations-moda
   providedIn: 'root'
 })
 export class SavedLocationsService {
-  show = false;
   ids = new Set();
   locations = [];
-  rawLocations = [];
-  filterInput = new Subject<string>();
   locationsChange = new EventEmitter();
 
-  constructor(
-    private auth: AuthService,
-    private matDialog: MatDialog,
-  ) {
+  constructor(private auth: AuthService, private matDialog: MatDialog) {
     this.loadLocations();
-    this.setupInputFilter();
   }
 
   async loadLocations() {
@@ -30,7 +21,6 @@ export class SavedLocationsService {
       result.forEach((i: any) => this.ids.add(i.place_id));
 
       this.locations = result;
-      this.rawLocations = result;
       this.locationsChange.emit();
     });
   }
@@ -60,32 +50,11 @@ export class SavedLocationsService {
       data: location,
       autoFocus: false,
       restoreFocus: false,
-      panelClass: 'saved-locations-modal',
+      panelClass: 'saved-locations-modal'
     });
   }
 
   isSaved(location: any) {
     return this.ids.has(location?.place_id);
   }
-
-  private setupInputFilter() {
-    this.filterInput
-      .pipe(
-        throttleTime(300, undefined, { leading: true, trailing: true }),
-        map((v) => v.toLowerCase())
-      )
-      .subscribe((v) => {
-        this.locations = this.rawLocations.filter((item) => item.name.toLowerCase().includes(v));
-      });
-  }
-
-  // private showInvalidNotification() {
-  //   this.notificationService.showErrorToastr(this.translateService.instant('location.txt_invalidDriection'));
-  // }
-
-  // private async isValidLocation(place_id: string) {
-  //   const payload = { place_id };
-
-  //   return (await this.auth.apiRest(JSON.stringify(payload), 'orders/place_details')).toPromise();
-  // }
 }
