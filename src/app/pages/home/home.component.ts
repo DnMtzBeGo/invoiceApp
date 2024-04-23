@@ -121,16 +121,17 @@ export class HomeComponent implements OnInit {
 
           if (data && data.hasOwnProperty('draft')) {
             this.draftData = data.draft;
-            this.locations.pickup = data.draft.pickup.address;
-            this.locations.dropoff = data.draft.dropoff.address;
-            this.locations.pickupLat = data.draft.pickup.lat;
-            this.locations.pickupLng = data.draft.pickup.lng;
-            this.locations.dropoffLat = data.draft.dropoff.lat;
-            this.locations.dropoffLng = data.draft.dropoff.lng;
-            this.locations.pickupPostalCode = data.draft.pickup.zip_code;
-            this.locations.dropoffPostalCode = data.draft.dropoff.zip_code;
-            this.locations.place_id_pickup = data.draft.pickup.place_id_pickup;
-            this.locations.place_id_dropoff = data.draft.dropoff.place_id_dropoff;
+            const [pickup, dropoff] = this.draftData.destinations;
+            this.locations.pickup = pickup.address;
+            this.locations.dropoff = dropoff.address;
+            this.locations.pickupLat = pickup.lat;
+            this.locations.pickupLng = pickup.lng;
+            this.locations.dropoffLat = dropoff.lat;
+            this.locations.dropoffLng = dropoff.lng;
+            this.locations.pickupPostalCode = pickup.zip_code;
+            this.locations.dropoffPostalCode = dropoff.zip_code;
+            this.locations.place_id_pickup = pickup.place_id;
+            this.locations.place_id_dropoff = dropoff.place_id;
             this.typeMap = 'draft';
             window.requestAnimationFrame(() => this.googlemaps.updateDataLocations(this.locations));
             this.showNewOrderCard();

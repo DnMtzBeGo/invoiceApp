@@ -326,6 +326,7 @@ export class OrdersComponent implements OnInit {
     this.orderData.pickup.contact_info.email = data.email;
     this.orderData.reference_number = data.reference;
     this.orderData.pickup.contact_info.country_code = data.country_code;
+    this.orderData.pickup.startDate = data.start_date;
     if (this.isOrderWithCP) {
       this.orderData.pickup.tax_information = {
         rfc: data.rfc,
@@ -491,7 +492,7 @@ export class OrdersComponent implements OnInit {
       country_of_residence: tax_information?.country_of_residence
     };
 
-    this.sendDestination(destinationPayload, id);
+    if(id) this.sendDestination(destinationPayload, id);
   }
 
   async sendDropoff() {
@@ -511,7 +512,7 @@ export class OrdersComponent implements OnInit {
       country_of_residence: tax_information?.country_of_residence
     };
 
-    this.sendDestination(destinationPayload, id);
+    if(id) this.sendDestination(destinationPayload, id);
   }
 
   async sendCargo() {

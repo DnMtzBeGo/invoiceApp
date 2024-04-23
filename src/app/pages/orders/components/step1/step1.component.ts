@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BegoRfcInputInfoOutput } from '@begomx/ui-components';
+import { BegoRfcInputInfo, BegoRfcInputInfoOutput } from '@begomx/ui-components';
 import { TranslateService } from '@ngx-translate/core';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
@@ -40,6 +40,7 @@ export class Step1Component implements OnInit {
   public phoneValidator;
   public emailValidator;
 
+  public rfcComponentValues: Partial<BegoRfcInputInfo>;
   constructor(private formBuilder: FormBuilder, private googleService: GoogleMapsService, private translateService: TranslateService) {
     this.step1Form = this.formBuilder.group({
       fullname: [null, Validators.required],
@@ -115,30 +116,35 @@ export class Step1Component implements OnInit {
     this.step1Form.get('orderWithCP').setValue(this.orderWithCP);
     if (
       changes.draftData &&
-      changes.draftData.currentValue &&
-      changes.draftData.currentValue.pickup &&
-      changes.draftData.currentValue.pickup.contact_info
+      changes.draftData.currentValue
     ) {
-      const { pickup } = changes.draftData.currentValue;
+      const draft = changes.draftData.currentValue;
+      const [pickup] = draft.destinations;
 
       if (pickup.contact_info.telephone) {
-        let [telephoneCode, ...telephone] = changes.draftData.currentValue.pickup.contact_info.telephone.split(' ');
+        let [telephoneCode, ...telephone] = pickup.contact_info.telephone.split(' ');
         telephone = telephone.join(' ');
         this.phoneCode = telephoneCode;
-        this.phoneFlag = changes.draftData.currentValue.pickup.contact_info.country_code;
+        this.phoneFlag = pickup.contact_info.country_code;
         this.phoneNumber = telephone;
         this.step1Form.get('phonenumber')!.setValue(telephone);
         this.step1Form.get('phoneCode')!.setValue(telephoneCode);
       }
 
-      this.step1Form.get('fullname')!.setValue(changes.draftData.currentValue.pickup.contact_info.name);
-      this.step1Form.get('email')!.setValue(changes.draftData.currentValue.pickup.contact_info.email);
+      this.step1Form.get('fullname')!.setValue(pickup.contact_info.name);
+      this.step1Form.get('email')!.setValue(pickup.contact_info.email);
       this.step1Form.get('reference')!.setValue(changes.draftData.currentValue.reference_number);
-      this.step1Form.get('country_code')!.setValue(changes.draftData.currentValue.pickup.contact_info.country_code);
+      this.step1Form.get('country_code')!.setValue(pickup.contact_info.country_code);
 
       this.validFormStep1.emit(this.step1Form.valid);
 
       if (this.draftData['stamp']) {
+        
+        if (pickup.tax_information) {
+          this.rfcComponentValues = pickup.tax_information;
+          this.step1Form.get('company_name').setValue(pickup.tax_information.company_name);
+        }
+
         this.step1Form.get('rfc').setValue(pickup.contact_info.rfc);
       }
     }
