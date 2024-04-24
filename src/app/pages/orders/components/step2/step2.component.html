@@ -68,7 +68,7 @@
 
         <bego-text-area
           keyValue="extra_notes"
-          [defaultValue]="draftData.destinations[1].extra_notes"
+          [defaultValue]="draftData?.destinations[1]?.extra_notes"
           [customPlaceholder]="'orders.placeholder-notes' | translate"
           (sendData)="updateFormGroup($event)"></bego-text-area>
       </div>

@@ -117,7 +117,7 @@ export class Step2Component implements OnInit {
       const draft = changes.draftData.currentValue;
       const [, dropoff] = draft.destinations;
 
-      if (dropoff.contact_info.telephone) {
+      if (dropoff?.contact_info?.telephone) {
         let [telephoneCode, ...telephone] = dropoff.contact_info.telephone.split(' ');
         telephone = telephone.join(' ');
         this.phoneCode = telephoneCode;
@@ -127,17 +127,17 @@ export class Step2Component implements OnInit {
         this.step2Form.get('phoneCode')!.setValue(telephoneCode);
       }
 
-      this.step2Form.get('fullname')!.setValue(dropoff.contact_info.name);
-      this.step2Form.get('email')!.setValue(dropoff.contact_info.email);
-      this.step2Form.get('country_code')!.setValue(dropoff.contact_info.country_code);
+      this.step2Form.get('fullname')!.setValue(dropoff?.contact_info?.name);
+      this.step2Form.get('email')!.setValue(dropoff?.contact_info?.email);
+      this.step2Form.get('country_code')!.setValue(dropoff?.contact_info?.country_code);
 
       if (this.draftData['stamp']) {
         if (dropoff.tax_information) {
-          this.rfcComponentValues = dropoff.tax_information;
-          this.step2Form.get('company_name').setValue(dropoff.tax_information.company_name);
+          this.rfcComponentValues = dropoff?.tax_information;
+          this.step2Form.get('company_name').setValue(dropoff?.tax_information?.company_name);
         }
 
-        this.step2Form.get('rfc').setValue(dropoff.contact_info.rfc);
+        this.step2Form.get('rfc').setValue(dropoff?.contact_info?.rfc);
       }
     }
     this.validFormStep2.emit(this.step2Form.valid);

@@ -421,7 +421,7 @@ export class OrdersComponent implements OnInit {
 
   validStep3(valid: boolean) {
     this.stepsValidate[2] = valid;
-    if (valid) this.sendCargo();
+    if (valid && this.orderPreview?.order_id) this.sendCargo();
     this.updateStatus();
   }
 
