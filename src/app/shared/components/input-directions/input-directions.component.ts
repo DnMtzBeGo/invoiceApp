@@ -30,10 +30,10 @@ import { GoogleMapsService } from "../../services/google-maps/google-maps.servic
 import { HomeComponent } from "../../../pages/home/home.component";
 import { AlertService } from "src/app/shared/services/alert.service";
 import { PinComponent } from "src/app/shared/components/pin/pin.component";
-import * as moment from "moment";
 import { NotificationsService } from "../../services/notifications.service";
 import { SavedLocationsService } from "../../services/saved-locations.service";
 import { PrimeService } from "../../services/prime.service";
+import { DateTime } from 'luxon'
 
 declare var google: any;
 
@@ -74,7 +74,7 @@ export class InputDirectionsComponent implements OnInit {
   langListener = null;
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
-  events: string = "DD / MM / YY";
+  events: string | Date = "DD / MM / YY";
   calendar: any = new Date();
   lastTime: any;
   firstLoad: boolean = true;
@@ -515,9 +515,7 @@ export class InputDirectionsComponent implements OnInit {
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     if (event.value) this.minTime = new Date(event.value);
-    this.events = moment(new Date(`${event.value}`), "MM-DD-YYYY").format(
-      "MMMM DD YYYY"
-    );
+    this.events = event.value;
 
     if (this.lastTime !== "DD / MM / YY") {
       this.updateDate();
@@ -538,14 +536,13 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   updateDate() {
-    const hours = moment(this.lastTime).format("HH");
-    const minutes = moment(this.lastTime).format("mm");
-    const hoursInt = parseInt(hours);
-    const minutesInt = parseInt(minutes);
-    const resHours = hoursInt * 60 * 60000;
-    const resMinutes = minutesInt * 60000;
+    const date = DateTime.fromJSDate(this.lastTime);
+    const hours = date.hour
+    const minutes = date.minute;
+    const resHours = hours * 60 * 60000;
+    const resMinutes = minutes * 60000;
     const resMilliseconds = resHours + resMinutes;
-    const total = moment(this.events).valueOf();
+    const total = DateTime.fromJSDate(this.events as Date).valueOf();
 
     this.fromDate = total + resMilliseconds;
     this.isDatesSelected = true;
