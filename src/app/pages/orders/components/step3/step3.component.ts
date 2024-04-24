@@ -179,32 +179,40 @@ export class Step3Component implements OnInit {
 
     if (
       changes.draftData &&
-      changes.draftData.currentValue &&
-      changes.draftData.currentValue.pickup &&
-      changes.draftData.currentValue.cargo
+      changes.draftData.currentValue
     ) {
-      if (changes.draftData.currentValue.cargo.type) {
-        this.cargoType = changes.draftData.currentValue.cargo.type;
-        this.step3Form.get('cargoType')!.setValue(changes.draftData.currentValue.cargo.type);
-        this.step3Form.get('cargo_goods').setValue(changes.draftData.currentValue.cargo['cargo_goods']);
-        this.satUnitData.value = changes.draftData.currentValue.cargo.unit_type;
-        if (changes.draftData.currentValue.cargo.type === 'hazardous') {
-          this.step3Form.get('hazardous_type').setValue(changes.draftData.currentValue.cargo.hazardous_type);
-          this.step3Form.get('packaging').setValue(changes.draftData.currentValue.cargo.packaging);
-          this.step3Form.get('hazardous_material').setValue(changes.draftData.currentValue.cargo.hazardous_material);
+
+      const { cargo, destinations: [pickup], documents } = changes.draftData.currentValue;
+
+      if (cargo.type) {
+        this.cargoType = cargo.type;
+        this.step3Form.get('cargoType')!.setValue(cargo.type);
+        this.step3Form.get('cargo_goods').setValue(cargo['cargo_goods']);
+        this.satUnitData.value = cargo.unit_type;
+        if (cargo.type === 'hazardous') {
+          this.step3Form.get('hazardous_type').setValue(cargo.hazardous_type);
+          this.step3Form.get('packaging').setValue(cargo.packaging);
+          this.step3Form.get('hazardous_material').setValue(cargo.hazardous_material);
         }
       }
 
-      if (changes.draftData.currentValue.pickup.startDate !== null) {
-        this.draftDate = changes.draftData.currentValue.pickup.startDate;
+      if (pickup.startDate !== null) {
+        this.draftDate = pickup.startDate;
       }
-      this.step3Form.get('unitType')!.setValue(changes.draftData.currentValue.cargo['53_48']);
-      if (changes.draftData.currentValue.cargo.weigth) {
-        this.step3Form.get('cargoWeight')!.setValue(changes.draftData.currentValue.cargo.weigth);
+      this.step3Form.get('unitType')!.setValue(cargo.trailer.load_cap);
+      if (cargo.weigth) {
+        this.step3Form.get('cargoWeight')!.setValue(cargo.weigth);
         this.editWeight = true;
       }
 
-      this.step3Form.get('description')!.setValue(changes.draftData.currentValue.cargo.description);
+      if (documents.hazardous) {
+        const splittedHazardousUrl = documents.hazardous.split('/');
+        const name = splittedHazardousUrl[splittedHazardousUrl.length - 1];
+        this.fileInfo = { name };
+        this.step3Form.get('hazardousFile').setValue(name);
+      }
+
+      this.step3Form.get('description')!.setValue(cargo.description);
     }
 
     if (changes.creationdatepickup && changes.creationdatepickup.currentValue) {
