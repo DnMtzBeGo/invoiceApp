@@ -184,11 +184,12 @@ export class Step3Component implements OnInit {
 
       const { cargo, destinations: [pickup], documents } = changes.draftData.currentValue;
 
-      if (cargo.type) {
+      if (cargo) {
         this.cargoType = cargo.type;
         this.step3Form.get('cargoType')!.setValue(cargo.type);
         this.step3Form.get('cargo_goods').setValue(cargo['cargo_goods']);
-        this.satUnitData.value = cargo.unit_type;
+        this.step3Form.get('commodity_quantity').setValue(cargo.commodity_quantity);
+        this.satUnitData.displayValue = cargo.unit_type;
         if (cargo.type === 'hazardous') {
           this.step3Form.get('hazardous_type').setValue(cargo.hazardous_type);
           this.step3Form.get('packaging').setValue(cargo.packaging);
@@ -199,9 +200,9 @@ export class Step3Component implements OnInit {
       if (pickup.startDate !== null) {
         this.draftDate = pickup.startDate;
       }
-      this.step3Form.get('unitType')!.setValue(cargo.trailer.load_cap);
-      if (cargo.weigth) {
-        this.step3Form.get('cargoWeight')!.setValue(cargo.weigth);
+      this.step3Form.get('unitType')!.setValue(cargo?.trailer?.load_cap);
+      if (cargo?.weight) {
+        this.step3Form.get('cargoWeight')!.setValue(cargo?.weight);
         this.editWeight = true;
       }
 
@@ -212,7 +213,7 @@ export class Step3Component implements OnInit {
         this.step3Form.get('hazardousFile').setValue(name);
       }
 
-      this.step3Form.get('description')!.setValue(cargo.description);
+      this.step3Form.get('description')!.setValue(cargo?.description);
     }
 
     if (changes.creationdatepickup && changes.creationdatepickup.currentValue) {
@@ -329,7 +330,6 @@ export class Step3Component implements OnInit {
   }
 
   addUnitDetailsFields() {
-    console.log('se crearon campos');
     this.step3Form.addControl('commodity_quantity', new FormControl(''));
     this.step3Form.addControl('satUnitType', new FormControl(''));
   }
