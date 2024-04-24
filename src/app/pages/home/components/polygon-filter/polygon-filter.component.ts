@@ -42,7 +42,8 @@ export class PolygonFilter implements OnInit {
     polygons: [],
     start_date: null,
     end_date: null,
-    date: null
+    date: null,
+    heatmap: false
   };
 
   pages = {
@@ -52,6 +53,7 @@ export class PolygonFilter implements OnInit {
   };
 
   activeDrivers: boolean = false;
+  saveActiveDrivers: boolean = false;
 
   activeLang: string = 'en';
 
@@ -198,6 +200,11 @@ export class PolygonFilter implements OnInit {
 
       case 'cancel':
         this.activeFilter = false;
+        this.activeDrivers = this.saveActiveDrivers;
+        console.log('24 hours?: ', this.activeFilter, this.heatmap, this.options);
+        if (this.options.start_date) {
+          this.heatmap = this.options.heatmap;
+        }
         break;
 
       case 'clear':
@@ -264,6 +271,7 @@ export class PolygonFilter implements OnInit {
       next: ({ result }) => {
         this.options = options;
         this.activeFilter = false;
+        this.saveActiveDrivers = this.activeDrivers;
         this.getCoordinates.emit({ type: 'dispersion', ...result });
         if (!result?.members.length) {
           this.notificationsService.showErrorToastr(this.translateService.instant('home.polygon-filter.filter.no-results.dispersion'));
@@ -302,9 +310,7 @@ export class PolygonFilter implements OnInit {
     dialogRef.afterClosed().subscribe((res?) => {});
   }
 
-  checkedActive(event: any) {
-    this.activeDrivers = event.checked;
-
+  checkedActive() {
     if (this.activeFilter || !this.options?.start_date) return;
 
     this.getDispersion(this.options);
@@ -317,9 +323,11 @@ export class PolygonFilter implements OnInit {
       polygons: [],
       start_date: null,
       end_date: null,
-      date: null
+      date: null,
+      heatmap: false
     };
     this.activeDrivers = false;
+    this.saveActiveDrivers = false;
 
     this.clearedFilter.emit();
   }
@@ -346,5 +354,9 @@ export class PolygonFilter implements OnInit {
         apply: this.translateService.instant(path + 'actions.apply')
       }
     };
+  }
+
+  heatmapSelection(status: boolean) {
+    this.heatmap = status;
   }
 }
