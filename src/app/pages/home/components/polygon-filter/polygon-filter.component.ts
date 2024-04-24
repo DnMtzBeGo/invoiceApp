@@ -1,10 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ShareReportModalComponent } from '../share-report-modal/share-report-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeService } from 'src/app/shared/services/prime.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { BegoPolygonFilter } from '@begomx/ui-components';
 
 const LIMIT = 6;
 
@@ -16,7 +17,7 @@ const LIMIT = 6;
 export class PolygonFilter implements OnInit {
   @Output() getCoordinates = new EventEmitter<any>();
   @Output() clearedFilter = new EventEmitter<any>();
-
+  @ViewChild('polygonFilter') polygonFilter: BegoPolygonFilter;
   activeFilter: boolean = false;
   heatmap: boolean = false;
 
@@ -201,7 +202,6 @@ export class PolygonFilter implements OnInit {
       case 'cancel':
         this.activeFilter = false;
         this.activeDrivers = this.saveActiveDrivers;
-        console.log('24 hours?: ', this.activeFilter, this.heatmap, this.options);
         if (this.options.start_date) {
           this.heatmap = this.options.heatmap;
         }
@@ -358,5 +358,15 @@ export class PolygonFilter implements OnInit {
 
   heatmapSelection(status: boolean) {
     this.heatmap = status;
+  }
+
+  openFilter() {
+    this.activeFilter = !this.activeFilter;
+
+    if (!this.activeFilter) {
+      this.polygonFilter?.loadState();
+      this.heatmap = this.options.heatmap;
+      this.activeDrivers = this.saveActiveDrivers;
+    }
   }
 }
