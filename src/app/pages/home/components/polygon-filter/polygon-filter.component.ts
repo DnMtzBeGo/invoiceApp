@@ -8,6 +8,7 @@ import { NotificationsService } from 'src/app/shared/services/notifications.serv
 import { BegoPolygonFilter } from '@begomx/ui-components';
 
 const LIMIT = 6;
+const DAY = 86_399_000;
 
 @Component({
   selector: 'app-polygon-filter',
@@ -222,7 +223,7 @@ export class PolygonFilter implements OnInit {
       tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
       polygons: JSON.stringify(options.polygons.map(({ _id }) => _id)),
       start_date: options.start_date,
-      end_date: options.end_date
+      end_date: options.end_date + DAY
     }).toString();
     (
       await this.apiRestService.apiRestGet(`polygons/heatmaps?${queryParams}`, {
@@ -260,7 +261,7 @@ export class PolygonFilter implements OnInit {
       drivers: JSON.stringify(options.drivers.map(({ _id }) => _id)),
       tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
       polygons: JSON.stringify(options.polygons.map(({ _id }) => _id)),
-      date: options.start_date,
+      date: options.start_date + DAY,
       include_older_locations: JSON.stringify(!this.activeDrivers)
     };
     const queryParams = new URLSearchParams(newOptions).toString();
