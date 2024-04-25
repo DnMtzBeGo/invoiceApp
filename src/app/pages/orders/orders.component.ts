@@ -220,7 +220,8 @@ export class OrdersComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.orderType) {
       Promise.resolve().then(() => {
-        this.marksRef.controller = this.stepperRef.controller;
+        if(this.marksRef)
+          this.marksRef.controller = this.stepperRef.controller;
       });
     }
 
@@ -433,6 +434,7 @@ export class OrdersComponent implements OnInit {
 
   validStep4(valid: boolean) {
     this.stepsValidate[4] = valid;
+    //TODO: In drafts, if all inputs are not valid, it won't be sent
     if (valid) this.sendInvoice();
     this.updateStatus();
   }
