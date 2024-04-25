@@ -50,6 +50,7 @@
 
         <bego-step [completed]="stepsValidate[3]">
           <app-pricing-step
+            [draftData]="draftData"
             (pricingStepFormData)="getPricingStepFormData($event)"
             (validPricingStep)="validPricingStep($event)"></app-pricing-step>
         </bego-step>

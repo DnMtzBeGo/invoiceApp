@@ -1,4 +1,4 @@
-import { EventEmitter, Output } from '@angular/core';
+import { EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./pricing-step.component.scss']
 })
 export class PricingStepComponent implements OnInit {
+  @Input() draftData: any;
   @Output() pricingStepFormData = new EventEmitter<any>();
   @Output() validPricingStep = new EventEmitter<boolean>();
 
@@ -48,6 +49,15 @@ export class PricingStepComponent implements OnInit {
     this.pricingForm.valueChanges.subscribe((value) => {
       this.pricingStepFormData.emit(value);
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if(changes.draftData && changes.draftData.currentValue){
+      const { pricing}  = changes.draftData.currentValue;
+      if(pricing){
+        this.pricingForm.patchValue(pricing);
+      }
+    }
   }
 
   updateSubtotal() {
