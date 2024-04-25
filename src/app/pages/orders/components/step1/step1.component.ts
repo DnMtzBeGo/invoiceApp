@@ -121,7 +121,7 @@ export class Step1Component implements OnInit {
       const draft = changes.draftData.currentValue;
       const [pickup] = draft.destinations;
 
-      if (pickup.contact_info.telephone) {
+      if (pickup?.contact_info?.telephone) {
         let [telephoneCode, ...telephone] = pickup.contact_info.telephone.split(' ');
         telephone = telephone.join(' ');
         this.phoneCode = telephoneCode;
@@ -131,10 +131,10 @@ export class Step1Component implements OnInit {
         this.step1Form.get('phoneCode')!.setValue(telephoneCode);
       }
 
-      this.step1Form.get('fullname')!.setValue(pickup.contact_info.name);
-      this.step1Form.get('email')!.setValue(pickup.contact_info.email);
-      this.step1Form.get('reference')!.setValue(changes.draftData.currentValue.reference_number);
-      this.step1Form.get('country_code')!.setValue(pickup.contact_info.country_code);
+      this.step1Form.get('fullname')!.setValue(pickup?.contact_info?.name);
+      this.step1Form.get('email')!.setValue(pickup?.contact_info?.email);
+      this.step1Form.get('reference')!.setValue(changes.draftData.currentValue?.reference_number);
+      this.step1Form.get('country_code')!.setValue(pickup?.contact_info?.country_code);
 
       this.validFormStep1.emit(this.step1Form.valid);
 
