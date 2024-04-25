@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class Step4Component implements OnInit {
   @Input() orderData: Order;
+  @Input() draftData: any;
   @Output() step4FormData: EventEmitter<any> = new EventEmitter();
   @Output() validFormStep4: EventEmitter<any> = new EventEmitter();
 
@@ -157,10 +158,41 @@ export class Step4Component implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     const orderData = changes.orderData.currentValue;
-
     this.updatePickup(orderData);
     this.updateDropoff(orderData);
     this.updateCargo(orderData);
+
+    if (changes.draftData && changes.draftData.currentValue) {
+      const { invoice: { receiver } } = changes.draftData.currentValue;
+      receiver.address = receiver.address.address;
+      console.log('reciever is: ', receiver);
+      this.invoiceContent.forEach(async (e) => {
+
+
+        if (e.propertyName == 'cfdi') {
+          await this.fetchCFDI();
+          const el = this.cfdiOptions.find(el => el.code == receiver[e.propertyName]);
+          if (el) {
+
+            e.value = `${el.code} - ${el.description}`;
+            return;
+          }
+        }
+
+        if (e.propertyName == 'tax_regime') {
+          await this.fetchTaxRegime();
+          const el = this.taxRegimeOptions.find(el => el.code == receiver[e.propertyName]);
+          if (el) {
+            e.value = `${el.code} - ${el.description}`;
+            return;
+          }
+        }
+
+        e.value = receiver[e.propertyName];
+
+        return e;
+      });
+    }
   }
 
   updateCardTitles() {

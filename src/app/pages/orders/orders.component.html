@@ -56,7 +56,8 @@
         </bego-step>
 
         <bego-step [completed]="stepsValidate[4]">
-          <app-step4 [orderData]="orderData" (step4FormData)="getStep4FormData($event)" (validFormStep4)="validStep4($event)"></app-step4>
+          <app-step4 [draftData]="draftData" [orderData]="orderData" (step4FormData)="getStep4FormData($event)"
+            (validFormStep4)="validStep4($event)"></app-step4>
         </bego-step>
       </bego-stepper>
 
