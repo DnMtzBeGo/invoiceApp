@@ -127,9 +127,9 @@ export class Step2Component implements OnInit {
         this.step2Form.get('phoneCode')!.setValue(telephoneCode);
       }
 
-      this.step2Form.get('fullname')!.setValue(dropoff?.contact_info?.name);
-      this.step2Form.get('email')!.setValue(dropoff?.contact_info?.email);
-      this.step2Form.get('country_code')!.setValue(dropoff?.contact_info?.country_code);
+      this.step2Form.get('fullname')!.setValue(dropoff?.contact_info?.name || '');
+      this.step2Form.get('email')!.setValue(dropoff?.contact_info?.email || '');
+      this.step2Form.get('country_code')!.setValue(dropoff?.contact_info?.country_code || '');
 
       if (this.draftData['stamp']) {
         if (dropoff.tax_information) {

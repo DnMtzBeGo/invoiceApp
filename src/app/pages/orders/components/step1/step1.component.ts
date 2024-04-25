@@ -133,10 +133,10 @@ export class Step1Component implements OnInit {
         this.step1Form.get('phoneCode')!.setValue(telephoneCode);
       }
 
-      this.step1Form.get('fullname')!.setValue(pickup?.contact_info?.name);
-      this.step1Form.get('email')!.setValue(pickup?.contact_info?.email);
-      this.step1Form.get('reference')!.setValue(changes.draftData.currentValue?.reference_number);
-      this.step1Form.get('country_code')!.setValue(pickup?.contact_info?.country_code);
+      this.step1Form.get('fullname')!.setValue(pickup?.contact_info?.name || '');
+      this.step1Form.get('email')!.setValue(pickup?.contact_info?.email || '');
+      this.step1Form.get('reference')!.setValue(changes.draftData.currentValue?.reference_number  || '');
+      this.step1Form.get('country_code')!.setValue(pickup?.contact_info?.country_code  || '');
 
       this.validFormStep1.emit(this.step1Form.valid);
       this.datePickup = pickup.start_date;
@@ -145,10 +145,10 @@ export class Step1Component implements OnInit {
         
         if (pickup.tax_information) {
           this.rfcComponentValues = pickup.tax_information;
-          this.step1Form.get('company_name').setValue(pickup.tax_information.company_name);
+          this.step1Form.get('company_name').setValue(pickup.tax_information.company_name || '');
         }
 
-        this.step1Form.get('rfc').setValue(pickup.contact_info.rfc);
+        this.step1Form.get('rfc').setValue(pickup?.contact_info?.rfc || '');
       }
     }
   }
