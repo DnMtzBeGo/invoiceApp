@@ -109,6 +109,8 @@ export class Step1Component implements OnInit {
 
     this.step1Form.valueChanges.subscribe(() => {
       this.step1FormData.emit(this.step1Form.value);
+      const date = this.datePickup;
+      this.step1FormData.emit({ ...this.step1Form.value, start_date: date, end_date: date });
     });
   }
 
@@ -137,6 +139,7 @@ export class Step1Component implements OnInit {
       this.step1Form.get('country_code')!.setValue(pickup?.contact_info?.country_code);
 
       this.validFormStep1.emit(this.step1Form.valid);
+      this.datePickup = pickup.start_date;
 
       if (this.draftData['stamp']) {
         
