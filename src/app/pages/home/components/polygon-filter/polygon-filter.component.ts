@@ -237,7 +237,11 @@ export class PolygonFilter implements OnInit {
         this.activeFilter = false;
         this.getCoordinates.emit({ type: 'heatmap', ...result });
         if (!result?.locations.length) {
-          this.notificationsService.showErrorToastr(this.translateService.instant('home.polygon-filter.filter.no-results.heatmap'));
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant('home.polygon-filter.filter.no-results.heatmap'),
+            5000,
+            'brand-snackbar-2'
+          );
         }
         this.loading = false;
       },
@@ -274,7 +278,11 @@ export class PolygonFilter implements OnInit {
         this.saveActiveDrivers = this.activeDrivers;
         this.getCoordinates.emit({ type: 'dispersion', ...result });
         if (!result?.members.length) {
-          this.notificationsService.showErrorToastr(this.translateService.instant('home.polygon-filter.filter.no-results.dispersion'));
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant('home.polygon-filter.filter.no-results.dispersion'),
+            5000,
+            'brand-snackbar-2'
+          );
         }
         this.loading = false;
       },
