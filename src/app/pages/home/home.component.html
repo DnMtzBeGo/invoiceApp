@@ -14,7 +14,7 @@
     (createGoogleImage)="getGoogleImageMap($event)">
   </bego-map>
 
-  <div class="new-order-wrapper">
+  <div class="new-order-wrapper" [class.full]="showOrderDetails">
     <div class="new-order-details" [ngClass]="{ full: !showOrderDetails }">
       <app-orders
         [(cardIsOpen)]="showOrderDetails"
