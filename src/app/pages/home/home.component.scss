@@ -6,6 +6,10 @@
   gap: 60px;
   overflow: hidden;
 
+  &.full {
+    overflow: initial;
+  }
+
   $directions-width: 400px;
   $spacing-right: 20px;
   $spacing-top: 125px;
