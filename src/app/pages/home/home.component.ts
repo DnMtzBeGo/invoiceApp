@@ -15,6 +15,7 @@ import { PolygonFilter } from './components/polygon-filter/polygon-filter.compon
 import { InputDirectionsComponent } from 'src/app/shared/components/input-directions/input-directions.component';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { PrimeService } from 'src/app/shared/services/prime.service';
+import { LocationsService } from '../../services/locations.service';
 
 declare var google: any;
 // 10 seconds for refreshing map markers
@@ -97,6 +98,7 @@ export class HomeComponent implements OnInit {
   showCompleteModal = false;
 
   isPrime = false;
+  showTrafficButton: boolean;
 
   constructor(
     private router: Router,
@@ -105,7 +107,8 @@ export class HomeComponent implements OnInit {
     private googlemaps: GoogleMapsService,
     private headerStyle: HeaderService,
     private location: Location,
-    public primeService: PrimeService
+    public primeService: PrimeService,
+    private locationsService : LocationsService
   ) {
     this.placesService.places$;
     this.headerStyle.changeHeader(this.headerTransparent);
@@ -143,6 +146,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.locationsService.dataObtained$.subscribe((dataObtained: boolean) => {
+      this.showTrafficButton = dataObtained; // Mostrar u ocultar el botón de tráfico según se hayan obtenido los datos
+    });
+
     setTimeout(() => {
       this.mostrarBoton = true;
     }, 8000);
@@ -678,7 +685,7 @@ export class HomeComponent implements OnInit {
 
     const map = this.map;
 
-    if (this.isTrafficActive) {
+    if (this.isTrafficActive && !this.showTrafficButton) {
       if (map) {
         const trafficLayer = new google.maps.TrafficLayer();
         trafficLayer.setMap(map);
