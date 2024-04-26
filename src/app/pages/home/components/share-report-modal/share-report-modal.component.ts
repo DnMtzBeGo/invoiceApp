@@ -19,6 +19,8 @@ interface Options {
   type?: string;
 }
 
+const DAY = 86_399_000;
+
 @Component({
   selector: 'app-share-report-modal',
   templateUrl: './share-report-modal.component.html',
@@ -52,7 +54,7 @@ export class ShareReportModalComponent {
 
     const requestJson = JSON.stringify({
       ...options,
-      ...(this.data.heatmap ? { start_date } : { date: start_date }),
+      ...(this.data.heatmap ? { start_date, end_date: options.end_date + DAY } : { date: start_date + DAY }),
       invitations: [
         {
           email: this.shareForm.get('email').value,
