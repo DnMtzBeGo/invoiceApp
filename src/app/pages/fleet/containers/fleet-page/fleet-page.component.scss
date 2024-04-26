@@ -40,6 +40,40 @@
     height: 100%;
     position: relative;
   }
+
+  .btns-container {
+    z-index: 999;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    right: 465px;
+    bottom: 35px;
+  }
+
+  .btns-container button {
+    right: 0 !important;
+  }
+
+  .btn-traffic {
+    position: absolute;
+    color: #ededed;
+    bottom: 60px;
+    right: calc(100% + 10px);
+    cursor: pointer;
+    border: none;
+    border-radius: 30px;
+    
+    img {
+      filter: brightness(0) invert(1);
+    }
+  }
+  
+  .btn-traffic.active img {
+    filter: none;
+  }
+
 }
 
 // copied from _home.scss
