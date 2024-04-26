@@ -1812,7 +1812,8 @@
       "selector": "Search..."
     },
     "actions": {
-      "edit": "Edit",
+      "edit_tag_name": "Edit tag name",
+      "edit_drivers": "Edit drivers",
       "delete": "Delete",
       "send_message": "Send message"
     },

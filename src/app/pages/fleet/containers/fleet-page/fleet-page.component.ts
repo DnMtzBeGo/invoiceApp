@@ -9,6 +9,7 @@ import { HeaderService } from 'src/app/pages/home/services/header.service';
 import { ofType } from 'src/app/shared/utils/operators.rx';
 import { CustomMarker } from 'src/app/pages/home/custom.marker';
 import { Location } from '@angular/common';
+import { trigger, style, animate, transition } from '@angular/animations';
 
 declare var google: any;
 // 10 seconds for refreshing map markers
@@ -17,7 +18,10 @@ const markersRefreshTime = 1000 * 20;
 @Component({
   selector: 'app-fleet-page',
   templateUrl: './fleet-page.component.html',
-  styleUrls: ['./fleet-page.component.scss']
+  styleUrls: ['./fleet-page.component.scss'],
+  animations: [
+    trigger('slideInFromBottom', [transition('void => *', [style({ transform: 'translateY(100%)' }), animate('500ms ease-out')])])
+  ]
 })
 export class FleetPageComponent implements OnInit {
   showOrderDetails: boolean = false;
@@ -57,6 +61,8 @@ export class FleetPageComponent implements OnInit {
 
   subs = new Subscription();
   showCompleteModal = false;
+
+  showTrafficButton: boolean;
 
   constructor(
     private router: Router,
@@ -148,6 +154,7 @@ export class FleetPageComponent implements OnInit {
           this.markersFromService = [];
           res.result.members.forEach((row) => {
             if (row.location) {
+              const thumbnail = row.thumbnail ? row.thumbnail : '../assets/images/user-outline.svg';
               this.markersFromService.push({
                 title: row._id,
                 position: {
@@ -321,18 +328,22 @@ export class FleetPageComponent implements OnInit {
       marker.setMap(null);
       marker.remove();
     });
+
     this.googleMarkers = [];
 
     for (var i = 0; i < this.markersFromService.length; i++) {
-      let changePic = this.markersFromService[i].icon.split('');
-      if (changePic[changePic.length - 1] === '/') this.markersFromService[i].icon = '../assets/images/user-outline.svg';
-
+      let iconUrl = this.markersFromService[i].icon;
+      if (iconUrl.charAt(iconUrl.length - 1) === '') {
+        iconUrl = '../assets/images/user-outline.svg';
+      }
       const marker = new CustomMarker(
         new google.maps.LatLng(this.markersFromService[i].position.lat, this.markersFromService[i].position.lng),
         this.map,
-        this.markersFromService[i].icon,
-        this.markersFromService[i].state,
-        this.markersFromService[i].title
+        iconUrl,
+        null,
+        this.markersFromService[i].title,
+        true,
+        this.markersFromService[i].extraData
       );
 
       this.googleMarkers.push(marker);
@@ -346,5 +357,36 @@ export class FleetPageComponent implements OnInit {
 
     if (cleanRefresh === false || fromShowMap || this.isMapDirty === false)
       this.map.fitBounds(this.bounds, { bottom: 50, top: 50, left: 80, right: 50 + 400 + 50 });
+  }
+
+  trafficLayer: google.maps.TrafficLayer;
+  isTrafficActive: boolean = false;
+
+  toggleTraffic() {
+    this.isTrafficActive = !this.isTrafficActive;
+
+    const btnTraffic = document.querySelector('.btn-traffic');
+
+    if (this.isTrafficActive) {
+      btnTraffic.classList.add('active');
+    } else {
+      btnTraffic.classList.remove('active');
+    }
+
+    const map = this.map;
+
+    if (this.isTrafficActive && !this.showTrafficButton) {
+      if (map) {
+        const trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
+
+        this.trafficLayer = trafficLayer;
+      }
+    } else {
+      if (this.trafficLayer) {
+        this.trafficLayer.setMap(null);
+        this.trafficLayer = null;
+      }
+    }
   }
 }
