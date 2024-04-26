@@ -1583,6 +1583,10 @@
           "clear": "Clear",
           "cancel": "Cancel",
           "apply": "Apply"
+        },
+        "no-results": {
+          "dispersion": "No results found",
+          "heatmap": "No results found"
         }
       },
       "share": {
@@ -1809,7 +1813,8 @@
       "selector": "Search..."
     },
     "actions": {
-      "edit": "Edit",
+      "edit_tag_name": "Edit tag name",
+      "edit_drivers": "Edit drivers",
       "delete": "Delete",
       "send_message": "Send message"
     },

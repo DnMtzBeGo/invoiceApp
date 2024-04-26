@@ -1586,6 +1586,10 @@
           "clear": "Limpiar",
           "cancel": "Cancelar",
           "apply": "Aplicar"
+        },
+        "no-results": {
+          "dispersion": "No se encontraron resultados",
+          "heatmap": "No se encontraron resultados"
         }
       },
       "share": {
@@ -1805,7 +1809,8 @@
       "selector": "Buscar..."
     },
     "actions": {
-      "edit": "Editar",
+      "edit_tag_name": "Editar nombre",
+      "edit_drivers": "Editar conductores",
       "delete": "Eliminar",
       "send_message": "Enviar mensaje"
     },

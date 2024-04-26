@@ -1,12 +1,14 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ShareReportModalComponent } from '../share-report-modal/share-report-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeService } from 'src/app/shared/services/prime.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { BegoPolygonFilter } from '@begomx/ui-components';
 
 const LIMIT = 6;
+const DAY = 86_399_000;
 
 @Component({
   selector: 'app-polygon-filter',
@@ -16,7 +18,7 @@ const LIMIT = 6;
 export class PolygonFilter implements OnInit {
   @Output() getCoordinates = new EventEmitter<any>();
   @Output() clearedFilter = new EventEmitter<any>();
-
+  @ViewChild('polygonFilter') polygonFilter: BegoPolygonFilter;
   activeFilter: boolean = false;
   heatmap: boolean = false;
 
@@ -42,7 +44,8 @@ export class PolygonFilter implements OnInit {
     polygons: [],
     start_date: null,
     end_date: null,
-    date: null
+    date: null,
+    heatmap: false
   };
 
   pages = {
@@ -52,6 +55,7 @@ export class PolygonFilter implements OnInit {
   };
 
   activeDrivers: boolean = false;
+  saveActiveDrivers: boolean = false;
 
   activeLang: string = 'en';
 
@@ -198,6 +202,10 @@ export class PolygonFilter implements OnInit {
 
       case 'cancel':
         this.activeFilter = false;
+        this.activeDrivers = this.saveActiveDrivers;
+        if (this.options.start_date) {
+          this.heatmap = this.options.heatmap;
+        }
         break;
 
       case 'clear':
@@ -215,12 +223,13 @@ export class PolygonFilter implements OnInit {
       tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
       polygons: JSON.stringify(options.polygons.map(({ _id }) => _id)),
       start_date: options.start_date,
-      end_date: options.end_date
+      end_date: options.end_date + DAY
     }).toString();
     (
       await this.apiRestService.apiRestGet(`polygons/heatmaps?${queryParams}`, {
         apiVersion: 'v1.1',
-        getLoader: 'true'
+        getLoader: 'true',
+        timeout: '60000'
       })
     ).subscribe({
       next: ({ result }) => {
@@ -228,13 +237,20 @@ export class PolygonFilter implements OnInit {
         this.activeDrivers = false;
         this.activeFilter = false;
         this.getCoordinates.emit({ type: 'heatmap', ...result });
-        /* if (!result?.locations.length) {
-          this.notificationsService.showErrorToastr(this.translateService.instant('home.polygon-filter.filter.no-results.heatmap'));
-        } */
+        if (!result?.locations.length) {
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant('home.polygon-filter.filter.no-results.heatmap'),
+            5000,
+            'brand-snackbar-2'
+          );
+        }
         this.loading = false;
       },
       error: ({ error }) => {
         console.error(error);
+        this.loading = false;
+      },
+      complete: () => {
         this.loading = false;
       }
     });
@@ -245,7 +261,7 @@ export class PolygonFilter implements OnInit {
       drivers: JSON.stringify(options.drivers.map(({ _id }) => _id)),
       tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
       polygons: JSON.stringify(options.polygons.map(({ _id }) => _id)),
-      date: options.start_date,
+      date: options.start_date + DAY,
       include_older_locations: JSON.stringify(!this.activeDrivers)
     };
     const queryParams = new URLSearchParams(newOptions).toString();
@@ -253,20 +269,29 @@ export class PolygonFilter implements OnInit {
     (
       await this.apiRestService.apiRestGet(`polygons/dispersion?${queryParams}`, {
         apiVersion: 'v1.1',
-        getLoader: 'true'
+        getLoader: 'true',
+        timeout: '60000'
       })
     ).subscribe({
       next: ({ result }) => {
         this.options = options;
         this.activeFilter = false;
+        this.saveActiveDrivers = this.activeDrivers;
         this.getCoordinates.emit({ type: 'dispersion', ...result });
-        /* if (!result?.members.length) {
-          this.notificationsService.showErrorToastr(this.translateService.instant('home.polygon-filter.filter.no-results.dispersion'));
-        } */
+        if (!result?.members.length) {
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant('home.polygon-filter.filter.no-results.dispersion'),
+            5000,
+            'brand-snackbar-2'
+          );
+        }
         this.loading = false;
       },
       error: ({ error }) => {
         console.error(error);
+        this.loading = false;
+      },
+      complete: () => {
         this.loading = false;
       }
     });
@@ -294,9 +319,7 @@ export class PolygonFilter implements OnInit {
     dialogRef.afterClosed().subscribe((res?) => {});
   }
 
-  checkedActive(event: any) {
-    this.activeDrivers = event.checked;
-
+  checkedActive() {
     if (this.activeFilter || !this.options?.start_date) return;
 
     this.getDispersion(this.options);
@@ -309,9 +332,11 @@ export class PolygonFilter implements OnInit {
       polygons: [],
       start_date: null,
       end_date: null,
-      date: null
+      date: null,
+      heatmap: false
     };
     this.activeDrivers = false;
+    this.saveActiveDrivers = false;
 
     this.clearedFilter.emit();
   }
@@ -338,5 +363,19 @@ export class PolygonFilter implements OnInit {
         apply: this.translateService.instant(path + 'actions.apply')
       }
     };
+  }
+
+  heatmapSelection(status: boolean) {
+    this.heatmap = status;
+  }
+
+  openFilter() {
+    this.activeFilter = !this.activeFilter;
+
+    if (!this.activeFilter) {
+      this.polygonFilter?.loadState();
+      this.heatmap = this.options.heatmap;
+      this.activeDrivers = this.saveActiveDrivers;
+    }
   }
 }
