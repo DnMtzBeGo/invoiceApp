@@ -6,9 +6,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
-import { PrimeService } from 'src/app/shared/services/prime.service';
 import { FormGroup } from '@angular/forms';
-
 
 @Component({
   selector: 'app-tags',
@@ -49,8 +47,7 @@ export class TagsComponent implements OnInit {
     private readonly apiService: AuthService,
     private readonly translateService: TranslateService,
     private readonly datePipe: DatePipe,
-    private readonly matDialog: MatDialog,
-    public readonly primeService: PrimeService
+    private readonly matDialog: MatDialog
   ) {
     this.loadingTableData = true;
 
@@ -65,18 +62,6 @@ export class TagsComponent implements OnInit {
 
   ngOnInit() {
     this.translateService.onLangChange.subscribe(() => this.setLang());
-
-    if (this.primeService.loaded.isStopped) {
-      this.handleMustRedirect();
-    } else {
-      this.primeService.loaded.subscribe(() => this.handleMustRedirect())
-    }
-  }
-
-  handleMustRedirect() {
-    if (!this.primeService.isPrime) {
-      this.router.navigate(['/home']);
-    }
   }
 
   setLang(): TagsComponent {
@@ -151,7 +136,12 @@ export class TagsComponent implements OnInit {
     this.actions = [
       {
         label: this.translate('edit', 'actions'),
-        id: 'edit',
+        id: 'edit_tag_name',
+        icon: 'edit'
+      },
+      {
+        label: this.translate('edit', 'actions'),
+        id: 'edit_drivers',
         icon: 'edit'
       },
       {
@@ -318,7 +308,7 @@ export class TagsComponent implements OnInit {
   public async closeDeleteDialog($event: string): Promise<void> {
     if ($event === 'ok') {
       console.log('se borra');
-      (await this.apiService.apiRestDel(`managers_tags/${this.activeTagId}`, { apiVersion: 'v1.1' })).subscribe({
+      (await this.apiService.apiRestDelete(`managers_tags/${this.activeTagId}`, { apiVersion: 'v1.1' })).subscribe({
         next: (d) => {
           this.fetchTags();
         },
@@ -380,7 +370,7 @@ export class TagsComponent implements OnInit {
     try {
       const updatedTag = { name: editedTagName };
 
-      (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/rename/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
+      (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
         next: (data) => {
           if (data.result?._id) this.openDialog(this.translate('created', 'tags'));
         },
