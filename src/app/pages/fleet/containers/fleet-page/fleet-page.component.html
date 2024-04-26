@@ -6,16 +6,27 @@
 
     <div class="input-directions">
       <app-fleet-widget></app-fleet-widget>
+      <div class="btns-container">
+        <button
+        id="reset"
+        (click)="mapEmitter.next(['center'])"
+        [ngClass]="{
+          'reset-up': userRole && showFleetMap && !showOrderDetails
+        }"
+        [@slideInFromBottom]>
+        <i class="icon icon-gps"></i>
+        </button>
+
+        <button
+            *ngIf="!showOrderDetails"
+            class="btn-traffic"
+            (click)="toggleTraffic()"
+            [@slideInFromBottom]>
+            <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg"/>
+        </button>
+      </div>
     </div>
 
-    <button
-      id="reset"
-      (click)="mapEmitter.next(['center'])"
-      [ngClass]="{
-        'reset-up': userRole && showFleetMap && !showOrderDetails
-      }">
-      <i class="icon icon-gps"></i>
-    </button>
   </div>
 </div>
 
