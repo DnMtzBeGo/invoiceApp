@@ -180,6 +180,16 @@ export class InputDirectionsComponent implements OnInit {
   hideMap: boolean = false;
   hideType: string = "";
 
+  isSpecial = false;
+
+  get locationsSelected(): boolean {
+    return this.pickupSelected && (this.isSpecial || this.dropoffSelected);
+  }
+
+  get autocompleteShown(): boolean {
+    return Boolean(this.autocompleteItemsPickup.length || this.autocompleteItemsDropoff.length);
+  }
+
   constructor(
     private auth: AuthService,
     public zone: NgZone,
@@ -353,6 +363,7 @@ export class InputDirectionsComponent implements OnInit {
 
   handleUpdateLocations() {
     this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
 
     if (this.autocompletePickup.input === '') {
       this.searchPickup.nativeElement.focus();
@@ -365,7 +376,6 @@ export class InputDirectionsComponent implements OnInit {
     }
 
     this.googlemaps.updateDataLocations(this.locations);
-    this.updateLocations.emit(this.locations);
     this.hideMap = false;
   }
 
@@ -379,6 +389,9 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.dropoffLat = "";
     this.locations.dropoffLng = "";
     this.locations.dropoffPostalCode = 0;
+    this.locations.place_id_dropoff = '';
+    this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
   }
 
   ClearAutocompletePickup() {
@@ -391,6 +404,9 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.pickupLat = "";
     this.locations.pickupLng = "";
     this.locations.pickupPostalCode = 0;
+    this.locations.place_id_pickup = '';
+    this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
   }
 
   UpdateSearchResultsDropoff(e: any) {
@@ -554,6 +570,11 @@ export class InputDirectionsComponent implements OnInit {
       },
     };
 
+    if (this.isSpecial) {
+      this.getFleetListDetails();
+      return
+    }
+
     (
       await this.auth.apiRest(
         JSON.stringify(requestETA),
@@ -650,6 +671,7 @@ export class InputDirectionsComponent implements OnInit {
 
   private async canCreateOrders() {
     (await this.auth.apiRest('', 'carriers/can_create_orders')).subscribe( res => {
+      this.isSpecial = res.result.canEditDropOff;
       this.userCanCreateOrders = true;
     }, error => {
       this.userCanCreateOrders = false;

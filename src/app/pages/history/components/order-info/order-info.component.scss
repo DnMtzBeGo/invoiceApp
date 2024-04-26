@@ -167,6 +167,11 @@
 
       }
 
+      .pickup-address,
+      .dropoff-address {
+        flex: 1;
+      }
+
       .pickup-title,
       .dropoff-title,
       .pickup-text-address,
@@ -186,6 +191,11 @@
         text-overflow: ellipsis;
         overflow-x: hidden;
         white-space: nowrap;
+
+        &.pending {
+          color: #fe0;
+          text-decoration: underline;
+        }
       }
 
       .pickup-title-address,
@@ -318,3 +328,24 @@ $dark1: #10161c;
   }
 }
 
+.location-modal {
+  --modalHeight: min(600px, 50vh);
+
+  ::ng-deep .modal {
+    padding: 0 !important;
+  }
+
+  ::ng-deep .backdrop {
+    pointer-events: all;
+  }
+
+  ::ng-deep app-saved-locations {
+    .list {
+      overflow: auto;
+    }
+
+    .btn-back {
+      display: none;
+    }
+  }
+}

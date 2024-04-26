@@ -84,7 +84,7 @@
         {{ "location.label_pin" | translate }}
       </button>
 
-      <div class="list-address-container">
+      <div *ngIf="autocompleteShown" class="list-address-container">
         <div
           *ngFor="let item of activeInput === 'pickup' ? autocompleteItemsPickup : autocompleteItemsDropoff"
           (click)="activeInput === 'pickup' ? selectSearchResultPickup(item) : selectSearchResultDropoff(item)"
@@ -152,7 +152,7 @@
 
       <div
         class="assigned-date-time-container"
-        *ngIf="pickupSelected && dropoffSelected"
+        *ngIf="locationsSelected && !showSavedLocations && !autocompleteItemsDropoff.length"
       >
         <div class="assigned-date-time-row">
           <form [formGroup]="orderForm">
@@ -220,7 +220,7 @@
         </div>
       </div>
 
-      <div class="fleet-info-container" *ngIf="isDatesSelected">
+      <div class="fleet-info-container" *ngIf="isDatesSelected && !showSavedLocations && !autocompleteShown">
         <ng-container *ngIf="orderType === 'OCL'; else notOcl">
           <div class="fleet-drivers-row">
             <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
@@ -353,7 +353,7 @@
 
       <app-button
         *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
-        [disabled]="!pickupSelected || !dropoffSelected || isDatesSelected"
+        [disabled]="!locationsSelected || isDatesSelected"
         (click)="openNewOrderMenu()"
         class="btn-yellow"
         [text]="'location.btn-order' | translate"
