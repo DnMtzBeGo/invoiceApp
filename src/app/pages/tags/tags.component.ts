@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
+import { PrimeService } from 'src/app/shared/services/prime.service';
 import { FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-tags',
@@ -47,7 +49,8 @@ export class TagsComponent implements OnInit {
     private readonly apiService: AuthService,
     private readonly translateService: TranslateService,
     private readonly datePipe: DatePipe,
-    private readonly matDialog: MatDialog
+    private readonly matDialog: MatDialog,
+    public readonly primeService: PrimeService
   ) {
     this.loadingTableData = true;
 
@@ -62,6 +65,18 @@ export class TagsComponent implements OnInit {
 
   ngOnInit() {
     this.translateService.onLangChange.subscribe(() => this.setLang());
+
+    if (this.primeService.loaded.isStopped) {
+      this.handleMustRedirect();
+    } else {
+      this.primeService.loaded.subscribe(() => this.handleMustRedirect())
+    }
+  }
+
+  handleMustRedirect() {
+    if (!this.primeService.isPrime) {
+      this.router.navigate(['/home']);
+    }
   }
 
   setLang(): TagsComponent {
@@ -188,10 +203,13 @@ export class TagsComponent implements OnInit {
 
   public selectingAction({ type, data }: any) {
     switch (type) {
-      case 'edit':
+      case 'edit_tag_name':
         this.showEditInput = true;
         this.editedTagName = data.name;
         this.activeTagId = data._id;
+        break;
+      case 'edit_drivers':
+        this.router.navigate(['/tags/create']);
         break;
       case 'send_message':
         this.openSendMessageModal(data._id, data.name);
@@ -261,7 +279,8 @@ export class TagsComponent implements OnInit {
           const actions = {
             enabled: true,
             options: {
-              edit: true,
+              edit_tag_name: true,
+              edit_drivers: true,
               delete: true,
               send_message: true
             }
@@ -299,7 +318,7 @@ export class TagsComponent implements OnInit {
   public async closeDeleteDialog($event: string): Promise<void> {
     if ($event === 'ok') {
       console.log('se borra');
-      (await this.apiService.apiRestDelete(`managers_tags/${this.activeTagId}`, { apiVersion: 'v1.1' })).subscribe({
+      (await this.apiService.apiRestDel(`managers_tags/${this.activeTagId}`, { apiVersion: 'v1.1' })).subscribe({
         next: (d) => {
           this.fetchTags();
         },
@@ -361,7 +380,7 @@ export class TagsComponent implements OnInit {
     try {
       const updatedTag = { name: editedTagName };
 
-      (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
+      (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/rename/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
         next: (data) => {
           if (data.result?._id) this.openDialog(this.translate('created', 'tags'));
         },
