@@ -39,9 +39,7 @@ export class PricingStepComponent implements OnInit {
     });
 
     this.dummyForm = this.formBuilder.group({ subtotal: [0] });
-  }
 
-  ngOnInit(): void {
     this.pricingForm.statusChanges.subscribe((status) => {
       this.validPricingStep.emit(status === 'VALID');
     });
@@ -49,20 +47,25 @@ export class PricingStepComponent implements OnInit {
     this.pricingForm.valueChanges.subscribe((value) => {
       this.pricingStepFormData.emit(value);
     });
+ 
+  }
+
+  ngOnInit(): void {
   }
 
   ngOnChanges(changes: SimpleChanges){
     if(changes.draftData && changes.draftData.currentValue){
       const { pricing}  = changes.draftData.currentValue;
       if(pricing){
-        this.pricingForm.patchValue(pricing);
+        this.pricingForm.setValue(pricing);
       }
     }
   }
 
   updateSubtotal() {
-    const { subtotal } = this.dummyForm.value;
-    this.pricingForm.get('subtotal').setValue(subtotal);
+    //COMMENTED AS ITS NOT NECESSARY!
+    // const { subtotal } = this.dummyForm.value;
+    // this.pricingForm.get('subtotal').setValue(subtotal);
   }
 
   changePay(data: any) {

@@ -18,7 +18,7 @@ import * as moment from 'moment';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
 import { BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
@@ -184,6 +184,8 @@ export class OrdersComponent implements OnInit {
     allowTouchMove: false,
     autoHeight: true
   };
+  private orderPreviewReceived = new Subject();
+  private orderPreviewSubscription: Record<string,Subscription | null> = {};
 
   constructor(
     private translateService: TranslateService,
@@ -220,9 +222,13 @@ export class OrdersComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.orderType) {
       Promise.resolve().then(() => {
-        if(this.marksRef)
+        if (this.marksRef)
           this.marksRef.controller = this.stepperRef.controller;
       });
+    }
+
+    if (changes.orderPreview && changes.orderPreview.currentValue) {
+      this.orderPreviewReceived.next(changes.orderPreview.currentValue);
     }
 
     if (this.imageFromGoogle && !this.sendMap) {
@@ -252,10 +258,17 @@ export class OrdersComponent implements OnInit {
       this.getETA(locations);
     }
     if (changes.draftData && changes.draftData.currentValue) {
-      this.getHazardous(changes.draftData.currentValue._id);
-      if (changes.draftData.currentValue.hasOwnProperty('stamp') && changes.draftData.currentValue.stamp) {
-        this.getCatalogsDescription(changes.draftData.currentValue._id);
+      const draftData = changes.draftData.currentValue;
+      this.getHazardous(draftData._id);
+      if (changes.draftData.currentValue.hasOwnProperty('stamp') && draftData.stamp) {
+        this.getCatalogsDescription(draftData._id);
       }
+
+      this.orderData.cargo = {
+        ...draftData.cargo,
+        '53_48': draftData.cargo.trailer.load_cap
+      }
+
     }
 
     if (changes.datepickup && changes.datepickup.currentValue) {
@@ -422,7 +435,17 @@ export class OrdersComponent implements OnInit {
 
   validStep3(valid: boolean) {
     this.stepsValidate[2] = valid;
-    if (valid && this.orderPreview?.order_id) this.sendCargo();
+
+    if (valid) {
+      if (this.orderPreview?.order_id) {
+        this.sendCargo()
+      } else {
+        this.orderPreviewSubscription.step3 = this.orderPreviewReceived.subscribe((orderPreview: any) => {
+          this.sendCargo();
+          this.orderPreviewSubscription.step3.unsubscribe();
+        });
+      }
+    }
     this.updateStatus();
   }
 
@@ -500,7 +523,6 @@ export class OrdersComponent implements OnInit {
   async sendDropoff() {
     const { dropoff } = this.orderData;
     const { contact_info, tax_information, extra_notes } = dropoff;
-    const [, id] = this.orderPreview?.destinations || [];
 
     const destinationPayload = {
       extra_notes,
@@ -514,11 +536,20 @@ export class OrdersComponent implements OnInit {
       country_of_residence: tax_information?.country_of_residence
     };
 
-    if(id) this.sendDestination(destinationPayload, id);
+    const [, id] = this.orderPreview?.destinations || [];
+    if (id) {
+      this.sendDestination(destinationPayload, id);
+    } else {
+      this.orderPreviewSubscription.dropoff = this.orderPreviewReceived.subscribe((orderPreview: any) => {
+        const [, id] = orderPreview?.destinations || [];
+        this.sendDestination(destinationPayload, id);
+        this.orderPreviewSubscription.dropoff.unsubscribe();
+      });
+    }
   }
 
   async sendCargo() {
-    const { cargo } = this.orderData;
+    const { cargo }: { cargo: any } = this.orderData;
     const { order_id } = this.orderPreview;
 
     const cargoPayload = {
@@ -527,7 +558,7 @@ export class OrdersComponent implements OnInit {
       unit_type: cargo.unit_type,
       required_units: cargo.required_units,
       hazardous_type: cargo.hazardous_type,
-      weight: cargo.weigth,
+      weight: cargo.weigth || cargo.weight,
       weight_uom: 'kg',
       trailer: {
         load_cap: cargo['53_48']
@@ -587,16 +618,33 @@ export class OrdersComponent implements OnInit {
   async sendPricing() {
     const { pricing } = this.orderData;
 
-    let pricingPayload = {
-      order_id: this.orderPreview.order_id,
-      subtotal: pricing.subtotal,
-      currency: pricing.currency,
-      deferred_payment: pricing.deferred_payment
+    const sendPricing = async (payload) => {
+      const req = await this.auth.apiRest(JSON.stringify(payload), 'orders/set_pricing');
+      await req.toPromise();
     };
 
-    const req = await this.auth.apiRest(JSON.stringify(pricingPayload), 'orders/set_pricing');
-    await req.toPromise();
+    if (this.orderPreview) {
+      sendPricing({
+        order_id: this.orderPreview.order_id,
+        subtotal: pricing.subtotal,
+        currency: pricing.currency,
+        deferred_payment: pricing.deferred_payment
+      });
+    } else {
+      this.orderPreviewSubscription.pricing = this.orderPreviewReceived.subscribe(() => {
+        sendPricing({
+          order_id: this.orderPreview.order_id,
+          subtotal: pricing.subtotal,
+          currency: pricing.currency,
+          deferred_payment: pricing.deferred_payment
+
+        })
+        this.orderPreviewSubscription.pricing.unsubscribe();
+    });
+
+
   }
+}
 
   async getETA(locations: GoogleLocation) {
     let datos = {

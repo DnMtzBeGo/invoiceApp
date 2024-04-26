@@ -163,35 +163,41 @@ export class Step4Component implements OnInit {
     this.updateCargo(orderData);
 
     if (changes.draftData && changes.draftData.currentValue) {
-      const { invoice: { receiver } } = changes.draftData.currentValue;
-      receiver.address = receiver.address.address;
-      console.log('reciever is: ', receiver);
-      this.invoiceContent.forEach(async (e) => {
+      const { invoice } = changes.draftData.currentValue;
+      if (invoice?.receiver) {
+
+        const { receiver } = invoice;
+
+        receiver.address = receiver.address.address;
+        //Fill info
+        this.invoiceContent.forEach(async (e) => {
 
 
-        if (e.propertyName == 'cfdi') {
-          await this.fetchCFDI();
-          const el = this.cfdiOptions.find(el => el.code == receiver[e.propertyName]);
-          if (el) {
+          if (e.propertyName == 'cfdi') {
+            await this.fetchCFDI();
+            const el = this.cfdiOptions.find(el => el.code == receiver[e.propertyName]);
+            if (el) {
 
-            e.value = `${el.code} - ${el.description}`;
-            return;
+              e.value = `${el.code} - ${el.description}`;
+              return;
+            }
           }
-        }
 
-        if (e.propertyName == 'tax_regime') {
-          await this.fetchTaxRegime();
-          const el = this.taxRegimeOptions.find(el => el.code == receiver[e.propertyName]);
-          if (el) {
-            e.value = `${el.code} - ${el.description}`;
-            return;
+          if (e.propertyName == 'tax_regime') {
+            await this.fetchTaxRegime();
+            const el = this.taxRegimeOptions.find(el => el.code == receiver[e.propertyName]);
+            if (el) {
+              e.value = `${el.code} - ${el.description}`;
+              return;
+            }
           }
-        }
 
-        e.value = receiver[e.propertyName];
+          e.value = receiver[e.propertyName];
 
-        return e;
-      });
+          return e;
+        });
+
+      }
     }
   }
 
@@ -261,7 +267,7 @@ export class Step4Component implements OnInit {
     const { cargo } = orderdata;
 
     this.cargoContent[0].value = 1;
-    this.cargoContent[1].value = this.formatWeight(cargo.weigth);
+    this.cargoContent[1].value = this.formatWeight(cargo.weigth || cargo['weight']);
     this.cargoContent[2].value = cargo.type;
     this.cargoContent[3].value = cargo.description;
   }
