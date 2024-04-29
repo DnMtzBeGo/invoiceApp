@@ -35,8 +35,7 @@
         </div>
       </div>
 
-      <div class="status-address">
-        
+      <div class="status-address" *ngIf="orderInfo.destinations">
         <div (click)="changePickupDropoff('pickup')" class="pickup-status-address">
           <div class="pickup-address">
             <p class="pickup-title"> {{'history.history_detail.pickup'| translate }}</p>
@@ -53,7 +52,7 @@
         <div (click)="changePickupDropoff('dropoff')" class="dropoff-status-address">
           <div class="dropoff-address">
             <p class="dropoff-title">{{'history.history_detail.dropoff' | translate }}</p>
-            <p *ngIf="this.orderInfo.destinations?.[1].address; else addressPending" class="pickup-text-address">
+            <p *ngIf="orderInfo.destinations?.[1].address; else addressPending" class="pickup-text-address">
               {{ orderInfo.destinations?.[1]?.address }}
             </p>
             <ng-template #addressPending>

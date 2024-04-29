@@ -28,6 +28,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   @Input() statusListData: any = {};
 
   @Output() infoUpdated = new EventEmitter<void>();
+  @Output() dropoffUpdated = new EventEmitter<any>();
 
   @ViewChild('embla', { static: true }) protected embla: any;
   @ViewChild('viewPort', { static: true }) protected viewPort: any;
@@ -96,6 +97,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       this.orderInfo.destinations[1].place_id = location.place_id;
       this.orderInfo.destinations[1].address = location.address;
       this.orderInfo = { ...this.orderInfo } // needed for change detection
+      this.dropoffUpdated.emit(this.orderInfo);
       this.closeLocationModal();
     });
   }

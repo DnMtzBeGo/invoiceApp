@@ -1,11 +1,11 @@
 <bego-body [ngClass]="{'no-orders': noOrders }" >
     <div class="container">
       <div class="orders-list">
-        <app-orders-list (idEvent)="receiveId($event)" (noOrders)="noOrdersAction($event)" [statusListData]="statusList">
+        <app-orders-list (idEvent)="receiveId($event)" (noOrders)="noOrdersAction($event)" [statusListData]="statusList" [dropoffUpdated]="dropoffUpdated">
         </app-orders-list>
       </div>
       <div class="order-detail">
-        <app-order-info [orderInfo]="orderInfo" [statusListData]="statusList" (infoUpdated)="receiveId($event)">
+        <app-order-info [orderInfo]="orderInfo" [statusListData]="statusList" (infoUpdated)="receiveId($event)" (dropoffUpdated)="this.dropoffUpdated.next($event)">
         </app-order-info>
       </div>
         <app-no-orders-yet [translations]=" ('history.no-orders-yet.' + currentTab) |  translate ">
