@@ -151,7 +151,12 @@ export class TagsComponent implements OnInit {
     this.actions = [
       {
         label: this.translate('edit', 'actions'),
-        id: 'edit',
+        id: 'edit_tag_name',
+        icon: 'edit'
+      },
+      {
+        label: this.translate('edit', 'actions'),
+        id: 'edit_drivers',
         icon: 'edit'
       },
       {
@@ -203,10 +208,13 @@ export class TagsComponent implements OnInit {
 
   public selectingAction({ type, data }: any) {
     switch (type) {
-      case 'edit':
+      case 'edit_tag_name':
         this.showEditInput = true;
         this.editedTagName = data.name;
         this.activeTagId = data._id;
+        break;
+      case 'edit_drivers':
+        this.router.navigate(['/tags/create']);
         break;
       case 'send_message':
         this.openSendMessageModal(data._id, data.name);
@@ -276,7 +284,8 @@ export class TagsComponent implements OnInit {
           const actions = {
             enabled: true,
             options: {
-              edit: true,
+              edit_tag_name: true,
+              edit_drivers: true,
               delete: true,
               send_message: true
             }

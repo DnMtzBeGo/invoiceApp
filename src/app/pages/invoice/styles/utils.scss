@@ -467,13 +467,25 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 }
 
-snack-bar-container.brand-snackbar-1 {
+mat-snack-bar-container.brand-snackbar-1 {
   background: linear-gradient(180deg, #080f15 0%, #171d23 100%);
   border: 3px solid #10161c;
   box-shadow: inset 3px 3px 8px 3px #111416;
 
-  .mat-simple-snackbar span {
+  .mat-mdc-snack-bar-label {
     color: #ffe000;
+  }
+}
+
+mat-snack-bar-container.brand-snackbar-2 {
+  background: #ffee00;
+  border: 2px solid #ffee00;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 4px 4px 4px #ffea52, inset -4px -4px 4px #e1c600;
+  border-radius: 8px;
+  
+  .mat-mdc-snack-bar-label {
+    color: #040b11;
+    font-weight: bold;
   }
 }
 

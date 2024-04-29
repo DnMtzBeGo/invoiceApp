@@ -22,6 +22,7 @@ import { Subject, Subscription } from 'rxjs';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
 import { BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
+import { LocationsService } from '../../services/locations.service';
 
 export interface OrderPreview {
   destinations: string[];
@@ -194,7 +195,8 @@ export class OrdersComponent implements OnInit {
     private googlemaps: GoogleMapsService,
     private router: Router,
     private alertService: AlertService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private locationsService : LocationsService
   ) {}
 
   ngOnInit() {
@@ -664,6 +666,7 @@ export class OrdersComponent implements OnInit {
       async (res) => {
         this.ETA = res.result.ETA;
         this.getCreationTime(locations);
+        this.locationsService.setDataObtained(true);
       },
       async (res) => {
         console.log(res);
