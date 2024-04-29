@@ -220,7 +220,7 @@
         </div>
       </div>
 
-      <div class="fleet-info-container" *ngIf="isDatesSelected && !showSavedLocations && !autocompleteShown">
+      <div class="fleet-info-container" *ngIf="isDatesSelected && locationsSelected && !showSavedLocations && !autocompleteShown">
         <ng-container *ngIf="orderType === 'OCL'; else notOcl">
           <div class="fleet-drivers-row">
             <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>

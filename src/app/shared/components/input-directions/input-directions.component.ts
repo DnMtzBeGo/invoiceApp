@@ -390,6 +390,7 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.dropoffLng = "";
     this.locations.dropoffPostalCode = 0;
     this.locations.place_id_dropoff = '';
+    this.canGoToSteps = false;
     this.updateLocation.emit()
     this.updateLocations.emit(this.locations);
   }
@@ -405,6 +406,7 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.pickupLng = "";
     this.locations.pickupPostalCode = 0;
     this.locations.place_id_pickup = '';
+    this.canGoToSteps = false;
     this.updateLocation.emit()
     this.updateLocations.emit(this.locations);
   }
