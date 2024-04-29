@@ -331,7 +331,8 @@
       "trailer": "Trailer",
       "subtotal": "Subtotal",
       "total_price": "Total price",
-      "select": "Select"
+      "select": "Select",
+      "pending": "Pending..."
     },
     "driver_assignment": {
       "title": "Assigned to",

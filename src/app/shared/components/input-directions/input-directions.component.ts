@@ -30,10 +30,10 @@ import { GoogleMapsService } from "../../services/google-maps/google-maps.servic
 import { HomeComponent } from "../../../pages/home/home.component";
 import { AlertService } from "src/app/shared/services/alert.service";
 import { PinComponent } from "src/app/shared/components/pin/pin.component";
-import * as moment from "moment";
 import { NotificationsService } from "../../services/notifications.service";
 import { SavedLocationsService } from "../../services/saved-locations.service";
 import { PrimeService } from "../../services/prime.service";
+import { DateTime } from 'luxon'
 
 declare var google: any;
 
@@ -74,7 +74,7 @@ export class InputDirectionsComponent implements OnInit {
   langListener = null;
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
-  events: string = "DD / MM / YY";
+  events: string | Date = "DD / MM / YY";
   calendar: any = new Date();
   lastTime: any;
   firstLoad: boolean = true;
@@ -102,6 +102,7 @@ export class InputDirectionsComponent implements OnInit {
   public provisionalPickupLocation: string = "";
   public provisionalDropoffLocation: string = "";
   public userWantCP: boolean = false;
+  showSavedLocations = false;
 
   orderTypeList = [
     { label: 'FTL', value: 'FTL' },
@@ -178,6 +179,16 @@ export class InputDirectionsComponent implements OnInit {
 
   hideMap: boolean = false;
   hideType: string = "";
+
+  isSpecial = false;
+
+  get locationsSelected(): boolean {
+    return this.pickupSelected && (this.isSpecial || this.dropoffSelected);
+  }
+
+  get autocompleteShown(): boolean {
+    return Boolean(this.autocompleteItemsPickup.length || this.autocompleteItemsDropoff.length);
+  }
 
   constructor(
     private auth: AuthService,
@@ -352,6 +363,7 @@ export class InputDirectionsComponent implements OnInit {
 
   handleUpdateLocations() {
     this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
 
     if (this.autocompletePickup.input === '') {
       this.searchPickup.nativeElement.focus();
@@ -364,7 +376,6 @@ export class InputDirectionsComponent implements OnInit {
     }
 
     this.googlemaps.updateDataLocations(this.locations);
-    this.updateLocations.emit(this.locations);
     this.hideMap = false;
   }
 
@@ -378,6 +389,10 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.dropoffLat = "";
     this.locations.dropoffLng = "";
     this.locations.dropoffPostalCode = 0;
+    this.locations.place_id_dropoff = '';
+    this.canGoToSteps = this.locationsSelected && this.fromDate && this.isMembersSelected();
+    this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
   }
 
   ClearAutocompletePickup() {
@@ -390,12 +405,16 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.pickupLat = "";
     this.locations.pickupLng = "";
     this.locations.pickupPostalCode = 0;
+    this.locations.place_id_pickup = '';
+    this.canGoToSteps = false;
+    this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
   }
 
   UpdateSearchResultsDropoff(e: any) {
     this.showMapPreview = false;
     this.dropoffSelected = false;
-    this.savedLocations.show = false;
+    this.showSavedLocations = false;
 
     this.autocompleteDropoff.input = e.target.value;
     if (this.autocompleteDropoff.input == "") {
@@ -427,7 +446,7 @@ export class InputDirectionsComponent implements OnInit {
   UpdateSearchResultsPickup(e: any) {
     this.showMapPreview = false;
     this.pickupSelected = false;
-    this.savedLocations.show = false;
+    this.showSavedLocations = false;
 
     this.autocompletePickup.input = e.target.value;
     if (this.autocompletePickup.input === "") {
@@ -496,9 +515,7 @@ export class InputDirectionsComponent implements OnInit {
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     if (event.value) this.minTime = new Date(event.value);
-    this.events = moment(new Date(`${event.value}`), "MM-DD-YYYY").format(
-      "MMMM DD YYYY"
-    );
+    this.events = event.value;
 
     if (this.lastTime !== "DD / MM / YY") {
       this.updateDate();
@@ -519,14 +536,13 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   updateDate() {
-    const hours = moment(this.lastTime).format("HH");
-    const minutes = moment(this.lastTime).format("mm");
-    const hoursInt = parseInt(hours);
-    const minutesInt = parseInt(minutes);
-    const resHours = hoursInt * 60 * 60000;
-    const resMinutes = minutesInt * 60000;
+    const date = DateTime.fromJSDate(this.lastTime);
+    const hours = date.hour
+    const minutes = date.minute;
+    const resHours = hours * 60 * 60000;
+    const resMinutes = minutes * 60000;
     const resMilliseconds = resHours + resMinutes;
-    const total = moment(this.events).valueOf();
+    const total = DateTime.fromJSDate(this.events as Date).valueOf();
 
     this.fromDate = total + resMilliseconds;
     this.isDatesSelected = true;
@@ -552,6 +568,11 @@ export class InputDirectionsComponent implements OnInit {
         lng: data.dropoffLng,
       },
     };
+
+    if (this.isSpecial) {
+      this.getFleetListDetails();
+      return
+    }
 
     (
       await this.auth.apiRest(
@@ -649,6 +670,7 @@ export class InputDirectionsComponent implements OnInit {
 
   private async canCreateOrders() {
     (await this.auth.apiRest('', 'carriers/can_create_orders')).subscribe( res => {
+      this.isSpecial = res.result.canDelayDropOff;
       this.userCanCreateOrders = true;
     }, error => {
       this.userCanCreateOrders = false;
@@ -808,11 +830,11 @@ export class InputDirectionsComponent implements OnInit {
     this.autocompleteItemsDropoff = [];
     this.invalidAddressDropoff = false;
 
-    this.savedLocations.show = true;
+    this.showSavedLocations = true;
   }
 
   pickSavedLocation(location: any) {
-    this.savedLocations.show = true;
+    this.showSavedLocations = true;
 
     if (this.activeInput === 'pickup') {
       this.selectSearchResultPickup(location);

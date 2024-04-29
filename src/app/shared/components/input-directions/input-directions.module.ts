@@ -12,6 +12,7 @@ import { FleetMembersModule } from 'src/app/shared/components/fleet-members/flee
 import { MemberCardSelectionModule } from 'src/app/shared/components/member-card-selection/member-card-selection.module';
 import { AppMaterialModule } from 'src/app/material';
 import { BegoButtonModule, BegoButtonToggleModule, BegoIconsModule, BegoModalModule } from '@begomx/ui-components';
+import { SharedModule } from '../../shared.module';
 
 @NgModule({
   declarations: [InputDirectionsComponent],
@@ -31,7 +32,8 @@ import { BegoButtonModule, BegoButtonToggleModule, BegoIconsModule, BegoModalMod
     BegoButtonToggleModule,
     BegoModalModule,
     BegoButtonModule,
-    BegoIconsModule
+    BegoIconsModule,
+    SharedModule,
   ],
   exports: [InputDirectionsComponent]
 })

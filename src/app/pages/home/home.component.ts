@@ -217,6 +217,8 @@ export class HomeComponent implements OnInit {
   }
 
   async createDraft() {
+    const dropoffId = this.locations.place_id_dropoff;
+
     const draftPayload = {
       destinations: [
         {
@@ -225,7 +227,7 @@ export class HomeComponent implements OnInit {
         },
         {
           type: 'dropoff',
-          location: await this.getLocationId(this.locations.place_id_dropoff)
+          location: dropoffId ? await this.getLocationId(dropoffId) : undefined,
         }
       ],
       stamp: this.userWantCP,
