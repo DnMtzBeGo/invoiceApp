@@ -55,6 +55,33 @@ export class Step2Component implements OnInit {
       extra_notes: ['']
     });
 
+        this.step2Form.get('orderWithCP').valueChanges.subscribe((value) => {
+      const rfc = this.step2Form.get('rfc');
+      if (this.orderWithCP) {
+        rfc.setValidators(
+          Validators.compose([
+            Validators.minLength(12),
+            Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/)
+          ])
+        );
+      } else {
+        rfc.clearValidators();
+      }
+      rfc.updateValueAndValidity();
+    });
+
+    this.step2Form.statusChanges.subscribe((val) => {
+      if (val === 'VALID') {
+        this.validFormStep2.emit(true);
+      } else {
+        this.validFormStep2.emit(false);
+      }
+    });
+
+    this.step2Form.valueChanges.subscribe(() => {
+      this.step2FormData.emit(this.step2Form.value);
+    });
+
     this.phoneValidator = {
       _firstCheck: true,
       errorMsg: this.translateService.instant('orders.invalid-phone'),
@@ -83,32 +110,6 @@ export class Step2Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.step2Form.get('orderWithCP').valueChanges.subscribe((value) => {
-      const rfc = this.step2Form.get('rfc');
-      if (this.orderWithCP) {
-        rfc.setValidators(
-          Validators.compose([
-            Validators.minLength(12),
-            Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/)
-          ])
-        );
-      } else {
-        rfc.clearValidators();
-      }
-      rfc.updateValueAndValidity();
-    });
-
-    this.step2Form.statusChanges.subscribe((val) => {
-      if (val === 'VALID') {
-        this.validFormStep2.emit(true);
-      } else {
-        this.validFormStep2.emit(false);
-      }
-    });
-
-    this.step2Form.valueChanges.subscribe(() => {
-      this.step2FormData.emit(this.step2Form.value);
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
