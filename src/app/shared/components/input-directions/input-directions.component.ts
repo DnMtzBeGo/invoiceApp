@@ -671,7 +671,7 @@ export class InputDirectionsComponent implements OnInit {
 
   private async canCreateOrders() {
     (await this.auth.apiRest('', 'carriers/can_create_orders')).subscribe( res => {
-      this.isSpecial = res.result.canEditDropOff;
+      this.isSpecial = res.result.canDelayDropOff;
       this.userCanCreateOrders = true;
     }, error => {
       this.userCanCreateOrders = false;
