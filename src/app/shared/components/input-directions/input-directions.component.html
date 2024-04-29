@@ -69,14 +69,14 @@
     </div> -->
       <button
         class="item-favorites"
-        *ngIf="!savedLocations.show && (!pickupSelected || !dropoffSelected)"
+        *ngIf="!showSavedLocations && (!pickupSelected || !dropoffSelected)"
         (click)="showFavoriteLocations()">
         <div class="icon"></div>
         {{ 'saved-locations.my-locations' | translate }}
       </button>
 
       <button
-        *ngIf="!savedLocations.show && (!pickupSelected || !dropoffSelected)"
+        *ngIf="!showSavedLocations && (!pickupSelected || !dropoffSelected)"
         class="item-pin"
         (click)="setLocationPin()"
       >
@@ -84,7 +84,7 @@
         {{ "location.label_pin" | translate }}
       </button>
 
-      <div class="list-address-container">
+      <div *ngIf="autocompleteShown" class="list-address-container">
         <div
           *ngFor="let item of activeInput === 'pickup' ? autocompleteItemsPickup : autocompleteItemsDropoff"
           (click)="activeInput === 'pickup' ? selectSearchResultPickup(item) : selectSearchResultDropoff(item)"
@@ -107,45 +107,11 @@
           </div>
         </div>
       </div>
-      <div class="favorites-menu" *ngIf="savedLocations.show && (!pickupSelected || !dropoffSelected)">
-        <div class="header">
-          <h3 class="title">{{ 'saved-locations.my-locations' | translate }}</h3>
-          <input
-            type="text"
-            [placeholder]="'saved-locations.search' | translate"
-            [ngModel]="savedLocations.filterInput | async"
-            (ngModelChange)="savedLocations.filterInput.next($event)"
-          >
-        </div>
-
-        <div class="item" *ngFor="let location of savedLocations.locations; index as i" (click)="pickSavedLocation(location)">
-          <div class="icon"></div>
-
-          <div class="location">
-            <div class="alias">{{ location.name }}</div>
-            <div class="address">{{ location.address }}</div>
-          </div>
-
-          <button class="action-btn" [matMenuTriggerFor]="menu" #menuTrigger (click)="$event.stopPropagation()">
-            <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
-          </button>
-
-          <mat-menu #menu="matMenu" class="brand-menu-1">
-            <button mat-menu-item class="menu-option" (click)="savedLocations.openModal(location)">
-              <bego-icon icon="begon-edit-fintech"></bego-icon>
-              <span>{{ 'saved-locations.opt-edit' | translate }}</span>
-            </button>
-            <button mat-menu-item class="menu-option" (click)="savedLocations.remove(location)">
-              <bego-icon icon="begon-trash1"></bego-icon>
-              <span>{{ 'saved-locations.opt-delete' | translate }}</span>
-            </button>
-          </mat-menu>
-        </div>
-
-        <bego-button size="small" class="btn-back" [activated]="true" (click)="savedLocations.show = false">
-          {{'saved-locations.btn-back' | translate}}
-        </bego-button>
-      </div>
+      <app-saved-locations
+        *ngIf="showSavedLocations && (!pickupSelected || !dropoffSelected)"
+        (goBack)="showSavedLocations = false"
+        (pickLocation)="pickSavedLocation($event)"
+      ></app-saved-locations>
 
       <div class="list-address-container" *ngIf="invalidAddressPickup">
         <!-- <div detail='false' >
@@ -186,7 +152,7 @@
 
       <div
         class="assigned-date-time-container"
-        *ngIf="pickupSelected && dropoffSelected"
+        *ngIf="locationsSelected && !showSavedLocations && !autocompleteItemsDropoff.length"
       >
         <div class="assigned-date-time-row">
           <form [formGroup]="orderForm">
@@ -254,7 +220,7 @@
         </div>
       </div>
 
-      <div class="fleet-info-container" *ngIf="isDatesSelected">
+      <div class="fleet-info-container" *ngIf="isDatesSelected && locationsSelected && !showSavedLocations && !autocompleteShown">
         <ng-container *ngIf="orderType === 'OCL'; else notOcl">
           <div class="fleet-drivers-row">
             <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
@@ -387,7 +353,7 @@
 
       <app-button
         *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
-        [disabled]="!pickupSelected || !dropoffSelected || isDatesSelected"
+        [disabled]="!locationsSelected || isDatesSelected"
         (click)="openNewOrderMenu()"
         class="btn-yellow"
         [text]="'location.btn-order' | translate"

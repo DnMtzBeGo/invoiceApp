@@ -18,6 +18,7 @@ import { UppercaseDirective } from 'src/app/pages/shared/directives/uppercase.di
 import { AppMaterialModule } from '../material';
 import { BegoButtonModule, BegoIconsModule, BegoModalModule } from '@begomx/ui-components';
 import { SavedLocationsModalModule } from './components/saved-locations-modal/saved-locations-modal.module';
+import { SavedLocationsComponent } from './components/saved-locations/saved-locations.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { SavedLocationsModalModule } from './components/saved-locations-modal/sa
     PinComponent,
     BegoInputFileComponent,
     UppercaseDirective,
+    SavedLocationsComponent,
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,8 @@ import { SavedLocationsModalModule } from './components/saved-locations-modal/sa
     //    NotificationBarModule,
     NotificationBarComponent,
     PinComponent,
-    UppercaseDirective
+    UppercaseDirective,
+    SavedLocationsComponent
   ],
   providers: [CartaPorteInfoService]
 })

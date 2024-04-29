@@ -1,5 +1,6 @@
 import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject, Subscription } from 'rxjs';
 import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
@@ -10,6 +11,7 @@ import { AuthService } from '../../../../shared/services/auth.service';
 export class OrdersListComponent implements OnInit {
 
   @Input() statusListData: any = {};
+  @Input() dropoffUpdated: Subject<any>;
   @Output() idEvent = new EventEmitter<string>();
   @Output() noOrders = new EventEmitter<any>();
 
@@ -28,6 +30,8 @@ export class OrdersListComponent implements OnInit {
   public orderTabsText: string[];
   public currentTabIndex: number = 0;
   public selectedOrderId!: string 
+
+  suscriptions: Subscription[] = [];
 
   Object = Object;
 
@@ -60,10 +64,22 @@ export class OrdersListComponent implements OnInit {
   ngOnInit(): void {
     this.language = localStorage.getItem('lang');
     this.getOrders();
+    this.suscriptions.push(this.dropoffUpdated.subscribe((orderInfo: any) => {
+
+      for (const list of Object.values<any>(this.orderTabs)) {
+        const idx = list.orders.findIndex((order: any) => order._id === orderInfo._id);
+
+        if (idx >= 0) {
+          list.orders[idx].destinations[1].address = orderInfo.destinations[1].address;
+          break
+        }
+      }
+    }));
   }
 
-
-  
+  ngOnDestroy() {
+    this.suscriptions.forEach((s) => s.unsubscribe());
+  }
 
   sendData(order: any, index: number) {
 
