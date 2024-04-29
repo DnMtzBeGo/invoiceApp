@@ -287,7 +287,7 @@ export class OrdersComponent implements OnInit {
   }
 
   validateForm() {
-    const validate = this.orderType === 'FTL' ? this.stepsValidate.slice(0, -1) : this.stepsValidateOCL;
+    const validate = this.orderType === 'FTL' ? this.stepsValidate.slice(0, -2) : this.stepsValidateOCL;
 
     return validate.every(Boolean);
   }

@@ -1,5 +1,5 @@
 <section class="pricing">
-  <form [formGroup]="dummyForm" class="box">
+  <form [formGroup]="pricingForm" class="box">
     <h2 class="title">{{ 'checkout.insurance-modal.title-insurance' | translate }}</h2>
     <p class="description">
       {{ 'checkout.insurance-modal.txt-insurance' | translate }}
@@ -8,9 +8,11 @@
     </p>
 
     <div class="subtotal">
-      <input formControlName="subtotal" (blur)="updateSubtotal()" min="0" currencyMask [options]="{
+      <input formControlName="subtotal" (blur)="updateSubtotalInput($event.target)" nullable="false" currencyMask [options]="{
         align: 'center',
         prefix: '$',
+        min: 0,
+        nullable: false,
         thousands: ',',
         decimal: '.',
         precision: 0,
