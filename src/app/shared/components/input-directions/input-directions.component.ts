@@ -390,7 +390,7 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.dropoffLng = "";
     this.locations.dropoffPostalCode = 0;
     this.locations.place_id_dropoff = '';
-    this.canGoToSteps = false;
+    this.canGoToSteps = this.locationsSelected && this.fromDate && this.isMembersSelected();
     this.updateLocation.emit()
     this.updateLocations.emit(this.locations);
   }
