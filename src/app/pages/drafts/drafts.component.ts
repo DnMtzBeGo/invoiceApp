@@ -5,6 +5,12 @@ import { trigger, style, animate, transition } from '@angular/animations';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
 import { Router } from '@angular/router';
 
+
+interface SearchDraft {
+  dataInput: string;
+  page: number
+}
+
 @Component({
   selector: 'app-drafts',
   templateUrl: './drafts.component.html',
@@ -31,8 +37,9 @@ export class DraftsComponent implements OnInit {
     dropoffLng: '',
     pickupPostalCode: 0,
     dropoffPostalCode: 0
-  }
+  };
 
+  public search: string = '';
 
   constructor(
     private auth: AuthService,
@@ -40,55 +47,15 @@ export class DraftsComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-    this.getDrafts();
-  }
+  async ngOnInit(): Promise<void> {
+    await this.searchDraft();
+    this.googlemaps.updateDataLocations(this.mapData)
 
-  async getDrafts() {
-    let searchOptions: any = {
-      pagination: {
-          page: 1,
-          limit: 30
-      }
-    };
-    this.loader = true;
-    (await this.auth.apiRest(JSON.stringify(searchOptions), 'orders/get_drafts')).subscribe(
-      async (res) => {
-        if(res.result.length > 0) {
-          console.log(this.showDraftList)
-          this.draftData = res.result;
-          this.mapData.pickup = res.result[0].pickup.address;
-          this.mapData.dropoff = res.result[0].dropoff.address;
-          this.mapData.pickupLat = res.result[0].pickup.lat;
-          this.mapData.pickupLng = res.result[0].pickup.lng;
-          this.mapData.dropoffLat = res.result[0].dropoff.lat;
-          this.mapData.dropoffLng = res.result[0].dropoff.lng;
-          this.mapData.pickupPostalCode = res.result[0].pickup.zip_code;
-          this.mapData.dropoffPostalCode = res.result[0].dropoff.zip_code;
-          this.googlemaps.updateDataLocations(this.mapData)
-        } else {
-          this.showDraftList = true;
-          console.log('No hay drafts')
-        }
-        this.loader = false;
-      },
-      async (res) => {
-        console.log(res);
-        this.loader = false;
-      }
-    );
   }
 
   updateDataDraft(draftData: any) {
-    this.mapData.pickup = draftData.pickup.address;
-    this.mapData.dropoff = draftData.dropoff.address;
-    this.mapData.pickupLat = draftData.pickup.lat;
-    this.mapData.pickupLng = draftData.pickup.lng;
-    this.mapData.dropoffLat = draftData.dropoff.lat;
-    this.mapData.dropoffLng = draftData.dropoff.lng;
-    this.mapData.pickupPostalCode = draftData.pickup.zip_code;
-    this.mapData.dropoffPostalCode = draftData.dropoff.zip_code;
-    this.googlemaps.updateDataLocations(this.mapData)
+    this.setMapData(draftData);
+    this.googlemaps.updateDataLocations(this.mapData);
   }
 
   indexDraft(index: number) {
@@ -102,7 +69,7 @@ export class DraftsComponent implements OnInit {
     };
     (await this.auth.apiRest(JSON.stringify(requestJson), 'orders/update_status')).subscribe(
       async (res) => {
-        this.getDrafts();
+        this.searchDraft();
       },
       async (res) => {
         console.log(res);
@@ -111,72 +78,55 @@ export class DraftsComponent implements OnInit {
   }
 
   async loadMoreDrafts(page: any) {
-    console.log(page)
-    console.log("Loader: ", this.loader)
-    let searchOptions: any = {
-      pagination: {
-          page: page
-      }
-    };
-    this.loader = true;
-    (await this.auth.apiRest(searchOptions, 'orders/get_drafts')).subscribe(
-      async (res) => {
-        if(res.result.length > 0) {
-          let newArray  = this.draftData.concat(res.result);
-          setTimeout(() => {
-            this.draftData = newArray;
-          }, 500);
-        } else {
-          console.log('No hay mas drafts')
-        }
-        this.loader = false;
-      },
-      async (res) => {
-        console.log(res);
-        this.loader = false;
-      }
-    );
+    const drafts = await this.getDrafts({ dataInput: this.search, page });
+    if (drafts.length) {
+      let newArray = this.draftData.concat(drafts);
+      setTimeout(() => (this.draftData = newArray), 500);
+    }
+    this.draftData.concat(drafts);
   }
 
-  async searchDraft(dataInput: any) {
+  setMapData(draftData){
 
-    let searchOptions: any = {
-      pagination: {
-          page: 1,
-          limit: 20
-      },
-      search: dataInput
-    };
-    
-    (await this.auth.apiRest(searchOptions, 'orders/get_drafts')).subscribe(
-      async (res) => {
-        if(res.result.length > 0) {
-          console.log(res.result)
-          this.draftData = res.result;
-          this.mapData.pickup = res.result[0].pickup.address;
-          this.mapData.dropoff = res.result[0].dropoff.address;
-          this.mapData.pickupLat = res.result[0].pickup.lat;
-          this.mapData.pickupLng = res.result[0].pickup.lng;
-          this.mapData.dropoffLat = res.result[0].dropoff.lat;
-          this.mapData.dropoffLng = res.result[0].dropoff.lng;
-          this.mapData.pickupPostalCode = res.result[0].pickup.zip_code;
-          this.mapData.dropoffPostalCode = res.result[0].dropoff.zip_code;
-        } else {
-          setTimeout(() => {
-            this.draftData = [];
-            this.loader = false;
-            this.showSearchDraftList = true;
-            console.log('No hay resultados')
-            this.googlemaps.updateDataLocations(0);
-          }, 2000);
-        }
+    const [pickup, dropoff] = draftData.destinations;
+    this.mapData.pickup = pickup.address;
+    this.mapData.dropoff = dropoff.address;
+    this.mapData.pickupLat = pickup.lat;
+    this.mapData.pickupLng = pickup.lng;
+    this.mapData.dropoffLat = dropoff.lat;
+    this.mapData.dropoffLng = dropoff.lng;
+    this.mapData.pickupPostalCode = pickup.zip_code;
+    this.mapData.dropoffPostalCode = dropoff.zip_code;
+  }
+
+  async getDrafts({ dataInput, page }: SearchDraft) {
+    this.loader = true;
+    return (await this.auth.apiRestGet(`orders/carriers/drafts?search=${dataInput}&page=${page}&size=10`, { apiVersion: 'v1.1' }))
+      .toPromise()
+      .then(({ result }) => {
         this.loader = false;
-      },
-      async (res) => {
-        console.log(res);
+        return result.result;
+      });
+  }
+
+  async searchDraft({ dataInput = '', page = 1 }: SearchDraft = { dataInput: '', page: 1 }) {
+    this.search = dataInput;
+
+    const drafts = await this.getDrafts({ dataInput, page });
+
+    if (drafts.length > 0) {
+      this.draftData = drafts;
+      const [draft] = drafts;
+      this.setMapData(draft);
+    } else {
+      setTimeout(() => {
+        this.draftData = [];
         this.loader = false;
-      }
-    );
+        this.showSearchDraftList = true;
+        this.googlemaps.updateDataLocations(0);
+      }, 2000);
+    }
+    this.loader = false;
   }
 
   continueOrder() {

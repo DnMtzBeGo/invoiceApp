@@ -8,6 +8,7 @@
         <bego-input
           keyValue="fullname"
           (value)="updateFormGroup($event)"
+          [setValue]="step2Form.get('fullname')!.value"
           [placeholder]="'orders.placeholder-fullname' | translate"></bego-input>
       </div>
 
@@ -23,6 +24,7 @@
             [setValue]="phoneNumber"
             [validators]="phoneValidator"
             (value)="phoneNumberChangeValue($event)"
+            [setValue]="step2Form.get('phonenumber')!.value"
             [placeholder]="'orders.placeholder-phone' | translate"></bego-input>
         </div>
 
@@ -34,6 +36,7 @@
             size="small"
             [validators]="emailValidator"
             (value)="updateFormGroup($event)"
+            [setValue]="step2Form.get('email')!.value"
             [placeholder]="'orders.placeholder-mail' | translate"></bego-input>
         </div>
       </div>
@@ -43,6 +46,7 @@
         <bego-rfc-input
           theme="secondary"
           (valueChanges)="updateRFC($event)"
+          [values]="rfcComponentValues"
           [lang]="{
             country_of_residence: 'orders.tax-country_of_residence' | translate,
             registration_number: 'orders.tax-registration_number' | translate,
@@ -54,7 +58,9 @@
 
       <div class="field" *ngIf="orderWithCP">
         <bego-label-input size="small" [textLabel]="('orders.title-company_name' | translate) + '*'"></bego-label-input>
-        <bego-input keyValue="company_name" (value)="updateFormGroup($event)" [placeholder]="'orders.placeholder-company_name' | translate"></bego-input>
+        <bego-input keyValue="company_name" (value)="updateFormGroup($event)"
+          [setValue]="step2Form.get('company_name')!.value"
+          [placeholder]="'orders.placeholder-company_name' | translate"></bego-input>
       </div>
 
       <div class="aditional-details">
@@ -62,6 +68,7 @@
 
         <bego-text-area
           keyValue="extra_notes"
+          [defaultValue]="draftData?.destinations[1]?.extra_notes"
           [customPlaceholder]="'orders.placeholder-notes' | translate"
           (sendData)="updateFormGroup($event)"></bego-text-area>
       </div>

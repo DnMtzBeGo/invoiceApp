@@ -258,18 +258,20 @@ export class InputDirectionsComponent implements OnInit {
       }
       
       if(changes.hasOwnProperty('drafts') && changes.drafts.currentValue) {
-      this.locations.pickup = changes.drafts.currentValue.pickup.address;
-      this.locations.pickupLat = changes.drafts.currentValue.pickup.lat;
-      this.locations.pickupLng = changes.drafts.currentValue.pickup.lng;
-      this.locations.place_id_pickup = changes.drafts.currentValue.pickup.place_id_pickup;
-      this.locations.pickupPostalCode = changes.drafts.currentValue.pickup.zip_code;
-      this.locations.dropoff = changes.drafts.currentValue.dropoff.address;
-      this.locations.dropoffLat = changes.drafts.currentValue.dropoff.lat;
-      this.locations.dropoffLng = changes.drafts.currentValue.dropoff.lng;
-      this.locations.place_id_dropoff = changes.drafts.currentValue.dropoff.place_id_dropoff;
-      this.locations.dropoffPostalCode = changes.drafts.currentValue.dropoff.zip_code;
-      this.autocompletePickup.input = changes.drafts.currentValue.pickup.address;
-      this.autocompleteDropoff.input = changes.drafts.currentValue.dropoff.address;
+        const drafts = changes.drafts.currentValue;
+        const [pickup, dropoff] = drafts.destinations;
+      this.locations.pickup = pickup.address;
+      this.locations.pickupLat = pickup.lat;
+      this.locations.pickupLng = pickup.lng;
+      this.locations.place_id_pickup = pickup.place_id_pickup;
+      this.locations.pickupPostalCode = pickup.zip_code;
+      this.locations.dropoff = dropoff.address;
+      this.locations.dropoffLat = dropoff.lat;
+      this.locations.dropoffLng = dropoff.lng;
+      this.locations.place_id_dropoff = dropoff.place_id_dropoff;
+      this.locations.dropoffPostalCode = dropoff.zip_code;
+      this.autocompletePickup.input = pickup.address;
+      this.autocompleteDropoff.input = dropoff.address;
       this.pickupSelected = true;
       this.dropoffSelected = true;
       if(changes.drafts.currentValue.hasOwnProperty('stamp') && changes.drafts.currentValue.stamp) {
