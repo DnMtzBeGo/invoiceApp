@@ -22,7 +22,7 @@
           </div>
           <div class="drafts-addresses">
               <label>{{ 'history.history_detail.dropoff' | translate }}</label>
-              <div class="addresses">{{order.destinations[1].address}}</div>
+              <div class="addresses">{{ order.destinations[1].address || ('history.history_detail.pending' | translate) }}</div>
           </div>
       </div>
       <div class="order-status">

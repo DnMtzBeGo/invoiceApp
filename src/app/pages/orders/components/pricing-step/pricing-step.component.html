@@ -8,9 +8,11 @@
     </p>
 
     <div class="subtotal">
-      <input formControlName="subtotal" (blur)="updateSubtotal()" min="0" currencyMask [options]="{
+      <input formControlName="subtotal" (blur)="updateSubtotalInput($event.target)" nullable="false" currencyMask [options]="{
         align: 'center',
         prefix: '$',
+        min: 0,
+        nullable: false,
         thousands: ',',
         decimal: '.',
         precision: 0,

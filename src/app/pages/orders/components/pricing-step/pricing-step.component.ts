@@ -27,18 +27,12 @@ export class PricingStepComponent implements OnInit {
 
   public pricingForm: FormGroup;
 
-  // helper to avoid calling `pricingStepFormData` each time `subtotal` changes
-  // `formControlName` updates form in each keystroke, instead when blur input (deserved behavior)
-  public dummyForm: FormGroup;
-
   constructor(private formBuilder: FormBuilder) {
     this.pricingForm = this.formBuilder.group({
-      subtotal: [0, Validators.min(1)],
+      subtotal: [0],
       deferred_payment: [false],
       currency: ['mxn']
-    });
-
-    this.dummyForm = this.formBuilder.group({ subtotal: [0] });
+    }, { updateOn: 'blur' });
 
     this.pricingForm.statusChanges.subscribe((status) => {
       this.validPricingStep.emit(status === 'VALID');
@@ -62,10 +56,10 @@ export class PricingStepComponent implements OnInit {
     }
   }
 
-  updateSubtotal() {
-    //COMMENTED AS ITS NOT NECESSARY!
-    // const { subtotal } = this.dummyForm.value;
-    // this.pricingForm.get('subtotal').setValue(subtotal);
+  updateSubtotalInput(el: HTMLInputElement) {
+    if (el.value) return;
+
+    el.value = `$${this.pricingForm.controls.subtotal.value}`;
   }
 
   changePay(data: any) {

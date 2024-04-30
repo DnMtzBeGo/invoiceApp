@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 import { AuthService } from '../../shared/services/auth.service';
 const statusList = require("src/assets/json/status-list.json");
 
@@ -12,6 +13,7 @@ export class HistoryComponent implements OnInit {
   public statusList: any = {};
   public noOrders: boolean = false;
   public currentTab = 'completed';
+  public dropoffUpdated = new Subject<any>();
 
   constructor(
     private authService: AuthService

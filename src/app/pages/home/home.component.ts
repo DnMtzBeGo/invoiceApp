@@ -112,6 +112,7 @@ export class HomeComponent implements OnInit {
   ) {
     this.placesService.places$;
     this.headerStyle.changeHeader(this.headerTransparent);
+    window.requestAnimationFrame(() => this.mapEmitter.next(['center']));
     this.subs.add(
       this.router.events.subscribe((res) => {
         if (res instanceof NavigationEnd && res.url.startsWith('/home')) {
@@ -217,6 +218,8 @@ export class HomeComponent implements OnInit {
   }
 
   async createDraft() {
+    const dropoffId = this.locations.place_id_dropoff;
+
     const draftPayload = {
       destinations: [
         {
@@ -225,7 +228,7 @@ export class HomeComponent implements OnInit {
         },
         {
           type: 'dropoff',
-          location: await this.getLocationId(this.locations.place_id_dropoff)
+          location: dropoffId ? await this.getLocationId(dropoffId) : undefined,
         }
       ],
       stamp: this.userWantCP,

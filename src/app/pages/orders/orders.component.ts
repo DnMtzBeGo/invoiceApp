@@ -302,7 +302,7 @@ export class OrdersComponent implements OnInit {
   }
 
   validateForm() {
-    const validate = this.orderType === 'FTL' ? this.stepsValidate.slice(0, -1) : this.stepsValidateOCL;
+    const validate = this.orderType === 'FTL' ? this.stepsValidate.slice(0, -2) : this.stepsValidateOCL;
 
     return validate.every(Boolean);
   }
@@ -747,7 +747,7 @@ export class OrdersComponent implements OnInit {
   async completeOrder() {
     await this.confirmOrder();
     await this.assignOrder();
-    if (this.orderType === 'FTL') await this.uploadScreenShotOrderMap();
+    if (this.orderType === 'FTL' && this.locations.dropoff) await this.uploadScreenShotOrderMap();
 
     // cleanup page
     await this.router.navigate(['/fleet'], { skipLocationChange: true });

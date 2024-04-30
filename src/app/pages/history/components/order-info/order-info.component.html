@@ -35,8 +35,7 @@
         </div>
       </div>
 
-      <div class="status-address">
-        
+      <div class="status-address" *ngIf="orderInfo.destinations">
         <div (click)="changePickupDropoff('pickup')" class="pickup-status-address">
           <div class="pickup-address">
             <p class="pickup-title"> {{'history.history_detail.pickup'| translate }}</p>
@@ -53,7 +52,14 @@
         <div (click)="changePickupDropoff('dropoff')" class="dropoff-status-address">
           <div class="dropoff-address">
             <p class="dropoff-title">{{'history.history_detail.dropoff' | translate }}</p>
-            <p class="dropoff-text-address">{{orderInfo.destinations?.[1]?.address}}</p>
+            <p *ngIf="orderInfo.destinations?.[1].address; else addressPending" class="pickup-text-address">
+              {{ orderInfo.destinations?.[1]?.address }}
+            </p>
+            <ng-template #addressPending>
+              <p class="pickup-text-address pending" (click)="showLocationModal = true">
+                {{ 'history.history_detail.pending' | translate }}
+              </p>
+            </ng-template>
           </div>
           <div class="dropoff-status">
             <div class="dropoff-status-text">
@@ -150,3 +156,12 @@
 
   <!-- <app-price-details [orderData]="orderInfo"></app-price-details> -->
 </div>
+
+<bego-modal
+  *ngIf="showLocationModal"
+  class="location-modal"
+  (clickOut)="closeLocationModal()"
+  [disabledDone]="true"
+>
+  <app-saved-locations (pickLocation)="updateDropoff($event)"></app-saved-locations>
+</bego-modal>
