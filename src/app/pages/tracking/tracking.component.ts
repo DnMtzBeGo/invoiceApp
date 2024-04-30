@@ -232,13 +232,13 @@ export class TrackingComponent implements OnInit {
 
   async getDriverLocation() {
     let currentTime = new Date().getTime();
-    let requestData = {  order_id: this.orderId,
-    encrypted: false };
-    (await this.auth.apiRest(JSON.stringify(requestData),'/orders/tracking')).subscribe(({result}) => {
+    let requestData = { encrypted: false } ;
+
+    (await this.auth.apiRest(JSON.stringify(requestData),`carriers/tracking/${this.orderId}`, { apiVersion: 'v1.1' })).subscribe(({result}) => {
       this.etaData = result;
       this.etaData['currentTime'] = currentTime;
       this.statusOrder = result.status;
-      this.driverLocation = new google.maps.LatLng(result.origin.lat, result.origin.lng);
+      this.driverLocation = new google.maps.LatLng(result.driver_location.lat, result.driver_location.lng);
       this.destinationLocation = new google.maps.LatLng(result.destination.lat, result.destination.lng);
       if(this.firstLocation) {
         this.initMap();
