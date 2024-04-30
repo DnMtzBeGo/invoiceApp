@@ -136,7 +136,8 @@
     },
     "complete-modal": {
       "title": "¡Orden lista!",
-      "description": "Su orden ha sido creada exitosamente"
+      "description": "Su orden ha sido creada exitosamente",
+      "done-btn": "¡Asombroso!"
     },
     "prime": {
       "no-vehicle": "Sin vehículo",
