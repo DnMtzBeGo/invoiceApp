@@ -95,3 +95,7 @@
         background: #C1C7D0;
     }
 }
+
+::ng-deep .done-button .mdc-button__label {
+    color: black !important;
+}

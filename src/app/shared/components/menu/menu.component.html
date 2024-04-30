@@ -12,14 +12,14 @@
       {{ 'menu.home' | translate }}
     </div>
 
-    <!-- <div 
+    <div 
       class="menu-option"
       [ngClass]="{ selected: router.url == '/drafts' }"
       (click)="goTo('drafts')"
     >
       <app-button class="btn-menu icon icon-drafts icon-only"></app-button>
       {{ "menu.home" | translate }}
-    </div> -->
+    </div>
 
     <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/fleet') }" (click)="goTo('fleet')">
       <app-button class="btn-menu icon icon-fleet icon-only"></app-button>

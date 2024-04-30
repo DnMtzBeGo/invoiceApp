@@ -18,9 +18,10 @@ import * as moment from 'moment';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
+import { SelectFleetModalComponent } from './components/select-fleet-modal/select-fleet-modal.component';
 import { BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
 import { LocationsService } from '../../services/locations.service';
 
@@ -185,6 +186,8 @@ export class OrdersComponent implements OnInit {
     allowTouchMove: false,
     autoHeight: true
   };
+  private orderPreviewReceived = new Subject();
+  private orderPreviewSubscription: Record<string, Subscription | null> = {};
 
   constructor(
     private translateService: TranslateService,
@@ -193,9 +196,9 @@ export class OrdersComponent implements OnInit {
     private googlemaps: GoogleMapsService,
     private router: Router,
     private alertService: AlertService,
+    private locationsService: LocationsService,
     private dialog: MatDialog,
-    private locationsService : LocationsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
@@ -222,8 +225,13 @@ export class OrdersComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.orderType) {
       Promise.resolve().then(() => {
-        this.marksRef.controller = this.stepperRef.controller;
+        if (this.marksRef)
+          this.marksRef.controller = this.stepperRef.controller;
       });
+    }
+
+    if (changes.orderPreview && changes.orderPreview.currentValue) {
+      this.orderPreviewReceived.next(changes.orderPreview.currentValue);
     }
 
     if (this.imageFromGoogle && !this.sendMap) {
@@ -253,10 +261,17 @@ export class OrdersComponent implements OnInit {
       this.getETA(locations);
     }
     if (changes.draftData && changes.draftData.currentValue) {
-      this.getHazardous(changes.draftData.currentValue._id);
-      if (changes.draftData.currentValue.hasOwnProperty('stamp') && changes.draftData.currentValue.stamp) {
-        this.getCatalogsDescription(changes.draftData.currentValue._id);
+      const draftData = changes.draftData.currentValue;
+      this.getHazardous(draftData._id);
+      if (changes.draftData.currentValue.hasOwnProperty('stamp') && draftData.stamp) {
+        this.getCatalogsDescription(draftData._id);
       }
+
+      this.orderData.cargo = {
+        ...draftData.cargo,
+        '53_48': draftData.cargo.trailer.load_cap
+      }
+
     }
 
     if (changes.datepickup && changes.datepickup.currentValue) {
@@ -328,6 +343,7 @@ export class OrdersComponent implements OnInit {
     this.orderData.pickup.contact_info.email = data.email;
     this.orderData.reference_number = data.reference;
     this.orderData.pickup.contact_info.country_code = data.country_code;
+    this.orderData.pickup.startDate = data.start_date;
     if (this.isOrderWithCP) {
       this.orderData.pickup.tax_information = {
         rfc: data.rfc,
@@ -422,7 +438,17 @@ export class OrdersComponent implements OnInit {
 
   validStep3(valid: boolean) {
     this.stepsValidate[2] = valid;
-    if (valid) this.sendCargo();
+
+    if (valid) {
+      if (this.orderPreview?.order_id) {
+        this.sendCargo()
+      } else {
+        this.orderPreviewSubscription.step3 = this.orderPreviewReceived.subscribe((orderPreview: any) => {
+          this.sendCargo();
+          this.orderPreviewSubscription.step3.unsubscribe();
+        });
+      }
+    }
     this.updateStatus();
   }
 
@@ -434,6 +460,7 @@ export class OrdersComponent implements OnInit {
 
   validStep4(valid: boolean) {
     this.stepsValidate[4] = valid;
+    //TODO: In drafts, if all inputs are not valid, it won't be sent
     if (valid) this.sendInvoice();
     this.updateStatus();
   }
@@ -493,13 +520,12 @@ export class OrdersComponent implements OnInit {
       country_of_residence: tax_information?.country_of_residence
     };
 
-    this.sendDestination(destinationPayload, id);
+    if (id) this.sendDestination(destinationPayload, id);
   }
 
   async sendDropoff() {
     const { dropoff } = this.orderData;
     const { contact_info, tax_information, extra_notes } = dropoff;
-    const [, id] = this.orderPreview?.destinations || [];
 
     const destinationPayload = {
       extra_notes,
@@ -513,11 +539,20 @@ export class OrdersComponent implements OnInit {
       country_of_residence: tax_information?.country_of_residence
     };
 
-    this.sendDestination(destinationPayload, id);
+    const [, id] = this.orderPreview?.destinations || [];
+    if (id) {
+      this.sendDestination(destinationPayload, id);
+    } else {
+      this.orderPreviewSubscription.dropoff = this.orderPreviewReceived.subscribe((orderPreview: any) => {
+        const [, id] = orderPreview?.destinations || [];
+        this.sendDestination(destinationPayload, id);
+        this.orderPreviewSubscription.dropoff.unsubscribe();
+      });
+    }
   }
 
   async sendCargo() {
-    const { cargo } = this.orderData;
+    const { cargo }: { cargo: any } = this.orderData;
     const { order_id } = this.orderPreview;
 
     const cargoPayload = {
@@ -526,7 +561,7 @@ export class OrdersComponent implements OnInit {
       unit_type: cargo.unit_type,
       required_units: cargo.required_units,
       hazardous_type: cargo.hazardous_type,
-      weight: cargo.weigth,
+      weight: cargo.weigth || cargo.weight,
       weight_uom: 'kg',
       trailer: {
         load_cap: cargo['53_48']
@@ -570,32 +605,67 @@ export class OrdersComponent implements OnInit {
   async sendInvoice() {
     const { invoice } = this.orderData;
 
-    const invoicePayload = {
-      order_id: this.orderPreview.order_id,
-      cfdi: invoice.cfdi,
-      rfc: invoice.rfc,
-      company: invoice.company,
-      tax_regime: invoice.tax_regime,
-      place_id: invoice.address
+
+    const sendInvoice = async (payload) => {
+      const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/update_invoice', { apiVersion: 'v1.1' });
+      await req.toPromise();
     };
 
-    const req = await this.auth.apiRestPut(JSON.stringify(invoicePayload), 'orders/update_invoice', { apiVersion: 'v1.1' });
-    await req.toPromise();
+    if (this.orderPreview) {
+      sendInvoice({
+        order_id: this.orderPreview.order_id,
+        cfdi: invoice.cfdi,
+        rfc: invoice.rfc,
+        company: invoice.company,
+        tax_regime: invoice.tax_regime,
+        place_id: invoice.address
+      });
+    } else {
+      this.orderPreviewSubscription.invoice = this.orderPreviewReceived.subscribe((orderPreview: any) => {
+        sendInvoice({
+          order_id: orderPreview.order_id,
+          cfdi: invoice.cfdi,
+          rfc: invoice.rfc,
+          company: invoice.company,
+          tax_regime: invoice.tax_regime,
+          place_id: (invoice.address as any).place_id
+        });
+      })
+    }
+
+
   }
 
   async sendPricing() {
     const { pricing } = this.orderData;
 
-    let pricingPayload = {
-      order_id: this.orderPreview.order_id,
-      subtotal: pricing.subtotal,
-      currency: pricing.currency,
-      deferred_payment: pricing.deferred_payment
+    const sendPricing = async (payload) => {
+      const req = await this.auth.apiRest(JSON.stringify(payload), 'orders/set_pricing');
+      await req.toPromise();
     };
 
-    const req = await this.auth.apiRest(JSON.stringify(pricingPayload), 'orders/set_pricing');
-    await req.toPromise();
+    if (this.orderPreview) {
+      sendPricing({
+        order_id: this.orderPreview.order_id,
+        subtotal: pricing.subtotal,
+        currency: pricing.currency,
+        deferred_payment: pricing.deferred_payment
+      });
+    } else {
+      this.orderPreviewSubscription.pricing = this.orderPreviewReceived.subscribe(() => {
+        sendPricing({
+          order_id: this.orderPreview.order_id,
+          subtotal: pricing.subtotal,
+          currency: pricing.currency,
+          deferred_payment: pricing.deferred_payment
+
+        })
+        this.orderPreviewSubscription.pricing.unsubscribe();
+    });
+
+
   }
+}
 
   async getETA(locations: GoogleLocation) {
     let datos = {
@@ -694,23 +764,45 @@ export class OrdersComponent implements OnInit {
     return req.toPromise();
   }
 
-  async assignOrder() {
-    const payload: any = {
-      order_id: this.orderPreview.order_id,
-      carrier_id: this.membersToAssigned.drivers._id,
+   assignOrder() {
+
+    const sendFleet = async (orderData) => {
+      const payload: any = {
+        order_id: this.orderPreview.order_id,
+        carrier_id: orderData.drivers._id,
+      };
+
+      if (this.orderType === 'FTL') {
+        payload.id_truck = orderData.trucks._id;
+        payload.id_trailer = orderData.trailers._id;
+
+        const req = await this.auth.apiRest(JSON.stringify(payload), 'orders/assign_order', { apiVersion: 'v1.1' });
+        return req.toPromise();
+      } else {
+        payload.vehicle_id = orderData.vehicle._id;
+        const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/ocl/assign_order', { apiVersion: 'v1.1' });
+        return req.toPromise();
+      }
     };
 
-    if (this.orderType === 'FTL') {
-      payload.id_truck = this.membersToAssigned.trucks._id;
-      payload.id_trailer = this.membersToAssigned.trailers._id;
+    return new Promise(async (resolve, reject) => {
+    if (!Object.keys(this.membersToAssigned).length) {
+        const [pickup ] = this.draftData.destinations
+        const dialogRef = this.dialog.open(SelectFleetModalComponent, {
+          panelClass: 'modal',
+          data: {start_date: pickup.start_date, end_date: pickup.end_date}
+        });
 
-      const req = await this.auth.apiRest(JSON.stringify(payload), 'orders/assign_order', { apiVersion: 'v1.1' });
-      return req.toPromise();
-    } else {
-      payload.vehicle_id = this.membersToAssigned.vehicle._id;
-      const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/ocl/assign_order', { apiVersion: 'v1.1' });
-      return req.toPromise();
-    }
+        dialogRef.afterClosed().subscribe(async (data) => {
+          await sendFleet(data);
+          resolve(true);
+        })
+      }else{
+        await sendFleet(this.membersToAssigned);
+        resolve(true);
+      }
+    });
+
   }
 
   public async uploadScreenShotOrderMap() {

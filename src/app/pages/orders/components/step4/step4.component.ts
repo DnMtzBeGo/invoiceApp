@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class Step4Component implements OnInit {
   @Input() orderData: Order;
+  @Input() draftData: any;
   @Output() step4FormData: EventEmitter<any> = new EventEmitter();
   @Output() validFormStep4: EventEmitter<any> = new EventEmitter();
 
@@ -135,11 +136,6 @@ export class Step4Component implements OnInit {
       cfdi: ['', Validators.required],
       tax_regime: ['', Validators.required]
     });
-  }
-
-  ngOnInit(): void {
-    this.fetchCFDI();
-    this.fetchTaxRegime();
 
     this.step4Form.statusChanges.subscribe((val) => {
       this.validFormStep4.emit(val === 'VALID');
@@ -149,18 +145,65 @@ export class Step4Component implements OnInit {
       this.step4FormData.emit(this.step4Form.value);
     });
 
+  }
+
+  ngOnInit(): void {
+    this.fetchCFDI();
+    this.fetchTaxRegime();
+
     this.updateCardTitles();
     this.translateService.onLangChange.subscribe(() => {
       this.updateCardTitles();
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges(changes: SimpleChanges) {
     const orderData = changes.orderData.currentValue;
-
     this.updatePickup(orderData);
     this.updateDropoff(orderData);
     this.updateCargo(orderData);
+
+    if (changes.draftData && changes.draftData.currentValue) {
+      const { invoice } = changes.draftData.currentValue;
+      if (invoice?.receiver) {
+
+        const { receiver } = invoice;
+
+        this.step4Form.setValue(receiver);
+        receiver.address = receiver.address.address;
+
+        const setInvoiceContent = async  (e) => {
+
+
+          if (e.propertyName == 'cfdi') {
+            await this.fetchCFDI();
+            const el = this.cfdiOptions.find(el => el.code == receiver[e.propertyName]);
+            if (el) {
+
+              e.value = `${el.code} - ${el.description}`;
+              return e;
+            }
+          }
+
+          if (e.propertyName == 'tax_regime') {
+            await this.fetchTaxRegime();
+            const el = this.taxRegimeOptions.find(el => el.code == receiver[e.propertyName]);
+            if (el) {
+              e.value = `${el.code} - ${el.description}`;
+              return e;
+            }
+          }
+
+          e.value = receiver[e.propertyName];
+
+          return e;
+
+        };
+
+        //Fill info
+        this.invoiceContent = await Promise.all(this.invoiceContent.map(async (e) => await setInvoiceContent(e)));
+      }
+    }
   }
 
   updateCardTitles() {
@@ -229,7 +272,7 @@ export class Step4Component implements OnInit {
     const { cargo } = orderdata;
 
     this.cargoContent[0].value = 1;
-    this.cargoContent[1].value = this.formatWeight(cargo.weigth);
+    this.cargoContent[1].value = this.formatWeight(cargo.weigth || cargo['weight']);
     this.cargoContent[2].value = cargo.type;
     this.cargoContent[3].value = cargo.description;
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BegoRfcInputInfoOutput } from '@begomx/ui-components';
+import { BegoRfcInputInfo, BegoRfcInputInfoOutput } from '@begomx/ui-components';
 import { TranslateService } from '@ngx-translate/core';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
@@ -38,6 +38,8 @@ export class Step2Component implements OnInit {
   public phoneValidator;
   public emailValidator;
 
+  public rfcComponentValues: Partial<BegoRfcInputInfo>;
+
   constructor(private formBuilder: FormBuilder, private googleService: GoogleMapsService, private translateService: TranslateService) {
     this.step2Form = this.formBuilder.group({
       fullname: ['', Validators.required],
@@ -51,6 +53,33 @@ export class Step2Component implements OnInit {
       country_of_residence: [''],
       company_name: [''],
       extra_notes: ['']
+    });
+
+        this.step2Form.get('orderWithCP').valueChanges.subscribe((value) => {
+      const rfc = this.step2Form.get('rfc');
+      if (this.orderWithCP) {
+        rfc.setValidators(
+          Validators.compose([
+            Validators.minLength(12),
+            Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/)
+          ])
+        );
+      } else {
+        rfc.clearValidators();
+      }
+      rfc.updateValueAndValidity();
+    });
+
+    this.step2Form.statusChanges.subscribe((val) => {
+      if (val === 'VALID') {
+        this.validFormStep2.emit(true);
+      } else {
+        this.validFormStep2.emit(false);
+      }
+    });
+
+    this.step2Form.valueChanges.subscribe(() => {
+      this.step2FormData.emit(this.step2Form.value);
     });
 
     this.phoneValidator = {
@@ -81,60 +110,35 @@ export class Step2Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.step2Form.get('orderWithCP').valueChanges.subscribe((value) => {
-      const rfc = this.step2Form.get('rfc');
-      if (this.orderWithCP) {
-        rfc.setValidators(
-          Validators.compose([
-            Validators.minLength(12),
-            Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/)
-          ])
-        );
-      } else {
-        rfc.clearValidators();
-      }
-      rfc.updateValueAndValidity();
-    });
-
-    this.step2Form.statusChanges.subscribe((val) => {
-      if (val === 'VALID') {
-        this.validFormStep2.emit(true);
-      } else {
-        this.validFormStep2.emit(false);
-      }
-    });
-
-    this.step2Form.valueChanges.subscribe(() => {
-      this.step2FormData.emit(this.step2Form.value);
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.step2Form.get('orderWithCP').setValue(this.orderWithCP);
-    if (
-      changes.draftData &&
-      changes.draftData.currentValue &&
-      changes.draftData.currentValue.dropoff &&
-      changes.draftData.currentValue.dropoff.contact_info
-    ) {
-      const { dropoff } = changes.draftData.currentValue;
+    if (changes.draftData && changes.draftData.currentValue) {
+      const draft = changes.draftData.currentValue;
+      const [, dropoff] = draft.destinations;
 
-      if (dropoff.contact_info.telephone) {
-        let [telephoneCode, ...telephone] = changes.draftData.currentValue.dropoff.contact_info.telephone.split(' ');
+      if (dropoff?.contact_info?.telephone) {
+        let [telephoneCode, ...telephone] = dropoff.contact_info.telephone.split(' ');
         telephone = telephone.join(' ');
         this.phoneCode = telephoneCode;
-        this.phoneFlag = changes.draftData.currentValue.dropoff.contact_info.country_code;
+        this.phoneFlag = dropoff.contact_info.country_code;
         this.phoneNumber = telephone;
         this.step2Form.get('phonenumber')!.setValue(telephone);
         this.step2Form.get('phoneCode')!.setValue(telephoneCode);
       }
 
-      this.step2Form.get('fullname')!.setValue(changes.draftData.currentValue.dropoff.contact_info.name);
-      this.step2Form.get('email')!.setValue(changes.draftData.currentValue.dropoff.contact_info.email);
-      this.step2Form.get('country_code')!.setValue(changes.draftData.currentValue.dropoff.contact_info.country_code);
+      this.step2Form.get('fullname')!.setValue(dropoff?.contact_info?.name || '');
+      this.step2Form.get('email')!.setValue(dropoff?.contact_info?.email || '');
+      this.step2Form.get('country_code')!.setValue(dropoff?.contact_info?.country_code || '');
 
       if (this.draftData['stamp']) {
-        this.step2Form.get('rfc').setValue(dropoff.contact_info.rfc);
+        if (dropoff.tax_information) {
+          this.rfcComponentValues = dropoff?.tax_information;
+          this.step2Form.get('company_name').setValue(dropoff?.tax_information?.company_name);
+        }
+
+        this.step2Form.get('rfc').setValue(dropoff?.contact_info?.rfc);
       }
     }
     this.validFormStep2.emit(this.step2Form.valid);

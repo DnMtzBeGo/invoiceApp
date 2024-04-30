@@ -4,6 +4,7 @@
       <bego-search-select
         *ngIf="orderWithCP"
         [debounce]="500"
+        [defaultValue]="step3Form.get('cargo_goods')!.value"
         [catalogs]="cargoCatalog"
         (searchValueChange)="getCargoTypeList($event)"
         (catalogValueChange)="updateForm('cargo_goods', $event)"
@@ -55,6 +56,7 @@
           <bego-search-select
             [debounce]="100"
             [catalogs]="filteredCategoryCatalog"
+            [defaultValue]="step3Form.get('hazardous_type')!.value"
             (searchValueChange)="updateCategoryCatalog($event)"
             (catalogValueChange)="updateForm('hazardous_type', $event)"
             [inputPlaceHolder]="'orders.choose-category' | translate"></bego-search-select>
@@ -65,10 +67,12 @@
               [catalogs]="packagingCatalog"
               (searchValueChange)="getPackagingList($event)"
               (catalogValueChange)="updateForm('packaging', $event)"
+              [defaultValue]="step3Form.get('packaging')!.value"
               [inputPlaceHolder]="'orders.slct-input-packaging' | translate"></bego-search-select>
             <bego-search-select
               [debounce]="500"
               [catalogs]="hazardousCatalog"
+              [defaultValue]="step3Form.get('hazardous_material')!.value"
               (searchValueChange)="getHazardousTypeList($event)"
               (catalogValueChange)="updateForm('hazardous_material', $event)"
               [inputPlaceHolder]="'orders.slct-input-hzrd_material' | translate"></bego-search-select>

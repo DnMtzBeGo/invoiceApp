@@ -11,18 +11,18 @@
             </div>
             <div class="draft-info" (click)="selectDraft(item,i)">
                 <div class="drafts-data-header">
-                    <div>{{item.created | dateFormatter: "date"}}</div>
-                    <div>{{item.created | dateFormatter: "time"}}</div>
+                    <div>{{item.created_date}}</div>
+                    <div>{{item.created_time}}</div>
                     <div>#{{item.order_number}}</div>
                 </div>
                 <div class="drafts-data-body">
                     <div class="drafts-addresses">
                         <label>{{'draft.label_pickup' | translate}}</label>
-                        <div class="addresses">{{item.pickup.address}}</div>
+                        <div class="addresses">{{item.destinations[0].address}}</div>
                     </div>
                     <div class="drafts-addresses">
                         <label>{{'draft.label_dropoff' | translate}}</label>
-                        <div class="addresses">{{item.dropoff.address}}</div>
+                        <div class="addresses">{{item.destinations[1].address}}</div>
                     </div>
                 </div>
                 <div class="drafts-data-footer">

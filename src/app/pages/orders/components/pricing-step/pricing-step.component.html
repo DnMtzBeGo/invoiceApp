@@ -25,6 +25,7 @@
         [noPadding]="true"
         [first]="currencyOptions.mxn"
         [second]="currencyOptions.usd"
+        [enabled]="pricingForm.get('currency')!.value == 'usd' || pricingForm.get('currency')!.value == 'USD'" 
         (statusChanged)="changePricingMethod($event)"></bego-button-toggle>
     </div>
 
@@ -34,6 +35,7 @@
         size="small"
         [first]="payModeOptions.pue"
         [second]="payModeOptions.ppd"
+        [enabled]="pricingForm.get('deferred_payment')!.value == false" 
         (statusChanged)="changePay($event)"></bego-button-toggle>
       <p *ngIf="!deferredPayment">{{ 'checkout.insurance-modal.deferred-PUE' | translate }}</p>
       <p *ngIf="deferredPayment">{{ 'checkout.insurance-modal.deferred-PPD' | translate }}</p>
