@@ -67,6 +67,7 @@
         </div>
         <app-button class="btn-list" text="My Saved Locations"></app-button>
     </div> -->
+    <div class="scroll-wrapper">
       <button
         class="item-favorites"
         *ngIf="!showSavedLocations && (!pickupSelected || !dropoffSelected)"
@@ -343,7 +344,6 @@
           </div>
         </ng-template>
       </div>
-
       <!--  <app-button 
         *ngIf="canGoToSteps"
         (click)="openNewOrderMenu()"
@@ -355,7 +355,7 @@
         *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
         [disabled]="!locationsSelected || isDatesSelected"
         (click)="openNewOrderMenu()"
-        class="btn-yellow"
+        class="btn-submit btn-yellow"
         [text]="'location.btn-order' | translate"
       >
       </app-button>
@@ -367,6 +367,8 @@
         [text]="'orders.btn-cancel' | translate"
       >
       </app-button>
+    </div>
+
     </div>
 
     <div *ngIf="haveFleetMembers" class="cant-create-orders">
