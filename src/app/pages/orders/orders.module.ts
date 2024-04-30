@@ -51,6 +51,8 @@ import {
 import { CargoUnitsComponent } from './components/cargo-units/cargo-units.component';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { AppMaterialModule } from 'src/app/material';
+import { SelectFleetModalComponent } from './components/select-fleet-modal/select-fleet-modal.component';
+import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/circular-avatar.module';
 
 export const MY_FORMATS = {
   parse: {
@@ -78,7 +80,8 @@ export const MY_FORMATS = {
     ContinueModalComponent,
     UnitDetailsModalComponent,
     CargoUnitsComponent,
-    PricingStepComponent
+    PricingStepComponent,
+    SelectFleetModalComponent,
   ],
   imports: [
     CommonModule,
@@ -86,6 +89,7 @@ export const MY_FORMATS = {
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    CircularAvatarModule,
     // MatMomentDateModule,
     MatNativeDateModule,
     NgxMaterialTimepickerModule,

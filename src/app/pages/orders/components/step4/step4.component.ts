@@ -136,11 +136,6 @@ export class Step4Component implements OnInit {
       cfdi: ['', Validators.required],
       tax_regime: ['', Validators.required]
     });
-  }
-
-  ngOnInit(): void {
-    this.fetchCFDI();
-    this.fetchTaxRegime();
 
     this.step4Form.statusChanges.subscribe((val) => {
       this.validFormStep4.emit(val === 'VALID');
@@ -150,13 +145,19 @@ export class Step4Component implements OnInit {
       this.step4FormData.emit(this.step4Form.value);
     });
 
+  }
+
+  ngOnInit(): void {
+    this.fetchCFDI();
+    this.fetchTaxRegime();
+
     this.updateCardTitles();
     this.translateService.onLangChange.subscribe(() => {
       this.updateCardTitles();
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges(changes: SimpleChanges) {
     const orderData = changes.orderData.currentValue;
     this.updatePickup(orderData);
     this.updateDropoff(orderData);
@@ -168,9 +169,10 @@ export class Step4Component implements OnInit {
 
         const { receiver } = invoice;
 
+        this.step4Form.setValue(receiver);
         receiver.address = receiver.address.address;
-        //Fill info
-        this.invoiceContent.forEach(async (e) => {
+
+        const setInvoiceContent = async  (e) => {
 
 
           if (e.propertyName == 'cfdi') {
@@ -179,7 +181,7 @@ export class Step4Component implements OnInit {
             if (el) {
 
               e.value = `${el.code} - ${el.description}`;
-              return;
+              return e;
             }
           }
 
@@ -188,15 +190,18 @@ export class Step4Component implements OnInit {
             const el = this.taxRegimeOptions.find(el => el.code == receiver[e.propertyName]);
             if (el) {
               e.value = `${el.code} - ${el.description}`;
-              return;
+              return e;
             }
           }
 
           e.value = receiver[e.propertyName];
 
           return e;
-        });
 
+        };
+
+        //Fill info
+        this.invoiceContent = await Promise.all(this.invoiceContent.map(async (e) => await setInvoiceContent(e)));
       }
     }
   }

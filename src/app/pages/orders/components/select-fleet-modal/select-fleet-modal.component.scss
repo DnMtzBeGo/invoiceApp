@@ -1,0 +1,50 @@
+.fleet-info-container {
+  padding-bottom: 80px;
+  max-height: 60vh;
+  overflow-y: scroll;
+
+  .fleet-drivers-row {
+    margin-top: 30px;
+
+    > p {
+      margin: 0 0 14px 33px;
+    }
+  }
+
+  .fleet-trucks-row,
+  .fleet-trailers-row {
+    margin-top: 20px;
+
+    > p {
+      margin: 0 0 14px 33px;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .fleet-trailers-row {
+    margin-bottom: 120px
+  }
+
+
+}
+
+.drivers-container, .trucks-container, .trailers-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  padding: 12px;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+
+  .error-msg{
+    color: gray;
+  }
+}
