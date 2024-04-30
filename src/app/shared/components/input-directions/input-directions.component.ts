@@ -376,6 +376,7 @@ export class InputDirectionsComponent implements OnInit {
     }
 
     this.googlemaps.updateDataLocations(this.locations);
+    this.showSavedLocations = false;
     this.hideMap = false;
   }
 
@@ -834,8 +835,6 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   pickSavedLocation(location: any) {
-    this.showSavedLocations = true;
-
     if (this.activeInput === 'pickup') {
       this.selectSearchResultPickup(location);
     } else {
