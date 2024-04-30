@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BegoRfcInputInfo, BegoRfcInputInfoOutput } from '@begomx/ui-components';
 import { TranslateService } from '@ngx-translate/core';
+import { start } from 'repl';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
 
@@ -39,6 +40,7 @@ export class Step1Component implements OnInit {
   public step1Form: FormGroup;
   public phoneValidator;
   public emailValidator;
+  public isDraft: boolean = false;
 
   public rfcComponentValues: Partial<BegoRfcInputInfo>;
   constructor(private formBuilder: FormBuilder, private googleService: GoogleMapsService, private translateService: TranslateService) {
@@ -53,7 +55,8 @@ export class Step1Component implements OnInit {
       rfc: [null],
       registration_number: [null],
       country_of_residence: [null],
-      company_name: [null]
+      company_name: [null],
+      start_date: [null]
     });
 
     this.phoneValidator = {
@@ -120,6 +123,7 @@ export class Step1Component implements OnInit {
       changes.draftData &&
       changes.draftData.currentValue
     ) {
+      this.isDraft = true;
       const draft = changes.draftData.currentValue;
       const [pickup] = draft.destinations;
 
@@ -182,5 +186,12 @@ export class Step1Component implements OnInit {
 
   changeLocation(type: string) {
     this.googleService.hidePreviewMap(type);
+  }
+
+  getPickupDate(date: any) {
+    this.datePickup = date;
+    this.step1Form.patchValue({
+      start_date: date
+    });
   }
 }
