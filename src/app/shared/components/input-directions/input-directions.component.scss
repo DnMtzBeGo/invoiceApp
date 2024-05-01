@@ -6,7 +6,6 @@
   gap: 40px;
   padding: 40px 26px;
   max-width: 60vw;
-  overflow: scroll;
 
   h3 {
     font-family: Avenir;
@@ -32,8 +31,6 @@
 
 .fleet-info-container {
   padding-bottom: 80px;
-  max-height: 60vh;
-  overflow-y: scroll;
 
   .fleet-drivers-row {
     margin-top: 30px;
@@ -54,10 +51,6 @@
         text-transform: uppercase;
       }
     }
-  }
-
-  .fleet-trailers-row {
-    margin-bottom: 120px
   }
 }
 
@@ -85,9 +78,11 @@
   background: #0A0F14;
   box-shadow: 0px 10px 10px #040B11, inset 2px 2px 5px #1A1E24, inset -2px -2px 4px #050D14;
   border-radius: 8px;
-  padding-top: 40px;
+  padding: 40px 0 10px;
+
   form {
     position: relative;
+    overflow: hidden;
 
     > .assigned-time-title {
       margin: 0 0 0 34px;
@@ -239,12 +234,10 @@ section {
   box-shadow: inset 2px 2px 5px #1a1e24, inset -2px -2px 4px #050d14;
   border-radius: $card-radius;
   height: 80vh;
-  overflow-y: hidden;
   pointer-events: auto;
   position: relative;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 
   .input-directions-scroll {
     overflow: scroll;
@@ -438,6 +431,16 @@ section {
   }
 }
 
+.scroll-wrapper {
+  overflow: auto;
+
+  .btn-submit {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+  }
+}
+
 .list-address-container {
   padding: 24px 30px 0;
 
@@ -568,6 +571,8 @@ app-member-card-selection:nth-last-of-type(1) {
   display: flex;
   align-items: center;
   gap: 14px;
+  width: 100%;
+  box-sizing: border-box;
   padding: 25px 30px;
   font-size: 0.875rem;
   font-weight: 350;
