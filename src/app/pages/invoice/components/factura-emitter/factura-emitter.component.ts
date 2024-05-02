@@ -31,8 +31,8 @@ export class FacturaEmitterComponent implements OnInit {
   public emitterAttributesForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
     regimen_fiscal: new FormControl('', [Validators.required]),
-    archivo_cer: new FormControl('', [Validators.required]),
-    archivo_key: new FormControl('', [Validators.required]),
+    archivo_cer: new FormControl(''),
+    archivo_key: new FormControl(''),
     archivo_key_pswd: new FormControl('', [Validators.required])
   });
 
@@ -58,9 +58,11 @@ export class FacturaEmitterComponent implements OnInit {
   public async saveEmisor(): Promise<void | boolean> {
     this.emitterAttributesForm.markAllAsTouched();
 
-    if (!this.emitterAttributesForm.valid) {
-      if (!this.emitterAttributesForm.get('archivo_cer').valid) this.flags.cerFileError = true;
-      if (!this.emitterAttributesForm.get('archivo_key').valid) this.flags.keyFileError = true;
+    console.log(this.emitterAttributesForm.get('archivo_cer').value, this.emitterAttributesForm.get('archivo_cer').valid);
+
+    if (!this.emitterAttributesForm.valid || !this.cerFile || !this.cerFile) {
+      if (!this.cerFile) this.flags.cerFileError = true;
+      if (!this.keyFile) this.flags.keyFileError = true;
 
       return false;
     }
