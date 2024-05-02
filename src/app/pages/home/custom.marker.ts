@@ -74,9 +74,8 @@ export class CustomMarker extends google.maps.OverlayView {
 
   openInfoWindow() {
     if (!this.infoWindow) return;
-    // Aquí puedes pasar el HTML personalizado o cualquier contenido que desees mostrar en el infoventana
     const content = `
-      <div class="info-window-content">
+      <div class="content">
         <h3>${this.title}</h3>
         <p>${this.extraData}</p>
       </div>
