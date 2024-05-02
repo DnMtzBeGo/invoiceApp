@@ -316,7 +316,8 @@ export class PolygonFilter implements OnInit {
     const dialogRef = this.matDialog.open(ShareReportModalComponent, {
       data: {
         options,
-        heatmap: this.heatmap
+        heatmap: this.heatmap,
+        activeDrivers: !this.activeDrivers
       },
       restoreFocus: false,
       backdropClass: ['brand-ui-dialog-2']

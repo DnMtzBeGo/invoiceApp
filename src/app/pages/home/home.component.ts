@@ -674,12 +674,14 @@ export class HomeComponent implements OnInit {
     this.heatmapPosition = [];
     this.markersPosition = [];
 
-    this.heatmapPosition.forEach((polygon) => {
-      polygon.setMap(null);
+    this.heatmapPosition.forEach((point) => {
+      point.setMap(null);
     });
-    this.markersPosition.forEach((polygon) => {
-      polygon.setMap(null);
+
+    this.markersPosition.forEach((point) => {
+      point.setMap(null);
     });
+
     if (this.heatmap) this.heatmap.setMap(null);
 
     if (this.polygons) {
