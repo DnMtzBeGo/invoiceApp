@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 interface Data {
   options: Options;
   heatmap: boolean;
+  activeDrivers: boolean;
 }
 
 interface Options {
@@ -55,6 +56,7 @@ export class ShareReportModalComponent {
     const requestJson = JSON.stringify({
       ...options,
       ...(this.data.heatmap ? { start_date, end_date: options.end_date + DAY } : { date: start_date + DAY }),
+      ...(!this.data.heatmap && { include_older_locations: this.data.activeDrivers }),
       invitations: [
         {
           email: this.shareForm.get('email').value,

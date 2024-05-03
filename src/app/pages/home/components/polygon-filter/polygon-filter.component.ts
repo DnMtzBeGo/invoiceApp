@@ -59,6 +59,9 @@ export class PolygonFilter implements OnInit {
 
   activeLang: string = 'en';
 
+  activeShare: boolean = false;
+  activeModal: boolean = false;
+
   filterLang = {
     title: '',
     column: {
@@ -218,6 +221,7 @@ export class PolygonFilter implements OnInit {
   }
 
   async getHeatmap(options: any) {
+    this.activeShare = false;
     const queryParams = new URLSearchParams({
       drivers: JSON.stringify(options.drivers.map(({ _id }) => _id)),
       tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
@@ -243,7 +247,7 @@ export class PolygonFilter implements OnInit {
             5000,
             'brand-snackbar-2'
           );
-        }
+        } else this.activeShare = true;
         this.loading = false;
       },
       error: ({ error }) => {
@@ -257,6 +261,7 @@ export class PolygonFilter implements OnInit {
   }
 
   async getDispersion(options: any) {
+    this.activeShare = false;
     const newOptions = {
       drivers: JSON.stringify(options.drivers.map(({ _id }) => _id)),
       tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
@@ -284,7 +289,7 @@ export class PolygonFilter implements OnInit {
             5000,
             'brand-snackbar-2'
           );
-        }
+        } else this.activeShare = true;
         this.loading = false;
       },
       error: ({ error }) => {
@@ -298,7 +303,7 @@ export class PolygonFilter implements OnInit {
   }
 
   openShareModal() {
-    if (!this.options.start_date) return;
+    if (!this.activeShare || !!!this.options.start_date) return;
 
     const options = {
       ...this.options,
@@ -307,16 +312,20 @@ export class PolygonFilter implements OnInit {
       tags: this.options.tags.map(({ _id }) => _id)
     };
 
+    this.activeModal = true;
     const dialogRef = this.matDialog.open(ShareReportModalComponent, {
       data: {
         options,
-        heatmap: this.heatmap
+        heatmap: this.heatmap,
+        activeDrivers: !this.activeDrivers
       },
       restoreFocus: false,
       backdropClass: ['brand-ui-dialog-2']
     });
 
-    dialogRef.afterClosed().subscribe((res?) => {});
+    dialogRef.afterClosed().subscribe(() => {
+      this.activeModal = false;
+    });
   }
 
   checkedActive() {
