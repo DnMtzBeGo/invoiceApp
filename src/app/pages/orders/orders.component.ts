@@ -793,6 +793,7 @@ export class OrdersComponent implements OnInit {
     };
 
     return new Promise(async (resolve, reject) => {
+      //if we are finishing a draft and don't have the information
     if (!Object.keys(this.membersToAssigned).length) {
         const [pickup ] = this.draftData.destinations
         const dialogRef = this.dialog.open(SelectFleetModalComponent, {
