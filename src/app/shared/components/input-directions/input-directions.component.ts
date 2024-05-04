@@ -715,7 +715,7 @@ export class InputDirectionsComponent implements OnInit {
   // quitar el indesd de esta function
   public getMemberSelected(event: any) {
     this.selectMembersForOrder(event["member"], event["memberType"]);
-    this.sendAssignedMermbers.emit({ ...this.selectMembersForOrder });
+    this.sendAssignedMermbers.emit({ ...this.selectMembersToAssign });
   }
 
   public closeFleetMembers(titleKey: keyof this): boolean {

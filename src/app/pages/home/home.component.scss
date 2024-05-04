@@ -168,56 +168,6 @@ bego-map {
   inset: 0;
 }
 
-::ng-deep {
-  .info-window-content {
-    font-family: Arial, sans-serif;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-
-    color: #ededed;
-    font-family: 'Avenir';
-
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .info-window-content h3 {
-    margin-top: 0;
-  }
-
-  .info-window-content p {
-    margin-bottom: 0;
-  }
-
-  .gm-style-iw {
-    background: #040b11 !important;
-    padding: 0 !important;
-  }
-
-  .gm-style-iw-d {
-    overflow: auto !important;
-  }
-
-  .gm-ui-hover-effect {
-    border: none;
-    outline: none;
-    top: 0px !important;
-
-    span {
-      filter: invert(100%);
-      margin: 0 !important;
-      padding: 8px !important;
-    }
-
-    &:hover {
-      border: none;
-      outline: none;
-    }
-  }
-}
-
 bego-modal {
   ::ng-deep .modal {
     gap: 34px;
@@ -254,8 +204,8 @@ bego-modal {
     to {
       transform: translateY(0);
     }
-  } 
-  
+  }
+
   img {
     filter: brightness(0) invert(1);
   }
@@ -263,4 +213,43 @@ bego-modal {
 
 .btn-traffic.active img {
   filter: none;
+}
+
+::ng-deep .gm-style iframe + div {
+  border: none !important;
+}
+
+::ng-deep div[role='dialog'][class*='gm-style'] {
+  padding: 12px !important;
+  background-color: #10161c;
+  box-shadow: inset 4px 4px 4px 0 #1d2024, inset -4px -4px 4px 0 #10161c;
+
+  > div {
+    overflow: auto !important;
+
+    .content {
+      color: #c1c7d0;
+      font-family: 'Avenir-Medium';
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 21px;
+      user-select: text;
+
+      &::selection {
+        color: #10161c;
+        background: #ffbe00;
+      }
+    }
+  }
+
+  > button {
+    span {
+      background-color: white !important;
+    }
+  }
+
+  & + div::after {
+    background: #10161c;
+  }
 }

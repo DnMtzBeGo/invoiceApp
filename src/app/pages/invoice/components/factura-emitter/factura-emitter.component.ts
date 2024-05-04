@@ -20,13 +20,20 @@ export class FacturaEmitterComponent implements OnInit {
   public regimen_fiscal: Array<object> = [];
   public isEditing: boolean = false;
   public isLoading: boolean = false;
+  public flags: {
+    keyFileError: boolean;
+    cerFileError: boolean;
+  } = {
+    keyFileError: false,
+    cerFileError: false
+  };
 
   public emitterAttributesForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
     regimen_fiscal: new FormControl('', [Validators.required]),
     archivo_cer: new FormControl(''),
     archivo_key: new FormControl(''),
-    archivo_key_pswd: new FormControl('')
+    archivo_key_pswd: new FormControl('', [Validators.required])
   });
 
   constructor(
@@ -48,7 +55,18 @@ export class FacturaEmitterComponent implements OnInit {
     }
   }
 
-  public async saveEmisor() {
+  public async saveEmisor(): Promise<void | boolean> {
+    this.emitterAttributesForm.markAllAsTouched();
+
+    console.log(this.emitterAttributesForm.get('archivo_cer').value, this.emitterAttributesForm.get('archivo_cer').valid);
+
+    if (!this.emitterAttributesForm.valid || !this.cerFile || !this.cerFile) {
+      if (!this.cerFile) this.flags.cerFileError = true;
+      if (!this.keyFile) this.flags.keyFileError = true;
+
+      return false;
+    }
+
     if (this.isLoading) return;
     this.isLoading = true;
 
@@ -62,7 +80,7 @@ export class FacturaEmitterComponent implements OnInit {
     if (this.isEditing) formData.append('_id', this.editData._id);
 
     const type = this.isEditing ? 'update' : 'create';
-    console.log(formData);
+
     (await this.apiRestService.uploadFilesSerivce(formData, 'invoice/emitters/' + type, {})).subscribe(
       (res) => {
         this.isLoading = false;
@@ -87,8 +105,10 @@ export class FacturaEmitterComponent implements OnInit {
         this.isLoading = false;
         let message = '';
 
-        if (typeof err.error?.error === 'object') message = err.error?.error[0]?.error ?? err.statusText ?? err.message;
-        else message = err.error?.error;
+        if (typeof err.error?.error === 'object') {
+          if (err.error?.error?.[0]) message = err.error?.error[0]?.error ?? err.statusText ?? err.message;
+          else message = err.error?.error.error;
+        } else message = err.error?.error;
 
         this.notificationsService.showErrorToastr(message);
       }
@@ -98,8 +118,10 @@ export class FacturaEmitterComponent implements OnInit {
   public onFileSelected(event, type) {
     const inputNode = event.target;
     if (type === 'archivo_key') {
+      this.flags.keyFileError = false;
       this.keyFile = inputNode.files[0];
     } else {
+      this.flags.cerFileError = false;
       this.cerFile = inputNode.files[0];
     }
 

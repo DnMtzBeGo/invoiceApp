@@ -51,7 +51,7 @@
       <button
         id="reset"
         *ngIf="!showOrderDetails"
-        (click)="creatingForms ? getCoordinates(centerCoords) : mapEmitter.next(['center'])"
+        (click)="creatingForms ? centerMap() : mapEmitter.next(['center'])"
         [ngClass]="{ 'reset-up': userRole && showFleetMap && !showOrderDetails }"
         [@slideInFromBottom]
       >

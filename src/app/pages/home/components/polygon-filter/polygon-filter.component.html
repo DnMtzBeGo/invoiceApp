@@ -7,8 +7,8 @@
   <div
     class="action-btn"
     [ngClass]="{
-      'active-btn': options.start_date,
-      'disabled-btn': !options.start_date
+      'active-btn': activeModal,
+      'disabled-btn': !activeShare || !!!options.start_date
     }"
     (click)="openShareModal()">
     <bego-icon icon="begon-shared"></bego-icon>
