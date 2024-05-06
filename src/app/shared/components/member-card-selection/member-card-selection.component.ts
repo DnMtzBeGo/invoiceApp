@@ -18,10 +18,9 @@ export class MemberCardSelectionComponent implements OnInit {
   ngOnInit(): void { }
 
   public getFleetMember(data: any) {
-    data.isSelected = true;
     this.sendMemberSelected.emit({
       memberType: this.titleFleetMembers,
-      member: {...data}
+      member: data
     });
   }
 
