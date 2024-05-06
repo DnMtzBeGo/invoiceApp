@@ -17,8 +17,6 @@ import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from "@ngx-translate/core";
 import {
-  AbstractControl,
-  FormBuilder,
   FormControl,
   FormGroup,
   Validators,
@@ -701,44 +699,31 @@ export class InputDirectionsComponent implements OnInit {
       this.selectMembersToAssign[typeMember].isSelected = false;
     }
 
-    member["isSelected"] = true;
+    member.isSelected = true;
     this.selectMembersToAssign[typeMember] = member;
     this.sendAssignedMermbers.emit({ ...this.selectMembersToAssign });
     this.canGoToSteps = this.isMembersSelected();
   }
 
-  public showFleetContainer(memberType: keyof this) {
+  public showFleetContainer(memberType: keyof this, members?: any[]) {
     this.titleFleetMembers = memberType;
-    this.fleetData = this[memberType];
+    this.fleetData = members || this[memberType];
     this.showFleetMembersContainer = true;
   }
-  // quitar el indesd de esta function
+
   public getMemberSelected(event: any) {
-    this.selectMembersForOrder(event["member"], event["memberType"]);
-    this.sendAssignedMermbers.emit({ ...this.selectMembersToAssign });
+    this.selectMembersForOrder(event.member, event.memberType);
   }
 
   public closeFleetMembers(titleKey: keyof this): boolean {
-    let obj = this[titleKey] as any;
-    let result;
-    for (const [i, iterator] of obj.entries()) {
-      if (this.selectMembersToAssign[titleKey]._id === iterator._id && i > 3) {
-        switch (titleKey) {
-          case "drivers":
-            result = this.drivers.splice(i, 1);
-            this.drivers.unshift(result[0]);
-            break;
-          case "trucks":
-            result = this.trucks.splice(i, 1);
-            this.trucks.unshift(result[0]);
-            break;
-          case "trailers":
-            result = this.trailers.splice(i, 1);
-            this.trailers.unshift(result[0]);
-            break;
-        }
-      }
+    const data = this.fleetData;
+    const picked = this.selectMembersToAssign[titleKey]
+    const idx = data.findIndex((el: any) => el._id === picked._id);
+
+    if (idx >= 0) {
+      data.unshift(...data.splice(idx, 1));
     }
+
     return (this.showFleetMembersContainer = false);
   }
 
