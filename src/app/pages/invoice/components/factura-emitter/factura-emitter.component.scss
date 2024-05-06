@@ -1,6 +1,6 @@
-@import "../../styles/colors";
-@import "../../styles/font";
-@import "../../styles/variables";
+@import '../../styles/colors';
+@import '../../styles/font';
+@import '../../styles/variables';
 
 .title {
   font-weight: bolder;
@@ -105,6 +105,10 @@
   }
 }
 
+.mat-error {
+  font-size: 12px;
+}
+
 .error-message {
   margin: auto 0 auto auto;
   padding-right: 1em;
@@ -197,4 +201,8 @@
 
 .stretch {
   justify-content: stretch;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-subscript-wrapper {
+  padding: 0px !important;
 }

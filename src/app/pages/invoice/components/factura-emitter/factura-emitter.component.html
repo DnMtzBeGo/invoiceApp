@@ -13,37 +13,26 @@
         <mat-form-field appearance="outline" class="brand-field-1">
           <mat-label>{{
             emitterAttributesForm.get("email").value
-              ? ("invoice.emisor-edit.email" | translate)
-              : ("invoice.emisor-edit.email-placeholder" | translate)
-          }}</mat-label>
-          <input
-            matInput
-            [attr.aria-label]="'invoice.emisor-edit.email' | translate"
-            name="email"
-            autocomplete="off"
-            formControlName="email"
-          />
+            ? ("invoice.emisor-edit.email" | translate)
+            : ("invoice.emisor-edit.email-placeholder" | translate)
+            }}</mat-label>
+          <input matInput [attr.aria-label]="'invoice.emisor-edit.email' | translate" name="email" autocomplete="off"
+            formControlName="email" />
+          <mat-error>Ingrese un e-mail</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="brand-field-1">
           <mat-label>{{
             emitterAttributesForm.get("regimen_fiscal").value
-              ? ("invoice.emisor-edit.regimen" | translate)
-              : ("invoice.emisor-edit.regimen-placeholder" | translate)
-          }}</mat-label>
-          <mat-select
-            formControlName="regimen_fiscal"
-            name="registroFiscal"
-            class="disable-custom-format"
-          >
-            <mat-option
-              *ngFor="let option of regimen_fiscal"
-              [value]="option.clave"
-              class="brand-option-1"
-            >
+            ? ("invoice.emisor-edit.regimen" | translate)
+            : ("invoice.emisor-edit.regimen-placeholder" | translate)
+            }}</mat-label>
+          <mat-select formControlName="regimen_fiscal" name="registroFiscal" class="disable-custom-format">
+            <mat-option *ngFor="let option of regimen_fiscal" [value]="option.clave" class="brand-option-1">
               {{ option.clave }} - {{ option.descripcion }}
             </mat-option>
           </mat-select>
+          <mat-error>Especifique el regimen fiscal</mat-error>
         </mat-form-field>
       </div>
       <div class="grid">
@@ -51,29 +40,22 @@
           <div class="files-wrapper__row">
             <mat-label>{{ "invoice.emisor-edit.cer" | translate }}</mat-label>
             <div class="carousel">
-              <input
-                class="file"
-                type="file"
-                autocomplete="off"
-                accept=".cer"
-                title="fsdfdsf"
-                (change)="onFileSelected($event, 'archivo_cer')"
-              />
+              <input class="file" type="file" autocomplete="off" accept=".cer" title="fsdfdsf"
+                (change)="onFileSelected($event, 'archivo_cer')" />
             </div>
+            <mat-error *ngIf="flags.cerFileError">Debe seleccionar el archivo .cer</mat-error>
           </div>
         </div>
         <div class="files-wrapper">
+
+
           <div class="files-wrapper__row">
             <mat-label>{{ "invoice.emisor-edit.key" | translate }}</mat-label>
             <div class="carousel">
-              <input
-                class="file"
-                type="file"
-                autocomplete="off"
-                accept=".key"
-                (change)="onFileSelected($event, 'archivo_key')"
-              />
+              <input class="file" type="file" autocomplete="off" accept=".key"
+                (change)="onFileSelected($event, 'archivo_key')" />
             </div>
+            <mat-error *ngIf="flags.keyFileError">Debe seleccionar el archivo .key</mat-error>
           </div>
         </div>
       </div>
@@ -81,35 +63,25 @@
         <mat-form-field appearance="outline" class="brand-field-1">
           <mat-label>{{
             emitterAttributesForm.get("archivo_key_pswd").value
-              ? ("invoice.emisor-edit.key-password" | translate)
-              : ("invoice.emisor-edit.key-password-placeholder" | translate)
-          }}</mat-label>
-          <input
-            matInput
-            [attr.aria-label]="'invoice.emisor-edit.key-password' | translate"
-            name="archivoKeyContrasena"
-            autocomplete="off"
-            formControlName="archivo_key_pswd"
-          />
+            ? ("invoice.emisor-edit.key-password" | translate)
+            : ("invoice.emisor-edit.key-password-placeholder" | translate)
+            }}</mat-label>
+          <input matInput [attr.aria-label]="'invoice.emisor-edit.key-password' | translate" name="archivoKeyContrasena"
+            autocomplete="off" formControlName="archivo_key_pswd" />
+
+          <mat-error>Indique la contraseña de los archivos</mat-error>
         </mat-form-field>
       </div>
     </form>
   </div>
 
-  <button
-    mat-flat-button
-    cdkFocusInitial
-    (click)="saveEmisor()"
-    class="brand-btn-2 radius-s"
-    style="
+  <button mat-flat-button cdkFocusInitial (click)="saveEmisor()" class="brand-btn-2 radius-s" style="
       min-width: 155px;
       min-height: 40px;
       position: absolute;
       bottom: 0;
       right: 0;
-    "
-    [disabled]="isLoading"
-  >
+    " [disabled]="isLoading">
     {{ "invoice.emisor-edit.btn-save" | translate }}
     <mat-icon style="margin-right: -8px"> keyboard_arrow_right </mat-icon>
   </button>

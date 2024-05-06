@@ -132,6 +132,8 @@ export class Step2Component implements OnInit {
       this.step2Form.get('email')!.setValue(dropoff?.contact_info?.email || '');
       this.step2Form.get('country_code')!.setValue(dropoff?.contact_info?.country_code || '');
 
+      this.step2Form.get('extra_notes').setValue(dropoff?.extra_notes);
+
       if (this.draftData['stamp']) {
         if (dropoff.tax_information) {
           this.rfcComponentValues = dropoff?.tax_information;

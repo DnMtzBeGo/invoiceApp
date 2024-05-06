@@ -200,6 +200,18 @@ export class OrdersComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
+  private afterOrderPreviewReceived(identifier: string, callback: (orderPreview: Record<string,any>) => any){
+        const subsExists = this.orderPreviewSubscription[identifier];
+        if (!subsExists) {
+          this.orderPreviewSubscription[identifier] = this.orderPreviewReceived.subscribe((orderPreview) => {
+            callback(orderPreview);
+            this.orderPreviewSubscription[identifier].unsubscribe();
+            this.orderPreviewSubscription[identifier] = null;
+          });
+
+        }
+  }
+
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
@@ -269,7 +281,7 @@ export class OrdersComponent implements OnInit {
 
       this.orderData.cargo = {
         ...draftData.cargo,
-        '53_48': draftData.cargo.trailer.load_cap
+        '53_48': draftData.cargo?.trailer?.load_cap
       }
 
     }
@@ -443,10 +455,8 @@ export class OrdersComponent implements OnInit {
       if (this.orderPreview?.order_id) {
         this.sendCargo()
       } else {
-        this.orderPreviewSubscription.step3 = this.orderPreviewReceived.subscribe((orderPreview: any) => {
-          this.sendCargo();
-          this.orderPreviewSubscription.step3.unsubscribe();
-        });
+
+        this.afterOrderPreviewReceived('step3', () => this.sendCargo());
       }
     }
     this.updateStatus();
@@ -543,10 +553,9 @@ export class OrdersComponent implements OnInit {
     if (id) {
       this.sendDestination(destinationPayload, id);
     } else {
-      this.orderPreviewSubscription.dropoff = this.orderPreviewReceived.subscribe((orderPreview: any) => {
+      this.afterOrderPreviewReceived('dropoff', (orderPreview) => {
         const [, id] = orderPreview?.destinations || [];
         this.sendDestination(destinationPayload, id);
-        this.orderPreviewSubscription.dropoff.unsubscribe();
       });
     }
   }
@@ -621,7 +630,7 @@ export class OrdersComponent implements OnInit {
         place_id: invoice.address
       });
     } else {
-      this.orderPreviewSubscription.invoice = this.orderPreviewReceived.subscribe((orderPreview: any) => {
+      this.afterOrderPreviewReceived('invoice', (orderPreview) => {
         sendInvoice({
           order_id: orderPreview.order_id,
           cfdi: invoice.cfdi,
@@ -630,7 +639,7 @@ export class OrdersComponent implements OnInit {
           tax_regime: invoice.tax_regime,
           place_id: (invoice.address as any).place_id
         });
-      })
+      });
     }
 
 
@@ -652,16 +661,14 @@ export class OrdersComponent implements OnInit {
         deferred_payment: pricing.deferred_payment
       });
     } else {
-      this.orderPreviewSubscription.pricing = this.orderPreviewReceived.subscribe(() => {
+      this.afterOrderPreviewReceived('pricing', (orderPreview) => {
         sendPricing({
-          order_id: this.orderPreview.order_id,
+          order_id: orderPreview.order_id,
           subtotal: pricing.subtotal,
           currency: pricing.currency,
           deferred_payment: pricing.deferred_payment
-
-        })
-        this.orderPreviewSubscription.pricing.unsubscribe();
-    });
+        });
+      });
 
 
   }
@@ -786,6 +793,7 @@ export class OrdersComponent implements OnInit {
     };
 
     return new Promise(async (resolve, reject) => {
+      //if we are finishing a draft and don't have the information
     if (!Object.keys(this.membersToAssigned).length) {
         const [pickup ] = this.draftData.destinations
         const dialogRef = this.dialog.open(SelectFleetModalComponent, {
