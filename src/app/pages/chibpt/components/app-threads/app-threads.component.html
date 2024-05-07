@@ -1,0 +1,15 @@
+<h2>ChiBPT</h2>
+<section class="chibi-chatbot-section" *ngIf="messages.length === 0">
+    <img src="assets/images/chibpt/chibi-chatbot.svg" alt="Chibi Chatbot">
+</section>
+<section class="chibibot-conversation-section" *ngIf="messages.length > 0">
+    <ng-container *ngFor="let message of messages">
+        <ng-container *ngIf="message.sender === 'user'">
+            <app-app-user-message [message]="message.content"></app-app-user-message>
+        </ng-container>
+        <ng-container *ngIf="message.sender === 'bot'">
+            <app-app-chibibot-message [message]="message.content"></app-app-chibibot-message>
+        </ng-container>
+    
+    </ng-container>
+</section>
