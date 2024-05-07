@@ -1,6 +1,19 @@
-.user-message {
-    border: palegreen 2px solid;
-    margin-block: 30px;
-    border-radius: 30px;
-    padding: 15px;
+@import '../../../../../styles.scss';
+
+section {
+    @include flexbox-align(row, flex-end, center);
+    width: 100%;
+
+}
+
+.user-yellow-circle {
+    border: #FFEE00 solid 1px;
+    border-radius: 50%;
+    margin-inline-start: 7px;
+    width: 72px;
+    height: 72px;
+}
+
+.user-message-gradient-container {
+    @include gradient-background;
 }

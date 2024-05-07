@@ -44,6 +44,7 @@ import { IncompatibleBrowserModalComponent } from './shared/components/incompati
 import { IonicModule } from '@ionic/angular';
 import { AppMaterialModule } from './material';
 
+
 export function playerFactory() {
   return player;
 }

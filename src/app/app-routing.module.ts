@@ -98,6 +98,10 @@ const routes: Routes = [
   {
     path: 'tags',
     loadChildren: () => import('./pages/tags/tags.module').then((m) => m.TagsModule)
+  },
+  {
+    path: 'chibpt',
+    loadChildren: () => import('./pages/chibpt/chibpt.module').then((m) => m.ChibptModule)
   }
 ];
 

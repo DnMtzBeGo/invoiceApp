@@ -1256,3 +1256,41 @@ input[type='number'] {
     background: none;
   }
 }
+/*****************************/
+/******* Gradient border *******/
+/*****************************/
+
+@mixin gradient-background {
+  // Establecer el background del contenedor padre
+  background: linear-gradient(to right, #191C1E 0%, #333537 25%, #5F6162 50%, #565757 75%, #343536 100%);
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5px;
+  border-radius: 30px;
+  margin-block: 30px;
+  max-width: 680px;
+
+  // Establecer el background del primer hijo
+  & > div {
+    background-color: #0D0F11;
+    border-radius: 30px;
+    padding: 15px;
+    width: auto;
+    height: auto;
+    min-width: 469px;
+  }
+}
+
+/*****************************/
+/******* Flexbox align *******/
+/*****************************/
+
+@mixin flexbox-align($direction, $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
