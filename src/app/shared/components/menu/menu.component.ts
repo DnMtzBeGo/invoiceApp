@@ -2,6 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { environment } from "src/environments/environment";
 import { PrimeService } from "../../services/prime.service";
+import { BegoSliderDotsOpts } from 'src/app/shared/components/bego-slider-dots/bego-slider-dots.component';
+import { TranslateService } from '@ngx-translate/core';
+import { HttpClient } from "@angular/common/http";
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: "bego-menu",
@@ -14,7 +18,37 @@ export class MenuComponent implements OnInit {
 
   menuIsOpen: boolean = false;
 
-  constructor(public router: Router, public primeService: PrimeService) {}
+  freeTrialButtonKey: string = 'menu.free-trial-btn';
+  freeTrialModalTitleKey: string = 'menu.free-trial-title';
+  successfulModalTextKey: string = 'menu.successful-long-text';
+  successfulModalShortTextKey: string = 'menu.successful-short-text';
+
+  showPrimeModal: boolean = false;
+  showConfirmModal: boolean = false;
+  showSuccessfulModal: boolean = false;
+  showErrorModal: boolean = false;
+
+  sliderDotsOpts: BegoSliderDotsOpts = {
+    totalElements: 3,
+    value: 0,
+  };
+
+  slides = [
+    { 
+      imageUrl: "/assets/images/slider-prime1.png", 
+      descriptionKey: "menu.slide1"
+    },
+    { 
+      imageUrl: "/assets/images/slider-prime2.png", 
+      descriptionKey: "menu.slide2"
+    },
+    { 
+      imageUrl: "/assets/images/slider-prime3.png", 
+      descriptionKey: "menu.slide3"
+    }
+  ];
+
+  constructor(public router: Router, public primeService: PrimeService, private translateService: TranslateService, private http: HttpClient) {}
 
   ngOnInit(): void {}
 
@@ -56,4 +90,175 @@ export class MenuComponent implements OnInit {
       appContainer?.classList.remove("open");
     }
   }
+
+  handlePrimeModal(redirectRoute: string) {
+    if (this.primeService.isPrime) {
+      this.router.navigate([redirectRoute]);
+    } else {
+      this.checkUserPrimeStatus();
+      this.showPrimeModal = true;
+    }
+  }  
+
+  checkUserPrimeStatus() {
+    const url = "https://mavs.bego.ai/v1.0/carriers/home";
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
+    });
+  
+    const body = {
+      getLoader: false,
+      loader: false,
+      timeout: 30000,
+      retry: 0,
+      route: "",
+      lang: "en"
+    };
+  
+    this.http.post<any>(url, body, { headers }).subscribe(
+      (response) => {
+        if (response && response.result.manager_had_trial === true) {
+          this.freeTrialButtonKey = 'menu.free-trial-btn-upgraded';
+          this.freeTrialModalTitleKey = 'menu.free-trial-title-upgraded';
+          this.successfulModalTextKey = 'menu.successful-text-upgraded';
+          this.successfulModalShortTextKey = '';
+        }
+      },
+      (error) => {
+        console.error("Error fetching manager_had_trial:", error);
+      }
+    );
+  }  
+
+  onModalClose(event: string) {
+    try {
+      if (event === 'cancel') {
+        this.showPrimeModal = false;
+      } else if (event === 'done') {
+        
+      }
+    } catch (error) {
+      console.error('Error al manejar el evento:', error);
+    }
+  }
+
+  getImageUrl(): string {
+    return this.slides[this.sliderDotsOpts.value].imageUrl;
+  }
+
+  getDescription(): string {
+    return this.translateService.instant(this.slides[this.sliderDotsOpts.value].descriptionKey);
+  }
+
+  onSlideChange(index: number) {
+    this.sliderDotsOpts.value = index;
+  }
+
+  prevSlide() {
+    this.sliderDotsOpts.value = (this.sliderDotsOpts.value === 0 ? this.slides.length - 1 : this.sliderDotsOpts.value - 1);
+  }
+
+  nextSlide() {
+    this.sliderDotsOpts.value = (this.sliderDotsOpts.value + 1) % this.slides.length;
+  }
+
+  handleConfirmModal() {
+    this.showConfirmModal = true;
+    this.showPrimeModal = false;
+  }  
+
+  confirmSuscription(event: string) {
+    try {
+      if (event === 'cancel') {
+        this.showConfirmModal = false;
+      } else if (event === 'done') {
+        const url = "https://mavs.bego.ai/v1.0/carriers/home";
+        const headers = new HttpHeaders({
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
+        });
+      
+        const body = {
+          getLoader: false,
+          loader: false,
+          timeout: 30000,
+          retry: 0,
+          route: "",
+          lang: "en"
+        };
+      
+        this.http.post<any>(url, body, { headers }).subscribe(
+          (response) => {
+            if (response && response.result.manager_had_trial === true) {
+              this.requestPrime();
+            } else {
+              this.requestFreeTrial();
+            }
+          },
+          (error) => {
+            console.error("Error fetching manager_had_trial:", error);
+          }
+        );
+      }
+    } catch (error) {
+      console.error('Error al manejar el evento:', error);
+    }
+  
+    this.showConfirmModal = false;
+  }    
+
+  public requestFreeTrial(): void {
+    const url = `${environment.URL_BASE}carriers/request_free_trial`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
+    });
+  
+    this.http.post<any>(url, {}, { headers: headers }).subscribe(
+      (response) => {
+        if (response && response) {
+          this.showSuccessfulModal = true;
+        } else {
+          this.showErrorModal = true;
+        }
+      },
+      (error) => {
+        this.showErrorModal = true;
+        console.error('Error al realizar la solicitud de prueba gratuita:', error);
+      }
+    );
+  }  
+
+  public requestPrime(): void {
+    const url = `${environment.URL_BASE}carriers/request_prime`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
+    });
+  
+    this.http.post<any>(url, {}, { headers: headers }).subscribe(
+      (response) => {
+        this.showSuccessfulModal = true;
+      },
+      (error) => {
+        this.showErrorModal = true;
+      }
+    );
+  }   
+
+  closeLastModal(event: string) {
+    try {
+      if (event === 'cancel') {
+        this.showSuccessfulModal = false;
+        this.showErrorModal = false;
+      } else if (event === 'done') {
+        this.showSuccessfulModal = false;
+        this.showErrorModal = false;
+      }
+    } catch (error) {
+      console.error('Error al manejar el evento:', error);
+    }
+  }
+
 }

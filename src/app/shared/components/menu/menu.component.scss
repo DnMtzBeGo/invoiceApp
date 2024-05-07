@@ -167,4 +167,160 @@
     font-size: 28px !important;
     transition: color 0.2s;
   }
+
+  .backdrop {
+    pointer-events: auto;
+  }
+}
+
+bego-modal {
+  ::ng-deep .modal {
+    height: 500px;
+    width: 580px;
+  }
+}
+
+bego-slider-dots {
+  ::ng-deep .slider-dots {
+    width: 83px !important;
+    gap: 30px !important;
+
+    .dot {
+      flex-grow: 3;
+      height: 15px !important;
+      width: 17px !important;
+      border-radius: 50px !important;
+    }
+
+    .dot.active {
+      flex-grow: 1 !important;
+    }
+
+  }
+
+}
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+
+  .modal-title {
+    width: 50%;
+
+    h2 {
+      text-align: center;
+    }
+  }
+
+  img {
+    width: 230px;
+    height: 210px;
+  }
+
+  .modal-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    gap: 40px;
+
+    p {
+      margin-bottom: 50px;
+      font-weight: 100;
+      text-align: justify;
+    }
+
+    .slider-dots {
+      display: flex;
+      position: absolute;
+      width: 200px;
+      bottom: 140px;
+      right: 38px;
+    }
+  }
+}
+
+.free-trial-btn {
+  background: #ffe000;
+  border: 2px solid #ffe000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 4px 4px 4px #ffea52, inset -4px -4px 4px #e1c600;
+  color: #040b11;
+  font-size: 14px;
+  font-weight: 700;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-end-end-radius: 50px;
+  border-start-start-radius: 50px;
+  padding: 16px 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  img {
+    width: 20px;
+  }
+}
+
+.confirm-modal-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+
+  h2 {
+    text-align: center;
+    font-size: 22px;
+    width: 70%;
+    margin-top: -20px;
+  }
+
+  img {
+    width: 220px;
+    margin-right: 40px;
+  }
+}
+
+.successful-modal-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  p {
+    width: 70%;
+    font-weight: 100;
+    text-align: justify;
+  }
+
+  p:nth-of-type(2) {
+    text-align: center;
+  }
+
+  img {
+    width: 180px;
+    height: 185px;
+  }
+}
+
+.error-modal-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  img {
+    width: 180px;
+    margin-top: -120px;
+  }
 }

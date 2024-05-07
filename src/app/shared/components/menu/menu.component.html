@@ -44,11 +44,6 @@
       {{ "menu.drafts" | translate }}
     </div> -->
 
-    <div class="menu-option" *ngIf="primeService.isPrime" [ngClass]="{ selected: router.url == '/polygons' }" (click)="goTo('polygons')">
-      <app-button class="btn-menu icon icon-polygon icon-only"></app-button>
-      {{ 'polygons.title' | translate }}
-    </div>
-
     <div class="menu-option" [ngClass]="{ selected: router.url == '/history' }" (click)="goTo('history')">
       <app-button class="btn-menu icon icon-history icon-only"></app-button>
       {{ 'menu.history' | translate }}
@@ -63,7 +58,12 @@
       {{ 'menu.invoice' | translate }}
     </div>
 
-    <div class="menu-option" *ngIf="primeService.isPrime" [ngClass]="{ selected: router.url.startsWith('/tags') }" (click)="goTo('tags')">
+    <div class="menu-option" [ngClass]="{ selected: router.url == '/polygons' }" (click)="handlePrimeModal('/polygons')">
+      <app-button class="btn-menu icon icon-polygon icon-only"></app-button>
+      {{ 'polygons.title' | translate }}
+    </div>
+
+    <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/tags') }" (click)="handlePrimeModal('/tags')">
       <bego-icon icon="begon-tag ui-icon"></bego-icon>
       {{ 'menu.tags' | translate }}
     </div>
@@ -109,3 +109,76 @@
     </div>
   </div>
 </section>
+
+
+<bego-modal
+  *ngIf="showPrimeModal" 
+  [enabledClose]="true"
+  [disabledDone]="true"
+  (closeEmitter)="onModalClose($event)">
+  <div class="modal-container">
+    <div class="modal-title">
+      <h2>{{ 'menu.modal-title' | translate }}</h2>
+    </div>
+    <div class="modal-slider">
+      <div>
+        <img [src]="getImageUrl()">
+      </div>
+      <div>
+        <p>{{ getDescription() }}</p>
+        <div class="slider-dots">
+          <bego-slider-dots 
+          [opts]="sliderDotsOpts" 
+          style="width: 100%"
+          (valueChange)="onSlideChange($event)"
+          [style.cursor]="'pointer'">
+          </bego-slider-dots>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="free-trial-btn" (click)="handleConfirmModal()"><img src="/assets/images/crown.svg"> {{ freeTrialButtonKey | translate }} </button>
+</bego-modal>
+
+<bego-modal
+  *ngIf="showConfirmModal" 
+  [enabledClose]="true"
+  [enabledCancel]="true"
+  (closeEmitter)="confirmSuscription($event)"
+  [lang]="{ 
+    done: 'menu.free-trial-confirm' | translate, 
+    cancel: 'menu.free-trial-cancel' | translate
+    }">
+  <div class="confirm-modal-container">
+    <img src="/assets/images/ready-chibi.svg">
+    <h2> {{ freeTrialModalTitleKey | translate }} </h2>
+  </div>
+</bego-modal>
+
+<bego-modal
+  *ngIf="showSuccessfulModal" 
+  (closeEmitter)="closeLastModal($event)"
+  [lang]="{ 
+    done: 'menu.successful-btn' | translate
+    }">
+  <div class="successful-modal-container">
+    <h2> {{ 'menu.successful-title' | translate }} </h2>
+    <p> {{ successfulModalTextKey | translate }} </p>
+    <img src="/assets/images/crown-chibi.svg">
+    <p> {{ successfulModalShortTextKey | translate }} </p>
+  </div>
+</bego-modal>
+
+<bego-modal
+  *ngIf="showErrorModal" 
+  [enabledClose]="true"
+  (closeEmitter)="closeLastModal($event)"
+  [lang]="{ 
+    done: 'menu.close-btn' | translate
+    }">
+  <div class="error-modal-container">
+    <img src="/assets/images/error-chibi.svg">
+    <h2> {{ 'menu.error-title' | translate }} </h2>
+    <p> {{ 'menu.error-text' | translate }} </p> 
+  </div>
+</bego-modal>
