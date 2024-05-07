@@ -92,7 +92,7 @@ export class MenuComponent implements OnInit {
   }
 
   handlePrimeModal(redirectRoute: string) {
-    if (this.primeService.isPrime) {
+    if (!this.primeService.isPrime) {
       this.router.navigate([redirectRoute]);
     } else {
       this.checkUserPrimeStatus();
@@ -153,14 +153,6 @@ export class MenuComponent implements OnInit {
 
   onSlideChange(index: number) {
     this.sliderDotsOpts.value = index;
-  }
-
-  prevSlide() {
-    this.sliderDotsOpts.value = (this.sliderDotsOpts.value === 0 ? this.slides.length - 1 : this.sliderDotsOpts.value - 1);
-  }
-
-  nextSlide() {
-    this.sliderDotsOpts.value = (this.sliderDotsOpts.value + 1) % this.slides.length;
   }
 
   handleConfirmModal() {
