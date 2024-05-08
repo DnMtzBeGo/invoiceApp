@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-app-user-message',
@@ -7,5 +8,6 @@ import { Component, Input } from '@angular/core';
 })
 export class AppUserMessageComponent {
   @Input() message: string;
+  profilePicture: SafeUrl = localStorage.getItem("profilePicture") ?? "/assets/images/user-outline.svg"
 
 }

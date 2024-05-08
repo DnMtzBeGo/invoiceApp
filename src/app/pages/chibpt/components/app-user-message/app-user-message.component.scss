@@ -1,9 +1,9 @@
 @import '../../../../../styles.scss';
 
 section {
-    @include flexbox-align(row, flex-end, center);
+    @include flexbox-align(row, flex-end, flex-end);
+    padding-block: 20px;
     width: 100%;
-
 }
 
 .user-yellow-circle {
@@ -12,6 +12,8 @@ section {
     margin-inline-start: 7px;
     width: 72px;
     height: 72px;
+    background-size: cover;
+    background-position: center;
 }
 
 .user-message-gradient-container {
