@@ -32,6 +32,6 @@ export class EditOrderFleetComponent implements OnInit {
   }
 
   private getImg(el: any) {
-    return el.thumbnail || el?.profile_picture?.thumbnail;
+    return el?.thumbnail || el?.profile_picture?.thumbnail;
   }
 }

@@ -8,7 +8,9 @@
         <bego-input
           keyValue="fullname"
           (value)="updateFormGroup($event)"
-          [placeholder]="'orders.placeholder-fullname' | translate"></bego-input>
+          [placeholder]="'orders.placeholder-fullname' | translate"
+          [setValue]="step1Form.get('fullname')!.value"></bego-input>
+          
       </div>
 
       <div class="row-field">
@@ -23,7 +25,8 @@
             [setValue]="phoneNumber"
             [validators]="phoneValidator"
             (value)="phoneNumberChangeValue($event)"
-            [placeholder]="'orders.placeholder-phone' | translate"></bego-input>
+            [placeholder]="'orders.placeholder-phone' | translate"
+            [setValue]="step1Form.get('phonenumber')!.value"></bego-input>
         </div>
 
         <div class="field">
@@ -34,7 +37,8 @@
             size="small"
             [validators]="emailValidator"
             (value)="updateFormGroup($event)"
-            [placeholder]="'orders.placeholder-mail' | translate"></bego-input>
+            [placeholder]="'orders.placeholder-mail' | translate"
+            [setValue]="step1Form.get('email')!.value"></bego-input>
         </div>
       </div>
 
@@ -43,6 +47,7 @@
         <bego-rfc-input
           theme="secondary"
           (valueChanges)="updateRFC($event)"
+          [values]="rfcComponentValues"
           [lang]="{
             country_of_residence: 'orders.tax-country_of_residence' | translate,
             registration_number: 'orders.tax-registration_number' | translate,
@@ -54,7 +59,9 @@
 
       <div class="field" *ngIf="orderWithCP">
         <bego-label-input size="small" [textLabel]="('orders.title-company_name' | translate) + '*'"></bego-label-input>
-        <bego-input keyValue="company_name" (value)="updateFormGroup($event)" [placeholder]="'orders.placeholder-company_name' | translate"></bego-input>
+        <bego-input keyValue="company_name" (value)="updateFormGroup($event)"
+          [placeholder]="'orders.placeholder-company_name' | translate"
+          [setValue]="step1Form.get('company_name')!.value"></bego-input>
       </div>
 
       <div class="field">
@@ -62,10 +69,12 @@
         <bego-input
           keyValue="reference"
           (value)="updateFormGroup($event)"
-          [placeholder]="'orders.placeholder-reference' | translate"></bego-input>
+          [placeholder]="'orders.placeholder-reference' | translate"
+          [setValue]="step1Form.get('reference')!.value"></bego-input>
       </div>
-
-      <bego-calendar-time *ngIf="cardIsOpen" [disabled]="true"[defaultDate]="datePickup"></bego-calendar-time>
+      <ng-container *ngIf="isDraft">
+        <bego-calendar-time *ngIf="cardIsOpen" [disabled]="false" [defaultDate]="datePickup" (changeValue)="getPickupDate($event)"></bego-calendar-time>
+      </ng-container>
     </div>
   </form>
 </div>

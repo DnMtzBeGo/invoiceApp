@@ -28,6 +28,8 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { BegoBodyModule } from 'src/app/shared/components/bego-body/bego-body.module';
 import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.module';
 import { AppMaterialModule } from 'src/app/material';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { BegoModalModule } from '@begomx/ui-components';
 @NgModule({
   declarations: [
     HistoryComponent,
@@ -56,7 +58,9 @@ import { AppMaterialModule } from 'src/app/material';
     ButtonModule,
     BegoBodyModule,
     BegoTabsModule,
-    AppMaterialModule
+    AppMaterialModule,
+    SharedModule,
+    BegoModalModule,
   ],
   exports: [
     OrderCardComponent,

@@ -12,20 +12,35 @@
       {{ 'menu.home' | translate }}
     </div>
 
-    <!-- <div 
+    <div class="menu-option" [ngClass]="{ selected: router.url == '/history' }" (click)="goTo('history')">
+      <app-button class="btn-menu icon icon-history icon-only"></app-button>
+      {{ 'menu.history' | translate }}
+    </div>
+
+    <div 
       class="menu-option"
       [ngClass]="{ selected: router.url == '/drafts' }"
       (click)="goTo('drafts')"
     >
       <app-button class="btn-menu icon icon-drafts icon-only"></app-button>
       {{ "menu.home" | translate }}
-    </div> -->
+    </div>
 
     <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/fleet') }" (click)="goTo('fleet')">
       <app-button class="btn-menu icon icon-fleet icon-only"></app-button>
       {{ 'menu.fleet' | translate }}
     </div>
 
+    <div class="menu-option" [ngClass]="{ selected: router.url == '/payments' }" (click)="goTo('payments')">
+      <app-button class="btn-menu icon icon-money icon-only"></app-button>
+      {{ 'menu.payments' | translate }}
+    </div>
+
+    <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/invoice') }" (click)="goTo('invoice')">
+      <app-button class="btn-menu icon icon-invoice icon-only"></app-button>
+      {{ 'menu.invoice' | translate }}
+    </div>
+    
     <!-- <div
       class="menu-option"
       [ngClass]="{ selected: router.url == '/calendar' }"
@@ -52,11 +67,9 @@
       <app-button class="btn-menu icon icon-money icon-only"></app-button>
       {{ 'menu.payments' | translate }}
     </div>
+
     <!-- <app-button class="btn-menu icon icon-referals" (click)="goTo('referals')"></app-button> -->
-    <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/invoice') }" (click)="goTo('invoice')">
-      <app-button class="btn-menu icon icon-invoices icon-only"></app-button>
-      {{ 'menu.invoice' | translate }}
-    </div>
+
 
     <div class="menu-option" [ngClass]="{ selected: router.url == '/polygons' }" (click)="handlePrimeModal('/polygons')">
       <app-button class="btn-menu icon icon-polygon icon-only"></app-button>

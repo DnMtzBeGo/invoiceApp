@@ -1,4 +1,4 @@
-import { EventEmitter, Output } from '@angular/core';
+import { EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./pricing-step.component.scss']
 })
 export class PricingStepComponent implements OnInit {
+  @Input() draftData: any;
   @Output() pricingStepFormData = new EventEmitter<any>();
   @Output() validPricingStep = new EventEmitter<boolean>();
 
@@ -26,21 +27,13 @@ export class PricingStepComponent implements OnInit {
 
   public pricingForm: FormGroup;
 
-  // helper to avoid calling `pricingStepFormData` each time `subtotal` changes
-  // `formControlName` updates form in each keystroke, instead when blur input (deserved behavior)
-  public dummyForm: FormGroup;
-
   constructor(private formBuilder: FormBuilder) {
     this.pricingForm = this.formBuilder.group({
-      subtotal: [0, Validators.min(1)],
+      subtotal: [0],
       deferred_payment: [false],
       currency: ['mxn']
-    });
+    }, { updateOn: 'blur' });
 
-    this.dummyForm = this.formBuilder.group({ subtotal: [0] });
-  }
-
-  ngOnInit(): void {
     this.pricingForm.statusChanges.subscribe((status) => {
       this.validPricingStep.emit(status === 'VALID');
     });
@@ -48,11 +41,25 @@ export class PricingStepComponent implements OnInit {
     this.pricingForm.valueChanges.subscribe((value) => {
       this.pricingStepFormData.emit(value);
     });
+ 
   }
 
-  updateSubtotal() {
-    const { subtotal } = this.dummyForm.value;
-    this.pricingForm.get('subtotal').setValue(subtotal);
+  ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if(changes.draftData && changes.draftData.currentValue){
+      const { pricing}  = changes.draftData.currentValue;
+      if(pricing){
+        this.pricingForm.setValue(pricing);
+      }
+    }
+  }
+
+  updateSubtotalInput(el: HTMLInputElement) {
+    if (el.value) return;
+
+    el.value = `$${this.pricingForm.controls.subtotal.value}`;
   }
 
   changePay(data: any) {

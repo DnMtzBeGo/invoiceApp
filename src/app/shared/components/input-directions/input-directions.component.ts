@@ -17,8 +17,6 @@ import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from "@ngx-translate/core";
 import {
-  AbstractControl,
-  FormBuilder,
   FormControl,
   FormGroup,
   Validators,
@@ -30,10 +28,10 @@ import { GoogleMapsService } from "../../services/google-maps/google-maps.servic
 import { HomeComponent } from "../../../pages/home/home.component";
 import { AlertService } from "src/app/shared/services/alert.service";
 import { PinComponent } from "src/app/shared/components/pin/pin.component";
-import * as moment from "moment";
 import { NotificationsService } from "../../services/notifications.service";
 import { SavedLocationsService } from "../../services/saved-locations.service";
 import { PrimeService } from "../../services/prime.service";
+import { DateTime } from 'luxon'
 
 declare var google: any;
 
@@ -74,7 +72,7 @@ export class InputDirectionsComponent implements OnInit {
   langListener = null;
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
-  events: string = "DD / MM / YY";
+  events: string | Date = "DD / MM / YY";
   calendar: any = new Date();
   lastTime: any;
   firstLoad: boolean = true;
@@ -102,6 +100,7 @@ export class InputDirectionsComponent implements OnInit {
   public provisionalPickupLocation: string = "";
   public provisionalDropoffLocation: string = "";
   public userWantCP: boolean = false;
+  showSavedLocations = false;
 
   orderTypeList = [
     { label: 'FTL', value: 'FTL' },
@@ -179,6 +178,16 @@ export class InputDirectionsComponent implements OnInit {
   hideMap: boolean = false;
   hideType: string = "";
 
+  isSpecial = false;
+
+  get locationsSelected(): boolean {
+    return this.pickupSelected && (this.isSpecial || this.dropoffSelected);
+  }
+
+  get autocompleteShown(): boolean {
+    return Boolean(this.autocompleteItemsPickup.length || this.autocompleteItemsDropoff.length);
+  }
+
   constructor(
     private auth: AuthService,
     public zone: NgZone,
@@ -247,18 +256,20 @@ export class InputDirectionsComponent implements OnInit {
       }
       
       if(changes.hasOwnProperty('drafts') && changes.drafts.currentValue) {
-      this.locations.pickup = changes.drafts.currentValue.pickup.address;
-      this.locations.pickupLat = changes.drafts.currentValue.pickup.lat;
-      this.locations.pickupLng = changes.drafts.currentValue.pickup.lng;
-      this.locations.place_id_pickup = changes.drafts.currentValue.pickup.place_id_pickup;
-      this.locations.pickupPostalCode = changes.drafts.currentValue.pickup.zip_code;
-      this.locations.dropoff = changes.drafts.currentValue.dropoff.address;
-      this.locations.dropoffLat = changes.drafts.currentValue.dropoff.lat;
-      this.locations.dropoffLng = changes.drafts.currentValue.dropoff.lng;
-      this.locations.place_id_dropoff = changes.drafts.currentValue.dropoff.place_id_dropoff;
-      this.locations.dropoffPostalCode = changes.drafts.currentValue.dropoff.zip_code;
-      this.autocompletePickup.input = changes.drafts.currentValue.pickup.address;
-      this.autocompleteDropoff.input = changes.drafts.currentValue.dropoff.address;
+        const drafts = changes.drafts.currentValue;
+        const [pickup, dropoff] = drafts.destinations;
+      this.locations.pickup = pickup.address;
+      this.locations.pickupLat = pickup.lat;
+      this.locations.pickupLng = pickup.lng;
+      this.locations.place_id_pickup = pickup.place_id_pickup;
+      this.locations.pickupPostalCode = pickup.zip_code;
+      this.locations.dropoff = dropoff.address;
+      this.locations.dropoffLat = dropoff.lat;
+      this.locations.dropoffLng = dropoff.lng;
+      this.locations.place_id_dropoff = dropoff.place_id_dropoff;
+      this.locations.dropoffPostalCode = dropoff.zip_code;
+      this.autocompletePickup.input = pickup.address;
+      this.autocompleteDropoff.input = dropoff.address;
       this.pickupSelected = true;
       this.dropoffSelected = true;
       if(changes.drafts.currentValue.hasOwnProperty('stamp') && changes.drafts.currentValue.stamp) {
@@ -352,6 +363,7 @@ export class InputDirectionsComponent implements OnInit {
 
   handleUpdateLocations() {
     this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
 
     if (this.autocompletePickup.input === '') {
       this.searchPickup.nativeElement.focus();
@@ -364,7 +376,7 @@ export class InputDirectionsComponent implements OnInit {
     }
 
     this.googlemaps.updateDataLocations(this.locations);
-    this.updateLocations.emit(this.locations);
+    this.showSavedLocations = false;
     this.hideMap = false;
   }
 
@@ -378,6 +390,10 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.dropoffLat = "";
     this.locations.dropoffLng = "";
     this.locations.dropoffPostalCode = 0;
+    this.locations.place_id_dropoff = '';
+    this.canGoToSteps = this.locationsSelected && this.fromDate && this.isMembersSelected();
+    this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
   }
 
   ClearAutocompletePickup() {
@@ -390,12 +406,16 @@ export class InputDirectionsComponent implements OnInit {
     this.locations.pickupLat = "";
     this.locations.pickupLng = "";
     this.locations.pickupPostalCode = 0;
+    this.locations.place_id_pickup = '';
+    this.canGoToSteps = false;
+    this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
   }
 
   UpdateSearchResultsDropoff(e: any) {
     this.showMapPreview = false;
     this.dropoffSelected = false;
-    this.savedLocations.show = false;
+    this.showSavedLocations = false;
 
     this.autocompleteDropoff.input = e.target.value;
     if (this.autocompleteDropoff.input == "") {
@@ -427,7 +447,7 @@ export class InputDirectionsComponent implements OnInit {
   UpdateSearchResultsPickup(e: any) {
     this.showMapPreview = false;
     this.pickupSelected = false;
-    this.savedLocations.show = false;
+    this.showSavedLocations = false;
 
     this.autocompletePickup.input = e.target.value;
     if (this.autocompletePickup.input === "") {
@@ -496,9 +516,7 @@ export class InputDirectionsComponent implements OnInit {
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     if (event.value) this.minTime = new Date(event.value);
-    this.events = moment(new Date(`${event.value}`), "MM-DD-YYYY").format(
-      "MMMM DD YYYY"
-    );
+    this.events = event.value;
 
     if (this.lastTime !== "DD / MM / YY") {
       this.updateDate();
@@ -519,14 +537,13 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   updateDate() {
-    const hours = moment(this.lastTime).format("HH");
-    const minutes = moment(this.lastTime).format("mm");
-    const hoursInt = parseInt(hours);
-    const minutesInt = parseInt(minutes);
-    const resHours = hoursInt * 60 * 60000;
-    const resMinutes = minutesInt * 60000;
+    const date = DateTime.fromJSDate(this.lastTime);
+    const hours = date.hour
+    const minutes = date.minute;
+    const resHours = hours * 60 * 60000;
+    const resMinutes = minutes * 60000;
     const resMilliseconds = resHours + resMinutes;
-    const total = moment(this.events).valueOf();
+    const total = DateTime.fromJSDate(this.events as Date).valueOf();
 
     this.fromDate = total + resMilliseconds;
     this.isDatesSelected = true;
@@ -552,6 +569,11 @@ export class InputDirectionsComponent implements OnInit {
         lng: data.dropoffLng,
       },
     };
+
+    if (this.isSpecial) {
+      this.getFleetListDetails();
+      return
+    }
 
     (
       await this.auth.apiRest(
@@ -649,6 +671,7 @@ export class InputDirectionsComponent implements OnInit {
 
   private async canCreateOrders() {
     (await this.auth.apiRest('', 'carriers/can_create_orders')).subscribe( res => {
+      this.isSpecial = res.result.canDelayDropOff;
       this.userCanCreateOrders = true;
     }, error => {
       this.userCanCreateOrders = false;
@@ -676,44 +699,31 @@ export class InputDirectionsComponent implements OnInit {
       this.selectMembersToAssign[typeMember].isSelected = false;
     }
 
-    member["isSelected"] = true;
+    member.isSelected = true;
     this.selectMembersToAssign[typeMember] = member;
     this.sendAssignedMermbers.emit({ ...this.selectMembersToAssign });
     this.canGoToSteps = this.isMembersSelected();
   }
 
-  public showFleetContainer(memberType: keyof this) {
+  public showFleetContainer(memberType: keyof this, members?: any[]) {
     this.titleFleetMembers = memberType;
-    this.fleetData = this[memberType];
+    this.fleetData = members || this[memberType];
     this.showFleetMembersContainer = true;
   }
-  // quitar el indesd de esta function
+
   public getMemberSelected(event: any) {
-    this.selectMembersForOrder(event["member"], event["memberType"]);
-    this.sendAssignedMermbers.emit({ ...this.selectMembersForOrder });
+    this.selectMembersForOrder(event.member, event.memberType);
   }
 
   public closeFleetMembers(titleKey: keyof this): boolean {
-    let obj = this[titleKey] as any;
-    let result;
-    for (const [i, iterator] of obj.entries()) {
-      if (this.selectMembersToAssign[titleKey]._id === iterator._id && i > 3) {
-        switch (titleKey) {
-          case "drivers":
-            result = this.drivers.splice(i, 1);
-            this.drivers.unshift(result[0]);
-            break;
-          case "trucks":
-            result = this.trucks.splice(i, 1);
-            this.trucks.unshift(result[0]);
-            break;
-          case "trailers":
-            result = this.trailers.splice(i, 1);
-            this.trailers.unshift(result[0]);
-            break;
-        }
-      }
+    const data = this.fleetData;
+    const picked = this.selectMembersToAssign[titleKey]
+    const idx = data.findIndex((el: any) => el._id === picked._id);
+
+    if (idx >= 0) {
+      data.unshift(...data.splice(idx, 1));
     }
+
     return (this.showFleetMembersContainer = false);
   }
 
@@ -808,12 +818,10 @@ export class InputDirectionsComponent implements OnInit {
     this.autocompleteItemsDropoff = [];
     this.invalidAddressDropoff = false;
 
-    this.savedLocations.show = true;
+    this.showSavedLocations = true;
   }
 
   pickSavedLocation(location: any) {
-    this.savedLocations.show = true;
-
     if (this.activeInput === 'pickup') {
       this.selectSearchResultPickup(location);
     } else {

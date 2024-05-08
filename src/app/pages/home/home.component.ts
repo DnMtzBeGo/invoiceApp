@@ -108,10 +108,11 @@ export class HomeComponent implements OnInit {
     private headerStyle: HeaderService,
     private location: Location,
     public primeService: PrimeService,
-    private locationsService : LocationsService
+    private locationsService: LocationsService
   ) {
     this.placesService.places$;
     this.headerStyle.changeHeader(this.headerTransparent);
+    window.requestAnimationFrame(() => this.mapEmitter.next(['center']));
     this.subs.add(
       this.router.events.subscribe((res) => {
         if (res instanceof NavigationEnd && res.url.startsWith('/home')) {
@@ -124,19 +125,20 @@ export class HomeComponent implements OnInit {
 
           if (data && data.hasOwnProperty('draft')) {
             this.draftData = data.draft;
-            this.locations.pickup = data.draft.pickup.address;
-            this.locations.dropoff = data.draft.dropoff.address;
-            this.locations.pickupLat = data.draft.pickup.lat;
-            this.locations.pickupLng = data.draft.pickup.lng;
-            this.locations.dropoffLat = data.draft.dropoff.lat;
-            this.locations.dropoffLng = data.draft.dropoff.lng;
-            this.locations.pickupPostalCode = data.draft.pickup.zip_code;
-            this.locations.dropoffPostalCode = data.draft.dropoff.zip_code;
-            this.locations.place_id_pickup = data.draft.pickup.place_id_pickup;
-            this.locations.place_id_dropoff = data.draft.dropoff.place_id_dropoff;
+            const [pickup, dropoff] = this.draftData.destinations;
+            this.locations.pickup = pickup.address;
+            this.locations.dropoff = dropoff.address;
+            this.locations.pickupLat = pickup.lat;
+            this.locations.pickupLng = pickup.lng;
+            this.locations.dropoffLat = dropoff.lat;
+            this.locations.dropoffLng = dropoff.lng;
+            this.locations.pickupPostalCode = pickup.zip_code;
+            this.locations.dropoffPostalCode = dropoff.zip_code;
+            this.locations.place_id_pickup = pickup.place_id;
+            this.locations.place_id_dropoff = dropoff.place_id;
             this.typeMap = 'draft';
             window.requestAnimationFrame(() => this.googlemaps.updateDataLocations(this.locations));
-            /* this.showNewOrderCard(); */
+            this.showNewOrderCard();
           } else {
             window.requestAnimationFrame(() => this.mapEmitter.next(['center']));
           }
@@ -216,6 +218,8 @@ export class HomeComponent implements OnInit {
   }
 
   async createDraft() {
+    const dropoffId = this.locations.place_id_dropoff;
+
     const draftPayload = {
       destinations: [
         {
@@ -224,7 +228,7 @@ export class HomeComponent implements OnInit {
         },
         {
           type: 'dropoff',
-          location: await this.getLocationId(this.locations.place_id_dropoff)
+          location: dropoffId ? await this.getLocationId(dropoffId) : undefined
         }
       ],
       stamp: this.userWantCP,
@@ -439,7 +443,6 @@ export class HomeComponent implements OnInit {
           if (this.map.getZoom() + 1 <= this.maxZoom) {
             this.isMapDirty = true;
           }
-          // console.log('zoom:', this.zoom);
         });
 
         this.mapRef.nativeElement.addEventListener(
@@ -487,7 +490,7 @@ export class HomeComponent implements OnInit {
 
     for (var i = 0; i < this.markersFromService.length; i++) {
       if (!this.markersFromService[i].icon || this.markersFromService[i].icon.trim() === '') {
-          this.markersFromService[i].icon = '../assets/images/user-outline.svg';
+        this.markersFromService[i].icon = '../assets/images/user-outline.svg';
       }
 
       const marker = new CustomMarker(
@@ -521,6 +524,9 @@ export class HomeComponent implements OnInit {
   centerCoords: any;
   polygons: any = [];
   circles: any = [];
+  markersPosition: any = [];
+  heatmapPosition: any = [];
+  activeCenter: boolean = false;
 
   getCoordinates({ type, geometry, locations, members }: any) {
     if (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input) {
@@ -535,22 +541,27 @@ export class HomeComponent implements OnInit {
     if (type === 'heatmap') this.addHeatmap(locations);
     else this.addDispersion(members);
     this.createPolygons(geometry.features);
+    this.activeCenter = !!locations?.length || !!members?.length || !!geometry?.features?.length;
+
+    this.centerMap();
     this.openOrderMenu = false;
   }
 
   addHeatmap(heatmapData) {
+    const data = this.coordinatesToLatLng(heatmapData);
+
     this.heatmap = new google.maps.visualization.HeatmapLayer({
-      data: this.coordinatesToLatLng(heatmapData),
+      data,
       dissipating: false,
       map: this.map,
       radius: 0.3
     });
+
+    this.heatmapPosition = data;
   }
 
   createPolygons(geometry) {
     if (!geometry?.length) return;
-
-    const bounds = new google.maps.LatLngBounds();
 
     geometry.forEach((polygon) => {
       const coordinates = polygon.geometry.coordinates[0].map((coord) => {
@@ -572,8 +583,6 @@ export class HomeComponent implements OnInit {
       this.polygons.push(newPolygon);
 
       coordinates.forEach((coordinate) => {
-        bounds.extend(coordinate);
-
         const circle = new google.maps.Marker({
           position: coordinate,
           map: this.map,
@@ -589,8 +598,6 @@ export class HomeComponent implements OnInit {
 
         this.circles.push(circle);
       });
-
-      this.map.fitBounds(bounds);
     });
   }
 
@@ -613,10 +620,9 @@ export class HomeComponent implements OnInit {
 
     this.googleMarkers = [];
 
-    for (var i = 0; i < this.markersFromService.length; i++) {
-      let changePic = this.markersFromService[i].icon.split('');
-      if (changePic[changePic.length - 1] === '/') this.markersFromService[i].icon = '../assets/images/user-outline.svg';
+    this.markersPosition = this.centerCoords.members.map(({ location }) => new google.maps.LatLng(location.lat, location.lng));
 
+    for (var i = 0; i < this.markersFromService.length; i++) {
       const marker = new CustomMarker(
         new google.maps.LatLng(this.markersFromService[i].position.lat, this.markersFromService[i].position.lng),
         this.map,
@@ -631,6 +637,32 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  centerMap() {
+    if (this.activeCenter) {
+      const bounds = new google.maps.LatLngBounds();
+
+      if (this.circles?.length) {
+        this.circles?.forEach((circle) => {
+          bounds.extend(circle.getPosition());
+        });
+      }
+
+      if (this.heatmap) {
+        this.heatmapPosition?.forEach((point) => {
+          bounds.extend(point);
+        });
+      } else {
+        this.markersPosition?.forEach((marker) => {
+          bounds.extend(marker);
+        });
+      }
+
+      this.map.fitBounds(bounds);
+    } else {
+      this.map.panTo(new google.maps.LatLng(19.432608, -99.133209));
+    }
+  }
+
   clearMap(): void {
     this.googleMarkers?.forEach((marker) => {
       marker.setMap(null);
@@ -639,6 +671,16 @@ export class HomeComponent implements OnInit {
 
     this.markersFromService = [];
     this.googleMarkers = [];
+    this.heatmapPosition = [];
+    this.markersPosition = [];
+
+    this.heatmapPosition.forEach((point) => {
+      point.setMap(null);
+    });
+
+    this.markersPosition.forEach((point) => {
+      point.setMap(null);
+    });
 
     if (this.heatmap) this.heatmap.setMap(null);
 
@@ -652,7 +694,7 @@ export class HomeComponent implements OnInit {
       this.circles.forEach((circle) => {
         circle.setMap(null);
       });
-      this.circles = []; // Limpiar el array de referencias a los círculos
+      this.circles = [];
     }
 
     this.openOrderMenu = true;
