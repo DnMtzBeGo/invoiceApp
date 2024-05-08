@@ -6,6 +6,7 @@ import { BegoSliderDotsOpts } from 'src/app/shared/components/bego-slider-dots/b
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from "@angular/common/http";
 import { HttpHeaders } from '@angular/common/http';
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: "bego-menu",
@@ -48,7 +49,7 @@ export class MenuComponent implements OnInit {
     }
   ];
 
-  constructor(public router: Router, public primeService: PrimeService, private translateService: TranslateService, private http: HttpClient) {}
+  constructor(public router: Router, public primeService: PrimeService, private translateService: TranslateService, private http: HttpClient, private webService: AuthService) {}
 
   ngOnInit(): void {}
 
@@ -92,7 +93,7 @@ export class MenuComponent implements OnInit {
   }
 
   handlePrimeModal(redirectRoute: string) {
-    if (!this.primeService.isPrime) {
+    if (this.primeService.isPrime) {
       this.router.navigate([redirectRoute]);
     } else {
       this.checkUserPrimeStatus();
@@ -100,23 +101,8 @@ export class MenuComponent implements OnInit {
     }
   }  
 
-  checkUserPrimeStatus() {
-    const url = "https://mavs.bego.ai/v1.0/carriers/home";
-    const headers = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
-    });
-  
-    const body = {
-      getLoader: false,
-      loader: false,
-      timeout: 30000,
-      retry: 0,
-      route: "",
-      lang: "en"
-    };
-  
-    this.http.post<any>(url, body, { headers }).subscribe(
+  async checkUserPrimeStatus() {
+    (await this.webService.apiRest('', 'carriers/home')).subscribe(
       (response) => {
         if (response && response.result.manager_had_trial === true) {
           this.freeTrialButtonKey = 'menu.free-trial-btn-upgraded';
@@ -160,27 +146,12 @@ export class MenuComponent implements OnInit {
     this.showPrimeModal = false;
   }  
 
-  confirmSuscription(event: string) {
+  async confirmSuscription(event: string) {
     try {
       if (event === 'cancel') {
         this.showConfirmModal = false;
       } else if (event === 'done') {
-        const url = "https://mavs.bego.ai/v1.0/carriers/home";
-        const headers = new HttpHeaders({
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
-        });
-      
-        const body = {
-          getLoader: false,
-          loader: false,
-          timeout: 30000,
-          retry: 0,
-          route: "",
-          lang: "en"
-        };
-      
-        this.http.post<any>(url, body, { headers }).subscribe(
+        (await this.webService.apiRest('', 'carriers/home')).subscribe(
           (response) => {
             if (response && response.result.manager_had_trial === true) {
               this.requestPrime();
@@ -200,14 +171,8 @@ export class MenuComponent implements OnInit {
     this.showConfirmModal = false;
   }    
 
-  public requestFreeTrial(): void {
-    const url = `${environment.URL_BASE}carriers/request_free_trial`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
-    });
-  
-    this.http.post<any>(url, {}, { headers: headers }).subscribe(
+  public async requestFreeTrial(): Promise<void> {
+    (await this.webService.apiRest('', 'carriers/request_free_trial')).subscribe(
       (response) => {
         if (response && response) {
           this.showSuccessfulModal = true;
@@ -222,14 +187,8 @@ export class MenuComponent implements OnInit {
     );
   }  
 
-  public requestPrime(): void {
-    const url = `${environment.URL_BASE}carriers/request_prime`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token') ?? ''}`
-    });
-  
-    this.http.post<any>(url, {}, { headers: headers }).subscribe(
+  public async requestPrime(): Promise<void> {
+    (await this.webService.apiRest('', 'carriers/request_prime')).subscribe(
       (response) => {
         this.showSuccessfulModal = true;
       },
