@@ -59,15 +59,6 @@
       {{ "menu.drafts" | translate }}
     </div> -->
 
-    <div class="menu-option" [ngClass]="{ selected: router.url == '/history' }" (click)="goTo('history')">
-      <app-button class="btn-menu icon icon-history icon-only"></app-button>
-      {{ 'menu.history' | translate }}
-    </div>
-    <div class="menu-option" [ngClass]="{ selected: router.url == '/payments' }" (click)="goTo('payments')">
-      <app-button class="btn-menu icon icon-money icon-only"></app-button>
-      {{ 'menu.payments' | translate }}
-    </div>
-
     <!-- <app-button class="btn-menu icon icon-referals" (click)="goTo('referals')"></app-button> -->
 
 
