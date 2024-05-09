@@ -384,6 +384,7 @@
   </div>
 
   <app-fleet-members
+    *ngIf="!showMapPreview"
     [ngClass]="showFleetMembersContainer ? 'show-fleet-members' : ''"
     [titleFleetMembers]="titleFleetMembers"
   >
