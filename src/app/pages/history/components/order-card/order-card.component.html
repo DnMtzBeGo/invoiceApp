@@ -27,8 +27,8 @@
       </div>
       <div class="order-status">
         <p class="status-text">
-          <i class="icon icon-dot" [ngClass]="statusListData.statusList[language][order.status]?.general.class"></i>
-          {{statusListData.statusList[language][order.status]?.general.text}}
+          <i class="icon icon-dot" [ngClass]="order.status_class"></i>
+        {{order.status_string}}
         </p>
       </div>
   </div>
