@@ -7,15 +7,60 @@ section {
 }
 
 .user-yellow-circle {
-    border: #FFEE00 solid 1px;
+    
+    box-shadow: 0 0 0 5px #000000, 0 0 0 6px #FFEE00;
     border-radius: 50%;
-    margin-inline-start: 7px;
-    width: 72px;
-    height: 72px;
+    margin-inline-start: 12px;
+    width: 67px;
+    height: 67px;
     background-size: cover;
     background-position: center;
 }
 
 .user-message-gradient-container {
     @include gradient-background;
+
+    .file-container-border-gradient {
+        @include gradient-background;
+        margin-block-start: 18px;
+
+        ::ng-deep bego-icon {
+            display: grid;
+            place-items: center;
+
+            i {
+                font-size: 20px;
+                color: #080C0F;
+            }
+          }
+
+        > div:first-child {
+            @include flexbox-align(row, flex-start, center);
+
+            > div:nth-child(1) {
+                background-color: #FFF930;
+                border-radius: 10px;
+                width: 40px;
+                height: 38px;
+                display: grid;
+                place-items: center;
+            }
+            
+            
+            > div:nth-child(2) {
+                @include flexbox-align(column, center, flex-start);
+                margin-inline: 8px;
+               
+
+
+                > span:nth-child(2) {
+                    color: #606060;
+                    
+                    
+               
+                }
+            }
+        }
+       
+    }
 }

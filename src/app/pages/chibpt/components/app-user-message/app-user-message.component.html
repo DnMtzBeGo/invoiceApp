@@ -1,7 +1,19 @@
 <section>
     <div class="user-message-gradient-container">
         <div>
-            <p>user: {{message}}</p>
+            <p>{{message}}</p>
+            <div class="file-container-border-gradient" *ngIf="file">
+                <div>
+                    <div>
+
+                        <bego-icon icon="begon-full-document-right"></bego-icon>
+                    </div>
+                    <div>
+                        <span>{{file}} </span>
+                        <span>{{format}}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="user-yellow-circle" [style.background-image]="'url(' + profilePicture + ')'"></div>
