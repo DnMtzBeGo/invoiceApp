@@ -19,10 +19,17 @@ section {
 
 .user-message-gradient-container {
     @include gradient-background;
+    
+    p {
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 1.6;
+    }
 
     .file-container-border-gradient {
         @include gradient-background;
         margin-block-start: 18px;
+        cursor: pointer;
 
         ::ng-deep bego-icon {
             display: grid;

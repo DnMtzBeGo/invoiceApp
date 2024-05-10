@@ -188,6 +188,29 @@ $font-url: 'assets/fonts/avenir/';
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/gotham/Gotham.woff2') format("woff2"), url('./assets/fonts/gotham/Gotham.woff') format("woff"), url('./assets/fonts/gotham/Gotham.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/gotham/GothamLight.woff2') format("woff2"), url('./assets/fonts/gotham/GothamLight.woff') format("woff"), url('./assets/fonts/gotham/GothamLight.ttf') format("truetype");
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/gotham/GothamBold.woff2') format("woff2"), url('./assets/fonts/gotham/GothamBold.woff') format("woff"), url('./assets/fonts/gotham/GothamBold.ttf') format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Gotham-Medium';
+  src: url('./assets/fonts/gotham/Gotham-Medium.woff2') format("woff2"), url('./assets/fonts/gotham/Gotham-Medium.woff') format("woff"), url('./assets/fonts/gotham/Gotham-Medium.ttf') format("truetype");
+  font-weight: 600;
+}
+
 // =============================================================================
 // Media Querries
 // =============================================================================

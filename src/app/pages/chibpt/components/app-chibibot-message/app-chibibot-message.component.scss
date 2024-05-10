@@ -17,4 +17,10 @@ section {
 
 .chibibot-message-gradient-container {
     @include gradient-background;
+
+    p {
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 1.6;
+    }
 }
