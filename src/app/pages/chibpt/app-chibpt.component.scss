@@ -1,3 +1,5 @@
+@import '../../../styles.scss';
+
 .container { 
   display: flex;
   justify-content: center;
@@ -7,5 +9,9 @@
 
   .container-app-threads {
     flex-basis: 100%;
+  }
+  
+  main {
+    @include flexbox-align(row, center, center);
   }
 }

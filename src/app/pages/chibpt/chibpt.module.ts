@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ChibptRoutingModule } from './chibpt-routing.module';
 import { AppChibptComponent } from './app-chibpt.component';
 import { AppChatChibptComponent } from './containers/app-chat-chibpt/app-chat-chibpt.component';
@@ -12,9 +11,6 @@ import { HistoryChibptComponent } from './components/history-chibpt/history-chib
 import { BegoIconsModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
 import { TranslateModule } from '@ngx-translate/core';
-
-
-
 
 @NgModule({
   declarations: [
