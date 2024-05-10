@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./app-chat-chibpt.component.scss']
 })
 export class AppChatChibptComponent {
-  @Input() message: string;
+  @Input() messages: string;
 }

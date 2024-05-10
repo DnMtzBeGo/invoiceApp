@@ -1,1 +1,5 @@
-<app-app-threads [messages]="messages"></app-app-threads>
+<main>
+
+    <app-app-chat-chibpt class="conversation-container-component" [ngClass]="{ 'hiddenHistory': isHistoryHidden, 'visibleHistory': !isHistoryHidden }" [messages]="messages"></app-app-chat-chibpt>
+    
+</main>

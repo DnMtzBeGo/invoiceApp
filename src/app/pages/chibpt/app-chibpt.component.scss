@@ -1,0 +1,6 @@
+@import '../../../styles.scss';
+
+main {
+    @include flexbox-align(row, center, center);
+  
+}
