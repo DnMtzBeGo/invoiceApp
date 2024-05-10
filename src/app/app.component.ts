@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { AlertService } from './shared/services/alert.service';
 import * as AOS from 'aos';
 import { uiComponentsConfig } from '@begomx/ui-components';
+import { Router } from '@angular/router';
 
 interface IncompatibleBrowserVersion {
   /**
@@ -42,7 +43,11 @@ export class AppComponent {
 
   minWidthResolution = 1024;
 
-  constructor(private languageService: LanguageService, private alertService: AlertService, profileInfoService: ProfileInfoService) {
+  constructor(
+    private languageService: LanguageService, 
+    private alertService: AlertService,
+    profileInfoService: ProfileInfoService,
+    public router: Router) {
     this.alert$ = this.alertService.alert$;
 
     languageService.setInitialLanguage();

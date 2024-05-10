@@ -1,8 +1,10 @@
 <span *ngIf="!(showSmallResolutionModal || showIncompatibleBrowserModal)">
   <bego-menu id="menu"></bego-menu>
-  <section id="container">
+  <section id="container" [ngClass]="{'full-height' : router?.url === '/chibpt'}">
     <bego-navigation [notificationBarToggle]=""></bego-navigation>
-    <router-outlet></router-outlet>
+    <div [ngClass]="{'full-height-child' : router?.url === '/chibpt'}">
+      <router-outlet></router-outlet>
+    </div>
     <app-notification-bar></app-notification-bar>
   </section>
 </span>

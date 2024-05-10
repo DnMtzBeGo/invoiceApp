@@ -64,7 +64,7 @@
     </div>
 
     <div class="menu-option" *ngIf="primeService.isPrime" [ngClass]="{ selected: router.url.startsWith('/tags') }" (click)="goTo('tags')">
-      <bego-icon icon="begon-tag ui-icon"></bego-icon>
+      <app-button class="btn-menu icon icon-tags icon-only"></app-button>
       {{ 'menu.tags' | translate }}
     </div>
 
@@ -81,7 +81,6 @@
       {{ "menu.support" | translate }}
     </div> -->
 
-    <bego-icon icon="begon-tag"></bego-icon>
     <div class="separator"></div>
     <!-- <div
       class="menu-option"
