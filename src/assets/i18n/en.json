@@ -1894,5 +1894,17 @@
       "btn-confirm": "Confirm",
       "btn-cancel": "Cancel"
     }
+  },
+  "chibpt": {
+    "history": {
+      "title": "Chat History",
+      "timestamp": {
+        "today": "Today",
+        "last-week": "Last week",
+        "last-month": "Last Month"
+      },
+      "edit": "Edit Chat Name",
+      "delete": "Delete Chat"
+    }
   }
 }

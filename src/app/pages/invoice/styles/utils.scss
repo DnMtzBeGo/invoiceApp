@@ -211,6 +211,41 @@
   }
 }
 
+.mat-menu-panel.brand-menu-2 {
+  border-radius: 26px;
+  position: relative;
+  padding: 5px 8px;
+  background: linear-gradient(to right, #191C1E 0%, #333537 25%, #5F6162 50%, #565757 75%, #343536 100%);
+  width: 193px;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: calc(100% - 1.5px);
+    height: calc(100% - 1.5px);
+    background-color: #0D0F11;
+  }
+
+
+  .mat-menu-item {
+    color: rgba(255, 255, 255, 0.54);
+    font-size: 14px;
+    font-weight: 350;
+    line-height: 19.12px;
+    letter-spacing: 0.5px;
+    
+    &:not(:last-child) {
+      // border-bottom: 1px solid #1c232a;
+    }
+
+    &:hover:not([disabled]) {
+
+    }
+  }
+}
+
 .mat-tooltip.brand-tooltip-1 {
   padding: 12px 14px;
   color: #ededed;

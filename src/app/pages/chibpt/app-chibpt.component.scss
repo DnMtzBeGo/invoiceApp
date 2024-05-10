@@ -1,6 +1,17 @@
 @import '../../../styles.scss';
 
-main {
-    @include flexbox-align(row, center, center);
+.container { 
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  height: 100%;
+  padding-bottom: 44px;
+
+  .container-app-threads {
+    flex-basis: 100%;
+  }
   
+  main {
+    @include flexbox-align(row, center, center);
+  }
 }
