@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { ChibptRoutingModule } from './chibpt-routing.module';
 import { AppChibptComponent } from './app-chibpt.component';
@@ -8,6 +9,7 @@ import { AppThreadsComponent } from './components/app-threads/app-threads.compon
 import { AppFrecuentPrompsComponent } from './components/app-frecuent-promps/app-frecuent-promps.component';
 import { AppUserMessageComponent } from './components/app-user-message/app-user-message.component';
 import { AppChibibotMessageComponent } from './components/app-chibibot-message/app-chibibot-message.component';
+import { BegoIconsModule } from '@begomx/ui-components';
 
 
 
@@ -23,7 +25,9 @@ import { AppChibibotMessageComponent } from './components/app-chibibot-message/a
   ],
   imports: [
     CommonModule,
-    ChibptRoutingModule
+    ChibptRoutingModule,
+    BegoIconsModule, 
+    FormsModule
   ]
 })
 export class ChibptModule { }

@@ -1,1 +1,11 @@
-<app-app-threads [messages]="messages"></app-app-threads>
+<main>
+
+    <app-app-chat-chibpt class="conversation-container-component" ></app-app-chat-chibpt>
+    <div class="input-container">
+        <form (ngSubmit)="sendMessage()">
+            <textarea [(ngModel)]="messageToSend" name="messageToSend"></textarea>
+            <button type="submit">send :3</button>
+        </form>
+    </div>
+    
+</main>

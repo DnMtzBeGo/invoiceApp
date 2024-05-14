@@ -6,9 +6,14 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./app-threads.component.scss']
 })
 export class AppThreadsComponent {
-  @Input() messages: {sender:string, content: string }[] = [];
+  @Input() messages: {role:string, content: string }[] = [];
 
-  getMessageComponentType(sender: string) {
-    return sender === 'bot' ? 'app-app-chibibot-message' : 'app-app-user-message';
+  
+
+  getMessageComponentType(role: string) {
+    return role === 'assistant' ? 'app-app-chibibot-message' : 'app-app-user-message';
+    console.log('estamos dentrode get messg component type');
+   
+    
   }
 }
