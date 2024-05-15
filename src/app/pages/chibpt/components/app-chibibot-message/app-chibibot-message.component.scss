@@ -1,7 +1,8 @@
 @import '../../../../../styles.scss';
 
 section {
-    @include flexbox-align(row, flex-start, center);
+    @include flexbox-align(row, flex-start, flex-end);
+    padding-block: 20px;
     width: 100%;
 }
 
@@ -11,12 +12,15 @@ section {
     margin-inline-end: 7px;
     width: 72px;
     height: 72px;
+    padding: 5px;
 }
 
 .chibibot-message-gradient-container {
     @include gradient-background;
-}
 
-button {
-    background-color: palevioletred;
+    p {
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 1.6;
+    }
 }
