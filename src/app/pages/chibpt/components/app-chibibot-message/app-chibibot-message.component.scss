@@ -16,3 +16,7 @@ section {
 .chibibot-message-gradient-container {
     @include gradient-background;
 }
+
+button {
+    background-color: palevioletred;
+}

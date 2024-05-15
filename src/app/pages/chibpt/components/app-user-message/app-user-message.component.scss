@@ -17,3 +17,7 @@ section {
 .user-message-gradient-container {
     @include gradient-background;
 }
+
+button {
+    background-color: plum;
+}

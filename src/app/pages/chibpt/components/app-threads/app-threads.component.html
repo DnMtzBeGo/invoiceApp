@@ -1,6 +1,34 @@
 <main>
     <h2>ChiBPT</h2>
+
+    <section class="chibi-chatbot-section" *ngIf="messages.length === 0">
+        <img src="assets/images/chibpt/chibi-chatbot.svg" alt="Chibi Chatbot">
+    </section>
+    <section class="chibibot-conversation-section"  *ngIf="messages.length > 0">
+        <ng-container *ngFor="let message of messages">
+            <ng-container *ngIf="message.role === 'user'">
+                <app-app-user-message [message]="message.content"></app-app-user-message>
+            </ng-container>
+            <ng-container *ngIf="message.role === 'assistant'">
+                <app-app-chibibot-message [message]="message.content"></app-app-chibibot-message>
+            </ng-container>
+        </ng-container>
+    </section>
+    
+    <div class="input-container">
+        <form (ngSubmit)="createChat()">
+            <textarea [(ngModel)]="messageToSend" name="messageToSend"></textarea>
+            <button type="submit">send :3</button>
+        </form>
+    </div>
+</main>
+
+<!--
+<main>
+    <h2>ChiBPT</h2>
+
     <p>{{ messages }}</p>
+
     <section class="chibi-chatbot-section" *ngIf="messages.length === 0">
         <img src="assets/images/chibpt/chibi-chatbot.svg" alt="Chibi Chatbot">
     </section>
@@ -14,4 +42,6 @@
             </ng-container>
         </ng-container>
     </section>
+    
 </main>
+-->

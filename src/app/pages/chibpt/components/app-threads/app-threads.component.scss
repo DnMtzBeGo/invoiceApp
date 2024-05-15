@@ -6,13 +6,13 @@
 main {
     height: 100%;
     width: 100%;
-    border: plum solid 1px;
 
     h2 {
         font-size: 38px;
         font-weight: 700;
         width: 100%;
-        margin-block-end: 30px;
+        margin-block: 70px;
+        padding-inline: 30px;
     }
 }
 
@@ -20,7 +20,6 @@ main {
     width: 346px;
     height: 195px;
     margin: calc((100% - 346px) / 2);
-    border: palevioletred solid 1px;
 
     img {
         width: 100%;

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-app-chibpt',
@@ -7,16 +6,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./app-chibpt.component.scss']
 })
 export class AppChibptComponent {
-  private chatStartEndpoint = 'https://rocket.bego.ai/v1.1/assistant/start_chat';
-  private chatEndpoint = 'https://rocket.bego.ai/v1.1/assistant/chat';
 
-  private conversationId: string | null = null;
 
-  constructor( private http: HttpClient ) {}
-
-  messageToSend: string = '';
+  constructor( ) {}
+/*
+messageToSend: string = '';
   messages: any[] = [];   //*tipar esto !!!!!!!!!
+*/
 
+  /*
   sendMessage() {
     console.log('este es el m,ensaje', this.messageToSend);
 
@@ -32,8 +30,10 @@ export class AppChibptComponent {
       });
   
       console.log('tyhis is the first body!!!!!', body)
+
       this.http.post<any>(this.chatStartEndpoint, body, { headers }).subscribe(
         response => {
+
           this.messages.push({ role: 'user', content: this.messageToSend });
           this.messages.push({ role: response.result.role, content: response.result.content });
           this.messageToSend = "";
@@ -77,4 +77,5 @@ export class AppChibptComponent {
     }
 
   }
+  */
 }

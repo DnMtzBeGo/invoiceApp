@@ -6,5 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./app-chibibot-message.component.scss']
 })
 export class AppChibibotMessageComponent {
+
   @Input() message: string;
+
 }

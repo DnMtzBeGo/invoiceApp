@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./app-user-message.component.scss']
 })
 export class AppUserMessageComponent {
+ 
   @Input() message: string;
 
 }
