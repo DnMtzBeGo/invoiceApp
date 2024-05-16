@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -8,8 +8,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HistoryChibptComponent implements OnInit {
 
+  @Input() openHistoryChat: boolean = false;
+
   public lang:string = 'en';
-  public openHistoryChat: boolean = false;
 
   constructor(
     private translateService: TranslateService
