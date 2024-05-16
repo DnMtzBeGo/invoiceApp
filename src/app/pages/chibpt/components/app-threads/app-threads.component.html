@@ -19,13 +19,19 @@
     <bego-chat-box (sendData)="createChat()($event)">
     </bego-chat-box>
     -->
+    <section class="input-section">
+
+        <div class="input-container">
+            <div>
     
-    <div class="input-container">
-        <form (ngSubmit)="createChat()">
-            <textarea [(ngModel)]="messageToSend" name="messageToSend"></textarea>
-            <button type="submit">send :3</button>
-        </form>
-    </div>
+                <form (ngSubmit)="createChat()">
+                    <textarea [(ngModel)]="messageToSend" name="messageToSend" placeholder="Send a message to ChibiPT"></textarea>
+                    <button type="submit">send</button>
+                </form>
+            </div>
+        </div>
+        <p>ChibiPT can make mistakes. Consider checking important information</p>
+    </section>
 </main>
 
 <!--
