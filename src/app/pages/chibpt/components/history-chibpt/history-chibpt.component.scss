@@ -25,7 +25,8 @@ button {
   height: 100%;
   border-radius: 8px;
   position: relative;
-  // overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
   transition: all 0.3s;
 
   .header {
