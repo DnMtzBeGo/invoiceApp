@@ -1,0 +1,11 @@
+<bego-modal
+  (backEmitter)="back()"
+  (closeEmitter)="actions($event)"
+  [enabledCancel]="true"
+  [enabledClose]="true"
+  [lang]="{ done: 'chibpt.history.modal.done' | translate, cancel: 'chibpt.history.modal.cancel' | translate }"
+  [simple]="{
+    title: 'chibpt.history.modal.title' | translate,
+    subtitle: ('chibpt.history.modal.subtitle' | translate) + title
+  }">
+</bego-modal>

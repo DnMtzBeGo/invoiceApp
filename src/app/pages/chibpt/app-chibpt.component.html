@@ -5,5 +5,5 @@
     </main>
     <button class="open-history" (click)="toggleHistory()"></button>
   </div>
-  <app-history-chibpt [openHistoryChat]="isHistoryHidden"></app-history-chibpt>
+  <app-history-chibpt [openHistoryChat]="isHistoryHidden" (selectedHistoryEmitter)="loadChat($event)"></app-history-chibpt>
 </div>
