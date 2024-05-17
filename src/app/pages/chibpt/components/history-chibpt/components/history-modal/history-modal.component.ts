@@ -20,7 +20,8 @@ export class HistoryModalComponent {
     public dialogRef: MatDialogRef<HistoryModalComponent>,
     private apiRestService: AuthService
   ) {
-    this.title = `"${this.data.title}"`;
+    this.title = this.data.title.length > 144 ? this.data.title.slice(0, 144) + '...' : this.data.title;
+    this.title = `"${this.title}"`;
   }
 
   async deleteHistory() {
