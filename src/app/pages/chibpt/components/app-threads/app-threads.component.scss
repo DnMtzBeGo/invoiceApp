@@ -15,15 +15,24 @@ main {
         font-size: 38px;
         font-weight: 700;
         width: 100%;
-        margin-block: 70px;
+        margin-block: 1rem;
         padding-inline: 30px;
     }
+}
+
+.top-section {
+    width: 100%;
+    height: calc(100vh - 240px);
+    /*
+    height: calc(100% - 136px); 
+    
+    */
 }
 
 .chibi-chatbot-section {
     width: 346px;
     height: 195px;
-    margin: calc((100% - 346px) / 2);
+    margin-inline: calc((100% - 346px) / 2);
 
     img {
         width: 100%;
@@ -37,7 +46,7 @@ main {
 }
 
 .input-section {
-    background-color: #0D0F11;
+    background-color: #050B10;
     height: 136px;
     width: 100%;
     position: fixed;
@@ -88,7 +97,7 @@ main {
             }
     
             button {
-                background-color: #E6AB00;
+                background-color: #FCEE50;
                 width: 115px;
                 height: 36px;
                 border-radius: 28px;
