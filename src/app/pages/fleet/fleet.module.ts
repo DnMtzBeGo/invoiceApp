@@ -64,6 +64,7 @@ import { PrimeCardComponent } from './components/prime-card/prime-card.component
     BegoButtonModule,
     BegoModalModule,
     BegoIconsModule
-  ]
+  ],
+  exports: [FleetPageComponent]
 })
 export class FleetModule {}
