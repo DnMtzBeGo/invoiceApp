@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -7,9 +7,6 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./app-threads.component.scss']
 })
 export class AppThreadsComponent  {
-  /*
-  @Input() messages: { role: string, content: string }[] = [];
-  */
 
   private conversationId: string | null = null;
 
@@ -19,69 +16,36 @@ export class AppThreadsComponent  {
   constructor( private authService: AuthService ) { }
 
   async createChat(userInput) {
-    console.log('este es el m,ensaje', this.messageToSend);
-    console.log(userInput);
     this.messageToSend = userInput.message;
 
     if(!this.conversationId) {
-      console.log('we are in if conditional and conversationiId is empty');
       const body = { "message": this.messageToSend };
-      console.log('tyhis is the first body!!!!!', body);
       (await this.authService.apiRest(JSON.stringify(body), 'assistant', {apiVersion: 'v1.1'})).subscribe(
         {next: (response) => {
           this.messages.push({ role: 'user', content: this.messageToSend });
           this.messages.push({ role: response.result.role, content: response.result.content });
           this.messageToSend = "";
-          //hasta aca
           this.conversationId = response.result.conversation_id;
-  
-          console.log('este es el id owo', this.conversationId);
-          console.log('this is the response of chatGPT OwO', response);
-          console.log(this.messages);
         },
         error: (error) => {
-          console.error('Error sending mssg U.U', error);
+          console.error('Error sending message', error);
         }
       }
       )
     } else {
-      console.log('we are inside else conditional and we have a conversation id !!!! owo');
       const body = { "message": this.messageToSend };
       const url = `assistant/${this.conversationId}`;
       (await this.authService.apiRestPut(JSON.stringify(body), url, {apiVersion: 'v1.1'})).subscribe(
         {next: (response) => {
           this.messages.push({ role: 'user', content: this.messageToSend });
           this.messages.push({ role: response.result.role, content: response.result.content });
-         // this.conversationId = response.result.conversation_id;
           this.messageToSend = "";
-  
-          //console.log('este es el id owo', this.conversationId);
-          console.log('this is the response of chatGPT OwO', response);
-          console.log(this.messages);
-
         },
         error: (error) => {
-          console.error('Error sending mssg u.u', error);
+          console.error('Error sending message', error);
         }
       }
       )
-
     }
-
   }
-
-  /*
-  logMessages() {
-    console.log('this is messages[s] content OwO:', this.messages);
-  }
-  */
-
-  /*
-  getMessageComponentType(role: string) {
-    return role === 'assistant' ? 'app-app-chibibot-message' : 'app-app-user-message';
-    console.log('estamos dentrode get messg component type');
-   
-    
-  }
-  */
 }

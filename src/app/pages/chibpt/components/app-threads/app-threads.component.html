@@ -22,40 +22,6 @@
         
         <bego-chat-box (sendData)="createChat($event)">
         </bego-chat-box>
-        <!--
-        <div class="input-container">
-            <div>
-    
-                <form (ngSubmit)="createChat()">
-                    <textarea [(ngModel)]="messageToSend" name="messageToSend" placeholder="Send a message to ChibiPT"></textarea>
-                    <button type="submit">send</button>
-                </form>
-            </div>
-        </div>
-        -->
         <p>ChibiPT can make mistakes. Consider checking important information</p>
     </section>
 </main>
-
-<!--
-<main>
-    <h2>ChiBPT</h2>
-
-    <p>{{ messages }}</p>
-
-    <section class="chibi-chatbot-section" *ngIf="messages.length === 0">
-        <img src="assets/images/chibpt/chibi-chatbot.svg" alt="Chibi Chatbot">
-    </section>
-    <section class="chibibot-conversation-section" *ngIf="messages.length > 0">
-        <ng-container *ngFor="let message of messages">
-            <ng-container *ngIf="message.role === 'user'">
-                <app-app-user-message [message]="message.content" [file]="message.files" [format]="message.format"></app-app-user-message>
-            </ng-container>
-            <ng-container *ngIf="message.role === 'assistant'">
-                <app-app-chibibot-message [message]="message.content"></app-app-chibibot-message>
-            </ng-container>
-        </ng-container>
-    </section>
-    
-</main>
--->
