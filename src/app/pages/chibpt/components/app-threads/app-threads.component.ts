@@ -18,13 +18,16 @@ export class AppThreadsComponent  {
 
   constructor( private authService: AuthService ) { }
 
-  async createChat() {
+  async createChat(userInput) {
     console.log('este es el m,ensaje', this.messageToSend);
+    console.log(userInput);
+    this.messageToSend = userInput.message;
+
     if(!this.conversationId) {
       console.log('we are in if conditional and conversationiId is empty');
       const body = { "message": this.messageToSend };
       console.log('tyhis is the first body!!!!!', body);
-      (await this.authService.apiRest(JSON.stringify(body), 'assistant/start_chat', {apiVersion: 'v1.1'})).subscribe(
+      (await this.authService.apiRest(JSON.stringify(body), 'assistant', {apiVersion: 'v1.1'})).subscribe(
         {next: (response) => {
           this.messages.push({ role: 'user', content: this.messageToSend });
           this.messages.push({ role: response.result.role, content: response.result.content });
@@ -44,7 +47,7 @@ export class AppThreadsComponent  {
     } else {
       console.log('we are inside else conditional and we have a conversation id !!!! owo');
       const body = { "message": this.messageToSend };
-      const url = `assistant/chat/${this.conversationId}`;
+      const url = `assistant/${this.conversationId}`;
       (await this.authService.apiRestPut(JSON.stringify(body), url, {apiVersion: 'v1.1'})).subscribe(
         {next: (response) => {
           this.messages.push({ role: 'user', content: this.messageToSend });

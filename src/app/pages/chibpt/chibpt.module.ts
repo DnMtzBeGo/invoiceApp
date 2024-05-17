@@ -9,9 +9,7 @@ import { AppThreadsComponent } from './components/app-threads/app-threads.compon
 import { AppFrecuentPrompsComponent } from './components/app-frecuent-promps/app-frecuent-promps.component';
 import { AppUserMessageComponent } from './components/app-user-message/app-user-message.component';
 import { AppChibibotMessageComponent } from './components/app-chibibot-message/app-chibibot-message.component';
-/*
-import { BegoChatBox, BegoIconsModule } from '@begomx/ui-components';
-*/
+import { BegoChatBoxModule, BegoIconsModule } from '@begomx/ui-components';
 
 
 
@@ -31,13 +29,9 @@ import { BegoChatBox, BegoIconsModule } from '@begomx/ui-components';
   imports: [
     CommonModule,
     ChibptRoutingModule,
-    /*
-    BegoIconsModule, 
-    */
+    BegoIconsModule,
     FormsModule,
-    /*
-    BegoChatBox
-    */
+    BegoChatBoxModule
   ]
 })
 export class ChibptModule { }
