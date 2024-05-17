@@ -1908,7 +1908,13 @@
         "last-month": "Último mes"
       },
       "edit": "Renombrar",
-      "delete": "Borrar "
+      "delete": "Borrar ",
+      "modal": {
+        "title": "¿Deseas eliminar el chat?",
+        "subtitle": "Esto eliminará ",
+        "done": "Eliminar",
+        "cancel": "Cancelar"
+      }
     }
   }
 }

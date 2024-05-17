@@ -11,6 +11,8 @@ import { HistoryChibptComponent } from './components/history-chibpt/history-chib
 import { BegoIconsModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
 import { TranslateModule } from '@ngx-translate/core';
+import { HistoryModalModule } from './components/history-chibpt/components/history-modal/history-modal.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,10 +26,13 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
     ChibptRoutingModule,
     BegoIconsModule,
     AppMaterialModule,
-    TranslateModule
+    TranslateModule,
+    HistoryModalModule
   ]
 })
 export class ChibptModule { }

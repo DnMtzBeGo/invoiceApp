@@ -1904,7 +1904,13 @@
         "last-month": "Last Month"
       },
       "edit": "Edit Chat Name",
-      "delete": "Delete Chat"
+      "delete": "Delete Chat",
+      "modal": {
+        "title": "Do you want to delete the chat?",
+        "subtitle": "This will remove ",
+        "done": "Delete",
+        "cancel": "Cancel"
+      }
     }
   }
 }
