@@ -22,6 +22,7 @@ main {
     width: 100%;
     height: calc(100vh - 240px);
     overflow-y: scroll;
+    padding: 15px;
 }
 
 .chibi-chatbot-section {
@@ -42,9 +43,7 @@ main {
 
 .input-section {
     background-color: #050B10;
-    height: 136px;
     width: 100%;
-    position: fixed;
     bottom: 0;
     left: 0;
     padding-block-end: 37px;
