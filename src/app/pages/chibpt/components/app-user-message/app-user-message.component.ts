@@ -10,7 +10,6 @@ export class AppUserMessageComponent {
   @Input() message: string;
   @Input() file: string;
   @Input() format: string;
-  profilePicture: SafeUrl = localStorage.getItem("profilePicture") ?? "/assets/images/user-outline.svg"
-
+  @Input() files: File[] = [];
+  profilePicture: SafeUrl = localStorage.getItem('profilePicture') ?? '/assets/images/user-outline.svg';
 }
-

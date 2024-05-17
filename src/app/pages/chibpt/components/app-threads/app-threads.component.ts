@@ -17,12 +17,13 @@ export class AppThreadsComponent  {
 
   async createChat(userInput) {
     this.messageToSend = userInput.message;
+    const files=userInput.files;
 
     if(!this.conversationId) {
       const body = { "message": this.messageToSend };
       (await this.authService.apiRest(JSON.stringify(body), 'assistant', {apiVersion: 'v1.1'})).subscribe(
         {next: (response) => {
-          this.messages.push({ role: 'user', content: this.messageToSend });
+          this.messages.push({ role: 'user', content: this.messageToSend, files });
           this.messages.push({ role: response.result.role, content: response.result.content });
           this.messageToSend = "";
           this.conversationId = response.result.conversation_id;
@@ -37,7 +38,7 @@ export class AppThreadsComponent  {
       const url = `assistant/${this.conversationId}`;
       (await this.authService.apiRestPut(JSON.stringify(body), url, {apiVersion: 'v1.1'})).subscribe(
         {next: (response) => {
-          this.messages.push({ role: 'user', content: this.messageToSend });
+          this.messages.push({ role: 'user', content: this.messageToSend, files });
           this.messages.push({ role: response.result.role, content: response.result.content });
           this.messageToSend = "";
         },

@@ -10,6 +10,7 @@ import { AppFrecuentPrompsComponent } from './components/app-frecuent-promps/app
 import { AppUserMessageComponent } from './components/app-user-message/app-user-message.component';
 import { AppChibibotMessageComponent } from './components/app-chibibot-message/app-chibibot-message.component';
 import { BegoChatBoxModule, BegoIconsModule } from '@begomx/ui-components';
+import { FileExtensionPipe } from 'src/app/shared/pipes/file-extension/file-extension.pipe';
 
 
 
@@ -21,7 +22,8 @@ import { BegoChatBoxModule, BegoIconsModule } from '@begomx/ui-components';
     AppThreadsComponent,
     AppFrecuentPrompsComponent,
     AppUserMessageComponent,
-    AppChibibotMessageComponent, 
+    AppChibibotMessageComponent,
+    FileExtensionPipe
     /*
     BegoIconsModule
     */
