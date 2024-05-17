@@ -6,15 +6,13 @@ import { Subject } from 'rxjs';
 })
 export class MapDashboardService {
   getCoordinates = new Subject<any>();
-  updateMap = new Subject<boolean>();
   toggleTraffic = new Subject<void>();
   makeMarker = new Subject<any>();
   clearMap = new Subject<void>();
   getFleetDetails = new Subject<boolean>();
+  centerMap = new Subject();
 
-  startReload = new Subject<void>();
-
-  userRole: string | null = null;
+  userRole: number | null = null;
 
   haveNotFleetMembers = false;
   showFleetMap = true;

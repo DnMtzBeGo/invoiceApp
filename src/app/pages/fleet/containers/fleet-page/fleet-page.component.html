@@ -7,7 +7,7 @@
       <div class="btns-container">
         <button
           id="reset"
-          (click)="mapEmitter.next(['center'])"
+          (click)="updateMap()"
           [ngClass]="{
             'reset-up': mapDashboardService.userRole && mapDashboardService.showFleetMap
           }"

@@ -1,13 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription, Subject, merge, fromEvent, interval } from 'rxjs';
-import { tap, filter, mapTo, exhaustMap, takeUntil } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { PlacesService } from 'src/app/shared/services/places.service';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
 import { HeaderService } from './services/header.service';
-import { ofType } from 'src/app/shared/utils/operators.rx';
 import { OrderPreview } from '../orders/orders.component';
 import { Location } from '@angular/common';
 import { PolygonFilter } from './components/polygon-filter/polygon-filter.component';
@@ -18,8 +16,6 @@ import { LocationsService } from '../../services/locations.service';
 import { MapDashboardService } from '../map-dashboard/map-dashboard.service';
 
 declare var google: any;
-// 10 seconds for refreshing map markers
-const markersRefreshTime = 1000 * 20;
 
 @Component({
   selector: 'app-home',
@@ -32,7 +28,6 @@ const markersRefreshTime = 1000 * 20;
 export class HomeComponent implements OnInit {
   @ViewChild(PolygonFilter) polygonFilter: PolygonFilter;
   @ViewChild(InputDirectionsComponent) inputDirections: InputDirectionsComponent;
-  mostrarBoton = false;
   @Input() locations: GoogleLocation = {
     pickup: '',
     dropoff: '',
@@ -56,12 +51,10 @@ export class HomeComponent implements OnInit {
   public imageFromGoogle: any;
   public membersToAssigned: object = {};
   public userWantCP: boolean = false;
-  public haveNotFleetMembers: boolean = false;
   public haveFleetMembersErrors: Array<string> = [];
 
   // members map logic
   geocoder = new google.maps.Geocoder();
-  mapEmitter = new Subject<['startReload' | 'center' | 'hideFleetMap']>();
   googleMarkers: any[] = [];
   isMapDirty = false;
   start: any;
@@ -104,9 +97,6 @@ export class HomeComponent implements OnInit {
     private locationsService: LocationsService,
     public mapDashboardService: MapDashboardService
   ) {
-    this.headerStyle.changeHeader(this.headerTransparent);
-    window.requestAnimationFrame(() => this.mapEmitter.next(['center']));
-
     this.subs.add(
       this.router.events.subscribe((res) => {
         if (res instanceof NavigationEnd && res.url.startsWith('/home')) {
@@ -134,72 +124,19 @@ export class HomeComponent implements OnInit {
             window.requestAnimationFrame(() => this.googlemaps.updateDataLocations(this.locations));
             this.showNewOrderCard();
           } else {
-            window.requestAnimationFrame(() => this.mapEmitter.next(['center']));
+            this.updateMap();
           }
         }
       })
     );
-
-    this.mapDashboardService.startReload.subscribe(() => this.mapEmitter.next(['startReload']));
   }
 
   ngOnInit(): void {
+    this.headerStyle.changeHeader(this.headerTransparent);
+
     this.locationsService.dataObtained$.subscribe((dataObtained: boolean) => {
       this.showTrafficButton = dataObtained; // Mostrar u ocultar el botón de tráfico según se hayan obtenido los datos
     });
-
-    setTimeout(() => {
-      this.mostrarBoton = true;
-    }, 8000);
-    // this.showNewOrderCard();
-
-    // Set the name of the hidden property and the change event for visibility
-    let visibilityChange: string;
-    if (typeof (document as any).hidden !== 'undefined') {
-      // Opera 12.10 and Firefox 18 and later support
-      visibilityChange = 'visibilitychange';
-    } else if (typeof (document as any).msHidden !== 'undefined') {
-      visibilityChange = 'msvisibilitychange';
-    } else if (typeof (document as any).webkitHidden !== 'undefined') {
-      visibilityChange = 'webkitvisibilitychange';
-    }
-
-    const pauseApp$ = fromEvent(document, visibilityChange).pipe(filter(() => document.visibilityState === 'hidden'));
-    const resumeApp$ = fromEvent(document, visibilityChange).pipe(filter(() => document.visibilityState === 'visible'));
-
-    this.subs.add(
-      merge(
-        this.mapEmitter.pipe(ofType('center'), mapTo(false)),
-        resumeApp$.pipe(
-          filter(() => this.mapDashboardService.showFleetMap),
-          mapTo(false)
-        ),
-        this.mapEmitter.pipe(
-          ofType('startReload'),
-          exhaustMap(() =>
-            interval(markersRefreshTime).pipe(
-              mapTo(true),
-              takeUntil(
-                merge(
-                  pauseApp$,
-                  this.mapEmitter.pipe(ofType('hideFleetMap')),
-                  this.mapEmitter.pipe(
-                    ofType('center'),
-                    tap(() => {
-                      this.isMapDirty = false;
-                    })
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-        .pipe(filter(() => !this.creatingForms))
-        .subscribe((cleanRefresh) => {
-          this.mapDashboardService.getFleetDetails.next(cleanRefresh);
-        })
-    );
 
     if (this.primeService.loaded.isStopped) {
       this.isPrime = this.primeService.isPrime;
@@ -213,6 +150,17 @@ export class HomeComponent implements OnInit {
   ngOnDestroy(): void {
     this.headerStyle.changeHeader(false);
     this.subs.unsubscribe();
+  }
+
+  updateMap() {
+    if (this.creatingForms) return;
+
+    this.isMapDirty = true;
+    this.mapDashboardService.getFleetDetails.next(false);
+  }
+
+  makeMarker(position: any, icon: any, title: any) {
+    this.mapDashboardService.makeMarker.next({ position, icon, title });
   }
 
   async createDraft() {
@@ -266,7 +214,6 @@ export class HomeComponent implements OnInit {
   updateLocations(data: GoogleLocation) {
     this.locations = data;
     this.mapDashboardService.showFleetMap = false;
-    this.mapEmitter.next(['hideFleetMap']);
   }
 
   updateDatepickup(data: number) {
@@ -287,10 +234,6 @@ export class HomeComponent implements OnInit {
 
   public getUserWantCP(event: boolean) {
     this.userWantCP = event;
-  }
-
-  makeMarker(position, icon, title) {
-    this.mapDashboardService.makeMarker.next({ position, icon, title });
   }
 
   onStepChange(step: number) {
@@ -323,7 +266,4 @@ export class HomeComponent implements OnInit {
     this.mapDashboardService.clearMap.next();
     this.openOrderMenu = true;
   }
-
-  trafficLayer: google.maps.TrafficLayer;
-  isTrafficActive: boolean = false;
 }

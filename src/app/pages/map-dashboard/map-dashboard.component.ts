@@ -1,12 +1,14 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { fromEvent, interval, merge, of, Subscription } from 'rxjs';
+import { catchError, exhaustMap, filter, map, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomMarker } from '../home/custom.marker';
 import { MapDashboardService } from './map-dashboard.service';
 
 declare var google: any;
+
+const MARKERS_REFRES_TIME = 1000 * 20;
 
 @Component({
   selector: 'app-map-dashboard',
@@ -31,27 +33,52 @@ export class MapDashboardComponent {
   zoom = 18;
   maxZoom = 18;
 
+  subscriptions = new Subscription();
+
   constructor(public mapDashboardService: MapDashboardService, public router: Router, public apiRestService: AuthService) {
-    this.router.events.subscribe((res) => {
-      if (!(res instanceof NavigationEnd) || ['/home', '/fleet'].every((url) => !res.url.startsWith(url))) return;
-      this.mapDashboardService.showFleetMap = true;
-    });
+    this.subscriptions.add(
+      this.router.events.subscribe((res) => {
+        if (!(res instanceof NavigationEnd) || ['/home', '/fleet'].every((url) => !res.url.startsWith(url))) return;
+        this.mapDashboardService.showFleetMap = true;
+      })
+    );
 
-    this.mapDashboardService.updateMap.subscribe((cleanRefresh) => {
-      this.initMap(cleanRefresh);
-    });
+    this.subscriptions.add(this.mapDashboardService.getCoordinates.subscribe((data) => this.getCoordinates(data)));
+    this.subscriptions.add(this.mapDashboardService.clearMap.subscribe(() => this.clearMap()));
+    this.subscriptions.add(this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic()));
+    this.subscriptions.add(
+      this.mapDashboardService.makeMarker.subscribe(({ position, icon, title }) => this.makeMarker(position, icon, title))
+    );
+    this.subscriptions.add(this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)));
+    this.subscriptions.add(this.mapDashboardService.centerMap.subscribe(() => this.centerMap()));
 
-    this.mapDashboardService.getCoordinates.subscribe((data) => this.getCoordinates(data));
-    this.mapDashboardService.clearMap.subscribe(() => this.clearMap());
-    this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic());
-    this.mapDashboardService.makeMarker.subscribe(({ position, icon, title }) => this.makeMarker(position, icon, title));
-    this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh));
+    const visibilitychange$ = fromEvent(document, 'visibilitychange');
+    const pauseApp$ = visibilitychange$.pipe(filter(() => document.visibilityState === 'hidden'));
+    const resumeApp$ = visibilitychange$.pipe(filter(() => document.visibilityState === 'visible'));
+
+    this.subscriptions.add(
+      merge(of({}), resumeApp$).subscribe(() => {
+        this.getFleetDetails(true);
+
+        this.subscriptions.add(
+          interval(MARKERS_REFRES_TIME)
+            .pipe(takeUntil(pauseApp$))
+            .subscribe(() => this.getFleetDetails(false))
+        );
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   async getFleetDetails(cleanRefresh: boolean) {
+    if (!this.mapDashboardService.showFleetMap || this.mapDashboardService.userRole === 1) return;
+
     (
       await this.apiRestService.apiRest('', 'carriers/home', {
-        loader: cleanRefresh ? 'false' : 'true'
+        loader: cleanRefresh
       })
     )
       .pipe(catchError(() => of({})))
@@ -89,17 +116,15 @@ export class MapDashboardComponent {
         this.mapDashboardService.userRole = userRole;
 
         if (userRole && this.markersFromService.length) {
-          this.mapDashboardService.updateMap.next(cleanRefresh);
+          this.updateMap(cleanRefresh);
           this.mapDashboardService.showFleetMap = true;
         } else {
           this.mapDashboardService.showFleetMap = false;
         }
-
-        if (userRole && userRole !== 1) this.mapDashboardService.startReload.next();
       });
   }
 
-  initMap(cleanRefresh: boolean) {
+  updateMap(cleanRefresh: boolean) {
     // Create map
     if (this.map == void 0) {
       window.requestAnimationFrame(() => {
