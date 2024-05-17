@@ -1,29 +1,31 @@
 <section class="container" [ngClass]="{ 'hide-history': openHistoryChat }">
   <div class="header">
-    <img src="../../../../../assets/images/chibpt/chibi-history.svg" alt="Chibi History">
+    <img src="../../../../../assets/images/chibpt/chibi-history.svg" alt="Chibi History" />
     <h3>{{ 'chibpt.history.title' | translate }}</h3>
   </div>
   <div class="threads">
     <h4>{{ 'chibpt.history.timestamp.today' | translate }}</h4>
     <ol>
-      <li>
-        <p class="threads-title">Contact my driver so he can pick me up in 10 minutes</p>
-        <div class="threads-options">
-          <button class="options" [matMenuTriggerFor]="menu" #menuTrigger>
-            <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
-          </button>
-          <mat-menu #menu="matMenu" class="brand-menu-2">
-            <button mat-menu-item class="menu-option">
-              <bego-icon icon="begon-edit-fintech"></bego-icon>
-              <span>{{ 'chibpt.history.edit' | translate }}</span>
+      <ng-container *ngIf="histories?.length">
+        <li *ngFor="let history of histories">
+          <p class="threads-title">{{ history.title }}</p>
+          <div class="threads-options">
+            <button class="options" [matMenuTriggerFor]="menu" #menuTrigger>
+              <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
             </button>
-            <button mat-menu-item class="menu-option">
-              <bego-icon icon="begon-trash1"></bego-icon>
-              <span>{{ 'chibpt.history.delete' | translate }}</span>
-            </button>
-          </mat-menu>
-        </div>
-      </li>
+            <mat-menu #menu="matMenu" class="brand-menu-2">
+              <button mat-menu-item class="menu-option">
+                <bego-icon icon="begon-edit-fintech"></bego-icon>
+                <span>{{ 'chibpt.history.edit' | translate }}</span>
+              </button>
+              <button mat-menu-item class="menu-option">
+                <bego-icon icon="begon-trash1"></bego-icon>
+                <span>{{ 'chibpt.history.delete' | translate }}</span>
+              </button>
+            </mat-menu>
+          </div>
+        </li>
+      </ng-container>
     </ol>
   </div>
 </section>
