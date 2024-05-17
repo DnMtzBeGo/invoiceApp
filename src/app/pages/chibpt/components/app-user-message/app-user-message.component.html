@@ -12,7 +12,7 @@
 <section>
   <div class="user-message-gradient-container">
     <div>
-      <p>{{ message }}</p>
+      <p [innerHTML]="formattedString"></p>
       <ng-container *ngFor="let file of files">
         <div class="file-container-border-gradient">
           <div>
