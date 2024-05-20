@@ -11,7 +11,6 @@ import { AppChibibotMessageComponent } from './components/app-chibibot-message/a
 import { BegoChatBoxModule, BegoIconsModule } from '@begomx/ui-components';
 import { FileExtensionPipe } from 'src/app/shared/pipes/file-extension/file-extension.pipe';
 import { HistoryChibptComponent } from './components/history-chibpt/history-chibpt.component';
-import { BegoIconsModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
 import { TranslateModule } from '@ngx-translate/core';
 import { HistoryModalModule } from './components/history-chibpt/components/history-modal/history-modal.module';
