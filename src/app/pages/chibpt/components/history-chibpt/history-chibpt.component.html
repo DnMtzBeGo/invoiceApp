@@ -1,0 +1,48 @@
+<section class="container" [ngClass]="{ 'hide-history': openHistoryChat }">
+  <div class="header">
+    <img src="../../../../../assets/images/chibpt/chibi-history.svg" alt="Chibi History" />
+    <h3>{{ 'chibpt.history.title' | translate }}</h3>
+  </div>
+  <div class="threads">
+    <h4>{{ 'chibpt.history.timestamp.today' | translate }}</h4>
+    <ol>
+      <ng-container *ngIf="histories?.length">
+        <li
+          *ngFor="let history of histories; index as i"
+          [ngClass]="{
+            'renaming-title': history?.rename || history?.selected
+          }"
+          (click)="selectedHistory(history._id, i)">
+          <ng-container *ngIf="!history?.rename; else rename">
+            <p class="threads-title">{{ history.title }}</p>
+          </ng-container>
+          <ng-template #rename>
+            <input
+              type="text"
+              [(ngModel)]="auxName"
+              #renameInput
+              (keyup.enter)="renameHistory(history._id, i)"
+              (keyup.escape)="cancelRename(i)"
+              (blur)="cancelRename(i)" />
+          </ng-template>
+
+          <div class="threads-options">
+            <button class="options" [matMenuTriggerFor]="menu" #menuTrigger>
+              <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
+            </button>
+            <mat-menu #menu="matMenu" class="brand-menu-2">
+              <button mat-menu-item class="menu-option" (click)="activeRename(i)">
+                <bego-icon icon="begon-edit-fintech"></bego-icon>
+                <span>{{ 'chibpt.history.edit' | translate }}</span>
+              </button>
+              <button mat-menu-item class="menu-option" (click)="openCloseModal(history, i)">
+                <bego-icon icon="begon-trash1"></bego-icon>
+                <span>{{ 'chibpt.history.delete' | translate }}</span>
+              </button>
+            </mat-menu>
+          </div>
+        </li>
+      </ng-container>
+    </ol>
+  </div>
+</section>

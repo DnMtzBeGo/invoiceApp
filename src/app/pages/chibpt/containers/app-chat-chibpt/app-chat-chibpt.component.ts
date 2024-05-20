@@ -7,5 +7,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./app-chat-chibpt.component.scss']
 })
 export class AppChatChibptComponent {
- 
 }

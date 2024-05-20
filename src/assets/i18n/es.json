@@ -1898,5 +1898,23 @@
       "btn-confirm": "Guardar",
       "btn-cancel": "Cancelar"
     }
+  },
+  "chibpt": {
+    "history": {
+      "title": "Historial",
+      "timestamp": {
+        "today": "Hoy",
+        "last-week": "Semana pasada",
+        "last-month": "Último mes"
+      },
+      "edit": "Renombrar",
+      "delete": "Borrar ",
+      "modal": {
+        "title": "¿Deseas eliminar el chat?",
+        "subtitle": "Esto eliminará ",
+        "done": "Eliminar",
+        "cancel": "Cancelar"
+      }
+    }
   }
 }

@@ -1,0 +1,48 @@
+@import '../../../styles.scss';
+
+button {
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.container { 
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  height: 100%;
+  padding-bottom: 44px;
+
+  .container-app-threads {
+    flex-basis: 100%;
+    overflow-y: scroll;
+    position: relative;
+  }
+  
+  main {
+    @include flexbox-align(row, center, center);
+  }
+}
+
+.open-history {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  width: 21.5px;
+  height: 125.5px;
+  background: url('../../../assets/images/chibpt/open-history.png');
+  z-index: 1;
+}

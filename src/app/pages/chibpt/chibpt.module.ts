@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 import { ChibptRoutingModule } from './chibpt-routing.module';
 import { AppChibptComponent } from './app-chibpt.component';
@@ -11,9 +10,12 @@ import { AppUserMessageComponent } from './components/app-user-message/app-user-
 import { AppChibibotMessageComponent } from './components/app-chibibot-message/app-chibibot-message.component';
 import { BegoChatBoxModule, BegoIconsModule } from '@begomx/ui-components';
 import { FileExtensionPipe } from 'src/app/shared/pipes/file-extension/file-extension.pipe';
-
-
-
+import { HistoryChibptComponent } from './components/history-chibpt/history-chibpt.component';
+import { BegoIconsModule } from '@begomx/ui-components';
+import { AppMaterialModule } from 'src/app/material';
+import { TranslateModule } from '@ngx-translate/core';
+import { HistoryModalModule } from './components/history-chibpt/components/history-modal/history-modal.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,17 +25,19 @@ import { FileExtensionPipe } from 'src/app/shared/pipes/file-extension/file-exte
     AppFrecuentPrompsComponent,
     AppUserMessageComponent,
     AppChibibotMessageComponent,
-    FileExtensionPipe
-    /*
-    BegoIconsModule
-    */
+    FileExtensionPipe,
+    HistoryChibptComponent
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BegoChatBoxModule,
     ChibptRoutingModule,
     BegoIconsModule,
-    FormsModule,
-    BegoChatBoxModule
+    AppMaterialModule,
+    TranslateModule,
+    HistoryModalModule
   ]
 })
 export class ChibptModule { }
