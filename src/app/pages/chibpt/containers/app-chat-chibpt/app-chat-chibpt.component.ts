@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
+
 
 @Component({
   selector: 'app-app-chat-chibpt',
@@ -6,5 +7,4 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./app-chat-chibpt.component.scss']
 })
 export class AppChatChibptComponent {
-  @Input() messages: string;
 }

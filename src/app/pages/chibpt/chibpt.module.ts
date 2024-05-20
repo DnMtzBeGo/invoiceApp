@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { ChibptRoutingModule } from './chibpt-routing.module';
 import { AppChibptComponent } from './app-chibpt.component';
 import { AppChatChibptComponent } from './containers/app-chat-chibpt/app-chat-chibpt.component';
@@ -7,6 +8,8 @@ import { AppThreadsComponent } from './components/app-threads/app-threads.compon
 import { AppFrecuentPrompsComponent } from './components/app-frecuent-promps/app-frecuent-promps.component';
 import { AppUserMessageComponent } from './components/app-user-message/app-user-message.component';
 import { AppChibibotMessageComponent } from './components/app-chibibot-message/app-chibibot-message.component';
+import { BegoChatBoxModule, BegoIconsModule } from '@begomx/ui-components';
+import { FileExtensionPipe } from 'src/app/shared/pipes/file-extension/file-extension.pipe';
 import { HistoryChibptComponent } from './components/history-chibpt/history-chibpt.component';
 import { BegoIconsModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
@@ -22,12 +25,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppFrecuentPrompsComponent,
     AppUserMessageComponent,
     AppChibibotMessageComponent,
+    FileExtensionPipe,
     HistoryChibptComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    BegoChatBoxModule,
     ChibptRoutingModule,
     BegoIconsModule,
     AppMaterialModule,
