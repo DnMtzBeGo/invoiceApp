@@ -12,6 +12,7 @@ export class AppUserMessageComponent implements OnInit {
   @Input() format: string;
   profilePicture: SafeUrl = localStorage.getItem("profilePicture") ?? "/assets/images/user-outline.svg"
   formattedString: SafeHtml;
+  @Input() files: File[] = [];
 
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -19,4 +20,3 @@ export class AppUserMessageComponent implements OnInit {
     this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g,'<br>'));
   }
 }
-

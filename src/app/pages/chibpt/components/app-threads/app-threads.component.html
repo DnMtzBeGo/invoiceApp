@@ -9,7 +9,7 @@
         <section class="chibibot-conversation-section"  *ngIf="messages.length > 0">
             <ng-container *ngFor="let message of messages">
                 <ng-container *ngIf="message.role === 'user'">
-                    <app-app-user-message [message]="message.content" ></app-app-user-message>
+                    <app-app-user-message [message]="message.content" [files]="message.files"></app-app-user-message>
                 </ng-container>
                 <ng-container *ngIf="message.role === 'assistant'">
                     <app-app-chibibot-message [message]="message.content"></app-app-chibibot-message>
