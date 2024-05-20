@@ -1,4 +1,10 @@
 <div [class.map-faded-out]="!mapDashboardService.showFleetMap" #map class="map google-map transparent"></div>
 
+<app-polygon-filter
+  *ngIf="mapDashboardService.showPolygons"
+  class="polygon-filter"
+  (getCoordinates)="getCoordinates($event)"
+  (clearedFilter)="clearedFilter()"></app-polygon-filter>
+
 <app-home *ngIf="router.routerState.snapshot.url.includes('home')"></app-home>
 <app-fleet-page *ngIf="router.routerState.snapshot.url.includes('fleet')"></app-fleet-page>

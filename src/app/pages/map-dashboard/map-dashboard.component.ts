@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { fromEvent, interval, merge, of, Subscription } from 'rxjs';
-import { catchError, exhaustMap, filter, map, takeUntil } from 'rxjs/operators';
+import { catchError, filter, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomMarker } from '../home/custom.marker';
 import { MapDashboardService } from './map-dashboard.service';
@@ -27,7 +27,6 @@ export class MapDashboardComponent {
   showTrafficButton = false;
 
   googleMarkers = [];
-  markersArray = [];
   markersFromService = [];
 
   zoom = 18;
@@ -39,16 +38,13 @@ export class MapDashboardComponent {
     this.subscriptions.add(
       this.router.events.subscribe((res) => {
         if (!(res instanceof NavigationEnd) || ['/home', '/fleet'].every((url) => !res.url.startsWith(url))) return;
+        this.mapDashboardService.showPolygons = true;
         this.mapDashboardService.showFleetMap = true;
       })
     );
 
-    this.subscriptions.add(this.mapDashboardService.getCoordinates.subscribe((data) => this.getCoordinates(data)));
     this.subscriptions.add(this.mapDashboardService.clearMap.subscribe(() => this.clearMap()));
     this.subscriptions.add(this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic()));
-    this.subscriptions.add(
-      this.mapDashboardService.makeMarker.subscribe(({ position, icon, title }) => this.makeMarker(position, icon, title))
-    );
     this.subscriptions.add(this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)));
     this.subscriptions.add(this.mapDashboardService.centerMap.subscribe(() => this.centerMap()));
 
@@ -58,12 +54,12 @@ export class MapDashboardComponent {
 
     this.subscriptions.add(
       merge(of({}), resumeApp$).subscribe(() => {
-        this.getFleetDetails(true);
+        this.getFleetDetails(false);
 
         this.subscriptions.add(
           interval(MARKERS_REFRES_TIME)
             .pipe(takeUntil(pauseApp$))
-            .subscribe(() => this.getFleetDetails(false))
+            .subscribe(() => this.getFleetDetails(true))
         );
       })
     );
@@ -110,6 +106,9 @@ export class MapDashboardComponent {
           this.markersFromService = this.markersFromService;
 
           this.mapDashboardService.haveNotFleetMembers = !res.result.trailers || !res.result.trucks;
+          if (res.result.hasOwnProperty('errors') && res.result.errors.length > 0) {
+            this.mapDashboardService.haveFleetMembersErrors = res.result.errors
+          }
         }
 
         const userRole = res.result.role;
@@ -234,17 +233,6 @@ export class MapDashboardComponent {
     }
   }
 
-  makeMarker(position: any, icon: any, title: any) {
-    this.markersArray.push(
-      new google.maps.Marker({
-        position,
-        map: this.map,
-        icon,
-        title
-      })
-    );
-  }
-
   clearMap(): void {
     this.googleMarkers?.forEach((marker) => {
       marker.setMap(null);
@@ -298,6 +286,11 @@ export class MapDashboardComponent {
     this.activeCenter = !!locations?.length || !!members?.length || !!geometry?.features?.length;
 
     this.centerMap();
+    this.mapDashboardService.getCoordinates.next();
+  }
+
+  clearedFilter() {
+    this.mapDashboardService.clearedFilter.next();
   }
 
   addHeatmap(heatmapData) {

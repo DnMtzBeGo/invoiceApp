@@ -15,8 +15,6 @@ import { PrimeService } from 'src/app/shared/services/prime.service';
 import { LocationsService } from '../../services/locations.service';
 import { MapDashboardService } from '../map-dashboard/map-dashboard.service';
 
-declare var google: any;
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -51,32 +49,6 @@ export class HomeComponent implements OnInit {
   public imageFromGoogle: any;
   public membersToAssigned: object = {};
   public userWantCP: boolean = false;
-  public haveFleetMembersErrors: Array<string> = [];
-
-  // members map logic
-  geocoder = new google.maps.Geocoder();
-  googleMarkers: any[] = [];
-  isMapDirty = false;
-  start: any;
-  end: any;
-  zoom = 18;
-  maxZoom = 18;
-  markersArray = [];
-  startAddress: string;
-  icons = {
-    location: new google.maps.MarkerImage(
-      '../assets/map/location.svg',
-      new google.maps.Size(68, 68),
-      new google.maps.Point(0, 0),
-      new google.maps.Point(34, 34)
-    ),
-    pin: new google.maps.MarkerImage(
-      '../assets/map/pin.svg',
-      new google.maps.Size(17, 40),
-      new google.maps.Point(0, 0),
-      new google.maps.Point(7.5, 20)
-    )
-  };
 
   subs = new Subscription();
 
@@ -129,6 +101,9 @@ export class HomeComponent implements OnInit {
         }
       })
     );
+
+    this.subs.add(this.mapDashboardService.getCoordinates.subscribe(() => this.getCoordinates()));
+    this.subs.add(this.mapDashboardService.clearedFilter.subscribe(() => this.clearedFilter()));
   }
 
   ngOnInit(): void {
@@ -154,13 +129,7 @@ export class HomeComponent implements OnInit {
 
   updateMap() {
     if (this.creatingForms) return;
-
-    this.isMapDirty = true;
     this.mapDashboardService.getFleetDetails.next(false);
-  }
-
-  makeMarker(position: any, icon: any, title: any) {
-    this.mapDashboardService.makeMarker.next({ position, icon, title });
   }
 
   async createDraft() {
@@ -192,6 +161,7 @@ export class HomeComponent implements OnInit {
   async showNewOrderCard() {
     await this.createDraft();
     this.showOrderDetails = true;
+    this.mapDashboardService.showPolygons = false;
   }
 
   private async getLocationId(place_id: string): Promise<string> {
@@ -243,7 +213,7 @@ export class HomeComponent implements OnInit {
   creatingForms: boolean = false;
   openOrderMenu: boolean = false;
 
-  getCoordinates(data: any) {
+  getCoordinates() {
     if (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input) {
       this.mapDashboardService.showFleetMap = true;
       this.inputDirections.ClearAutocompleteDropoff();
@@ -252,7 +222,6 @@ export class HomeComponent implements OnInit {
 
     this.creatingForms = true;
     this.openOrderMenu = false;
-    this.mapDashboardService.getCoordinates.next(data);
   }
 
   clearedFilter() {

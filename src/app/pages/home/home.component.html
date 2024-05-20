@@ -1,10 +1,4 @@
 <div class="map map-container">
-  <app-polygon-filter
-    *ngIf="!showOrderDetails"
-    class="polygon-filter"
-    (getCoordinates)="getCoordinates($event)"
-    (clearedFilter)="clearedFilter()"></app-polygon-filter>
-
   <bego-map
     [hide]="showOrderDetails"
     [typeMap]="typeMap"
@@ -44,7 +38,7 @@
         (sendUserWantCP)="getUserWantCP($event)"
         [drafts]="draftData"
         [haveFleetMembers]="mapDashboardService.haveNotFleetMembers"
-        [haveFleetMembersErrors]="haveFleetMembersErrors">
+        [haveFleetMembersErrors]="mapDashboardService.haveFleetMembersErrors">
       </app-input-directions>
       <button
         id="reset"
