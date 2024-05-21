@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
-import { FormGroup } from '@angular/forms';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 @Component({
@@ -27,26 +26,14 @@ export class TagsComponent implements OnInit {
   public searchQuery: SearchQuery;
   public alertContent: string = '';
 
-  public saveButtonEnabled: boolean = true;
-  public tagsForm: FormGroup;
-
   public showTagInput: boolean = false;
   public showEditInput: boolean = false;
   public tagName: string = '';
   public editedTagName: string = '';
 
-  private disableSaveButton(): void {
-    this.saveButtonEnabled = false;
-  }
-
-  private enableSaveButton(): void {
-    this.saveButtonEnabled = true;
-  }
-
   public openDialog(message: string): void {
 
   }
-
 
   constructor(
     private readonly router: Router,

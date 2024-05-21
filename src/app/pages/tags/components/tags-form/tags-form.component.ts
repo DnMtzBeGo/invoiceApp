@@ -5,9 +5,6 @@ import { Action, Column, Lang, Page, SearchQuery, SelectedRow, StatusOptions, Ta
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import {MatSnackBar } from '@angular/material/snack-bar';
-
 interface AlerLang {
   title: string;
   subtitle: string;
@@ -38,19 +35,11 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   public tag: Tag = { name: '', carriers: [] };
   public drivers: TagDriver[];
 
-  public tagsForm: FormGroup;
-
-  public addDriverToast: string = '';
-  public deleteDriverToast: string = '';
-  public errorTagToast: string = '';
-
   constructor(
     private readonly apiService: AuthService,
     private readonly translateService: TranslateService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly formBuilder: FormBuilder,
-    private readonly snackBar: MatSnackBar,
     private readonly notificationService: NotificationsService
   ) {
     this.loadingTableData = true;
@@ -74,28 +63,16 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
       this.tag_id = params['tagId'];
     });
 
-    this.tagsForm = this.formBuilder.group({
-      name: new FormControl('', [Validators.required, Validators.minLength(1)]),
-      carriers: new FormControl(' ', [Validators.required])
-    });
-
     this.onChanges();
   }
 
-  onChanges(): void {
-    this.tagsForm.get('name').valueChanges.subscribe(() => {
-    });
-  }
+  onChanges(): void {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.firstInput.nativeElement.focus();
     }, 500);
   }
-
-  public getError = (controlName: string, errorName: string) => {
-    return this.tagsForm.controls[controlName].hasError(errorName);
-  };
 
   private checkRouteParams(): TagsFormComponent {
     this.route.params.subscribe({
