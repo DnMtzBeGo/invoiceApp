@@ -1,7 +1,7 @@
-<span *ngIf="!(showSmallResolutionModal || showIncompatibleBrowserModal)">
+<span [hidden]="showSmallResolutionModal || showIncompatibleBrowserModal">
   <bego-menu id="menu"></bego-menu>
   <section id="container">
-    <bego-navigation [notificationBarToggle]=""></bego-navigation>
+    <bego-navigation></bego-navigation>
     <router-outlet></router-outlet>
     <app-notification-bar></app-notification-bar>
   </section>
