@@ -72,6 +72,8 @@ export class HomeComponent implements OnInit {
     this.subs.add(
       this.router.events.subscribe((res) => {
         if (res instanceof NavigationEnd && res.url.startsWith('/home')) {
+          this.cleanup();
+
           const data = this.router.getCurrentNavigation()?.extras.state;
 
           if (data?.showCompleteModal) {
@@ -125,6 +127,24 @@ export class HomeComponent implements OnInit {
   ngOnDestroy(): void {
     this.headerStyle.changeHeader(false);
     this.subs.unsubscribe();
+  }
+
+  cleanup() {
+    this.showOrderDetails = false;
+    this.draftData = null;
+    this.datepickup = 0;
+    this.userWantCP = false;
+    this.membersToAssigned = {}
+    this.locations = {
+      pickup: '',
+      dropoff: '',
+      pickupLat: '',
+      pickupLng: '',
+      dropoffLat: '',
+      dropoffLng: '',
+      pickupPostalCode: 0,
+      dropoffPostalCode: 0
+    };
   }
 
   updateMap() {
