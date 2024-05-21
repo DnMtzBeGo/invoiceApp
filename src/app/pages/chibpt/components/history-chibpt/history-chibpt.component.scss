@@ -163,6 +163,17 @@ button {
         }
       }
     }
+
+    ::ng-deep {
+      .loader-spinner {
+        margin: 25px auto;
+      }
+
+      .mat-progress-spinner circle,
+      .mat-spinner circle {
+        stroke: #ffee00;
+      }
+    }
   }
 
   .open-history {

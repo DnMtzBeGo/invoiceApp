@@ -80,7 +80,7 @@ export class HistoryChibptComponent implements OnInit {
     const requestJson = JSON.stringify({ name: this.auxName });
 
     (await this.apiRestService.apiRestPut(requestJson, `assistant/rename/${_id}`, { apiVersion: 'v1.1' })).subscribe({
-      next: ({ result }) => {
+      next: () => {
         this.histories[date][index].title = this.auxName;
         this.histories[date][index].rename = false;
       },

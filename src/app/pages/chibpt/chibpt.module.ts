@@ -15,6 +15,7 @@ import { AppMaterialModule } from 'src/app/material';
 import { TranslateModule } from '@ngx-translate/core';
 import { HistoryModalModule } from './components/history-chibpt/components/history-modal/history-modal.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BegoIconsModule,
     AppMaterialModule,
     TranslateModule,
-    HistoryModalModule
+    HistoryModalModule,
+    MatProgressSpinnerModule
   ]
 })
-export class ChibptModule { }
+export class ChibptModule {}
