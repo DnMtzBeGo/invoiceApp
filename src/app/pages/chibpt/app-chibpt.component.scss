@@ -18,7 +18,7 @@ button {
   cursor: pointer;
 }
 
-.container { 
+.container {
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -30,10 +30,16 @@ button {
     overflow-y: scroll;
     position: relative;
   }
-  
+
   main {
     @include flexbox-align(row, center, center);
+    height: 100%;
   }
+}
+
+.conversation-container-component {
+  height: 100%;
+  width: 100%;
 }
 
 .open-history {

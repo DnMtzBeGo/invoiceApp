@@ -8,6 +8,8 @@ main {
   height: 100%;
   width: 100%;
   padding-inline: 37px;
+  display: flex;
+  flex-direction: column;
 
   h2 {
     font-size: 38px;
@@ -20,9 +22,8 @@ main {
 
 .top-section {
   width: 100%;
-  height: calc(100vh - 240px);
   overflow-y: auto;
-  padding: 15px;
+  padding: 15px 25px;
 }
 
 .chibi-chatbot-section {
@@ -44,13 +45,15 @@ main {
 .input-section {
   background-color: #050b10;
   width: 100%;
-  bottom: 0;
-  left: 0;
+
   padding-block-end: 37px;
   @include flexbox-align(column, space-between, center);
 
+  margin-top: auto;
+
   bego-chat-box {
-    width: 760px;
+    width: 100%;
+    // width: 760px;
   }
 
   p {
