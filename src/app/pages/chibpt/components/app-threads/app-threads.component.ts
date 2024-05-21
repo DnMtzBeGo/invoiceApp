@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { BegoChatBox } from '@begomx/ui-components';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 interface Question {
@@ -13,6 +14,7 @@ interface Question {
 })
 export class AppThreadsComponent {
   @ViewChild('scrollContainer') private scrollContainer: ElementRef;
+  @ViewChild('chatBox') chatBox: BegoChatBox;
   @Input() chatId: string = '';
   sendingMessage: boolean = false;
 
@@ -46,10 +48,12 @@ export class AppThreadsComponent {
 
   async ngOnChanges(changes: SimpleChanges) {
     if (changes.chatId.currentValue) await this.loadChat();
+    else this.cleanChat();
   }
 
   async loadChat() {
-    (await this.webService.apiRestGet(`assistant/${this.chatId}`, { apiVersion: 'v1.1' })).subscribe({
+    this.chatBox?.cleanData();
+    (await this.webService.apiRestGet(`assistant/${this.chatId}`, { apiVersion: 'v1.1', getLoader: 'true' })).subscribe({
       next: ({ result: { messages } }) => {
         this.messages = messages;
         this.scrollToBottom();
@@ -58,6 +62,11 @@ export class AppThreadsComponent {
         console.error('Error sending message', error);
       }
     });
+  }
+
+  cleanChat() {
+    this.messages = [];
+    this.chatBox?.cleanData();
   }
 
   async sendQuestion({ message, files }: Question) {

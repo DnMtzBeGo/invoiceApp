@@ -1,26 +1,32 @@
 <main>
   <section class="top-section" #scrollContainer>
-    <h2>ChiBPT</h2>
-    <section class="chibi-chatbot-section" *ngIf="messages.length === 0">
-      <img src="assets/images/chibpt/chibi-chatbot.svg" alt="Chibi Chatbot" />
-    </section>
-    <section class="chibibot-conversation-section" *ngIf="messages.length > 0">
-      <ng-container *ngFor="let message of messages">
-        <ng-container *ngIf="message.role === 'user'">
-          <app-app-user-message [message]="message.content" [files]="message.files"></app-app-user-message>
+    <ng-container *ngIf="!messages?.length; else list">
+      <h2>ChiBPT</h2>
+      <section class="chibi-chatbot-section">
+        <img src="assets/images/chibpt/chibi-chatbot.svg" alt="Chibi Chatbot" />
+      </section>
+    </ng-container>
+
+    <ng-template #list>
+      <section class="chibibot-conversation-section">
+        <ng-container *ngFor="let message of messages">
+          <ng-container *ngIf="message.role === 'user'">
+            <app-app-user-message [message]="message.content" [files]="message.files"></app-app-user-message>
+          </ng-container>
+
+          <ng-container *ngIf="message.role === 'assistant'">
+            <app-app-chibibot-message [message]="message.content"></app-app-chibibot-message>
+          </ng-container>
         </ng-container>
 
-        <ng-container *ngIf="message.role === 'assistant'">
-          <app-app-chibibot-message [message]="message.content"></app-app-chibibot-message>
-        </ng-container>
-      </ng-container>
-
-      <app-app-chibibot-message [loader]="true" *ngIf="sendingMessage"></app-app-chibibot-message>
-    </section>
+        <app-app-chibibot-message [loader]="true" *ngIf="sendingMessage"></app-app-chibibot-message>
+      </section>
+    </ng-template>
   </section>
 
   <section class="input-section">
-    <bego-chat-box (sendData)="sendQuestion($event)" [enabledFiles]="true" [questions]="!chatId && quickQuestions"> </bego-chat-box>
+    <bego-chat-box #chatBox (sendData)="sendQuestion($event)" [enabledFiles]="true" [questions]="!chatId && quickQuestions">
+    </bego-chat-box>
     <p>ChibiPT can make mistakes. Consider checking important information</p>
   </section>
 </main>

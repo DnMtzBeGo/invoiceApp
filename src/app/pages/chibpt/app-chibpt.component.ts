@@ -16,6 +16,7 @@ export class AppChibptComponent {
   }
 
   loadChat(_id: string) {
+    console.log('load:', _id);
     this.chatId = _id;
   }
 }

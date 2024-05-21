@@ -1,7 +1,10 @@
 <section class="container" [ngClass]="{ 'hide-history': openHistoryChat }">
-  <div class="header">
+  <div class="header" (click)="selectedHistoryEmitter.emit('')">
     <img src="../../../../../assets/images/chibpt/chibi-history.svg" alt="Chibi History" />
-    <h3>{{ 'chibpt.history.title' | translate }}</h3>
+    <h3>New Chat</h3>
+    <bego-icon icon="begon-edit-fintech"></bego-icon>
+    <!-- <bego-icon icon="begon-edit"></bego-icon> -->
+    <!-- <h3>{{ 'chibpt.history.title' | translate }}</h3> -->
   </div>
   <div class="threads">
     <h4>{{ 'chibpt.history.timestamp.today' | translate }}</h4>
@@ -11,10 +14,9 @@
           *ngFor="let history of histories; index as i"
           [ngClass]="{
             'renaming-title': history?.rename || history?.selected
-          }"
-          (click)="selectedHistory(history._id, i)">
+          }">
           <ng-container *ngIf="!history?.rename; else rename">
-            <p class="threads-title">{{ history.title }}</p>
+            <p class="threads-title" (click)="selectedHistory(history._id, i)">{{ history.title }}</p>
           </ng-container>
           <ng-template #rename>
             <input

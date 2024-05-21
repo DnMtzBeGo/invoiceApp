@@ -35,7 +35,7 @@ export class HistoryChibptComponent implements OnInit {
 
   async getHistoryChat() {
     this.loading = true;
-    (await this.apiRestService.apiRestGet(`assistant?limit=20&page=1`, { apiVersion: 'v1.1', loader: false })).subscribe({
+    (await this.apiRestService.apiRestGet(`assistant?limit=30&page=1`, { apiVersion: 'v1.1', loader: false })).subscribe({
       next: ({ result }) => {
         if (result?.result?.length) this.histories = result.result;
         this.loading = false;
