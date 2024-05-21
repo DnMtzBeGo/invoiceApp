@@ -1660,7 +1660,12 @@
       "edit_drivers_title": "Editar conductores",
       "tag_name": "Nombre del Tag:",
       "tag_name_placeholder": "Ingrese el nombre del tag",
-      "tag_edit_placeholder": "Ingrese el nuevo nombre del tag"
+      "tag_edit_placeholder": "Ingrese el nuevo nombre del tag",
+      "add_driver_toast": "Conductor(es) agregado(s) correctamente",
+      "delete_driver_toast": "Conductor(es) eliminado(s) correctamente",
+      "error_tag_toast": "Se produjo un error al agregar o eliminar el/los conductor(es)",
+      "error_tag_name": "Ocurrió un error al crear la tag",
+      "error_repeat_tag_name": "El nombre de la tag ya existe"
     },
     "validation": {
       "carriers_required": "Debe seleccionar al menos un conductor",

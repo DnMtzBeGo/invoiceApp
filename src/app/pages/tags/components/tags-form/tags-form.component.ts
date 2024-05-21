@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Action, Column, Lang, Page, SearchQuery, SelectedRow, StatusOptions, Tag, TagDriver, TagFormParams } from '../../interfaces';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import {MatSnackBar } from '@angular/material/snack-bar';
@@ -39,13 +40,18 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
 
   public tagsForm: FormGroup;
 
+  public addDriverToast: string = '';
+  public deleteDriverToast: string = '';
+  public errorTagToast: string = '';
+
   constructor(
     private readonly apiService: AuthService,
     private readonly translateService: TranslateService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly formBuilder: FormBuilder,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly notificationService: NotificationsService
   ) {
     this.loadingTableData = true;
     this.drivers = [];
@@ -57,7 +63,6 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     .configurePagination()
     .configureSelectedRow()
     .setLang()
-    .setDefaultFormValues()
     .fetchDrivers();
 
     this.setLang();
@@ -91,15 +96,6 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   public getError = (controlName: string, errorName: string) => {
     return this.tagsForm.controls[controlName].hasError(errorName);
   };
-
-  private setDefaultFormValues(): TagsFormComponent {
-    if (this.tag_id) {
-      this.fetchTag();
-    } else {
-      this.tag = { name: '', carriers: [] };
-    }
-    return this;
-  }
 
   private checkRouteParams(): TagsFormComponent {
     this.route.params.subscribe({
@@ -222,8 +218,6 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     this.searchQuery.sort = JSON.stringify({ [type]: asc ? -1 : 1 });
     this.page.index = 1;
     this.searchQuery.page = 1;
-
-    if (this.tag_id) this.fetchTag();
   }
 
   public changePage({ index, size }: any) {
@@ -233,39 +227,17 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
       this.searchQuery.page = 1;
     }
     this.searchQuery.limit = size;
-
-    if (this.tag_id) this.fetchTag();
   }
 
   public selectColumn($event) {
     console.log($event);
   }
 
-  private async fetchTag(translated: boolean = false) {
-    this.loadingTableData = true;
-
-    if (translated) this.drivers = [];
-
-    (await this.apiService.apiRestGet(`managers_tags/${this.tag_id}`, { apiVersion: 'v1.1' })).subscribe({
-      next: ({ result }) => {
-        this.tag = result;
-        this.tagsForm.controls['name'].setValue(result.name);
-        this.tagsForm.controls['carriers'].setValue(JSON.stringify(result.carriers).replace('[]', ''));
-      },
-      error: (err: any) => {
-        console.error('fetching tag', err);
-      },
-      complete: () => {
-        this.loadingTableData = false;
-      }
-    });
-  }
-
   public async fetchDrivers(translated: boolean = false) {
     this.loadingTableData = true;
-
+  
     if (translated) this.drivers = [];
-
+  
     const { limit, page, sort, match } = this.searchQuery;
     const queryParams = new URLSearchParams({
       limit: limit.toString(),
@@ -273,30 +245,25 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
       ...(sort && { sort }),
       ...(match && { search: match })
     }).toString();
-
-    (await this.apiService.apiRestGet(`carriers/get_drivers?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
+  
+    (await this.apiService.apiRestGet(`managers_tags/members?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
       next: ({ result: { result, size = '10', page = '1' } }) => {
         this.page = { total: +size * +page, index: page, size: limit };
-
-        let hascheckedTags: boolean = false;
+  
+        const activeTagId = this.tag_id;
+  
         this.drivers = result.map((driver: TagDriver) => {
-          const actions = {
-            enabled: true,
-            options: {}
-          };
-
-          if (this.tag.carriers.includes(driver._id)) {
-            hascheckedTags = true;
-          }
-
+          const hasActiveTag = driver.tags.some(tagId => tagId === activeTagId);
+  
           return {
-            selection_check: this.tag.carriers.includes(driver._id),
             ...driver,
-            actions
+            selection_check: hasActiveTag
           };
         });
-
-        ;
+  
+        // Aquí llamamos a rowSelected con los drivers ya seleccionados para inicializar correctamente
+        const initiallySelectedDrivers = this.drivers.filter(driver => driver.selection_check);
+        this.rowSelected(initiallySelectedDrivers, true);
       },
       error: (err: any) => {
         console.error('fetching drivers', err);
@@ -305,46 +272,74 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
         this.loadingTableData = false;
       }
     });
-  }
+  }  
 
-  public async rowSelected($event: any[]) {
-    const selectedDriverIds: string[] = $event
-      .filter((driver: TagDriver) => driver.selection_check)
-      .map((driver: TagDriver) => driver._id);
+  public async rowSelected($event: any[], isInitialLoad: boolean = false) {
+    const timestamp = Date.now();
+    const selectedDrivers = $event;
   
-    this.tag.carriers = selectedDriverIds;
+    // Identificar los drivers que se han agregado o eliminado
+    const newSelectedDrivers = selectedDrivers.filter(driver => driver.selection_check);
+    const removedDrivers = this.tag.carriers.filter(carrierId => 
+      !selectedDrivers.some(driver => driver._id === carrierId && driver.selection_check)
+    );
   
-    const putRequest = async () => {
-      try {
-        const response = (await this.apiService.apiRestPut(JSON.stringify(this.tag), `managers_tags/${this.tag_id}`, { apiVersion: 'v1.1' })).subscribe();
-  
-        if (response) {
-          if (selectedDriverIds.length > 0) {
-            this.showToast('Conductor(es) agregado(s) correctamente');
-          } else {
-            this.showToast('Conductor(es) eliminado(s) correctamente');
+    // Eliminar drivers deseleccionados
+    for (const carrierId of removedDrivers) {
+      (await this.apiService.apiRestPut(
+        JSON.stringify({
+          carrier_id: carrierId,
+          activate: false,
+          timestamp: timestamp,
+        }),
+        `managers_tags/tag_member/${this.tag_id}`,
+        { apiVersion: 'v1.1' }
+      )).subscribe({
+        next: () => {
+          const indexToRemove = this.tag.carriers.indexOf(carrierId);
+          if (indexToRemove !== -1) {
+            this.tag.carriers.splice(indexToRemove, 1);
           }
-        } else {
-          throw new Error('Error');
+          if (!isInitialLoad) {
+            this.notificationService.showSuccessToastr(this.translateService.instant('tags.form.delete_driver_toast'));
+          }
+        },
+        error: (error) => {
+          console.error('Error removing driver:', error);
+          this.notificationService.showErrorToastr(this.translateService.instant('tags.form.error_tag_toast'));
         }
-      } catch (error) {
-        this.showToast('Error' + error.message);
-      }
-    };
+      });
+    }
   
-    setTimeout(() => {
-      putRequest();
-    }, 3000);
-  }
+    // Agregar nuevos drivers seleccionados
+    for (const driver of newSelectedDrivers) {
+      const carrierId = driver._id;
+      if (!this.tag.carriers.includes(carrierId)) {
+        (await this.apiService.apiRestPut(
+          JSON.stringify({
+            carrier_id: carrierId,
+            activate: true,
+            timestamp: timestamp,
+          }),
+          `managers_tags/tag_member/${this.tag_id}`,
+          { apiVersion: 'v1.1' }
+        )).subscribe({
+          next: () => {
+            this.tag.carriers.push(carrierId);
+            if (!isInitialLoad) {
+              this.notificationService.showSuccessToastr(this.translateService.instant('tags.form.add_driver_toast'));
+            }
+          },
+          error: (error) => {
+            console.error('Error adding driver:', error);
+            this.notificationService.showErrorToastr(this.translateService.instant('tags.form.error_tag_toast'));
+          }
+        });
+      }
+    }
+  }   
   
   // #endregion Table methods
-  public showToast(message: string): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
-  }
   
   finish() {
     this.router.navigate(['/tags']);

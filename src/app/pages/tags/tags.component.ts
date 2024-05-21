@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
 import { FormGroup } from '@angular/forms';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 @Component({
   selector: 'app-tags',
@@ -29,6 +30,11 @@ export class TagsComponent implements OnInit {
   public saveButtonEnabled: boolean = true;
   public tagsForm: FormGroup;
 
+  public showTagInput: boolean = false;
+  public showEditInput: boolean = false;
+  public tagName: string = '';
+  public editedTagName: string = '';
+
   private disableSaveButton(): void {
     this.saveButtonEnabled = false;
   }
@@ -47,7 +53,8 @@ export class TagsComponent implements OnInit {
     private readonly apiService: AuthService,
     private readonly translateService: TranslateService,
     private readonly datePipe: DatePipe,
-    private readonly matDialog: MatDialog
+    private readonly matDialog: MatDialog,
+    private readonly notificationService: NotificationsService
   ) {
     this.loadingTableData = true;
 
@@ -199,7 +206,9 @@ export class TagsComponent implements OnInit {
         this.activeTagId = data._id;
         break;
       case 'edit_drivers':
-        this.router.navigate(['/tags/create']);
+        this.activeTagId = data._id;
+        this.tagName = data.name;
+        this.router.navigate(['/tags/create'], { queryParams: { tagName: this.tagName, tagId: this.activeTagId } });
         break;
       case 'send_message':
         this.openSendMessageModal(data._id, data.name);
@@ -322,34 +331,70 @@ export class TagsComponent implements OnInit {
     this.activeTagId = '';
   }
 
-  showTagInput: boolean = false;
-  showEditInput: boolean = false;
-  tagName: string = '';
-  editedTagName: string = '';
-
+  private isTagNameUnique(tagName: string, tagIdToExclude?: string): boolean {
+    return !this.tags.some(tag => tag.name === tagName && tag._id !== tagIdToExclude);
+  }
+  
   public async createTagName() {
     const tagName = this.tagName.trim();
     
     if (tagName && tagName.length >= 1) {
-      console.log('create tag name', tagName, this.activeTagId)
-      
-        const tag = {
-            name: tagName
-        };
-
-        try {
-            const data = await (await this.apiService.apiRest(JSON.stringify(tag), `managers_tags`, { apiVersion: 'v1.1' })).toPromise();
-
-            if (data && data.result && data.result._id) {
-                this.openDialog(this.translate('created', 'tags'));
+      if (!this.isTagNameUnique(tagName)) {
+        this.notificationService.showErrorToastr(this.translateService.instant('tags.form.error_repeat_tag_name'));
+        return;
+      }
+  
+      const tag = { name: tagName };
+  
+      try {
+        (await this.apiService.apiRest(JSON.stringify(tag), `managers_tags`, { apiVersion: 'v1.1' }))
+          .subscribe({
+            next: (data: any) => {
+              if (data && data.result && data.result._id) {
                 this.router.navigate(['/tags/create'], { queryParams: { tagName: tagName, tagId: data.result._id } });
-            }
-
-        } catch (error) {
-            console.log('Error creating tag:', error);
-        }
+                this.showTagInput = false;
+              }
+            },
+            error: (error: any) => {
+              if (error.status === 500) {
+                this.notificationService.showErrorToastr(this.translateService.instant('tags.form.error_repeat_tag_name'));
+              } else {
+                this.notificationService.showErrorToastr(this.translateService.instant('tags.form.error_tag_name'));
+              }
+            }            
+          });
+      } catch (error) {
+        console.log('Error creating tag:', error);
       }
     }
+  }
+  
+  public async editTagName(tagId: string, editedTagName: string) {
+    try {
+      editedTagName = editedTagName.trim();
+  
+      if (!this.isTagNameUnique(editedTagName, tagId)) {
+        this.notificationService.showErrorToastr(this.translateService.instant('tags.form.error_repeat_tag_name'));
+        return;
+      }
+  
+      const updatedTag = { name: editedTagName };
+  
+      (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/rename/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
+        next: (data) => {
+          if (data.result?._id) this.openDialog(this.translate('created', 'tags'));
+        },
+      })
+  
+      const tagToUpdate = this.tags.find(tag => tag._id === tagId); 
+      if (tagToUpdate) {
+        tagToUpdate.name = editedTagName;
+      }
+      this.showEditInput = false;
+    } catch (error) {
+      console.error('Error al actualizar el nombre de la etiqueta:', error);
+    }
+  }    
 
   onModalClose(event: string) {
     try {
@@ -365,27 +410,6 @@ export class TagsComponent implements OnInit {
       console.error('Error al manejar el evento:', error);
     }
   }
-
-  public async editTagName(tagId: string, editedTagName: string) {
-    try {
-      const updatedTag = { name: editedTagName };
-
-      (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
-        next: (data) => {
-          if (data.result?._id) this.openDialog(this.translate('created', 'tags'));
-        },
-      })
-
-      const tagToUpdate = this.tags.find(tag => tag._id === tagId); 
-      if (tagToUpdate) {
-        tagToUpdate.name = editedTagName;
-      }
-      this.showEditInput = false;
-    } catch (error) {
-      console.error('Error al actualizar el nombre de la etiqueta:', error);
-    }
-  }
-  
 
   onEditClose(event: string, tagId: string, editedTagName: string) {
     try {

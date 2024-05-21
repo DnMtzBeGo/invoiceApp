@@ -1662,7 +1662,12 @@
       "edit_drivers_title": "Edit drivers",
       "tag_name": "Tag name:",
       "tag_name_placeholder": "Type tag name",
-      "tag_edit_placeholder": "Type new tag name"
+      "tag_edit_placeholder": "Type new tag name",
+      "add_driver_toast": "Driver(s) successfully added",
+      "delete_driver_toast": "Driver(s) removed successfully",
+      "error_tag_toast": "An error occurred while adding or deleting the driver(s)",
+      "error_tag_name": "An error occurred while creating tag",
+      "error_repeat_tag_name": "The tag name already exists"
     },
     "validation": {
       "carriers_required": "Choose almost one driver",
