@@ -1,10 +1,24 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-app-user-message',
   templateUrl: './app-user-message.component.html',
-  styleUrls: ['./app-user-message.component.scss']
+  styleUrls: ['./app-user-message.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      state('void', style({
+        opacity: 0,
+      })),
+      state('*', style({
+        opacity: 1,
+      })),
+      transition(':enter', [
+        animate('0.75s ease-in')
+      ])
+    ])
+  ]
 })
 export class AppUserMessageComponent implements OnInit {
   @Input() message: string;

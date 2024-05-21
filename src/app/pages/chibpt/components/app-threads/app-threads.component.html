@@ -1,25 +1,26 @@
 <main>
-    <section class="top-section">
-        <h2>ChiBPT</h2>
-        <section class="chibi-chatbot-section" *ngIf="messages.length === 0">
-            <img src="assets/images/chibpt/chibi-chatbot.svg" alt="Chibi Chatbot">
-        </section>
-        <section class="chibibot-conversation-section"  *ngIf="messages.length > 0">
-            <ng-container *ngFor="let message of messages">
-                <ng-container *ngIf="message.role === 'user'">
-                    <app-app-user-message [message]="message.content" [files]="message.files"></app-app-user-message>
-                </ng-container>
-                <ng-container *ngIf="message.role === 'assistant'">
-                    <app-app-chibibot-message [message]="message.content"></app-app-chibibot-message>
-                </ng-container>
-            </ng-container>
-        </section>
+  <section class="top-section" #scrollContainer>
+    <h2>ChiBPT</h2>
+    <section class="chibi-chatbot-section" *ngIf="messages.length === 0">
+      <img src="assets/images/chibpt/chibi-chatbot.svg" alt="Chibi Chatbot" />
     </section>
+    <section class="chibibot-conversation-section" *ngIf="messages.length > 0">
+      <ng-container *ngFor="let message of messages">
+        <ng-container *ngIf="message.role === 'user'">
+          <app-app-user-message [message]="message.content" [files]="message.files"></app-app-user-message>
+        </ng-container>
 
-    <section class="input-section">
-        
-        <bego-chat-box (sendData)="createChat($event)" [enabledFiles]="true">
-        </bego-chat-box>
-        <p>ChibiPT can make mistakes. Consider checking important information</p>
+        <ng-container *ngIf="message.role === 'assistant'">
+          <app-app-chibibot-message [message]="message.content"></app-app-chibibot-message>
+        </ng-container>
+      </ng-container>
+
+      <app-app-chibibot-message [loader]="true" *ngIf="sendingMessage"></app-app-chibibot-message>
     </section>
+  </section>
+
+  <section class="input-section">
+    <bego-chat-box (sendData)="sendQuestion($event)" [enabledFiles]="true" [questions]="!chatId && quickQuestions"> </bego-chat-box>
+    <p>ChibiPT can make mistakes. Consider checking important information</p>
+  </section>
 </main>

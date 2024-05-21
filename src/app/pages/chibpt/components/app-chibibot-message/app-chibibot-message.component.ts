@@ -1,21 +1,35 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'app-app-chibibot-message',
   templateUrl: './app-chibibot-message.component.html',
-  styleUrls: ['./app-chibibot-message.component.scss']
+  styleUrls: ['./app-chibibot-message.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      state('void', style({
+        opacity: 0,
+      })),
+      state('*', style({
+        opacity: 1,
+      })),
+      transition(':enter', [
+        animate('0.75s ease-in')
+      ])
+    ])
+  ]
 })
 export class AppChibibotMessageComponent implements OnInit {
-
   @Input() message: string;
+  @Input() loader: boolean = false;
   formattedString: SafeHtml;
 
   constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g,'<br>'));
+    console.log('loader: ' + this.loader);
+    console.log('message: ' + this.message);
+    if (this.loader || !this.message) return;
+    this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g, '<br>'));
   }
-
-
-
 }

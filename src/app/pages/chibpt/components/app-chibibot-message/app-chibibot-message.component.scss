@@ -1,26 +1,50 @@
 @import '../../../../../styles.scss';
 
+.message {
+  opacity: 0;
+  transition: opacity 0.75s ease-in;
+}
+
 section {
-    @include flexbox-align(row, flex-start, flex-end);
-    padding-block: 20px;
-    width: 100%;
+  @include flexbox-align(row, flex-start, flex-end);
+  padding-block: 20px;
+  width: 100%;
 }
 
 .chibibot-yellow-circle {
-    border: #FFEE00 solid 1px;
-    border-radius: 50%;
-    margin-inline-end: 7px;
-    width: 72px;
-    height: 72px;
-    padding: 5px;
+  border: #ffee00 solid 1px;
+  border-radius: 50%;
+  margin-inline-end: 7px;
+  width: 72px;
+  height: 72px;
+  padding: 5px;
 }
 
 .chibibot-message-gradient-container {
-    @include gradient-background;
+  @include gradient-background;
 
-    p {
-        font-weight: 300;
-        font-size: 12px;
-        line-height: 1.6;
-    }
+  p {
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+}
+
+.dot-loader {
+  min-width: 100px !important;
+}
+
+.loader {
+  margin-inline: auto;
+  height: 10px;
+  aspect-ratio: 5;
+  -webkit-mask: linear-gradient(90deg, #0000, #000 20% 80%, #0000);
+  background: radial-gradient(closest-side at 37.5% 50%, #ffee00 94%, #0000) 0 / calc(80% / 3) 100%;
+  animation: l48 0.75s infinite linear;
+}
+
+@keyframes l48 {
+  100% {
+    background-position: 36.36%;
+  }
 }
