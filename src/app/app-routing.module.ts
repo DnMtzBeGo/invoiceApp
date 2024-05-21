@@ -11,7 +11,7 @@ const routes: Routes = [
     data: {
       breadcrumb: 'Home'
     },
-    loadChildren: () => import('./pages/map-dashboard/map-dashboard.module').then((m) => m.MapDashboardModule),
+    loadChildren: () => import('./shared/pages/map-dashboard/map-dashboard.module').then((m) => m.MapDashboardModule),
   },
   {
     path: 'calendar',
@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: 'fleet',
-    loadChildren: () => import('./pages/map-dashboard/map-dashboard.module').then((m) => m.MapDashboardModule),
+    loadChildren: () => import('./shared/pages/map-dashboard/map-dashboard.module').then((m) => m.MapDashboardModule),
   },
   /* {
     path: 'shippers',

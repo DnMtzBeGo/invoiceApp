@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { HeaderService } from 'src/app/pages/home/services/header.service';
 import { Location } from '@angular/common';
 import { trigger, style, animate, transition } from '@angular/animations';
-import { MapDashboardService } from 'src/app/pages/map-dashboard/map-dashboard.service';
+import { MapDashboardService } from 'src/app/shared/pages/map-dashboard/map-dashboard.service';
 
 @Component({
   selector: 'app-fleet-page',

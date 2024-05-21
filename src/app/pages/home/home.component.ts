@@ -13,7 +13,7 @@ import { InputDirectionsComponent } from 'src/app/shared/components/input-direct
 import { trigger, style, animate, transition } from '@angular/animations';
 import { PrimeService } from 'src/app/shared/services/prime.service';
 import { LocationsService } from '../../services/locations.service';
-import { MapDashboardService } from '../map-dashboard/map-dashboard.service';
+import { MapDashboardService } from 'src/app/shared/pages/map-dashboard/map-dashboard.service';
 
 @Component({
   selector: 'app-home',

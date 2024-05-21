@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { fromEvent, interval, merge, of, Subscription } from 'rxjs';
 import { catchError, filter, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { CustomMarker } from '../home/custom.marker';
+import { CustomMarker } from 'src/app/pages/home/custom.marker';
 import { MapDashboardService } from './map-dashboard.service';
 
 declare var google: any;

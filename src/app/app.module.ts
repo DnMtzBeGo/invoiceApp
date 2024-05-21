@@ -44,7 +44,7 @@ import { IncompatibleBrowserModalComponent } from './shared/components/incompati
 import { IonicModule } from '@ionic/angular';
 import { AppMaterialModule } from './material';
 import { RouteReuseStrategy } from '@angular/router';
-import { CustomRouteReuseStrategy } from './pages/home/custom-reuse-strategy';
+import { CustomRouteReuseStrategy } from './shared/pages/map-dashboard/custom-reuse-strategy';
 
 export function playerFactory() {
   return player;
