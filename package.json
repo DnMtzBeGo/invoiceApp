@@ -39,6 +39,7 @@
     "leaflet": "^1.7.1",
     "leaflet-draw": "^1.0.4",
     "lottie-web": "^5.9.6",
+    "luxon": "^3.4.4",
     "moment": "^2.29.1",
     "ngx-bootstrap": "^10.0.0",
     "ngx-currency": "^3.0.0",
