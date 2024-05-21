@@ -148,7 +148,7 @@ export class HistoryChibptComponent implements OnInit {
     const last30Days = today.minus({ days: 30 });
 
     histories.forEach((history: History) => {
-      const historyDate = this.parseDate(history.created);
+      const historyDate = DateTime.fromFormat(history.created, 'dd/MM/yy');
 
       switch (true) {
         case historyDate >= today:
@@ -169,9 +169,5 @@ export class HistoryChibptComponent implements OnInit {
           break;
       }
     });
-  }
-
-  private parseDate(dateString: string): DateTime {
-    return DateTime.fromFormat(dateString, 'dd/MM/yy');
   }
 }

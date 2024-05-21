@@ -15,8 +15,7 @@ export class AppChibptComponent {
     this.isHistoryHidden = !this.isHistoryHidden;
   }
 
-  loadChat(_id: string) {
-    console.log('load:', _id);
-    this.chatId = _id;
+  loadChat(chatId: string) {
+    this.chatId = chatId;
   }
 }
