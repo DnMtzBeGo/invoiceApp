@@ -1914,6 +1914,10 @@
         "done": "Delete",
         "cancel": "Cancel"
       }
+    },
+    "chatbox": {
+      "send": "Send",
+      "placeholder": "Send a message to ChibPT"
     }
   }
 }
