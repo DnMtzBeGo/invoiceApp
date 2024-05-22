@@ -63,7 +63,6 @@ export class HomeComponent implements OnInit {
     private webService: AuthService,
     public placesService: PlacesService,
     private googlemaps: GoogleMapsService,
-    private headerStyle: HeaderService,
     private location: Location,
     public primeService: PrimeService,
     private locationsService: LocationsService,
@@ -109,8 +108,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.headerStyle.changeHeader(this.headerTransparent);
-
     this.locationsService.dataObtained$.subscribe((dataObtained: boolean) => {
       this.showTrafficButton = dataObtained; // Mostrar u ocultar el botón de tráfico según se hayan obtenido los datos
     });
@@ -125,7 +122,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.headerStyle.changeHeader(false);
     this.subs.unsubscribe();
   }
 

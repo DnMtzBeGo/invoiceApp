@@ -5,6 +5,7 @@ import { catchError, filter, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomMarker } from 'src/app/pages/home/custom.marker';
 import { MapDashboardService } from './map-dashboard.service';
+import { HeaderService } from 'src/app/pages/home/services/header.service';
 
 declare var google: any;
 
@@ -33,13 +34,27 @@ export class MapDashboardComponent {
   maxZoom = 18;
 
   subscriptions = new Subscription();
+  restoreHeader = false;
 
-  constructor(public mapDashboardService: MapDashboardService, public router: Router, public apiRestService: AuthService) {
+  constructor(
+    public mapDashboardService: MapDashboardService,
+    public router: Router,
+    public apiRestService: AuthService,
+    public headerService: HeaderService,
+  ) {
     this.subscriptions.add(
       this.router.events.subscribe((res) => {
-        if (!(res instanceof NavigationEnd) || ['/home', '/fleet'].every((url) => !res.url.startsWith(url))) return;
-        this.mapDashboardService.showPolygons = true;
-        this.mapDashboardService.showFleetMap = true;
+        if (!(res instanceof NavigationEnd)) return;
+
+        if (['/home', '/fleet'].includes(res.url)) {
+          this.headerService.changeHeader(true);
+          this.mapDashboardService.showPolygons = true;
+          this.mapDashboardService.showFleetMap = true;
+          this.restoreHeader = true;
+        } else if (this.restoreHeader) {
+          this.headerService.changeHeader(false);
+          this.restoreHeader = false;
+        }
       })
     );
 

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { HeaderService } from 'src/app/pages/home/services/header.service';
 import { Location } from '@angular/common';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { MapDashboardService } from 'src/app/shared/pages/map-dashboard/map-dashboard.service';
@@ -20,7 +19,6 @@ export class FleetPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private headerStyle: HeaderService,
     private location: Location,
     public mapDashboardService: MapDashboardService
   ) {
@@ -40,12 +38,9 @@ export class FleetPageComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.headerStyle.changeHeader(true);
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    this.headerStyle.changeHeader(false);
     this.subs.unsubscribe();
   }
 
