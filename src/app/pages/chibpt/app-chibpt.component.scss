@@ -42,13 +42,22 @@ button {
   width: 100%;
 }
 
-.open-history {
+.open-history, 
+.closed-history {
   position: absolute;
   top: 50%;
   right: 0;
   transform: translate(0, -50%);
   width: 21.5px;
   height: 125.5px;
-  background: url('../../../assets/images/chibpt/open-history.png');
   z-index: 1;
 }
+
+.open-history {
+  background: url('../../../assets/images/chibpt/open-history.png');
+}
+
+.closed-history {
+  background: url('../../../assets/images/chibpt/open-yellow.png');
+}
+
