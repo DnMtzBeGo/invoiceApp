@@ -88,7 +88,6 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
     testgFormDta.append("message", message)
-    this.sendingMessage = true;
 // c hecks if chat id is true to make de put or post request
     const uploadFunction = this.chatId
     ? this.webService.uploadFilesServicePut.bind(this.webService)
