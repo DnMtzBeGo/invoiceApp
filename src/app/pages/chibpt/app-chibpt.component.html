@@ -3,7 +3,7 @@
     <main>
       <app-app-chat-chibpt class="conversation-container-component" [ngClass]="{ 'hiddenHistory': isHistoryHidden, 'visibleHistory': !isHistoryHidden }" [chatId]="chatId"></app-app-chat-chibpt>
     </main>
-    <button class="open-history" (click)="toggleHistory()"></button>
+    <button class="open-history" (click)="toggleHistory()" [ngClass]="{ 'open-history': !isHistoryHidden, 'closed-history': isHistoryHidden }"></button>
   </div>
   <app-history-chibpt [openHistoryChat]="isHistoryHidden" (selectedHistoryEmitter)="loadChat($event)"></app-history-chibpt>
 </div>

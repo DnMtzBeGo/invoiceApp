@@ -81,15 +81,25 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async sendQuestion({ message, files }: Question) {
+    let testgFormDta = new FormData()
+    if(files) {
+      files.forEach((file: File, index: number) => {
+        testgFormDta.append("files", file, index.toString());
+      });
+    }
+    testgFormDta.append("message", message)
+    this.sendingMessage = true;
+// c hecks if chat id is true to make de put or post request
+    const uploadFunction = this.chatId
+    ? this.webService.uploadFilesServicePut.bind(this.webService)
+    : this.webService.uploadFilesSerivce.bind(this.webService);
     this.chibiptService.sendingMessage = true;
-    const requestJson = JSON.stringify({ message });
-    const verb = this.chatId ? 'apiRestPut' : 'apiRest';
 
     this.messages = [...this.messages, { role: 'user', content: message, files }];
     this.scrollToBottom();
 
     (
-      await this.webService[verb](requestJson, `assistant/${this.chatId}`, {
+      await uploadFunction(testgFormDta, `assistant/${this.chatId}`, {
         apiVersion: 'v1.1',
         loader: 'false'
       })
