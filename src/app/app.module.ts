@@ -43,6 +43,8 @@ import { SmallResolutionModalComponent } from './shared/components/small-resolut
 import { IncompatibleBrowserModalComponent } from './shared/components/incompatible-browser-modal/incompatible-browser-modal.component';
 import { IonicModule } from '@ionic/angular';
 import { AppMaterialModule } from './material';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './shared/pages/map-dashboard/custom-reuse-strategy';
 
 export function playerFactory() {
   return player;
@@ -118,7 +120,8 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ],
   bootstrap: [AppComponent]
 })

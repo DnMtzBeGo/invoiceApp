@@ -23,7 +23,7 @@
       (click)="goTo('drafts')"
     >
       <app-button class="btn-menu icon icon-drafts icon-only"></app-button>
-      {{ "menu.home" | translate }}
+      {{ "menu.drafts" | translate }}
     </div>
 
     <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/fleet') }" (click)="goTo('fleet')">

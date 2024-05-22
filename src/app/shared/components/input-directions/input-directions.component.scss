@@ -364,7 +364,10 @@ section {
     font-weight: 500;
     font-size: 14px;
     letter-spacing: 0.5px;
-    text-transform: capitalize;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
   }
   .input-container {
     position: relative;
