@@ -587,7 +587,7 @@
     "placeholder": "Enter destination",
     "location-not-enabled": "Location is not enabled",
     "txt-address-not-found": "No se encontró la dirección",
-    "btn-order": "Make an Order"
+    "btn-order": "Make an order"
   },
   "alerts": {
     "contact": {
