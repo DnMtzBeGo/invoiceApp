@@ -1,5 +1,5 @@
 <section class="container" [ngClass]="{ 'hide-history': openHistoryChat }">
-  <div class="header" (click)="selectedHistoryEmitter.emit('')">
+  <div class="header" [ngClass]="{ 'wait-request': chibiptService.sendingMessage }" (click)="createNewChat()">
     <img src="../../../../../assets/images/chibpt/chibi-history.svg" alt="Chibi History" />
     <h3>{{ 'chibpt.history.new-chat' | translate }}</h3>
     <bego-icon icon="begon-edit-fintech"></bego-icon>
@@ -20,7 +20,12 @@
                   'selected-history': history?.selected
                 }">
                 <ng-container *ngIf="!history?.rename; else rename">
-                  <p class="threads-title" (click)="selectedHistory(history._id, i, date)">{{ history.title }}</p>
+                  <p
+                    class="threads-title"
+                    [ngClass]="{ 'wait-request': chibiptService.sendingMessage }"
+                    (click)="selectedHistory(history, i, date)">
+                    {{ history.title }}
+                  </p>
                 </ng-container>
 
                 <ng-template #rename>

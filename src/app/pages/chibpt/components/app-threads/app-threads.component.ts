@@ -1,6 +1,9 @@
-import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { BegoChatBox } from '@begomx/ui-components';
+import { DateTime } from 'luxon';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ChibiptService } from 'src/app/shared/services/chibipt.service';
 
 interface Question {
   message: string;
@@ -12,11 +15,10 @@ interface Question {
   templateUrl: './app-threads.component.html',
   styleUrls: ['./app-threads.component.scss']
 })
-export class AppThreadsComponent {
+export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('scrollContainer') private scrollContainer: ElementRef;
   @ViewChild('chatBox') chatBox: BegoChatBox;
   @Input() chatId: string = '';
-  sendingMessage: boolean = false;
 
   question = {
     message: '',
@@ -44,11 +46,18 @@ export class AppThreadsComponent {
     }
   ];
 
-  constructor(private webService: AuthService) {}
+  createNewHistorySub: Subscription;
+
+  constructor(private webService: AuthService, public chibiptService: ChibiptService) {}
+
+  ngOnInit() {
+    this.createNewHistorySub = this.chibiptService.createNewChatSub$.subscribe(() => {
+      this.cleanChat();
+    });
+  }
 
   async ngOnChanges(changes: SimpleChanges) {
     if (changes.chatId.currentValue) await this.loadChat();
-    else this.cleanChat();
   }
 
   async loadChat() {
@@ -65,12 +74,14 @@ export class AppThreadsComponent {
   }
 
   cleanChat() {
+    this.chatId = '';
     this.messages = [];
     this.chatBox?.cleanData();
+    this.chatBox.firstChat = true;
   }
 
   async sendQuestion({ message, files }: Question) {
-    this.sendingMessage = true;
+    this.chibiptService.sendingMessage = true;
     const requestJson = JSON.stringify({ message });
     const verb = this.chatId ? 'apiRestPut' : 'apiRest';
 
@@ -84,17 +95,26 @@ export class AppThreadsComponent {
       })
     ).subscribe({
       next: ({ result }) => {
-        this.sendingMessage = false;
+        this.chibiptService.sendingMessage = false;
         this.messages = [...this.messages, { role: result.role, content: result.content }];
-        if (!this.chatId) this.chatId = result.conversation_id;
+        if (!this.chatId) {
+          this.chatId = result.conversation_id;
+          const history = {
+            _id: result.conversation_id,
+            title: message,
+            created: DateTime.now().toFormat('dd/MM/yy'),
+            selected: true
+          };
+          this.chibiptService.addNewHistory(history);
+        }
         this.scrollToBottom();
       },
       error: (error) => {
         console.error('Error sending message', error);
-        this.sendingMessage = false;
+        this.chibiptService.sendingMessage = false;
       },
       complete: () => {
-        this.sendingMessage = false;
+        this.chibiptService.sendingMessage = false;
       }
     });
   }
@@ -104,5 +124,9 @@ export class AppThreadsComponent {
       const top = this.scrollContainer?.nativeElement.scrollHeight;
       this.scrollContainer?.nativeElement?.scrollTo({ top, behavior: 'smooth' });
     });
+  }
+
+  ngOnDestroy() {
+    this.createNewHistorySub.unsubscribe();
   }
 }

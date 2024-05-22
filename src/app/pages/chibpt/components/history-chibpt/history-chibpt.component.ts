@@ -1,9 +1,11 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { HistoryModalComponent } from './components/history-modal/history-modal.component';
 import { DateTime } from 'luxon';
+import { ChibiptService } from 'src/app/shared/services/chibipt.service';
+import { Subscription } from 'rxjs';
 
 interface History {
   _id: string;
@@ -20,7 +22,7 @@ type DateType = 'today' | 'yesterday' | 'last7Days' | 'last30Days' | 'previous';
   templateUrl: './history-chibpt.component.html',
   styleUrls: ['./history-chibpt.component.scss']
 })
-export class HistoryChibptComponent implements OnInit {
+export class HistoryChibptComponent implements OnInit, OnDestroy {
   @ViewChild('scrollHistory') scrollHistory!: ElementRef;
   @Output() selectedHistoryEmitter = new EventEmitter<string>();
   @Input() openHistoryChat: boolean = false;
@@ -46,13 +48,29 @@ export class HistoryChibptComponent implements OnInit {
   };
 
   auxName: string = '';
+  getNewHistorySub: Subscription;
 
-  constructor(private translateService: TranslateService, private apiRestService: AuthService, private matDialog: MatDialog) {
+  constructor(
+    private translateService: TranslateService,
+    private apiRestService: AuthService,
+    private matDialog: MatDialog,
+    public chibiptService: ChibiptService
+  ) {
     this.lang = this.translateService.currentLang;
   }
 
   public async ngOnInit() {
     await this.getHistoryChat();
+    this.getNewHistorySub = this.chibiptService.sendNewHistorySub$.subscribe((history: History) => {
+      this.unselectHistory();
+      this.histories.today.unshift(history);
+    });
+  }
+
+  createNewChat() {
+    if (this.chibiptService.sendingMessage) return;
+    this.unselectHistory();
+    this.chibiptService.createNewChat();
   }
 
   async getHistoryChat() {
@@ -105,8 +123,16 @@ export class HistoryChibptComponent implements OnInit {
     });
   }
 
-  selectedHistory(_id: string, index: string, date: DateType) {
-    this.histories[date].forEach((history) => (history['selected'] = false));
+  unselectHistory() {
+    for (const date in this.histories) {
+      this.histories[date].forEach((history) => (history['selected'] = false));
+    }
+  }
+
+  selectedHistory({ _id, selected }: History, index: string, date: DateType) {
+    if (selected || this.chibiptService.sendingMessage) return;
+
+    this.unselectHistory();
     this.histories[date][index]['selected'] = true;
     this.selectedHistoryEmitter.emit(_id);
   }
@@ -169,5 +195,9 @@ export class HistoryChibptComponent implements OnInit {
           break;
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.getNewHistorySub.unsubscribe();
   }
 }
