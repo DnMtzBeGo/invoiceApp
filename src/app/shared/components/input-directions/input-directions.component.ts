@@ -10,7 +10,6 @@ import {
   Inject,
   SimpleChanges,
   Renderer2,
-  ChangeDetectorRef,
 } from "@angular/core";
 import { Subscription } from "rxjs";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
@@ -32,6 +31,7 @@ import { NotificationsService } from "../../services/notifications.service";
 import { SavedLocationsService } from "../../services/saved-locations.service";
 import { PrimeService } from "../../services/prime.service";
 import { DateTime } from 'luxon'
+import { NavigationEnd, Router } from "@angular/router";
 
 declare var google: any;
 
@@ -69,7 +69,6 @@ export class InputDirectionsComponent implements OnInit {
   isPrime = false;
 
   lang = 'en';
-  langListener = null;
   pickupSelected: boolean = false;
   dropoffSelected: boolean = false;
   events: string | Date = "DD / MM / YY";
@@ -125,7 +124,6 @@ export class InputDirectionsComponent implements OnInit {
     place_id_dropoff: ''
   };
 
-  subscription: Subscription;
   map: any;
   bounds: any;
   start: any;
@@ -188,15 +186,17 @@ export class InputDirectionsComponent implements OnInit {
     return Boolean(this.autocompleteItemsPickup.length || this.autocompleteItemsDropoff.length);
   }
 
+  subs = new Subscription();
+
   constructor(
     private auth: AuthService,
     public zone: NgZone,
     public render: Renderer2,
     private googlemaps: GoogleMapsService,
-    private cdr: ChangeDetectorRef,
     private alertservice: AlertService,
     private notificationService: NotificationsService,
     private translateService: TranslateService,
+    private router: Router,
     @Inject(HomeComponent) public parent: HomeComponent,
     private matDialog: MatDialog,
     public savedLocations: SavedLocationsService,
@@ -205,13 +205,13 @@ export class InputDirectionsComponent implements OnInit {
     if (this.primeService.loaded.isStopped) {
       this.isPrime = this.primeService.isPrime;
     } else {
-      this.primeService.loaded.subscribe(() => {
+      this.subs.add(this.primeService.loaded.subscribe(() => {
         this.isPrime = this.primeService.isPrime;
-      })
+      }));
     }
 
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
-    this.subscription = this.googlemaps.previewMapStatus.subscribe((data) => {
+    this.subs.add(this.googlemaps.previewMapStatus.subscribe((data) => {
       if (data) {
         this.hideType = data;
         this.hideMap = true;
@@ -220,7 +220,12 @@ export class InputDirectionsComponent implements OnInit {
       }
 
       if (data === "pickup" || data === "dropoff") this.changeLocations = true;
-    });
+    }));
+
+    this.subs.add(this.router.events.subscribe((res) => {
+      if (!(res instanceof NavigationEnd) || !res.url.startsWith('/home')) return;
+      this.cleanup();
+    }));
   }
 
   ngOnInit(): void {
@@ -228,7 +233,7 @@ export class InputDirectionsComponent implements OnInit {
 
     this.orderTypeList[1].label = this.translateService.instant('fleet.prime.ocl');
 
-    this.langListener = this.translateService.onLangChange.subscribe((lang) => {
+    this.subs.add(this.translateService.onLangChange.subscribe((lang) => {
       this.lang = lang.lang;
 
       this.orderTypeList[1].label = this.translateService.instant('fleet.prime.ocl');
@@ -236,14 +241,13 @@ export class InputDirectionsComponent implements OnInit {
       if (this.walkingData) {
         this.walkingData.attributes.vehicle_number = this.translateService.instant('orders.prime.walking');
       }
-    });
+    }));
 
     this.savedLocations.loadLocations();
   }
 
   ngOnDestroy(): void {
-    this.langListener.unsubscribe();
-    this.subscription.unsubscribe();
+    this.subs.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -277,6 +281,19 @@ export class InputDirectionsComponent implements OnInit {
         this.sendUserWantCP.emit(true);
       }
     }
+  }
+
+  cleanup() {
+    this.drivers = [];
+    this.trucks = [];
+    this.trailers = [];
+    this.vehicle = [];
+    this.userWantCP = false;
+    this.showSavedLocations = false;
+    this.showMapPreview = false;
+    this.selectMembersToAssign = {}
+    this.ClearAutocompletePickup();
+    this.ClearAutocompleteDropoff();
   }
 
   async selectSearchResultPickup(item: any) {
@@ -680,7 +697,7 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   public selectMembersForOrder(member: any, typeMember: keyof this) {
-    if (this.userWantCP && !member.can_stamp) {
+    if (typeMember !== 'vehicle' && this.userWantCP && !member.can_stamp) {
       return this.showAlert(
         this.translateService.instant(
           `home.alerts.cant-cp-${String(typeMember)}`

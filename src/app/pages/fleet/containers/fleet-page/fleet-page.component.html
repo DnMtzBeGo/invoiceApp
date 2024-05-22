@@ -1,6 +1,4 @@
 <div class="map map-container">
-  <div #map [ngClass]="[!showFleetMap || showOrderDetails ? 'map-faded-out' : '']" class="google-map transparent"></div>
-
   <div class="new-order-wrapper">
     <div class="new-order-details"></div>
 
@@ -8,25 +6,20 @@
       <app-fleet-widget></app-fleet-widget>
       <div class="btns-container">
         <button
-        id="reset"
-        (click)="mapEmitter.next(['center'])"
-        [ngClass]="{
-          'reset-up': userRole && showFleetMap && !showOrderDetails
-        }"
-        [@slideInFromBottom]>
-        <i class="icon icon-gps"></i>
+          id="reset"
+          (click)="updateMap()"
+          [ngClass]="{
+            'reset-up': mapDashboardService.userRole && mapDashboardService.showFleetMap
+          }"
+          [@slideInFromBottom]>
+          <i class="icon icon-gps"></i>
         </button>
 
-        <button
-            *ngIf="!showOrderDetails"
-            class="btn-traffic"
-            (click)="toggleTraffic()"
-            [@slideInFromBottom]>
-            <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg"/>
+        <button class="btn-traffic" (click)="mapDashboardService.toggleTraffic.next()" [@slideInFromBottom]>
+          <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg" />
         </button>
       </div>
     </div>
-
   </div>
 </div>
 
