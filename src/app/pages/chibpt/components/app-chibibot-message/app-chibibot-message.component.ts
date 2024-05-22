@@ -7,15 +7,19 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./app-chibibot-message.component.scss'],
   animations: [
     trigger('fadeIn', [
-      state('void', style({
-        opacity: 0,
-      })),
-      state('*', style({
-        opacity: 1,
-      })),
-      transition(':enter', [
-        animate('0.75s ease-in')
-      ])
+      state(
+        'void',
+        style({
+          opacity: 0
+        })
+      ),
+      state(
+        '*',
+        style({
+          opacity: 1
+        })
+      ),
+      transition(':enter', [animate('0.75s ease-in')])
     ])
   ]
 })
@@ -27,9 +31,7 @@ export class AppChibibotMessageComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    console.log('loader: ' + this.loader);
-    console.log('message: ' + this.message);
-    if (this.loader || !this.message) return;
+    if (this.loader) return;
     this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g, '<br>'));
   }
 }
