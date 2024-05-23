@@ -25,8 +25,8 @@ button {
   height: 100%;
   border-radius: 8px;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  /* overflow-x: hidden;
+  overflow-y: scroll; */
   transition: all 0.3s;
 
   .header {
@@ -34,87 +34,123 @@ button {
     justify-content: start;
     align-items: center;
     gap: 21px;
-    padding: 21px 52px 16.39px 52px;
+    margin: 21px auto 16.39px 52px;
+    &:hover {
+      cursor: pointer;
+    }
+
+    bego-icon {
+      --color: #ffffff;
+    }
+  }
+
+  .wait-request:hover {
+    cursor: wait;
   }
 
   .threads {
     border-radius: 13px;
     box-shadow: 0px 2px 5px 0px #1c232a;
-    background: #0a0f14;
-    padding: 16px;
     margin: 0 3px;
+    height: 100%;
+    overflow-y: auto;
 
-    h4 {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 19.12px;
-      letter-spacing: 0.5px;
-      color: #8e8e8e;
-      margin-bottom: 25px;
-      padding: 0 27px;
-    }
+    .history-list-container {
+      box-shadow: 0px 2px 5px 0px #1c232a;
+      border-radius: 15px;
+      padding: 16px;
+      margin-right: 4px;
 
-    ol {
-      list-style: none;
-      padding: 0;
-
-      li {
-        padding: 7px 10px 8px 27px;
-        color: #ffffff;
+      h4 {
         font-size: 14px;
-        font-weight: 350;
+        font-weight: 500;
         line-height: 19.12px;
         letter-spacing: 0.5px;
-        cursor: pointer;
-        position: relative;
+        color: #8e8e8e;
+        margin-top: 12px;
+        margin-bottom: 25px;
+        padding: 0 27px;
+      }
 
-        .threads-title {
-          overflow: hidden;
-          white-space: nowrap;
+      ol {
+        list-style: none;
+        padding: 0;
+
+        li {
+          color: #ffffff;
+          font-size: 14px;
+          font-weight: 350;
+          line-height: 19.12px;
+          letter-spacing: 0.5px;
+          cursor: pointer;
           position: relative;
 
-          &:before {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            top: 0;
-            background-image: linear-gradient(to right, transparent 0%, #0a0f14 60%);
-            width: 5rem;
-            height: 100%;
-          }
-        }
-
-        .threads-options {
-          transform: translate(0, -50%);
-          top: 50%;
-          right: 15px;
-          position: absolute;
-
-          .options {
-            transform: rotate(90deg);
-
-            ::ng-deep bego-icon {
-              i {
-                color: #ffffff;
-              }
+          .threads-title {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            padding: 7px 10px 8px 27px;
+            &:before {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              top: 0;
+              background-image: linear-gradient(to right, transparent 0%, #0a0f14 60%);
+              width: 5rem;
+              height: 100%;
             }
+          }
 
-            &:hover {
+          .threads-options {
+            transform: translate(0, -50%);
+            top: 50%;
+            right: 15px;
+            position: absolute;
+
+            .options {
+              transform: rotate(90deg);
+
               ::ng-deep bego-icon {
                 i {
-                  color: #ffee00;
+                  color: #ffffff;
+                }
+              }
+
+              &:hover {
+                ::ng-deep bego-icon {
+                  i {
+                    color: #ffee00;
+                  }
                 }
               }
             }
           }
+
+          &:hover {
+            box-shadow: -2px -2px 4px 0px #050d14 inset, 2px 2px 5px 0px #1a1e24 inset;
+            border-radius: 8px;
+            background: #0c141b;
+            color: #ffee00;
+
+            .threads-title {
+              &:before {
+                background-image: linear-gradient(to right, transparent 0%, #0c141b 60%);
+              }
+            }
+          }
         }
 
-        &:hover {
+        .renaming-title {
           box-shadow: -2px -2px 4px 0px #050d14 inset, 2px 2px 5px 0px #1a1e24 inset;
           border-radius: 8px;
           background: #0c141b;
-          color: #ffee00;
+
+          input {
+            padding: 7px 10px 8px 27px;
+            width: 90%;
+            color: #ffffff;
+          }
 
           .threads-title {
             &:before {
@@ -122,23 +158,21 @@ button {
             }
           }
         }
+
+        .selected-history {
+          color: #ffee00;
+        }
+      }
+    }
+
+    ::ng-deep {
+      .loader-spinner {
+        margin: 25px auto;
       }
 
-      .renaming-title {
-        box-shadow: -2px -2px 4px 0px #050d14 inset, 2px 2px 5px 0px #1a1e24 inset;
-        border-radius: 8px;
-        background: #0c141b;
-
-        input {
-          width: 90%;
-          color: #ffffff;
-        }
-
-        .threads-title {
-          &:before {
-            background-image: linear-gradient(to right, transparent 0%, #0c141b 60%);
-          }
-        }
+      .mat-progress-spinner circle,
+      .mat-spinner circle {
+        stroke: #ffee00;
       }
     }
   }
@@ -150,7 +184,7 @@ button {
     transform: translate(0, -50%);
     width: 21.5px;
     height: 125.5px;
-    background: url("../../../../../assets/images/chibpt/open-history.png");
+    background: url('../../../../../assets/images/chibpt/open-history.png');
     z-index: 1;
   }
 }

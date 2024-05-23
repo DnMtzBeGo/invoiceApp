@@ -1,5 +1,5 @@
 <section>
-  <div class="user-message-gradient-container">
+  <div class="user-message-gradient-container message" [@fadeIn]>
     <div>
       <p [innerHTML]="formattedString"></p>
       <ng-container *ngFor="let file of files">

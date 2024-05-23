@@ -1898,10 +1898,13 @@
   "chibpt": {
     "history": {
       "title": "Chat History",
+      "new-chat": "New Chat",
       "timestamp": {
         "today": "Today",
-        "last-week": "Last week",
-        "last-month": "Last Month"
+        "yesterday": "Yesterday",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "previous": "Previous"
       },
       "edit": "Edit Chat Name",
       "delete": "Delete Chat",
@@ -1910,6 +1913,13 @@
         "subtitle": "This will remove ",
         "done": "Delete",
         "cancel": "Cancel"
+      }
+    },
+    "chatbox": {
+      "send": "Send",
+      "placeholder": "Send a message to ChibPT",
+      "message": {
+        "error-img": "This image has expired"
       }
     }
   }

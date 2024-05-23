@@ -25,8 +25,6 @@ export class HistoryModalComponent {
   }
 
   async deleteHistory() {
-    // this.dialogRef.close(true);
-    // return;
     (
       await this.apiRestService.apiRestDelete(`assistant/${this.data._id}`, {
         apiVersion: 'v1.1'

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-app-chibpt',
@@ -6,15 +6,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app-chibpt.component.scss']
 })
 export class AppChibptComponent {
+  @Input() chatId: string = '';
   public isHistoryHidden: boolean = false;
 
-  constructor( ) {}
+  constructor() {}
 
   toggleHistory() {
     this.isHistoryHidden = !this.isHistoryHidden;
   }
 
-  loadChat(_id) {
-    console.log('loading chat: ', _id);
+  loadChat(chatId: string) {
+    this.chatId = chatId;
   }
 }
