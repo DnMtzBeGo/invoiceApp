@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ChibiptService } from 'src/app/shared/services/chibipt.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 interface Question {
   message: string;
@@ -48,7 +49,7 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
 
   createNewHistorySub: Subscription;
 
-  constructor(private webService: AuthService, public chibiptService: ChibiptService) {}
+  constructor(private webService: AuthService, public chibiptService: ChibiptService, private notificationsService: NotificationsService) {}
 
   ngOnInit() {
     this.createNewHistorySub = this.chibiptService.createNewChatSub$.subscribe(() => {
@@ -81,35 +82,35 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async sendQuestion({ message, files }: Question) {
-    let testgFormDta = new FormData()
-    if(files) {
+    let testgFormDta = new FormData();
+    if (files) {
       files.forEach((file: File, index: number) => {
-        testgFormDta.append("files", file, index.toString());
+        testgFormDta.append('files', file, index.toString());
       });
     }
-    testgFormDta.append("message", message)
-// c hecks if chat id is true to make de put or post request
-    const uploadFunction = this.chatId
-    ? this.webService.uploadFilesServicePut.bind(this.webService)
-    : this.webService.uploadFilesSerivce.bind(this.webService);
+    testgFormDta.append('message', message);
+    // c hecks if chat id is true to make de put or post request
+    const verb = this.chatId ? 'uploadFilesServicePut' : 'uploadFilesSerivce';
     this.chibiptService.sendingMessage = true;
 
     this.messages = [...this.messages, { role: 'user', content: message, files }];
     this.scrollToBottom();
 
     (
-      await uploadFunction(testgFormDta, `assistant/${this.chatId}`, {
-        apiVersion: 'v1.1',
-        loader: 'false'
-      })
+      await this.webService[verb](testgFormDta, `assistant/${this.chatId}`, { apiVersion: 'v1.1' }, { loader: 'false', timeout: '60000' })
     ).subscribe({
-      next: ({ result }) => {
+      next: ({ result: { conversation_id, role, content, url } }) => {
         this.chibiptService.sendingMessage = false;
-        this.messages = [...this.messages, { role: result.role, content: result.content }];
+        const newMessage = {
+          role: role,
+          content: content,
+          ...(url && { url })
+        };
+        this.messages = [...this.messages, newMessage];
         if (!this.chatId) {
-          this.chatId = result.conversation_id;
+          this.chatId = conversation_id;
           const history = {
-            _id: result.conversation_id,
+            _id: conversation_id,
             title: message,
             created: DateTime.now().toFormat('dd/MM/yy'),
             selected: true
@@ -118,9 +119,12 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
         }
         this.scrollToBottom();
       },
-      error: (error) => {
+      error: ({ error }) => {
         console.error('Error sending message', error);
         this.chibiptService.sendingMessage = false;
+        this.messages.pop();
+        if (!this.chatId && !this.messages.length) this.cleanChat();
+        this.notificationsService.showErrorToastr(error?.error?.message, 10000);
       },
       complete: () => {
         this.chibiptService.sendingMessage = false;

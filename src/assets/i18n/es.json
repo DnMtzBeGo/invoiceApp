@@ -1921,7 +1921,10 @@
     },
     "chatbox": {
       "send": "Enviar",
-      "placeholder": "Envía un mensaje a ChibPT"
+      "placeholder": "Envía un mensaje a ChibPT",
+      "message": {
+        "error-img": "Esta imagen ha caducado"
+      }
     }
   }
 }

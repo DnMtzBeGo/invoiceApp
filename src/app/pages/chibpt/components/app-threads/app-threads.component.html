@@ -1,5 +1,5 @@
 <main>
-    <h2>ChiBPT</h2>
+  <h2>ChiBPT</h2>
   <section class="top-section" #scrollContainer>
     <ng-container *ngIf="!messages?.length; else list">
       <section class="chibi-chatbot-section">
@@ -15,7 +15,7 @@
           </ng-container>
 
           <ng-container *ngIf="message.role === 'assistant'">
-            <app-app-chibibot-message [message]="message.content"></app-app-chibibot-message>
+            <app-app-chibibot-message [message]="message.content" [image]="message?.url"></app-app-chibibot-message>
           </ng-container>
         </ng-container>
 

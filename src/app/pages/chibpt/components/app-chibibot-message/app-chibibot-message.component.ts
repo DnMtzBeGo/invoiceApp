@@ -25,13 +25,26 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class AppChibibotMessageComponent implements OnInit {
   @Input() message: string;
+  @Input() image: string = '';
   @Input() loader: boolean = false;
   formattedString: SafeHtml;
+
+  loadingImage: boolean = true;
+  errorImage: boolean = false;
 
   constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
     if (this.loader) return;
+
     this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g, '<br>'));
+  }
+
+  onLoad() {
+    this.loadingImage = false;
+  }
+  onError() {
+    this.loadingImage = false;
+    this.errorImage = true;
   }
 }

@@ -28,6 +28,58 @@ section {
     font-size: 12px;
     line-height: 1.6;
   }
+
+  .image-container {
+    margin-top: 10px;
+    position: relative;
+
+    a {
+      display: flex;
+      text-decoration: none;
+      position: relative;
+    }
+
+    ::ng-deep {
+      .mat-progress-spinner circle,
+      .mat-spinner circle {
+        stroke: #ffee00;
+      }
+    }
+
+    mat-progress-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .error-container {
+      @include gradient-background;
+      div {
+        min-width: fit-content;
+
+        span {
+          font-family: Gotham;
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+
+  .while-loading {
+    min-height: 320px;
+  }
 }
 
 .dot-loader {
