@@ -137,17 +137,19 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
     this.selectedHistoryEmitter.emit(_id);
   }
 
-  openCloseModal(data, index: number, date: DateType) {
+  openCloseModal(history: History, index: number, date: DateType) {
+    if (history?.selected && this.chibiptService.sendingMessage) return;
+
     const dialogRef = this.matDialog.open(HistoryModalComponent, {
-      data,
+      data: history,
       restoreFocus: false,
       backdropClass: ['brand-ui-dialog-2']
     });
 
     dialogRef.afterClosed().subscribe((deleted?) => {
       if (deleted) {
+        if (history?.selected) this.chibiptService.createNewChat();
         this.histories[date].splice(index, 1);
-        this.selectedHistoryEmitter.emit('');
       }
     });
   }

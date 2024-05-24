@@ -7,6 +7,7 @@ import { AlertService } from './shared/services/alert.service';
 import * as AOS from 'aos';
 import { uiComponentsConfig } from '@begomx/ui-components';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 interface IncompatibleBrowserVersion {
   /**
@@ -43,10 +44,13 @@ export class AppComponent {
 
   minWidthResolution = 1024;
 
+  public currentPath: string = '';
+
   constructor(
     private languageService: LanguageService, 
     private alertService: AlertService,
     profileInfoService: ProfileInfoService,
+    private location: Location,
     public router: Router) {
     this.alert$ = this.alertService.alert$;
 
@@ -84,6 +88,8 @@ export class AppComponent {
     AOS.init({
       duration: 1200
     });
+
+    this.currentPath = this.location.path();
 
     window.addEventListener('load', AOS.refresh);
 
