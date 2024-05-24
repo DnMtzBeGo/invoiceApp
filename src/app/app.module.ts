@@ -46,6 +46,7 @@ import { AppMaterialModule } from './material';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './shared/pages/map-dashboard/custom-reuse-strategy';
 
+
 export function playerFactory() {
   return player;
 }

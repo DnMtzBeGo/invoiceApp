@@ -1898,5 +1898,33 @@
       "btn-confirm": "Guardar",
       "btn-cancel": "Cancelar"
     }
+  },
+  "chibpt": {
+    "history": {
+      "title": "Historial",
+      "new-chat": "Nuevo chat",
+      "timestamp": {
+        "today": "Hoy",
+        "yesterday": "Ayer",
+        "last7Days": "7 días anteriores",
+        "last30Days": "30 días anteriores",
+        "previous": "Antiguo"
+      },
+      "edit": "Renombrar",
+      "delete": "Borrar ",
+      "modal": {
+        "title": "¿Deseas eliminar el chat?",
+        "subtitle": "Esto eliminará ",
+        "done": "Eliminar",
+        "cancel": "Cancelar"
+      }
+    },
+    "chatbox": {
+      "send": "Enviar",
+      "placeholder": "Envía un mensaje a ChibPT",
+      "message": {
+        "error-img": "Esta imagen ha caducado"
+      }
+    }
   }
 }
