@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderService } from '../home/services/header.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -88,14 +87,12 @@ export class PolygonsComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private headerStyle: HeaderService,
     private webService: AuthService,
     private translateService: TranslateService,
     private dialog: MatDialog, // private datePipe: DatePipe,
     public readonly primeService: PrimeService
   ) {
     this.lang.selected = localStorage.getItem('lang') || 'en';
-    this.headerStyle.changeHeader(this.headerTransparent);
 
     this.setLang();
   }

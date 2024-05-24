@@ -1,0 +1,67 @@
+@import '../../../../../styles.scss';
+
+* {
+  font-family: 'Gotham';
+}
+
+main {
+  height: 100%;
+  width: 100%;
+  padding-inline: 37px;
+  display: flex;
+  flex-direction: column;
+  
+
+
+  h2 {
+    font-size: 38px;
+    font-weight: 700;
+    width: 100%;
+    margin-block: 1rem;
+    padding-inline: 30px;
+  }
+}
+
+.top-section {
+  width: 100%;
+  overflow-y: auto;
+  padding: 15px 25px;
+  direction: rtl;
+}
+
+.chibi-chatbot-section {
+  width: 346px;
+  height: 195px;
+  margin-inline: calc((100% - 346px) / 2);
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.chibibot-conversation-section {
+  width: 100%;
+  height: 100%;
+  direction: ltr;
+}
+
+.input-section {
+  background-color: #050b10;
+  width: 100%;
+
+  padding-block-end: 37px;
+  @include flexbox-align(column, space-between, center);
+  margin-top: auto;
+
+  bego-chat-box {
+    width: 100%;
+    max-width: 760px;
+  }
+
+  p {
+    font-size: 12px;
+    font-weight: 400;
+    margin-block-start: 12px;
+  }
+}
