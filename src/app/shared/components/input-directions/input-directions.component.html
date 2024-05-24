@@ -264,7 +264,7 @@
               <div
                 class="rest-of-members"
                 *ngIf="vehicleGroup.vehicles?.length > 4"
-                (click)="showFleetContainer('vehicle')"
+                (click)="showFleetContainer('vehicle',  vehicleGroup.vehicles)"
               >
                 <p>+{{ vehicleGroup.vehicles.length - 4 }}</p>
               </div>
@@ -384,6 +384,7 @@
   </div>
 
   <app-fleet-members
+    *ngIf="!showMapPreview"
     [ngClass]="showFleetMembersContainer ? 'show-fleet-members' : ''"
     [titleFleetMembers]="titleFleetMembers"
   >

@@ -43,8 +43,8 @@
           </div>
           <div class="pickup-status">
             <div class="pickup-status-text">
-              <i class="icon icon-dot" [ngClass]="statusListData.statusList[language][statusOrder]?.general.class"></i>
-              {{statusListData.statusList[language][statusOrder]?.general.text}}
+              <i class="icon icon-dot" [ngClass]="orderInfo.destinations[0].status_class"></i>
+              {{orderInfo.destinations[0].status_string}}
             </div>
           </div>
         </div>
@@ -63,8 +63,8 @@
           </div>
           <div class="dropoff-status">
             <div class="dropoff-status-text">
-              <i class="icon icon-dot" [ngClass]="statusListData.statusList[language][statusOrder]?.general.class"></i>
-              {{statusListData.statusList[language][statusOrder]?.general.text}}
+              <i class="icon icon-dot" [ngClass]="orderInfo.destinations[1].status_class"></i>
+              {{orderInfo.destinations[1].status_string}}
             </div>
           </div>
         </div>
@@ -96,9 +96,11 @@
       </div>
 
       <!-- Edit order info slide  -->
-      <div class="embla__slide"  [ngClass]="{current: sliderIndex == 1}">
+      <!-- Fleet edition not available for now as its not working as expected-->
+      <!-- <div class="embla__slide"  [ngClass]="{current: sliderIndex == 1}">
         <div class="embla__slide__inner">
           <div class="investor-slide">
+            Edit order is:
             <app-edit-order-fleet
               [orderData]="orderInfo"
               (goBack)="slider.scrollPrev()"
@@ -107,10 +109,11 @@
 
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Change fleet element goes here  -->
-      <div class="embla__slide"  [ngClass]="{current: sliderIndex == 2}">
+      <!-- Change fleet not available for now!!-->
+      <!-- <div class="embla__slide"  [ngClass]="{current: sliderIndex == 2}">
         <div class="embla__slide__inner">
           <div class="investor-slide"> 
             <app-choose-fleet-element 
@@ -121,7 +124,7 @@
             </app-choose-fleet-element>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

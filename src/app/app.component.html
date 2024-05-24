@@ -1,4 +1,4 @@
-<span *ngIf="!(showSmallResolutionModal || showIncompatibleBrowserModal)">
+<span [hidden]="showSmallResolutionModal || showIncompatibleBrowserModal">
   <bego-menu id="menu"></bego-menu>
   <section id="container" [ngClass]="this.currentPath === '/chibpt' ? 'full-height' : '' ">
     <bego-navigation [notificationBarToggle]=""></bego-navigation>
