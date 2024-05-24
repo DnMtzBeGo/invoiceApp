@@ -47,7 +47,7 @@
                       <bego-icon icon="begon-edit-fintech"></bego-icon>
                       <span>{{ 'chibpt.history.edit' | translate }}</span>
                     </button>
-                    <button mat-menu-item class="menu-option" (click)="openCloseModal(history, i, date)">
+                    <button mat-menu-item class="menu-option" [disabled]="history.selected && chibiptService.sendingMessage" (click)="openCloseModal(history, i, date)">
                       <bego-icon icon="begon-trash1"></bego-icon>
                       <span>{{ 'chibpt.history.delete' | translate }}</span>
                     </button>

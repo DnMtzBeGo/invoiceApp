@@ -28,11 +28,13 @@ button {
     flex-basis: 100%;
     overflow-y: scroll;
     position: relative;
+    direction: rtl
   }
 
   main {
     @include flexbox-align(row, center, center);
     height: 100%;
+    direction: ltr;
   }
 }
 
