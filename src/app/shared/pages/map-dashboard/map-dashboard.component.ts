@@ -9,8 +9,6 @@ import { HeaderService } from 'src/app/pages/home/services/header.service';
 
 declare var google: any;
 
-const MARKERS_REFRES_TIME = 1000 * 20;
-
 @Component({
   selector: 'app-map-dashboard',
   templateUrl: './map-dashboard.component.html',
@@ -63,21 +61,7 @@ export class MapDashboardComponent {
     this.subscriptions.add(this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)));
     this.subscriptions.add(this.mapDashboardService.centerMap.subscribe(() => this.centerMap()));
 
-    const visibilitychange$ = fromEvent(document, 'visibilitychange');
-    const pauseApp$ = visibilitychange$.pipe(filter(() => document.visibilityState === 'hidden'));
-    const resumeApp$ = visibilitychange$.pipe(filter(() => document.visibilityState === 'visible'));
-
-    this.subscriptions.add(
-      merge(of({}), resumeApp$).subscribe(() => {
-        this.getFleetDetails(false);
-
-        this.subscriptions.add(
-          interval(MARKERS_REFRES_TIME)
-            .pipe(takeUntil(pauseApp$))
-            .subscribe(() => this.getFleetDetails(true))
-        );
-      })
-    );
+    this.getFleetDetails(false);
   }
 
   ngOnDestroy() {
