@@ -57,18 +57,6 @@ export class TagsComponent implements OnInit {
 
   ngOnInit() {
     this.translateService.onLangChange.subscribe(() => this.setLang());
-
-    if (this.primeService.loaded.isStopped) {
-      this.handleMustRedirect();
-    } else {
-      this.primeService.loaded.subscribe(() => this.handleMustRedirect())
-    }
-  }
-
-  handleMustRedirect() {
-    if (!this.primeService.isPrime) {
-      this.router.navigate(['/home']);
-    }
   }
 
   setLang(): TagsComponent {
