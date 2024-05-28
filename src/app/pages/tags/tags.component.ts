@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SendMessageModalComponent } from './components/send-message-modal/send-message-modal.component';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
+
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
@@ -56,6 +57,18 @@ export class TagsComponent implements OnInit {
 
   ngOnInit() {
     this.translateService.onLangChange.subscribe(() => this.setLang());
+
+    if (this.primeService.loaded.isStopped) {
+      this.handleMustRedirect();
+    } else {
+      this.primeService.loaded.subscribe(() => this.handleMustRedirect())
+    }
+  }
+
+  handleMustRedirect() {
+    if (!this.primeService.isPrime) {
+      this.router.navigate(['/home']);
+    }
   }
 
   setLang(): TagsComponent {
@@ -304,7 +317,7 @@ export class TagsComponent implements OnInit {
   public async closeDeleteDialog($event: string): Promise<void> {
     if ($event === 'ok') {
       console.log('se borra');
-      (await this.apiService.apiRestDelete(`managers_tags/${this.activeTagId}`, { apiVersion: 'v1.1' })).subscribe({
+      (await this.apiService.apiRestDel(`managers_tags/${this.activeTagId}`, { apiVersion: 'v1.1' })).subscribe({
         next: (d) => {
           this.fetchTags();
         },
@@ -366,7 +379,7 @@ export class TagsComponent implements OnInit {
       }
   
       const updatedTag = { name: editedTagName };
-  
+
       (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/rename/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
         next: (data) => {
           if (data.result?._id) this.openDialog(this.translate('created', 'tags'));

@@ -1,33 +1,19 @@
 <div class="mercancias-inputs" [formGroup]="mercanciasForm">
   <mat-form-field appearance="outline" class="brand-field-1">
-    <mat-label>{{ "invoice.mercancias.peso-bruto" | translate }}</mat-label>
-    <input
-      matInput
-      name="peso_bruto_total"
-      type="number"
-      formControlName="peso_bruto_total"
-      [value]=""
-    />
+    <mat-label>{{ 'invoice.mercancias.peso-bruto' | translate }}</mat-label>
+    <input matInput name="peso_bruto_total" type="number" formControlName="peso_bruto_total" [value]="" />
   </mat-form-field>
   <mat-form-field appearance="outline" class="brand-field-1 unidad-peso">
-    <mat-label>{{ "invoice.mercancias.unidad-peso" | translate }}</mat-label>
+    <mat-label>{{ 'invoice.mercancias.unidad-peso' | translate }}</mat-label>
     <input
       formControlName="unidad_peso"
       autocomplete="off"
       type="search"
       matInput
       [matAutocomplete]="unidadPesoRef"
-      (search)="resetFilterList('unidad_peso')"
-    />
-    <mat-autocomplete
-      #unidadPesoRef="matAutocomplete"
-      [displayWith]="getUnidadPesoText.bind(this)"
-    >
-      <mat-option
-        *ngFor="let option of filteredUnidadPeso"
-        [value]="option.clave"
-        class="brand-option-1"
-      >
+      (search)="resetFilterList('unidad_peso')" />
+    <mat-autocomplete #unidadPesoRef="matAutocomplete" [displayWith]="getUnidadPesoText.bind(this)">
+      <mat-option *ngFor="let option of filteredUnidadPeso" [value]="option.clave" class="brand-option-1">
         {{ option.clave }} - {{ option.nombre }}
       </mat-option>
     </mat-autocomplete>
@@ -36,11 +22,7 @@
 <mat-divider></mat-divider>
 
 <div class="commodities">
-  <div class="add-figura-btn" (click)="addPedimento()">
-    <div class="icon icon-plus"></div>
-    <span>Agregar</span>
-  </div>
-  <div class="figuras-subwrapper" *ngFor="let commodity of commodities; let i = index">
+  <div class="merchandises-subwrapper" *ngFor="let commodity of commodities; let i = index">
     <div>
       <span class="bubble">{{ i + 1 }}</span>
       <span>
@@ -48,19 +30,20 @@
       </span>
       <span (click)="removeData()">Eliminar</span>
     </div>
-    <app-commodity
-      [commodityInfo]="commodity"
-      [dataCoin]="monedas"
-    ></app-commodity>
+    <app-commodity [commodityInfo]="commodity" [dataCoin]="monedas"></app-commodity>
     <mat-divider *ngIf="i != commodities.length - 1"></mat-divider>
+  </div>
+  <div class="add-merchandise-btn" (click)="addMerchandise()">
+    <div class="icon icon-plus"></div>
+    <span>Agregar mercancia</span>
   </div>
 </div>
 
 <div class="grid">
   <button mat-button matStepperPrevious>
-    {{ "invoice.cp-page.anterior" | translate }}
+    {{ 'invoice.cp-page.anterior' | translate }}
   </button>
   <button mat-button matStepperNext>
-    {{ "invoice.cp-page.siguiente" | translate }}
+    {{ 'invoice.cp-page.siguiente' | translate }}
   </button>
 </div>

@@ -20,6 +20,11 @@ import { PicturesGridComponent } from './components/pictures-grid/pictures-grid.
 import { FleetInviteDriverComponent } from './containers/fleet-invite-driver/fleet-invite-driver.component';
 import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
 import { AppMaterialModule } from 'src/app/material';
+import { FleetEditPrimeComponent } from './containers/fleet-edit-prime/fleet-edit-prime.component';
+import { BegoButtonModule, BegoIconsModule, BegoModalModule, BegoRadioBulletModule, BegoTextInputModule } from '@begomx/ui-components';
+import { BegoColorPickerModule } from 'src/app/shared/components/color-picker-2/color-picker.module';
+import { PrimeListComponent } from './components/prime-list/prime-list.component';
+import { PrimeCardComponent } from './components/prime-card/prime-card.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +38,10 @@ import { AppMaterialModule } from 'src/app/material';
     FleetTableComponent,
     FleetEditTrailerComponent,
     PicturesGridComponent,
-    FleetInviteDriverComponent
+    FleetInviteDriverComponent,
+    FleetEditPrimeComponent,
+    PrimeListComponent,
+    PrimeCardComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +57,14 @@ import { AppMaterialModule } from 'src/app/material';
     ButtonModule,
     DragFileBarModule,
     BegoPhoneInputModule,
-    AppMaterialModule
-  ]
+    AppMaterialModule,
+    BegoTextInputModule,
+    BegoColorPickerModule,
+    BegoRadioBulletModule,
+    BegoButtonModule,
+    BegoModalModule,
+    BegoIconsModule
+  ],
+  exports: [FleetPageComponent]
 })
 export class FleetModule {}

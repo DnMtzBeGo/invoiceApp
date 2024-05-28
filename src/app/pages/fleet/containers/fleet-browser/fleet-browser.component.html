@@ -2,18 +2,39 @@
   <div class="wrapper">
     <div class="main">
       <div class="header">
-        <h1>
-          {{ 'fleet.' + resolver.lang + '.txt_header' | translate }}
+        <h1 [ngSwitch]="model">
+          <ng-container *ngSwitchCase="'primeList'">{{ 'fleet.prime.txt_header_vehicles' | translate }}</ng-container>
+          <ng-container *ngSwitchCase="'prime'">
+            {{ 'fleet.' + resolver.lang + '.txt_header' | translate }} {{ category.translations?.[lang] || category.name }}
+          </ng-container>
+          <ng-container *ngSwitchDefault>{{ 'fleet.' + resolver.lang + '.txt_header' | translate }}</ng-container>
+
           <span>{{ paginator.total || '-' }}</span>
         </h1>
         <div class="actions">
-          <button
-            mat-flat-button
-            class="brand-btn-2"
-            [routerLink]="['new']"
-            [queryParams]="resolver.withFleetId ? { fleet_id: vm.fleetId } : {}">
-            {{ 'fleet.' + resolver.lang + '.btn_add' | translate }}
-          </button>
+          <ng-container *ngIf="'primeList' === model; else normalBrowse">
+            <button *ngIf="model === 'primeList'" class="btn-new-category" (click)="openCategoryModal('new')">
+              + {{ 'fleet.prime.category_modal.btn-open' | translate }}
+            </button>
+
+            <bego-button
+              *ngIf="model === 'primeList'"
+              [activated]="selectedCategory"
+              [routerLink]="selectedCategory ? ['new'] : null"
+              [queryParams]="{ fleet_id: selectedCategory }">
+              {{ 'fleet.' + resolver.lang + '.btn_add' | translate }}
+            </bego-button>
+          </ng-container>
+
+          <ng-template #normalBrowse>
+            <button
+              mat-flat-button
+              class="brand-btn-2"
+              [routerLink]="[resolver.newUrl || 'new']"
+              [queryParams]="resolver.withFleetId ? { fleet_id: vm.fleetId } : {}">
+              {{ 'fleet.' + resolver.lang + '.btn_add' | translate }}
+            </button>
+          </ng-template>
 
           <div class="search">
             <i class="icon icon-search"></i>
@@ -43,7 +64,7 @@
           </mat-select>
         </div>
 
-        <div class="right">
+        <div class="right" *ngIf="model !== 'primeList'">
           <mat-button-toggle-group (change)="facturasEmitter.next(['view:set', $event.value])">
             <mat-button-toggle [checked]="vm.view === 'list'" value="list">
               <i class="icon icon-list1"></i>
@@ -56,26 +77,44 @@
       </div>
 
       <div class="content">
-        <div *ngIf="vm.view === 'grid'" class="grid">
-          <ng-container *ngIf="model === 'members'">
-            <app-member-card *ngFor="let data of vm.facturas" [data]="data" (deleted)="facturasEmitter.next(['refresh'])"></app-member-card>
-          </ng-container>
+        <app-prime-list
+          *ngIf="model === 'primeList'; else notPrime"
+          [data]="vm.facturas"
+          (changeSelected)="selectedCategory = $event"
+          (editCategory)="openCategoryModal('edit', $event)"
+          (deleted)="facturasEmitter.next(['refresh'])"
+        ></app-prime-list>
 
-          <ng-container *ngIf="model === 'trucks'">
-            <app-truck-card *ngFor="let data of vm.facturas" [data]="data" (deleted)="facturasEmitter.next(['refresh'])"></app-truck-card>
-          </ng-container>
+        <ng-template #notPrime>
+          <div *ngIf="vm.view === 'grid'" class="grid">
+            <ng-container *ngIf="model === 'members'">
+              <app-member-card
+                *ngFor="let data of vm.facturas"
+                [data]="data"
+                (deleted)="facturasEmitter.next(['refresh'])"></app-member-card>
+            </ng-container>
 
-          <ng-container *ngIf="model === 'trailers'">
-            <app-trailer-card
-              *ngFor="let data of vm.facturas"
-              [data]="data"
-              (deleted)="facturasEmitter.next(['refresh'])"></app-trailer-card>
-          </ng-container>
-        </div>
+            <ng-container *ngIf="model === 'trucks'">
+              <app-truck-card *ngFor="let data of vm.facturas" [data]="data" (deleted)="facturasEmitter.next(['refresh'])"></app-truck-card>
+            </ng-container>
 
-        <div *ngIf="vm.view === 'list'" class="list">
-          <app-fleet-table [orderTableData]="vm.facturas" [model]="model" (deleted)="facturasEmitter.next(['refresh'])"> </app-fleet-table>
-        </div>
+            <ng-container *ngIf="model === 'trailers'">
+              <app-trailer-card
+                *ngFor="let data of vm.facturas"
+                [data]="data"
+                (deleted)="facturasEmitter.next(['refresh'])"></app-trailer-card>
+            </ng-container>
+
+            <ng-container *ngIf="model === 'prime'">
+              <app-prime-card *ngFor="let data of vm.facturas" [data]="data" (deleted)="facturasEmitter.next(['refresh'])"></app-prime-card>
+            </ng-container>
+          </div>
+
+          <div *ngIf="vm.view === 'list'" class="list">
+            <app-fleet-table [orderTableData]="vm.facturas" [model]="model" (deleted)="facturasEmitter.next(['refresh'])">
+            </app-fleet-table>
+          </div>
+        </ng-template>
       </div>
 
       <div class="footer">
@@ -85,7 +124,6 @@
           {{ paginator.pageTotal }}
         </div>
 
-        <!-- copied from orders-list.component.html -->
         <div class="pagination">
           <p
             class="pagination-back"
@@ -116,11 +154,7 @@
           <p
             class="pagination-next"
             [ngClass]="{ desactivated: paginator.pageIndex >= paginator.pageTotal }"
-            (click)="
-              navigate({
-                page: paginator.pageIndex + 1
-              })
-            ">
+            (click)="navigate({ page: paginator.pageIndex + 1 })">
             {{ 'history.btns.next' | translate }}
             <i class="icon icon-next"></i>
           </p>
@@ -129,14 +163,7 @@
         <div class="limit">
           <mat-label>{{ 'invoice.invoice-table.items-per-page' | translate }}</mat-label>
           <mat-form-field appearance="outline" floatLabel="always" class="brand-field-1">
-            <mat-select
-              [value]="paginator.pageSize"
-              (selectionChange)="
-                navigate({
-                  limit: $event.value
-                })
-              "
-              class="disable-custom-format">
+            <mat-select [value]="paginator.pageSize" (selectionChange)="navigate({ limit: $event.value })" class="disable-custom-format">
               <mat-option *ngFor="let sizeOption of paginatorDefaults[vm.view]?.sizeOptions" [value]="sizeOption" class="brand-option-1">{{
                 sizeOption
               }}</mat-option>
@@ -151,3 +178,23 @@
     </div>
   </div>
 </div>
+
+<bego-modal
+  image="chibi-bego"
+  class="add-category-modal"
+  *ngIf="categoryModal.show"
+  [enabledClose]="true"
+  [lang]="{ done: 'fleet.prime.category_modal.btn-done' | translate }"
+  (clickOut)="handleCloseCategoryModal()"
+  (closeEmitter)="handleCloseCategoryModal($event)">
+  <div class="container">
+    <h3>{{ 'fleet.prime.category_modal.title' | translate }}</h3>
+
+    <div class="field">
+      <label class="input-box">
+        <input type="text" [(ngModel)]="categoryModal.type" [placeholder]="'fleet.prime.category_modal.placeholder-category' | translate" />
+      </label>
+      <span class="error">{{ categoryModal.error }}</span>
+    </div>
+  </div>
+</bego-modal>

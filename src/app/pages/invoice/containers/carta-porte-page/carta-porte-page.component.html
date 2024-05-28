@@ -1,12 +1,14 @@
 <div>
   <div class="page-header" role="heading">
-    <h1>{{ "invoice.cp-page.carta-porte" | translate }}</h1>
+    <h1>{{ 'invoice.cp-page.carta-porte' | translate }}</h1>
     <!-- <button mat-button (click)="gatherInfo()">
       {{ "invoice.cp-page.btn-save" | translate }}
     </button> -->
     <app-tooltip-help [content]="'invoice.tooltips.complementos' | translate"></app-tooltip-help>
     <mat-slide-toggle [(ngModel)]="cartaPorteDisabled" (change)="cartaPorteStatus($event)"></mat-slide-toggle>
   </div>
+
+  <div class="idcpp">Folio de transacción: {{ cartaPorteInfoService.id_ccp }}</div>
 
   <div class="page-wrapper" *ngIf="cartaPorteEnabled.length > 0">
     <mat-horizontal-stepper [linear]="isLinear" #stepper class="stepper">
@@ -32,9 +34,7 @@
         <app-mercancias [info]="mercanciasInfo"></app-mercancias>
       </mat-step>
       <mat-step [label]="'invoice.cp-page.figura-transporte' | translate">
-        <app-figura-transporte
-          [info]="figuraTransporteInfo"
-        ></app-figura-transporte>
+        <app-figura-transporte [info]="figuraTransporteInfo"></app-figura-transporte>
       </mat-step>
       <!-- MOSTRAR SE MOSTRARÁ A FUTURO-->
       <!-- <mat-step label="Resumen">

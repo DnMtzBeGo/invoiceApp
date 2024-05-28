@@ -1,0 +1,30 @@
+<bego-modal
+  image="chibi-bego"
+  class="save-location-modal"
+  [enabledCancel]="!saved"
+  [lang]="
+    saved
+      ? { done: 'saved-locations.modal.btn-confirm' | translate }
+      : { done: 'saved-locations.modal.btn-done' | translate, cancel: 'saved-locations.modal.btn-cancel' | translate }
+  "
+  (closeEmitter)="close($event)">
+  <div class="container">
+    <ng-container *ngIf="!saved; else savedModal">
+      <h3>{{ 'saved-locations.modal.title-form' | translate }}</h3>
+      <div class="field">
+        <label class="input-box">
+          <input autofocus type="text" [placeholder]="'saved-locations.modal.placeholder' | translate" [(ngModel)]="name" />
+        </label>
+
+        <span class="error" *ngIf="error">
+          {{ error[lang] || error }}
+        </span>
+      </div>
+    </ng-container>
+
+    <ng-template #savedModal>
+      <h3>{{ 'saved-locations.modal.title-complete' | translate }}</h3>
+      <p>{{ 'saved-locations.modal.complete-msg' | translate }}</p>
+    </ng-template>
+  </div>
+</bego-modal>

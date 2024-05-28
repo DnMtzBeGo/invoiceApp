@@ -10,7 +10,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "low": "node --max-old-space-size=6144 ./node_modules/.bin/ng serve"
   },
   "private": true,
   "dependencies": {
@@ -28,14 +29,17 @@
     "@angular/platform-browser": "^15.2.10",
     "@angular/platform-browser-dynamic": "^15.2.10",
     "@angular/router": "^15.2.10",
-    "@begomx/ui-components": "^15.3.19",
+    "@begomx/ui-components": "^15.5.16",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "angular2-text-mask": "^9.0.0",
     "aos": "^2.3.4",
     "embla-carousel": "^4.1.5",
     "firebase": "^9.4.1",
+    "leaflet": "^1.7.1",
+    "leaflet-draw": "^1.0.4",
     "lottie-web": "^5.9.6",
+    "luxon": "^3.4.4",
     "moment": "^2.29.1",
     "ngx-bootstrap": "^10.0.0",
     "ngx-currency": "^3.0.0",
@@ -47,10 +51,11 @@
     "omit-empty": "1.0.0",
     "rxfire": "^6.0.3",
     "rxjs": "~6.6.0",
-    "socket.io-client": "^4.5.1",
+    "socket.io-client": "4.5.1",
     "source-map-support": "^0.5.21",
     "swiper": "^7.2.0",
     "tslib": "^2.0.0",
+    "uuid": "^9.0.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

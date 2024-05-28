@@ -16,6 +16,9 @@ import { NotificationBarModule } from 'src/app/shared/components/notification-ba
 import { NotificationBarComponent } from 'src/app/shared/components/notification-bar/notification-bar.component';
 import { UppercaseDirective } from 'src/app/pages/shared/directives/uppercase.directive';
 import { AppMaterialModule } from '../material';
+import { BegoButtonModule, BegoIconsModule, BegoModalModule } from '@begomx/ui-components';
+import { SavedLocationsModalModule } from './components/saved-locations-modal/saved-locations-modal.module';
+import { SavedLocationsComponent } from './components/saved-locations/saved-locations.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,8 @@ import { AppMaterialModule } from '../material';
     NotificationBarComponent,
     PinComponent,
     BegoInputFileComponent,
-    UppercaseDirective
+    UppercaseDirective,
+    SavedLocationsComponent,
   ],
   imports: [
     CommonModule,
@@ -37,7 +41,11 @@ import { AppMaterialModule } from '../material';
     NgxPaginationModule,
     BegoAddressAutocompleteModule,
     NotificationBarModule,
-    AppMaterialModule
+    AppMaterialModule,
+    BegoIconsModule,
+    BegoModalModule,
+    BegoButtonModule,
+    SavedLocationsModalModule
   ],
   exports: [
     FacturaEmisorConceptosComponent,
@@ -49,7 +57,8 @@ import { AppMaterialModule } from '../material';
     //    NotificationBarModule,
     NotificationBarComponent,
     PinComponent,
-    UppercaseDirective
+    UppercaseDirective,
+    SavedLocationsComponent
   ],
   providers: [CartaPorteInfoService]
 })

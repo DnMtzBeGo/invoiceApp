@@ -1,0 +1,52 @@
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 108px;
+
+  h2 {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 31px;
+    letter-spacing: 1px;
+    text-align: center;   
+    margin: 0 0 47px 0; 
+  }
+
+  .input-content {
+    border-radius: 50px;
+    background: linear-gradient(66deg, rgba(8, 12, 15, 0.5) 5.1%, rgba(85, 85, 85, 0.00) 100%), linear-gradient(66deg, rgba(8, 12, 15, 0.50) 5.1%, rgba(85, 85, 85, 0.00) 100%);
+    position: relative;
+
+    input {
+      font-size: 18px;
+      color: #EDEDED;
+      height: 76px;
+      border-radius: 50px;
+      background: transparent;
+      width: 416px;
+      text-align: center;
+      padding: 0 20px;
+
+      &::placeholder {
+        color: #828282;
+      }
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      margin: -1px;
+      border-radius: inherit;
+      background: radial-gradient(115.33% 186.67% at 0% 100%, #151c20 0.32%, rgba(155, 155, 155, 0.5) 54.17%, rgba(104, 104, 104, 0) 100%);
+    }
+  
+  }
+}

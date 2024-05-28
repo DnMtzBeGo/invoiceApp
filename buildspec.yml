@@ -13,7 +13,7 @@ phases:
       - echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc
       - echo "@OWNER:registry=https://npm.pkg.github.com" >> ~/.npmrc
       - echo Installing NPM packages...
-      - npm install --legacy-peer-deps
+      - npm install
   build:
     commands:
       - echo Starting production build...

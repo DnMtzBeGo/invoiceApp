@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CartaPorteCountries } from 'src/app/pages/invoice/models/invoice/carta-porte/CartaPorteCountries';
 import { ClavesDeTransporte } from 'src/app/pages/invoice/models/invoice/carta-porte/ClavesDeTransporte';
 import { SubtiposRemolques } from 'src/app/pages/invoice/models/invoice/carta-porte/subtipos-remolques';
-import { TiposDePermiso } from 'src/app/pages/invoice/models/invoice/carta-porte/TiposDePermiso';
 import { CartaPorteInfoService } from '../services/carta-porte-info.service';
 import { CataloguesListService } from '../services/catalogues-list.service';
+import { RegimenesAduaneros } from 'src/app/pages/invoice/models/invoice/carta-porte/RegimenesAduaneros';
 
 @Component({
   selector: 'app-transporte',
@@ -21,16 +21,18 @@ export class TransporteComponent implements OnInit {
 
   public ingresoSalidaPais: ClavesDeTransporte[];
   public countries: CartaPorteCountries[];
+  public regimenesAduaneros: RegimenesAduaneros[];
   public subscribedCartaPorte: Subscription;
 
   public cartaPorteType: string = 'autotransporte';
 
   public internationalTransport: boolean = false;
-  firstFormGroup: FormGroup = new FormGroup({
+  public firstFormGroup: FormGroup = new FormGroup({
     transp_internac: new FormControl(''),
     pais_origen_destino: new FormControl(''),
     entrada_salida_merc: new FormControl(''),
-    via_entrada_salida: new FormControl('')
+    via_entrada_salida: new FormControl(''),
+    regimen_aduanero: new FormControl('')
   });
 
   constructor(
@@ -44,33 +46,33 @@ export class TransporteComponent implements OnInit {
 
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
       this.ingresoSalidaPais = data.claves_de_transporte;
+      this.regimenesAduaneros = data.regimen_aduanero;
     });
   }
 
   ngOnInit(): void {
-    this.firstFormGroup.controls['transp_internac'].setValue('No');
+    if (!this.firstFormGroup.get('transp_internac').value) this.firstFormGroup.get('transp_internac').setValue('No');
+
     this.subscribedCartaPorte = this.cartaPorteInfoService.infoRecolector.subscribe((value) => {
       this.cartaPorteInfoService.addRecolectedInfo({
         ...this.firstFormGroup.value,
-        transp_internac: this.firstFormGroup.value.transp_internac,
+        transp_internac: this.firstFormGroup.get('transp_internac').value,
         isValid: this.firstFormGroup.status
       });
     });
 
-    this.firstFormGroup.controls.transp_internac.valueChanges.subscribe((inputValue) => {
-      if (inputValue && this.firstFormGroup.get('entrada_salida_merc').value == 'salida') {
+    this.firstFormGroup.get('transp_internac').valueChanges.subscribe((inputValue) => {
+      if (inputValue && this.firstFormGroup.get('entrada_salida_merc').value == 'salida')
         this.cartaPorteInfoService.showFraccionArancelaria(true);
-      } else {
-        this.cartaPorteInfoService.showFraccionArancelaria(false);
-      }
+      else this.cartaPorteInfoService.showFraccionArancelaria(false);
+
+      this.firstFormGroup.get('regimen_aduanero').setValue('');
     });
 
     this.firstFormGroup.controls.entrada_salida_merc.valueChanges.subscribe((inputValue) => {
-      if (inputValue == 'salida' && this.firstFormGroup.get('transp_internac').value) {
+      if (inputValue == 'salida' && this.firstFormGroup.get('transp_internac').value)
         this.cartaPorteInfoService.showFraccionArancelaria(true);
-      } else {
-        this.cartaPorteInfoService.showFraccionArancelaria(false);
-      }
+      else this.cartaPorteInfoService.showFraccionArancelaria(false);
     });
   }
 
@@ -88,13 +90,14 @@ export class TransporteComponent implements OnInit {
 
     if (changes.info && this.info) {
       this.autotransportesInfo = this.info?.mercancias.autotransporte;
-      const { transp_internac, pais_origen_destino, entrada_salida_merc, via_entrada_salida } = this.info;
+      const { transp_internac, pais_origen_destino, entrada_salida_merc, via_entrada_salida, regimen_aduanero } = this.info;
 
       this.firstFormGroup.patchValue({
-        transp_internac: transp_internac !== 'No',
-        pais_origen_destino: pais_origen_destino,
-        entrada_salida_merc: entrada_salida_merc,
-        via_entrada_salida: via_entrada_salida
+        transp_internac,
+        pais_origen_destino,
+        entrada_salida_merc,
+        via_entrada_salida,
+        regimen_aduanero
       });
     }
   }

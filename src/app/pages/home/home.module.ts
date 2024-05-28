@@ -9,18 +9,25 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CheckoutModule } from '../orders/components/checkout/checkout.module';
 import { ProfileModule } from '../profile/profile.module';
 import { AppMaterialModule } from 'src/app/material';
+import { BegoModalModule } from '@begomx/ui-components';
+import { TranslateModule } from '@ngx-translate/core';
+import { PolygonFilterModule } from './components/polygon-filter/polygon-filter.module';
 
 @NgModule({
   declarations: [HomeComponent],
   imports: [
     CommonModule,
+    TranslateModule,
     HomeRoutingModule,
     MapModule,
     InputDirectionsModule,
     OrdersModule,
     CheckoutModule,
     ProfileModule,
-    AppMaterialModule
-  ]
+    AppMaterialModule,
+    BegoModalModule,
+    PolygonFilterModule
+  ],
+  exports: [HomeComponent]
 })
 export class HomeModule {}

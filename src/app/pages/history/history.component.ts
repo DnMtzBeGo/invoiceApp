@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 import { AuthService } from '../../shared/services/auth.service';
 const statusList = require("src/assets/json/status-list.json");
 
@@ -12,6 +13,7 @@ export class HistoryComponent implements OnInit {
   public statusList: any = {};
   public noOrders: boolean = false;
   public currentTab = 'completed';
+  public dropoffUpdated = new Subject<any>();
 
   constructor(
     private authService: AuthService
@@ -30,9 +32,7 @@ export class HistoryComponent implements OnInit {
   }
 
   public async getOrderById(orderId: string) {
-    let requestOrders = `{"order_id": "${orderId}"}`;
-
-    (await this.authService.apiRest(requestOrders, 'orders/get_by_id')).subscribe(res => {
+    (await this.authService.apiRest('', `carriers/orders/${orderId}`, { apiVersion: `v1.1` })).subscribe(res => {
       this.orderInfo = res.result;
     }, error => {
       console.log(error.error);

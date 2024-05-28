@@ -7,8 +7,6 @@ import {
   Output,
   EventEmitter,
   SimpleChanges,
-  ViewChildren,
-  QueryList
 } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -20,10 +18,12 @@ import * as moment from 'moment';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
+import { SelectFleetModalComponent } from './components/select-fleet-modal/select-fleet-modal.component';
 import { BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
+import { LocationsService } from '../../services/locations.service';
 
 export interface OrderPreview {
   destinations: string[];
@@ -57,11 +57,14 @@ export class OrdersComponent implements OnInit {
   @Input() imageFromGoogle: any;
   @Input() membersToAssigned: any;
   @Input() userWantCP: boolean = false;
+  @Input() orderType: string;
+
   screenshotOrderMap: any;
   requestScreenshotOrderMap: FormData = new FormData();
 
   creationTime: any;
   ordersSteps: Step[];
+  ordersStepsOCL: Step[];
 
   hazardousFile?: File;
   hazardousFileAWS: object = {};
@@ -138,6 +141,7 @@ export class OrdersComponent implements OnInit {
   secondFormGroup!: FormGroup;
 
   stepsValidate = [false, false, false, false, false];
+  stepsValidateOCL = [false, false];
 
   private subscription: Subscription;
 
@@ -182,11 +186,8 @@ export class OrdersComponent implements OnInit {
     allowTouchMove: false,
     autoHeight: true
   };
-
-  @ViewChildren('step') stepsRef: QueryList<any>;
-  resizeObserver = new ResizeObserver(() => {
-    this.stepperRef.controller.swiper.updateAutoHeight();
-  });
+  private orderPreviewReceived = new Subject();
+  private orderPreviewSubscription: Record<string, Subscription | null> = {};
 
   constructor(
     private translateService: TranslateService,
@@ -195,36 +196,20 @@ export class OrdersComponent implements OnInit {
     private googlemaps: GoogleMapsService,
     private router: Router,
     private alertService: AlertService,
-    private dialog: MatDialog
-  ) {
-    this.ordersSteps = [
-      {
-        text: '1',
-        nextBtnTxt: this.translateService.instant('orders.next-step')
-      },
-      {
-        text: '2',
-        nextBtnTxt: this.translateService.instant('orders.next-step')
-      },
-      {
-        text: '3',
-        nextBtnTxt: this.translateService.instant('orders.next-step')
-      },
-      {
-        text: '4',
-        nextBtnTxt: this.translateService.instant('orders.next-step')
-      },
-      {
-        text: '5',
-        nextBtnTxt: this.translateService.instant('orders.create-order')
-      }
-    ];
+    private locationsService: LocationsService,
+    private dialog: MatDialog,
+  ) { }
 
-    this.subscription = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
-      this.updateStepTexts();
-    });
+  private afterOrderPreviewReceived(identifier: string, callback: (orderPreview: Record<string,any>) => any){
+        const subsExists = this.orderPreviewSubscription[identifier];
+        if (!subsExists) {
+          this.orderPreviewSubscription[identifier] = this.orderPreviewReceived.subscribe((orderPreview) => {
+            callback(orderPreview);
+            this.orderPreviewSubscription[identifier].unsubscribe();
+            this.orderPreviewSubscription[identifier] = null;
+          });
 
-    this.typeOrder = this.translateService.instant('orders.title-pickup');
+        }
   }
 
   ngOnInit() {
@@ -235,6 +220,7 @@ export class OrdersComponent implements OnInit {
       secondCtrl: ['', Validators.required]
     });
 
+    this.updateStepTexts();
     this.subscription = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
       this.updateStepTexts();
     });
@@ -242,18 +228,24 @@ export class OrdersComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.marksRef.controller = this.stepperRef.controller;
-
-    this.stepsRef.forEach((el) => {
-      this.resizeObserver.observe(el.nativeElement);
-    });
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.resizeObserver.disconnect();
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.orderType) {
+      Promise.resolve().then(() => {
+        if (this.marksRef)
+          this.marksRef.controller = this.stepperRef.controller;
+      });
+    }
+
+    if (changes.orderPreview && changes.orderPreview.currentValue) {
+      this.orderPreviewReceived.next(changes.orderPreview.currentValue);
+    }
+
     if (this.imageFromGoogle && !this.sendMap) {
       this.screenshotOrderMap = new File(this.imageFromGoogle, 'image');
       this.requestScreenshotOrderMap.set('map', this.screenshotOrderMap);
@@ -281,10 +273,17 @@ export class OrdersComponent implements OnInit {
       this.getETA(locations);
     }
     if (changes.draftData && changes.draftData.currentValue) {
-      this.getHazardous(changes.draftData.currentValue._id);
-      if (changes.draftData.currentValue.hasOwnProperty('stamp') && changes.draftData.currentValue.stamp) {
-        this.getCatalogsDescription(changes.draftData.currentValue._id);
+      const draftData = changes.draftData.currentValue;
+      this.getHazardous(draftData._id);
+      if (changes.draftData.currentValue.hasOwnProperty('stamp') && draftData.stamp) {
+        this.getCatalogsDescription(draftData._id);
       }
+
+      this.orderData.cargo = {
+        ...draftData.cargo,
+        '53_48': draftData.cargo?.trailer?.load_cap
+      }
+
     }
 
     if (changes.datepickup && changes.datepickup.currentValue) {
@@ -303,36 +302,36 @@ export class OrdersComponent implements OnInit {
   }
 
   updateStatus() {
-    this.updateStepTexts();
+    this.updateTitleText();
 
-    if (this.currentStepIndex < 4) {
-      this.btnStatusNext = false;
-    } else {
+    if (this.stepperRef?.controller.isLastStep()) {
       this.btnStatusNext = !this.validateForm();
+    } else {
+      this.btnStatusNext = false;
     }
-
-    this.ordersSteps.forEach((e, i) => {
-      e.validated = this.stepsValidate[i];
-    });
 
     this.stepChange.emit(this.currentStepIndex);
   }
 
   validateForm() {
-    return this.stepsValidate.slice(0, -1).every(Boolean);
+    const validate = this.orderType === 'FTL' ? this.stepsValidate.slice(0, -2) : this.stepsValidateOCL;
+
+    return validate.every(Boolean);
   }
 
   nextSlide() {
-    if (this.currentStepIndex === 4 && this.validateForm()) {
-      this.isOrderWithCP ? this.checkCPFields() : this.completeOrder();
-    }
+    if (!this.stepperRef.controller.isLastStep()) {
+      if (this.orderType === 'FTL' && this.currentStepIndex === 2 && !this.hasEditedCargoWeight) {
+        this.editCargoWeightNow = true;
+      }
 
-    if (this.currentStepIndex === 2 && !this.hasEditedCargoWeight) {
-      this.editCargoWeightNow = true;
-    }
-
-    if (this.currentStepIndex < 4) {
-      this.currentStepIndex = this.currentStepIndex + 1;
+      this.currentStepIndex += 1;
+    } else if (this.validateForm()) {
+      if (this.isOrderWithCP && this.orderType === 'FTL') {
+        this.checkCPFields();
+      } else {
+        this.completeOrder();
+      }
     }
   }
 
@@ -347,7 +346,7 @@ export class OrdersComponent implements OnInit {
   }
 
   jumpStepTitle() {
-    this.updateStepTexts();
+    this.updateTitleText();
   }
 
   getStep1FormData(data: any) {
@@ -356,6 +355,7 @@ export class OrdersComponent implements OnInit {
     this.orderData.pickup.contact_info.email = data.email;
     this.orderData.reference_number = data.reference;
     this.orderData.pickup.contact_info.country_code = data.country_code;
+    this.orderData.pickup.startDate = data.start_date;
     if (this.isOrderWithCP) {
       this.orderData.pickup.tax_information = {
         rfc: data.rfc,
@@ -450,7 +450,15 @@ export class OrdersComponent implements OnInit {
 
   validStep3(valid: boolean) {
     this.stepsValidate[2] = valid;
-    if (valid) this.sendCargo();
+
+    if (valid) {
+      if (this.orderPreview?.order_id) {
+        this.sendCargo()
+      } else {
+
+        this.afterOrderPreviewReceived('step3', () => this.sendCargo());
+      }
+    }
     this.updateStatus();
   }
 
@@ -462,8 +470,45 @@ export class OrdersComponent implements OnInit {
 
   validStep4(valid: boolean) {
     this.stepsValidate[4] = valid;
+    //TODO: In drafts, if all inputs are not valid, it won't be sent
     if (valid) this.sendInvoice();
     this.updateStatus();
+  }
+
+  validStepOCL(idx: number, valid: boolean) {
+    this.stepsValidateOCL[idx] = valid;
+    this.updateStatus();
+  }
+
+  updateStep1OCL(data: any) {
+    Object.assign(this.orderData, {
+      reference_number: data.reference,
+      pickup: {
+        startDate: data.date,
+        contact_info: {
+          name: data.name,
+          telephone: `${data.phone_code} ${data.phone_number}`,
+          country_code: data.phone_flag,
+          email: data.email
+        }
+      }
+    });
+
+    this.sendPickup();
+  }
+
+  updateStep2OCL(data: any) {
+    Object.assign(this.orderData.dropoff, {
+      extra_notes: data.aditional_details,
+      contact_info: {
+        name: data.name,
+        email: data.email,
+        telephone: `${data.phone_code} ${data.phone_number}`,
+        country_code: data.phone_flag
+      }
+    });
+
+    this.sendDropoff();
   }
 
   async sendPickup() {
@@ -485,13 +530,12 @@ export class OrdersComponent implements OnInit {
       country_of_residence: tax_information?.country_of_residence
     };
 
-    this.sendDestination(destinationPayload, id);
+    if (id) this.sendDestination(destinationPayload, id);
   }
 
   async sendDropoff() {
     const { dropoff } = this.orderData;
     const { contact_info, tax_information, extra_notes } = dropoff;
-    const [, id] = this.orderPreview?.destinations || [];
 
     const destinationPayload = {
       extra_notes,
@@ -505,11 +549,19 @@ export class OrdersComponent implements OnInit {
       country_of_residence: tax_information?.country_of_residence
     };
 
-    this.sendDestination(destinationPayload, id);
+    const [, id] = this.orderPreview?.destinations || [];
+    if (id) {
+      this.sendDestination(destinationPayload, id);
+    } else {
+      this.afterOrderPreviewReceived('dropoff', (orderPreview) => {
+        const [, id] = orderPreview?.destinations || [];
+        this.sendDestination(destinationPayload, id);
+      });
+    }
   }
 
   async sendCargo() {
-    const { cargo } = this.orderData;
+    const { cargo }: { cargo: any } = this.orderData;
     const { order_id } = this.orderPreview;
 
     const cargoPayload = {
@@ -518,7 +570,7 @@ export class OrdersComponent implements OnInit {
       unit_type: cargo.unit_type,
       required_units: cargo.required_units,
       hazardous_type: cargo.hazardous_type,
-      weight: cargo.weigth,
+      weight: cargo.weigth || cargo.weight,
       weight_uom: 'kg',
       trailer: {
         load_cap: cargo['53_48']
@@ -562,32 +614,65 @@ export class OrdersComponent implements OnInit {
   async sendInvoice() {
     const { invoice } = this.orderData;
 
-    const invoicePayload = {
-      order_id: this.orderPreview.order_id,
-      cfdi: invoice.cfdi,
-      rfc: invoice.rfc,
-      company: invoice.company,
-      tax_regime: invoice.tax_regime,
-      place_id: invoice.address
+
+    const sendInvoice = async (payload) => {
+      const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/update_invoice', { apiVersion: 'v1.1' });
+      await req.toPromise();
     };
 
-    const req = await this.auth.apiRestPut(JSON.stringify(invoicePayload), 'orders/update_invoice', { apiVersion: 'v1.1' });
-    await req.toPromise();
+    if (this.orderPreview) {
+      sendInvoice({
+        order_id: this.orderPreview.order_id,
+        cfdi: invoice.cfdi,
+        rfc: invoice.rfc,
+        company: invoice.company,
+        tax_regime: invoice.tax_regime,
+        place_id: invoice.address
+      });
+    } else {
+      this.afterOrderPreviewReceived('invoice', (orderPreview) => {
+        sendInvoice({
+          order_id: orderPreview.order_id,
+          cfdi: invoice.cfdi,
+          rfc: invoice.rfc,
+          company: invoice.company,
+          tax_regime: invoice.tax_regime,
+          place_id: (invoice.address as any).place_id
+        });
+      });
+    }
+
+
   }
 
   async sendPricing() {
     const { pricing } = this.orderData;
 
-    let pricingPayload = {
-      order_id: this.orderPreview.order_id,
-      subtotal: pricing.subtotal,
-      currency: pricing.currency,
-      deferred_payment: pricing.deferred_payment
+    const sendPricing = async (payload) => {
+      const req = await this.auth.apiRest(JSON.stringify(payload), 'orders/set_pricing');
+      await req.toPromise();
     };
 
-    const req = await this.auth.apiRest(JSON.stringify(pricingPayload), 'orders/set_pricing');
-    await req.toPromise();
+    if (this.orderPreview) {
+      sendPricing({
+        order_id: this.orderPreview.order_id,
+        subtotal: pricing.subtotal,
+        currency: pricing.currency,
+        deferred_payment: pricing.deferred_payment
+      });
+    } else {
+      this.afterOrderPreviewReceived('pricing', (orderPreview) => {
+        sendPricing({
+          order_id: orderPreview.order_id,
+          subtotal: pricing.subtotal,
+          currency: pricing.currency,
+          deferred_payment: pricing.deferred_payment
+        });
+      });
+
+
   }
+}
 
   async getETA(locations: GoogleLocation) {
     let datos = {
@@ -607,6 +692,7 @@ export class OrdersComponent implements OnInit {
       async (res) => {
         this.ETA = res.result.ETA;
         this.getCreationTime(locations);
+        this.locationsService.setDataObtained(true);
       },
       async (res) => {
         console.log(res);
@@ -668,11 +754,11 @@ export class OrdersComponent implements OnInit {
   async completeOrder() {
     await this.confirmOrder();
     await this.assignOrder();
-    await this.uploadScreenShotOrderMap();
+    if (this.orderType === 'FTL' && this.locations.dropoff) await this.uploadScreenShotOrderMap();
 
     // cleanup page
-    await this.router.navigate(['/'], { skipLocationChange: true });
-    await this.router.navigate(['/home']);
+    await this.router.navigate(['/fleet'], { skipLocationChange: true });
+    await this.router.navigate(['/home'], { state: { showCompleteModal: true } });
   }
 
   async confirmOrder() {
@@ -685,17 +771,46 @@ export class OrdersComponent implements OnInit {
     return req.toPromise();
   }
 
-  async assignOrder() {
-    const assignPayload = {
-      order_id: this.orderPreview.order_id,
-      carrier_id: this.membersToAssigned.drivers._id,
-      id_truck: this.membersToAssigned.trucks._id,
-      id_trailer: this.membersToAssigned.trailers._id
+   assignOrder() {
+
+    const sendFleet = async (orderData) => {
+      const payload: any = {
+        order_id: this.orderPreview.order_id,
+        carrier_id: orderData.drivers._id,
+      };
+
+      if (this.orderType === 'FTL') {
+        payload.id_truck = orderData.trucks._id;
+        payload.id_trailer = orderData.trailers._id;
+
+        const req = await this.auth.apiRest(JSON.stringify(payload), 'orders/assign_order', { apiVersion: 'v1.1' });
+        return req.toPromise();
+      } else {
+        payload.vehicle_id = orderData.vehicle._id;
+        const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/ocl/assign_order', { apiVersion: 'v1.1' });
+        return req.toPromise();
+      }
     };
 
-    const req = await this.auth.apiRest(JSON.stringify(assignPayload), 'orders/assign_order', { apiVersion: 'v1.1' });
+    return new Promise(async (resolve, reject) => {
+      //if we are finishing a draft and don't have the information
+    if (!Object.keys(this.membersToAssigned).length) {
+        const [pickup ] = this.draftData.destinations
+        const dialogRef = this.dialog.open(SelectFleetModalComponent, {
+          panelClass: 'modal',
+          data: {start_date: pickup.start_date, end_date: pickup.end_date}
+        });
 
-    return req.toPromise();
+        dialogRef.afterClosed().subscribe(async (data) => {
+          await sendFleet(data);
+          resolve(true);
+        })
+      }else{
+        await sendFleet(this.membersToAssigned);
+        resolve(true);
+      }
+    });
+
   }
 
   public async uploadScreenShotOrderMap() {
@@ -754,29 +869,33 @@ export class OrdersComponent implements OnInit {
     this.hasEditedCargoWeight = true;
   }
 
+  updateTitleText() {
+    const keys = [
+      'orders.title-pickup',
+      'orders.title-dropoff',
+      'orders.title-cargo-info',
+      'orders.title-summary',
+      'orders.title-summary'
+    ];
+
+    this.typeOrder = this.translateService.instant(keys[this.currentStepIndex]);
+  }
+
   updateStepTexts() {
-    switch (this.currentStepIndex) {
-      case 0:
-        this.typeOrder = this.translateService.instant('orders.title-pickup');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-        break;
-      case 1:
-        this.typeOrder = this.translateService.instant('orders.title-dropoff');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-        break;
-      case 2:
-        this.typeOrder = this.translateService.instant('orders.title-cargo-info');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-        break;
-      case 3:
-        this.typeOrder = this.translateService.instant('orders.title-summary');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.next-step');
-        break;
-      case 4:
-        this.typeOrder = this.translateService.instant('orders.title-summary');
-        this.ordersSteps[this.currentStepIndex].nextBtnTxt = this.translateService.instant('orders.create-order');
-        break;
-    }
+    this.ordersSteps = [
+      { text: '1', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '2', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '3', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '4', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '5', nextBtnTxt: this.translateService.instant('orders.create-order') }
+    ];
+
+    this.ordersStepsOCL = [
+      { text: '1', nextBtnTxt: this.translateService.instant('orders.next-step') },
+      { text: '2', nextBtnTxt: this.translateService.instant('orders.create-order') }
+    ];
+
+    this.updateTitleText();
   }
 
   private removeEmpty(obj: any) {

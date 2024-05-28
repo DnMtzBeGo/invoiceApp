@@ -1,7 +1,7 @@
 declare var google: any;
 
 export class CustomMarker extends google.maps.OverlayView {
-  constructor(latlng, map, imageSrc, state, title = 'ok') {
+  constructor(latlng, map, imageSrc, state, title = 'ok', includeInfoWindow = false, extraData = '') {
     super();
     this.latlng_ = latlng;
     this.imageSrc = imageSrc;
@@ -10,6 +10,8 @@ export class CustomMarker extends google.maps.OverlayView {
     this.setMap(map);
     this.state = state;
     this.title = title;
+    this.extraData = extraData;
+    this.infoWindow = includeInfoWindow ? new google.maps.InfoWindow() : null;
   }
 
   draw() {
@@ -37,7 +39,13 @@ export class CustomMarker extends google.maps.OverlayView {
       img.src = this.imageSrc;
       div.appendChild(img);
       div.addEventListener('click', (event) => {
-        console.log(this.title);
+        // console.log(this.title);
+      });
+
+      google.maps.event.addDomListener(div, 'click', () => {
+        if (this.infoWindow) {
+          this.openInfoWindow();
+        }
       });
 
       // Then add the overlay to the DOM
@@ -62,5 +70,18 @@ export class CustomMarker extends google.maps.OverlayView {
 
   getPosition() {
     return this.latlng_;
+  }
+
+  openInfoWindow() {
+    if (!this.infoWindow) return;
+    const content = `
+      <div class="content">
+        <h3>${this.title}</h3>
+        <p>${this.extraData}</p>
+      </div>
+    `;
+
+    this.infoWindow.setContent(content);
+    this.infoWindow.open(this.getMap(), this);
   }
 }

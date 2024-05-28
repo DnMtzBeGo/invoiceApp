@@ -1,31 +1,27 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
-import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity } from 'rxjs';
+import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity, Subscription } from 'rxjs';
 import {
   mapTo,
   mergeAll,
   pluck,
   debounceTime,
   share,
-  observeOn,
   repeatWhen,
   switchMap,
-  delay,
   map,
-  catchError,
   withLatestFrom,
   tap,
   distinctUntilChanged,
-  skip,
   filter,
   takeUntil,
-  startWith
+  startWith,
+  finalize
 } from 'rxjs/operators';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { routes } from '../../consts';
 import { Paginator } from '../../../invoice/models';
 import { FacturaFiltersComponent, ActionConfirmationComponent } from '../../../invoice/modals';
@@ -36,6 +32,48 @@ import { arrayToObject, object_compare, clone } from 'src/app/shared/utils/objec
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 const filterParams = new Set(['search']);
+
+const resolvers = {
+  members: {
+    endpoint: 'fleets/:fleetId/members',
+    pluck: 'data',
+    lang: 'members',
+    sortBy: ['member_meta.date_created', 'member.nickname'],
+    sortInit: ['member_meta.date_created', 'desc'],
+    withFleetId: true
+  },
+  trucks: {
+    endpoint: 'fleets/:fleetId/trucks',
+    pluck: 'data',
+    lang: 'trucks',
+    sortBy: ['date_created', 'attributes.brand'],
+    sortInit: ['date_created', 'desc'],
+    withFleetId: false
+  },
+  trailers: {
+    endpoint: 'fleets/:fleetId/trailers',
+    pluck: 'data',
+    lang: 'trailers',
+    sortBy: ['date_created', 'trailer_number'],
+    sortInit: ['date_created', 'desc'],
+    withFleetId: false
+  },
+  primeList: {
+    endpoint: 'orders/vehicles',
+    lang: 'prime',
+    // type instead name because in backend `type` is the real keyname of `name`
+    sortBy: ['type', '_id'],
+    sortInit: ['_id', 'desc']
+  },
+  prime: {
+    endpoint: 'orders/vehicles/:id',
+    newUrl: routes.NEW_PRIME,
+    lang: 'prime',
+    sortBy: ['date_created', 'attributes.vehicle_number'],
+    sortInit: ['date_created', 'desc'],
+    withFleetId: true
+  }
+};
 
 @Component({
   selector: 'app-fleet-browser',
@@ -49,11 +87,11 @@ export class FleetBrowserComponent implements OnInit {
 
   $rx = reactiveComponent(this);
 
-  private filtersDialogRef;
+  private filtersDialogRef: FacturaFiltersComponent | any;
 
-  showSelectPage: boolean = false;
+  public showSelectPage: boolean = false;
 
-  vm!: {
+  public vm!: {
     fleetId?: number;
     // list | grid
     view?: any;
@@ -85,34 +123,32 @@ export class FleetBrowserComponent implements OnInit {
     ['queryParams' | 'refresh' | 'template:search' | 'template:set' | 'refresh:defaultEmisor' | 'view:set', unknown?]
   >();
 
-  model: 'members' | 'trucks' | 'trailers' = this.route.snapshot.data.model;
+  model: 'members' | 'trucks' | 'trailers' | 'primeList' | 'prime';
+
+  lang = 'en';
 
   view = window.localStorage.getItem('app-fleet-browser-view') ?? 'grid';
 
-  private _resolver = resolvers[this.route.snapshot.data.model];
-  resolver = {
-    ...this._resolver,
-    sortBy: this._resolver.sortBy.flatMap((key) =>
-      ['desc', 'asc'].map((sort) => ({
-        key,
-        sort,
-        value: [key, sort].join(':')
-      }))
-    )
+  private _resolver;
+  public resolver;
+
+  public paginatorDefaults;
+
+  public paginator: Paginator;
+
+  listeners: Subscription[] = [];
+
+  selectedCategory = '';
+  categoryModal = {
+    show: false,
+    mode: 'new',
+    type: '',
+    error: null
   };
 
-  paginatorDefaults = {
-    grid: { sizeOptions: [6, 9, 12], default: 6 },
-    list: { sizeOptions: [6, 9, 12, 50, 100], default: 6 }
-    // list: { sizeOptions: [5, 10, 20, 50, 100], default: 5 }
-  };
-
-  paginator: Paginator = {
-    pageIndex: +this.route.snapshot.queryParams.page || 1,
-    pageSize: +this.route.snapshot.queryParams.limit || this.paginatorDefaults[this.view].default || 10,
-    pageTotal: 1,
-    pageSearch: '',
-    total: 0
+  category = {
+    name: '',
+    translations: {}
   };
 
   constructor(
@@ -121,9 +157,47 @@ export class FleetBrowserComponent implements OnInit {
     private matDialog: MatDialog,
     private apiRestService: AuthService,
     public translateService: TranslateService,
-    private notificationsService: NotificationsService,
-    private location: Location
-  ) {}
+    private location: Location,
+    private cd: ChangeDetectorRef
+  ) {
+    this.model = this.route.snapshot.data.model;
+
+    this._resolver = resolvers[this.route.snapshot.data.model];
+    this.resolver = {
+      ...this._resolver,
+      sortBy: this._resolver.sortBy.flatMap((key) =>
+        ['desc', 'asc'].map((sort) => ({
+          key,
+          sort,
+          value: [key, sort].join(':')
+        }))
+      )
+    };
+
+    this.paginatorDefaults = {
+      grid: { sizeOptions: [6, 9, 12], default: 6 },
+      list: { sizeOptions: [6, 9, 12, 50, 100], default: 6 }
+      // list: { sizeOptions: [5, 10, 20, 50, 100], default: 5 }
+    };
+
+    this.paginator = {
+      pageIndex: +this.route.snapshot.queryParams.page || 1,
+      pageSize: +this.route.snapshot.queryParams.limit || this.paginatorDefaults[this.view].default || 10,
+      pageTotal: 1,
+      pageSearch: '',
+      total: 0
+    };
+
+    this.listeners.push(this.route.params.subscribe((ev) => {
+      if (this.router.url.includes(routes.PRIME) && ev.id) {
+        this.ngOnInit();
+      }
+    }));
+
+    this.listeners.push(this.translateService.onLangChange.subscribe((lang) => {
+      this.lang = lang.lang;
+    }));
+  }
 
   ngOnInit(): void {
     const fleetId$ = this.fetchFleetId().pipe(share());
@@ -144,15 +218,23 @@ export class FleetBrowserComponent implements OnInit {
 
     const params$ = merge(oof(this.route.snapshot.queryParams), this.facturasEmitter.pipe(ofType('queryParams'), debounceTime(500))).pipe(
       distinctUntilChanged(object_compare),
-      map((params: any) => ({
-        ...params,
-        limit: +params.limit || this.paginator.pageSize,
-        page: +params.page || this.paginator.pageIndex,
-        sort: params.sort || this.resolver.sortInit.join(':')
-      })),
+      map((params: any) => { {
+        const p = {
+          ...params,
+          limit: +params.limit || this.paginator.pageSize,
+          page: +params.page || this.paginator.pageIndex,
+          sort: params.sort || this.resolver.sortInit?.join(':')
+        }
+
+        if (p.sort === undefined) delete p.sort;
+
+        return p
+      } }),
       tap((params) => {
         this.paginator.pageSize = Number(params.limit);
         this.paginator.pageIndex = Number(params.page);
+
+        this.cd.markForCheck();
       }),
       share()
     );
@@ -184,6 +266,9 @@ export class FleetBrowserComponent implements OnInit {
           return factura;
         })
       ),
+      tap(() => {
+        this.cd.markForCheck();
+      }),
       share()
     );
 
@@ -250,8 +335,16 @@ export class FleetBrowserComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.listeners.forEach(l => l.unsubscribe());
+  }
+
   // API calls
   fetchFleetId = () => {
+    if (this.model === 'prime') {
+      return of(this.route.snapshot.params.id);
+    }
+
     return from(
       this.apiRestService.apiRest('', 'fleet/overview', {
         loader: 'false'
@@ -263,6 +356,59 @@ export class FleetBrowserComponent implements OnInit {
     const payload = {
       ...params
     };
+
+    if (this.model === 'primeList') {
+      return from(this.apiRestService.apiRestGet(this.resolver.endpoint, { apiVersion: 'v1.1', ...this.vm.params })).pipe(
+        mergeAll(),
+        pluck('result'),
+        map((res) => {
+          this.paginator.pageTotal = res.pagination?.pages || 1;
+          this.paginator.total = res.pagination?.size ?? 0;
+          return res.data;
+        }),
+        finalize(() => {
+          this.cd.markForCheck();
+        })
+      );
+    }
+
+    if (this.model === 'prime') {
+      from(this.apiRestService.apiRestGet('orders/vehicles', { apiVersion: 'v1.1' }))
+        .pipe(
+          mergeAll(),
+          pluck('result'),
+          tap((res) => {
+            const category = res.find(c => c._id === this.route.snapshot.params.id);
+
+            this.category = {
+              name: category.name,
+              translations: category.translations
+            };
+
+            this.cd.markForCheck();
+          })
+        )
+        .subscribe();
+
+      return from(
+        this.apiRestService.apiRestGet(this.resolver.endpoint.replace(':id', this.route.snapshot.params.id), {
+          apiVersion: 'v1.1',
+          ...this.vm.params
+        })
+      ).pipe(
+        mergeAll(),
+        pluck('result'),
+        map((res) => {
+          this.paginator.pageTotal = res?.pagination?.pages || 1;
+          this.paginator.total = res?.pagination?.size ?? 0;
+
+          return res?.data || [];
+        }),
+        finalize(() => {
+          this.cd.markForCheck();
+        })
+      );
+    }
 
     return from(
       this.apiRestService.apiRestGet(this.resolver.endpoint.replace(':fleetId', this.vm.fleetId), {
@@ -277,7 +423,10 @@ export class FleetBrowserComponent implements OnInit {
         this.paginator.pageTotal = result.pagination?.pages || 1;
         this.paginator.total = result.pagination?.size ?? 0;
       }),
-      this.resolver.pluck ? pluck(this.resolver.pluck) : identity
+      this.resolver.pluck ? pluck(this.resolver.pluck) : identity,
+      tap(() => {
+        this.cd.markForCheck();
+      })
     );
   };
 
@@ -433,6 +582,58 @@ export class FleetBrowserComponent implements OnInit {
     // })
   }
 
+  openCategoryModal(mode: 'new' | 'edit', data?: any) {
+    if (data) {
+      this.selectedCategory = data._id;
+      this.categoryModal.type = data.name;
+    }
+
+    this.categoryModal.show = true;
+    this.categoryModal.mode = mode;
+  }
+
+  async handleCloseCategoryModal(type?: 'done' | string) {
+    const status = this.categoryModal;
+
+    if (type !== 'done') {
+      this.resetCategoryModal();
+      return;
+    }
+
+    if (!status.type) return;
+
+    const payload = { type: status.type };
+
+    const apiCall =
+      status.mode === 'new'
+        ? this.apiRestService.apiRest(JSON.stringify(payload), 'api/vehicle_types', { apiVersion: 'vehicle-service' })
+        : this.apiRestService.apiRestPut(JSON.stringify(payload), `api/vehicle_types/${this.selectedCategory}`, {
+            apiVersion: 'vehicle-service'
+          });
+
+    (await apiCall).subscribe({
+      next: () => {
+        this.resetCategoryModal();
+        this.facturasEmitter.next(['refresh']);
+      },
+      error: ({ error }) => {
+        status.error = error.error;
+        this.cd.markForCheck();
+      }
+    });
+  }
+
+  resetCategoryModal(show?: boolean) {
+    this.categoryModal = {
+      show,
+      mode: 'new',
+      type: '',
+      error: null
+    };
+
+    this.cd.markForCheck();
+  }
+
   //UTILS
   log = (...args: any[]) => {
     console.log(...args);
@@ -452,30 +653,3 @@ export class FleetBrowserComponent implements OnInit {
       .map((_, i) => from + i);
   };
 }
-
-const resolvers = {
-  members: {
-    endpoint: 'fleets/:fleetId/members',
-    pluck: 'data',
-    lang: 'members',
-    sortBy: ['member_meta.date_created', 'member.nickname'],
-    sortInit: ['member_meta.date_created', 'desc'],
-    withFleetId: true
-  },
-  trucks: {
-    endpoint: 'fleets/:fleetId/trucks',
-    pluck: 'data',
-    lang: 'trucks',
-    sortBy: ['date_created', 'attributes.brand'],
-    sortInit: ['date_created', 'desc'],
-    withFleetId: false
-  },
-  trailers: {
-    endpoint: 'fleets/:fleetId/trailers',
-    pluck: 'data',
-    lang: 'trailers',
-    sortBy: ['date_created', 'trailer_number'],
-    sortInit: ['date_created', 'desc'],
-    withFleetId: false
-  }
-};

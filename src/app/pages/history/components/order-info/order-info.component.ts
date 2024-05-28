@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, ViewChild, ElementRef, Host, EventEmitter } from '@angular/core';
 import EmblaCarousel from 'embla-carousel';
 import { FleetElementType } from 'src/app/shared/interfaces/FleetElement.type';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ChooseFleetElementComponent } from '../choose-fleet-element/choose-fleet-element.component';
 @Component({
   selector: 'app-order-info',
@@ -19,16 +20,23 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     this.sliderIndex = this.slider.selectedScrollSnap();
   }
 
-  constructor() { }
+  showLocationModal = false;
+
+  constructor(private apiRestService: AuthService) {}
 
   @Input() orderInfo: any = {};
   @Input() statusListData: any = {};
 
   @Output() infoUpdated = new EventEmitter<void>();
+  @Output() dropoffUpdated = new EventEmitter<any>();
 
   @ViewChild('embla', { static: true }) protected embla: any;
   @ViewChild('viewPort', { static: true }) protected viewPort: any;
   @ViewChild('chooseFleetElementRef') public chooseElementRef: ChooseFleetElementComponent;
+
+  get selectedInfo() {
+    return this.orderInfo?.destinations?.[this.selectedRow === 'pickup' ? 0 : 1];
+  }
 
   ngOnInit(): void {
     this.language = localStorage.getItem('lang');
@@ -70,5 +78,27 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   public chooseFleetElement(fleetElement: FleetElementType): void{
     this.chooseElementRef.setElementToChoose(fleetElement);
     this.slider.scrollNext();
+  }
+
+  public closeLocationModal() {
+    this.showLocationModal = false;
+  }
+
+  public async updateDropoff(location: any) {
+    const q = new URLSearchParams(Object.entries({
+      location_id: location.location_id
+    }));
+
+    (
+      await this.apiRestService.apiRestPut('', `/orders/update_dropoff_location/${this.orderInfo._id}?${q.toString()}`, {
+        apiVersion: 'v1.1'
+      })
+    ).subscribe(() => {
+      this.orderInfo.destinations[1].place_id = location.place_id;
+      this.orderInfo.destinations[1].address = location.address;
+      this.orderInfo = { ...this.orderInfo } // needed for change detection
+      this.dropoffUpdated.emit(this.orderInfo);
+      this.closeLocationModal();
+    });
   }
 }

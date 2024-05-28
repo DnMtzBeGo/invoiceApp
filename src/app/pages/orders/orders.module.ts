@@ -11,6 +11,9 @@ import { Step3Component } from './components/step3/step3.component';
 import { Step4Component } from './components/step4/step4.component';
 import { PricingStepComponent } from './components/pricing-step/pricing-step.component';
 
+import { OclStep1Component } from './components/ocl/step1/step1.component';
+import { OclStep2Component } from './components/ocl/step2/step2.component';
+
 import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-file-bar.module';
 import { StepperModule } from 'src/app/shared/components/stepper/stepper.module';
 
@@ -48,6 +51,8 @@ import {
 import { CargoUnitsComponent } from './components/cargo-units/cargo-units.component';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { AppMaterialModule } from 'src/app/material';
+import { SelectFleetModalComponent } from './components/select-fleet-modal/select-fleet-modal.component';
+import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/circular-avatar.module';
 
 export const MY_FORMATS = {
   parse: {
@@ -68,12 +73,15 @@ export const MY_FORMATS = {
     Step2Component,
     Step3Component,
     Step4Component,
+    OclStep1Component,
+    OclStep2Component,
     MomentDatePipe,
     CargoWeightComponent,
     ContinueModalComponent,
     UnitDetailsModalComponent,
     CargoUnitsComponent,
-    PricingStepComponent
+    PricingStepComponent,
+    SelectFleetModalComponent,
   ],
   imports: [
     CommonModule,
@@ -81,6 +89,7 @@ export const MY_FORMATS = {
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
+    CircularAvatarModule,
     // MatMomentDateModule,
     MatNativeDateModule,
     NgxMaterialTimepickerModule,
@@ -110,7 +119,8 @@ export const MY_FORMATS = {
     BegoInputIncrementDecrementModule,
     BegoCheckoutCardModule,
     BegoRfcInputModule,
-    AppMaterialModule
+    AppMaterialModule,
+    BegoPhoneCodeSelectModule,
   ],
   exports: [OrdersComponent]
   // providers: [

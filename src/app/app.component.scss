@@ -18,6 +18,15 @@
     > ::ng-deep app-contact-support.ng-star-inserted {
       flex: 1;
     }
+
+    &.full-height {
+      height: 100%;
+
+      .full-height-child {
+        flex-basis: 100%;
+        overflow: hidden;
+      }
+    }
     
  }
 

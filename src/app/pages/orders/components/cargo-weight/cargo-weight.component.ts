@@ -10,20 +10,21 @@ import { CargoWeight } from '../../interfaces/cargo-weight';
 })
 export class CargoWeightComponent implements OnInit {
   maxUnits = Number.MAX_SAFE_INTEGER;
-
-  arrayButtons = [
-    {
-      textBtn: this.translateService.instant('orders.btn-save'),
-      textEmit: 'close',
-      activated: true
-    }
-  ];
+  arrayButtons: any;
 
   constructor(
     public dialogRef: MatDialogRef<CargoWeightComponent>,
     private translateService: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: CargoWeight
-  ) {}
+  ) {
+    this.arrayButtons = [
+      {
+        textBtn: this.translateService.instant('orders.btn-save'),
+        textEmit: 'close',
+        activated: true
+      }
+    ];
+  }
 
   ngOnInit() {}
 

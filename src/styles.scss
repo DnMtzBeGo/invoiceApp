@@ -188,6 +188,29 @@ $font-url: 'assets/fonts/avenir/';
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/gotham/Gotham.woff2') format("woff2"), url('./assets/fonts/gotham/Gotham.woff') format("woff"), url('./assets/fonts/gotham/Gotham.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/gotham/GothamLight.woff2') format("woff2"), url('./assets/fonts/gotham/GothamLight.woff') format("woff"), url('./assets/fonts/gotham/GothamLight.ttf') format("truetype");
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('./assets/fonts/gotham/GothamBold.woff2') format("woff2"), url('./assets/fonts/gotham/GothamBold.woff') format("woff"), url('./assets/fonts/gotham/GothamBold.ttf') format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Gotham-Medium';
+  src: url('./assets/fonts/gotham/Gotham-Medium.woff2') format("woff2"), url('./assets/fonts/gotham/Gotham-Medium.woff') format("woff"), url('./assets/fonts/gotham/Gotham-Medium.ttf') format("truetype");
+  font-weight: 600;
+}
+
 // =============================================================================
 // Media Querries
 // =============================================================================
@@ -1249,4 +1272,47 @@ input[type='number'] {
   > img {
     filter: grayscale(1);
   }
+}
+
+.saved-locations-modal {
+  .mat-dialog-container {
+    background: none;
+  }
+}
+/*****************************/
+/******* Gradient border *******/
+/*****************************/
+
+@mixin gradient-background {
+  // Establecer el background del contenedor padre
+  background: linear-gradient(to right, #191C1E 0%, #333537 25%, #5F6162 50%, #565757 75%, #343536 100%);
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5px;
+  border-radius: 30px;
+  max-width: 680px;
+
+  // Establecer el background del primer hijo
+  & > div {
+    background-color: #0D0F11;
+    border-radius: 30px;
+    padding: 15px;
+    width: auto;
+    height: auto;
+    min-width: 469px;
+  }
+}
+
+/*****************************/
+/******* Flexbox align *******/
+/*****************************/
+
+@mixin flexbox-align($direction, $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
 }

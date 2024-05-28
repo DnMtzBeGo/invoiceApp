@@ -7,8 +7,11 @@ import { ContactComponent } from './pages/contact/contact.component';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule)
+    path: "home",
+    data: {
+      breadcrumb: 'Home'
+    },
+    loadChildren: () => import('./shared/pages/map-dashboard/map-dashboard.module').then((m) => m.MapDashboardModule),
   },
   {
     path: 'calendar',
@@ -16,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: 'fleet',
-    loadChildren: () => import('./pages/fleet/fleet.module').then((m) => m.FleetModule)
+    loadChildren: () => import('./shared/pages/map-dashboard/map-dashboard.module').then((m) => m.MapDashboardModule),
   },
   /* {
     path: 'shippers',
@@ -39,8 +42,17 @@ const routes: Routes = [
     loadChildren: () => import('./pages/drafts/drafts.module').then((m) => m.DraftsModule)
   },
   {
-    path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then((m) => m.ProfileModule)
+    path: 'polygons',
+    data: {
+      breadcrumb: 'Polygons'
+    },
+    loadChildren: () =>
+      import('./pages/polygons/polygons.module').then((m) => m.PolygonsModule)
+  },
+  {
+    path: "profile",
+    loadChildren: () =>
+      import("./pages/profile/profile.module").then((m) => m.ProfileModule),
     // children: [
     //   {
     //     path: '',
@@ -85,6 +97,10 @@ const routes: Routes = [
   {
     path: 'tags',
     loadChildren: () => import('./pages/tags/tags.module').then((m) => m.TagsModule)
+  },
+  {
+    path: 'chibpt',
+    loadChildren: () => import('./pages/chibpt/chibpt.module').then((m) => m.ChibptModule)
   }
 ];
 

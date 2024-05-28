@@ -1,0 +1,97 @@
+.prime-list {
+  margin: 20px 0 0 24px;
+}
+
+.vehicle {
+  all: unset;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 20px 0;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 50px;
+
+  picture {
+    display: flex;
+    margin: 0 50px 0 30px;
+    position: relative;
+    padding: 8px;
+    border-radius: 24px;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+    }
+
+    &::before {
+      background: linear-gradient(180deg, #fcff52 2%, #0f161b 100%);
+    }
+
+    &::after {
+      inset: 1px;
+      background: #060b11;
+    }
+
+    img {
+      border-radius: 16px;
+      background: #fff;
+      object-fit: contain;
+
+      &.default {
+        background: #060b11;
+      }
+    }
+  }
+
+  .name {
+    flex: 1;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  .options {
+    all: unset;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    margin-right: 1px;
+
+    &:hover,
+    &:focus-visible {
+      color: #fe0;
+    }
+
+    &:focus-visible {
+      outline: 1px solid currentColor;
+    }
+
+    bego-icon {
+      --color: currentColor;
+      --font-size: 16px;
+    }
+  }
+}
+
+.menu-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  bego-icon {
+    --color: #fff;
+    --font-size: 16px;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+  }
+}

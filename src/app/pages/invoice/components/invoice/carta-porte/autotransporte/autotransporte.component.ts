@@ -47,7 +47,8 @@ export class AutotransporteComponent implements OnInit {
     remolquesPlates: new FormControl(''),
     identificacionVehicularConfig: new FormControl(''),
     truckPlates: new FormControl('', Validators.compose([Validators.pattern(/^[a-zA-Z0-9]{5,7}$/)])),
-    truckModel: new FormControl('', Validators.compose([Validators.pattern(/^19\d{2}$|20\d{2}$/)]))
+    truckModel: new FormControl('', Validators.compose([Validators.pattern(/^19\d{2}$|20\d{2}$/)])),
+    vehicleGrossWeight: new FormControl('')
   });
 
   remolquesForm = new FormGroup({
@@ -124,7 +125,8 @@ export class AutotransporteComponent implements OnInit {
         identificacion_vehicular: {
           config_vehicular: info.identificacionVehicularConfig,
           placa_v_m: info.truckPlates,
-          anio_modelo_v_m: info.truckModel
+          anio_modelo_v_m: info.truckModel,
+          peso_bruto_vehicular: info.vehicleGrossWeight
         },
 
         seguros: {
@@ -173,7 +175,8 @@ export class AutotransporteComponent implements OnInit {
         remolquesConfig: Array.isArray(remolques) ? remolques[0]?.sub_tipo_rem : remolques?.sub_tipo_rem,
         remolquesPlates: Array.isArray(remolques) ? remolques[0]?.placa : remolques?.placa,
         truckModel: identificacion_vehicular?.anio_modelo_v_m,
-        truckPlates: identificacion_vehicular?.placa_v_m
+        truckPlates: identificacion_vehicular?.placa_v_m,
+        vehicleGrossWeight: identificacion_vehicular?.peso_bruto_vehicular
       });
     }
   }

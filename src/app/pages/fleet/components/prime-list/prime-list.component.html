@@ -1,0 +1,35 @@
+<div class="prime-list">
+  <div *ngFor="let category of data" class="vehicle" (click)="select(category)">
+    <bego-radio-bullet [selected]="selected === category._id"></bego-radio-bullet>
+
+    <picture>
+      <img
+        #img
+        [class.default]="!category.public"
+        [src]="category.public ? '/assets/images/public_vehicles/' + category.name + '.png' : defaultCover"
+        (error)="setDefaultImg(img)"
+        height="58"
+        width="58"
+      />
+    </picture>
+
+    <span class="name">{{ category.translations?.[lang] || category.name }}</span>
+
+    <ng-container *ngIf="!category.public">
+      <button class="options" [matMenuTriggerFor]="menu" #menuTrigger>
+        <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
+      </button>
+
+      <mat-menu #menu="matMenu" class="brand-menu-1">
+        <button mat-menu-item (click)="edit(category)" class="menu-option">
+          <bego-icon icon="begon-edit-fintech"></bego-icon>
+          <span>Edit category</span>
+        </button>
+        <button mat-menu-item (click)="delete(category)" class="menu-option">
+          <bego-icon icon="begon-trash1"></bego-icon>
+          <span>Delete category</span>
+        </button>
+      </mat-menu>
+    </ng-container>
+  </div>
+</div>

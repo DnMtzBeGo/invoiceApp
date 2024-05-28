@@ -146,7 +146,7 @@ export class FleetEditTrailerComponent implements OnInit {
     formData.append('id_fleet', this.fleetId);
 
     const newtrailerInfo = this.trailerDetailsForm.value;
-    newtrailerInfo.year = parseInt(newtrailerInfo.year);
+    //newtrailerInfo.year = parseInt(newtrailerInfo.year);
 
     //add properties received props to formdata
     Object.keys(newtrailerInfo).forEach(key=>{

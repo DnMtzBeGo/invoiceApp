@@ -211,6 +211,41 @@
   }
 }
 
+.mat-menu-panel.brand-menu-2 {
+  border-radius: 26px;
+  position: relative;
+  padding: 5px 8px;
+  background: linear-gradient(to right, #191C1E 0%, #333537 25%, #5F6162 50%, #565757 75%, #343536 100%);
+  width: 193px;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: calc(100% - 1.5px);
+    height: calc(100% - 1.5px);
+    background-color: #0D0F11;
+  }
+
+
+  .mat-menu-item {
+    color: rgba(255, 255, 255, 0.54);
+    font-size: 14px;
+    font-weight: 350;
+    line-height: 19.12px;
+    letter-spacing: 0.5px;
+    
+    &:not(:last-child) {
+      // border-bottom: 1px solid #1c232a;
+    }
+
+    &:hover:not([disabled]) {
+
+    }
+  }
+}
+
 .mat-tooltip.brand-tooltip-1 {
   padding: 12px 14px;
   color: #ededed;
@@ -378,17 +413,64 @@ ngx-mat-select-search.brand-select-search-1 {
   }
 }
 
+.cdk-overlay-backdrop.brand-ui-dialog-1 {
+  &.cdk-overlay-backdrop-showing {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+  }
+
+  & + * {
+    .mat-dialog-container {
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 50px;
+      filter: none;
+      width: 566px;
+    }
+  }
+}
+
+.cdk-overlay-backdrop.brand-ui-dialog-2 {
+  &.cdk-overlay-backdrop-showing {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+  }
+
+  & + * {
+    .mat-dialog-container {
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 50px;
+      filter: none;
+
+      app-share-report-modal bego-modal {
+        ::ng-deep {
+          .modal {
+            width: 667px !important;
+            height: 521px !important;
+          }
+        }
+      }
+    }
+  }
+}
+
 .brand-table-1 {
   width: 100%;
   box-shadow: none;
   background: initial;
 
   .mat-header-cell,
-  .mat-cell {
+  .mat-cell,
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
     color: #ededed;
   }
 
-  .mat-header-cell {
+  .mat-header-cell,
+  .mat-mdc-header-cell {
     font-family: 'Avenir';
     font-style: normal;
     font-weight: 500;
@@ -400,7 +482,9 @@ ngx-mat-select-search.brand-select-search-1 {
     }
   }
 
-  .mat-cell {
+  .mat-cell,
+  .mat-mdc-cell {
+    border: none;
     font-family: 'Avenir';
     font-style: normal;
     font-weight: 400;
@@ -414,16 +498,29 @@ ngx-mat-select-search.brand-select-search-1 {
 
   tbody tr:nth-child(2n) {
     background: linear-gradient(90.03deg, rgba(13, 18, 23, 0.4) 0.86%, rgba(35, 37, 40, 0.163875) 51.72%, rgba(83, 88, 94, 0.08) 99.51%);
+    box-shadow: 0px 2px 16px 0px rgba(4, 4, 4, 1);
   }
 }
 
-snack-bar-container.brand-snackbar-1 {
+mat-snack-bar-container.brand-snackbar-1 {
   background: linear-gradient(180deg, #080f15 0%, #171d23 100%);
   border: 3px solid #10161c;
   box-shadow: inset 3px 3px 8px 3px #111416;
 
-  .mat-simple-snackbar span {
+  .mat-mdc-snack-bar-label {
     color: #ffe000;
+  }
+}
+
+mat-snack-bar-container.brand-snackbar-2 {
+  background: #ffee00;
+  border: 2px solid #ffee00;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 4px 4px 4px #ffea52, inset -4px -4px 4px #e1c600;
+  border-radius: 8px;
+  
+  .mat-mdc-snack-bar-label {
+    color: #040b11;
+    font-weight: bold;
   }
 }
 

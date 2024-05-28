@@ -1,13 +1,6 @@
-import { 
-  Component, 
-  OnInit, 
-  Input,
-  Output,
-  EventEmitter,
-  SimpleChanges,
- } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
- import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 const codesJson = require('./country-codes.json');
 
@@ -17,23 +10,19 @@ const codesJson = require('./country-codes.json');
   styleUrls: ['./bego-phone-input.component.scss']
 })
 export class BegoPhoneInputComponent implements OnInit {
-
   public loginPhone: string = '';
-  public phone: string= '';
+  public phone: string = '';
   public mxMask = [/\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/];
   public usMask = [/[1-9]/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/];
-  public generalMask = [/\d/,/\d/,/\d/,/\d/,' ', /\d/,/\d/,/\d/,/\d/,' ', /\d/,/\d/,/\d/,/\d/,' ', /\d/,/\d/,/\d/,/\d/];
+  public generalMask = [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/];
   public phoneMask: any = this.mxMask;
   public phoneError: boolean = true;
 
-  phoneInputForm: FormGroup = this.formBuilder.group({
-    phoneNumber: ['', Validators.required], 
-  });
+  public phoneInputForm: FormGroup;
 
   public defaultPhoneCode = '+52';
 
-
-  @Input() icon:string = '';
+  @Input() icon: string = '';
   //Indicates the design that bego phone input should have
   @Input() design: string = '';
   @Input() disabled: boolean = false;
@@ -56,65 +45,58 @@ export class BegoPhoneInputComponent implements OnInit {
 
   @Input() validations: boolean = true;
 
-
-
-
   public allCodes: any = [];
 
   public isSelectFlag: boolean = false;
 
-
   public selectedPhoneCode: string = 'mx';
 
-
-  constructor(
-    private formBuilder: FormBuilder
-  ) { }
+  constructor(private formBuilder: FormBuilder) {
+    this.phoneInputForm = this.formBuilder.group({
+      phoneNumber: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.allCodes = Object.values(codesJson);
-
   }
 
   ngAfterViewInit(): void {
-    if(this.disabled){
+    if (this.disabled) {
       this.phoneInputForm.controls['phoneNumber'].disable();
     }
-
   }
 
-  ngOnChanges(changes: SimpleChanges): void{
-    if(changes.phoneNumber){
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.phoneNumber) {
       this.phoneInputForm.patchValue({
-        phoneNumber: this.phoneNumber,
+        phoneNumber: this.phoneNumber
       });
     }
 
-    if(changes.phoneCode){
-      if(!this.phoneCode){
+    if (changes.phoneCode) {
+      if (!this.phoneCode) {
         this.phoneCode = this.defaultPhoneCode;
       }
     }
 
-    if(changes.disabled){
-      if(this.disabled){
-        this.phoneInputForm.disable()
-      }else{
+    if (changes.disabled) {
+      if (this.disabled) {
+        this.phoneInputForm.disable();
+      } else {
         this.phoneInputForm.enable();
       }
     }
 
-    if(changes.validations) {
-      if(this.validations) {
+    if (changes.validations) {
+      if (this.validations) {
         this.phoneInputForm.controls['phoneNumber'].clearValidators();
-        
       } else {
         this.phoneInputForm.controls['phoneNumber'].setValidators(Validators.compose([Validators.required]));
       }
 
       this.phoneInputForm.controls['phoneNumber'].updateValueAndValidity();
     }
-
   }
 
   public getFocusFromInput(event: Event) {
@@ -129,30 +111,32 @@ export class BegoPhoneInputComponent implements OnInit {
     let valueInput = (<HTMLInputElement>event.target).value;
     let inputRefered = document.getElementById(`${refInput}`);
 
-    if(!valueInput || valueInput.length <= 0) {
+    if (!valueInput || valueInput.length <= 0) {
       inputRefered!.style.top = '0px';
       inputRefered!.style.fontSize = '18px';
     }
-
   }
 
   public openSelector(event: Event) {
-
     event.stopPropagation();
 
-    document.addEventListener('click', () => {
-      this.isSelectFlag = false;
-    },{
-      once: true,
-      capture: false,
-    })
+    document.addEventListener(
+      'click',
+      () => {
+        this.isSelectFlag = false;
+      },
+      {
+        once: true,
+        capture: false
+      }
+    );
 
     this.isSelectFlag = !this.isSelectFlag;
   }
 
   public selectFlag(event: Event, codeInfo: any) {
     event.stopPropagation();
-    if(codeInfo && codeInfo.dial_code && codeInfo.code) {
+    if (codeInfo && codeInfo.dial_code && codeInfo.code) {
       this.isSelectFlag = !this.isSelectFlag;
       this.phoneFlag = codeInfo.code.toLowerCase();
       this.phoneFlagChange.emit(this.phoneFlag);
@@ -161,17 +145,17 @@ export class BegoPhoneInputComponent implements OnInit {
       this.phoneCodeChange.emit(this.phoneCode);
     }
 
-    if(codeInfo.code == 'MX') {
+    if (codeInfo.code == 'MX') {
       this.phoneMask = this.mxMask;
-    } else if(codeInfo.code == 'US') {
+    } else if (codeInfo.code == 'US') {
       this.phoneMask = this.usMask;
     } else {
       this.phoneMask = this.generalMask;
     }
 
-    if( this.deleteInputOnPhoneCodeChange){
+    if (this.deleteInputOnPhoneCodeChange) {
       this.phoneInputForm.patchValue({
-        phoneNumber: '',
+        phoneNumber: ''
       });
     }
   }
@@ -179,27 +163,25 @@ export class BegoPhoneInputComponent implements OnInit {
   /**
    * Sends emit with the current phone number
    */
-  public detectInputChanges(): void{
+  public detectInputChanges(): void {
     const phoneNumber = this.phoneInputForm.controls['phoneNumber'].value;
     this.phoneNumberChange.emit(phoneNumber);
   }
 
-  public blurElement(): void{
-    if(this.phoneInputForm.status == 'INVALID'){
+  public blurElement(): void {
+    if (this.phoneInputForm.status == 'INVALID') {
       this.phoneInvalid.emit(true);
-    }else{
+    } else {
       this.phoneInvalid.emit(false);
     }
-    const { phoneFlag, phoneCode} = this;
-    const phoneNumber = this.phoneInputForm.value.phoneNumber
-    this.blur.emit({phoneFlag, phoneCode, phoneNumber});
+    const { phoneFlag, phoneCode } = this;
+    const phoneNumber = this.phoneInputForm.value.phoneNumber;
+    this.blur.emit({ phoneFlag, phoneCode, phoneNumber });
   }
 
   public phoneData(): void {
-    const { phoneFlag, phoneCode} = this;
-    const phoneNumber = this.phoneInputForm.value.phoneNumber
-    this.phoneObject.emit({phoneFlag, phoneCode, phoneNumber});
-  } 
-
-
+    const { phoneFlag, phoneCode } = this;
+    const phoneNumber = this.phoneInputForm.value.phoneNumber;
+    this.phoneObject.emit({ phoneFlag, phoneCode, phoneNumber });
+  }
 }

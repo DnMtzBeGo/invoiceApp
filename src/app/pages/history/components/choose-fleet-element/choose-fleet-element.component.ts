@@ -67,7 +67,7 @@ export class ChooseFleetElementComponent implements OnInit {
   async updateFleetInfo(): Promise<void> {
     this.setOriginalValues();
 
-    const { pickup, dropoff } = this.orderInfo;
+    const [ pickup, dropoff ] = this.orderInfo.destinations;
     const payload = {
       fromDate: pickup.startDate,
       toDate: dropoff.endDate

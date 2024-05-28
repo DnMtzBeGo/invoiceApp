@@ -43,32 +43,42 @@
   .menu-options {
     overflow-x: hidden;
 
-    .menu-option {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      margin: 16px 0px;
-      box-sizing: content-box;
-      border-left: 3px solid transparent;
-
-      bego-button {
-        margin-left: 21px;
-        margin-right: 16px;
+      .menu-option{
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        margin: 13px 0px;
+        box-sizing: content-box;
+        border-left: 3px solid transparent;
+  
+        app-button {
+            margin-left: 21px;
+            margin-right: 16px;
 
         ::ng-deep button.btn-menu {
-          width: 40px;
-          height: 40px;
+          width: 45px;
+          height: 45px;
+
+          &.chibi-bego {
+            background: url('../../../../assets/images/menu/chibpt.svg') 50% 50% no-repeat;
+    
+            &:hover {
+              background: url('../../../../assets/images/menu/chibpt-active.svg') 50% 50% no-repeat;
+            }
+          }
         }
       }
 
       ::ng-deep .ui-icon {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         font-size: 25px;
         color: #fff;
         margin-left: 27px;
         margin-right: 26px;
       }
+
+
 
       &.selected {
         border-left: 3px solid #ffe000;
@@ -82,6 +92,11 @@
           font-weight: 500;
           letter-spacing: 0.5px;
 
+          &.chibi-bego {
+              background: url('../../../../assets/images/menu/chibpt-active.svg') 50% 50% no-repeat $yellow-color !important;
+              box-shadow: none;
+          }
+
           &::before {
             font-size: 22px !important;
           }
@@ -94,6 +109,11 @@
         &:not(.selected) {
           ::ng-deep button.btn-menu::before {
             color: #ffe000;
+          }
+          ::ng-deep button.btn-menu {
+            &.chibi-bego {
+              background: url('../../../../assets/images/menu/chibpt-active.svg') 50% 50% no-repeat !important;
+            }
           }
         }
       }

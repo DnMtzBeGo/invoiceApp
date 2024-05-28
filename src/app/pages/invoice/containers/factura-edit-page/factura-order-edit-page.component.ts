@@ -35,16 +35,13 @@ interface VM {
       subtotal: number;
       deferred_payment: boolean;
     };
-    pickup?: {
-      contact_info?: {
+    destinations: {
+      destination_id: string,
+      tax_information?: {
         rfc?: string;
+        company_name?: string;
       };
-    };
-    dropoff?: {
-      contact_info?: {
-        rfc: string;
-      };
-    };
+    }[];
     cargo?: {
       cargo_goods: string;
       commodity_quantity: number;
@@ -311,6 +308,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
       formLoading: formLoading$,
       formError: formError$,
       formSuccess: formSuccess$
+
     }) as VM;
   }
 
@@ -328,16 +326,10 @@ export class FacturaOrderEditPageComponent implements OnInit {
           tax_regime: ''
         }
       },
-      pickup: {
-        contact_info: {
-          rfc: ''
-        }
-      },
-      dropoff: {
-        contact_info: {
-          rfc: ''
-        }
-      },
+      destinations: [
+        { contact_info: { rfc: '' } },
+        { contact_info: { rfc: '' } },
+      ],
       cargo: {
         cargo_goods: '',
         commodity_quantity: 0,
@@ -355,13 +347,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
   // API calls
   public fetchForm(_id) {
     return from(
-      this.apiRestService.apiRest(
-        JSON.stringify({
-          order_id: _id
-        }),
-        'orders/get_by_id',
-        { loader: 'false' }
-      )
+      this.apiRestService.apiRest('', `carriers/orders/${_id}`, { apiVersion: 'v1.1' })
     ).pipe(
       mergeAll(),
       map((responseData) => fromOrder(responseData?.result))
@@ -463,6 +449,13 @@ const fromOrder = (order) => {
 
   // create keys if null
   if (!newOrder.invoice?.receiver) newOrder.invoice.receiver = {};
+
+  if (order.destinations) {
+    order.destinations.forEach((destination: any) => {
+      destination.destination_id = destination._id;
+      delete destination._id;
+    });
+  }
 
   if (!newOrder.invoice?.receiver?.address)
     newOrder.invoice.receiver.address = {

@@ -1,20 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest,
-  HttpEvent
-} from '@angular/common/http';
+import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable, EMPTY, TimeoutError } from 'rxjs';
-import {
-  catchError,
-  delay,
-  finalize,
-  map,
-  retryWhen,
-  tap,
-  timeout
-} from 'rxjs/operators';
+import { catchError, delay, finalize, map, retryWhen, tap, timeout } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Router } from '@angular/router';
@@ -38,12 +25,9 @@ import { Router } from '@angular/router';
 })
 export class TimeoutInterceptor implements HttpInterceptor {
   private alertDisplayed: boolean = false;
+  loaderRequests = 0;
 
-  constructor(
-    private router: Router,
-    private translateService: TranslateService,
-    private alertService: AlertService
-  ) {}
+  constructor(private router: Router, private translateService: TranslateService, private alertService: AlertService) {}
 
   /**
    *
@@ -53,13 +37,11 @@ export class TimeoutInterceptor implements HttpInterceptor {
    * @return {*}  Note: setTimeout in the finalize pipe operator its defined for solving the flashes loader in some cases, the default value is 0. Still evaluating a better solution.
    * @memberof TimeoutInterceptor
    */
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    if (request.method !== 'GET') {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (request.method !== 'GET' || (request.method === 'GET' && request.params.get('getLoader') === 'true')) {
       let showLoader = request.params.get('loader');
       if (showLoader === 'true') {
+        this.loaderRequests += 1;
         document.getElementById('loader')?.classList?.add('show-loader');
       }
       return next.handle(request).pipe(
@@ -90,10 +72,12 @@ export class TimeoutInterceptor implements HttpInterceptor {
         }),
         finalize(() => {
           if (showLoader === 'true') {
+            this.loaderRequests -= 1;
+
             setTimeout(() => {
-              document
-                .getElementById('loader')
-                ?.classList?.remove('show-loader');
+              if (!this.loaderRequests) {
+                document.getElementById('loader')?.classList?.remove('show-loader');
+              }
             }, 0);
           }
         })

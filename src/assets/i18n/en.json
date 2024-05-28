@@ -134,6 +134,15 @@
       "label-or": "or",
       "btn-browse": "Choose your file",
       "label-max": "max"
+    },
+    "complete-modal": {
+      "title": "Order ready!",
+      "description": "Your order has been created successfully",
+      "done-btn": "Awesome"
+    },
+    "prime": {
+      "no-vehicle": "Without vehicle",
+      "walking": "Walking"
     }
   },
   "checkout": {
@@ -322,7 +331,8 @@
       "trailer": "Trailer",
       "subtotal": "Subtotal",
       "total_price": "Total price",
-      "select": "Select"
+      "select": "Select",
+      "pending": "Pending..."
     },
     "driver_assignment": {
       "title": "Assigned to",
@@ -567,6 +577,7 @@
     "btn-es": "SP"
   },
   "location": {
+    "title": "Order type",
     "label_pickup": "pickup",
     "label_dropoff": "dropoff",
     "label_pin": "Set location on map",
@@ -576,7 +587,7 @@
     "placeholder": "Enter destination",
     "location-not-enabled": "Location is not enabled",
     "txt-address-not-found": "No se encontró la dirección",
-    "btn-order": "Make an Order"
+    "btn-order": "Make an order"
   },
   "alerts": {
     "contact": {
@@ -714,6 +725,7 @@
     "invoice": "Invoice",
     "support": "Support",
     "faq": "FAQs",
+    "tags": "Tags",
     "terms-conditions": "T & C",
     "log-out": "Log out"
   },
@@ -1143,13 +1155,13 @@
       "save-error": "Serie borrada"
     },
     "cp-page": {
-      "carta-porte": "Carta Porte 2.0",
+      "carta-porte": "Carta Porte 3.0",
       "btn-save": "Guardar",
 
       "transporte": "Transporte",
       "ubicaciones": "Ubicaciones",
       "mercancias": "Mercancías",
-      "figura-transporte": "Figura del Transporte",
+      "figura-transporte": "Figura de Transporte",
 
       "success-title": "Carta porte",
       "success-message": "La carta porte se ha guardado de manera satisfactoria",
@@ -1191,6 +1203,8 @@
       "placa": "* Placa",
       "año-modelo": "* Año y Modelo",
       "año-modelo-error": "El año debe de ser mayor a 1900 y menor a 2099",
+
+      "vehicle_gross_weight": "Vehicle gross weight",
 
       "remolques": "Remolques"
     },
@@ -1241,6 +1255,14 @@
       "clave-material-peligroso": "Clave Material Peligroso",
       "embalaje": "Embalaje",
 
+      "cantidad_transporta": {
+        "title": "Transport Quantity",
+        "quantity": "Quantity",
+        "origin_id": "Origin ID",
+        "destination_id": "Destination ID",
+        "cves_transporte": "Transport codes"
+      },
+
       "pedimentos": "Pedimentos",
 
       "pedimento": "Pedimento",
@@ -1248,7 +1270,7 @@
       "table-pedimento": "Pedimento"
     },
     "figura": {
-      "figura-transporte": "Figura del transporte",
+      "figura-transporte": "Figura de Transporte",
       "tipo-figura": "Tipo de Figura",
       "rfc-figura": "RFC",
       "residencia-figura": "Residencia Fiscal",
@@ -1328,6 +1350,10 @@
       "gray": "Gray",
       "grey": "Gray"
     },
+    "color-picker": {
+      "change": "Change?",
+      "other": "Other?"
+    },
     "only-imgs": "Only images supported",
     "choose-invitation": {
       "txt_choose": "Choose one option",
@@ -1364,6 +1390,7 @@
     "txt_showing": "Showing",
     "txt_of": "of",
     "btn_remove": "Remove",
+    "btn_new_vehicle": "Add new vehicle",
     "members": {
       "txt_header": "Team",
       "txt_search": "Search...",
@@ -1444,6 +1471,45 @@
         "type-trailer-number": "Type trailer number"
       }
     },
+    "prime": {
+      "ocl": "Other",
+      "txt_header": "My",
+      "txt_header_vehicles": "My vehicles",
+      "btn_add": "Add new",
+      "txt_search": "Search vehicle...",
+      "see_details": "See",
+      "btn_view": "View",
+      "btn_save": "Save",
+      "brand": "Model",
+      "year": "Year",
+      "vehicle_number": "Plates",
+      "nickname": "Nickname",
+      "placeholder": {
+        "brand": "Type your model",
+        "vehicle_number": "Type plates",
+        "nickname": "Type your nickname"
+      },
+      "sort_by": {
+        "type": "Name",
+        "_id": "Creation date",
+        "date_created": "Creation date",
+        "attributes.vehicle_number": "Plates"
+      },
+      "table": {
+        "vehicle_number": "Vehicle number"
+      },
+      "category_modal": {
+        "title": "Add New Category",
+        "placeholder-category": "Type your category name",
+        "btn-open": "Add Category",
+        "btn-done": "Confirm"
+      },
+      "complete_modal": {
+        "done": "Awesome",
+        "title": "Vehicle saved",
+        "txt": "Your vehicle has been successfully added to the fleet section"
+      }
+    },
     "alerts": {
       "invitation_sent": {
         "title": "Invitation sent",
@@ -1494,6 +1560,50 @@
       "not-available-drivers": "Este operador no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad.",
       "not-available-trucks": "Este camión no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad.",
       "not-available-trailers": "Esta caja no está disponible para dicha fecha, pero puedes selecionarlo bajo tu responsabilidad."
+    },
+    "polygon-filter": {
+      "btn-filter": "Filter",
+      "btn-share": "Share",
+      "btn-active-24": "Active drivers the last 24 hours",
+      "filter": {
+        "title": "Filters",
+        "column": {
+          "drivers": "Drivers",
+          "polygons": "Polygon",
+          "tags": "Tags",
+          "empty": ""
+        },
+        "date": "Date",
+        "heatmap": {
+          "title": "Do yo want Heatmap?",
+          "yes": "YES",
+          "no": "NO"
+        },
+        "actions": {
+          "clear": "Clear",
+          "cancel": "Cancel",
+          "apply": "Apply"
+        },
+        "no-results": {
+          "dispersion": "No results found",
+          "heatmap": "No results found"
+        }
+      },
+      "share": {
+        "sended": {
+          "title": "Email Sent!",
+          "subtitle": "Your email was sent successfully, check your inbox to view the content.",
+          "done": "Awesome"
+        },
+        "form": {
+          "title": "Personal report",
+          "subtitle": "Enter the email you want to send an updated report",
+          "name": "Full Name*",
+          "email": "Email*",
+          "placeholder": "Type full name",
+          "send": "Send"
+        }
+      }
     }
   },
   "small-display-modal": {
@@ -1506,7 +1616,7 @@
   },
   "pin": {
     "title": "Confirm your address",
-    "btn": "Set Destination",
+    "btn": "Confirm",
     "placeholder": "Destination, Destination",
     "address": {
       "title": "Edit Address",
@@ -1630,6 +1740,10 @@
   "tags": {
     "created": "The tag has been created successfully",
     "updated": "The tag has been updated successfully",
+    "driver": {
+      "added": "Driver added successfully",
+      "removed": "Driver removed successfully"
+    },
     "confirm_dialog": {
       "done": "Ok"
     },
@@ -1719,5 +1833,99 @@
   "filter": {
     "input": "Search...",
     "selector": "Search..."
+  },
+  "polygons": {
+    "title": "Polygons",
+    "actions": {
+      "rename": "Rename",
+      "edit": "Upgrade Geometry",
+      "delete": "Delete"
+    },
+    "paginator": {
+      "total": "Total",
+      "of": "of",
+      "nextPage": "Next",
+      "prevPage": "Prev",
+      "itemsPerPage": "Items per page"
+    },
+    "filter": {
+      "input": "Search...",
+      "selector": "Search..."
+    },
+    "table": {
+      "name": "Name",
+      "date_created": "Date created"
+    },
+    "buttons": {
+      "create": "Create New Polygon"
+    },
+    "create-polygon": {
+      "title": {
+        "create": "Create new Polygon",
+        "rename": "Rename Polygon",
+        "delete": "Delete Polygon"
+      },
+      "warn": {
+        "delete": "Are you sure you want delete the polygon?"
+      },
+      "title-success": {
+        "create": "Polygon successfully created",
+        "rename": "Polygon successfully renamed",
+        "delete": "Polygon successfully deleted"
+      },
+      "subtitle-success": {
+        "create": "Your Polygon has been created correctly on the map and has been added to filters.",
+        "rename": "Your Polygon has been renamed correctly",
+        "delete": "Your Polygon has been deleted correctly"
+      },
+      "input-placeholder": "Type polygon name",
+      "button-accept": "Accept",
+      "button-success": "Awesome",
+      "button-cancel": "Cancel"
+    }
+  },
+  "saved-locations": {
+    "my-locations": "My saved locations",
+    "search": "Search location",
+    "opt-edit": "Edit location",
+    "opt-delete": "Delete location",
+    "btn-back": "Back",
+    "modal": {
+      "title-form": "Address Name",
+      "title-complete": "Awesome!",
+      "placeholder": "Type your address name",
+      "complete-msg": "Your location has been saved and has been added to your favorite locations",
+      "btn-done": "Awesome",
+      "btn-confirm": "Confirm",
+      "btn-cancel": "Cancel"
+    }
+  },
+  "chibpt": {
+    "history": {
+      "title": "Chat History",
+      "new-chat": "New Chat",
+      "timestamp": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "previous": "Previous"
+      },
+      "edit": "Edit Chat Name",
+      "delete": "Delete Chat",
+      "modal": {
+        "title": "Do you want to delete the chat?",
+        "subtitle": "This will remove ",
+        "done": "Delete",
+        "cancel": "Cancel"
+      }
+    },
+    "chatbox": {
+      "send": "Send",
+      "placeholder": "Send a message to ChibPT",
+      "message": {
+        "error-img": "This image has expired"
+      }
+    }
   }
 }
