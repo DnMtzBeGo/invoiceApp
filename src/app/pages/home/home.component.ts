@@ -199,7 +199,7 @@ export class HomeComponent implements OnInit {
 
   updateLocations(data: GoogleLocation) {
     this.locations = data;
-    this.mapDashboardService.showFleetMap = false;
+    this.mapDashboardService.showFleetMap = Boolean(!data.pickup || !data.dropoff);
   }
 
   updateDatepickup(data: number) {
