@@ -116,10 +116,23 @@
 
 
 <bego-modal
+  *ngIf="showWaitingModal" 
+  [enabledClose]="true"
+  (closeEmitter)="closeModal($event)"
+  [lang]="{ 
+    done: 'menu.modal-waiting-btn' | translate,
+    }">
+  <div class="waiting-modal-container">
+    <img src="/assets/images/crown-chibi.svg">
+    <h2> {{ 'menu.modal-waiting-title' | translate }} </h2>
+  </div>
+</bego-modal>
+
+<bego-modal
   *ngIf="showPrimeModal" 
   [enabledClose]="true"
   [disabledDone]="true"
-  (closeEmitter)="onModalClose($event)">
+  (closeEmitter)="closeModal($event)">
   <div class="modal-container">
     <div class="modal-title">
       <h2>{{ 'menu.modal-title' | translate }}</h2>

@@ -25,6 +25,7 @@ export class MenuComponent implements OnInit {
   successfulModalShortTextKey: string = 'menu.successful-short-text';
 
   showPrimeModal: boolean = false;
+  showWaitingModal: boolean = false;
   showConfirmModal: boolean = false;
   showSuccessfulModal: boolean = false;
   showErrorModal: boolean = false;
@@ -97,18 +98,26 @@ export class MenuComponent implements OnInit {
       this.router.navigate([redirectRoute]);
     } else {
       this.checkUserPrimeStatus();
-      this.showPrimeModal = true;
     }
   }  
 
   async checkUserPrimeStatus() {
     (await this.webService.apiRest('', 'carriers/home')).subscribe(
       (response) => {
-        if (response && response.result.manager_had_trial === true) {
-          this.freeTrialButtonKey = 'menu.free-trial-btn-upgraded';
-          this.freeTrialModalTitleKey = 'menu.free-trial-title-upgraded';
-          this.successfulModalTextKey = 'menu.successful-text-upgraded';
-          this.successfulModalShortTextKey = '';
+        if (response && response.result.prime_requested === true) {
+          this.showWaitingModal = true;
+        } else {
+          if (response && response.result.manager_had_trial === false) {
+            // Mostrar la modal de Prime con textos estándar
+            this.showPrimeModal = true;
+          } else {
+            // Mostrar la modal de Prime con textos editados
+            this.showPrimeModal = true;
+            this.freeTrialButtonKey = 'menu.free-trial-btn-upgraded';
+            this.freeTrialModalTitleKey = 'menu.free-trial-title-upgraded';
+            this.successfulModalTextKey = 'menu.successful-text-upgraded';
+            this.successfulModalShortTextKey = '';
+          }
         }
       },
       (error) => {
@@ -117,12 +126,13 @@ export class MenuComponent implements OnInit {
     );
   }  
 
-  onModalClose(event: string) {
+  closeModal(event: string) {
     try {
       if (event === 'cancel') {
         this.showPrimeModal = false;
+        this.showWaitingModal = false;
       } else if (event === 'done') {
-        
+        this.showWaitingModal = false;
       }
     } catch (error) {
       console.error('Error al manejar el evento:', error);
@@ -188,7 +198,7 @@ export class MenuComponent implements OnInit {
   }  
 
   public async requestPrime(): Promise<void> {
-    (await this.webService.apiRest('', 'carriers/request_prime')).subscribe(
+    (await this.webService.apiRest('', 'carriers/request_prime', {apiVersion: 'v1.1'})).subscribe(
       (response) => {
         this.showSuccessfulModal = true;
       },

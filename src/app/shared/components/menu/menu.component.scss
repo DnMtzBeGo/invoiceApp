@@ -200,6 +200,25 @@ bego-slider-dots {
 
 }
 
+.waiting-modal-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  h2 {
+    text-align: center;
+    font-size: 22px;
+    width: 70%;
+  }
+
+  img {
+    width: 220px;
+  }
+}
+
 .modal-container {
   display: flex;
   flex-direction: column;
