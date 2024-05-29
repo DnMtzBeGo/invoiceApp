@@ -178,6 +178,7 @@ export class HomeComponent implements OnInit {
     await this.createDraft();
     this.showOrderDetails = true;
     this.mapDashboardService.showPolygons = false;
+    this.mapDashboardService.showFleetMap = false;
   }
 
   private async getLocationId(place_id: string): Promise<string> {
