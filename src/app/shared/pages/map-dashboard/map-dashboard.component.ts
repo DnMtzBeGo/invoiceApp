@@ -32,7 +32,7 @@ export class MapDashboardComponent {
   maxZoom = 18;
 
   subscriptions = new Subscription();
-  restoreHeader = false;
+  restoreHeader = true;
 
   constructor(
     public mapDashboardService: MapDashboardService,
@@ -40,6 +40,8 @@ export class MapDashboardComponent {
     public apiRestService: AuthService,
     public headerService: HeaderService,
   ) {
+    this.headerService.changeHeader(true);
+
     this.subscriptions.add(
       this.router.events.subscribe((res) => {
         if (!(res instanceof NavigationEnd)) return;
