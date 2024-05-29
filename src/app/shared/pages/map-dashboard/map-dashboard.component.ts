@@ -196,8 +196,6 @@ export class MapDashboardComponent {
         mark.icon,
         mark.state,
         mark.title,
-        true,
-        mark.extraData
       );
 
       this.googleMarkers.push(marker);
