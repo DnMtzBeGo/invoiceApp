@@ -13,6 +13,7 @@ export class MapDashboardService {
   // polygons
   getCoordinates = new Subject<any>();
   clearedFilter = new Subject();
+  clearFilter = new Subject();
 
   userRole: number | null = null;
   showFleetMap = true;

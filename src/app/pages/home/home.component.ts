@@ -8,7 +8,6 @@ import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-ma
 import { HeaderService } from './services/header.service';
 import { OrderPreview } from '../orders/orders.component';
 import { Location } from '@angular/common';
-import { PolygonFilter } from './components/polygon-filter/polygon-filter.component';
 import { InputDirectionsComponent } from 'src/app/shared/components/input-directions/input-directions.component';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { PrimeService } from 'src/app/shared/services/prime.service';
@@ -24,7 +23,6 @@ import { MapDashboardService } from 'src/app/shared/pages/map-dashboard/map-dash
   ]
 })
 export class HomeComponent implements OnInit {
-  @ViewChild(PolygonFilter) polygonFilter: PolygonFilter;
   @ViewChild(InputDirectionsComponent) inputDirections: InputDirectionsComponent;
   @Input() locations: GoogleLocation = {
     pickup: '',
@@ -193,7 +191,7 @@ export class HomeComponent implements OnInit {
   updateLocation() {
     if (this.creatingForms) {
       this.clearMap();
-      this.polygonFilter.clearFilters();
+      this.mapDashboardService.clearFilter.next();
       this.creatingForms = false;
     }
   }

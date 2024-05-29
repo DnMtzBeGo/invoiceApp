@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomMarker } from 'src/app/pages/home/custom.marker';
 import { MapDashboardService } from './map-dashboard.service';
 import { HeaderService } from 'src/app/pages/home/services/header.service';
+import { PolygonFilter } from 'src/app/pages/home/components/polygon-filter/polygon-filter.component';
 
 declare var google: any;
 
@@ -16,6 +17,7 @@ declare var google: any;
 })
 export class MapDashboardComponent {
   @ViewChild('map', { read: ElementRef, static: false }) mapRef!: ElementRef;
+  @ViewChild(PolygonFilter) polygonFilter: PolygonFilter;
 
   trafficLayer: google.maps.TrafficLayer;
 
@@ -41,7 +43,9 @@ export class MapDashboardComponent {
     public headerService: HeaderService,
   ) {
     this.headerService.changeHeader(true);
+  }
 
+  ngOnInit() {
     this.subscriptions.add(
       this.router.events.subscribe((res) => {
         if (!(res instanceof NavigationEnd)) return;
@@ -51,6 +55,7 @@ export class MapDashboardComponent {
           this.mapDashboardService.showPolygons = true;
           this.mapDashboardService.showFleetMap = true;
           this.restoreHeader = true;
+          this.polygonFilter.clearFilters();
         } else if (this.restoreHeader) {
           this.headerService.changeHeader(false);
           this.restoreHeader = false;
@@ -62,6 +67,7 @@ export class MapDashboardComponent {
     this.subscriptions.add(this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic()));
     this.subscriptions.add(this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)));
     this.subscriptions.add(this.mapDashboardService.centerMap.subscribe(() => this.centerMap()));
+    this.subscriptions.add(this.mapDashboardService.clearFilter.subscribe(() => this.polygonFilter.clearFilters()));
 
     this.getFleetDetails(false);
   }
