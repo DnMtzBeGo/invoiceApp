@@ -108,10 +108,10 @@ export class MenuComponent implements OnInit {
           this.showWaitingModal = true;
         } else {
           if (response && response.result.manager_had_trial === false) {
-            // Mostrar la modal de Prime con textos estándar
+            // Mostrar la modal de Prime para prueba gratuita
             this.showPrimeModal = true;
           } else {
-            // Mostrar la modal de Prime con textos editados
+            // Mostrar la modal de Prime para suscripicion
             this.showPrimeModal = true;
             this.freeTrialButtonKey = 'menu.free-trial-btn-upgraded';
             this.freeTrialModalTitleKey = 'menu.free-trial-title-upgraded';
@@ -130,7 +130,7 @@ export class MenuComponent implements OnInit {
     try {
       if (event === 'cancel') {
         this.showPrimeModal = false;
-        this.showWaitingModal = false;
+        this.showConfirmModal = false;
       } else if (event === 'done') {
         this.showWaitingModal = false;
       }
@@ -156,30 +156,27 @@ export class MenuComponent implements OnInit {
     this.showPrimeModal = false;
   }  
 
-  async confirmSuscription(event: string) {
+  async confirmSuscription() {
     try {
-      if (event === 'cancel') {
-        this.showConfirmModal = false;
-      } else if (event === 'done') {
-        (await this.webService.apiRest('', 'carriers/home')).subscribe(
-          (response) => {
-            if (response && response.result.manager_had_trial === true) {
-              this.requestPrime();
-            } else {
-              this.requestFreeTrial();
-            }
-          },
-          (error) => {
-            console.error("Error fetching manager_had_trial:", error);
+      (await this.webService.apiRest('', 'carriers/home')).subscribe(
+        (response) => {
+          if (response && response.result.manager_had_trial === true) {
+            this.requestPrime();
+          } else {
+            this.requestFreeTrial();
           }
-        );
-      }
+        },
+        (error) => {
+          console.error("Error fetching manager_had_trial:", error);
+        },
+        () => {
+          this.showConfirmModal = false;
+        }
+      );
     } catch (error) {
-      console.error('Error al manejar el evento:', error);
+      this.showConfirmModal = false;
     }
-  
-    this.showConfirmModal = false;
-  }    
+  }  
 
   public async requestFreeTrial(): Promise<void> {
     (await this.webService.apiRest('', 'carriers/request_free_trial')).subscribe(

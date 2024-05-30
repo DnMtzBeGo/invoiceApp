@@ -114,19 +114,20 @@
   </div>
 </section>
 
-
-<bego-modal
-  *ngIf="showWaitingModal" 
-  [enabledClose]="true"
-  (closeEmitter)="closeModal($event)"
-  [lang]="{ 
-    done: 'menu.modal-waiting-btn' | translate,
-    }">
-  <div class="waiting-modal-container">
-    <img src="/assets/images/crown-chibi.svg">
-    <h2> {{ 'menu.modal-waiting-title' | translate }} </h2>
-  </div>
-</bego-modal>
+<div class="waiting-modal">
+  <bego-modal
+    *ngIf="showWaitingModal" 
+    (closeEmitter)="closeModal($event)"
+    [lang]="{ 
+      done: 'menu.modal-waiting-btn' | translate,
+      }">
+    <div class="waiting-modal-container">
+      <img src="/assets/images/chibi-waiting.svg">
+      <h2> {{ 'menu.modal-waiting-title' | translate }} </h2>
+      <p> {{ 'menu.modal-waiting-p' | translate }} </p>
+    </div>
+  </bego-modal>
+</div>
 
 <bego-modal
   *ngIf="showPrimeModal" 
@@ -160,8 +161,8 @@
 <bego-modal
   *ngIf="showConfirmModal" 
   [enabledClose]="true"
-  [enabledCancel]="true"
-  (closeEmitter)="confirmSuscription($event)"
+  [disabledDone]="true"
+  (closeEmitter)="closeModal($event)"
   [lang]="{ 
     done: 'menu.free-trial-confirm' | translate, 
     cancel: 'menu.free-trial-cancel' | translate
@@ -169,6 +170,10 @@
   <div class="confirm-modal-container">
     <img src="/assets/images/ready-chibi.svg">
     <h2> {{ freeTrialModalTitleKey | translate }} </h2>
+    <div class="btns-container">
+      <button class="cancel-btn" (click)="showConfirmModal = false">{{ 'menu.free-trial-cancel' | translate }}</button>
+      <button class="confirm-btn" (click)="confirmSuscription()">{{ 'menu.free-trial-confirm' | translate }}</button>
+    </div>
   </div>
 </bego-modal>
 

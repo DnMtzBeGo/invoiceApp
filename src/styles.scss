@@ -101,6 +101,7 @@ body {
 // =============================================================================
 
 $font-url: 'assets/fonts/avenir/';
+$gotham-url: 'assets/fonts/gotham/';
 
 @font-face {
   font-family: 'Avenir';
@@ -184,6 +185,15 @@ $font-url: 'assets/fonts/avenir/';
 @font-face {
   font-family: 'Keep Calm';
   src: url('assets/fonts/keepcalm/KeepCalm-Medium.woff');
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham Bold';
+  src: url($gotham-url + 'GothamBold.woff2') format('woff2'),
+       url($gotham-url + 'GothamBold.woff') format('woff'),
+       url($gotham-url + 'GothamBold.ttf') format('truetype');
   font-style: normal;
   font-display: swap;
 }

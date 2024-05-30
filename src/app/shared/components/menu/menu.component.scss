@@ -177,6 +177,10 @@ bego-modal {
   ::ng-deep .modal {
     height: 500px;
     width: 580px;
+
+    button {
+      font-family: Avenir Heavy;
+    }
   }
 }
 
@@ -200,6 +204,13 @@ bego-slider-dots {
 
 }
 
+.waiting-modal {
+  ::ng-deep .modal {
+    height: 390px;
+    width: 550px;
+  }
+}
+
 .waiting-modal-container {
   width: 100%;
   display: flex;
@@ -209,13 +220,27 @@ bego-slider-dots {
   gap: 20px;
 
   h2 {
+    font-family: 'Gotham Bold';
+    font-weight: 100;
+    letter-spacing: .5px;
     text-align: center;
-    font-size: 22px;
+    font-size: 28px;
     width: 70%;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-family: "Avenir Medium";
+    width: 60%;
+    text-align: center;
+    color: #bbbbbb;
   }
 
   img {
-    width: 220px;
+    width: 200px;
+    height: 190px;
+    margin-top: -120px;
+    margin-bottom: 20px;
   }
 }
 
@@ -227,9 +252,11 @@ bego-slider-dots {
   gap: 50px;
 
   .modal-title {
-    width: 50%;
+    width: 70%;
 
     h2 {
+      font-family: 'Gotham Bold';
+      font-weight: 100;
       text-align: center;
     }
   }
@@ -247,6 +274,7 @@ bego-slider-dots {
     gap: 40px;
 
     p {
+      font-family: "Avenir Medium";
       margin-bottom: 50px;
       font-weight: 100;
       text-align: justify;
@@ -294,8 +322,10 @@ bego-slider-dots {
   margin-bottom: 10px;
 
   h2 {
+    font-family: 'Gotham Bold';
+    font-weight: 100;
     text-align: center;
-    font-size: 22px;
+    font-size: 20px;
     width: 70%;
     margin-top: -20px;
   }
@@ -303,6 +333,51 @@ bego-slider-dots {
   img {
     width: 220px;
     margin-right: 40px;
+  }
+
+  .btns-container {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 70px;
+
+    button {
+        padding: 15px 45px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .cancel-btn {
+        color: #fff;
+        background-color: transparent;
+    }
+
+    .cancel-btn::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        bottom: -1px;
+        right: -1px;
+        border-radius: inherit;
+        padding: 1px;
+        background: radial-gradient(115.33% 186.67% at 0% 100%, #151C20 0.32%, rgba(155, 155, 155, 0.5) 54.17%, rgba(104, 104, 104, 0) 100%);
+        -webkit-mask: 
+            linear-gradient(#fff 0 0) content-box, 
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out; 
+                mask-composite: exclude; 
+        pointer-events: none;
+     }
+
+    .confirm-btn {
+      background: #ffee00;
+      box-shadow: -5px -5px 5px #ccc000 inset;
+    }
   }
 }
 
@@ -315,6 +390,7 @@ bego-slider-dots {
   gap: 20px;
 
   p {
+    font-family: "Avenir Medium";
     width: 70%;
     font-weight: 100;
     text-align: justify;
