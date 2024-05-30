@@ -81,4 +81,5 @@ export interface TagDriver {
   email: string;
   telephone?: string;
   thumbnail?: string;
+  tags: string[];
 }
