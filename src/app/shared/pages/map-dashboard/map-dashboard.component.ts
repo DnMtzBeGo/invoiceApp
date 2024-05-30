@@ -40,7 +40,7 @@ export class MapDashboardComponent {
     public mapDashboardService: MapDashboardService,
     public router: Router,
     public apiRestService: AuthService,
-    public headerService: HeaderService,
+    public headerService: HeaderService
   ) {
     this.headerService.changeHeader(true);
   }
@@ -66,9 +66,8 @@ export class MapDashboardComponent {
     this.subscriptions.add(this.mapDashboardService.clearMap.subscribe(() => this.clearMap()));
     this.subscriptions.add(this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic()));
     this.subscriptions.add(this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)));
-    this.subscriptions.add(this.mapDashboardService.centerMap.subscribe(() => this.centerMap()));
+    this.subscriptions.add(this.mapDashboardService.centerMap.subscribe((isPolygons: boolean) => this.centerMap(isPolygons)));
     this.subscriptions.add(this.mapDashboardService.clearFilter.subscribe(() => this.polygonFilter?.clearFilters()));
-
     this.getFleetDetails(false);
   }
 
@@ -114,7 +113,7 @@ export class MapDashboardComponent {
 
           this.mapDashboardService.haveNotFleetMembers = !res.result.trailers || !res.result.trucks;
           if (res.result.hasOwnProperty('errors') && res.result.errors.length > 0) {
-            this.mapDashboardService.haveFleetMembersErrors = res.result.errors
+            this.mapDashboardService.haveFleetMembersErrors = res.result.errors;
           }
         }
 
@@ -195,7 +194,7 @@ export class MapDashboardComponent {
         this.map,
         mark.icon,
         mark.state,
-        mark.title,
+        mark.title
       );
 
       this.googleMarkers.push(marker);
@@ -290,7 +289,7 @@ export class MapDashboardComponent {
     this.createPolygons(geometry.features);
     this.activeCenter = !!locations?.length || !!members?.length || !!geometry?.features?.length;
 
-    this.centerMap();
+    this.centerMap(true);
     this.mapDashboardService.getCoordinates.next();
   }
 
@@ -388,29 +387,32 @@ export class MapDashboardComponent {
     }
   }
 
-  centerMap() {
-    if (this.activeCenter) {
-      const bounds = new google.maps.LatLngBounds();
+  centerMap(isPolygons?: boolean) {
+    const bounds = new google.maps.LatLngBounds();
+    if (isPolygons) {
+      if (this.activeCenter) {
+        if (this.circles?.length) {
+          this.circles?.forEach((circle) => {
+            bounds.extend(circle.getPosition());
+          });
+        }
 
-      if (this.circles?.length) {
-        this.circles?.forEach((circle) => {
-          bounds.extend(circle.getPosition());
-        });
-      }
+        if (this.heatmap) {
+          this.heatmapPosition?.forEach((point) => {
+            bounds.extend(point);
+          });
+        } else {
+          this.markersPosition?.forEach((marker) => {
+            bounds.extend(marker);
+          });
+        }
 
-      if (this.heatmap) {
-        this.heatmapPosition?.forEach((point) => {
-          bounds.extend(point);
-        });
+        this.map.fitBounds(bounds);
       } else {
-        this.markersPosition?.forEach((marker) => {
-          bounds.extend(marker);
-        });
+        this.map.panTo(new google.maps.LatLng(19.432608, -99.133209));
       }
-
-      this.map.fitBounds(bounds);
     } else {
-      this.map.panTo(new google.maps.LatLng(19.432608, -99.133209));
+      this.updateMap(false);
     }
   }
 

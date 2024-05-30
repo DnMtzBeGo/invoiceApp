@@ -12,6 +12,7 @@ export class MapDashboardService {
 
   // polygons
   getCoordinates = new Subject<any>();
+  reloadPolygons = new Subject();
   clearedFilter = new Subject();
   clearFilter = new Subject();
 
@@ -21,6 +22,7 @@ export class MapDashboardService {
 
   haveNotFleetMembers = false;
   haveFleetMembersErrors: string[] = [];
+  centerRouteMap = new Subject();
 
   constructor() {}
 }
