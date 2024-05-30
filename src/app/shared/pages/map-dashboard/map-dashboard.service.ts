@@ -22,6 +22,7 @@ export class MapDashboardService {
 
   haveNotFleetMembers = false;
   haveFleetMembersErrors: string[] = [];
+  centerRouteMap = new Subject();
 
   constructor() {}
 }

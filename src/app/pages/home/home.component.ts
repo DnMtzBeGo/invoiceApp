@@ -255,4 +255,9 @@ export class HomeComponent implements OnInit {
     if (this.creatingForms) this.mapDashboardService.reloadPolygons.next();
     else this.mapDashboardService.getFleetDetails.next(false);
   }
+
+  centerMap() {
+    if (this.mapDashboardService.showFleetMap) this.mapDashboardService.centerMap.next(this.creatingForms);
+    else this.mapDashboardService.centerRouteMap.next();
+  }
 }

@@ -44,7 +44,7 @@
       <button
         id="reset"
         *ngIf="!showOrderDetails"
-        (click)="creatingForms ? mapDashboardService.centerMap.next() : updateMap()"
+        (click)="centerMap()"
         [ngClass]="{ 'reset-up': mapDashboardService.userRole && mapDashboardService.showFleetMap && !showOrderDetails }"
         [@slideInFromBottom]>
         <i class="icon icon-gps"></i>
