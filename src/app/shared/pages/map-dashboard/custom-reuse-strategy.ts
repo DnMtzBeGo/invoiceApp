@@ -13,6 +13,11 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
   }
 
   shouldAttach(route: ActivatedRouteSnapshot): boolean {
+    if (!this.mustSave(route)) {
+      this.clearStore()
+      return false;
+    }
+
     return this.routeStore.has(route.routeConfig?.component);
   }
 
@@ -22,5 +27,22 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
 
   shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
     return future.routeConfig === curr.routeConfig;
+  }
+
+  private clearStore() {
+    this.routeStore.forEach((handler: any) => {
+      handler?.componentRef.destroy();
+    });
+
+    this.routeStore.clear();
+  }
+
+  private mustSave(route: ActivatedRouteSnapshot): boolean {
+    const url = this.getResolvedUrl(route);
+    return ['home', 'fleet'].some((segment) => url.startsWith(`/${segment}`));
+  }
+
+  private getResolvedUrl(route: ActivatedRouteSnapshot): string {
+    return route.pathFromRoot.map((v) => v.url.map((segment) => segment.toString()).join('/')).join('/');
   }
 }

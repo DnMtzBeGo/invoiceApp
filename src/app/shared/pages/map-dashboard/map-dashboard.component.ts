@@ -34,7 +34,6 @@ export class MapDashboardComponent {
   maxZoom = 18;
 
   subscriptions = new Subscription();
-  restoreHeader = true;
 
   constructor(
     public mapDashboardService: MapDashboardService,
@@ -54,11 +53,7 @@ export class MapDashboardComponent {
           this.headerService.changeHeader(true);
           this.mapDashboardService.showPolygons = true;
           this.mapDashboardService.showFleetMap = true;
-          this.restoreHeader = true;
           this.polygonFilter?.clearFilters();
-        } else if (this.restoreHeader) {
-          this.headerService.changeHeader(false);
-          this.restoreHeader = false;
         }
       })
     );
@@ -72,6 +67,7 @@ export class MapDashboardComponent {
   }
 
   ngOnDestroy() {
+    this.headerService.changeHeader(false);
     this.subscriptions.unsubscribe();
   }
 
