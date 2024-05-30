@@ -115,14 +115,11 @@ export class MapComponent implements OnInit {
   constructor(private googlemaps: GoogleMapsService, private elementRef: ElementRef, public mapDashboardService: MapDashboardService) {}
 
   ngOnInit(): void {
-    console.log('TIPO DE MAP!!!!!!!!!!!', this.typeMap);
     if (this.typeMap !== 'draft' && this.typeMap !== 'tracking') {
       this.showMap();
     }
-    console.log('OLLLLD MAP');
     this.subs.add(
       this.googlemaps.updateData.subscribe((data) => {
-        console.log('mapa', data);
         if (data === 0) {
           this.directionsRenderer.setMap(null);
           this.route.setMap(null);
