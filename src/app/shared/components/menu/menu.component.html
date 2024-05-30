@@ -72,7 +72,7 @@
       {{ 'menu.tags' | translate }}
     </div>
 
-    <div class="menu-option" *ngIf="primeService.isPrime" [ngClass]="{ selected: router.url.startsWith('/chibpt') }" (click)="goTo('chibpt')">
+    <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/chibpt') }" (click)="handlePrimeModal('/chibpt')">
       <app-button class="btn-menu chibi-bego icon-only"></app-button>
       ChiBPT
     </div>
