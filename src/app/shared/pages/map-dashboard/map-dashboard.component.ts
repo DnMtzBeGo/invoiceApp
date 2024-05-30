@@ -55,7 +55,7 @@ export class MapDashboardComponent {
           this.mapDashboardService.showPolygons = true;
           this.mapDashboardService.showFleetMap = true;
           this.restoreHeader = true;
-          this.polygonFilter.clearFilters();
+          this.polygonFilter?.clearFilters();
         } else if (this.restoreHeader) {
           this.headerService.changeHeader(false);
           this.restoreHeader = false;
@@ -67,7 +67,7 @@ export class MapDashboardComponent {
     this.subscriptions.add(this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic()));
     this.subscriptions.add(this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)));
     this.subscriptions.add(this.mapDashboardService.centerMap.subscribe(() => this.centerMap()));
-    this.subscriptions.add(this.mapDashboardService.clearFilter.subscribe(() => this.polygonFilter.clearFilters()));
+    this.subscriptions.add(this.mapDashboardService.clearFilter.subscribe(() => this.polygonFilter?.clearFilters()));
 
     this.getFleetDetails(false);
   }
