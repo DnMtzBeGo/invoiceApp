@@ -480,18 +480,18 @@
             [attr.readonly]="vm.readonly"
           >
             <mat-label>{{
-              vm.form?.pickup?.contact_info?.rfc
+              vm.form?.destinations[0]?.tax_information?.rfc
                 ? ("invoice.edit.rfc" | translate)
                 : ("invoice.edit.rfc-placeholder" | translate)
             }}</mat-label>
             <input
               matInput
               name="pickup_rfc"
-              [ngModel]="vm.form?.pickup?.contact_info?.rfc"
+              [ngModel]="vm.form?.destinations[0]?.tax_information?.rfc"
               (ngModelChange)="
                 formEmitter.next([
                   'rfc:search',
-                  (vm.form.pickup.contact_info.rfc = $event
+                  (vm.form.destinations[0].tax_information.rfc = $event
                     .toUpperCase()
                     .trim())
                 ])
@@ -829,18 +829,18 @@
             [attr.readonly]="vm.readonly"
           >
             <mat-label>{{
-              vm.form?.dropoff?.contact_info?.rfc
+              vm.form?.destinations[1]?.tax_information?.rfc
                 ? ("invoice.edit.rfc" | translate)
                 : ("invoice.edit.rfc-placeholder" | translate)
             }}</mat-label>
             <input
               matInput
               name="dropoff_rfc"
-              [ngModel]="vm.form?.dropoff?.contact_info?.rfc"
+              [ngModel]="vm.form?.destinations[1]?.tax_information?.rfc"
               (ngModelChange)="
                 formEmitter.next([
                   'rfc:search',
-                  (vm.form.dropoff.contact_info.rfc = $event
+                  (vm.form.destinations[1].tax_information.rfc = $event
                     .toUpperCase()
                     .trim())
                 ])

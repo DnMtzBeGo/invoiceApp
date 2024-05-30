@@ -1,0 +1,22 @@
+<section>
+  <div class="user-message-gradient-container message" [@fadeIn]>
+    <div>
+      <p [innerHTML]="formattedString"></p>
+      <ng-container *ngFor="let file of files">
+        <div class="file-container-border-gradient">
+          <div>
+            <div>
+              <bego-icon icon="begon-full-document-right"></bego-icon>
+            </div>
+
+            <div>
+              <p>{{ file.name }}</p>
+              <p>{{ file.name | fileExtension: '.':'FILE' }}</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="user-yellow-circle" [style.background-image]="'url(' + profilePicture + ')'"></div>
+</section>

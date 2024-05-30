@@ -587,7 +587,7 @@
     "placeholder": "Enter destination",
     "location-not-enabled": "Location is not enabled",
     "txt-address-not-found": "No se encontró la dirección",
-    "btn-order": "Make an Order"
+    "btn-order": "Make an order"
   },
   "alerts": {
     "contact": {
@@ -1797,7 +1797,12 @@
       "edit_drivers_title": "Edit drivers",
       "tag_name": "Tag name:",
       "tag_name_placeholder": "Type tag name",
-      "tag_edit_placeholder": "Type new tag name"
+      "tag_edit_placeholder": "Type new tag name",
+      "add_driver_toast": "Driver(s) successfully added",
+      "delete_driver_toast": "Driver(s) removed successfully",
+      "error_tag_toast": "An error occurred while adding or deleting the driver(s)",
+      "error_tag_name": "An error occurred while creating tag",
+      "error_repeat_tag_name": "The tag name already exists"
     },
     "validation": {
       "carriers_required": "Choose almost one driver",
@@ -1914,6 +1919,34 @@
       "btn-done": "Awesome",
       "btn-confirm": "Confirm",
       "btn-cancel": "Cancel"
+    }
+  },
+  "chibpt": {
+    "history": {
+      "title": "Chat History",
+      "new-chat": "New Chat",
+      "timestamp": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "previous": "Previous"
+      },
+      "edit": "Edit Chat Name",
+      "delete": "Delete Chat",
+      "modal": {
+        "title": "Do you want to delete the chat?",
+        "subtitle": "This will remove ",
+        "done": "Delete",
+        "cancel": "Cancel"
+      }
+    },
+    "chatbox": {
+      "send": "Send",
+      "placeholder": "Send a message to ChibPT",
+      "message": {
+        "error-img": "This image has expired"
+      }
     }
   }
 }

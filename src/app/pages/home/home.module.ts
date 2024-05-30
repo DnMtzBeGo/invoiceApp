@@ -27,6 +27,7 @@ import { PolygonFilterModule } from './components/polygon-filter/polygon-filter.
     AppMaterialModule,
     BegoModalModule,
     PolygonFilterModule
-  ]
+  ],
+  exports: [HomeComponent]
 })
 export class HomeModule {}

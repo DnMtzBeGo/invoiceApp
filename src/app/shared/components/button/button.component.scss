@@ -98,7 +98,6 @@ button {
         font-size: 20px;
         font-weight: 600;
         letter-spacing: 0.5px;
-        text-transform: capitalize;
         justify-content: center;
         position: relative;
         bottom: 0;
@@ -108,6 +107,10 @@ button {
         color: #040B11;
 
         cursor: pointer;
+
+        &::first-letter {
+            text-transform: capitalize;
+        }
 
         &.active {
             background: $yellow-color;

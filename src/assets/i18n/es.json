@@ -1794,7 +1794,12 @@
       "edit_drivers_title": "Editar conductores",
       "tag_name": "Nombre del Tag:",
       "tag_name_placeholder": "Ingrese el nombre del tag",
-      "tag_edit_placeholder": "Ingrese el nuevo nombre del tag"
+      "tag_edit_placeholder": "Ingrese el nuevo nombre del tag",
+      "add_driver_toast": "Conductor(es) agregado(s) correctamente",
+      "delete_driver_toast": "Conductor(es) eliminado(s) correctamente",
+      "error_tag_toast": "Se produjo un error al agregar o eliminar el/los conductor(es)",
+      "error_tag_name": "Ocurrió un error al crear la tag",
+      "error_repeat_tag_name": "El nombre de la tag ya existe"
     },
     "validation": {
       "carriers_required": "Debe seleccionar al menos un conductor",
@@ -1918,6 +1923,34 @@
       "btn-done": "Asombroso",
       "btn-confirm": "Guardar",
       "btn-cancel": "Cancelar"
+    }
+  },
+  "chibpt": {
+    "history": {
+      "title": "Historial",
+      "new-chat": "Nuevo chat",
+      "timestamp": {
+        "today": "Hoy",
+        "yesterday": "Ayer",
+        "last7Days": "7 días anteriores",
+        "last30Days": "30 días anteriores",
+        "previous": "Antiguo"
+      },
+      "edit": "Renombrar",
+      "delete": "Borrar ",
+      "modal": {
+        "title": "¿Deseas eliminar el chat?",
+        "subtitle": "Esto eliminará ",
+        "done": "Eliminar",
+        "cancel": "Cancelar"
+      }
+    },
+    "chatbox": {
+      "send": "Enviar",
+      "placeholder": "Envía un mensaje a ChibPT",
+      "message": {
+        "error-img": "Esta imagen ha caducado"
+      }
     }
   }
 }

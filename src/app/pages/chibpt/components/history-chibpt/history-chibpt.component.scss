@@ -1,0 +1,226 @@
+button {
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #0a0f14;
+  width: 400px;
+  min-height: 100%;
+  height: calc(100vh - 104px);
+  border-radius: 8px;
+  position: relative;
+  /* overflow-x: hidden;
+  overflow-y: scroll; */
+  transition: all 0.3s;
+
+  .header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 21px;
+    margin: 21px auto 16.39px 52px;
+    &:hover {
+      cursor: pointer;
+    }
+
+    bego-icon {
+      --color: #ffffff;
+    }
+  }
+
+  .wait-request:hover {
+    cursor: wait;
+  }
+
+  .threads {
+    border-radius: 13px;
+    box-shadow: 0px 2px 5px 0px #1c232a;
+    margin: 0 3px;
+    height: 100%;
+    overflow-y: auto;
+
+    .history-list-container {
+      box-shadow: 0px 2px 5px 0px #1c232a;
+      border-radius: 15px;
+      padding: 16px;
+      margin-right: 4px;
+
+      h4 {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 19.12px;
+        letter-spacing: 0.5px;
+        color: #8e8e8e;
+        margin-top: 12px;
+        margin-bottom: 25px;
+        padding: 0 27px;
+      }
+
+      ol {
+        list-style: none;
+        padding: 0;
+
+        li {
+          color: #ffffff;
+          font-size: 14px;
+          font-weight: 350;
+          line-height: 19.12px;
+          letter-spacing: 0.5px;
+          cursor: pointer;
+          position: relative;
+
+          .threads-title {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            padding: 7px 10px 8px 27px;
+            &:before {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              top: 0;
+              background-image: linear-gradient(to right, transparent 0%, #0a0f14 60%);
+              width: 5rem;
+              height: 100%;
+            }
+          }
+
+          .threads-options {
+            transform: translate(0, -50%);
+            top: 50%;
+            right: 15px;
+            position: absolute;
+
+            .options {
+              transform: rotate(90deg);
+
+              ::ng-deep bego-icon {
+                i {
+                  color: #ffffff;
+                }
+              }
+
+              &:hover {
+                ::ng-deep bego-icon {
+                  i {
+                    color: #ffee00;
+                  }
+                }
+              }
+            }
+          }
+
+          &:hover {
+            box-shadow: -2px -2px 4px 0px #050d14 inset, 2px 2px 5px 0px #1a1e24 inset;
+            border-radius: 8px;
+            background: #0c141b;
+            color: #ffee00;
+
+            .threads-title {
+              &:before {
+                background-image: linear-gradient(to right, transparent 0%, #0c141b 60%);
+              }
+            }
+          }
+        }
+
+        .renaming-title {
+          box-shadow: -2px -2px 4px 0px #050d14 inset, 2px 2px 5px 0px #1a1e24 inset;
+          border-radius: 8px;
+          background: #0c141b;
+
+          input {
+            padding: 7px 10px 8px 27px;
+            width: 90%;
+            color: #ffffff;
+          }
+
+          .threads-title {
+            &:before {
+              background-image: linear-gradient(to right, transparent 0%, #0c141b 60%);
+            }
+          }
+        }
+
+        .selected-history {
+          color: #ffee00;
+        }
+      }
+    }
+
+    ::ng-deep {
+      .loader-spinner {
+        margin: 25px auto;
+      }
+
+      .mat-progress-spinner circle,
+      .mat-spinner circle {
+        stroke: #ffee00;
+      }
+    }
+  }
+
+  .open-history {
+    position: absolute;
+    top: 50%;
+    left: -21px;
+    transform: translate(0, -50%);
+    width: 21.5px;
+    height: 125.5px;
+    background: url('../../../../../assets/images/chibpt/open-history.png');
+    z-index: 1;
+  }
+}
+
+.menu-option {
+  padding: 0 16px;
+  ::ng-deep bego-icon {
+    margin-right: 20px;
+
+    i {
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 18px;
+    }
+  }
+
+  &:hover:not([disabled]) {
+    border-radius: 26px;
+    background: linear-gradient(66.07deg, rgba(8, 12, 15, 0.5) 5.1%, rgba(85, 85, 85, 0) 100%);
+    border-image-source: linear-gradient(
+      95.86deg,
+      #1e1e1e 30.22%,
+      rgba(167, 167, 167, 0) 62.01%,
+      rgba(125, 125, 125, 0) 87.8%,
+      #7d7d7d 87.8%
+    );
+    box-shadow: 0px 2px 16px 0px rgba(4, 4, 4, 1);
+    color: rgba(255, 255, 255, 1);
+
+    ::ng-deep bego-icon {
+      i {
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+  }
+}
+
+.hide-history {
+  width: 0;
+}
