@@ -727,7 +727,28 @@
     "faq": "FAQs",
     "tags": "Tags",
     "terms-conditions": "T & C",
-    "log-out": "Log out"
+    "log-out": "Log out",
+    "modal-title": "Boost your fleet or team with BeGo Black.",
+    "modal-waiting-title": "BeGo Black in process!",
+    "modal-waiting-p": "Your BeGo Black account is in process, we will notify you when it's ready",
+    "modal-waiting-btn": "Awesome",
+    "slide1": "Interact with your team via SMS and in-app push notifications.",
+    "slide2": "Identify the areas where your teams spends the most time on their activities using our polygon reports and heat maps.",
+    "slide3": "Improve the security of your team with our panic button for any emergency.",
+    "free-trial-btn": "Start your free trial",
+    "free-trial-btn-upgraded": "Subscribe to BeGo Black",
+    "free-trial-title": "Are you sure you want to try BeGo Black for free?",
+    "free-trial-title-upgraded": "Are you sure you want to subscribe to BeGo Black?",
+    "free-trial-confirm": "Confirm",
+    "free-trial-cancel": "Cancel",
+    "successful-title": "Let´s Begin!",
+    "successful-long-text": "Your free trial begins now, you´ve unlocked our prime features. Now you can discover a new way to manage your team.",
+    "successful-text-upgraded": "Your subscription begins now, you´ve unlocked our prime features. Now you can discover a new way to manage your team.",
+    "successful-short-text": "After 30 days of your free trial your plan will be canceled",
+    "successful-btn": "Go!",
+    "error-title": "Oops!",
+    "error-text": "An error occurred while trying to subscribe",
+    "close-btn": "Close"
   },
   "errors": {
     "timeout": {
@@ -1776,7 +1797,12 @@
       "edit_drivers_title": "Edit drivers",
       "tag_name": "Tag name:",
       "tag_name_placeholder": "Type tag name",
-      "tag_edit_placeholder": "Type new tag name"
+      "tag_edit_placeholder": "Type new tag name",
+      "add_driver_toast": "Driver(s) successfully added",
+      "delete_driver_toast": "Driver(s) removed successfully",
+      "error_tag_toast": "An error occurred while adding or deleting the driver(s)",
+      "error_tag_name": "An error occurred while creating tag",
+      "error_repeat_tag_name": "The tag name already exists"
     },
     "validation": {
       "carriers_required": "Choose almost one driver",

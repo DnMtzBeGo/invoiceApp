@@ -6,10 +6,9 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomMarker } from 'src/app/pages/home/custom.marker';
 import { MapDashboardService } from './map-dashboard.service';
 import { HeaderService } from 'src/app/pages/home/services/header.service';
+import { PolygonFilter } from 'src/app/pages/home/components/polygon-filter/polygon-filter.component';
 
 declare var google: any;
-
-const MARKERS_REFRES_TIME = 1000 * 20;
 
 @Component({
   selector: 'app-map-dashboard',
@@ -18,6 +17,7 @@ const MARKERS_REFRES_TIME = 1000 * 20;
 })
 export class MapDashboardComponent {
   @ViewChild('map', { read: ElementRef, static: false }) mapRef!: ElementRef;
+  @ViewChild(PolygonFilter) polygonFilter: PolygonFilter;
 
   trafficLayer: google.maps.TrafficLayer;
 
@@ -34,14 +34,17 @@ export class MapDashboardComponent {
   maxZoom = 18;
 
   subscriptions = new Subscription();
-  restoreHeader = false;
 
   constructor(
     public mapDashboardService: MapDashboardService,
     public router: Router,
     public apiRestService: AuthService,
-    public headerService: HeaderService,
+    public headerService: HeaderService
   ) {
+    this.headerService.changeHeader(true);
+  }
+
+  ngOnInit() {
     this.subscriptions.add(
       this.router.events.subscribe((res) => {
         if (!(res instanceof NavigationEnd)) return;
@@ -50,10 +53,7 @@ export class MapDashboardComponent {
           this.headerService.changeHeader(true);
           this.mapDashboardService.showPolygons = true;
           this.mapDashboardService.showFleetMap = true;
-          this.restoreHeader = true;
-        } else if (this.restoreHeader) {
-          this.headerService.changeHeader(false);
-          this.restoreHeader = false;
+          this.polygonFilter?.clearFilters();
         }
       })
     );
@@ -61,26 +61,13 @@ export class MapDashboardComponent {
     this.subscriptions.add(this.mapDashboardService.clearMap.subscribe(() => this.clearMap()));
     this.subscriptions.add(this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic()));
     this.subscriptions.add(this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)));
-    this.subscriptions.add(this.mapDashboardService.centerMap.subscribe(() => this.centerMap()));
-
-    const visibilitychange$ = fromEvent(document, 'visibilitychange');
-    const pauseApp$ = visibilitychange$.pipe(filter(() => document.visibilityState === 'hidden'));
-    const resumeApp$ = visibilitychange$.pipe(filter(() => document.visibilityState === 'visible'));
-
-    this.subscriptions.add(
-      merge(of({}), resumeApp$).subscribe(() => {
-        this.getFleetDetails(false);
-
-        this.subscriptions.add(
-          interval(MARKERS_REFRES_TIME)
-            .pipe(takeUntil(pauseApp$))
-            .subscribe(() => this.getFleetDetails(true))
-        );
-      })
-    );
+    this.subscriptions.add(this.mapDashboardService.centerMap.subscribe((isPolygons: boolean) => this.centerMap(isPolygons)));
+    this.subscriptions.add(this.mapDashboardService.clearFilter.subscribe(() => this.polygonFilter?.clearFilters()));
+    this.getFleetDetails(false);
   }
 
   ngOnDestroy() {
+    this.headerService.changeHeader(false);
     this.subscriptions.unsubscribe();
   }
 
@@ -122,7 +109,7 @@ export class MapDashboardComponent {
 
           this.mapDashboardService.haveNotFleetMembers = !res.result.trailers || !res.result.trucks;
           if (res.result.hasOwnProperty('errors') && res.result.errors.length > 0) {
-            this.mapDashboardService.haveFleetMembersErrors = res.result.errors
+            this.mapDashboardService.haveFleetMembersErrors = res.result.errors;
           }
         }
 
@@ -203,9 +190,7 @@ export class MapDashboardComponent {
         this.map,
         mark.icon,
         mark.state,
-        mark.title,
-        true,
-        mark.extraData
+        mark.title
       );
 
       this.googleMarkers.push(marker);
@@ -300,7 +285,7 @@ export class MapDashboardComponent {
     this.createPolygons(geometry.features);
     this.activeCenter = !!locations?.length || !!members?.length || !!geometry?.features?.length;
 
-    this.centerMap();
+    this.centerMap(true);
     this.mapDashboardService.getCoordinates.next();
   }
 
@@ -398,29 +383,32 @@ export class MapDashboardComponent {
     }
   }
 
-  centerMap() {
-    if (this.activeCenter) {
-      const bounds = new google.maps.LatLngBounds();
+  centerMap(isPolygons?: boolean) {
+    const bounds = new google.maps.LatLngBounds();
+    if (isPolygons) {
+      if (this.activeCenter) {
+        if (this.circles?.length) {
+          this.circles?.forEach((circle) => {
+            bounds.extend(circle.getPosition());
+          });
+        }
 
-      if (this.circles?.length) {
-        this.circles?.forEach((circle) => {
-          bounds.extend(circle.getPosition());
-        });
-      }
+        if (this.heatmap) {
+          this.heatmapPosition?.forEach((point) => {
+            bounds.extend(point);
+          });
+        } else {
+          this.markersPosition?.forEach((marker) => {
+            bounds.extend(marker);
+          });
+        }
 
-      if (this.heatmap) {
-        this.heatmapPosition?.forEach((point) => {
-          bounds.extend(point);
-        });
+        this.map.fitBounds(bounds);
       } else {
-        this.markersPosition?.forEach((marker) => {
-          bounds.extend(marker);
-        });
+        this.map.panTo(new google.maps.LatLng(19.432608, -99.133209));
       }
-
-      this.map.fitBounds(bounds);
     } else {
-      this.map.panTo(new google.maps.LatLng(19.432608, -99.133209));
+      this.updateMap(false);
     }
   }
 

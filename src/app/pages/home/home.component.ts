@@ -8,7 +8,6 @@ import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-ma
 import { HeaderService } from './services/header.service';
 import { OrderPreview } from '../orders/orders.component';
 import { Location } from '@angular/common';
-import { PolygonFilter } from './components/polygon-filter/polygon-filter.component';
 import { InputDirectionsComponent } from 'src/app/shared/components/input-directions/input-directions.component';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { PrimeService } from 'src/app/shared/services/prime.service';
@@ -24,7 +23,6 @@ import { MapDashboardService } from 'src/app/shared/pages/map-dashboard/map-dash
   ]
 })
 export class HomeComponent implements OnInit {
-  @ViewChild(PolygonFilter) polygonFilter: PolygonFilter;
   @ViewChild(InputDirectionsComponent) inputDirections: InputDirectionsComponent;
   @Input() locations: GoogleLocation = {
     pickup: '',
@@ -79,32 +77,13 @@ export class HomeComponent implements OnInit {
             this.showCompleteModal = data.showCompleteModal;
             this.location.replaceState('');
           }
-
-          if (data && data.hasOwnProperty('draft')) {
-            this.draftData = data.draft;
-            const [pickup, dropoff] = this.draftData.destinations;
-            this.locations.pickup = pickup.address;
-            this.locations.dropoff = dropoff.address;
-            this.locations.pickupLat = pickup.lat;
-            this.locations.pickupLng = pickup.lng;
-            this.locations.dropoffLat = dropoff.lat;
-            this.locations.dropoffLng = dropoff.lng;
-            this.locations.pickupPostalCode = pickup.zip_code;
-            this.locations.dropoffPostalCode = dropoff.zip_code;
-            this.locations.place_id_pickup = pickup.place_id;
-            this.locations.place_id_dropoff = dropoff.place_id;
-            this.typeMap = 'draft';
-            window.requestAnimationFrame(() => this.googlemaps.updateDataLocations(this.locations));
-            this.showNewOrderCard();
-          } else {
-            this.updateMap();
-          }
         }
       })
     );
 
     this.subs.add(this.mapDashboardService.getCoordinates.subscribe(() => this.getCoordinates()));
     this.subs.add(this.mapDashboardService.clearedFilter.subscribe(() => this.clearedFilter()));
+    this.restoreDraft();
   }
 
   ngOnInit(): void {
@@ -130,7 +109,7 @@ export class HomeComponent implements OnInit {
     this.draftData = null;
     this.datepickup = 0;
     this.userWantCP = false;
-    this.membersToAssigned = {}
+    this.membersToAssigned = {};
     this.locations = {
       pickup: '',
       dropoff: '',
@@ -141,6 +120,32 @@ export class HomeComponent implements OnInit {
       pickupPostalCode: 0,
       dropoffPostalCode: 0
     };
+  }
+
+  restoreDraft() {
+    const data = this.location.getState() as any;
+
+    if (!data.draft) {
+      this.updateMap();
+      return
+    }
+
+    this.draftData = data.draft;
+    const [pickup, dropoff] = this.draftData.destinations;
+    this.locations.pickup = pickup.address;
+    this.locations.dropoff = dropoff.address;
+    this.locations.pickupLat = pickup.lat;
+    this.locations.pickupLng = pickup.lng;
+    this.locations.dropoffLat = dropoff.lat;
+    this.locations.dropoffLng = dropoff.lng;
+    this.locations.pickupPostalCode = pickup.zip_code;
+    this.locations.dropoffPostalCode = dropoff.zip_code;
+    this.locations.place_id_pickup = pickup.place_id;
+    this.locations.place_id_dropoff = dropoff.place_id;
+    this.typeMap = 'draft';
+    window.requestAnimationFrame(() => this.googlemaps.updateDataLocations(this.locations));
+    this.showNewOrderCard();
+    this.location.replaceState(''); // removing draft data once consuming
   }
 
   updateMap() {
@@ -178,6 +183,7 @@ export class HomeComponent implements OnInit {
     await this.createDraft();
     this.showOrderDetails = true;
     this.mapDashboardService.showPolygons = false;
+    this.mapDashboardService.showFleetMap = false;
   }
 
   private async getLocationId(place_id: string): Promise<string> {
@@ -192,14 +198,14 @@ export class HomeComponent implements OnInit {
   updateLocation() {
     if (this.creatingForms) {
       this.clearMap();
-      this.polygonFilter.clearFilters();
+      this.mapDashboardService.clearFilter.next();
       this.creatingForms = false;
     }
   }
 
   updateLocations(data: GoogleLocation) {
     this.locations = data;
-    this.mapDashboardService.showFleetMap = false;
+    this.mapDashboardService.showFleetMap = Boolean(!data.pickup || !data.dropoff);
   }
 
   updateDatepickup(data: number) {
@@ -250,5 +256,15 @@ export class HomeComponent implements OnInit {
   clearMap() {
     this.mapDashboardService.clearMap.next();
     this.openOrderMenu = true;
+  }
+
+  reloadMap() {
+    if (this.creatingForms) this.mapDashboardService.reloadPolygons.next();
+    else this.mapDashboardService.getFleetDetails.next(false);
+  }
+
+  centerMap() {
+    if (this.mapDashboardService.showFleetMap) this.mapDashboardService.centerMap.next(this.creatingForms);
+    else this.mapDashboardService.centerRouteMap.next();
   }
 }

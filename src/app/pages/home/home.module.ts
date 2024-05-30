@@ -9,7 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CheckoutModule } from '../orders/components/checkout/checkout.module';
 import { ProfileModule } from '../profile/profile.module';
 import { AppMaterialModule } from 'src/app/material';
-import { BegoModalModule } from '@begomx/ui-components';
+import { BegoIconsModule, BegoModalModule } from '@begomx/ui-components';
 import { TranslateModule } from '@ngx-translate/core';
 import { PolygonFilterModule } from './components/polygon-filter/polygon-filter.module';
 
@@ -26,7 +26,8 @@ import { PolygonFilterModule } from './components/polygon-filter/polygon-filter.
     ProfileModule,
     AppMaterialModule,
     BegoModalModule,
-    PolygonFilterModule
+    PolygonFilterModule,
+    BegoIconsModule
   ],
   exports: [HomeComponent]
 })
