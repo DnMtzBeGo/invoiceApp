@@ -390,7 +390,6 @@ export class MapDashboardComponent {
   centerMap(isPolygons?: boolean) {
     const bounds = new google.maps.LatLngBounds();
     if (isPolygons) {
-      console.log('center polygons');
       if (this.activeCenter) {
         if (this.circles?.length) {
           this.circles?.forEach((circle) => {
