@@ -128,7 +128,7 @@ export class HomeComponent implements OnInit {
     this.draftData = null;
     this.datepickup = 0;
     this.userWantCP = false;
-    this.membersToAssigned = {}
+    this.membersToAssigned = {};
     this.locations = {
       pickup: '',
       dropoff: '',
@@ -249,5 +249,10 @@ export class HomeComponent implements OnInit {
   clearMap() {
     this.mapDashboardService.clearMap.next();
     this.openOrderMenu = true;
+  }
+
+  reloadMap() {
+    if (this.creatingForms) this.mapDashboardService.reloadPolygons.next();
+    else this.mapDashboardService.getFleetDetails.next(false);
   }
 }

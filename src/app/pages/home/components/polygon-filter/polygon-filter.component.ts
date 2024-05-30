@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ShareReportModalComponent } from '../share-report-modal/share-report-modal.component';
@@ -6,6 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { PrimeService } from 'src/app/shared/services/prime.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { BegoPolygonFilter } from '@begomx/ui-components';
+import { Subscription } from 'rxjs';
+import { MapDashboardService } from 'src/app/shared/pages/map-dashboard/map-dashboard.service';
 
 const LIMIT = 6;
 const DAY = 86_399_000;
@@ -15,7 +17,7 @@ const DAY = 86_399_000;
   templateUrl: './polygon-filter.component.html',
   styleUrls: ['./polygon-filter.component.scss']
 })
-export class PolygonFilter implements OnInit {
+export class PolygonFilter implements OnInit, OnDestroy {
   @Output() getCoordinates = new EventEmitter<any>();
   @Output() clearedFilter = new EventEmitter<any>();
   @ViewChild('polygonFilter') polygonFilter: BegoPolygonFilter;
@@ -85,12 +87,15 @@ export class PolygonFilter implements OnInit {
 
   loading: boolean = false;
 
+  subs = new Subscription();
+
   constructor(
     private apiRestService: AuthService,
     private matDialog: MatDialog,
     private translateService: TranslateService,
     public readonly primeService: PrimeService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    public mapDashboardService: MapDashboardService
   ) {}
 
   async ngOnInit() {
@@ -102,6 +107,8 @@ export class PolygonFilter implements OnInit {
     await this.getDrivers();
     await this.getPolygons();
     await this.getTags();
+
+    this.subs.add(this.mapDashboardService.reloadPolygons.subscribe(() => this.reloadPolygons()));
   }
 
   isPrime(): boolean {
@@ -188,6 +195,10 @@ export class PolygonFilter implements OnInit {
     if (column === 'drivers') this.getDrivers(this.pages.drivers.actual);
     if (column === 'polygons') this.getPolygons(this.pages.polygons.actual);
     if (column === 'tags') this.getTags(this.pages.tags.actual);
+  }
+
+  reloadPolygons() {
+    this.polygonFilter.useAction('apply');
   }
 
   async selectedAction(event: any) {
@@ -386,5 +397,9 @@ export class PolygonFilter implements OnInit {
       this.heatmap = this.options.heatmap;
       this.activeDrivers = this.saveActiveDrivers;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

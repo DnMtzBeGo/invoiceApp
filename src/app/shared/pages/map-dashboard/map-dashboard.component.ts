@@ -40,7 +40,7 @@ export class MapDashboardComponent {
     public mapDashboardService: MapDashboardService,
     public router: Router,
     public apiRestService: AuthService,
-    public headerService: HeaderService,
+    public headerService: HeaderService
   ) {
     this.headerService.changeHeader(true);
   }
@@ -68,7 +68,6 @@ export class MapDashboardComponent {
     this.subscriptions.add(this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)));
     this.subscriptions.add(this.mapDashboardService.centerMap.subscribe(() => this.centerMap()));
     this.subscriptions.add(this.mapDashboardService.clearFilter.subscribe(() => this.polygonFilter.clearFilters()));
-
     this.getFleetDetails(false);
   }
 
@@ -114,7 +113,7 @@ export class MapDashboardComponent {
 
           this.mapDashboardService.haveNotFleetMembers = !res.result.trailers || !res.result.trucks;
           if (res.result.hasOwnProperty('errors') && res.result.errors.length > 0) {
-            this.mapDashboardService.haveFleetMembersErrors = res.result.errors
+            this.mapDashboardService.haveFleetMembersErrors = res.result.errors;
           }
         }
 
@@ -195,7 +194,7 @@ export class MapDashboardComponent {
         this.map,
         mark.icon,
         mark.state,
-        mark.title,
+        mark.title
       );
 
       this.googleMarkers.push(marker);

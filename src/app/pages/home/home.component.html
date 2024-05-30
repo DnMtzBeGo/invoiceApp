@@ -1,9 +1,5 @@
 <div class="map map-container">
-  <bego-map
-    [hide]="showOrderDetails"
-    [typeMap]="typeMap"
-    [headerTransparent]="true"
-    (createGoogleImage)="getGoogleImageMap($event)">
+  <bego-map [hide]="showOrderDetails" [typeMap]="typeMap" [headerTransparent]="true" (createGoogleImage)="getGoogleImageMap($event)">
   </bego-map>
 
   <div class="new-order-wrapper" [class.full]="showOrderDetails">
@@ -40,6 +36,11 @@
         [haveFleetMembers]="mapDashboardService.haveNotFleetMembers"
         [haveFleetMembersErrors]="mapDashboardService.haveFleetMembersErrors">
       </app-input-directions>
+
+      <button *ngIf="mapDashboardService.showFleetMap" class="btn-reload" (click)="reloadMap()" [@slideInFromBottom]>
+        <bego-icon icon="begon-refresh"></bego-icon>
+      </button>
+
       <button
         id="reset"
         *ngIf="!showOrderDetails"
@@ -49,7 +50,11 @@
         <i class="icon icon-gps"></i>
       </button>
 
-      <button *ngIf="!showOrderDetails && !showTrafficButton" class="btn-traffic" (click)="mapDashboardService.toggleTraffic.next()" [@slideInFromBottom]>
+      <button
+        *ngIf="!showOrderDetails && !showTrafficButton"
+        class="btn-traffic"
+        (click)="mapDashboardService.toggleTraffic.next()"
+        [@slideInFromBottom]>
         <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg" />
       </button>
 

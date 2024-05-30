@@ -12,6 +12,7 @@ export class MapDashboardService {
 
   // polygons
   getCoordinates = new Subject<any>();
+  reloadPolygons = new Subject();
   clearedFilter = new Subject();
   clearFilter = new Subject();
 
