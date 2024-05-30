@@ -101,6 +101,7 @@ body {
 // =============================================================================
 
 $font-url: 'assets/fonts/avenir/';
+$gotham-url: 'assets/fonts/gotham/';
 
 @font-face {
   font-family: 'Avenir';
@@ -200,7 +201,7 @@ $font-url: 'assets/fonts/avenir/';
 }
 
 @font-face {
-  font-family: 'Gotham';
+  font-family: 'Gotham Bold';
   src: url('./assets/fonts/gotham/GothamBold.woff2') format("woff2"), url('./assets/fonts/gotham/GothamBold.woff') format("woff"), url('./assets/fonts/gotham/GothamBold.ttf') format("truetype");
   font-weight: 600;
 }

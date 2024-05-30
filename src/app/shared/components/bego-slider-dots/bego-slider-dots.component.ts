@@ -60,5 +60,12 @@ export class BegoSliderDotsComponent implements OnInit {
 
   changeIndex(newIndex: number) {
     this.opts.valueChange?.(newIndex);
+
+    this.opts.value = newIndex;
+    this.slidesInfo.forEach((slide, index) => {
+      slide.active = index === newIndex;
+    });
+    this.valueChange.emit(this.opts.value);
   }
+  
 }
