@@ -294,17 +294,23 @@ export class MapDashboardComponent {
   }
 
   addHeatmap(heatmapData) {
-    const data = this.coordinatesToLatLng(heatmapData);
+    const data = this.optimizedCoordinates(heatmapData);
+    // const data = this.coordinatesToLatLng(heatmapData);
+    // descomentar si es que usamos la función anterior con el array original sin modificar
+    console.log('heatmap coordinates: ', data[0], data.length, ' old: ', heatmapData[0], heatmapData.length);
 
     this.heatmap = new google.maps.visualization.HeatmapLayer({
       data,
-      dissipating: false,
+      // dissipating: false,
+      // descomentar si queremos el redondeo original 
       map: this.map,
-      radius: 0.3
+      radius: 20
     });
 
     this.heatmapPosition = data;
   }
+
+  
 
   createPolygons(geometry) {
     if (!geometry?.length) return;
@@ -395,7 +401,9 @@ export class MapDashboardComponent {
 
         if (this.heatmap) {
           this.heatmapPosition?.forEach((point) => {
-            bounds.extend(point);
+            bounds.extend(point.location);
+            // bounds.extend(point);
+            // descomentar si es que usamos la función anterior con el array original sin modificar
           });
         } else {
           this.markersPosition?.forEach((marker) => {
@@ -410,6 +418,18 @@ export class MapDashboardComponent {
     } else {
       this.updateMap(false);
     }
+  }
+
+  optimizedCoordinates(coords): any[] {
+    const newCoords = new Map();
+
+    coords.forEach(({ lat, lng }) => {
+      const key = `${lat},${lng}`;
+      if (newCoords.has(key)) newCoords.get(key).weight++;
+      else newCoords.set(key, { location: new google.maps.LatLng(lat, lng), weight: 1 });
+    });
+
+    return Array.from(newCoords.values());
   }
 
   coordinatesToLatLng(data: any[]): any[] {
