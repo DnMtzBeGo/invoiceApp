@@ -13,7 +13,8 @@ declare var google: any;
 @Component({
   selector: 'app-map-dashboard',
   templateUrl: './map-dashboard.component.html',
-  styleUrls: ['./map-dashboard.component.scss']
+  styleUrls: ['./map-dashboard.component.scss'],
+  providers: [MapDashboardService]
 })
 export class MapDashboardComponent {
   @ViewChild('map', { read: ElementRef, static: false }) mapRef!: ElementRef;

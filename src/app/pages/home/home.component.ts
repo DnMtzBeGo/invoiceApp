@@ -70,13 +70,6 @@ export class HomeComponent implements OnInit {
       this.router.events.subscribe((res) => {
         if (res instanceof NavigationEnd && res.url.startsWith('/home')) {
           this.cleanup();
-
-          const data = this.router.getCurrentNavigation()?.extras.state;
-
-          if (data?.showCompleteModal) {
-            this.showCompleteModal = data.showCompleteModal;
-            this.location.replaceState('');
-          }
         }
       })
     );
@@ -87,6 +80,13 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const data = this.location.getState() as any;
+
+    if (data?.showCompleteModal) {
+      this.showCompleteModal = data.showCompleteModal;
+      this.location.replaceState('');
+    }
+
     this.locationsService.dataObtained$.subscribe((dataObtained: boolean) => {
       this.showTrafficButton = dataObtained; // Mostrar u ocultar el botón de tráfico según se hayan obtenido los datos
     });
