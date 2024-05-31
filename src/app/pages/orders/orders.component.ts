@@ -675,6 +675,8 @@ export class OrdersComponent implements OnInit {
 }
 
   async getETA(locations: GoogleLocation) {
+    if (!locations.pickup || !locations.dropoff) return;
+
     let datos = {
       pickup: {
         lat: locations.pickupLat,

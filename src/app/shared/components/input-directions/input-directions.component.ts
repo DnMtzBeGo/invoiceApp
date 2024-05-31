@@ -380,6 +380,7 @@ export class InputDirectionsComponent implements OnInit {
 
   handleUpdateLocations() {
     this.updateLocation.emit()
+    this.updateLocations.emit(this.locations);
 
     if (this.autocompletePickup.input === '') {
       this.searchPickup.nativeElement.focus();
@@ -391,7 +392,6 @@ export class InputDirectionsComponent implements OnInit {
       return
     }
 
-    this.updateLocations.emit(this.locations);
     this.googlemaps.updateDataLocations(this.locations);
     this.showSavedLocations = false;
     this.hideMap = false;

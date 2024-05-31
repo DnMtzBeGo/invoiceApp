@@ -204,7 +204,7 @@ export class HomeComponent implements OnInit {
   }
 
   updateLocations(data: GoogleLocation) {
-    this.locations = data;
+    this.locations = { ...data };
     this.mapDashboardService.showFleetMap = Boolean(!data.pickup || !data.dropoff);
   }
 
