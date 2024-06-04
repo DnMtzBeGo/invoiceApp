@@ -34,6 +34,7 @@ export class MapDashboardComponent {
   maxZoom = 18;
 
   subscriptions = new Subscription();
+  isHeatmap: boolean = false;
 
   constructor(
     public mapDashboardService: MapDashboardService,
@@ -278,9 +279,11 @@ export class MapDashboardComponent {
   markersPosition = [];
 
   getCoordinates({ type, geometry, locations, members }: any) {
+    this.isHeatmap = type === 'heatmap';
     this.centerCoords = { type, geometry, locations, members };
     this.clearMap();
-    if (type === 'heatmap') this.addHeatmap(locations);
+
+    if (this.isHeatmap) this.addHeatmap(locations);
     else this.addDispersion(members);
     this.createPolygons(geometry.features);
     this.activeCenter = !!locations?.length || !!members?.length || !!geometry?.features?.length;
@@ -294,16 +297,20 @@ export class MapDashboardComponent {
   }
 
   addHeatmap(heatmapData) {
-    const data = this.coordinatesToLatLng(heatmapData);
+    const data = this.optimizedCoordinates(heatmapData);
+    // const data = this.coordinatesToLatLng(heatmapData);
+    // descomentar si es que usamos la función anterior con el array original sin modificar
 
     this.heatmap = new google.maps.visualization.HeatmapLayer({
       data,
-      dissipating: false,
+      // dissipating: false,
+      // descomentar si queremos el redondeo original
       map: this.map,
-      radius: 0.3
+      radius: 12
     });
 
     this.heatmapPosition = data;
+    this.heatmap.set('maxIntensity', 50);
   }
 
   createPolygons(geometry) {
@@ -354,7 +361,11 @@ export class MapDashboardComponent {
       if (member.location) {
         this.markersFromService.push({
           title: member.nickname,
-          extraData: member.email,
+          description: {
+            email: member.email,
+            lat: member.location.lat,
+            lng: member.location.lng
+          },
           position: {
             lat: member.location.lat,
             lng: member.location.lng
@@ -376,7 +387,7 @@ export class MapDashboardComponent {
         null,
         this.markersFromService[i].title,
         true,
-        this.markersFromService[i].extraData
+        this.markersFromService[i].description
       );
 
       this.googleMarkers.push(marker);
@@ -393,9 +404,11 @@ export class MapDashboardComponent {
           });
         }
 
-        if (this.heatmap) {
+        if (this.isHeatmap) {
           this.heatmapPosition?.forEach((point) => {
-            bounds.extend(point);
+            bounds.extend(point.location);
+            // bounds.extend(point);
+            // descomentar si es que usamos la función anterior con el array original sin modificar
           });
         } else {
           this.markersPosition?.forEach((marker) => {
@@ -410,6 +423,18 @@ export class MapDashboardComponent {
     } else {
       this.updateMap(false);
     }
+  }
+
+  optimizedCoordinates(coords): any[] {
+    const newCoords = new Map();
+
+    coords.forEach(({ lat, lng }) => {
+      const key = `${lat},${lng}`;
+      if (newCoords.has(key)) newCoords.get(key).weight++;
+      else newCoords.set(key, { location: new google.maps.LatLng(lat, lng), weight: 1 });
+    });
+
+    return Array.from(newCoords.values());
   }
 
   coordinatesToLatLng(data: any[]): any[] {
