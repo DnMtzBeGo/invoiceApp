@@ -306,10 +306,11 @@ export class MapDashboardComponent {
       // dissipating: false,
       // descomentar si queremos el redondeo original
       map: this.map,
-      radius: 20
+      radius: 12
     });
 
     this.heatmapPosition = data;
+    this.heatmap.set('maxIntensity', 50);
   }
 
   createPolygons(geometry) {
