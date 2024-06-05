@@ -14,7 +14,7 @@ button {
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
   -webkit-appearance: none;
-  color: #EDEDED;
+  color: $lighter-color;
   cursor: pointer;
 }
 
@@ -23,7 +23,7 @@ button {
   justify-content: center;
   align-items: stretch;
   height: calc(100vh - 104px);
-
+  
   .container-app-threads {
     flex-basis: 100%;
     overflow-y: scroll;

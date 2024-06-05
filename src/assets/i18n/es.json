@@ -1951,6 +1951,8 @@
       "message": {
         "error-img": "Esta imagen ha caducado"
       }
-    }
+    }, 
+    "footer": "ChibiPT puede cometer errores. Comprueba la información importante.",
+    "greeting": "¿Como te puedo ayudar hoy?"
   }
 }
