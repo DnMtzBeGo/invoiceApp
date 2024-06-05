@@ -115,6 +115,11 @@ main {
     }
 
     /* Estilos aplicados dentro de ::ng-deep */
+    ::ng-deep .question {
+      position: relative;
+    }
+
+
   ::ng-deep .questions-container {
     @media (max-height: 700px) and (max-width: 1220px) {
       gap: 10px;
