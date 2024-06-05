@@ -446,16 +446,8 @@ export class MapDashboardComponent {
 
   createCustomMarker(markerData: any): any {
     const customMarker = new google.maps.OverlayView();
-    const description = {
-      raw_nickname: '',
-      location: '',
-      email: '',
-      location_updated_at: ''
-    };
 
-    const infoWindow = new google.maps.InfoWindow({
-      content: this.createContent('')
-    });
+    const infoWindow = new google.maps.InfoWindow();
 
     let div: HTMLElement | null = null;
 
@@ -485,16 +477,13 @@ export class MapDashboardComponent {
         google.maps.event.addDomListener(div, 'click', async () => {
           (await this.apiRestService.apiRestGet(`carriers/information?user_id=${markerData._id}`, { getLoader: 'true' })).subscribe({
             next: ({ result }) => {
-              if (result?.location_updated_at) {
-                const date = DateTime.fromMillis(result.location_updated_at);
-                description.location_updated_at = date.toFormat('dd/MM/yyyy HH:mm:ss');
+              let { raw_nickname, email, location_updated_at, location } = result;
+              if (location_updated_at) {
+                const date = DateTime.fromMillis(location_updated_at);
+                location_updated_at = date.toFormat('dd/MM/yyyy HH:mm:ss');
               }
 
-              description.raw_nickname = result?.raw_nickname;
-              description.email = result?.email;
-              description.location = result?.location;
-
-              infoWindow.setContent(this.createContent(description));
+              infoWindow.setContent(this.createContent(raw_nickname, email, location_updated_at, location));
 
               infoWindow.open({ anchor: customMarker, map: this.map, shouldFocus: false });
             },
@@ -530,22 +519,14 @@ export class MapDashboardComponent {
     return customMarker;
   }
 
-  createContent(description) {
+  createContent(username: string, email: string, lastDate: string, location: string) {
     return `
     <div class="content" style="max-width: 350px">
-        <h3 style="text-align: center">${description.raw_nickname}</h3>
+        <h3 style="text-align: center">${username}</h3>
         <div class="description">
-        ${description?.email ? '<div class="info"><i class="material-icons">email</i><p>' + description.email + '</p></div>' : ''}
-        ${
-          description?.location_updated_at
-            ? '<div class="info"><i class="material-icons">schedule</i><p>' + description.location_updated_at + '</p></div>'
-            : ''
-        }
-        ${
-          description?.location
-            ? '<div class="info"><i class="material-icons">location_on</i><p>' + description.location + '</p></div>'
-            : ''
-        }
+        ${email ? '<div class="info"><i class="material-icons">email</i><p>' + email + '</p></div>' : ''}
+        ${lastDate ? '<div class="info"><i class="material-icons">schedule</i><p>' + lastDate + '</p></div>' : ''}
+        ${location ? '<div class="info"><i class="material-icons">location_on</i><p>' + location + '</p></div>' : ''}
         </div>
     </div>`;
   }
