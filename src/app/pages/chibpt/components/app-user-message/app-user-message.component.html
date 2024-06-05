@@ -18,5 +18,8 @@
       </ng-container>
     </div>
   </div>
-  <div class="user-yellow-circle" [style.background-image]="'url(' + profilePicture + ')'"></div>
+  <div class="user-yellow-circle">
+    <img class="profile-picture" [src]="profilePicture" (error)="onError()" alt="User profile picture">
+    <img class="chibibot-message-corner-right message" src="assets/images/chibpt/corner1.svg" alt="corner" [@fadeIn]>
+  </div>
 </section>

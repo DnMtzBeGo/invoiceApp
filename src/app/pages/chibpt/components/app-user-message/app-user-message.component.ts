@@ -24,13 +24,26 @@ export class AppUserMessageComponent implements OnInit {
   @Input() message: string;
   @Input() file: string;
   @Input() format: string;
-  profilePicture: SafeUrl = localStorage.getItem("profilePicture") ?? "/assets/images/user-outline.svg"
+  //profilePicture: SafeUrl = localStorage.getItem("profilePicture") ?? "/assets/images/user-outline.svg";
+  profilePicture: SafeUrl;
   formattedString: SafeHtml;
   @Input() files: File[] = [];
 
-  constructor(private sanitizer: DomSanitizer) {}
+  private defaultProfilePicture = "/assets/images/user-outline.svg";
+
+  constructor(private sanitizer: DomSanitizer) {
+    //this.profilePicture = "/assets/images/user-outline.svg";
+  }
 
   ngOnInit() {
+    const storedProfilePicture = localStorage.getItem("profilePicture");
+    this.profilePicture = storedProfilePicture ? this.sanitizer.bypassSecurityTrustUrl(storedProfilePicture) : this.defaultProfilePicture;
+
     this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g,'<br>'));
+   
+  }
+
+  onError() {
+    this.profilePicture = this.defaultProfilePicture;
   }
 }
