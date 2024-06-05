@@ -12,7 +12,7 @@ button {
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
   -webkit-appearance: none;
-  color: #ffffff;
+  color: #EDEDED;
   cursor: pointer;
 }
 
@@ -40,7 +40,7 @@ button {
     }
 
     bego-icon {
-      --color: #ffffff;
+      --color: #EDEDED;
     }
   }
 
@@ -77,7 +77,7 @@ button {
         padding: 0;
 
         li {
-          color: #ffffff;
+          color: #EDEDED;
           font-size: 14px;
           font-weight: 350;
           line-height: 19.12px;
@@ -113,7 +113,7 @@ button {
 
               ::ng-deep bego-icon {
                 i {
-                  color: #ffffff;
+                  color: #EDEDED;
                 }
               }
 
@@ -149,7 +149,7 @@ button {
           input {
             padding: 7px 10px 8px 27px;
             width: 90%;
-            color: #ffffff;
+            color: #EDEDED;
           }
 
           .threads-title {

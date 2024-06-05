@@ -1,6 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 @Component({
   selector: 'app-app-chibibot-message',
   templateUrl: './app-chibibot-message.component.html',
@@ -37,7 +39,11 @@ export class AppChibibotMessageComponent implements OnInit {
   ngOnInit() {
     if (this.loader) return;
 
-    this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g, '<br>'));
+    const rawHtml = marked(this.message);
+    const cleanHtml = DOMPurify.sanitize(rawHtml);
+    this.formattedString = this.sanitizer.bypassSecurityTrustHtml(cleanHtml);
+
+   //this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g, '<br>'));
   }
 
   onLoad() {

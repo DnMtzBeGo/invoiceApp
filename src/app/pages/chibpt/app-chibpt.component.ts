@@ -17,15 +17,19 @@ export class AppChibptComponent {
   ) {}
 
   async ngOnInit() {
+    /*
     if (this.primeService.loaded.isStopped) {
       this.handleMustRedirect();
     } else {
+    */
       this.primeService.loaded.subscribe(() => this.handleMustRedirect());
+    /*
     }
+    */
   }
 
   handleMustRedirect() {
-    if (!this.primeService.isPrime) this.router.navigate(['/home']);
+    this.router.navigate(['/home']);
   }
 
   toggleHistory() {

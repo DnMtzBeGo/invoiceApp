@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60.55 62">
+  <defs>
+    <style>
+      .cls-1 {
+        mask: url(#mask);
+      }
+
+      .cls-2 {
+        fill: url(#radial-gradient);
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-3, .cls-4 {
+        fill-rule: evenodd;
+      }
+
+      .cls-4 {
+        fill: #fff;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="1.79" y1="8.35" x2="69.33" y2="38.32" gradientTransform="translate(0 63) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#080c0f" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#161616" stop-opacity=".2"/>
+    </linearGradient>
+    <mask id="mask" x="0" y="0" width="60.55" height="62" maskUnits="userSpaceOnUse">
+      <g id="path-1-inside-1_3415_42272" data-name="path-1-inside-1 3415 42272">
+        <path class="cls-4" d="m59.05,1.5h-5.52c-9.67,0-16.14,12.33-16.14,22C37.39,43.56,20.78,59.89.05,60.48c.36.01.73.02,1.1.02h57.9V1.5Z"/>
+      </g>
+    </mask>
+    <radialGradient id="radial-gradient" cx="-629.52" cy="681.62" fx="-629.52" fy="681.62" r="1" gradientTransform="translate(47060.13 -133241.82) rotate(-136.5) scale(91.62 -189.32)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000"/>
+      <stop offset=".55" stop-color="#bababa" stop-opacity=".49"/>
+      <stop offset=".99" stop-color="#848484" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path class="cls-3" d="m59.05,1.5h-5.52c-9.67,0-16.14,12.33-16.14,22C37.39,43.56,20.78,59.89.05,60.48c.36.01.73.02,1.1.02h57.9V1.5Z"/>
+  <g class="cls-1">
+    <path class="cls-2" d="m59.05,1.5h1.5V0h-1.5v1.5ZM.05,60.48l-.04-1.5v3s.04-1.5.04-1.5Zm59,.02v1.5h1.5v-1.5h-1.5ZM53.53,3h5.52V0h-5.52v3Zm-14.64,20.5c0-4.54,1.53-9.75,4.2-13.8,2.67-4.06,6.3-6.7,10.44-6.7V0c-5.53,0-9.97,3.53-12.95,8.05-2.99,4.53-4.69,10.32-4.69,15.45h3ZM.09,61.98c21.48-.62,38.8-17.56,38.8-38.48h-3C35.89,42.69,19.98,58.41,0,58.98l.09,3Zm1.05-2.98c-.35,0-.7,0-1.05-.02l-.09,3c.38.01.76.02,1.14.02v-3Zm57.9,0H1.14v3h57.9v-3Zm1.5,1.5V1.5h-3v59h3Z"/>
+  </g>
+</svg>
