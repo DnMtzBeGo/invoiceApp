@@ -7,6 +7,8 @@ import { CustomMarker } from 'src/app/pages/home/custom.marker';
 import { MapDashboardService } from './map-dashboard.service';
 import { HeaderService } from 'src/app/pages/home/services/header.service';
 import { PolygonFilter } from 'src/app/pages/home/components/polygon-filter/polygon-filter.component';
+import { DateTime } from 'luxon';
+import { NotificationsService } from '../../services/notifications.service';
 
 declare var google: any;
 
@@ -40,7 +42,8 @@ export class MapDashboardComponent {
     public mapDashboardService: MapDashboardService,
     public router: Router,
     public apiRestService: AuthService,
-    public headerService: HeaderService
+    public headerService: HeaderService,
+    private notificationsService: NotificationsService
   ) {
     this.headerService.changeHeader(true);
   }
@@ -89,7 +92,8 @@ export class MapDashboardComponent {
           res.result.members.forEach((row: any) => {
             if (row.location) {
               this.markersFromService.push({
-                title: row._id,
+                _id: row._id,
+                title: '',
                 position: {
                   lat: row.location.lat,
                   lng: row.location.lng
@@ -186,13 +190,8 @@ export class MapDashboardComponent {
     this.markersFromService.forEach((mark) => {
       mark.icon ||= '../assets/images/user-outline.svg';
 
-      const marker = new CustomMarker(
-        new google.maps.LatLng(mark.position.lat, mark.position.lng),
-        this.map,
-        mark.icon,
-        mark.state,
-        mark.title
-      );
+      const marker = this.createCustomMarker(mark);
+      marker.setMap(this.map);
 
       this.googleMarkers.push(marker);
       this.bounds.extend(marker.getPosition());
@@ -439,6 +438,116 @@ export class MapDashboardComponent {
 
   coordinatesToLatLng(data: any[]): any[] {
     return data.map((coord) => new google.maps.LatLng(coord.lat, coord.lng));
+  }
+
+  setLatLng(lat, lng) {
+    return new google.maps.LatLng(lat, lng);
+  }
+
+  createCustomMarker(markerData: any): any {
+    const customMarker = new google.maps.OverlayView();
+    const description = {
+      raw_nickname: '',
+      location: '',
+      email: '',
+      location_updated_at: ''
+    };
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: this.createContent('')
+    });
+
+    let div: HTMLElement | null = null;
+
+    customMarker.draw = () => {
+      if (!div) {
+        div = document.createElement('div');
+        div.className = 'customMarker';
+
+        switch (markerData.state) {
+          case 'inactive':
+            div.classList.add('customMarker', 'inactive-marker');
+            break;
+          case 'available':
+            div.classList.add('customMarker', 'available-marker');
+            break;
+          case 'unavailable':
+            div.classList.add('customMarker', 'unavailable-marker');
+            break;
+          default:
+            div.classList.add('customMarker', 'active-marker');
+        }
+
+        let img = document.createElement('img');
+        img.src = markerData.icon;
+        div.appendChild(img);
+
+        google.maps.event.addDomListener(div, 'click', async () => {
+          (await this.apiRestService.apiRestGet(`carriers/information?user_id=${markerData._id}`, { getLoader: 'true' })).subscribe({
+            next: ({ result }) => {
+              if (result?.location_updated_at) {
+                const date = DateTime.fromMillis(result.location_updated_at);
+                description.location_updated_at = date.toFormat('dd/MM/yyyy HH:mm:ss');
+              }
+
+              description.raw_nickname = result?.raw_nickname;
+              description.email = result?.email;
+              description.location = result?.location;
+
+              infoWindow.setContent(this.createContent(description));
+
+              infoWindow.open({ anchor: customMarker, map: this.map, shouldFocus: false });
+            },
+            error: (err) => {
+              this.notificationsService.showErrorToastr('There was an error, try again later');
+              console.error(err);
+            }
+          });
+        });
+
+        let panes = customMarker.getPanes();
+        panes.overlayImage.appendChild(div);
+      }
+
+      let point = customMarker.getProjection().fromLatLngToDivPixel(this.setLatLng(markerData.position.lat, markerData.position.lng));
+      if (point) {
+        div.style.left = point.x + 'px';
+        div.style.top = point.y + 'px';
+      }
+    };
+
+    customMarker.remove = () => {
+      if (div) {
+        div.parentNode.removeChild(div);
+        div = null;
+      }
+    };
+
+    customMarker.getPosition = () => {
+      return markerData.position;
+    };
+
+    return customMarker;
+  }
+
+  createContent(description) {
+    return `
+    <div class="content" style="max-width: 350px">
+        <h3 style="text-align: center">${description.raw_nickname}</h3>
+        <div class="description">
+        ${description?.email ? '<div class="info"><i class="material-icons">email</i><p>' + description.email + '</p></div>' : ''}
+        ${
+          description?.location_updated_at
+            ? '<div class="info"><i class="material-icons">schedule</i><p>' + description.location_updated_at + '</p></div>'
+            : ''
+        }
+        ${
+          description?.location
+            ? '<div class="info"><i class="material-icons">location_on</i><p>' + description.location + '</p></div>'
+            : ''
+        }
+        </div>
+    </div>`;
   }
 
   // #endregion
