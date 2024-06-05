@@ -3,6 +3,17 @@
 .message {
   opacity: 0;
   transition: opacity 0.75s ease-in;
+
+  ::ng-deep {
+    code, p {
+      word-wrap: break-word;
+      white-space: break-spaces;
+    }
+
+    a {
+      color: $yellow-color
+    }
+  }
 }
 
 section {
