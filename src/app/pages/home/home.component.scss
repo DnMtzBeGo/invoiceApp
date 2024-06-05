@@ -262,6 +262,27 @@ bego-modal {
 
       h3 {
         margin-right: 12px;
+        text-transform: capitalize;
+      }
+      .description {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+
+        .info {
+          display: flex;
+          i {
+            margin-right: 8px;
+          }
+
+          p {
+            margin-top: 2px;
+          }
+
+          &:first-child {
+            margin-top: 10px;
+          }
+        }
       }
 
       &::selection {
