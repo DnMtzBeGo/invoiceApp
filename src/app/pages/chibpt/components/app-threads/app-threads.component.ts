@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ChibiptService } from 'src/app/shared/services/chibipt.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Question {
   message: string;
@@ -49,7 +50,7 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
 
   createNewHistorySub: Subscription;
 
-  constructor(private webService: AuthService, public chibiptService: ChibiptService, private notificationsService: NotificationsService) {}
+  constructor(private webService: AuthService, public chibiptService: ChibiptService, private notificationsService: NotificationsService, private translate: TranslateService) {}
 
   ngOnInit() {
     this.createNewHistorySub = this.chibiptService.createNewChatSub$.subscribe(() => {

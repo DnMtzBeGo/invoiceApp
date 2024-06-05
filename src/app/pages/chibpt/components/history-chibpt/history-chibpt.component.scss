@@ -1,3 +1,6 @@
+@import '../../../../../styles.scss';
+$lighter-color: #EDEDED;
+
 button {
   border: none;
   margin: 0;
@@ -12,7 +15,7 @@ button {
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
   -webkit-appearance: none;
-  color: #ffffff;
+  color: $lighter-color;
   cursor: pointer;
 }
 
@@ -22,7 +25,7 @@ button {
   background-color: #0a0f14;
   width: 400px;
   min-height: 100%;
-  height: calc(100vh - 104px);
+  height: 100%;
   border-radius: 8px;
   position: relative;
   /* overflow-x: hidden;
@@ -40,7 +43,11 @@ button {
     }
 
     bego-icon {
-      --color: #ffffff;
+      --color: #{$lighter-color};
+    }
+
+    h3 {
+      color: $lighter-color;
     }
   }
 
@@ -77,7 +84,7 @@ button {
         padding: 0;
 
         li {
-          color: #ffffff;
+          color: $lighter-color;
           font-size: 14px;
           font-weight: 350;
           line-height: 19.12px;
@@ -113,7 +120,7 @@ button {
 
               ::ng-deep bego-icon {
                 i {
-                  color: #ffffff;
+                  color: $lighter-color;
                 }
               }
 
@@ -149,7 +156,7 @@ button {
           input {
             padding: 7px 10px 8px 27px;
             width: 90%;
-            color: #ffffff;
+            color: $lighter-color;
           }
 
           .threads-title {

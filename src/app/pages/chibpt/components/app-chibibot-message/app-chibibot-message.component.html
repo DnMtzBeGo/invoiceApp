@@ -1,8 +1,9 @@
 <section>
   <div class="chibibot-yellow-circle">
     <img src="assets/images/chibpt/chibibot.svg" alt="Chibi Chatbot" />
+    <img *ngIf="!loader" class="chibibot-message-corner message" src="assets/images/chibpt/corner1.svg" alt="corner" [@fadeIn]>
   </div>
-  <div class="message chibibot-message-gradient-container" [@fadeIn]>
+  <div [ngClass]="{ 'dot-loader-gradient': loader }" class="message chibibot-message-gradient-container" [@fadeIn]>
     <div [ngClass]="{ 'dot-loader': loader }">
       <ng-container *ngIf="!loader; else loaderMessage">
         <p [innerHTML]="formattedString"></p>

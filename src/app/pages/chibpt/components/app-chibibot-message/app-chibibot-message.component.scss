@@ -3,6 +3,17 @@
 .message {
   opacity: 0;
   transition: opacity 0.75s ease-in;
+
+  ::ng-deep {
+    code, p {
+      word-wrap: break-word;
+      white-space: break-spaces;
+    }
+
+    a {
+      color: $yellow-color
+    }
+  }
 }
 
 section {
@@ -12,16 +23,32 @@ section {
 }
 
 .chibibot-yellow-circle {
+  position: relative;
   border: #ffee00 solid 1px;
   border-radius: 50%;
   margin-inline-end: 7px;
   width: 72px;
   height: 72px;
   padding: 5px;
+
+  
+
+  .chibibot-message-corner {
+    position: absolute;
+    top: 17px;
+    left: 52px;
+    width: 3.39rem;
+    z-index: -1;
+  }
+}
+
+.chibibot-message-gradient-container.dot-loader-gradient {
+  @include gradient-background;
 }
 
 .chibibot-message-gradient-container {
-  @include gradient-background;
+ @include gradient-background-left;
+  margin-inline-start: 4px;
 
   p {
     font-weight: 300;
