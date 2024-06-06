@@ -68,7 +68,7 @@
     </div>
 
     <div class="menu-option" [ngClass]="{ selected: router.url.startsWith('/tags') }" (click)="handlePrimeModal('/tags')">
-      <bego-icon icon="begon-tag ui-icon"></bego-icon>
+      <app-button class="btn-menu icon icon-tags icon-only"></app-button>
       {{ 'menu.tags' | translate }}
     </div>
 
@@ -99,11 +99,12 @@
       {{ 'menu.terms-conditions' | translate }}
     </div>
 
-    <div class="menu-option logout" (click)="logout()">
-      <div style="overflow: hidden; display: flex; align-items: center; margin-right: 10px">
-        <app-button class="btn-menu icon icon-logout icon-only"></app-button>
-        {{ 'menu.log-out' | translate }}
-      </div>
+
+  </div>
+  <div class="menu-options logout">
+    <div class="menu-option" (click)="logout()">
+      <app-button class="btn-menu icon icon-logout icon-only"></app-button>
+      {{ 'menu.log-out' | translate }}
     </div>
   </div>
 

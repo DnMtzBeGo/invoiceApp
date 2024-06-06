@@ -1,3 +1,5 @@
+@import '../../../styles.scss';
+
 #map {
   ::ng-deep .leaflet-tile-pane {
     filter: invert(0.9) grayscale(0.9);
@@ -192,7 +194,7 @@
   left: 0;
   width: 100%;
   z-index: 1;
-  background-color: black;
+  background-color: $background-color;
   display: flex;
   flex-direction: column;
 

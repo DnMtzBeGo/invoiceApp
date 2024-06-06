@@ -95,7 +95,7 @@ main {
 }
 
 .input-section {
-  background-color: #050b10;
+  background-color: $background-color;
   width: 100%;
   padding-block-end: 37px;
   @include flexbox-align(column, space-between, center);
@@ -141,7 +141,7 @@ main {
       }
 
     p {
-      color: #2F3234; 
+      color: #36393b; /*quick promps when no selected*/
     }
 
    &:hover {
@@ -155,7 +155,7 @@ main {
       }
 
       p:nth-child(2) {
-        color: #2E3133;
+        color: #919394; /*second p child when hover*/
       }
 
       
