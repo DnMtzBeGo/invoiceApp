@@ -19,8 +19,6 @@ export class MarkerInfoWindowComponent implements OnInit {
   constructor(public apiRestService: AuthService, private notificationsService: NotificationsService) {}
 
   ngOnInit(): void {
-    console.log('INIT NEW MARKER WAY');
-    // this.loading = true;
     this.getMemberData();
   }
 
@@ -29,7 +27,6 @@ export class MarkerInfoWindowComponent implements OnInit {
 
     (await this.apiRestService.apiRestGet(`carriers/information?user_id=${this.memberId}`)).subscribe({
       next: ({ result }) => {
-        console.log('member data: ', result);
         let { raw_nickname, email, location_updated_at, location } = result;
 
         this.username = raw_nickname;

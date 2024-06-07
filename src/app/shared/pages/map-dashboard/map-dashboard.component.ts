@@ -448,6 +448,8 @@ export class MapDashboardComponent {
     return new google.maps.LatLng(lat, lng);
   }
 
+  openInfoWindow: google.maps.InfoWindow | null = null;
+
   createCustomMarker(markerData: any): any {
     const customMarker = new google.maps.OverlayView();
 
@@ -481,7 +483,9 @@ export class MapDashboardComponent {
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkerInfoWindowComponent);
         const componentRef = componentFactory.create(this.injector);
 
-        google.maps.event.addDomListener(div, 'click', async () => {
+        google.maps.event.addDomListener(div, 'click', () => {
+          this.openInfoWindow?.close();
+
           componentRef.instance.memberId = markerData._id;
 
           this.appRef.attachView(componentRef.hostView);
@@ -491,11 +495,14 @@ export class MapDashboardComponent {
           infoWindow.setContent(componentElement);
 
           infoWindow.open({ anchor: customMarker, map: this.map, shouldFocus: false });
+
+          this.openInfoWindow = infoWindow;
         });
 
         google.maps.event.addListener(infoWindow, 'closeclick', () => {
           this.appRef.detachView(componentRef.hostView);
           componentRef.destroy();
+          this.openInfoWindow = null;
         });
 
         let panes = customMarker.getPanes();
@@ -521,18 +528,6 @@ export class MapDashboardComponent {
     };
 
     return customMarker;
-  }
-
-  createContent(username: string, email: string, lastDate: string, location: string) {
-    return `
-    <div class="content" style="max-width: 350px">
-        <h3 style="text-align: center">${username}</h3>
-        <div class="description">
-        ${email ? '<div class="info"><i class="material-icons">email</i><p>' + email + '</p></div>' : ''}
-        ${lastDate ? '<div class="info"><i class="material-icons">schedule</i><p>' + lastDate + '</p></div>' : ''}
-        ${location ? '<div class="info"><i class="material-icons">location_on</i><p>' + location + '</p></div>' : ''}
-        </div>
-    </div>`;
   }
 
   // #endregion
