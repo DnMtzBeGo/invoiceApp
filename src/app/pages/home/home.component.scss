@@ -271,8 +271,23 @@ bego-modal {
 
         .info {
           display: flex;
-          i {
-            margin-right: 8px;
+
+          bego-icon {
+            --color: white;
+            --font-size: 22px;
+            margin-right: 10px;
+            min-width: 36px;
+            display: flex;
+            justify-content: center;
+
+            .begon-tracker {
+              margin-left: 10px;
+            }
+
+            .begon-email {
+              --font-size: 20px;
+              margin-top: 2px;
+            }
           }
 
           p {

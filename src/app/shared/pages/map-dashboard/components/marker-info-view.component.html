@@ -4,30 +4,30 @@
 
   <div class="description" *ngIf="!loading">
     <div class="info" *ngIf="email">
-      <i class="material-icons">email</i>
+      <bego-icon icon="begon-email"></bego-icon>
       <p>{{ email }}</p>
     </div>
     <div class="info" *ngIf="lastDate">
-      <i class="material-icons">schedule</i>
+      <bego-icon icon="begon-timer"></bego-icon>
       <p>{{ lastDate }}</p>
     </div>
     <div class="info" *ngIf="location">
-      <i class="material-icons">location_on</i>
+      <bego-icon icon="begon-tracker" class="tracker"></bego-icon>
       <p>{{ location }}</p>
     </div>
   </div>
   <!-- Skeleton -->
   <div class="description" *ngIf="loading">
     <div class="info">
-      <i class="material-icons">email</i>
+      <bego-icon icon="begon-email"></bego-icon>
       <p class="skeleton"></p>
     </div>
     <div class="info">
-      <i class="material-icons">schedule</i>
+      <bego-icon icon="begon-timer"></bego-icon>
       <p class="skeleton"></p>
     </div>
     <div class="info">
-      <i class="material-icons">location_on</i>
+      <bego-icon icon="begon-tracker" class="tracker"></bego-icon>
       <p class="skeleton"></p>
     </div>
   </div>
