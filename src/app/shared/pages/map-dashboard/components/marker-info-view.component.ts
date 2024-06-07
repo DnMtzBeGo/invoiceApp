@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DateTime } from 'luxon';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
@@ -15,6 +15,7 @@ export class MarkerInfoWindowComponent implements OnInit {
   lastDate: string;
   location: string;
   loading: boolean = false;
+  @Output() errorLoadData = new EventEmitter<void>();
 
   constructor(public apiRestService: AuthService, private notificationsService: NotificationsService) {}
 
@@ -45,6 +46,7 @@ export class MarkerInfoWindowComponent implements OnInit {
         this.notificationsService.showErrorToastr('There was an error, try again later');
         console.error(err);
         this.loading = false;
+        this.errorLoadData.emit();
       },
       complete: () => {
         this.loading = false;

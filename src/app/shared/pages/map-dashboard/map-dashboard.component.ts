@@ -448,7 +448,7 @@ export class MapDashboardComponent {
     return new google.maps.LatLng(lat, lng);
   }
 
-  openInfoWindow: google.maps.InfoWindow | null = null;
+  actualInfoWindow: google.maps.InfoWindow | null = null;
 
   createCustomMarker(markerData: any): any {
     const customMarker = new google.maps.OverlayView();
@@ -480,13 +480,15 @@ export class MapDashboardComponent {
         img.src = markerData.icon;
         div.appendChild(img);
 
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkerInfoWindowComponent);
-        const componentRef = componentFactory.create(this.injector);
-
         google.maps.event.addDomListener(div, 'click', () => {
-          this.openInfoWindow?.close();
+          const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkerInfoWindowComponent);
+          const componentRef = componentFactory.create(this.injector);
+          this.actualInfoWindow?.close();
 
           componentRef.instance.memberId = markerData._id;
+          componentRef.instance.errorLoadData.subscribe(() => {
+            infoWindow.close();
+          });
 
           this.appRef.attachView(componentRef.hostView);
 
@@ -496,13 +498,13 @@ export class MapDashboardComponent {
 
           infoWindow.open({ anchor: customMarker, map: this.map, shouldFocus: false });
 
-          this.openInfoWindow = infoWindow;
-        });
+          this.actualInfoWindow = infoWindow;
 
-        google.maps.event.addListener(infoWindow, 'closeclick', () => {
-          this.appRef.detachView(componentRef.hostView);
-          componentRef.destroy();
-          this.openInfoWindow = null;
+          google.maps.event.addListener(infoWindow, 'closeclick', () => {
+            this.appRef.detachView(componentRef.hostView);
+            componentRef.destroy();
+            this.actualInfoWindow = null;
+          });
         });
 
         let panes = customMarker.getPanes();
