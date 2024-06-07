@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, Injector, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { fromEvent, interval, merge, of, Subscription } from 'rxjs';
 import { catchError, filter, takeUntil } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { HeaderService } from 'src/app/pages/home/services/header.service';
 import { PolygonFilter } from 'src/app/pages/home/components/polygon-filter/polygon-filter.component';
 import { DateTime } from 'luxon';
 import { NotificationsService } from '../../services/notifications.service';
+import { MarkerInfoWindowComponent } from './components/marker-info-view.component';
 
 declare var google: any;
 
@@ -43,7 +44,10 @@ export class MapDashboardComponent {
     public router: Router,
     public apiRestService: AuthService,
     public headerService: HeaderService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private injector: Injector,
+    private appRef: ApplicationRef
   ) {
     this.headerService.changeHeader(true);
   }
@@ -474,24 +478,24 @@ export class MapDashboardComponent {
         img.src = markerData.icon;
         div.appendChild(img);
 
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkerInfoWindowComponent);
+        const componentRef = componentFactory.create(this.injector);
+
         google.maps.event.addDomListener(div, 'click', async () => {
-          (await this.apiRestService.apiRestGet(`carriers/information?user_id=${markerData._id}`, { getLoader: 'true' })).subscribe({
-            next: ({ result }) => {
-              let { raw_nickname, email, location_updated_at, location } = result;
-              if (location_updated_at) {
-                const date = DateTime.fromMillis(location_updated_at);
-                location_updated_at = date.toFormat('dd/MM/yyyy HH:mm:ss');
-              }
+          componentRef.instance.memberId = markerData._id;
 
-              infoWindow.setContent(this.createContent(raw_nickname, email, location_updated_at, location));
+          this.appRef.attachView(componentRef.hostView);
 
-              infoWindow.open({ anchor: customMarker, map: this.map, shouldFocus: false });
-            },
-            error: (err) => {
-              this.notificationsService.showErrorToastr('There was an error, try again later');
-              console.error(err);
-            }
-          });
+          const componentElement = (componentRef.hostView as any).rootNodes[0] as HTMLElement;
+
+          infoWindow.setContent(componentElement);
+
+          infoWindow.open({ anchor: customMarker, map: this.map, shouldFocus: false });
+        });
+
+        google.maps.event.addListener(infoWindow, 'closeclick', () => {
+          this.appRef.detachView(componentRef.hostView);
+          componentRef.destroy();
         });
 
         let panes = customMarker.getPanes();

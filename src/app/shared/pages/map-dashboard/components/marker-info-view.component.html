@@ -1,0 +1,34 @@
+<div class="content" style="max-width: 350px; min-width: 350px">
+  <h3 style="text-align: center" *ngIf="!loading">{{ username }}</h3>
+  <h3 style="text-align: center" class="skeleton skeleton-header" *ngIf="loading"></h3>
+
+  <div class="description" *ngIf="!loading">
+    <div class="info" *ngIf="email">
+      <i class="material-icons">email</i>
+      <p>{{ email }}</p>
+    </div>
+    <div class="info" *ngIf="lastDate">
+      <i class="material-icons">schedule</i>
+      <p>{{ lastDate }}</p>
+    </div>
+    <div class="info" *ngIf="location">
+      <i class="material-icons">location_on</i>
+      <p>{{ location }}</p>
+    </div>
+  </div>
+  <!-- Skeleton -->
+  <div class="description" *ngIf="loading">
+    <div class="info">
+      <i class="material-icons">email</i>
+      <p class="skeleton"></p>
+    </div>
+    <div class="info">
+      <i class="material-icons">schedule</i>
+      <p class="skeleton"></p>
+    </div>
+    <div class="info">
+      <i class="material-icons">location_on</i>
+      <p class="skeleton"></p>
+    </div>
+  </div>
+</div>
