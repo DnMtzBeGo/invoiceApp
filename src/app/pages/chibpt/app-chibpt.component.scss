@@ -22,6 +22,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: stretch;
+  overflow: hidden;
   height: calc(100vh - 104px);
   
   .container-app-threads {
