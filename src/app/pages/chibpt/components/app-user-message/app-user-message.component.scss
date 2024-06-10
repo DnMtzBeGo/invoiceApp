@@ -30,16 +30,6 @@ section {
     border-radius: 50%;
     object-fit: cover;
   }
-
-
-  .chibibot-message-corner-right {
-    position: absolute;
-    top: 16px;
-    right: 47px;
-    width: 3.39rem;
-    z-index: -1;
-    transform: scaleX(-1);
-  }
 }
 
 .user-message-gradient-container {
@@ -68,7 +58,6 @@ section {
 
     > div:first-child {
       @include flexbox-align(row, flex-start, center);
-      
 
       > div:nth-child(1) {
         background-color: #fff930;

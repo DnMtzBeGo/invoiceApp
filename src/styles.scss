@@ -1295,9 +1295,6 @@ input[type='number'] {
   padding: 1.5px;
   border-radius: 30px;
   max-width: 680px;
-  
-
-  
 
   @include desktop-hd {
     max-width: 320px;
@@ -1318,22 +1315,25 @@ input[type='number'] {
   }
 }
 
-
 /*****************************/
 /******* Gradient border left (chibibot) *******/
 /*****************************/
 
 @mixin gradient-background-left {
-  // Establecer el background del contenedor padre
   position: relative;
-  background: linear-gradient(to right, #525456 0%, #545657 50%, #1B1E20 100%);
+
+  //lighter gradient***********
+  //background: linear-gradient(140deg, #161616 0%, #4C4C4D 10%, #616364 50%, #232527 90%, #282B2D 100%); 
+//darker gradient********
+  background: linear-gradient(140deg, #111416 10%, #2B2E2F 50%, #0C1012 100%); 
+
   width: fit-content;
   height: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1px;
-  border-radius: 15px 30px 30px 15px;
+  border-radius: 30px;
   max-width: 480px;
 
   @media (min-width: 1240px) and (max-width: 1390px) {
@@ -1344,23 +1344,10 @@ input[type='number'] {
     max-width: 320px;
   }
 
-  &:not(.dot-loader-gradient)::after {
-    content: "";
-    position: absolute;
-    width: 2px;
-    height: 15px;
-    background-color: #0D0F11;
-    bottom: 2px;
-    left: 0;
-    border-radius: 50%;
-  }
-
-  
-
   // Establecer el background del primer hijo
   & > div {
     background-color: #0D0F11;
-    border-radius: 15px 30px 30px 0;
+    border-radius: 30px;
     padding: 15px;
     width: auto;
     height: auto;
@@ -1380,39 +1367,29 @@ input[type='number'] {
 @mixin gradient-background-right {
   // Establecer el background del contenedor padre
   position: relative;
-  background: linear-gradient(to left, #525456 0%, #545657 50%, #1B1E20 100%);
+  
+  //lighter gradient***********
+  //background: linear-gradient(140deg, #161616 0%, #4C4C4D 10%, #616364 50%, #232527 90%, #282B2D 100%); 
+//darker gradient********
+background: linear-gradient(140deg, #111416 10%, #2B2E2F 50%, #0C1012 100%); 
+
   width: fit-content;
   height: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1px;
-  border-radius: 30px 15px 15px 30px;
+  border-radius: 30px;
   max-width: 680px;
-
-  
-  
 
   @include desktop-hd {
     max-width: 320px;
   }
 
-  &::after {
-    content: "";
-    position: absolute;
-    width: 2px;
-    height: 10px;
-    background-color: #0D0F11;
-    bottom: 2px;
-    right: 0;
-    border-radius: 30px;
-  }
-
-
   // Establecer el background del primer hijo
   & > div {
     background-color: #0D0F11;
-    border-radius: 30px 15px 0 30px;
+    border-radius: 30px;
     padding: 15px;
     width: auto;
     height: auto;
