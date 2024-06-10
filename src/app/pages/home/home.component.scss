@@ -269,6 +269,12 @@ bego-modal {
         flex-direction: column;
         row-gap: 10px;
 
+        .info-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
         .info {
           display: flex;
 
@@ -290,6 +296,10 @@ bego-modal {
             }
           }
 
+          .material-icons {
+            margin: 0 14px 0 8px !important;
+          }
+
           p {
             margin-top: 2px;
           }
@@ -297,6 +307,94 @@ bego-modal {
           &:first-child {
             margin-top: 10px;
           }
+        }
+
+        .battery-status-div {
+          display: flex;
+          justify-content: space-between;
+          .skeleton {
+            margin-left: 33px !important;
+          }
+        }
+
+        .battery-icon-div {
+          display: flex;
+          gap: 10px;
+        }
+
+        .battery-icon-filled {
+          margin: 2px 6px 0 8px;
+          position: relative;
+          width: 24px;
+          height: 14px;
+          border: 1px solid #a2a4ab;
+          border-radius: 3px;
+        }
+
+        .battery-icon-filled::after {
+          content: '';
+          position: absolute;
+          top: 3px;
+          right: -4px;
+          width: 2px;
+          height: 4px;
+          border: 1px solid #a2a4ab;
+          border-top-right-radius: 2px;
+          border-bottom-right-radius: 2px;
+        }
+
+        .battery-icon-na {
+          margin: 2px 6px 0 8px;
+          position: relative;
+          width: 24px;
+          height: 14px;
+          border: 1px solid #a2a4ab;
+          border-radius: 3px;
+        }
+
+        .battery-icon-na::before {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 24.5px;
+          height: 1px;
+          background-color: #a2a4ab;
+          transform: rotate(-27deg);
+          transform-origin: bottom left;
+        }
+
+        .battery-icon-na::after {
+          content: '';
+          position: absolute;
+          top: 3px;
+          right: -4px;
+          width: 2px;
+          height: 4px;
+          border: 1px solid #a2a4ab;
+          border-top-right-radius: 2px;
+          border-bottom-right-radius: 2px;
+        }
+
+        .battery-icon-na:nth-child(2)::before {
+          background-color: #a2a4ab;
+        }
+
+        .battery-fill {
+          height: 100%;
+          background-color: #7aff59;
+          position: absolute;
+          top: 0;
+          left: 0;
+          border-top-left-radius: 2px;
+          border-end-start-radius: 2px;
+          transition: width 0.5s ease;
+        }
+
+        .battery-last-update {
+          font-size: 12px;
+          font-weight: 400;
+          color: #a2a4ab;
         }
       }
 

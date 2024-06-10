@@ -15,7 +15,29 @@
       <bego-icon icon="begon-tracker" class="tracker"></bego-icon>
       <p>{{ location }}</p>
     </div>
+
+    <div class="info">
+      <i class="material-icons">speed</i>
+      <!-- <bego-icon icon="begon-speed"></bego-icon> -->
+      <p>{{ speed | number: '1.0-3' }} km/h</p>
+    </div>
+
+    <div class="battery-status-div">
+      <div class="battery-icon-div">
+        <div class="battery-icon-filled" *ngIf="battery.percentage !== 'N/A'">
+          <div class="battery-fill" [style.width]="battery.width" [style.backgroundColor]="battery.color"></div>
+        </div>
+        <ng-container *ngIf="battery.percentage !== 'N/A'; else naIcon">
+          <p>{{ battery.percentage }}%</p>
+        </ng-container>
+      </div>
+      <ng-template #naIcon>
+        <div class="battery-icon-na"></div>
+        <p>{{ battery.percentage }}</p>
+      </ng-template>
+    </div>
   </div>
+
   <!-- Skeleton -->
   <div class="description" *ngIf="loading">
     <div class="info">
@@ -28,6 +50,16 @@
     </div>
     <div class="info">
       <bego-icon icon="begon-tracker" class="tracker"></bego-icon>
+      <p class="skeleton"></p>
+    </div>
+
+    <div class="info">
+      <i class="material-icons">speed</i>
+      <p class="skeleton"></p>
+    </div>
+
+    <div class="battery-status-div">
+      <div class="battery-icon-na"></div>
       <p class="skeleton"></p>
     </div>
   </div>
