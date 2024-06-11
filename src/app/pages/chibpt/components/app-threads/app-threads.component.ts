@@ -29,7 +29,11 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
 
   messages: any[] = [];
 
-  quickQuestions = [
+  quickQuestions: any[] = [];
+
+  langChangesSuscription: any;
+/*
+quickQuestions = [
     {
       title: 'Write an email',
       description: 'requesting a deadline extension for my project'
@@ -48,6 +52,7 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
     }
   ];
 
+*/
   createNewHistorySub: Subscription;
 
   constructor(private webService: AuthService, public chibiptService: ChibiptService, private notificationsService: NotificationsService, private translate: TranslateService) {}
@@ -56,6 +61,11 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
     this.createNewHistorySub = this.chibiptService.createNewChatSub$.subscribe(() => {
       this.cleanChat();
     });
+    this.getQuickQuestions(this.translate.currentLang);
+
+    this.langChangesSuscription = this.translate.onLangChange.subscribe((event) => {
+      this.getQuickQuestions(event.lang);
+    })
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -71,6 +81,20 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
       },
       error: (error) => {
         console.error('Error sending message', error);
+      }
+    });
+  }
+
+  async getQuickQuestions(lang: string){
+    (await this.webService.apiRestGet('assistant/quick_threads', {apiVersion: 'v1.1', loader: false})).subscribe({
+      next: ({ result }) => {
+        this.quickQuestions = result.map((question) => ({
+          title: question[lang].title, 
+          description: question[lang].question
+        }))
+      },
+      error: (error) => {
+        console.error('Error obtaining quick questions', error);
       }
     });
   }
@@ -140,7 +164,10 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
+  
+
   ngOnDestroy() {
     this.createNewHistorySub.unsubscribe();
+    this.langChangesSuscription.unsubscribe();
   }
 }
