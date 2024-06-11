@@ -13,9 +13,26 @@
               <p>{{ file.name }}</p>
               <p>{{ file.name | fileExtension: '.':'FILE' }}</p>
             </div>
+            
           </div>
         </div>
       </ng-container>
+
+      <div class="images-container">
+
+        <!--
+                <div *ngFor="let imageUrl of uploadedImageUrls" class="image-container">
+                  <a [href]="imageUrl" target="_blank">
+                    <img [src]="imageUrl" alt="Uploaded Image" class="thumbnail">
+                  </a>
+                </div>
+                -->
+        <ng-container *ngFor="let file of files">
+          <a [href]="file" target="_blank" class="image-conversation">
+            <img [src]="file" alt="Uploaded Image" class="thumbnail">
+          </a>
+        </ng-container>
+      </div>
     </div>
   </div>
   <div class="user-yellow-circle">

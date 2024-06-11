@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 
 @Component({
@@ -26,24 +26,45 @@ export class AppUserMessageComponent implements OnInit {
   @Input() format: string;
   //profilePicture: SafeUrl = localStorage.getItem("profilePicture") ?? "/assets/images/user-outline.svg";
   profilePicture: SafeUrl;
+  uploadedImageUrls: SafeUrl[] = []; // Array to store multiple image URLs
   formattedString: SafeHtml;
   @Input() files: File[] = [];
+  //@Input() files: string[] = [];
 
   private defaultProfilePicture = "/assets/images/user-outline.svg";
 
-  constructor(private sanitizer: DomSanitizer) {
-    //this.profilePicture = "/assets/images/user-outline.svg";
-  }
+  constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
     const storedProfilePicture = localStorage.getItem("profilePicture");
     this.profilePicture = storedProfilePicture ? this.sanitizer.bypassSecurityTrustUrl(storedProfilePicture) : this.defaultProfilePicture;
-
     this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g,'<br>'));
-   
+    console.log(this.files);
+    /*
+    console.log(this.format);
+    console.log(this.file)
+    */
   }
+
+  /*
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.files) {
+      this.loadUploadedImages();
+    }
+  }
+  */
 
   onError() {
     this.profilePicture = this.defaultProfilePicture;
   }
+
+  /*
+  loadUploadedImages(){
+    const imageExtensions = /\.(jpeg|jpg|gif|png|bmp|svg)$/i;
+    this.uploadedImageUrls = this.files
+      .filter(fileUrl => imageExtensions.test(fileUrl))
+      .map(fileUrl => this.sanitizer.bypassSecurityTrustUrl(fileUrl));
+    console.log('Filtered image URLs:', this.uploadedImageUrls);
+  }
+  */
 }
