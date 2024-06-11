@@ -39,11 +39,6 @@ export class AppUserMessageComponent implements OnInit {
     const storedProfilePicture = localStorage.getItem("profilePicture");
     this.profilePicture = storedProfilePicture ? this.sanitizer.bypassSecurityTrustUrl(storedProfilePicture) : this.defaultProfilePicture;
     this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g,'<br>'));
-    console.log(this.files);
-    /*
-    console.log(this.format);
-    console.log(this.file)
-    */
   }
 
   /*
