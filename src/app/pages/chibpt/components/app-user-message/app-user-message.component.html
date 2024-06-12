@@ -2,13 +2,14 @@
   <div class="user-message-gradient-container message" [@fadeIn]>
     <div>
       <p [innerHTML]="formattedString"></p>
-      <ng-container *ngFor="let file of files">
-        <div class="file-container-border-gradient">
+
+      <ng-container *ngIf="pdfFiles.length">
+        <div class="file-container-border-gradient" *ngFor="let file of pdfFiles">
           <div>
             <div>
               <bego-icon icon="begon-full-document-right"></bego-icon>
             </div>
-
+            <!-- PDF files container -->
             <div>
               <p>{{ file.name }}</p>
               <p>{{ file.name | fileExtension: '.':'FILE' }}</p>
@@ -17,19 +18,11 @@
           </div>
         </div>
       </ng-container>
-
-      <div class="images-container">
-
-        <!--
-                <div *ngFor="let imageUrl of uploadedImageUrls" class="image-container">
-                  <a [href]="imageUrl" target="_blank">
-                    <img [src]="imageUrl" alt="Uploaded Image" class="thumbnail">
-                  </a>
-                </div>
-                -->
-        <ng-container *ngFor="let file of files">
-          <a [href]="file" target="_blank" class="image-conversation">
-            <img [src]="file" alt="Uploaded Image" class="thumbnail">
+  <!-- image container  -->
+  <div class="images-container" *ngIf="imageFiles.length">
+    <ng-container *ngFor="let file of imageFiles">
+          <a [href]="getFileUrl(file)" target="_blank" class="image-conversation">
+            <img [src]="getFileUrl(file)" alt="Uploaded Image" class="thumbnail">
           </a>
         </ng-container>
       </div>

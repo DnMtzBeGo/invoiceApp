@@ -24,13 +24,15 @@ export class AppUserMessageComponent implements OnInit {
   @Input() message: string;
   @Input() file: string;
   @Input() format: string;
-  //profilePicture: SafeUrl = localStorage.getItem("profilePicture") ?? "/assets/images/user-outline.svg";
-  profilePicture: SafeUrl;
-  uploadedImageUrls: SafeUrl[] = []; // Array to store multiple image URLs
-  formattedString: SafeHtml;
-  @Input() files: File[] = [];
+  @Input() files: any = [];
   //@Input() files: string[] = [];
 
+  profilePicture: SafeUrl;
+  //uploadedImageUrls: SafeUrl[] = []; // Array to store multiple image URLs
+  formattedString: SafeHtml;
+  imageFiles: any[] = [];
+  pdfFiles: any[] = [];
+  
   private defaultProfilePicture = "/assets/images/user-outline.svg";
 
   constructor(private sanitizer: DomSanitizer) {}
@@ -41,25 +43,25 @@ export class AppUserMessageComponent implements OnInit {
     this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g,'<br>'));
   }
 
-  /*
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.files) {
-      this.loadUploadedImages();
+      console.log('estoas son los files owo', this.files);
+      this.classifyFiles();
+      console.log('estos son los image files', this.imageFiles);
+      console.log('estos son PDFs', this.pdfFiles);
     }
   }
-  */
+
+  classifyFiles() {
+    this.imageFiles = this.files.filter(file => file.type.startsWith('image/'));
+    this.pdfFiles = this.files.filter(file => file.type === 'application/pdf');
+  }
 
   onError() {
     this.profilePicture = this.defaultProfilePicture;
   }
 
-  /*
-  loadUploadedImages(){
-    const imageExtensions = /\.(jpeg|jpg|gif|png|bmp|svg)$/i;
-    this.uploadedImageUrls = this.files
-      .filter(fileUrl => imageExtensions.test(fileUrl))
-      .map(fileUrl => this.sanitizer.bypassSecurityTrustUrl(fileUrl));
-    console.log('Filtered image URLs:', this.uploadedImageUrls);
+  getFileUrl(file) {
+    return file.url;
   }
-  */
 }

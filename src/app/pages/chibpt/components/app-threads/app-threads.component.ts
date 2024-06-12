@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 interface Question {
   message: string;
-  files?: File[];
+  files?: any;
 }
 
 @Component({
