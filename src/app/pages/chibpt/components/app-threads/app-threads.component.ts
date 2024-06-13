@@ -55,7 +55,7 @@ quickQuestions = [
 */
   createNewHistorySub: Subscription;
 
-  constructor(private webService: AuthService, public chibiptService: ChibiptService, private notificationsService: NotificationsService, private translate: TranslateService) {}
+  constructor(private webService: AuthService, public chibiptService: ChibiptService, private notificationsService: NotificationsService, private translate: TranslateService ) {}
 
   ngOnInit() {
     this.createNewHistorySub = this.chibiptService.createNewChatSub$.subscribe(() => {
@@ -70,6 +70,7 @@ quickQuestions = [
 
   async ngOnChanges(changes: SimpleChanges) {
     if (changes.chatId.currentValue) await this.loadChat();
+
   }
 
   async loadChat() {

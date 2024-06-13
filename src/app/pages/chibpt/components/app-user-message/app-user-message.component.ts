@@ -62,6 +62,14 @@ export class AppUserMessageComponent implements OnInit {
   }
 
   getFileUrl(file) {
-    return file.url;
+    return file.url || URL.createObjectURL(file);
+  }
+
+  ngOnDestroy() {
+    this.imageFiles.forEach(file => {
+      if (!file.url) {
+        URL.revokeObjectURL(file);
+      }
+    });
   }
 }
