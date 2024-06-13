@@ -44,25 +44,23 @@ export class AppUserMessageComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.files) {
-      console.log('estoas son los files owo', this.files);
+    if (changes?.files?.currentValue) {
       this.classifyFiles();
-      console.log('estos son los image files', this.imageFiles);
-      console.log('estos son PDFs', this.pdfFiles);
     }
   }
 
   classifyFiles() {
-    this.imageFiles = this.files.filter(file => file.type.startsWith('image/'));
+    this.imageFiles = this.files.filter(file => file.type.startsWith('image/')).map(file => {
+      if(!file.url){
+        file.url = URL.createObjectURL(file)
+      }
+      return file;
+    });
     this.pdfFiles = this.files.filter(file => file.type === 'application/pdf');
   }
 
   onError() {
     this.profilePicture = this.defaultProfilePicture;
-  }
-
-  getFileUrl(file) {
-    return file.url || URL.createObjectURL(file);
   }
 
   ngOnDestroy() {

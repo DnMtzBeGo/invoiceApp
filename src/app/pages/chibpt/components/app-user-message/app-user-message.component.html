@@ -19,10 +19,10 @@
         </div>
       </ng-container>
   <!-- image container  -->
-  <div class="images-container" *ngIf="imageFiles.length">
+  <div class="images-container" *ngIf="imageFiles.length > 0">
     <ng-container *ngFor="let file of imageFiles">
-          <a [href]="getFileUrl(file)" target="_blank" class="image-conversation">
-            <img [src]="getFileUrl(file)" alt="Uploaded Image" class="thumbnail">
+          <a [href]="file.url" target="_blank" class="image-conversation">
+            <img [src]="file.url" alt="Uploaded Image" class="thumbnail">
           </a>
         </ng-container>
       </div>
