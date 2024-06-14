@@ -33,7 +33,7 @@ section {
 }
 
 .user-message-gradient-container {
-  @include gradient-background-right;
+  @include gradient-background-message;
   
   p {
     font-weight: 300;
@@ -42,8 +42,8 @@ section {
   }
 
   .file-container-border-gradient {
-    @include gradient-background;
-    margin-block-start: 18px;
+    @include gradient-background-small;
+    margin-block: 18px;
     cursor: pointer;
 
     ::ng-deep bego-icon {

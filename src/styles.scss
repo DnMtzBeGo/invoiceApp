@@ -1284,9 +1284,9 @@ input[type='number'] {
 /******* Gradient border *******/
 /*****************************/
 
-@mixin gradient-background {
+@mixin gradient-background-small {
   // Establecer el background del contenedor padre
-  //background: linear-gradient(to right, #525456 0%, #545657 50%, #1B1E20 100%);
+  background: linear-gradient(140deg, #111416 10%, #2B2E2F 50%, #0C1012 100%); 
   width: fit-content;
   height: fit-content;
   display: flex;
@@ -1307,7 +1307,7 @@ input[type='number'] {
     padding: 15px;
     width: auto;
     height: auto;
-    min-width: 469px;
+    min-width: 400px;
 
     @include desktop-hd {
       min-width: 200px;
@@ -1316,17 +1316,16 @@ input[type='number'] {
 }
 
 /*****************************/
-/******* Gradient border left (chibibot) *******/
+/******* Gradient border (chibpt conversation messages) *******/
 /*****************************/
 
-@mixin gradient-background-left {
+@mixin gradient-background-message {
   position: relative;
 
   //lighter gradient***********
   //background: linear-gradient(140deg, #161616 0%, #4C4C4D 10%, #616364 50%, #232527 90%, #282B2D 100%); 
 //darker gradient********
   background: linear-gradient(140deg, #111416 10%, #2B2E2F 50%, #0C1012 100%); 
-
   width: fit-content;
   height: fit-content;
   display: flex;
@@ -1337,7 +1336,7 @@ input[type='number'] {
   max-width: 480px;
 
   @media (min-width: 1240px) and (max-width: 1390px) {
-    max-width: 300px;
+    max-width: 450px;
   }
 
   @include desktop-hd {
@@ -1355,48 +1354,6 @@ input[type='number'] {
     min-height: 51px;
 
     @media (min-width: 1015px) and (max-width: 1390px) {
-      min-width: 200px;
-    }
-  }
-}
-
-/*****************************/
-/******* Gradient border right (user) *******/
-/*****************************/
-
-@mixin gradient-background-right {
-  // Establecer el background del contenedor padre
-  position: relative;
-  
-  //lighter gradient***********
-  //background: linear-gradient(140deg, #161616 0%, #4C4C4D 10%, #616364 50%, #232527 90%, #282B2D 100%); 
-//darker gradient********
-background: linear-gradient(140deg, #111416 10%, #2B2E2F 50%, #0C1012 100%); 
-
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1px;
-  border-radius: 30px;
-  max-width: 680px;
-
-  @include desktop-hd {
-    max-width: 320px;
-  }
-
-  // Establecer el background del primer hijo
-  & > div {
-    background-color: #0D0F11;
-    border-radius: 30px;
-    padding: 15px;
-    width: auto;
-    height: auto;
-    min-width: 469px;
-    min-height: 51px;
-
-    @include desktop-hd {
       min-width: 200px;
     }
   }
