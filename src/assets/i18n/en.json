@@ -1568,7 +1568,7 @@
     "fleet-assignment": {
       "time-date": "Assigned time & date",
       "schedule": "Schedule to:",
-      "aprox-time": "Aprox Time Load",
+      "aprox-time": "ETA",
       "cp-order": "Bill of lading (BOL)",
       "available-drivers": "Available drivers",
       "available-trucks": "Available trucks",
