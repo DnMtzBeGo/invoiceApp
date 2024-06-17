@@ -4,19 +4,22 @@
       <p [innerHTML]="formattedString"></p>
 
       <ng-container *ngIf="pdfFiles.length">
+        
         <div class="file-container-border-gradient" *ngFor="let file of pdfFiles">
-          <div>
             <div>
-              <bego-icon icon="begon-full-document-right"></bego-icon>
+              <a [href]="file.url" target="_blank" class="file-container">
+              <div class="file-container-1">
+                <bego-icon icon="begon-full-document-right"></bego-icon>
+              </div>
+              <!-- PDF files container -->
+              <div class="file-container-2">
+                <p>{{ file.name }}</p>
+                <p>{{ file.name | fileExtension: '.':'FILE' }}</p>
+              </div>
+              </a>
             </div>
-            <!-- PDF files container -->
-            <div>
-              <p>{{ file.name }}</p>
-              <p>{{ file.name | fileExtension: '.':'FILE' }}</p>
-            </div>
-            
-          </div>
         </div>
+      
       </ng-container>
   <!-- image container  -->
   <div class="images-container" *ngIf="imageFiles.length > 0">

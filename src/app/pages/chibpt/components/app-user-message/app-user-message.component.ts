@@ -52,11 +52,13 @@ export class AppUserMessageComponent implements OnInit {
   classifyFiles() {
     this.imageFiles = this.files.filter(file => file.type.startsWith('image/')).map(file => {
       if(!file.url){
-        file.url = URL.createObjectURL(file)
+        file.url = URL.createObjectURL(file);
+        console.log("este es el archivo recien adjuntado con url temporal", this.file);
       }
       return file;
     });
     this.pdfFiles = this.files.filter(file => file.type === 'application/pdf');
+    console.log("estos mson los opdfs owo", this.pdfFiles);
   }
 
   onError() {
