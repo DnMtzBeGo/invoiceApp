@@ -2,24 +2,36 @@
   <div class="user-message-gradient-container message" [@fadeIn]>
     <div>
       <p [innerHTML]="formattedString"></p>
-      <ng-container *ngFor="let file of files">
-        <div class="file-container-border-gradient">
-          <div>
-            <div>
-              <bego-icon icon="begon-full-document-right"></bego-icon>
-            </div>
 
+      <ng-container *ngIf="pdfFiles.length">
+        
+        <div class="file-container-border-gradient" *ngFor="let file of pdfFiles">
             <div>
-              <p>{{ file.name }}</p>
-              <p>{{ file.name | fileExtension: '.':'FILE' }}</p>
+              <a [href]="file.url" target="_blank" class="file-container">
+              <div class="file-container-1">
+                <bego-icon icon="begon-full-document-right"></bego-icon>
+              </div>
+              <!-- PDF files container -->
+              <div class="file-container-2">
+                <p>{{ file.name }}</p>
+                <p>{{ file.name | fileExtension: '.':'FILE' }}</p>
+              </div>
+              </a>
             </div>
-          </div>
         </div>
+      
       </ng-container>
+  <!-- image container  -->
+  <div class="images-container" *ngIf="imageFiles.length > 0">
+    <ng-container *ngFor="let file of imageFiles">
+          <a [href]="file.url" target="_blank" class="image-conversation">
+            <img [src]="file.url" alt="Uploaded Image" class="thumbnail">
+          </a>
+        </ng-container>
+      </div>
     </div>
   </div>
   <div class="user-yellow-circle">
     <img class="profile-picture" [src]="profilePicture" (error)="onError()" alt="User profile picture">
-    <img class="chibibot-message-corner-right message" src="assets/images/chibpt/corner1.svg" alt="corner" [@fadeIn]>
   </div>
 </section>
