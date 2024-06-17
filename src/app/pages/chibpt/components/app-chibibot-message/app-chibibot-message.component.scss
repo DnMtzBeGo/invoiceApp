@@ -30,24 +30,14 @@ section {
   width: 72px;
   height: 72px;
   padding: 5px;
-
-  
-
-  .chibibot-message-corner {
-    position: absolute;
-    top: 17px;
-    left: 52px;
-    width: 3.39rem;
-    z-index: -1;
-  }
 }
 
 .chibibot-message-gradient-container.dot-loader-gradient {
-  @include gradient-background;
+  @include gradient-background-small;
 }
 
 .chibibot-message-gradient-container {
- @include gradient-background-left;
+ @include gradient-background-message;
   margin-inline-start: 4px;
 
   p {
@@ -94,7 +84,7 @@ section {
     }
 
     .error-container {
-      @include gradient-background;
+      @include gradient-background-small;
       div {
         min-width: fit-content;
 
