@@ -1572,7 +1572,7 @@
     "fleet-assignment": {
       "time-date": "Hora y fecha asignadas",
       "schedule": "Programar para:",
-      "aprox-time": "Tiempo de carga aproximado",
+      "aprox-time": "Tiempo de tránsito aproximado",
       "cp-order": "¿Factura y carta porte?",
       "available-drivers": "Conductores disponibles",
       "available-trucks": "Camiones disponibles",
@@ -1953,6 +1953,6 @@
       }
     }, 
     "footer": "ChibiPT puede cometer errores. Comprueba la información importante.",
-    "greeting": "¿Como te puedo ayudar hoy?"
+    "greeting": "¿Cómo te puedo ayudar hoy?"
   }
 }
