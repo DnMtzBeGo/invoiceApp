@@ -2,7 +2,7 @@
 
   <div class="edit-btn-wrapper">
     <div
-      *ngIf="orderData.status < 2"
+      *ngIf="orderData.status < 2 && orderData.type === 'FTL'"
       (click)="editOrder.emit()"
       class="edit-order-btn"
     >
