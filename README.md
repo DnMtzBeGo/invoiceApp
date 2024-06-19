@@ -45,7 +45,7 @@ For automatic linting on your IDE/Text editor, install the Eslint plugin, some p
 
 Testing suite for Dashboard project is based on [Jest](https://jestjs.io/). Configuration can be found in the `jest.config.js` file. Test is mandatory in order to prevent errors.
 
-To test the project run `npx jest [PATH]` where PATH is the path to the specific testing filenames or patterns. If no PATH is declare, all project test will run. The command `npx jest -o` runs tests related to changed files based on git/gh (changes in current commit). More information can be found on [Jest CLI docs](https://eslint.org/docs/latest/use/command-line-interface).
+To test the project run `npx jest [PATH]` where PATH is the path to the specific testing filenames or patterns. If no PATH is declare, all project test will run. The command `npx jest -o` runs tests related to changed files based on git/gh (changes in current commit). To generate a coverage report, previous scripts can work adding coverage flag, a useful example can be the follow `npx jest --coverage [PATH] && open coverage/lcov-report/index.html`. An important note on this is that jest consider all related modules to generate reports and perform test, so even if the suit fails, check the specific test output of the fieles you do want to test. More information can be found on [Jest CLI docs](https://eslint.org/docs/latest/use/command-line-interface).
 
 > Why not `ng tests`? Fair question, Angular uses by default Karma + Jasmine test suite, but we decided that jest offers some advantages that make it a better testing option, some of them are: runs test without a browser, is several times faster, provides rich cli options, among others.
 
