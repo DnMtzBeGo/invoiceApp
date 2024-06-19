@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, Injector, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { fromEvent, interval, merge, of, Subscription } from 'rxjs';
 import { catchError, filter, takeUntil } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { HeaderService } from 'src/app/pages/home/services/header.service';
 import { PolygonFilter } from 'src/app/pages/home/components/polygon-filter/polygon-filter.component';
 import { DateTime } from 'luxon';
 import { NotificationsService } from '../../services/notifications.service';
+import { MarkerInfoWindowComponent } from './components/marker-info-view.component';
 
 declare var google: any;
 
@@ -43,7 +44,10 @@ export class MapDashboardComponent {
     public router: Router,
     public apiRestService: AuthService,
     public headerService: HeaderService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private injector: Injector,
+    private appRef: ApplicationRef
   ) {
     this.headerService.changeHeader(true);
   }
@@ -444,6 +448,8 @@ export class MapDashboardComponent {
     return new google.maps.LatLng(lat, lng);
   }
 
+  actualInfoWindow: google.maps.InfoWindow | null = null;
+
   createCustomMarker(markerData: any): any {
     const customMarker = new google.maps.OverlayView();
 
@@ -474,23 +480,30 @@ export class MapDashboardComponent {
         img.src = markerData.icon;
         div.appendChild(img);
 
-        google.maps.event.addDomListener(div, 'click', async () => {
-          (await this.apiRestService.apiRestGet(`carriers/information?user_id=${markerData._id}`, { getLoader: 'true' })).subscribe({
-            next: ({ result }) => {
-              let { raw_nickname, email, location_updated_at, location } = result;
-              if (location_updated_at) {
-                const date = DateTime.fromMillis(location_updated_at);
-                location_updated_at = date.toFormat('dd/MM/yyyy HH:mm:ss');
-              }
+        google.maps.event.addDomListener(div, 'click', () => {
+          const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkerInfoWindowComponent);
+          const componentRef = componentFactory.create(this.injector);
+          this.actualInfoWindow?.close();
 
-              infoWindow.setContent(this.createContent(raw_nickname, email, location_updated_at, location));
+          componentRef.instance.memberId = markerData._id;
+          componentRef.instance.errorLoadData.subscribe(() => {
+            infoWindow.close();
+          });
 
-              infoWindow.open({ anchor: customMarker, map: this.map, shouldFocus: false });
-            },
-            error: (err) => {
-              this.notificationsService.showErrorToastr('There was an error, try again later');
-              console.error(err);
-            }
+          this.appRef.attachView(componentRef.hostView);
+
+          const componentElement = (componentRef.hostView as any).rootNodes[0] as HTMLElement;
+
+          infoWindow.setContent(componentElement);
+
+          infoWindow.open({ anchor: customMarker, map: this.map, shouldFocus: false });
+
+          this.actualInfoWindow = infoWindow;
+
+          google.maps.event.addListener(infoWindow, 'closeclick', () => {
+            this.appRef.detachView(componentRef.hostView);
+            componentRef.destroy();
+            this.actualInfoWindow = null;
           });
         });
 
@@ -517,18 +530,6 @@ export class MapDashboardComponent {
     };
 
     return customMarker;
-  }
-
-  createContent(username: string, email: string, lastDate: string, location: string) {
-    return `
-    <div class="content" style="max-width: 350px">
-        <h3 style="text-align: center">${username}</h3>
-        <div class="description">
-        ${email ? '<div class="info"><i class="material-icons">email</i><p>' + email + '</p></div>' : ''}
-        ${lastDate ? '<div class="info"><i class="material-icons">schedule</i><p>' + lastDate + '</p></div>' : ''}
-        ${location ? '<div class="info"><i class="material-icons">location_on</i><p>' + location + '</p></div>' : ''}
-        </div>
-    </div>`;
   }
 
   // #endregion

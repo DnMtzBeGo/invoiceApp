@@ -282,6 +282,10 @@ $dark1: #10161c;
   margin-top: 50px;
 }
 
+.investor-slide {
+  height: 100%;
+}
+
 /**************************/
 /********* Embla **********/
 /**************************/
@@ -325,6 +329,10 @@ $dark1: #10161c;
   &.current{
     max-height: 1000px;
     opacity: 1;
+  }
+
+  &__inner {
+    height: 100%;
   }
 }
 

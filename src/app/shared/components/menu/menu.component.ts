@@ -179,13 +179,9 @@ export class MenuComponent implements OnInit {
   }  
 
   public async requestFreeTrial(): Promise<void> {
-    (await this.webService.apiRest('', 'carriers/request_free_trial')).subscribe(
+    (await this.webService.apiRest('', 'carriers/request_free_trial', {apiVersion: 'v1.1'})).subscribe(
       (response) => {
-        if (response && response) {
-          this.showSuccessfulModal = true;
-        } else {
-          this.showErrorModal = true;
-        }
+        this.showSuccessfulModal = true;
       },
       (error) => {
         this.showErrorModal = true;

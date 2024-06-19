@@ -158,27 +158,14 @@ export class ProfileComponent implements OnInit {
   }
 
   async getOrderCount(carrier_id) {
-
-    if (carrier_id == void 0) {
-      (await this.webService.apiRest("", 'orders/get')).subscribe(
-        async (res) => {
-          this.ordersCount = res.result.length;
-        },
-        async (err) => {
-          this.ordersCount = 0;
-        }
-      );
-    }
-    else {
-      (await this.webService.apiRest(JSON.stringify({ carrier_id }), 'orders/total_orders')).subscribe(
-        async (res) => {
-          this.ordersCount = res.result.total;
-        },
-        async (err) => {
-          this.ordersCount = 0;
-        }
-      );
-    }
+    (await this.webService.apiRest(JSON.stringify({ carrier_id }), 'orders/total_orders', {apiVersion: 'v1.1'})).subscribe(
+      async (res) => {
+        this.ordersCount = res.result.total;
+      },
+      async (err) => {
+        this.ordersCount = 0;
+      }
+    );
   }
 
   selectTab(index: number): void {
