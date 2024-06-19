@@ -60,4 +60,4 @@ Operations can use the following keywords inside Front chat:
 
 ## AWS Pipeline
 
-When merging a pull request or pushing code to development, an AWS pipeline will run to deploy the project to https://carriers-dev.bego.ai. The same is true for the master branch, and the production build will end up on https://carriers.bego.ai.
+When merging a pull request or pushing code to development, an AWS pipeline will run to deploy the project to <https://carriers-dev.bego.ai>. The same is true for the master branch, and the production build will end up on <https://carriers.bego.ai>.

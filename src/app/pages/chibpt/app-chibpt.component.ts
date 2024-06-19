@@ -1,22 +1,20 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { PrimeService } from 'src/app/shared/services/prime.service';
 
 @Component({
   selector: 'app-app-chibpt',
   templateUrl: './app-chibpt.component.html',
-  styleUrls: ['./app-chibpt.component.scss']
+  styleUrls: ['./app-chibpt.component.scss'],
 })
-export class AppChibptComponent {
-  @Input() chatId: string = '';
+export class AppChibptComponent implements OnInit {
+  @Input() public chatId: string = '';
   public isHistoryHidden: boolean = false;
 
-  constructor(
-    private readonly router: Router,
-    public readonly primeService: PrimeService
-  ) {}
+  constructor(private readonly router: Router, public readonly primeService: PrimeService) {}
 
-  async ngOnInit() {
+  public async ngOnInit(): Promise<void> {
     if (this.primeService.loaded.isStopped) {
       this.handleMustRedirect();
     } else {
@@ -24,15 +22,15 @@ export class AppChibptComponent {
     }
   }
 
-  handleMustRedirect() {
+  public handleMustRedirect(): void {
     if (!this.primeService.isPrime) this.router.navigate(['/home']);
   }
 
-  toggleHistory() {
+  public toggleHistory(): void {
     this.isHistoryHidden = !this.isHistoryHidden;
   }
 
-  loadChat(chatId: string) {
+  public loadChat(chatId: string): void {
     this.chatId = chatId;
   }
 }
