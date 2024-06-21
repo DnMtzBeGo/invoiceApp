@@ -1,8 +1,10 @@
 @import '../../../../../styles.scss';
+$light-gray: #A0A0A0;
 
 * {
   font-family: 'Gotham';
   color: $lighter-color;
+  
 }
 
 main {
@@ -141,7 +143,7 @@ main {
       }
 
     p {
-      color: #36393b; /*quick promps when no selected*/
+      color: rgba(237, 237, 237, 0.3); /*quick promps when no selected*/
     }
 
    &:hover {
@@ -170,7 +172,12 @@ main {
     font-size: 12px;
     font-weight: 400;
     margin-block-start: 12px;
+    color: rgba(197, 187, 187, 0.8);
   }
   
   
+}
+::ng-deep .chat-container .chat-subcontainer .textarea-container textarea::placeholder {
+  color: palevioletred; 
+
 }
