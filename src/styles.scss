@@ -1294,11 +1294,12 @@ input[type='number'] {
   align-items: center;
   padding: 1.5px;
   border-radius: 30px;
-  max-width: 680px;
-
+  max-width: 306px;
+/*
   @include desktop-hd {
     max-width: 320px;
   }
+    */
 
   // Establecer el background del primer hijo
   & > div {
@@ -1307,7 +1308,7 @@ input[type='number'] {
     padding: 15px;
     width: auto;
     height: auto;
-    min-width: 400px;
+    min-width: 250px;
 
     @include desktop-hd {
       min-width: 200px;
@@ -1321,18 +1322,13 @@ input[type='number'] {
 
 @mixin gradient-background-message {
   position: relative;
-
-  //lighter gradient***********
-  //background: linear-gradient(140deg, #161616 0%, #4C4C4D 10%, #616364 50%, #232527 90%, #282B2D 100%); 
-//darker gradient********
-  background: linear-gradient(140deg, #111416 10%, #2B2E2F 50%, #0C1012 100%); 
+  background-color: transparent;
   width: fit-content;
   height: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1px;
-  border-radius: 30px;
   max-width: 480px;
 
   @media (min-width: 1240px) and (max-width: 1390px) {
@@ -1345,13 +1341,14 @@ input[type='number'] {
 
   // Establecer el background del primer hijo
   & > div {
-    background-color: #0D0F11;
-    border-radius: 30px;
-    padding: 15px;
+    background: linear-gradient(60deg, #0f1416, #1c1e21, #1c2021);
+    border-radius: 33px;
+    padding: 15px 30px;
     width: auto;
     height: auto;
     min-width: 469px;
     min-height: 51px;
+    color: #A0A0A0;  // new text color
 
     @media (min-width: 1015px) and (max-width: 1390px) {
       min-width: 200px;
