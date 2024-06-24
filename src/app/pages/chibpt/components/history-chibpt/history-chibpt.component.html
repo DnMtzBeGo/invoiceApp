@@ -30,6 +30,29 @@
                         (click)="selectedHistory(history, i, date)">
                         {{ history.title }}
                       </p>
+
+                      <div class="threads-options">
+                        <button 
+                        class="options" 
+                        [matMenuTriggerFor]="menu" 
+                        #menuTrigger
+                        [ngClass]="{ 'selected-button': selectedButtonIndex === i }"
+                        (click)="selectButton(i, $event)"
+                        >
+                          <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" class="brand-menu-2">
+                          <button mat-menu-item class="menu-option" (click)="activeRename(i, date)">
+                            <bego-icon icon="begon-edit-fintech"></bego-icon>
+                            <span>{{ 'chibpt.history.edit' | translate }}</span>
+                          </button>
+                          <button mat-menu-item class="menu-option" [disabled]="history.selected && chibiptService.sendingMessage" (click)="openCloseModal(history, i, date)">
+                            <bego-icon icon="begon-trash1"></bego-icon>
+                            <span>{{ 'chibpt.history.delete' | translate }}</span>
+                          </button>
+                        </mat-menu>
+                      </div>
+
                     </div>
                   </ng-container>
   
@@ -43,27 +66,7 @@
                       (blur)="cancelRename(i, date)" />
                   </ng-template>
   
-                  <div class="threads-options">
-                    <button 
-                    class="options" 
-                    [matMenuTriggerFor]="menu" 
-                    #menuTrigger
-                    [ngClass]="{ 'selected-button': selectedButtonIndex === i }"
-                    (click)="selectButton(i, $event)"
-                    >
-                      <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
-                    </button>
-                    <mat-menu #menu="matMenu" class="brand-menu-2">
-                      <button mat-menu-item class="menu-option" (click)="activeRename(i, date)">
-                        <bego-icon icon="begon-edit-fintech"></bego-icon>
-                        <span>{{ 'chibpt.history.edit' | translate }}</span>
-                      </button>
-                      <button mat-menu-item class="menu-option" [disabled]="history.selected && chibiptService.sendingMessage" (click)="openCloseModal(history, i, date)">
-                        <bego-icon icon="begon-trash1"></bego-icon>
-                        <span>{{ 'chibpt.history.delete' | translate }}</span>
-                      </button>
-                    </mat-menu>
-                  </div>
+
                 </li>
               </ng-container>
             </ol>
