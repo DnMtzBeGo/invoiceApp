@@ -32,27 +32,7 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
   quickQuestions: any[] = [];
 
   langChangesSuscription: any;
-/*
-quickQuestions = [
-    {
-      title: 'Write an email',
-      description: 'requesting a deadline extension for my project'
-    },
-    {
-      title: 'Write an email',
-      description: 'to request a quote from local plumbers'
-    },
-    {
-      title: 'Plan a trip',
-      description: 'to see the best of Route 57 in one week'
-    },
-    {
-      title: 'Start an online business',
-      description: 'finding a niche'
-    }
-  ];
 
-*/
   createNewHistorySub: Subscription;
 
   constructor(private webService: AuthService, public chibiptService: ChibiptService, private notificationsService: NotificationsService, private translate: TranslateService ) {}

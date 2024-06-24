@@ -44,7 +44,13 @@
                   </ng-template>
   
                   <div class="threads-options">
-                    <button class="options" [matMenuTriggerFor]="menu" #menuTrigger>
+                    <button 
+                    class="options" 
+                    [matMenuTriggerFor]="menu" 
+                    #menuTrigger
+                    [ngClass]="{ 'selected-button': selectedButtonIndex === i }"
+                    (click)="selectButton(i, $event)"
+                    >
                       <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
                     </button>
                     <mat-menu #menu="matMenu" class="brand-menu-2">

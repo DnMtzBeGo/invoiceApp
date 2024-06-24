@@ -50,6 +50,8 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
   auxName: string = '';
   getNewHistorySub: Subscription;
 
+  selectedButtonIndex: number | null = null;
+
   constructor(
     private translateService: TranslateService,
     private apiRestService: AuthService,
@@ -109,6 +111,16 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
     });
   }
 
+  selectButton(index: number, event: Event) {
+    event.stopPropagation(); 
+    this.selectedButtonIndex = index;
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: Event) {
+    this.selectedButtonIndex = null;
+  }
+
   cancelRename(index: number, date: DateType) {
     this.histories[date][index].rename = false;
     this.auxName = '';
@@ -152,6 +164,8 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
         this.histories[date].splice(index, 1);
       }
     });
+
+    
   }
 
   @HostListener('scroll', ['$event.target'])
