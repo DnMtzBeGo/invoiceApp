@@ -29,7 +29,7 @@
     "@angular/platform-browser": "^15.2.10",
     "@angular/platform-browser-dynamic": "^15.2.10",
     "@angular/router": "^15.2.10",
-    "@begomx/ui-components": "~15.7.0",
+    "@begomx/ui-components": "~15.9.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "angular2-text-mask": "^9.0.0",
