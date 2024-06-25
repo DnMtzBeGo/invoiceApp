@@ -1,3 +1,5 @@
+$icon-size: 30px;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -12,7 +14,6 @@
   padding-bottom: 16px;
 
   $gap: 26px;
-  $icon-size: 30px;
 
   .header {
     margin: 30px 25px;
@@ -115,5 +116,15 @@
     ::ng-deep .button-wrapper.small {
       width: 100%;
     }
+  }
+}
+
+.menu-option {
+  bego-icon {
+    --color: #fff !important;
+    --font-size: 16px !important;
+    width: $icon-size;
+    height: $icon-size;
+    margin-right: 10px;
   }
 }
