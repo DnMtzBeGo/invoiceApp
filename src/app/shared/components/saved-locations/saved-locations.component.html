@@ -49,4 +49,4 @@
   *ngIf="invoiceState.show"
   [location]="invoiceState.address"
   (close)="hideInvoiceModal()"
-  (upadteLocation)="updateInvoiceAddress()"></bego-invoice-address>
+  (upadteLocation)="updateInvoiceAddress($event)"></bego-invoice-address>
