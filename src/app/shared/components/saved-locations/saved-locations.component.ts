@@ -100,8 +100,6 @@ export class SavedLocationsComponent {
   }
 
   private makeInvoiceLang(): BegoInvoiceAddressLang {
-    console.log(this.translateService);
-
     return {
       title: this.translateService.instant('invoice-address.title'),
       inputs: {
