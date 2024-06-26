@@ -33,7 +33,7 @@ section {
 }
 
 .user-message-gradient-container {
-  @include gradient-background-message;
+  @include gradient-background-message(false);
   
   p {
     font-weight: 300;

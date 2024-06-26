@@ -103,6 +103,8 @@ button {
           letter-spacing: 0.5px;
           cursor: pointer;
           position: relative;
+          outline: none;
+          -webkit-tap-highlight-color: transparent;
 
           .threads-title {
             overflow: hidden;
@@ -153,24 +155,11 @@ button {
                   color: $light-gray;
                 }
               }
-
-              /*
-              &:hover {
-                
-                ::ng-deep bego-icon {
-                  i {
-                    color: peru;
-                  }
-                }
-              }
-              */
             }
           }
 
           &:hover {
             border-radius: 24px;
-
-            
 
             &:before {
               content: '';  
@@ -227,32 +216,43 @@ button {
   }
 }
 
+::ng-deep .mat-menu-panel.brand-menu-2 {
+ // background-color: paleturquoise !important;
+   background: radial-gradient(112.63% 391.25% at 102.56% 100%, #000000 0%, rgba(186, 186, 186, 0.489583) 55.21%, rgba(132, 132, 132, 0) 99.25%) !important;
+  //background: palevioletred !important;
+
+  .mat-menu-item {
+    color: rgba(237, 237, 237, 0.54);
+    font-weight: 350;
+    font-family: 'Avenir';
+  }
+}
+
+::ng-deep .mat-menu-panel.brand-menu-2::before {
+  background: linear-gradient(66.07deg, rgba(8, 12, 15, 0.5) 5.1%, rgba(85, 85, 85, 0) 100%); //new background gradient (inside)
+  width: calc(100% - 3px);
+  height: calc(100% - 3px);
+  border-radius: 26px;
+}
+
 .menu-option {
   padding: 0 16px;
   ::ng-deep bego-icon {
     margin-right: 20px;
-
     i {
-      color: rgba(255, 255, 255, 0.54);
+      color: rgba(237, 237, 237, 0.54) !important;
       font-size: 18px;
     }
   }
 
   &:hover:not([disabled]) {
-
-    border-image-source: linear-gradient(
-      95.86deg,
-      #1e1e1e 30.22%,
-      rgba(167, 167, 167, 0) 62.01%,
-      rgba(125, 125, 125, 0) 87.8%,
-      #7d7d7d 87.8%
-    );
-    box-shadow: 0px 2px 16px 0px rgba(4, 4, 4, 1);
-    color: rgba(255, 255, 255, 1);
+    background: linear-gradient(66.07deg, rgba(8, 12, 15, 0.5) 5.1%, rgba(85, 85, 85, 0) 100%);//nuevo background gradient de select (hover)
+    color: $lighter-color;
+    border-radius: 26px;
 
     ::ng-deep bego-icon {
       i {
-        color: rgba(255, 255, 255, 1);
+        color: $lighter-color;
       }
     }
   }

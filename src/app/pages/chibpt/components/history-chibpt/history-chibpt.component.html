@@ -24,8 +24,6 @@
                   <ng-container *ngIf="!history?.rename; else rename">
                     <div class="threads-title">
                       <p
-
-                        
                         [ngClass]="{ 'wait-request': chibiptService.sendingMessage }"
                         (click)="selectedHistory(history, i, date)">
                         {{ history.title }}

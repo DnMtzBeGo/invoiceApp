@@ -37,6 +37,34 @@ main {
   min-height: 15rem;
   height: 100%;
 
+  &.hide-scrollbar {
+    scrollbar-width: none;  
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  
+/*
+scrollbar-width: none;  
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &.show-scrollbar {
+      scrollbar-width: thin; 
+      
+      &::-webkit-scrollbar {
+        display: block; 
+        width: 8px !important;
+    background-color: #040b11 !important;
+    //opacity: 0;
+      }
+    }
+*/
+
   @media (max-height: 800px) {
     padding: 0;
     min-height: 6rem;
