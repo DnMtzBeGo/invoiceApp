@@ -16,7 +16,7 @@ import { NotificationBarModule } from 'src/app/shared/components/notification-ba
 import { NotificationBarComponent } from 'src/app/shared/components/notification-bar/notification-bar.component';
 import { UppercaseDirective } from 'src/app/pages/shared/directives/uppercase.directive';
 import { AppMaterialModule } from '../material';
-import { BegoButtonModule, BegoIconsModule, BegoModalModule } from '@begomx/ui-components';
+import { BegoButtonModule, BegoIconsModule, BegoInvoiceAddressModule, BegoModalModule } from '@begomx/ui-components';
 import { SavedLocationsModalModule } from './components/saved-locations-modal/saved-locations-modal.module';
 import { SavedLocationsComponent } from './components/saved-locations/saved-locations.component';
 
@@ -45,7 +45,8 @@ import { SavedLocationsComponent } from './components/saved-locations/saved-loca
     BegoIconsModule,
     BegoModalModule,
     BegoButtonModule,
-    SavedLocationsModalModule
+    SavedLocationsModalModule,
+    BegoInvoiceAddressModule
   ],
   exports: [
     FacturaEmisorConceptosComponent,

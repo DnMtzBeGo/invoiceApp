@@ -1915,6 +1915,11 @@
     "opt-edit": "Editar ubicación",
     "opt-delete": "Eliminar ubicación",
     "btn-back": "Regresar",
+    "invoice": {
+      "add": "Agregar ubicación de factura",
+      "edit": "Editar ubicación de factura",
+      "updated": "Dirección de factura actualizada"
+    },
     "modal": {
       "title-form": "Nombre de la dirección",
       "title-complete": "Guardado!",
@@ -1953,6 +1958,51 @@
       }
     }, 
     "footer": "ChibiPT puede cometer errores. Comprueba la información importante.",
-    "greeting": "¿Cómo te puedo ayudar hoy?"
+    "greeting": "¿Como te puedo ayudar hoy?"
+  },
+  "invoice-address": {
+    "success-alert": "Dirección guardada",
+    "title": "Dirección de facturación",
+    "inputs": {
+      "street": {
+        "label": "Calle",
+        "placeholder": "Calle"
+      },
+      "external_number": {
+        "label": "No. Exterior",
+        "placeholder": "No. Exterior"
+      },
+      "internal_number": {
+        "label": "No. Interior",
+        "placeholder": "No. Interior"
+      },
+      "country": {
+        "label": "País",
+        "placeholder": "País"
+      },
+      "state": {
+        "label": "Estado",
+        "placeholder": "Estado",
+        "country_required": "Selecciona un país"
+      },
+      "municipality": {
+        "label": "Municipio",
+        "placeholder": "Municipio",
+        "state_required": "Selecciona un Estado"
+      },
+      "locality": {
+        "label": "Localidad",
+        "placeholder": "Localidad",
+        "state_required": "Selecciona un Estado"
+      },
+      "cp": {
+        "label": "Código Postal",
+        "placeholder": "Código Postal"
+      }
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    }
   }
 }

@@ -14,17 +14,19 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2022",
-    "module": "es2020",
-    "lib": ["es2019", "dom"],
+    "target": "ES2022",
+    "module": "esnext",
+    "useDefineForClassFields": false,
+    "lib": ["es2021", "dom", "dom.iterable"],
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": false,
     "strictInputAccessModifiers": false,
     "strictTemplates": false,
-    "types": ["node"]
+    "types": ["node"],
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   }
 }

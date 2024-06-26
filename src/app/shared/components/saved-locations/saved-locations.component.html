@@ -30,6 +30,11 @@
           <bego-icon icon="begon-trash1"></bego-icon>
           <span>{{ 'saved-locations.opt-delete' | translate }}</span>
         </button>
+        <button mat-menu-item class="menu-option" (click)="openInvoiceModal(location)">
+          <bego-icon icon="begon-edit-address"></bego-icon>
+          <span *ngIf="location.invoicing_address_id; else addInvoiceAddress">{{ 'saved-locations.invoice.edit' | translate }}</span>
+          <ng-template #addInvoiceAddress>{{ 'saved-locations.invoice.add' | translate }}</ng-template>
+        </button>
       </mat-menu>
     </div>
   </div>
@@ -38,3 +43,10 @@
     {{ 'saved-locations.btn-back' | translate }}
   </bego-button>
 </div>
+
+<bego-invoice-address
+  [lang]="invoiceLang"
+  *ngIf="invoiceState.show"
+  [location]="invoiceState.address"
+  (close)="hideInvoiceModal()"
+  (upadteLocation)="updateInvoiceAddress($event)"></bego-invoice-address>
