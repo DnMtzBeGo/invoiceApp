@@ -1,0 +1,47 @@
+name: Run unit testing
+run-name: Testing ${{ github.actor }} changes in '#${{ github.event.pull_request.number }}' PR
+
+on:
+  pull_request:
+    branches-ignore:
+      - main
+    paths:
+      - '**.ts'
+
+jobs:
+  test:
+    name: Check tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Secure base branch exist
+        run: |
+          git fetch --no-tags --depth=1 origin ${{ github.event.pull_request.base.ref }}
+          git checkout -b ${{ github.event.pull_request.base.ref }}
+          git checkout ${{ github.event.pull_request.head.sha }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://npm.pkg.github.com/
+      - name: Add auth token for private npm
+        run: |
+          echo "@begomx:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+      - name: Install Dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run unit tests
+        run: npx jest --ci --coverage --testLocationInResults --json --outputFile=report.json --coverageProvider=v8 --maxWorkers=2 --changedSince=origin/${{ github.event.pull_request.base.ref }}
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+      - name: Coverage report
+        if: '!cancelled()'
+        uses: ArtiomTr/jest-coverage-report-action@v2.3.0
+        with:
+          coverage-file: report.json
+          base-coverage-file: report.json

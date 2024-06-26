@@ -1,0 +1,52 @@
+name: Check Linting status
+run-name: Linting ${{ github.actor }} changes in '#${{ github.event.pull_request.number }}' PR
+
+on:
+  pull_request:
+    branches-ignore:
+      - main
+    paths:
+      - '**.ts'
+      - '**.html'
+
+jobs:
+  lint:
+    name: Check Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://npm.pkg.github.com/
+      - name: Add auth token for private npm
+        run: |
+          echo "@begomx:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+      - name: Install Dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Gather ts & html files changed
+        id: file_changes
+        uses: Ana06/get-changed-files@v2.2.0
+        with:
+          filter: |
+            *.html
+            *.ts
+      - name: Run ESLint
+        run: npx eslint -f node_modules/eslint-formatter-markdown/markdown.js -o log/linting.md ${{ steps.file_changes.outputs.added_modified_renamed }}
+      - name: Linting results
+        if: '!cancelled()'
+        run: |
+          echo 'linting_results<<EOF' >> $GITHUB_ENV
+          cat log/linting.md >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      - name: Report linting results
+        if: '!cancelled()'
+        uses: mshick/add-pr-comment@v2.8.1
+        with:
+          message: ${{ env.linting_results }}
+          refresh-message-position: true
