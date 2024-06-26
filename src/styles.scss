@@ -1286,7 +1286,8 @@ input[type='number'] {
 
 @mixin gradient-background-small {
   // Establecer el background del contenedor padre
-  background: linear-gradient(140deg, #111416 10%, #2B2E2F 50%, #0C1012 100%); 
+  //background: linear-gradient(140deg, #111416 10%, #2B2E2F 50%, #0C1012 100%); 
+  background: radial-gradient(112.63% 391.25% at 102.56% 100%, rgba(0, 0, 0, 0.5) 0%, rgba(186, 186, 186, 0.244792) 55.21%, rgba(132, 132, 132, 0) 99.25%);
   width: fit-content;
   height: fit-content;
   display: flex;
@@ -1303,7 +1304,9 @@ input[type='number'] {
 
   // Establecer el background del primer hijo
   & > div {
-    background-color: #0D0F11;
+    //background-color: #0D0F11;
+    background: linear-gradient(66.07deg, #111518 5.1%, #1c1d20 100%); // new background color
+
     border-radius: 30px;
     padding: 15px;
     width: auto;
