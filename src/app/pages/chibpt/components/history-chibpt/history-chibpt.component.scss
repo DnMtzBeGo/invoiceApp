@@ -136,17 +136,19 @@ button {
             margin-block: 3px;
             margin: 1.5px;
   
-                      //         &:after {
-                            //     content: '';  
-                              //    display: block;
-                              //   position: absolute;
-                              ///   top: 0;
-                            //     right: 0;
-                            //     background-image: linear-gradient(to right, transparent 0%, #0c141b 90%);
-                            //      z-index: 1;
-                            //     width: 100%;
-                            //      height: 100%;
-                            //    }
+               /*
+               &:after {
+                 content: '';  
+                  display: block;
+                 position: absolute;
+                   top: 0;
+                 right: 0;
+                 background-image: linear-gradient(to right, transparent 0%, #0c141b 90%);
+                  z-index: 1;
+                 width: 100%;
+                  height: 100%;
+                }
+               */
 
             p {
               overflow: hidden;
@@ -200,7 +202,6 @@ button {
         }
 
         .selected-button {
-
           ::ng-deep bego-icon i {
             color: #ffee00 !important;
           }
@@ -233,9 +234,7 @@ button {
 }
 
 ::ng-deep .mat-menu-panel.brand-menu-2 {
- // background-color: paleturquoise !important;
-   background: radial-gradient(112.63% 391.25% at 102.56% 100%, #000000 0%, rgba(186, 186, 186, 0.489583) 55.21%, rgba(132, 132, 132, 0) 99.25%) !important;
-  //background: palevioletred !important;
+   background: radial-gradient(112.63% 391.25% at 102.56% 100%, #1c2021 0%, #646667 55.21%, #2c2e30 99.25%) !important;
 
   .mat-menu-item {
     color: rgba(237, 237, 237, 0.54);
@@ -245,16 +244,41 @@ button {
 }
 
 ::ng-deep .mat-menu-panel.brand-menu-2::before {
-  background: linear-gradient(66.07deg, rgba(8, 12, 15, 0.5) 5.1%, rgba(85, 85, 85, 0) 100%); //new background gradient (inside)
+  background: linear-gradient(66.07deg, #0f1416 5.1%, #1a1d20 60%, #181c1d 100%); //new background gradient (inside)
   width: calc(100% - 3px);
   height: calc(100% - 3px);
   border-radius: 26px;
 }
 
+::ng-deep .mat-menu-panel.brand-menu-2 .mat-menu-item {
+  position: relative; 
+
+  span {
+    position: relative; 
+    z-index: 1; 
+  }
+
+  &:hover span::before {
+    content: '';
+    position: absolute;
+    border-radius: 26px;
+    background: linear-gradient(to top right, #16191c 5.1%, #232627 60%, #1e2123 100%);//new background gradient of select (hover)
+    width: 174px;
+    height: 44px;
+    top: 8px;
+    left: 33.3px;
+    transform: translate(-50%, -50%);
+    z-index: -1; 
+    box-sizing: border-box;
+  }
+}
+
 .menu-option {
   padding: 0 16px;
+
   ::ng-deep bego-icon {
     margin-right: 20px;
+    
     i {
       color: rgba(237, 237, 237, 0.54) !important;
       font-size: 18px;
@@ -262,12 +286,17 @@ button {
   }
 
   &:hover:not([disabled]) {
-    background: linear-gradient(66.07deg, rgba(8, 12, 15, 0.5) 5.1%, rgba(85, 85, 85, 0) 100%);//nuevo background gradient de select (hover)
+    
     color: $lighter-color;
     border-radius: 26px;
+    height: 46px;
+    width: 180px;
+    background: linear-gradient(95.86deg, #1E1E1E 30.22%, #3e3f3f 62.01%, #1d2022 87.8%, #191c1e 87.8%);
 
     ::ng-deep bego-icon {
       i {
+        z-index: 3;
+        position: relative;
         color: $lighter-color;
       }
     }
