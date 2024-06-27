@@ -164,7 +164,14 @@
         align-items: center;
         min-height: 70px;
         cursor: pointer;
+        position: relative;
 
+        &::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          left: -49px;
+        }
       }
 
       .pickup-address,
