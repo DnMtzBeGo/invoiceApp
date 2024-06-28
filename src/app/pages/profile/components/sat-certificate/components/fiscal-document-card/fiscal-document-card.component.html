@@ -39,11 +39,6 @@
       </svg>
 
       <div class="circle-progress-wrapper" *ngIf="fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.documentIsBeingUploaded">
-        <circle-progress
-          [percent]="fiscalDocumentsService.fileInfo[index]?.uploadFileStatus?.currentPercentage || 0"
-          [showTitle]="!showCheckmarkComponent"
-          [showUnits]="!showCheckmarkComponent">
-        </circle-progress>
       </div>
     </div>
 

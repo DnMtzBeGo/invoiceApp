@@ -17,7 +17,7 @@
       </ul>
       <ul class="formatt-files">
         <li *ngFor="let voucher of voucherAll.upfront_vouchers">
-          <ng-container *ngIf="voucher !== null && voucher !== undefined && voucher !== empty">
+          <ng-container *ngIf="voucher !== null && voucher !== undefined && voucher !== 'empty'">
             <div *ngIf="voucher" class="card-file-info">
               <div class="card-icon">
                 <mat-icon class="icon icon-document document-icon"></mat-icon>
@@ -49,7 +49,7 @@
       </ul>
       <ul class="formatt-files">
         <li *ngFor="let voucher of voucherAll.vouchers">
-          <ng-container *ngIf="voucher !== null && voucher !== undefined && voucher !== empty">
+          <ng-container *ngIf="voucher !== null && voucher !== undefined && voucher !== 'empty'">
             <div *ngIf="voucher" class="card-file-info">
               <div class="card-icon">
                 <mat-icon class="icon icon-document document-icon"></mat-icon>
