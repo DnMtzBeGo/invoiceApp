@@ -19,13 +19,13 @@
                   *ngFor="let history of histories[date]; index as i"
                   [ngClass]="{
                     'renaming-title': history?.rename || history?.selected,
-                    'selected-history': history?.selected
+                    'selected-history-title': history?.selected
                   }">
                   <ng-container *ngIf="!history?.rename; else rename">
                     <div class="threads-title">
                       <p
                         [ngClass]="{ 'wait-request': chibiptService.sendingMessage }"
-                        (click)="selectedHistory(history, i, date)">
+                        (click)="selectedHistoryTitle(history, i, date)">
                         {{ history.title }}
                       </p>
 

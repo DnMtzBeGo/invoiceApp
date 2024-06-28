@@ -197,13 +197,13 @@ button {
           }
         }
 
-        .selected-button {
+        .selected-history-title {
           color: #ffee00;
         }
 
-        .selected-button {
+        .selected-options-button {
           ::ng-deep bego-icon i {
-            color: #ffee00 !important;
+            color: #ffee00 !important; // options icons when clicked
           }
         } 
       }
