@@ -58,7 +58,7 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
   auxName: string = '';
   getNewHistorySub: Subscription;
 
-  selectedButtonIndex: number | null = null;
+  selectedButtonIndex: { date: DateType, index: number } | null = null;
 
   constructor(
     private translateService: TranslateService,
@@ -121,8 +121,7 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
 
   selectButton(index: number, event: Event, date: DateType) {
     event.stopPropagation(); 
-    this.selectedButtonIndex[index] = index;
-    console.log('estamos dentro de select button owo', this.selectedButtonIndex);
+    this.selectedButtonIndex = { date, index };
   }
 
   @HostListener('document:click', ['$event'])

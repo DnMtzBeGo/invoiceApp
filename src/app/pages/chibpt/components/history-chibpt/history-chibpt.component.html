@@ -5,8 +5,6 @@
       <img src="../../../../../assets/images/chibpt/chibi-history.svg" alt="Chibi History" />
       <h3>{{ 'chibpt.history.new-chat' | translate }}</h3>
       <bego-icon icon="begon-edit-fintech"></bego-icon>
-      <!-- <bego-icon icon="begon-edit"></bego-icon> -->
-      <!-- <h3>{{ 'chibpt.history.title' | translate }}</h3> -->
     </div>
     <div class="threads" #scrollHistory (scroll)="onScroll()">
       <ng-container *ngFor="let date of dates">
@@ -28,15 +26,13 @@
                         (click)="selectedHistoryTitle(history, i, date)">
                         {{ history.title }}
                       </p>
-
                       <div class="threads-options">
                         <button 
                         class="options" 
                         [matMenuTriggerFor]="menu" 
                         #menuTrigger
-                        [ngClass]="{ 'selected-button': selectedButtonIndex === i }"
-                        (click)="selectButton(i, $event)"
-                        >
+                        [ngClass]="{ 'selected-options-button': selectedButtonIndex?.date === date && selectedButtonIndex?.index === i }"
+                        (click)="selectButton(i, $event, date)">
                           <bego-icon icon="begon-vertical-ellipsis"></bego-icon>
                         </button>
                         <mat-menu #menu="matMenu" class="brand-menu-2">
@@ -50,7 +46,6 @@
                           </button>
                         </mat-menu>
                       </div>
-
                     </div>
                   </ng-container>
   
