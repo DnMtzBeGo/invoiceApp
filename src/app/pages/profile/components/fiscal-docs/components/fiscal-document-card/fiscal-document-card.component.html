@@ -72,11 +72,6 @@
             <div 
                 class="circle-progress-wrapper" 
                 *ngIf="fileInfo.uploadFileStatus?.documentIsBeingUploaded">
-                    <circle-progress
-                        [percent]="fileInfo.uploadFileStatus?.currentPercentage || 0"
-                        [showTitle]="!showCheckmarkComponent"
-                        [showUnits]="!showCheckmarkComponent">
-                    </circle-progress>
             </div>
         
         

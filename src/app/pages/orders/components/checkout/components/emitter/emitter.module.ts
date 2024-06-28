@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
 import { BegoAddressAutocompleteModule } from 'src/app/shared/components/bego-address-autocomplete/bego-address-autocomplete.module';
 import { AppMaterialModule } from 'src/app/material';
+import { ButtonModule } from 'src/app/shared/components/button/button.module';
 
 @NgModule({
   declarations: [EmitterComponent],
@@ -18,7 +19,8 @@ import { AppMaterialModule } from 'src/app/material';
     ReactiveFormsModule,
     BegoPhoneInputModule,
     BegoAddressAutocompleteModule,
-    AppMaterialModule
+    AppMaterialModule,
+    ButtonModule,
   ],
   exports: [EmitterComponent]
 })

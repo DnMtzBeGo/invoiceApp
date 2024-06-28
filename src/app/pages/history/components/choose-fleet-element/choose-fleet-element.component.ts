@@ -33,7 +33,7 @@ export class ChooseFleetElementComponent implements OnInit {
 
   private titleTransLations: TitleTransLations;
 
-  private fleetInfo: any;
+  public fleetInfo: any;
   private payload: any;
 
   @Input() orderInfo: any;

@@ -27,6 +27,8 @@ export class SelectFleetModalComponent {
 
   public enableBtn: boolean = false;
 
+  lang = 'en'
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private authService: AuthService,
@@ -40,6 +42,9 @@ export class SelectFleetModalComponent {
       this.vehicle = [];
       this.trailers = fleet.trailers;
     });
+
+    this.lang = this.translateService.currentLang;
+    this.translateService.onLangChange.subscribe((ev) => (this.lang = ev.lang));
   }
 
   async getFleet(data: any) {
