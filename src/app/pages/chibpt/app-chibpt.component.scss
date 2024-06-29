@@ -75,11 +75,11 @@ button {
 app-history-chibpt {
   margin-block-end: 44px;
   margin-inline-end: 23px;
-  width: 27.78%;
-  min-width: 500px;
+  width: 600px;
+  //min-width: 500px;
   overflow-y: hidden;
   overflow-x: hidden;
-  min-width: 420px;
+  /* min-width: 420px;
 
   @include desktop-4k {
     min-width: 400px;
@@ -95,4 +95,14 @@ app-history-chibpt {
 
   
   */
+
+  
 }
+
+app-history-chibpt.hide-history-app {
+  width: 0;
+  min-width: 0px;
+  margin: 0px;
+}
+
+
