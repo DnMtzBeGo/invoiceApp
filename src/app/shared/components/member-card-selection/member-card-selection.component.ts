@@ -12,6 +12,7 @@ export class MemberCardSelectionComponent implements OnInit {
   @Output() sendMemberSelected = new EventEmitter<any>();
 
   public avatarSelected: boolean = false;
+  public fallbackImg: string = '';
 
   constructor() { }
 
@@ -24,8 +25,18 @@ export class MemberCardSelectionComponent implements OnInit {
     });
   }
 
-  public onPicError(data: any) {
-    data['photo'] = '../../../../assets/images/truck.svg'
+  public onPicError() {
+    switch (this.titleFleetMembers) {
+      case 'drivers':
+        this.fallbackImg = '../../../../assets/images/avatar-outline.svg';
+        break;
+      case 'trucks':
+        this.fallbackImg = '../../../../assets/images/truck.svg';
+        break;
+      case 'vehicle':
+      case 'trailers':
+        this.fallbackImg = '../../../../assets/images/trailer.svg';
+        break;
+    }
   }
-
 }
