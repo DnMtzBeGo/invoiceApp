@@ -5,6 +5,7 @@
     max-height: 600px;
     justify-content: center;
     color: #ededed;
+    position: relative;
 
     .payments-header {
         position: relative;
@@ -80,6 +81,15 @@
                 width: 220px;
             }
         }
+    }
+
+    .btn-pay {
+        min-width: 155px;
+        min-height: 40px;
+        position: absolute;
+        bottom: -32px;
+        right: -24px;
+        border-radius: 8px 0 24px 0;
     }
 }
 
