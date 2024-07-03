@@ -675,6 +675,8 @@ export class OrdersComponent implements OnInit {
 }
 
   async getETA(locations: GoogleLocation) {
+    if (!locations.pickup || !locations.dropoff) return;
+
     let datos = {
       pickup: {
         lat: locations.pickupLat,
@@ -757,7 +759,7 @@ export class OrdersComponent implements OnInit {
     if (this.orderType === 'FTL' && this.locations.dropoff) await this.uploadScreenShotOrderMap();
 
     // cleanup page
-    await this.router.navigate(['/fleet'], { skipLocationChange: true });
+    await this.router.navigate(['/about'], { skipLocationChange: true });
     await this.router.navigate(['/home'], { state: { showCompleteModal: true } });
   }
 

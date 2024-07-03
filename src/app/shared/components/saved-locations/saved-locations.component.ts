@@ -29,7 +29,7 @@ export class SavedLocationsComponent {
   invoiceLang: BegoInvoiceAddressLang;
 
   constructor(
-    private savedLocations: SavedLocationsService,
+    public savedLocations: SavedLocationsService,
     private apiRestService: AuthService,
     private notificationService: NotificationsService,
     private translateService: TranslateService

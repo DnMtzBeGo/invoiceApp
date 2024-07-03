@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
-import { UploadFilesComponent } from '../upload-files/upload-files.component';
+import { UploadFilesComponent, UploadFilesProps } from '../upload-files/upload-files.component';
 
 export interface ReceviedPicture {
   file: File;
@@ -27,12 +27,12 @@ export class PicturesGridComponent implements OnInit {
 
   openFileEditor(flag: boolean) {
     if (!flag) return;
-    const dialog = this.matDialog.open(UploadFilesComponent, {
+    const dialog = this.matDialog.open<UploadFilesComponent, UploadFilesProps>(UploadFilesComponent, {
       data: {
         places: 5,
         obligatoryImages: this.obligatoryImgs,
-        files: this.pictures,
-        handleFileInput: (receivedPicture: ReceviedPicture) => {
+        files: this.pictures as any[],
+        handleFileInput: (receivedPicture) => {
           this.onFileInput.emit({ ...receivedPicture, dialog });
         }
       },
