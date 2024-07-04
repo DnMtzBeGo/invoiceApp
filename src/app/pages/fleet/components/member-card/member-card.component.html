@@ -16,7 +16,12 @@
   <div class="avatar">
     <div class="avatar-1">
       <div class="avatar-status" [class]="data.status"></div>
-      <img [src]="data.thumbnail && !data.thumbnail.endsWith('/') ? data.thumbnail : '../../../../assets/images/avatar-outline.svg'" />
+      <img
+        [src]="
+          data.thumbnail && !data.thumbnail.endsWith('/')
+            ? data.thumbnail
+            : '../../../../assets/images/avatar-outline.svg'
+        " />
     </div>
   </div>
 

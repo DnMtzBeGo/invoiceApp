@@ -7,7 +7,12 @@
         <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
           <div class="avatar" [style]="'--avatar-rounded: ' + resolvers[model].avatarRounded + ';'">
             <div class="avatar-1">
-              <img [src]="element.thumbnail && !element.thumbnail.endsWith('/') ? element.thumbnail : resolvers[model].avatarFallback" />
+              <img
+                [src]="
+                  element.thumbnail && !element.thumbnail.endsWith('/')
+                    ? element.thumbnail
+                    : resolvers[model].avatarFallback
+                " />
             </div>
           </div>
         </td>
@@ -25,7 +30,11 @@
 
       <!-- Incoming Column -->
       <ng-container matColumnDef="incoming">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 90px; text-transform: capitalize">
+        <th
+          class="fleet-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 90px; text-transform: capitalize">
           {{ 'fleet.members.incoming' | translate }}
         </th>
         <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
@@ -35,7 +44,11 @@
 
       <!-- Done Column -->
       <ng-container matColumnDef="done">
-        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 90px; text-transform: capitalize">
+        <th
+          class="fleet-table__table-header"
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 90px; text-transform: capitalize">
           {{ 'fleet.members.done' | translate }}
         </th>
         <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
@@ -65,10 +78,14 @@
               resolvers[model].editUrl,
               resolvers[model].queryParams ? {} : { id: element?.member_meta?.id_member || element._id }
             ]"
-            [queryParams]="resolvers[model].queryParams ? { id: element?.member_meta?.id_member || element._id } : null">
+            [queryParams]="
+              resolvers[model].queryParams ? { id: element?.member_meta?.id_member || element._id } : null
+            ">
             <mat-icon class="icon icon-eye-open icon-only" style="font-size: 18px"></mat-icon>
           </button>
-          <button mat-icon-button (click)="delete(element?.fleet_id || element?.id_fleet, element?.member_meta?.id_member || element._id)">
+          <button
+            mat-icon-button
+            (click)="delete(element?.fleet_id || element?.id_fleet, element?.member_meta?.id_member || element._id)">
             <mat-icon class="icon icon-trash1 icon-only" style="font-size: 16px"></mat-icon>
           </button>
           <!-- <mat-menu #menu="matMenu" class="brand-menu-1">
