@@ -30,6 +30,10 @@
     <span>{{ data.attributes.year }}</span>
   </div>
 
+  <p class="description" *ngIf="data.original_fleet">
+    {{ data.original_fleet.name }}
+  </p>
+
   <div class="actions">
     <button mat-flat-button class="brand-btn-2" [routerLink]="[routes.EDIT_TRUCK, { id: data._id }]">
       {{ 'fleet.trucks.btn_view' | translate }}

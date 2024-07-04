@@ -30,6 +30,10 @@
     {{ data.attributes.trailer_number }}
   </p>
 
+  <p class="description" *ngIf="data.original_fleet">
+    {{ data.original_fleet.name }}
+  </p>
+
   <div class="actions">
     <button mat-flat-button class="brand-btn-2" [routerLink]="[routes.EDIT_TRAILER, { id: data._id }]">
       {{ 'fleet.trailers.btn_view' | translate }}

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, OnChanges, AfterViewInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnChanges, AfterViewInit, Output, EventEmitter, ViewEncapsulation, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSort } from '@angular/material/sort';
@@ -89,8 +89,19 @@ export class FleetTableComponent implements OnInit, OnChanges, AfterViewInit {
     public fleetService: FleetService
   ) {}
 
-  public ngOnChanges(): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     this.handleUpdateTable();
+
+    if (changes.orderTableData) {
+      if (this.orderTableData?.some((el) => el.original_fleet)) {
+        const columns = this.resolvers[this.model].displayedColumns;
+
+        if (!columns.includes('fleet_name')) {
+          columns.splice(columns.length - 1, 0, 'fleet_name')
+        }
+      }
+    }
+
   }
 
   public ngOnInit(): void {

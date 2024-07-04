@@ -208,6 +208,15 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="fleet_name">
+        <th class="fleet-table__table-header" mat-header-cell *matHeaderCellDef style="width: 220px">
+          {{ 'fleet.fleet_name' | translate }}
+        </th>
+        <td class="fleet-table__table-body" mat-cell *matCellDef="let element">
+          {{ element.original_fleet?.name }}
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="resolvers[model].displayedColumns"></tr>
 
       <tr mat-row *matRowDef="let row; columns: resolvers[model].displayedColumns"></tr>

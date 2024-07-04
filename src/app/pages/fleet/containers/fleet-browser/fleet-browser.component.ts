@@ -44,7 +44,7 @@ const resolvers = {
   },
   trucks: {
     endpoint: 'fleets/:fleetId/trucks',
-    pluck: 'data',
+    pluck: 'result',
     lang: 'trucks',
     sortBy: ['date_created', 'attributes.brand'],
     sortInit: ['date_created', 'desc'],
@@ -52,7 +52,7 @@ const resolvers = {
   },
   trailers: {
     endpoint: 'fleets/:fleetId/trailers',
-    pluck: 'data',
+    pluck: 'result',
     lang: 'trailers',
     sortBy: ['date_created', 'trailer_number'],
     sortInit: ['date_created', 'desc'],

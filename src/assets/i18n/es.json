@@ -1417,6 +1417,7 @@
     "btn_remove": "Remover",
     "btn_new_vehicle": "Agregar nuevo vehículo",
     "clear_fleet_group": "Limpiar",
+    "fleet_name": "Flotilla",
     "members": {
       "txt_header": "Equipo",
       "txt_search": "Buscar...",
