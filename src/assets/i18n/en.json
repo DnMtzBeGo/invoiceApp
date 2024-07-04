@@ -1412,6 +1412,7 @@
     "txt_of": "of",
     "btn_remove": "Remove",
     "btn_new_vehicle": "Add new vehicle",
+    "clear_fleet_group": "Clear",
     "members": {
       "txt_header": "Team",
       "txt_search": "Search...",

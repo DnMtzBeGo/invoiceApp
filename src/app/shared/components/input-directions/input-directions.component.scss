@@ -436,12 +436,9 @@ section {
 
 .scroll-wrapper {
   overflow: auto;
-
-  .btn-submit {
-    position: sticky;
-    bottom: 0;
-    z-index: 1;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .list-address-container {
@@ -603,5 +600,36 @@ app-member-card-selection:nth-last-of-type(1) {
   bego-icon {
     --color: #fff;
     --font-size: 16px;
+  }
+}
+
+.footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background: #0b1117;
+  font-size: 1rem;
+  margin-top: auto;
+}
+.clear-btn {
+  all: unset;
+
+  display: flex;
+  gap: 1ch;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+
+  span {
+    text-decoration: underline;
+  }
+
+  bego-icon {
+    display: flex;
+    --font-size: 0.75em;
+    --color: unset;
   }
 }

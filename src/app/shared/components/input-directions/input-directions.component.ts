@@ -188,6 +188,8 @@ export class InputDirectionsComponent implements OnInit {
 
   subs = new Subscription();
 
+  selectedFleetId = '';
+
   constructor(
     private auth: AuthService,
     public zone: NgZone,
@@ -258,7 +260,7 @@ export class InputDirectionsComponent implements OnInit {
       ) {
         this.showScroll = true;
       }
-      
+
       if(changes.hasOwnProperty('drafts') && changes.drafts.currentValue) {
         const drafts = changes.drafts.currentValue;
         const [pickup, dropoff] = drafts.destinations;
@@ -615,7 +617,12 @@ export class InputDirectionsComponent implements OnInit {
     const requestAvailavilityFleetMembers = {
       fromDate: this.fromDate,
       toDate: this.toDate,
+      originalFleet: undefined,
     };
+
+    if (this.selectedFleetId) {
+      requestAvailavilityFleetMembers.originalFleet = this.selectedFleetId;
+    }
 
     (
       await this.auth.apiRest(
@@ -626,31 +633,37 @@ export class InputDirectionsComponent implements OnInit {
     ).subscribe(
       ({ result }) => {
         this.canGoToSteps = false;
-        this.selectMembersToAssign.trucks = null;
-        this.selectMembersToAssign.trailers = null;
+
+        ['trucks', 'trailers', 'drivers'].forEach((k) => {
+          const fleetId = this.selectMembersToAssign[k]?.original_fleet?._id
+
+          if (fleetId === this.selectedFleetId) {
+            const id = this.selectMembersToAssign[k]._id
+            const selected = result[k].find(el => el._id === id)
+
+            selected.isSelected = true;
+            this.selectMembersToAssign[k] = selected
+          } else {
+            this.selectMembersToAssign[k] = null;
+          }
+        });
+
         this.trucks = result.trucks;
         this.trailers = result.trailers;
+        this.drivers = result.drivers;
+
+        if (this.showFleetMembersContainer) {
+          this.fleetData = this[this.titleFleetMembers]
+        }
       },
       (error) => {
         console.log("Something went wrong", error.error);
       }
     );
 
-    this.getDrivers();
     this.getVehicles();
   }
 
-  async getDrivers() {
-    const q = new URLSearchParams();
-    q.set('fromDate', String(this.fromDate));
-    q.set('toDate', String(this.toDate));
-
-    const req = await this.auth.apiRestGet(`orders/drivers_availability?${q.toString()}`, { apiVersion: 'v1.1' });
-    const { result } = await req.toPromise();
-
-    this.selectMembersToAssign.drivers = null;
-    this.drivers = result;
-  }
 
   async getVehicles() {
     const q = new URLSearchParams();
@@ -715,6 +728,10 @@ export class InputDirectionsComponent implements OnInit {
     if (this.selectMembersToAssign[typeMember]) {
       this.selectMembersToAssign[typeMember].isSelected = false;
     }
+
+   if (member.original_fleet && !this.selectedFleetId) {
+     this.setSelectedFleet(member.original_fleet._id)
+   }
 
     member.isSelected = true;
     this.selectMembersToAssign[typeMember] = member;
@@ -844,5 +861,10 @@ export class InputDirectionsComponent implements OnInit {
     } else {
       this.selectSearchResultDropoff(location);
     }
+  }
+
+  setSelectedFleet(id: string) {
+    this.selectedFleetId = id;
+    this.getFleetListDetails();
   }
 }

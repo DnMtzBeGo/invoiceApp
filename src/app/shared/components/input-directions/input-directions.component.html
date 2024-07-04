@@ -351,14 +351,20 @@
         [text]="'location.btn-order' | translate">
       </-button> -->
 
-      <app-button
-        *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
-        [disabled]="!locationsSelected || isDatesSelected"
-        (click)="openNewOrderMenu()"
-        class="btn-submit btn-yellow"
-        [text]="'location.btn-order' | translate"
-      >
-      </app-button>
+      <div class="footer">
+        <button *ngIf="selectedFleetId" class="clear-btn" (click)="setSelectedFleet('')">
+          <span>{{ 'fleet.clear_fleet_group' | translate }}</span>
+          <bego-icon icon="begon-refresh"></bego-icon>
+        </button>
+
+        <app-button
+          *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
+          class="btn-yellow"
+          [disabled]="!locationsSelected || isDatesSelected"
+          (click)="openNewOrderMenu()"
+          [text]="'location.btn-order' | translate">
+        </app-button>
+      </div>
 
       <app-button
         *ngIf="hideMap"
