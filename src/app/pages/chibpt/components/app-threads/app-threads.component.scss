@@ -39,6 +39,7 @@ main {
 
   &.hide-scrollbar {
     scrollbar-width: none;  
+    margin-left: 4px;
 
     &::-webkit-scrollbar {
       display: none;
@@ -191,9 +192,6 @@ scrollbar-width: none;
       
     }
   }
-
-  
-
   }
 
   p {
@@ -202,10 +200,4 @@ scrollbar-width: none;
     margin-block-start: 12px;
     color: rgba(197, 187, 187, 0.8);
   }
-  
-  
-}
-::ng-deep .chat-container .chat-subcontainer .textarea-container textarea::placeholder {
-  color: palevioletred; 
-
 }

@@ -58,7 +58,7 @@ button {
   position: absolute;
   top: 50%;
   right: 0;
-  transform: translate(0, -50%);
+  transform: translateX(0, -50%);
   width: 21.5px;
   height: 125.5px;
   z-index: 1;
@@ -74,8 +74,8 @@ button {
 
 app-history-chibpt {
   margin-block-end: 44px;
-  margin-inline-end: 23px;
-  width: 600px;
+  margin-inline-end: 13px;
+  width: 500px;
   //min-width: 500px;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -90,10 +90,6 @@ app-history-chibpt {
   }
 
   /*
-  
-
-
-  
   */
 
   
