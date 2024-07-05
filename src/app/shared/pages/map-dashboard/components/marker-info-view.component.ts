@@ -17,6 +17,8 @@ export class MarkerInfoWindowComponent implements OnInit {
   loading: boolean = false;
   speed: number;
   battery = { width: '', color: '', percentage: 0 };
+  fleetName: string;
+
   @Output() errorLoadData = new EventEmitter<void>();
 
   constructor(public apiRestService: AuthService, private notificationsService: NotificationsService) {}
@@ -30,11 +32,12 @@ export class MarkerInfoWindowComponent implements OnInit {
 
     (await this.apiRestService.apiRestGet(`carriers/information?user_id=${this.memberId}`)).subscribe({
       next: ({ result }) => {
-        let { raw_nickname, email, location_updated_at, location, speed_kms_ph, device_battery } = result;
+        let { raw_nickname, email, location_updated_at, location, speed_kms_ph, device_battery, original_fleet } = result;
         this.username = raw_nickname;
         this.email = email;
         this.location = location;
         this.speed = speed_kms_ph;
+        this.fleetName = original_fleet.name
 
         if (location_updated_at) {
           const date = DateTime.fromMillis(location_updated_at);
