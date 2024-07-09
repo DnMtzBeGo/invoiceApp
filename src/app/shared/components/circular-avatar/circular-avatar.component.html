@@ -1,9 +1,9 @@
 <div class="brand-icon-help"
-  [matTooltip]="fleetMember === 'drivers' ? data?.nickname : fleetMember === 'vehicle' ? data.attributes.vehicle_number : data?.model"
+  [matTooltip]="tooltipData"
   matTooltipPosition="right"
   matTooltipHideDelay="100"
-  matTooltipClass="brand-tooltip-1" 
-  class="circular-avatar-container" 
+  matTooltipClass="brand-tooltip-1 circular-avatar-tooltip"
+  class="circular-avatar-container"
   [ngClass]="[userWantCP && !data?.can_stamp ? 'not-available-cp' : '', !data?.availability ? 'not-available': '']">
   <div class="circular-avatar-middle-container">
     <div class="circular-avatar-int-container">

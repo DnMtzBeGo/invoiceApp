@@ -32,6 +32,11 @@ import { PrimeService } from '../../services/prime.service';
 
 declare var google: any;
 
+interface Fleet {
+  name: string;
+  _id: string;
+}
+
 @Component({
   selector: 'app-input-directions',
   templateUrl: './input-directions.component.html',
@@ -171,7 +176,7 @@ export class InputDirectionsComponent implements OnInit {
 
   private subs = new Subscription();
 
-  public selectedFleetId = '';
+  public selectedFleet: Fleet | null = null;
 
   constructor(
     private auth: AuthService,
@@ -592,8 +597,8 @@ export class InputDirectionsComponent implements OnInit {
       originalFleet: undefined,
     };
 
-    if (this.selectedFleetId) {
-      requestAvailavilityFleetMembers.originalFleet = this.selectedFleetId;
+    if (this.selectedFleet) {
+      requestAvailavilityFleetMembers.originalFleet = this.selectedFleet._id;
     }
 
     (
@@ -607,7 +612,7 @@ export class InputDirectionsComponent implements OnInit {
         ['trucks', 'trailers', 'drivers'].forEach((k) => {
           const fleetId = this.selectMembersToAssign[k]?.original_fleet?._id;
 
-          if (fleetId === this.selectedFleetId) {
+          if (fleetId && fleetId === this.selectedFleet?._id) {
             const id = this.selectMembersToAssign[k]._id;
             const selected = result[k].find((el) => el._id === id);
 
@@ -693,16 +698,26 @@ export class InputDirectionsComponent implements OnInit {
     if (!member.availability)
       this.showAlert(this.translateService.instant(`home.alerts.not-available-${String(typeMember)}`));
 
-    if (this.selectMembersToAssign[typeMember]) {
-      this.selectMembersToAssign[typeMember].isSelected = false;
+    if (this.selectMembersToAssign[typeMember] === member) {
+      member.isSelected = false;
+      this.selectMembersToAssign[typeMember] = null;
+
+      if (Object.values(this.selectMembersToAssign).every((v) => !v)) {
+        this.setSelectedFleet();
+      }
+    } else {
+      if (this.selectMembersToAssign[typeMember]) {
+        this.selectMembersToAssign[typeMember].isSelected = false;
+      }
+
+      if (member.original_fleet && !this.selectedFleet?._id) {
+        this.setSelectedFleet(member.original_fleet);
+      }
+
+      member.isSelected = true;
+      this.selectMembersToAssign[typeMember] = member;
     }
 
-    if (member.original_fleet && !this.selectedFleetId) {
-      this.setSelectedFleet(member.original_fleet._id);
-    }
-
-    member.isSelected = true;
-    this.selectMembersToAssign[typeMember] = member;
     this.sendAssignedMermbers.emit({ ...this.selectMembersToAssign });
     this.canGoToSteps = this.isMembersSelected();
   }
@@ -828,8 +843,9 @@ export class InputDirectionsComponent implements OnInit {
     }
   }
 
-  public setSelectedFleet(id: string) {
-    this.selectedFleetId = id;
+  public setSelectedFleet(fleet: Fleet | null = null): void {
+    console.log(fleet)
+    this.selectedFleet = fleet;
     this.getFleetListDetails();
   }
 }

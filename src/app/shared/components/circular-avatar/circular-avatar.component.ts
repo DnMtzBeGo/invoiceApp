@@ -1,25 +1,24 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-circular-avatar',
   templateUrl: './circular-avatar.component.html',
-  styleUrls: ['./circular-avatar.component.scss']
+  styleUrls: ['./circular-avatar.component.scss'],
 })
-export class CircularAvatarComponent implements OnInit, OnChanges {
-
-  @Input() data: any;
-  @Input() userWantCP: boolean = false;
-  @Input() fleetMember: string = '';
-  @Input() radioButton: boolean= true;
+export class CircularAvatarComponent implements OnChanges {
+  @Input() public data: any;
+  @Input() public userWantCP: boolean = false;
+  @Input() public fleetMember: string = '';
+  @Input() public radioButton: boolean = true;
 
   public fallbackImage: string = '';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {}
+  public ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.data);
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if(changes.hasOwnProperty('fleetMember')) {
+    if (changes.hasOwnProperty('fleetMember')) {
       switch (this.fleetMember) {
         case 'drivers':
           this.fallbackImage = '../../../../assets/images/avatar-outline.svg';
@@ -33,5 +32,27 @@ export class CircularAvatarComponent implements OnInit, OnChanges {
           break;
       }
     }
+  }
+
+  public get tooltipData(): string {
+    const lines = [];
+
+    switch (this.fleetMember) {
+      case 'drivers':
+        lines.push(this.data.nickname);
+        break;
+      case 'vehicle':
+        lines.push(this.data.attributes.vehicle_number);
+        break;
+      default:
+        lines.push(this.data.model);
+        break;
+    }
+
+    if (this.data.original_fleet) {
+      lines.push(this.data.original_fleet.name)
+    }
+
+    return lines.join('\n');
   }
 }

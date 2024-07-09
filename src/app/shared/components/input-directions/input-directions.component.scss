@@ -218,7 +218,7 @@
   > mat-slide-toggle {
     margin: 0 35px 0 0;
   }
-} 
+}
 
 ::ng-deep .select-fleet-members {
     margin-top: 20px !important;
@@ -495,7 +495,7 @@ app-button {
         pointer-events: none;
         cursor: unset;
         color: #1C232A;
-    
+
     }
 }
 
@@ -623,7 +623,11 @@ app-member-card-selection:nth-last-of-type(1) {
   width: 100%;
   box-sizing: border-box;
 
-  span {
+  .name {
+    margin-right: auto;
+  }
+
+  .clear {
     text-decoration: underline;
   }
 

@@ -307,8 +307,9 @@
       </-button> -->
 
         <div class="footer">
-          <button *ngIf="selectedFleetId" class="clear-btn" (click)="setSelectedFleet('')">
-            <span>{{ 'fleet.clear_fleet_group' | translate }}</span>
+          <button *ngIf="selectedFleet" class="clear-btn" (click)="setSelectedFleet()">
+            <span class="name">{{ selectedFleet.name }}</span>
+            <span class="clear">{{ 'fleet.clear_fleet_group' | translate }}</span>
             <bego-icon icon="begon-refresh"></bego-icon>
           </button>
 
