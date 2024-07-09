@@ -50,7 +50,7 @@ export class CircularAvatarComponent implements OnChanges {
     }
 
     if (this.data.original_fleet) {
-      lines.push(this.data.original_fleet.name)
+      lines.push(this.data.original_fleet.name);
     }
 
     return lines.join('\n');

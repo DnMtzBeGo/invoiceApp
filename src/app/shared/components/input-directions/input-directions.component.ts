@@ -844,7 +844,6 @@ export class InputDirectionsComponent implements OnInit {
   }
 
   public setSelectedFleet(fleet: Fleet | null = null): void {
-    console.log(fleet)
     this.selectedFleet = fleet;
     this.getFleetListDetails();
   }
