@@ -13,7 +13,7 @@
 
     //red
     &.not-available{
-      background: 
+      background:
       linear-gradient(rgba(222, 71, 60,1), rgba(176, 24, 50,0.6)) padding-box,
       linear-gradient(to bottom, rgba(222, 71, 60,1), rgba(176, 24, 50,0.6)) border-box;
 
@@ -116,4 +116,10 @@
 
 .not-available-cp {
   filter: grayscale(1);
+}
+
+::ng-deep .circular-avatar-tooltip {
+  > div {
+    text-align: start;
+  }
 }

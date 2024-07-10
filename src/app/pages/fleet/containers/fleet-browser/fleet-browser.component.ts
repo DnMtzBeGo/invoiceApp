@@ -15,13 +15,13 @@ import {
   filter,
   takeUntil,
   startWith,
-  finalize
+  finalize,
 } from 'rxjs/operators';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+
 import { routes } from '../../consts';
 import { Paginator } from '../../../invoice/models';
 import { FacturaFiltersComponent, ActionConfirmationComponent } from '../../../invoice/modals';
@@ -40,30 +40,30 @@ const resolvers = {
     lang: 'members',
     sortBy: ['member_meta.date_created', 'member.nickname'],
     sortInit: ['member_meta.date_created', 'desc'],
-    withFleetId: true
+    withFleetId: true,
   },
   trucks: {
     endpoint: 'fleets/:fleetId/trucks',
-    pluck: 'data',
+    pluck: 'result',
     lang: 'trucks',
     sortBy: ['date_created', 'attributes.brand'],
     sortInit: ['date_created', 'desc'],
-    withFleetId: false
+    withFleetId: false,
   },
   trailers: {
     endpoint: 'fleets/:fleetId/trailers',
-    pluck: 'data',
+    pluck: 'result',
     lang: 'trailers',
     sortBy: ['date_created', 'trailer_number'],
     sortInit: ['date_created', 'desc'],
-    withFleetId: false
+    withFleetId: false,
   },
   primeList: {
     endpoint: 'orders/vehicles',
     lang: 'prime',
     // type instead name because in backend `type` is the real keyname of `name`
     sortBy: ['type', '_id'],
-    sortInit: ['_id', 'desc']
+    sortInit: ['_id', 'desc'],
   },
   prime: {
     endpoint: 'orders/vehicles/:id',
@@ -71,8 +71,8 @@ const resolvers = {
     lang: 'prime',
     sortBy: ['date_created', 'attributes.vehicle_number'],
     sortInit: ['date_created', 'desc'],
-    withFleetId: true
-  }
+    withFleetId: true,
+  },
 };
 
 @Component({
@@ -80,12 +80,12 @@ const resolvers = {
   templateUrl: './fleet-browser.component.html',
   styleUrls: ['./fleet-browser.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class FleetBrowserComponent implements OnInit {
   public routes: typeof routes = routes;
 
-  $rx = reactiveComponent(this);
+  private $rx = reactiveComponent(this);
 
   private filtersDialogRef: FacturaFiltersComponent | any;
 
@@ -119,15 +119,15 @@ export class FleetBrowserComponent implements OnInit {
     };
   };
 
-  facturasEmitter = new Subject<
+  public facturasEmitter = new Subject<
     ['queryParams' | 'refresh' | 'template:search' | 'template:set' | 'refresh:defaultEmisor' | 'view:set', unknown?]
   >();
 
-  model: 'members' | 'trucks' | 'trailers' | 'primeList' | 'prime';
+  public model: 'members' | 'trucks' | 'trailers' | 'primeList' | 'prime';
 
-  lang = 'en';
+  public lang = 'en';
 
-  view = window.localStorage.getItem('app-fleet-browser-view') ?? 'grid';
+  private view = window.localStorage.getItem('app-fleet-browser-view') ?? 'grid';
 
   private _resolver;
   public resolver;
@@ -136,19 +136,19 @@ export class FleetBrowserComponent implements OnInit {
 
   public paginator: Paginator;
 
-  listeners: Subscription[] = [];
+  private listeners: Subscription[] = [];
 
-  selectedCategory = '';
-  categoryModal = {
+  public selectedCategory = '';
+  public categoryModal = {
     show: false,
     mode: 'new',
     type: '',
-    error: null
+    error: null,
   };
 
-  category = {
+  public category = {
     name: '',
-    translations: {}
+    translations: {},
   };
 
   constructor(
@@ -158,7 +158,7 @@ export class FleetBrowserComponent implements OnInit {
     private apiRestService: AuthService,
     public translateService: TranslateService,
     private location: Location,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {
     this.model = this.route.snapshot.data.model;
 
@@ -169,14 +169,14 @@ export class FleetBrowserComponent implements OnInit {
         ['desc', 'asc'].map((sort) => ({
           key,
           sort,
-          value: [key, sort].join(':')
-        }))
-      )
+          value: [key, sort].join(':'),
+        })),
+      ),
     };
 
     this.paginatorDefaults = {
       grid: { sizeOptions: [6, 9, 12], default: 6 },
-      list: { sizeOptions: [6, 9, 12, 50, 100], default: 6 }
+      list: { sizeOptions: [6, 9, 12, 50, 100], default: 6 },
       // list: { sizeOptions: [5, 10, 20, 50, 100], default: 5 }
     };
 
@@ -185,29 +185,33 @@ export class FleetBrowserComponent implements OnInit {
       pageSize: +this.route.snapshot.queryParams.limit || this.paginatorDefaults[this.view].default || 10,
       pageTotal: 1,
       pageSearch: '',
-      total: 0
+      total: 0,
     };
 
-    this.listeners.push(this.route.params.subscribe((ev) => {
-      if (this.router.url.includes(routes.PRIME) && ev.id) {
-        this.ngOnInit();
-      }
-    }));
+    this.listeners.push(
+      this.route.params.subscribe((ev) => {
+        if (this.router.url.includes(routes.PRIME) && ev.id) {
+          this.ngOnInit();
+        }
+      }),
+    );
 
-    this.listeners.push(this.translateService.onLangChange.subscribe((lang) => {
-      this.lang = lang.lang;
-    }));
+    this.listeners.push(
+      this.translateService.onLangChange.subscribe((lang) => {
+        this.lang = lang.lang;
+      }),
+    );
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const fleetId$ = this.fetchFleetId().pipe(share());
 
     const view$ = merge(
       oof(this.view),
       this.facturasEmitter.pipe(
         ofType('view:set'),
-        tap((view: string) => window.localStorage.setItem('app-fleet-browser-view', view))
-      )
+        tap((view: string) => window.localStorage.setItem('app-fleet-browser-view', view)),
+      ),
     );
 
     const loadDataAction$ = merge(fleetId$, this.facturasEmitter.pipe(ofType('refresh')));
@@ -216,27 +220,32 @@ export class FleetBrowserComponent implements OnInit {
 
     const facturaStatus$ = this.fetchFacturaStatus().pipe(share());
 
-    const params$ = merge(oof(this.route.snapshot.queryParams), this.facturasEmitter.pipe(ofType('queryParams'), debounceTime(500))).pipe(
+    const params$ = merge(
+      oof(this.route.snapshot.queryParams),
+      this.facturasEmitter.pipe(ofType('queryParams'), debounceTime(500)),
+    ).pipe(
       distinctUntilChanged(object_compare),
-      map((params: any) => { {
-        const p = {
-          ...params,
-          limit: +params.limit || this.paginator.pageSize,
-          page: +params.page || this.paginator.pageIndex,
-          sort: params.sort || this.resolver.sortInit?.join(':')
+      map((params: any) => {
+        {
+          const p = {
+            ...params,
+            limit: +params.limit || this.paginator.pageSize,
+            page: +params.page || this.paginator.pageIndex,
+            sort: params.sort || this.resolver.sortInit?.join(':'),
+          };
+
+          if (p.sort === undefined) delete p.sort;
+
+          return p;
         }
-
-        if (p.sort === undefined) delete p.sort;
-
-        return p
-      } }),
+      }),
       tap((params) => {
         this.paginator.pageSize = Number(params.limit);
         this.paginator.pageIndex = Number(params.page);
 
         this.cd.markForCheck();
       }),
-      share()
+      share(),
     );
 
     const facturasRequest$ = combineLatest([loadDataAction$, params$]).pipe(pluck('1'), share());
@@ -244,7 +253,7 @@ export class FleetBrowserComponent implements OnInit {
     const facturas$ = combineLatest(
       tiposComprobante$.pipe(map(arrayToObject('clave', 'descripcion'))),
       facturaStatus$.pipe(map(arrayToObject('clave', 'nombre'))),
-      facturasRequest$.pipe(switchMap(this.fetchFacturas))
+      facturasRequest$.pipe(switchMap(this.fetchFacturas)),
     ).pipe(
       map(([tiposComprobante, facturaStatus, facturas]: any) =>
         facturas.map((factura: any) => {
@@ -257,25 +266,27 @@ export class FleetBrowserComponent implements OnInit {
                 ? 'available'
                 : factura.member.availability === 2
                 ? 'unavailable'
-                : 'unavailable'
+                : 'unavailable',
             };
 
             return newFactura;
           }
 
           return factura;
-        })
+        }),
       ),
       tap(() => {
         this.cd.markForCheck();
       }),
-      share()
+      share(),
     );
 
     const facturasLoading$ = merge(facturasRequest$.pipe(mapTo(true)), facturas$.pipe(mapTo(false)));
 
     // EMISORES
-    const defaultEmisor$ = this.fetchEmisores().pipe(repeatWhen(() => this.facturasEmitter.pipe(ofType('refresh:defaultEmisor'))));
+    const defaultEmisor$ = this.fetchEmisores().pipe(
+      repeatWhen(() => this.facturasEmitter.pipe(ofType('refresh:defaultEmisor'))),
+    );
 
     //TEMPLATES
     const emptySearch = (search: any) => search.search === '';
@@ -286,37 +297,40 @@ export class FleetBrowserComponent implements OnInit {
     const searchAction$ = merge(
       this.facturasEmitter.pipe(
         ofType('template:search'),
-        map((search: string) => ({ type: 'template' as const, search }))
-      )
+        map((search: string) => ({ type: 'template' as const, search })),
+      ),
     ).pipe(share());
 
-    const cancelSearchAction$ = merge(searchAction$.pipe(filter(emptySearch)), this.facturasEmitter.pipe(ofType('template:set')));
+    const cancelSearchAction$ = merge(
+      searchAction$.pipe(filter(emptySearch)),
+      this.facturasEmitter.pipe(ofType('template:set')),
+    );
 
     const validSearch$ = searchAction$.pipe(
       filter(validSearch),
-      switchMap((search) => timer(500).pipe(takeUntil(cancelSearchAction$), mapTo(search)))
+      switchMap((search) => timer(500).pipe(takeUntil(cancelSearchAction$), mapTo(search))),
     );
 
     const searchRequest$ = validSearch$.pipe(
       switchMap((search) => this.searchTemplate(search).pipe(takeUntil(cancelSearchAction$))),
-      share()
+      share(),
     );
 
     const searchLoading$ = merge(
       oof(false),
       validSearch$.pipe(mapTo(true)),
       searchRequest$.pipe(mapTo(false)),
-      cancelSearchAction$.pipe(mapTo(false))
+      cancelSearchAction$.pipe(mapTo(false)),
     );
 
     const receptorSearch$ = merge(
       searchRequest$.pipe(
         withLatestFrom(searchAction$),
         map(([requestData, search]: any) => ({
-          [search.type]: requestData
-        }))
+          [search.type]: requestData,
+        })),
       ),
-      cancelSearchAction$.pipe(mapTo({}))
+      cancelSearchAction$.pipe(mapTo({})),
     );
 
     this.vm = this.$rx.connect({
@@ -331,34 +345,36 @@ export class FleetBrowserComponent implements OnInit {
       template: template$,
       searchAction: searchAction$,
       searchLoading: searchLoading$,
-      receptorSearch: receptorSearch$
+      receptorSearch: receptorSearch$,
     });
   }
 
-  ngOnDestroy() {
-    this.listeners.forEach(l => l.unsubscribe());
+  public ngOnDestroy() {
+    this.listeners.forEach((l) => l.unsubscribe());
   }
 
   // API calls
-  fetchFleetId = () => {
+  private fetchFleetId = () => {
     if (this.model === 'prime') {
       return of(this.route.snapshot.params.id);
     }
 
     return from(
       this.apiRestService.apiRest('', 'fleet/overview', {
-        loader: 'false'
-      })
+        loader: 'false',
+      }),
     ).pipe(mergeAll(), pluck('result', '_id'));
   };
 
-  fetchFacturas = (params: any) => {
+  private fetchFacturas = (params: any) => {
     const payload = {
-      ...params
+      ...params,
     };
 
     if (this.model === 'primeList') {
-      return from(this.apiRestService.apiRestGet(this.resolver.endpoint, { apiVersion: 'v1.1', ...this.vm.params })).pipe(
+      return from(
+        this.apiRestService.apiRestGet(this.resolver.endpoint, { apiVersion: 'v1.1', ...this.vm.params }),
+      ).pipe(
         mergeAll(),
         pluck('result'),
         map((res) => {
@@ -368,7 +384,7 @@ export class FleetBrowserComponent implements OnInit {
         }),
         finalize(() => {
           this.cd.markForCheck();
-        })
+        }),
       );
     }
 
@@ -378,23 +394,23 @@ export class FleetBrowserComponent implements OnInit {
           mergeAll(),
           pluck('result'),
           tap((res) => {
-            const category = res.find(c => c._id === this.route.snapshot.params.id);
+            const category = res.find((c) => c._id === this.route.snapshot.params.id);
 
             this.category = {
               name: category.name,
-              translations: category.translations
+              translations: category.translations,
             };
 
             this.cd.markForCheck();
-          })
+          }),
         )
         .subscribe();
 
       return from(
         this.apiRestService.apiRestGet(this.resolver.endpoint.replace(':id', this.route.snapshot.params.id), {
           apiVersion: 'v1.1',
-          ...this.vm.params
-        })
+          ...this.vm.params,
+        }),
       ).pipe(
         mergeAll(),
         pluck('result'),
@@ -406,7 +422,7 @@ export class FleetBrowserComponent implements OnInit {
         }),
         finalize(() => {
           this.cd.markForCheck();
-        })
+        }),
       );
     }
 
@@ -414,8 +430,8 @@ export class FleetBrowserComponent implements OnInit {
       this.apiRestService.apiRestGet(this.resolver.endpoint.replace(':fleetId', this.vm.fleetId), {
         loader: 'false',
         apiVersion: 'v1.1',
-        ...payload
-      })
+        ...payload,
+      }),
     ).pipe(
       mergeAll(),
       pluck('result'),
@@ -426,31 +442,31 @@ export class FleetBrowserComponent implements OnInit {
       this.resolver.pluck ? pluck(this.resolver.pluck) : identity,
       tap(() => {
         this.cd.markForCheck();
-      })
+      }),
     );
   };
 
-  fetchTipoComprobante() {
+  private fetchTipoComprobante() {
     return from(
       this.apiRestService.apiRestGet('invoice/catalogs/tipos-de-comprobante', {
-        loader: 'false'
-      })
+        loader: 'false',
+      }),
     ).pipe(mergeAll(), pluck('result'));
   }
 
-  fetchFacturaStatus = () => {
+  private fetchFacturaStatus = () => {
     return from(
       this.apiRestService.apiRestGet('invoice/catalogs/statuses', {
-        loader: 'false'
-      })
+        loader: 'false',
+      }),
     ).pipe(mergeAll(), pluck('result'));
   };
 
-  fetchEmisores() {
+  private fetchEmisores() {
     return from(
       this.apiRestService.apiRestGet('invoice/emitters', {
-        loader: 'false'
-      })
+        loader: 'false',
+      }),
     ).pipe(
       mergeAll(),
       map((responseData) => {
@@ -463,16 +479,16 @@ export class FleetBrowserComponent implements OnInit {
 
         return emisores.length === 0 ? [] : [emisores.pop()];
       }),
-      startWith(null)
+      startWith(null),
     );
   }
 
-  searchTemplate(search: { type: 'template'; search: string }) {
+  private searchTemplate(search: { type: 'template'; search: string }) {
     const endpoints = {
-      template: 'invoice/get_drafts'
+      template: 'invoice/get_drafts',
     };
     const keys = {
-      template: 'search'
+      template: 'search',
     };
 
     return from(
@@ -480,25 +496,25 @@ export class FleetBrowserComponent implements OnInit {
         JSON.stringify({
           pagination: {
             size: 10,
-            page: 1
+            page: 1,
           },
-          [keys[search.type]]: search.search
+          [keys[search.type]]: search.search,
         }),
         endpoints[search.type],
-        { loader: 'false' }
-      )
+        { loader: 'false' },
+      ),
     ).pipe(mergeAll(), pluck('result'));
   }
 
   // MODALS
-  openFilters() {
+  private openFilters() {
     if (this.filtersDialogRef) return;
 
     this.filtersDialogRef = this.matDialog.open(FacturaFiltersComponent, {
       data: {
         tiposComprobante: this.vm.tiposComprobante,
         facturaStatus: this.vm.facturaStatus,
-        params: clone(this.vm.params)
+        params: clone(this.vm.params),
       },
       restoreFocus: false,
       autoFocus: false,
@@ -506,8 +522,8 @@ export class FleetBrowserComponent implements OnInit {
       // hasBackdrop: true,
       backdropClass: ['brand-dialog-1', 'dialog-filters'],
       position: {
-        top: '12.5rem'
-      }
+        top: '12.5rem',
+      },
     });
 
     // TODO: false/positive when close event
@@ -520,22 +536,22 @@ export class FleetBrowserComponent implements OnInit {
         relativeTo: this.route,
         queryParams: {
           ...params,
-          page: 1
+          page: 1,
         },
-        queryParamsHandling: 'merge'
+        queryParamsHandling: 'merge',
       });
     });
   }
 
-  noEmisorAlert() {
+  private noEmisorAlert() {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
         modalTitle: this.translateService.instant('invoice.invoices.noemisor-title'),
         modalMessage: this.translateService.instant('invoice.invoices.noemisor-message'),
-        confirm: this.translateService.instant('invoice.invoices.noemisor-confirm')
+        confirm: this.translateService.instant('invoice.invoices.noemisor-confirm'),
       },
       restoreFocus: false,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
     });
 
     // TODO: false/positive when close event
@@ -544,13 +560,13 @@ export class FleetBrowserComponent implements OnInit {
     });
   }
 
-  createEditEmisor(emisor?) {
+  private createEditEmisor(emisor?) {
     const dialogRef = this.matDialog.open(FacturaEmitterComponent, {
       data: emisor,
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
     });
 
     dialogRef.afterClosed().subscribe((result?) => {
@@ -560,13 +576,13 @@ export class FleetBrowserComponent implements OnInit {
     });
   }
 
-  navigate(newParams) {
+  public navigate(newParams) {
     // Hacky solution
 
     const urlTree = this.router.createUrlTree([], {
       relativeTo: this.route,
       queryParams: { ...this.vm?.params, ...newParams },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
 
     this.location.go(urlTree.toString());
@@ -582,7 +598,7 @@ export class FleetBrowserComponent implements OnInit {
     // })
   }
 
-  openCategoryModal(mode: 'new' | 'edit', data?: any) {
+  public openCategoryModal(mode: 'new' | 'edit', data?: any) {
     if (data) {
       this.selectedCategory = data._id;
       this.categoryModal.type = data.name;
@@ -592,7 +608,7 @@ export class FleetBrowserComponent implements OnInit {
     this.categoryModal.mode = mode;
   }
 
-  async handleCloseCategoryModal(type?: 'done' | string) {
+  public async handleCloseCategoryModal(type?: 'done' | string) {
     const status = this.categoryModal;
 
     if (type !== 'done') {
@@ -608,7 +624,7 @@ export class FleetBrowserComponent implements OnInit {
       status.mode === 'new'
         ? this.apiRestService.apiRest(JSON.stringify(payload), 'api/vehicle_types', { apiVersion: 'vehicle-service' })
         : this.apiRestService.apiRestPut(JSON.stringify(payload), `api/vehicle_types/${this.selectedCategory}`, {
-            apiVersion: 'vehicle-service'
+            apiVersion: 'vehicle-service',
           });
 
     (await apiCall).subscribe({
@@ -619,34 +635,34 @@ export class FleetBrowserComponent implements OnInit {
       error: ({ error }) => {
         status.error = error.error;
         this.cd.markForCheck();
-      }
+      },
     });
   }
 
-  resetCategoryModal(show?: boolean) {
+  private resetCategoryModal(show?: boolean) {
     this.categoryModal = {
       show,
       mode: 'new',
       type: '',
-      error: null
+      error: null,
     };
 
     this.cd.markForCheck();
   }
 
   //UTILS
-  log = (...args: any[]) => {
+  private log = (...args: any[]) => {
     console.log(...args);
   };
 
-  makeTemplate = (template: object) => {
+  private makeTemplate = (template: object) => {
     return encodeURIComponent(JSON.stringify(template));
   };
 
-  filtersCount = (params = {}) =>
+  private filtersCount = (params = {}) =>
     Object.keys(params).filter((filterName) => filterParams.has(filterName) && params[filterName]).length || null;
 
-  range = (from, to) => {
+  public range = (from, to) => {
     to = to + 1;
     return Array(to - from)
       .fill(0)

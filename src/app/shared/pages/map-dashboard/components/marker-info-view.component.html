@@ -32,6 +32,11 @@
         </ng-container>
       </div>
     </div>
+
+    <div class="info" *ngIf="fleetName">
+      <bego-icon icon="begon-fleet"></bego-icon>
+      {{ fleetName }}
+    </div>
   </div>
 
   <!-- Skeleton -->
