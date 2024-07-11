@@ -26,7 +26,7 @@ button {
   border: none;
   background-image: radial-gradient(112.63% 391.25% at 102.56% 100%, #000000 0%, rgba(186, 186, 186, 0.489583) 55.21%, rgba(132, 132, 132, 0) 99.25%);
   width: 100%;
-  transition: all 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
   max-width: 400px;
 
   @include desktop-hd {
@@ -214,16 +214,7 @@ button {
     }
   }
 
-  .open-history {
-    position: absolute;
-    top: 50%;
-    left: -21px;
-    transform: translate(0, -50%);
-    width: 21.5px;
-    height: 125.5px;
-    background: url('../../../../../assets/images/chibpt/open-history.png');
-    z-index: 1;
-  }
+  
 }
 
 ::ng-deep .mat-menu-panel.brand-menu-2 {
@@ -296,7 +287,34 @@ button {
   }
 }
 
-.hide-history {
-  width: 0;
-  min-width: 0px;
+.show-history {
+  transform: translateX(100%);
+  //position: relative;
+  //animation: mover-izquierda 3s forwards; /* duración de 2 segundos */
 }
+
+.hide-history {
+  transform: translateX(0);
+  //position: relative;
+  //animation: mover-derecha 3s forwards; /* duración de 2 segundos */
+}
+
+/*
+@keyframes mover-izquierda {
+  0% {
+      left: 200px; // Empieza desde 50 píxeles a la derecha 
+  }
+  100% {
+      left: 0;     // Termina en su posición original 
+  }
+}
+
+@keyframes mover-derecha {
+  0% {
+      left: 0px; // Empieza desde 50 píxeles a la izquierda 
+  }
+  100% {
+      left: 100%;     // Termina en su posición original 
+  }
+}
+*/

@@ -1,6 +1,9 @@
 
-<div class="history-container-shadow" [ngClass]="{ 'hide-history': openHistoryChat }">
-  <section class="container" [ngClass]="{ 'hide-history': openHistoryChat }">
+<div class="history-container-shadow" [ngClass]="{ 
+  'hide-history': !openHistoryChat,
+  'show-history': openHistoryChat,
+}">
+  <section class="container">
     <div class="header" [ngClass]="{ 'wait-request': chibiptService.sendingMessage }" (click)="createNewChat()">
       <img src="../../../../../assets/images/chibpt/chibi-history.svg" alt="Chibi History" />
       <h3>{{ 'chibpt.history.new-chat' | translate }}</h3>

@@ -30,15 +30,6 @@ button {
     overflow-y: scroll;
     position: relative;
     direction: rtl;
-
-    /*
-    -ms-overflow-style: none; 
-  scrollbar-width: none;  
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    */
   }
 
   main {
@@ -58,7 +49,6 @@ button {
   position: absolute;
   top: 50%;
   right: 0;
-  transform: translateX(0, -50%);
   width: 21.5px;
   height: 125.5px;
   z-index: 1;
@@ -76,29 +66,13 @@ app-history-chibpt {
   margin-block-end: 44px;
   margin-inline-end: 13px;
   width: 500px;
-  //min-width: 500px;
+  transition: all 0.3s ease-in-out;
   overflow-y: hidden;
   overflow-x: hidden;
-  /* min-width: 420px;
-
-  @include desktop-4k {
-    min-width: 400px;
-  }
-
-  @include desktop-hd {
-    min-width: 370px;
-  }
-
-  /*
-  */
-
-  
 }
 
 app-history-chibpt.hide-history-app {
   width: 0;
-  min-width: 0px;
   margin: 0px;
+  transition: all 0.3s ease-in-out;
 }
-
-
