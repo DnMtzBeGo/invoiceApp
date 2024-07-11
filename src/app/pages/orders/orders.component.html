@@ -65,7 +65,6 @@
         <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions" (stepChange)="updateStatus()">
           <bego-step [completed]="stepsValidateOCL[0]">
             <app-ocl-step1
-              [draftData]="draftData"
               [datePickup]="datepickup"
               [cardIsOpen]="cardIsOpen"
               (statusChange)="validStepOCL(0, $event)"

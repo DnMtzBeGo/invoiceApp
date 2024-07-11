@@ -11,10 +11,7 @@
           {{ selectedInfo?.start_date | date: 'dd/MM/yyyy' }}
           <i class="icon icon-dot"></i>
           {{ selectedInfo?.start_date | date: 'shortTime' }}
-          {{ selectedRow === 'dropoff'
-            ? ' - ' + (orderInfo?.[selectedRow]?.end_date | date: 'shortTime')
-            : ''
-          }}
+          {{ selectedRow === 'dropoff' ? ' - ' + (selectedInfo?.end_date | date: 'shortTime') : '' }}
         </div>
       </div>
       <div class="edit-cn-btn-wrapper">

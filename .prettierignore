@@ -1,18 +1,15 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
-.angular
+
 # compiled output
 /dist
 /tmp
 /out-tsc
-# Only exists if Bazel was run
-/bazel-out
 
 # dependencies
 /node_modules
-
-# profiling files
-chrome-profiler-events*.json
-speed-measure-plugin*.json
+package.json
+package-lock.json
+yarn.lock
 
 # IDEs and editors
 /.idea
@@ -24,7 +21,12 @@ speed-measure-plugin*.json
 *.sublime-workspace
 
 # IDE - VSCode
+.vscode
 .vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 .history/*
 
 # misc
@@ -36,10 +38,12 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/documentation
+/docs
 
 # System Files
 .DS_Store
 Thumbs.db
 
-# Jest
-report.json
+# firebase
+/.firebase

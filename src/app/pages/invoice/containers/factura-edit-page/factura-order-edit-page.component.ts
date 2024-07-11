@@ -124,11 +124,11 @@ export class FacturaOrderEditPageComponent implements OnInit {
   public tabs = ['receptor', 'precio', 'orden'];
   public sliderDotsOpts: BegoSliderDotsOpts = {
     totalElements: this.tabs.length,
-    value: 0
-    // valueChange: (slideIndex: number): void => {
-    //   this.sliderDotsOpts.value = slideIndex;
-    //   this.formEmitter.next(["tab", this.tabs[slideIndex]]);
-    // },
+    value: 0,
+    valueChange: (slideIndex: number): void => {
+      this.sliderDotsOpts.value = slideIndex;
+      this.formEmitter.next(["tab", this.tabs[slideIndex]]);
+    },
   };
 
   constructor(

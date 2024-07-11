@@ -1412,6 +1412,8 @@
     "txt_of": "of",
     "btn_remove": "Remove",
     "btn_new_vehicle": "Add new vehicle",
+    "clear_fleet_group": "Clear",
+    "fleet_name": "Fleet name",
     "members": {
       "txt_header": "Team",
       "txt_search": "Search...",
@@ -1568,7 +1570,7 @@
     "fleet-assignment": {
       "time-date": "Assigned time & date",
       "schedule": "Schedule to:",
-      "aprox-time": "Aprox Time Load",
+      "aprox-time": "ETA",
       "cp-order": "Bill of lading (BOL)",
       "available-drivers": "Available drivers",
       "available-trucks": "Available trucks",
@@ -1910,6 +1912,11 @@
     "search": "Search location",
     "opt-edit": "Edit location",
     "opt-delete": "Delete location",
+    "invoice": {
+      "add": "Add invoice location",
+      "edit": "Edit invoice location",
+      "updated": "Invoice address updated."
+    },
     "btn-back": "Back",
     "modal": {
       "title-form": "Address Name",
@@ -1950,6 +1957,50 @@
     },
     "footer": "ChibiPT can make mistakes. Consider checking important information.",
     "greeting": "How can i help you today?"
+  },
+  "invoice-address": {
+    "success-alert": "Saved Address",
+    "title": "Invoice Address",
+    "inputs": {
+      "street": {
+        "label": "Street",
+        "placeholder": "Street"
+      },
+      "external_number": {
+        "label": "Stret number",
+        "placeholder": "Stret number"
+      },
+      "internal_number": {
+        "label": " Apartment number",
+        "placeholder": "Apartment number"
+      },
+      "country": {
+        "label": "Country",
+        "placeholder": "Country"
+      },
+      "state": {
+        "label": "State",
+        "placeholder": "State",
+        "country_required": "Select a country"
+      },
+      "municipality": {
+        "label": "Municipality",
+        "placeholder": "Municipality",
+        "state_required": "Select a state"
+      },
+      "locality": {
+        "label": "Locality",
+        "placeholder": "Locality",
+        "state_required": "Select a state"
+      },
+      "cp": {
+        "label": "Postal Code",
+        "placeholder": "Postal Code"
+      }
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel"
+    }
   }
 }
-

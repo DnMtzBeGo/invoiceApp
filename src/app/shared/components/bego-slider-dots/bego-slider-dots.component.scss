@@ -29,6 +29,7 @@
     background-color: #292f34;
     overflow: hidden;
     transition: flex-grow $animation-duration;
+    cursor: pointer;
 
     &::after {
       content: "";

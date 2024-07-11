@@ -12,15 +12,14 @@ export class PricingStepComponent implements OnInit {
   @Output() pricingStepFormData = new EventEmitter<any>();
   @Output() validPricingStep = new EventEmitter<boolean>();
 
-  orderId: string = '';
-  deferredPayment = false;
+  public orderId: string = '';
 
-  payModeOptions = {
-    pue: { label: 'PUE', value: false },
-    ppd: { label: 'PPD', value: true }
+  public payModeOptions = {
+    pue: { label: 'PUE', value: true },
+    ppd: { label: 'PPD', value: false }
   };
 
-  currencyOptions = {
+  public currencyOptions = {
     mxn: { label: 'MXN', value: 'mxn' },
     usd: { label: 'USD', value: 'usd' }
   };
@@ -63,8 +62,7 @@ export class PricingStepComponent implements OnInit {
   }
 
   changePay(data: any) {
-    this.pricingForm.get('deferred_payment').setValue(data.value);
-    this.deferredPayment = data.value;
+    this.pricingForm.get('deferred_payment').setValue(!data.value);
   }
 
   changePricingMethod(data: any) {

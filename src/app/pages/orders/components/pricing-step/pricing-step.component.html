@@ -35,10 +35,10 @@
         size="small"
         [first]="payModeOptions.pue"
         [second]="payModeOptions.ppd"
-        [enabled]="pricingForm.get('deferred_payment')!.value == false" 
+        [enabled]="pricingForm.get('deferred_payment')!.value == true" 
         (statusChanged)="changePay($event)"></bego-button-toggle>
-      <p *ngIf="!deferredPayment">{{ 'checkout.insurance-modal.deferred-PUE' | translate }}</p>
-      <p *ngIf="deferredPayment">{{ 'checkout.insurance-modal.deferred-PPD' | translate }}</p>
+      <p *ngIf="!pricingForm.get('deferred_payment')!.value">{{ 'checkout.insurance-modal.deferred-PUE' | translate }}</p>
+      <p *ngIf="pricingForm.get('deferred_payment')!.value">{{ 'checkout.insurance-modal.deferred-PPD' | translate }}</p>
     </div>
   </form>
 </section>

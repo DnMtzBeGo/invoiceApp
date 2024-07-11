@@ -11,7 +11,7 @@ export interface UploadFilesProps {
   places: number;
   obligatoryImages?: number;
   files: UploadFileInfo[];
-  handleFileInput: (file: File) => void;
+  handleFileInput: (data: { file: File, i: number }) => void;
 }
 
 @Component({
@@ -26,7 +26,7 @@ export class UploadFilesComponent implements OnInit {
   @Input() info: UploadFilesProps = {
     places: 5,
     files: [],
-    handleFileInput: (file: File) => {}
+    handleFileInput: () => {}
   };
 
   constructor(@Inject(MAT_DIALOG_DATA) info: UploadFilesProps, public matDialogRef: MatDialogRef<UploadFilesComponent>) {

@@ -208,7 +208,9 @@
     border-radius: 8px;
     color: #ededed;
     // min-width: 280px;
+    max-height: 80vh;
     margin-right: 30px;
+    overflow: auto;
   }
 
   app-pictures-grid{

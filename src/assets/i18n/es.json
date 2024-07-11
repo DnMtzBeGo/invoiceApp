@@ -1416,6 +1416,8 @@
     "txt_of": "de",
     "btn_remove": "Remover",
     "btn_new_vehicle": "Agregar nuevo vehículo",
+    "clear_fleet_group": "Limpiar",
+    "fleet_name": "Flotilla",
     "members": {
       "txt_header": "Equipo",
       "txt_search": "Buscar...",
@@ -1572,7 +1574,7 @@
     "fleet-assignment": {
       "time-date": "Hora y fecha asignadas",
       "schedule": "Programar para:",
-      "aprox-time": "Tiempo de carga aproximado",
+      "aprox-time": "Tiempo de tránsito aproximado",
       "cp-order": "¿Factura y carta porte?",
       "available-drivers": "Conductores disponibles",
       "available-trucks": "Camiones disponibles",
@@ -1915,6 +1917,11 @@
     "opt-edit": "Editar ubicación",
     "opt-delete": "Eliminar ubicación",
     "btn-back": "Regresar",
+    "invoice": {
+      "add": "Agregar ubicación de factura",
+      "edit": "Editar ubicación de factura",
+      "updated": "Dirección de factura actualizada"
+    },
     "modal": {
       "title-form": "Nombre de la dirección",
       "title-complete": "Guardado!",
@@ -1954,5 +1961,50 @@
     }, 
     "footer": "ChibiPT puede cometer errores. Comprueba la información importante.",
     "greeting": "¿Como te puedo ayudar hoy?"
+  },
+  "invoice-address": {
+    "success-alert": "Dirección guardada",
+    "title": "Dirección de facturación",
+    "inputs": {
+      "street": {
+        "label": "Calle",
+        "placeholder": "Calle"
+      },
+      "external_number": {
+        "label": "No. Exterior",
+        "placeholder": "No. Exterior"
+      },
+      "internal_number": {
+        "label": "No. Interior",
+        "placeholder": "No. Interior"
+      },
+      "country": {
+        "label": "País",
+        "placeholder": "País"
+      },
+      "state": {
+        "label": "Estado",
+        "placeholder": "Estado",
+        "country_required": "Selecciona un país"
+      },
+      "municipality": {
+        "label": "Municipio",
+        "placeholder": "Municipio",
+        "state_required": "Selecciona un Estado"
+      },
+      "locality": {
+        "label": "Localidad",
+        "placeholder": "Localidad",
+        "state_required": "Selecciona un Estado"
+      },
+      "cp": {
+        "label": "Código Postal",
+        "placeholder": "Código Postal"
+      }
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    }
   }
 }

@@ -5,8 +5,7 @@
       parent.showOrderDetails && !changeLocations ? 'show-map' : '',
       hideMap ? 'hide-map' : '',
       showScroll ? 'input-directions-scroll' : ''
-    ]"
-  >
+    ]">
     <div *ngIf="!haveFleetMembers">
       <div class="fleet-type" *ngIf="isPrime">
         <h3>{{ 'location.title' | translate }}</h3>
@@ -15,15 +14,11 @@
           [enabled]="orderType === orderTypeList[1].value"
           [first]="orderTypeList[0]"
           [second]="orderTypeList[1]"
-          (statusChanged)="setOrderType($event)"
-          ></bego-button-toggle>
+          (statusChanged)="setOrderType($event)"></bego-button-toggle>
       </div>
       <div class="directions" [ngClass]="hideMap ? 'hide-line' : ''">
-        <div
-          class="input-container"
-          [ngClass]="hideType === 'dropoff' ? 'hide-input' : ''"
-        >
-          <label>{{ "location.label_pickup" | translate }}</label>
+        <div class="input-container" [ngClass]="hideType === 'dropoff' ? 'hide-input' : ''">
+          <label>{{ 'location.label_pickup' | translate }}</label>
           <input
             #pickup
             type="text"
@@ -31,19 +26,14 @@
             (input)="UpdateSearchResultsPickup($event)"
             (keydown.enter)="selectSearchResultPickup(autocompleteItemsPickup[0])"
             [placeholder]="'location.placeholder' | translate"
-            (focusin)="activeInput = 'pickup'"
-          />
+            (focusin)="activeInput = 'pickup'" />
           <i
             class="icon icon-close"
             (click)="ClearAutocompletePickup()"
-            *ngIf="autocompletePickup.input.length > 0"
-          ></i>
+            *ngIf="autocompletePickup.input.length > 0"></i>
         </div>
-        <div
-          class="input-container"
-          [ngClass]="hideType === 'pickup' ? 'hide-input' : ''"
-        >
-          <label>{{ "location.label_dropoff" | translate }}</label>
+        <div class="input-container" [ngClass]="hideType === 'pickup' ? 'hide-input' : ''">
+          <label>{{ 'location.label_dropoff' | translate }}</label>
           <input
             #dropoff
             type="text"
@@ -51,13 +41,11 @@
             (input)="UpdateSearchResultsDropoff($event)"
             (keydown.enter)="selectSearchResultDropoff(autocompleteItemsDropoff[0])"
             [placeholder]="'location.placeholder' | translate"
-            (focusin)="activeInput = 'dropoff'"
-          />
+            (focusin)="activeInput = 'dropoff'" />
           <i
             class="icon icon-close"
             (click)="ClearAutocompleteDropoff()"
-            *ngIf="autocompleteDropoff?.input?.length > 0"
-          ></i>
+            *ngIf="autocompleteDropoff?.input?.length > 0"></i>
         </div>
       </div>
       <!-- <div class="saved-locations">
@@ -67,124 +55,111 @@
         </div>
         <app-button class="btn-list" text="My Saved Locations"></app-button>
     </div> -->
-    <div class="scroll-wrapper">
-      <button
-        class="item-favorites"
-        *ngIf="!showSavedLocations && (!pickupSelected || !dropoffSelected)"
-        (click)="showFavoriteLocations()">
-        <div class="icon"></div>
-        {{ 'saved-locations.my-locations' | translate }}
-      </button>
+      <div class="scroll-wrapper">
+        <button
+          class="item-favorites"
+          *ngIf="!showSavedLocations && (!pickupSelected || !dropoffSelected)"
+          (click)="showFavoriteLocations()">
+          <div class="icon"></div>
+          {{ 'saved-locations.my-locations' | translate }}
+        </button>
 
-      <button
-        *ngIf="!showSavedLocations && (!pickupSelected || !dropoffSelected)"
-        class="item-pin"
-        (click)="setLocationPin()"
-      >
-        <div class="icon"></div>
-        {{ "location.label_pin" | translate }}
-      </button>
+        <button
+          *ngIf="!showSavedLocations && (!pickupSelected || !dropoffSelected)"
+          class="item-pin"
+          (click)="setLocationPin()">
+          <div class="icon"></div>
+          {{ 'location.label_pin' | translate }}
+        </button>
 
-      <div *ngIf="autocompleteShown" class="list-address-container">
-        <div
-          *ngFor="let item of activeInput === 'pickup' ? autocompleteItemsPickup : autocompleteItemsDropoff"
-          (click)="activeInput === 'pickup' ? selectSearchResultPickup(item) : selectSearchResultDropoff(item)"
-        >
-          <div class="item-location">
-            <div class="list-icon-address" (click)="!savedLocations.isSaved(item) && savedLocations.openModal(item)">
-              <img
-                [src]="
-                  savedLocations.isSaved(item)
-                    ? '/assets/images/maps/marker-fav-on.svg'
-                    : '/assets/images/maps/marker-fav-off.svg'
-                "
-                alt="Location marker icon"
-              />
-            </div>
-            <div class="list-address">
-              <span>{{ item.description | splitGoogleAddress }},</span>
-              {{ item.description | splitGoogleAddressSecond }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <app-saved-locations
-        *ngIf="showSavedLocations && (!pickupSelected || !dropoffSelected)"
-        (goBack)="showSavedLocations = false"
-        (pickLocation)="pickSavedLocation($event)"
-      ></app-saved-locations>
-
-      <div class="list-address-container" *ngIf="invalidAddressPickup">
-        <!-- <div detail='false' >
-          <div class='item-location'>
-            <div class='list-icon-pin'></div>
-            <div class="list-map">{{'location.label_pin' | translate}}</div>
-          </div>
-        </div> -->
-        <div (click)="ClearAutocompletePickup()">
-          <div class="item-location">
-            <div class="list-icon-error"></div>
-            <div class="list-address-error">
-              <span>{{ "location.txt-address-not-found" | translate }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        #btnOrder
-        class="list-address-container"
-        *ngIf="invalidAddressDropoff"
-      >
-        <!-- <div detail='false' >
-          <div class='item-location'>
-            <div class='list-icon-pin'></div>
-            <div class="list-map">{{'location.label_pin' | translate}}</div>
-          </div>
-        </div> -->
-        <div (click)="ClearAutocompleteDropoff()">
-          <div class="item-location">
-            <div class="list-icon-error"></div>
-            <div class="list-address-error">
-              <span>{{ "location.txt-address-not-found" | translate }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="assigned-date-time-container"
-        *ngIf="locationsSelected && !showSavedLocations && !autocompleteItemsDropoff.length"
-      >
-        <div class="assigned-date-time-row">
-          <form [formGroup]="orderForm">
-            <p class="assigned-time-title">
-              {{ "home.fleet-assignment.time-date" | translate }}
-            </p>
-            <mat-form-field class="input-calendar" appearance="fill">
-              <mat-datepicker #picker></mat-datepicker>
-              <div class="btn-input-calendar" (click)="picker.open()">
-                <div
-                  class="radio"
-                  [ngClass]="isDatesSelected ? 'active' : ''"
-                ></div>
-                <!-- <input type="radio" name="" id=""> -->
-                <p>{{ "home.fleet-assignment.schedule" | translate }}</p>
-                <input
-                  class="date-input"
-                  [ngClass]="isDatesSelected ? 'date-input-selected' : ''"
-                  matInput
-                  formControlName="datepickup"
-                  [matDatepicker]="picker"
-                  (dateChange)="addEvent('change', $event)"
-                  [min]="calendar"
-                  placeholder="MM/DD/YY"
-                />
-                <mat-datepicker #picker></mat-datepicker>
+        <div *ngIf="autocompleteShown" class="list-address-container">
+          <div
+            *ngFor="let item of activeInput === 'pickup' ? autocompleteItemsPickup : autocompleteItemsDropoff"
+            (click)="activeInput === 'pickup' ? selectSearchResultPickup(item) : selectSearchResultDropoff(item)">
+            <div class="item-location">
+              <div class="list-icon-address" (click)="!savedLocations.isSaved(item) && savedLocations.openModal(item)">
+                <img
+                  [src]="
+                    savedLocations.isSaved(item)
+                      ? '/assets/images/maps/marker-fav-on.svg'
+                      : '/assets/images/maps/marker-fav-off.svg'
+                  "
+                  alt="Location marker icon" />
               </div>
-            </mat-form-field>
+              <div class="list-address">
+                <span>{{ item.description | splitGoogleAddress }},</span>
+                {{ item.description | splitGoogleAddressSecond }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-saved-locations
+          *ngIf="showSavedLocations && (!pickupSelected || !dropoffSelected)"
+          (goBack)="showSavedLocations = false"
+          (pickLocation)="pickSavedLocation($event)"></app-saved-locations>
 
-            <div class="input-timer">
-              <!-- <timepicker
+        <div class="list-address-container" *ngIf="invalidAddressPickup">
+          <!-- <div detail='false' >
+          <div class='item-location'>
+            <div class='list-icon-pin'></div>
+            <div class="list-map">{{'location.label_pin' | translate}}</div>
+          </div>
+        </div> -->
+          <div (click)="ClearAutocompletePickup()">
+            <div class="item-location">
+              <div class="list-icon-error"></div>
+              <div class="list-address-error">
+                <span>{{ 'location.txt-address-not-found' | translate }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div #btnOrder class="list-address-container" *ngIf="invalidAddressDropoff">
+          <!-- <div detail='false' >
+          <div class='item-location'>
+            <div class='list-icon-pin'></div>
+            <div class="list-map">{{'location.label_pin' | translate}}</div>
+          </div>
+        </div> -->
+          <div (click)="ClearAutocompleteDropoff()">
+            <div class="item-location">
+              <div class="list-icon-error"></div>
+              <div class="list-address-error">
+                <span>{{ 'location.txt-address-not-found' | translate }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="assigned-date-time-container"
+          *ngIf="locationsSelected && !showSavedLocations && !autocompleteItemsDropoff.length">
+          <div class="assigned-date-time-row">
+            <form [formGroup]="orderForm">
+              <p class="assigned-time-title">
+                {{ 'home.fleet-assignment.time-date' | translate }}
+              </p>
+              <mat-form-field class="input-calendar" appearance="fill">
+                <mat-datepicker #picker></mat-datepicker>
+                <div class="btn-input-calendar" (click)="picker.open()">
+                  <div class="radio" [ngClass]="isDatesSelected ? 'active' : ''"></div>
+                  <!-- <input type="radio" name="" id=""> -->
+                  <p>{{ 'home.fleet-assignment.schedule' | translate }}</p>
+                  <input
+                    class="date-input"
+                    [ngClass]="isDatesSelected ? 'date-input-selected' : ''"
+                    matInput
+                    formControlName="datepickup"
+                    [matDatepicker]="picker"
+                    (dateChange)="addEvent('change', $event)"
+                    [min]="calendar"
+                    placeholder="MM/DD/YY" />
+                  <mat-datepicker #picker></mat-datepicker>
+                </div>
+              </mat-form-field>
+
+              <div class="input-timer">
+                <!-- <timepicker
                 [disabled]="monthSelected"
                 [formControlName]="'timepickup'"
                 class="timepicker"
@@ -194,187 +169,172 @@
                 [showMeridian]="ismeridian"
                 *ngIf="!destroyPicker"
               ></timepicker> -->
-              <timepicker
-                [formControlName]="'timepickup'"
-                class="timepicker"
-                (isValid)="timepickerValid($event)"
-                [hourStep]="1"
-                [minuteStep]="1"
-                [showMeridian]="ismeridian"
-                *ngIf="!destroyPicker"
-              ></timepicker>
-            </div>
-
-            <ng-container *ngIf="orderType !== 'OCL'">
-              <div class="eta-container">
-                <p>{{ "home.fleet-assignment.aprox-time" | translate }}</p>
-                <p>{{ aproxETA }} hrs</p>
+                <timepicker
+                  [formControlName]="'timepickup'"
+                  class="timepicker"
+                  (isValid)="timepickerValid($event)"
+                  [hourStep]="1"
+                  [minuteStep]="1"
+                  [showMeridian]="ismeridian"
+                  *ngIf="!destroyPicker"></timepicker>
               </div>
 
-              <div class="cp-toggle-container">
-                <p>{{ "home.fleet-assignment.cp-order" | translate }}</p>
-                <mat-slide-toggle (change)="orderWithCP()" [checked]="userWantCP">
-                </mat-slide-toggle>
-              </div>
-            </ng-container>
-          </form>
+              <ng-container *ngIf="orderType !== 'OCL'">
+                <div class="eta-container">
+                  <p>{{ 'home.fleet-assignment.aprox-time' | translate }}</p>
+                  <p>{{ aproxETA }} hrs</p>
+                </div>
+
+                <div class="cp-toggle-container">
+                  <p>{{ 'home.fleet-assignment.cp-order' | translate }}</p>
+                  <mat-slide-toggle (change)="orderWithCP()" [checked]="userWantCP"> </mat-slide-toggle>
+                </div>
+              </ng-container>
+            </form>
+          </div>
         </div>
-      </div>
 
-      <div class="fleet-info-container" *ngIf="isDatesSelected && locationsSelected && !showSavedLocations && !autocompleteShown">
-        <ng-container *ngIf="orderType === 'OCL'; else notOcl">
-          <div class="fleet-drivers-row">
-            <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
-            <div class="drivers-container">
-              <app-circular-avatar
-                *ngFor="let driver of drivers.slice(0, 4)"
-                [data]="driver"
-                fleetMember="drivers"
-                (click)="selectMembersForOrder(driver, 'drivers')"
-              >
-              </app-circular-avatar>
-              <div
-                class="rest-of-members"
-                *ngIf="drivers.length > 4"
-                (click)="showFleetContainer('drivers')"
-              >
-                <p>+{{ drivers.length - 4 }}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="fleet-trucks-row" *ngIf="walkingData">
-            <p>{{ 'orders.prime.no-vehicle' | translate }}</p>
-            <div class="drivers-container">
-              <app-circular-avatar fleetMember="vehicle" [data]="walkingData" (click)="selectMembersForOrder(walkingData, 'vehicle')"></app-circular-avatar>
-            </div>
-          </div>
-
-          <div class="fleet-trucks-row" *ngFor="let vehicleGroup of vehicle">
-            <p>{{ vehicleGroup.translations?.[lang] || vehicleGroup.name }}</p>
-
-            <div class="drivers-container">
-              <ng-container></ng-container>
-              <app-circular-avatar
-                *ngFor="let vehicle of vehicleGroup.vehicles?.slice(0, 4)"
-                fleetMember="vehicle"
-                [data]="vehicle"
-                (click)="selectMembersForOrder(vehicle, 'vehicle')"
-              ></app-circular-avatar>
-              <div
-                class="rest-of-members"
-                *ngIf="vehicleGroup.vehicles?.length > 4"
-                (click)="showFleetContainer('vehicle',  vehicleGroup.vehicles)"
-              >
-                <p>+{{ vehicleGroup.vehicles.length - 4 }}</p>
-              </div>
-            </div>
-          </div>
-
-        </ng-container>
-
-        <ng-template #notOcl>
-          <div class="fleet-drivers-row">
-            <p>{{ "home.fleet-assignment.available-drivers" | translate }}</p>
-            <div class="drivers-container">
-              <ng-container *ngFor="let driver of drivers; let i = index">
+        <div
+          class="fleet-info-container"
+          *ngIf="isDatesSelected && locationsSelected && !showSavedLocations && !autocompleteShown">
+          <ng-container *ngIf="orderType === 'OCL'; else notOcl">
+            <div class="fleet-drivers-row">
+              <p>{{ 'home.fleet-assignment.available-drivers' | translate }}</p>
+              <div class="drivers-container">
                 <app-circular-avatar
+                  *ngFor="let driver of drivers.slice(0, 4)"
                   [data]="driver"
-                  [userWantCP]="userWantCP"
                   fleetMember="drivers"
-                  *ngIf="i < 4"
-                  (click)="selectMembersForOrder(driver, 'drivers')"
-                >
+                  (click)="selectMembersForOrder(driver, 'drivers')">
                 </app-circular-avatar>
-              </ng-container>
-              <div
-                class="rest-of-members"
-                *ngIf="drivers.length > 4"
-                (click)="showFleetContainer('drivers')"
-              >
-                <p>+{{ drivers.length - 4 }}</p>
+                <div class="rest-of-members" *ngIf="drivers.length > 4" (click)="showFleetContainer('drivers')">
+                  <p>+{{ drivers.length - 4 }}</p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="fleet-trucks-row">
-            <p>{{ "home.fleet-assignment.available-trucks" | translate }}</p>
-            <div class="trucks-container">
-              <ng-container *ngFor="let truck of trucks; let i = index">
+            <div class="fleet-trucks-row" *ngIf="walkingData">
+              <p>{{ 'orders.prime.no-vehicle' | translate }}</p>
+              <div class="drivers-container">
                 <app-circular-avatar
-                  [data]="truck"
-                  [userWantCP]="userWantCP"
-                  fleetMember="trucks"
-                  *ngIf="i < 4"
-                  (click)="selectMembersForOrder(truck, 'trucks')"
-                >
-                </app-circular-avatar>
-              </ng-container>
-              <div
-                class="rest-of-members"
-                *ngIf="trucks.length > 4"
-                (click)="showFleetContainer('trucks')"
-              >
-                <p>+{{ trucks.length - 4 }}</p>
+                  fleetMember="vehicle"
+                  [data]="walkingData"
+                  (click)="selectMembersForOrder(walkingData, 'vehicle')"></app-circular-avatar>
               </div>
             </div>
-          </div>
 
-          <div class="fleet-trailers-row">
-            <p>{{ "home.fleet-assignment.available-trailers" | translate }}</p>
-            <div class="trailers-container">
-              <ng-container *ngFor="let trailer of trailers; let i = index">
+            <div class="fleet-trucks-row" *ngFor="let vehicleGroup of vehicle">
+              <p>{{ vehicleGroup.translations?.[lang] || vehicleGroup.name }}</p>
+
+              <div class="drivers-container">
+                <ng-container></ng-container>
                 <app-circular-avatar
-                  [data]="trailer"
-                  [userWantCP]="userWantCP"
-                  fleetMember="trailers"
-                  *ngIf="i < 4"
-                  (click)="selectMembersForOrder(trailer, 'trailers')"
-                >
-                </app-circular-avatar>
-              </ng-container>
-              <div
-                class="rest-of-members"
-                *ngIf="trailers.length > 4"
-                (click)="showFleetContainer('trailers')"
-              >
-                <p>+{{ trailers.length - 4 }}</p>
+                  *ngFor="let vehicle of vehicleGroup.vehicles?.slice(0, 4)"
+                  fleetMember="vehicle"
+                  [data]="vehicle"
+                  (click)="selectMembersForOrder(vehicle, 'vehicle')"></app-circular-avatar>
+                <div
+                  class="rest-of-members"
+                  *ngIf="vehicleGroup.vehicles?.length > 4"
+                  (click)="showFleetContainer('vehicle', vehicleGroup.vehicles)">
+                  <p>+{{ vehicleGroup.vehicles.length - 4 }}</p>
+                </div>
               </div>
             </div>
-          </div>
-        </ng-template>
-      </div>
-      <!--  <app-button 
+          </ng-container>
+
+          <ng-template #notOcl>
+            <div class="fleet-drivers-row">
+              <p>{{ 'home.fleet-assignment.available-drivers' | translate }}</p>
+              <div class="drivers-container">
+                <ng-container *ngFor="let driver of drivers; let i = index">
+                  <app-circular-avatar
+                    [data]="driver"
+                    [userWantCP]="userWantCP"
+                    fleetMember="drivers"
+                    *ngIf="i < 4"
+                    (click)="selectMembersForOrder(driver, 'drivers')">
+                  </app-circular-avatar>
+                </ng-container>
+                <div class="rest-of-members" *ngIf="drivers.length > 4" (click)="showFleetContainer('drivers')">
+                  <p>+{{ drivers.length - 4 }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="fleet-trucks-row">
+              <p>{{ 'home.fleet-assignment.available-trucks' | translate }}</p>
+              <div class="trucks-container">
+                <ng-container *ngFor="let truck of trucks; let i = index">
+                  <app-circular-avatar
+                    [data]="truck"
+                    [userWantCP]="userWantCP"
+                    fleetMember="trucks"
+                    *ngIf="i < 4"
+                    (click)="selectMembersForOrder(truck, 'trucks')">
+                  </app-circular-avatar>
+                </ng-container>
+                <div class="rest-of-members" *ngIf="trucks.length > 4" (click)="showFleetContainer('trucks')">
+                  <p>+{{ trucks.length - 4 }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="fleet-trailers-row">
+              <p>{{ 'home.fleet-assignment.available-trailers' | translate }}</p>
+              <div class="trailers-container">
+                <ng-container *ngFor="let trailer of trailers; let i = index">
+                  <app-circular-avatar
+                    [data]="trailer"
+                    [userWantCP]="userWantCP"
+                    fleetMember="trailers"
+                    *ngIf="i < 4"
+                    (click)="selectMembersForOrder(trailer, 'trailers')">
+                  </app-circular-avatar>
+                </ng-container>
+                <div class="rest-of-members" *ngIf="trailers.length > 4" (click)="showFleetContainer('trailers')">
+                  <p>+{{ trailers.length - 4 }}</p>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <!--  <app-button
         *ngIf="canGoToSteps"
         (click)="openNewOrderMenu()"
         class="btn-yellow"
         [text]="'location.btn-order' | translate">
       </-button> -->
 
-      <app-button
-        *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
-        [disabled]="!locationsSelected || isDatesSelected"
-        (click)="openNewOrderMenu()"
-        class="btn-submit btn-yellow"
-        [text]="'location.btn-order' | translate"
-      >
-      </app-button>
+        <div class="footer">
+          <button *ngIf="selectedFleet" class="clear-btn" (click)="setSelectedFleet()">
+            <span class="name">{{ selectedFleet.name }}</span>
+            <span class="clear">{{ 'fleet.clear_fleet_group' | translate }}</span>
+            <bego-icon icon="begon-refresh"></bego-icon>
+          </button>
 
-      <app-button
-        *ngIf="hideMap"
-        (click)="cancelChangeLocations()"
-        class="btn-yellow cancel-locations"
-        [text]="'orders.btn-cancel' | translate"
-      >
-      </app-button>
-    </div>
+          <app-button
+            *ngIf="!hideMap && !showFleetMembersContainer && canGoToSteps"
+            class="btn-yellow"
+            [disabled]="!locationsSelected || isDatesSelected"
+            (click)="openNewOrderMenu()"
+            [text]="'location.btn-order' | translate">
+          </app-button>
+        </div>
 
+        <app-button
+          *ngIf="hideMap"
+          (click)="cancelChangeLocations()"
+          class="btn-yellow cancel-locations"
+          [text]="'orders.btn-cancel' | translate">
+        </app-button>
+      </div>
     </div>
 
     <div *ngIf="haveFleetMembers" class="cant-create-orders">
-      <img src="../../../../assets/images/drafts/no-orders-yet.svg" alt="">
+      <img src="../../../../assets/images/drafts/no-orders-yet.svg" alt="" />
       <ng-container *ngFor="let error of haveFleetMembersErrors">
-        <p>{{error}}</p>
+        <p>{{ error }}</p>
       </ng-container>
     </div>
 
@@ -386,22 +346,19 @@
   <app-fleet-members
     *ngIf="!showMapPreview"
     [ngClass]="showFleetMembersContainer ? 'show-fleet-members' : ''"
-    [titleFleetMembers]="titleFleetMembers"
-  >
+    [titleFleetMembers]="titleFleetMembers">
     <ng-container *ngFor="let fleet of fleetData">
       <app-member-card-selection
         [data]="fleet"
         [titleFleetMembers]="titleFleetMembers"
-        (sendMemberSelected)="getMemberSelected($event)"
-      ></app-member-card-selection>
+        (sendMemberSelected)="getMemberSelected($event)"></app-member-card-selection>
     </ng-container>
 
     <app-button
       *ngIf="showFleetMembersContainer"
       class="btn-yellow select-fleet-members"
       text="Seleccionar"
-      (click)="closeFleetMembers(titleFleetMembers)"
-    >
+      (click)="closeFleetMembers(titleFleetMembers)">
     </app-button>
   </app-fleet-members>
 </section>
