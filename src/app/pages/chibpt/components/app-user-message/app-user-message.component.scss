@@ -3,6 +3,13 @@
 .message {
   opacity: 0;
   transition: opacity 0.75s ease-in;
+
+  ::ng-deep {
+    code, p {
+      word-wrap: break-word;
+      white-space: break-spaces;
+    }
+  }
 }
 
 section {
@@ -33,7 +40,7 @@ section {
 }
 
 .user-message-gradient-container {
-  @include gradient-background-message;
+  @include gradient-background-message(false);
   
   p {
     font-weight: 300;

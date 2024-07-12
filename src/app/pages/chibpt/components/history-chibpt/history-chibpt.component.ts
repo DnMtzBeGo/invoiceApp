@@ -37,6 +37,14 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
     previous: []
   };
 
+  public selectedIndices: { [key in DateType]: number | null } = {
+    today: null,
+    yesterday: null, 
+    last7Days: null, 
+    last30Days: null, 
+    previous: null
+  };
+
   dates: string[] = ['today', 'yesterday', 'last7Days', 'last30Days', 'previous'];
 
   public loading: boolean = false;
@@ -50,6 +58,8 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
   auxName: string = '';
   getNewHistorySub: Subscription;
 
+  selectedButtonIndex: { date: DateType, index: number } | null = null;
+
   constructor(
     private translateService: TranslateService,
     private apiRestService: AuthService,
@@ -62,14 +72,14 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
   public async ngOnInit() {
     await this.getHistoryChat();
     this.getNewHistorySub = this.chibiptService.sendNewHistorySub$.subscribe((history: History) => {
-      this.unselectHistory();
+      this.unselectHistoryTitle();
       this.histories.today.unshift(history);
     });
   }
 
   createNewChat() {
     if (this.chibiptService.sendingMessage) return;
-    this.unselectHistory();
+    this.unselectHistoryTitle();
     this.chibiptService.createNewChat();
   }
 
@@ -109,6 +119,16 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
     });
   }
 
+  selectButton(index: number, event: Event, date: DateType) {
+    event.stopPropagation(); 
+    this.selectedButtonIndex = { date, index };
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: Event) {
+    this.selectedButtonIndex = null;
+  }
+
   cancelRename(index: number, date: DateType) {
     this.histories[date][index].rename = false;
     this.auxName = '';
@@ -123,16 +143,17 @@ export class HistoryChibptComponent implements OnInit, OnDestroy {
     });
   }
 
-  unselectHistory() {
+  unselectHistoryTitle() {
     for (const date in this.histories) {
       this.histories[date].forEach((history) => (history['selected'] = false));
+      this.selectedIndices[date] = null;
     }
   }
 
-  selectedHistory({ _id, selected }: History, index: string, date: DateType) {
+  selectedHistoryTitle({ _id, selected }: History, index: number, date: DateType) {
     if (selected || this.chibiptService.sendingMessage) return;
 
-    this.unselectHistory();
+    this.unselectHistoryTitle();
     this.histories[date][index]['selected'] = true;
     this.selectedHistoryEmitter.emit(_id);
   }

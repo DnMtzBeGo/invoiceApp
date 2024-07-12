@@ -37,7 +37,7 @@ section {
 }
 
 .chibibot-message-gradient-container {
- @include gradient-background-message;
+ @include gradient-background-message(true);
   margin-inline-start: 4px;
 
   p {
