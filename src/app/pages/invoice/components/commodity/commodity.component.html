@@ -58,6 +58,17 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.commodity.tipo_materia' | translate }}</mat-label>
+      <mat-select formControlName="tipoMateria" class="disable-custom-format" name="tipoMateria">
+        <mat-option *ngFor="let option of typesOfMatter" [value]="option.clave">
+          {{ option.clave }} - {{ option.descripcion}}
+          </mat-option>
+        </mat-select>
+        <mat-hint align="end">Solo transporte internacional</mat-hint>
+      </mat-form-field>
+
     <div class="hazardous-container">
       <p>{{ 'invoice.commodity.material-peligroso' | translate }}</p>
       <mat-slide-toggle formControlName="materialPeligroso"></mat-slide-toggle>

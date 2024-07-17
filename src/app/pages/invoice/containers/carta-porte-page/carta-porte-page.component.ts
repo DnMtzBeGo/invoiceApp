@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 @Component({
   selector: 'app-carta-porte-page',
   templateUrl: './carta-porte-page.component.html',
-  styleUrls: ['./carta-porte-page.component.scss']
+  styleUrls: ['./carta-porte-page.component.scss'],
 })
 export class CartaPortePageComponent {
   public subtiposRemolquesList: SubtiposRemolques;
@@ -35,7 +35,7 @@ export class CartaPortePageComponent {
     public route: ActivatedRoute,
     public apiRestService: AuthService,
     public matDialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {
     this.cartaPorteInfoService.id_ccp = '';
   }
@@ -100,6 +100,13 @@ export class CartaPortePageComponent {
       delete this.facturaInfo.carta_porte.pais_origen_destino;
       delete this.facturaInfo.carta_porte.entrada_salida_merc;
       delete this.facturaInfo.carta_porte.via_entrada_salida;
+      delete this.facturaInfo.carta_porte.regimen_aduanero;
+      delete this.facturaInfo.carta_porte.regimenes_aduaneros;
+    } else {
+      if (this.facturaInfo.carta_porte.regimenes_aduaneros) {
+        const { regimenes_aduaneros } = this.facturaInfo.carta_porte;
+        this.facturaInfo.carta_porte.regimenes_aduaneros = JSON.parse(regimenes_aduaneros);
+      }
     }
 
     this.facturaInfo.carta_porte.cve_transporte = '01';
@@ -116,9 +123,9 @@ export class CartaPortePageComponent {
           } else {
             this._location.back();
           }
-        }
+        },
       },
-      restoreFocus: false
+      restoreFocus: false,
     });
   }
 
@@ -126,9 +133,9 @@ export class CartaPortePageComponent {
     this.matDialog.open(InfoModalComponent, {
       data: {
         title: this.translateService.instant('invoice.cp-page.error-title'),
-        message: error
+        message: error,
       },
-      restoreFocus: false
+      restoreFocus: false,
     });
   }
 
@@ -138,10 +145,10 @@ export class CartaPortePageComponent {
         title: this.translateService.instant('invoice.cp-page.readonly-title'),
         action: () => {
           this.router.navigateByUrl('/operations/facturas');
-        }
+        },
       },
       restoreFocus: false,
-      disableClose: true
+      disableClose: true,
     });
   }
 }

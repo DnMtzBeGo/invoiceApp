@@ -8,7 +8,11 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { SharedModule } from '../../shared/shared.module';
-import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import {
+  MAT_COLOR_FORMATS,
+  NgxMatColorPickerModule,
+  NGX_MAT_COLOR_FORMATS,
+} from '@angular-material-components/color-picker';
 
 import { InvoiceRoutingModule } from './invoice-routing.module';
 import {
@@ -20,7 +24,7 @@ import {
   FacturasPageComponent,
   FacturaEditPageComponent,
   FacturaOrderEditPageComponent,
-  CartaPortePageComponent
+  CartaPortePageComponent,
   //   InvoicePageComponent,
 } from './containers';
 import {
@@ -42,14 +46,14 @@ import {
   //   TruckSelectionTableComponent,
   //   TrailerSelectionTableComponent,
   //   RunAlgorithmComponent,
-  FacturaTableComponent
+  FacturaTableComponent,
   //   InvoiceTableComponent,
 } from './components';
 import {
   ActionConfirmationComponent,
   ActionCancelarFacturaComponent,
   ActionSendEmailFacturaComponent,
-  FacturaFiltersComponent
+  FacturaFiltersComponent,
   // PushNotificationComponent,
   // AddNoteComponent
 } from './modals';
@@ -79,6 +83,7 @@ import { TooltipHelpModule } from 'src/app/shared/components/tooltip-help/toolti
 import { BegoIconsModule, BegoTableModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
 import { CantidadTransportaComponent } from './components/cantidad-transporta/cantidad-transporta.component';
+import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/regimenes-aduaneros/regimenes-aduaneros.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +141,8 @@ import { CantidadTransportaComponent } from './components/cantidad-transporta/ca
     ActionCancelarFacturaComponent,
     ActionSendEmailFacturaComponent,
     FacturaFiltersComponent,
-    TwoDigitDecimaNumberDirective
+    TwoDigitDecimaNumberDirective,
+    RegimenesAduanerosComponent,
   ],
   imports: [
     CommonModule,
@@ -155,7 +161,7 @@ import { CantidadTransportaComponent } from './components/cantidad-transporta/ca
     TooltipHelpModule,
     BegoIconsModule,
     BegoTableModule,
-    AppMaterialModule
+    AppMaterialModule,
   ],
   exports: [
     // MODALS
@@ -163,8 +169,8 @@ import { CantidadTransportaComponent } from './components/cantidad-transporta/ca
     ActionCancelarFacturaComponent,
     ActionSendEmailFacturaComponent,
     FacturaFiltersComponent,
-    NgxMatColorPickerModule
+    NgxMatColorPickerModule,
   ],
-  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }, NotificationsService, DatePipe]
+  providers: [{ provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }, NotificationsService, DatePipe],
 })
 export class InvoiceModule {}

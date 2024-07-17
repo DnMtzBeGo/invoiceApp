@@ -5,9 +5,11 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { InfoModalComponent } from 'src/app/pages/invoice/modals/info-modal/info-modal.component';
 import { v4 as uuidv4 } from 'uuid';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartaPorteInfoService {
+  public ACTIVE_VERSION = '3.1';
+
   public id_ccp: string;
   public info: any;
   public infoRecolector = new Subject();
@@ -42,16 +44,17 @@ export class CartaPorteInfoService {
     this.matDialog.open(InfoModalComponent, {
       data: {
         title: 'La información es invalida',
-        message
+        message,
       },
-      restoreFocus: false
+      restoreFocus: false,
     });
   }
 
   resetCartaPorteInfo(): void {
     this.info = {
-      version: '3.0',
-      mercancias: {}
+      version: this.ACTIVE_VERSION,
+      regimenes_aduaneros: '[]',
+      mercancias: {},
     };
   }
 

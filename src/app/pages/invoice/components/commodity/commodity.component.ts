@@ -6,12 +6,12 @@ import { CataloguesListService } from '../invoice/carta-porte/services/catalogue
 import {
   CantidadTansporta,
   CantidadTansportaChangedEvent,
-  CantidadTransportaComponent
+  CantidadTransportaComponent,
 } from '../cantidad-transporta/cantidad-transporta.component';
 @Component({
   selector: 'app-commodity',
   templateUrl: './commodity.component.html',
-  styleUrls: ['./commodity.component.scss']
+  styleUrls: ['./commodity.component.scss'],
 })
 export class CommodityComponent implements OnChanges {
   @ViewChildren(CantidadTransportaComponent) cantidadTransportaRef: QueryList<CantidadTransportaComponent>;
@@ -20,6 +20,7 @@ export class CommodityComponent implements OnChanges {
   @Input() dataCoin: any;
   @Input() commodityInfo: any;
 
+  public typesOfMatter: any[] = [];
   public cantidadTransportaInfo: Array<CantidadTansporta>;
   public cantidad_transporta: Array<CantidadTansporta> = [{ cantidad: '', id_origen: '', id_destino: '' }];
   public embalaje: Array<object> = [];
@@ -45,6 +46,7 @@ export class CommodityComponent implements OnChanges {
     moneda: new FormControl('MXN'),
     pedimento: new FormControl(''),
     materialPeligroso: new FormControl(false),
+    tipoMateria: new FormControl(''),
     claveMaterialPeligroso: new FormControl(''),
     embalaje: new FormControl(''),
     cantidad: new FormControl(''),
@@ -56,7 +58,7 @@ export class CommodityComponent implements OnChanges {
         /^[a-f0-9A-F]{8}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{4}-[a-f0-9A-F]{12}$/
       )])
     ),
-    cantidad_transporta: new FormControl([])
+    cantidad_transporta: new FormControl([]),
   });
 
   constructor(private catalogListService: CataloguesListService, private cartaPorteInfoService: CartaPorteInfoService) {
@@ -70,6 +72,7 @@ export class CommodityComponent implements OnChanges {
       this.embalaje = data.tipos_de_embalaje;
       this.claveUnidad = Object.assign([], data.claves_de_unidad);
       this.filteredClaveUnidad = Object.assign([], this.claveUnidad);
+      this.typesOfMatter = Object.assign([], data.tipo_materia);
 
       this.setCatalogsFields();
     });
@@ -79,25 +82,31 @@ export class CommodityComponent implements OnChanges {
     //Obtener Autocomplete de Bienes Transportados
     this.commodity.controls.bienesTransportados.valueChanges.subscribe(async (val: string) => {
       if (val !== '') {
-        this.bienesTransportados = await this.catalogListService.getCatalogue('consignment-note/productos-y-servicios', {
-          term: val,
-          limit: 30
-        });
+        this.bienesTransportados = await this.catalogListService.getCatalogue(
+          'consignment-note/productos-y-servicios',
+          {
+            term: val,
+            limit: 30,
+          },
+        );
         this.filteredBienesTransportados = Object.assign([], this.bienesTransportados);
 
         if (this.filteredBienesTransportados.length < 1) {
           let productsCatalogs = await this.catalogListService.getCatalogue('consignment-note/productos-y-servicios', {
             term: '01010101',
-            limit: 1
+            limit: 1,
           });
           this.filteredBienesTransportados = Object.assign([], productsCatalogs);
           this.bienesTransportados = [...productsCatalogs];
         }
       } else {
-        this.bienesTransportados = await this.catalogListService.getCatalogue('consignment-note/productos-y-servicios', {
-          term: '',
-          limit: 30
-        });
+        this.bienesTransportados = await this.catalogListService.getCatalogue(
+          'consignment-note/productos-y-servicios',
+          {
+            term: '',
+            limit: 30,
+          },
+        );
 
         this.filteredBienesTransportados = Object.assign([], this.bienesTransportados);
       }
@@ -108,7 +117,7 @@ export class CommodityComponent implements OnChanges {
       if (val !== '') {
         this.materialPeligroso = await this.catalogListService.getCatalogue('consignment-note/material-peligroso', {
           term: val,
-          limit: 30
+          limit: 30,
         });
         this.filteredMaterialPeligroso = Object.assign([], this.materialPeligroso);
       }
@@ -118,7 +127,8 @@ export class CommodityComponent implements OnChanges {
       if (val !== '') {
         this.filteredClaveUnidad = this.claveUnidad.filter((e) => {
           const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
-          const input = typeof val == 'string' ? val.toLowerCase() : val ? `${val.clave} ${val.nombre}`.toLowerCase() : '';
+          const input =
+            typeof val == 'string' ? val.toLowerCase() : val ? `${val.clave} ${val.nombre}`.toLowerCase() : '';
           return currentValue.includes(input);
         });
       }
@@ -140,18 +150,25 @@ export class CommodityComponent implements OnChanges {
         material_peligroso,
         cve_material_peligroso: claveMaterialPeligroso,
         fraccion_arancelaria: fraccionArancelaria,
-        cantidad_transporta
+        cantidad_transporta,
+        tipo_materia,
       } = this.commodityInfo;
+
+      console.log({ com: this.commodityInfo });
+
       if (pedimentos) this.dataSourcePedimento = pedimentos;
       if (bienesTransportados) {
-        this.bienesTransportados = await this.catalogListService.getCatalogue('consignment-note/productos-y-servicios', {
-          term: bienesTransportados
-        });
+        this.bienesTransportados = await this.catalogListService.getCatalogue(
+          'consignment-note/productos-y-servicios',
+          {
+            term: bienesTransportados,
+          },
+        );
       }
       if (claveMaterialPeligroso) {
         this.materialPeligroso = await this.catalogListService.getCatalogue('consignment-note/material-peligroso', {
           term: claveMaterialPeligroso,
-          limit: 30
+          limit: 30,
         });
       }
 
@@ -175,7 +192,8 @@ export class CommodityComponent implements OnChanges {
         embalaje,
         cantidad,
         fraccionArancelaria,
-        cantidad_transporta
+        cantidad_transporta,
+        tipoMateria: tipo_materia,
       });
     }
   }
@@ -184,7 +202,7 @@ export class CommodityComponent implements OnChanges {
     const valuePedimento = event.target['value'];
     event.target['value'] = '';
     this.dataSourcePedimento.push({
-      pedimento: valuePedimento
+      pedimento: valuePedimento,
     });
     this.table?.renderRows();
     this.commodity.get('pedimento').reset();
@@ -194,7 +212,7 @@ export class CommodityComponent implements OnChanges {
   getBienesTransportadosText(option: string) {
     const optionInfo = this.bienesTransportados?.find((e) => e.code == option);
     this.commodity.patchValue({
-      bienesTransportadosDescripcion: optionInfo?.description
+      bienesTransportadosDescripcion: optionInfo?.description,
     });
     return optionInfo ? `${optionInfo.code} - ${optionInfo.description}` : '';
   }

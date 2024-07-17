@@ -11,11 +11,13 @@ import { RegimenesAduaneros } from 'src/app/pages/invoice/models/invoice/carta-p
 @Component({
   selector: 'app-transporte',
   templateUrl: './transporte.component.html',
-  styleUrls: ['./transporte.component.scss']
+  styleUrls: ['./transporte.component.scss'],
 })
 export class TransporteComponent implements OnInit {
   @Input() subtiposRemolques: SubtiposRemolques[] = [];
   @Input() info: any;
+
+  public selectedCustomsRegime: string[] = [];
 
   public autotransportesInfo: any;
 
@@ -32,13 +34,14 @@ export class TransporteComponent implements OnInit {
     pais_origen_destino: new FormControl(''),
     entrada_salida_merc: new FormControl(''),
     via_entrada_salida: new FormControl(''),
-    regimen_aduanero: new FormControl('')
+    regimen_aduanero: new FormControl(''),
+    regimenes_aduaneros: new FormControl('[]'),
   });
 
   constructor(
     private _formBuilder: FormBuilder,
     public cataloguesListService: CataloguesListService,
-    public cartaPorteInfoService: CartaPorteInfoService
+    public cartaPorteInfoService: CartaPorteInfoService,
   ) {
     this.cataloguesListService.countriesSubject.subscribe((data: any[]) => {
       this.countries = data;
@@ -57,7 +60,7 @@ export class TransporteComponent implements OnInit {
       this.cartaPorteInfoService.addRecolectedInfo({
         ...this.firstFormGroup.value,
         transp_internac: this.firstFormGroup.get('transp_internac').value,
-        isValid: this.firstFormGroup.status
+        isValid: this.firstFormGroup.status,
       });
     });
 
@@ -90,15 +93,26 @@ export class TransporteComponent implements OnInit {
 
     if (changes.info && this.info) {
       this.autotransportesInfo = this.info?.mercancias.autotransporte;
-      const { transp_internac, pais_origen_destino, entrada_salida_merc, via_entrada_salida, regimen_aduanero } = this.info;
+
+      const {
+        transp_internac,
+        pais_origen_destino,
+        entrada_salida_merc,
+        via_entrada_salida,
+        regimen_aduanero,
+        regimenes_aduaneros = [],
+      } = this.info;
 
       this.firstFormGroup.patchValue({
         transp_internac,
         pais_origen_destino,
         entrada_salida_merc,
         via_entrada_salida,
-        regimen_aduanero
+        regimen_aduanero,
+        regimenes_aduaneros: regimenes_aduaneros.length ? JSON.stringify(regimenes_aduaneros) : '[]',
       });
+
+      if (regimenes_aduaneros.length) this.selectedCustomsRegime = [...regimenes_aduaneros];
     }
   }
 }

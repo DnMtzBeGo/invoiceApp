@@ -11,7 +11,7 @@ const ELEMENT_DATA: Pedimento[] = [];
 @Component({
   selector: 'app-mercancias',
   templateUrl: './mercancias.component.html',
-  styleUrls: ['./mercancias.component.scss']
+  styleUrls: ['./mercancias.component.scss'],
 })
 export class MercanciasComponent implements OnInit {
   @ViewChildren(CommodityComponent) commodityRef: QueryList<CommodityComponent>;
@@ -30,15 +30,18 @@ export class MercanciasComponent implements OnInit {
   public commodities: Array<any> = [1];
   public monedas: any[] = [
     { clave: 'MXN', valor: 'MXN' },
-    { clave: 'USD', valor: 'USD' }
+    { clave: 'USD', valor: 'USD' },
   ];
 
   public mercanciasForm = new FormGroup({
     peso_bruto_total: new FormControl('', Validators.required),
-    unidad_peso: new FormControl('', Validators.required)
+    unidad_peso: new FormControl('', Validators.required),
   });
 
-  constructor(public cartaPorteInfoService: CartaPorteInfoService, private cataloguesListService: CataloguesListService) {
+  constructor(
+    public cartaPorteInfoService: CartaPorteInfoService,
+    private cataloguesListService: CataloguesListService,
+  ) {
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
       if (data?.unidades_de_peso) {
         this.unidadPeso = data.unidades_de_peso;
@@ -58,7 +61,7 @@ export class MercanciasComponent implements OnInit {
         peso_bruto_total: peso_bruto_total,
         unidad_peso,
         num_total_mercancias: mercancia.length,
-        mercancia
+        mercancia,
         // isValid: this.isValid()
       });
     });
@@ -87,7 +90,7 @@ export class MercanciasComponent implements OnInit {
       if (mercancia) this.commodities = mercancia;
       this.mercanciasForm.patchValue({
         peso_bruto_total,
-        unidad_peso
+        unidad_peso,
       });
     }
   }
@@ -104,22 +107,24 @@ export class MercanciasComponent implements OnInit {
     return this.commodityRef.toArray().map((e) => {
       const info = e.commodity.value;
 
+      console.log({ toService: info });
       const response = {
         clave_unidad: info.claveUnidad,
         peso_en_kg: info.peso,
         material_peligroso: info.materialPeligroso ? 'Sí' : 'No',
-        cve_material_peligroso: e.commodity.value.claveMaterialPeligroso ? e.commodity.value.claveMaterialPeligroso : '',
+        cve_material_peligroso: info.claveMaterialPeligroso ? info.claveMaterialPeligroso : '',
         embalaje: info.embalaje,
         descrip_embalaje: info.embalaje?.descripcion,
-        bienes_transp: e.commodity.value.bienesTransportados,
-        descripcion: e.commodity.value.bienesTransportadosDescripcion,
+        bienes_transp: info.bienesTransportados,
+        descripcion: info.bienesTransportadosDescripcion,
         dimensiones: info.dimensiones,
         valor_mercancia: parseFloat(info.valorMercancia),
         fraccion_arancelaria: info.fraccionArancelaria,
         moneda: info.moneda,
         cantidad: parseInt(info.cantidad),
         pedimentos: info.pedimento,
-        cantidad_transporta: info.cantidad_transporta
+        cantidad_transporta: info.cantidad_transporta,
+        tipo_materia: info.tipoMateria,
       };
 
       if (!info.materialPeligroso) {
