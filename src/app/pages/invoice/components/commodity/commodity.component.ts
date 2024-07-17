@@ -16,11 +16,11 @@ import {
   styleUrls: ['./commodity.component.scss'],
 })
 export class CommodityComponent implements OnChanges {
-  @ViewChildren(CantidadTransportaComponent) cantidadTransportaRef: QueryList<CantidadTransportaComponent>;
-  @ViewChild(MatTable) table: MatTable<any>;
+  @ViewChildren(CantidadTransportaComponent) public cantidadTransportaRef: QueryList<CantidadTransportaComponent>;
+  @ViewChild(MatTable) public table: MatTable<any>;
 
-  @Input() dataCoin: any;
-  @Input() commodityInfo: any;
+  @Input() public dataCoin: any;
+  @Input() public commodityInfo: any;
 
   public typesOfMatter: any[] = [];
   public cantidadTransportaInfo: Array<CantidadTansporta>;
@@ -200,7 +200,7 @@ export class CommodityComponent implements OnChanges {
     }
   }
 
-  async addPedimento(event: KeyboardEvent) {
+  public async addPedimento(event: KeyboardEvent) {
     const valuePedimento = event.target['value'];
     event.target['value'] = '';
     this.dataSourcePedimento.push({
@@ -211,7 +211,7 @@ export class CommodityComponent implements OnChanges {
     this.commodity.patchValue({ pedimento: this.dataSourcePedimento });
   }
 
-  getBienesTransportadosText(option: string) {
+  public getBienesTransportadosText(option: string) {
     const optionInfo = this.bienesTransportados?.find((e) => e.code == option);
     this.commodity.patchValue({
       bienesTransportadosDescripcion: optionInfo?.description,
@@ -219,26 +219,26 @@ export class CommodityComponent implements OnChanges {
     return optionInfo ? `${optionInfo.code} - ${optionInfo.description}` : '';
   }
 
-  getClaveUnidadText(option) {
+  public getClaveUnidadText(option) {
     let stateFound = option ? this.claveUnidad.find((x) => x.clave === option) : undefined;
     return stateFound ? `${stateFound.clave} - ${stateFound.nombre}` : undefined;
   }
 
-  getMaterialPeligrosoText(option: string) {
+  public getMaterialPeligrosoText(option: string) {
     const optionInfo = this.materialPeligroso.find((e) => e.clave == option);
     return optionInfo ? `${optionInfo.clave} - ${optionInfo.descripcion}` : '';
   }
 
-  removeData(id) {
+  public removeData(id) {
     this.dataSourcePedimento = this.dataSourcePedimento.filter((item, index) => index !== id);
     this.table.renderRows();
   }
 
-  acceptOnlyNumbers(event: Event): void {
+  public acceptOnlyNumbers(event: Event): void {
     event.target['value'] = event.target['value'].replace(/\D/g, '');
   }
 
-  resetFilterList(list) {
+  public resetFilterList(list) {
     switch (list) {
       case 'bienesTransportados':
         this.filteredBienesTransportados = this.bienesTransportados;

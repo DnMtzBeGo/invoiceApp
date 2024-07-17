@@ -14,14 +14,14 @@ const ELEMENT_DATA: Pedimento[] = [];
   templateUrl: './mercancias.component.html',
   styleUrls: ['./mercancias.component.scss'],
 })
-export class MercanciasComponent implements OnInit {
-  @ViewChildren(CommodityComponent) commodityRef: QueryList<CommodityComponent>;
-  @ViewChild(MatTable) table: MatTable<Pedimento>;
+export class MercanciasComponent {
+  @ViewChildren(CommodityComponent) public commodityRef: QueryList<CommodityComponent>;
+  @ViewChild(MatTable) public table: MatTable<Pedimento>;
 
-  @Input() info: any;
+  @Input() public info: any;
 
-  displayedColumns: string[] = ['value', 'action'];
-  dataSource = [...ELEMENT_DATA];
+  public displayedColumns: string[] = ['value', 'action'];
+  public dataSource = [...ELEMENT_DATA];
 
   public pesoBrutoTotal: number;
   public filteredUnidadPeso: any[] = [];
@@ -53,7 +53,7 @@ export class MercanciasComponent implements OnInit {
     });
   }
 
-  setCatalogsFields() {
+  public setCatalogsFields() {
     this.cartaPorteInfoService.infoRecolector.subscribe(() => {
       const mercancia = this.sendDataToService();
       const { peso_bruto_total, unidad_peso } = this.mercanciasForm.value;
@@ -83,9 +83,7 @@ export class MercanciasComponent implements OnInit {
     this.mercanciasForm.patchValue(this.info);
   }
 
-  async ngOnInit(): Promise<void> {}
-
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.info && this.info) {
       const { mercancia, peso_bruto_total, unidad_peso } = this.info;
       if (mercancia) this.commodities = mercancia;
@@ -96,11 +94,11 @@ export class MercanciasComponent implements OnInit {
     }
   }
 
-  addMerchandise() {
+  public addMerchandise() {
     this.commodities.push(1);
   }
 
-  removeData() {
+  public removeData() {
     if (this.commodities.length > 1) this.commodities.pop();
   }
 
@@ -147,12 +145,12 @@ export class MercanciasComponent implements OnInit {
     }
   }
 
-  getUnidadPesoText(option: string): string {
+  public getUnidadPesoText(option: string): string {
     let stateFound = option ? this.unidadPeso?.find((x) => x.clave === option) : undefined;
     return stateFound ? `${stateFound.clave} - ${stateFound.nombre}` : undefined;
   }
 
-  resetFilterList(list) {
+  public resetFilterList(list) {
     switch (list) {
       case 'permisosSCT':
         this.filteredUnidadPeso = this.unidadPeso;

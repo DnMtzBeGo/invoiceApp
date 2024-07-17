@@ -21,7 +21,7 @@ export class CartaPortePageComponent {
   public catalogues: any;
   private redirectTo: string;
 
-  @Input() facturaInfo: any;
+  @Input() public facturaInfo: any;
 
   public transporteInfo: any;
   public ubicacionesInfo: any;
@@ -29,7 +29,7 @@ export class CartaPortePageComponent {
   public figuraTransporteInfo: any;
   public cartaPorteEnabled = [];
   public cartaPorteDisabled: boolean = false;
-  isLinear = false;
+  public isLinear = false;
   constructor(
     public cartaPorteInfoService: CartaPorteInfoService,
     private _location: Location,
@@ -42,7 +42,7 @@ export class CartaPortePageComponent {
     this.cartaPorteInfoService.id_ccp = '';
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges) {
     if (changes.facturaInfo?.currentValue?.carta_porte) {
       this.cartaPorteEnabled.push('carta_porte');
       this.facturaInfo.complementos = this.cartaPorteEnabled;
@@ -86,7 +86,7 @@ export class CartaPortePageComponent {
     return 'CCC' + uuidv4().substring(3, 36).toUpperCase();
   }
 
-  async gatherInfo(): Promise<void> {
+  public async gatherInfo(): Promise<void> {
     this.cartaPorteInfoService.invalidInfo = false;
     this.cartaPorteInfoService.resetCartaPorteInfo();
     this.cartaPorteInfoService.infoRecolector.next(null);

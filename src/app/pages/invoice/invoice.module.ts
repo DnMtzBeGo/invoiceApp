@@ -75,7 +75,6 @@ import { SeriesPageComponent } from './containers/series-page/series-page.compon
 import { SeriesTableComponent } from './components/series-table/series-table.component';
 import { SeriesNewComponent } from './components/series-new/series-new.component';
 import { LocationComponent } from './components/location/location.component';
-
 // Services
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { TwoDigitDecimaNumberDirective } from '../shared/directives/decimal.directive';

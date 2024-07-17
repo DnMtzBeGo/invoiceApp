@@ -18,7 +18,7 @@ export class RegimenesAduanerosComponent implements OnInit {
 
   constructor(private readonly alertService: AlertService, private cd: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (this.initialValue.length) this.items = this.initialValue;
   }
 

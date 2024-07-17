@@ -79,11 +79,11 @@ export class TransporteComponent implements OnInit {
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subscribedCartaPorte.unsubscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     //MAYBE THIS FUNCTION IS NOT NECESSARY
     if (changes.subtiposRemolques) {
       if (this.subtiposRemolques == null) {

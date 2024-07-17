@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
 
 import { InfoModalComponent } from 'src/app/pages/invoice/modals/info-modal/info-modal.component';
 
@@ -21,7 +20,7 @@ export class CartaPorteInfoService {
     this.info = this.resetCartaPorteInfo();
   }
 
-  addRecolectedInfo(infoToAdd: any) {
+  public addRecolectedInfo(infoToAdd: any) {
     const { isValid } = infoToAdd;
     delete infoToAdd.isValid;
     if (!isValid && !this.invalidInfo) {
@@ -36,12 +35,12 @@ export class CartaPorteInfoService {
     Object.assign(this.info, infoToAdd);
   }
 
-  addRecoletedInfoMercancias(infoToAdd: any): void {
+  public addRecoletedInfoMercancias(infoToAdd: any): void {
     if (!this.info.mercancias) this.info.mercancias = {};
     Object.assign(this.info.mercancias, infoToAdd);
   }
 
-  showInvalidInfoModal(message: string) {
+  public showInvalidInfoModal(message: string) {
     this.matDialog.open(InfoModalComponent, {
       data: {
         title: 'La información es invalida',
@@ -51,7 +50,7 @@ export class CartaPorteInfoService {
     });
   }
 
-  resetCartaPorteInfo(): void {
+  public resetCartaPorteInfo(): void {
     this.info = {
       version: this.ACTIVE_VERSION,
       regimenes_aduaneros: '[]',
@@ -59,9 +58,7 @@ export class CartaPorteInfoService {
     };
   }
 
-  showSuccessModal() {}
-
-  showFraccionArancelaria(data: boolean) {
+  public showFraccionArancelaria(data: boolean) {
     this.emitShowFraccion.next(data);
     return this.emitShowFraccion;
   }
