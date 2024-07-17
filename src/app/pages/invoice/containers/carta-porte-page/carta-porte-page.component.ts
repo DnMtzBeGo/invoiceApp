@@ -3,12 +3,14 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { v4 as uuidv4 } from 'uuid';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { InfoModalComponent } from '../../modals/info-modal/info-modal.component';
 import { CartaPorteInfoService } from '../../components/invoice/carta-porte/services/carta-porte-info.service';
 import { SubtiposRemolques } from '../../models/invoice/carta-porte/subtipos-remolques';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { v4 as uuidv4 } from 'uuid';
+
 @Component({
   selector: 'app-carta-porte-page',
   templateUrl: './carta-porte-page.component.html',

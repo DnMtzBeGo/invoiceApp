@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-
 import { BehaviorSubject, Subject } from 'rxjs';
-import { InfoModalComponent } from 'src/app/pages/invoice/modals/info-modal/info-modal.component';
 import { v4 as uuidv4 } from 'uuid';
+
+import { InfoModalComponent } from 'src/app/pages/invoice/modals/info-modal/info-modal.component';
+
 @Injectable({
   providedIn: 'root',
 })

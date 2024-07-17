@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
+
 import { CartaPorteInfoService } from '../invoice/carta-porte/services/carta-porte-info.service';
 import { CataloguesListService } from '../invoice/carta-porte/services/catalogues-list.service';
 import {
@@ -8,6 +9,7 @@ import {
   CantidadTansportaChangedEvent,
   CantidadTransportaComponent,
 } from '../cantidad-transporta/cantidad-transporta.component';
+
 @Component({
   selector: 'app-commodity',
   templateUrl: './commodity.component.html',

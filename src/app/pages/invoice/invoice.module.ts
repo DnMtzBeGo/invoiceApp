@@ -6,14 +6,14 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TextMaskModule } from 'angular2-text-mask';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { SharedModule } from '../../shared/shared.module';
 import {
   MAT_COLOR_FORMATS,
   NgxMatColorPickerModule,
   NGX_MAT_COLOR_FORMATS,
 } from '@angular-material-components/color-picker';
+import { BegoIconsModule, BegoTableModule } from '@begomx/ui-components';
 
+import { SharedModule } from '../../shared/shared.module';
 import { InvoiceRoutingModule } from './invoice-routing.module';
 import {
   //   OrdersPageComponent,
@@ -80,7 +80,6 @@ import { LocationComponent } from './components/location/location.component';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { TwoDigitDecimaNumberDirective } from '../shared/directives/decimal.directive';
 import { TooltipHelpModule } from 'src/app/shared/components/tooltip-help/tooltip-help.module';
-import { BegoIconsModule, BegoTableModule } from '@begomx/ui-components';
 import { AppMaterialModule } from 'src/app/material';
 import { CantidadTransportaComponent } from './components/cantidad-transporta/cantidad-transporta.component';
 import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/regimenes-aduaneros/regimenes-aduaneros.component';
