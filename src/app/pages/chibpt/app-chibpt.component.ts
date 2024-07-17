@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { PrimeService } from 'src/app/shared/services/prime.service';
 
 @Component({

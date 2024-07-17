@@ -3,29 +3,37 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-member-card-selection',
   templateUrl: './member-card-selection.component.html',
-  styleUrls: ['./member-card-selection.component.scss']
+  styleUrls: ['./member-card-selection.component.scss'],
 })
-export class MemberCardSelectionComponent implements OnInit {
-
-  @Input() data: any;
-  @Input() titleFleetMembers: any;
-  @Output() sendMemberSelected = new EventEmitter<any>();
+export class MemberCardSelectionComponent {
+  @Input() public data: any;
+  @Input() public titleFleetMembers: any;
+  @Output() public sendMemberSelected = new EventEmitter<any>();
 
   public avatarSelected: boolean = false;
+  public fallbackImg: string = '';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
-
-  public getFleetMember(data: any) {
+  public getFleetMember(data: any): void {
     this.sendMemberSelected.emit({
       memberType: this.titleFleetMembers,
-      member: data
+      member: data,
     });
   }
 
-  public onPicError(data: any) {
-    data['photo'] = '../../../../assets/images/truck.svg'
+  public onPicError(): void {
+    switch (this.titleFleetMembers) {
+      case 'drivers':
+        this.fallbackImg = '../../../../assets/images/avatar-outline.svg';
+        break;
+      case 'trucks':
+        this.fallbackImg = '../../../../assets/images/truck.svg';
+        break;
+      case 'vehicle':
+      case 'trailers':
+        this.fallbackImg = '../../../../assets/images/trailer.svg';
+        break;
+    }
   }
-
 }

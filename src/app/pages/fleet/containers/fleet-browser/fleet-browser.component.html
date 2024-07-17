@@ -5,7 +5,8 @@
         <h1 [ngSwitch]="model">
           <ng-container *ngSwitchCase="'primeList'">{{ 'fleet.prime.txt_header_vehicles' | translate }}</ng-container>
           <ng-container *ngSwitchCase="'prime'">
-            {{ 'fleet.' + resolver.lang + '.txt_header' | translate }} {{ category.translations?.[lang] || category.name }}
+            {{ 'fleet.' + resolver.lang + '.txt_header' | translate }}
+            {{ category.translations?.[lang] || category.name }}
           </ng-container>
           <ng-container *ngSwitchDefault>{{ 'fleet.' + resolver.lang + '.txt_header' | translate }}</ng-container>
 
@@ -47,7 +48,7 @@
         </div>
 
         <mat-progress-bar
-          [style.display]="vm.fleetId == null || vm.facturasLoading ? 'block' : 'none'"
+          [style.display]="vm.fleetId === null || vm.facturasLoading ? 'block' : 'none'"
           style="position: absolute; bottom: -2px; height: 2px"
           class="brand-progress-bar-1"
           mode="indeterminate"></mat-progress-bar>
@@ -56,7 +57,10 @@
       <div class="controls">
         <div class="left">
           <mat-label>{{ 'fleet.txt_sort' | translate }}</mat-label>
-          <mat-select [value]="vm.params?.sort" (selectionChange)="navigate({ sort: $event.value, page: 1 })" class="disable-custom-format">
+          <mat-select
+            [value]="vm.params?.sort"
+            (selectionChange)="navigate({ sort: $event.value, page: 1 })"
+            class="disable-custom-format">
             <mat-option *ngFor="let option of resolver.sortBy" [value]="option.value" class="brand-option-1"
               >{{ 'fleet.' + resolver.lang + '.sort_by.' + option.key | translate }}
               {{ option.sort.slice(0, 1).toUpperCase() + option.sort.slice(1) }}
@@ -82,8 +86,7 @@
           [data]="vm.facturas"
           (changeSelected)="selectedCategory = $event"
           (editCategory)="openCategoryModal('edit', $event)"
-          (deleted)="facturasEmitter.next(['refresh'])"
-        ></app-prime-list>
+          (deleted)="facturasEmitter.next(['refresh'])"></app-prime-list>
 
         <ng-template #notPrime>
           <div *ngIf="vm.view === 'grid'" class="grid">
@@ -95,7 +98,10 @@
             </ng-container>
 
             <ng-container *ngIf="model === 'trucks'">
-              <app-truck-card *ngFor="let data of vm.facturas" [data]="data" (deleted)="facturasEmitter.next(['refresh'])"></app-truck-card>
+              <app-truck-card
+                *ngFor="let data of vm.facturas"
+                [data]="data"
+                (deleted)="facturasEmitter.next(['refresh'])"></app-truck-card>
             </ng-container>
 
             <ng-container *ngIf="model === 'trailers'">
@@ -106,12 +112,18 @@
             </ng-container>
 
             <ng-container *ngIf="model === 'prime'">
-              <app-prime-card *ngFor="let data of vm.facturas" [data]="data" (deleted)="facturasEmitter.next(['refresh'])"></app-prime-card>
+              <app-prime-card
+                *ngFor="let data of vm.facturas"
+                [data]="data"
+                (deleted)="facturasEmitter.next(['refresh'])"></app-prime-card>
             </ng-container>
           </div>
 
           <div *ngIf="vm.view === 'list'" class="list">
-            <app-fleet-table [orderTableData]="vm.facturas" [model]="model" (deleted)="facturasEmitter.next(['refresh'])">
+            <app-fleet-table
+              [orderTableData]="vm.facturas"
+              [model]="model"
+              (deleted)="facturasEmitter.next(['refresh'])">
             </app-fleet-table>
           </div>
         </ng-template>
@@ -127,7 +139,7 @@
         <div class="pagination">
           <p
             class="pagination-back"
-            [ngClass]="{ desactivated: paginator.pageIndex == 1 }"
+            [ngClass]="{ desactivated: paginator.pageIndex === 1 }"
             (click)="
               navigate({
                 page: paginator.pageIndex - 1
@@ -163,10 +175,16 @@
         <div class="limit">
           <mat-label>{{ 'invoice.invoice-table.items-per-page' | translate }}</mat-label>
           <mat-form-field appearance="outline" floatLabel="always" class="brand-field-1">
-            <mat-select [value]="paginator.pageSize" (selectionChange)="navigate({ limit: $event.value })" class="disable-custom-format">
-              <mat-option *ngFor="let sizeOption of paginatorDefaults[vm.view]?.sizeOptions" [value]="sizeOption" class="brand-option-1">{{
-                sizeOption
-              }}</mat-option>
+            <mat-select
+              [value]="paginator.pageSize"
+              (selectionChange)="navigate({ limit: $event.value })"
+              class="disable-custom-format">
+              <mat-option
+                *ngFor="let sizeOption of paginatorDefaults[vm.view]?.sizeOptions"
+                [value]="sizeOption"
+                class="brand-option-1"
+                >{{ sizeOption }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </div>
@@ -192,7 +210,10 @@
 
     <div class="field">
       <label class="input-box">
-        <input type="text" [(ngModel)]="categoryModal.type" [placeholder]="'fleet.prime.category_modal.placeholder-category' | translate" />
+        <input
+          type="text"
+          [(ngModel)]="categoryModal.type"
+          [placeholder]="'fleet.prime.category_modal.placeholder-category' | translate" />
       </label>
       <span class="error">{{ categoryModal.error }}</span>
     </div>

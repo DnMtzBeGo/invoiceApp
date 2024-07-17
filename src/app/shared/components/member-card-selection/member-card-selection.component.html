@@ -1,12 +1,15 @@
 <div class="member-card-container" (click)="getFleetMember(data)">
   <div class="avatar-container">
-    <img [src]="data?.photo" alt="" (error)="onPicError(data)" [ngClass]="!data?.availability ? 'not-available' : 'available'">
+    <img
+      [src]="data?.photo || fallbackImg"
+      alt=""
+      (error)="onPicError()"
+      [ngClass]="!data?.availability ? 'not-available' : 'available'" />
   </div>
   <div class="avatar-info">
-    <p>{{titleFleetMembers === 'drivers' ? data?.nickname : (data?.model || data.attributes.vehicle_number) }}</p>
+    <p>{{ titleFleetMembers === 'drivers' ? data?.nickname : data?.model || data.attributes.vehicle_number }}</p>
   </div>
   <div class="avatar-radio-container">
-    <div class="avatar-radio-button" [ngClass]=" data?.isSelected ? 'avatar-selected' : ''"></div>
-
+    <div class="avatar-radio-button" [ngClass]="data?.isSelected ? 'avatar-selected' : ''"></div>
   </div>
 </div>

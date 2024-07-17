@@ -1,5 +1,6 @@
 @import '../../../../../styles.scss';
 $lighter-color: #EDEDED;
+$light-gray: #A0A0A0;
 
 button {
   border: none;
@@ -15,35 +16,54 @@ button {
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
   -webkit-appearance: none;
-  color: $lighter-color;
   cursor: pointer;
+}
+
+.history-container-shadow {
+  height: 100%;
+  border-radius: 21px;
+  padding: 1.5px;
+  border: none;
+  background-image: radial-gradient(112.63% 391.25% at 102.56% 100%, #000000 0%, rgba(186, 186, 186, 0.489583) 55.21%, rgba(132, 132, 132, 0) 99.25%);
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+  max-width: 400px;
+
+  @include desktop-hd {
+    max-width: 370px;
+  }
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  background-color: #040B11;
-  width: 400px;
+  background: linear-gradient(60deg, #090d10, #121518); // new interface color
+  width: 100%;
+  max-width: 396px;
   min-height: 100%;
   height: 100%;
-  border-radius: 8px;
+  border-radius: 21px;
   position: relative;
-  /* overflow-x: hidden;
-  overflow-y: scroll; */
-  transition: all 0.3s;
+  overflow: hidden;
+
+  @include desktop-hd {
+    max-width: 376px;
+  }
 
   .header {
     display: flex;
     justify-content: start;
     align-items: center;
     gap: 21px;
-    margin: 21px auto 16.39px 52px;
+    margin-block: 21px;
+    margin-inline-start: 28.5px;
+
     &:hover {
       cursor: pointer;
     }
 
     bego-icon {
-      --color: #{$lighter-color};
+      --color: #{$light-gray};
     }
 
     h3 {
@@ -56,17 +76,22 @@ button {
   }
 
   .threads {
-    border-radius: 13px;
-    box-shadow: 0px 2px 5px 0px #1c232a;
-    margin: 0 3px;
+    margin-inline: 3px;
     height: 100%;
     overflow-y: auto;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+
+    ::-webkit-scrollbar {
+      display: none; 
+    }
 
     .history-list-container {
-      box-shadow: 0px 2px 5px 0px #1c232a;
       border-radius: 15px;
       padding: 16px;
       margin-right: 4px;
+      background: linear-gradient(60deg, #0d0f12, #191c1e, #0f1416);
+      margin-block-end: 6px;
 
       h4 {
         font-size: 14px;
@@ -84,28 +109,49 @@ button {
         padding: 0;
 
         li {
-          color: $lighter-color;
+          color: $light-gray;
           font-size: 14px;
           font-weight: 350;
           line-height: 19.12px;
           letter-spacing: 0.5px;
           cursor: pointer;
           position: relative;
+          outline: none;
+          -webkit-tap-highlight-color: transparent;
 
           .threads-title {
             overflow: hidden;
             white-space: nowrap;
             position: relative;
             padding: 7px 10px 8px 27px;
-            &:before {
-              content: '';
-              position: absolute;
-              bottom: 0;
-              right: 0;
-              top: 0;
-              background-image: linear-gradient(to right, transparent 0%, #0a0f14 60%);
-              width: 5rem;
-              height: 100%;
+            height:  33px;
+            z-index: 3;
+            border-radius: 24px;
+            margin-block: 3px;
+            margin: 1.5px;
+  
+               /*
+               &:after {
+                 content: '';  
+                  display: block;
+                 position: absolute;
+                   top: 0;
+                 right: 0;
+                 background-image: linear-gradient(to right, transparent 0%, #0c141b 90%);
+                  z-index: 1;
+                 width: 100%;
+                  height: 100%;
+                }
+               */
+
+            p {
+              overflow: hidden;
+              width: 87%;
+            }
+
+            &:hover{
+              background: linear-gradient(60deg, #0d0f12, #191c1e, #0f1416);
+              color: #ffee00;
             }
           }
 
@@ -114,61 +160,45 @@ button {
             top: 50%;
             right: 15px;
             position: absolute;
+            z-index: 5;
 
             .options {
               transform: rotate(90deg);
 
               ::ng-deep bego-icon {
                 i {
-                  color: $lighter-color;
-                }
-              }
-
-              &:hover {
-                ::ng-deep bego-icon {
-                  i {
-                    color: #ffee00;
-                  }
+                  color: $light-gray;
                 }
               }
             }
           }
 
           &:hover {
-            box-shadow: -2px -2px 4px 0px #050d14 inset, 2px 2px 5px 0px #1a1e24 inset;
-            border-radius: 8px;
-            background: #0c141b;
-            color: #ffee00;
+            border-radius: 24px;
 
-            .threads-title {
-              &:before {
-                background-image: linear-gradient(to right, transparent 0%, #0c141b 60%);
-              }
-            }
-          }
-        }
-
-        .renaming-title {
-          box-shadow: -2px -2px 4px 0px #050d14 inset, 2px 2px 5px 0px #1a1e24 inset;
-          border-radius: 8px;
-          background: #0c141b;
-
-          input {
-            padding: 7px 10px 8px 27px;
-            width: 90%;
-            color: $lighter-color;
-          }
-
-          .threads-title {
             &:before {
-              background-image: linear-gradient(to right, transparent 0%, #0c141b 60%);
+              content: '';  
+              display: block;
+              background-image: radial-gradient(112.63% 391.25% at 102.56% 100%, #000000 0%, rgba(186, 186, 186, 0.489583) 55.21%, rgba(132, 132, 132, 0) 99.25%);
+              border-radius: 24px;
+              position: absolute;
+              top: -1.5px;
+              left: -1.5px;
+              bottom: -1.5px;
+              right: -1.5px;
             }
           }
         }
 
-        .selected-history {
+        .selected-history-title {
           color: #ffee00;
         }
+
+        .selected-options-button {
+          ::ng-deep bego-icon i {
+            color: #ffee00 !important; // options icons when clicked
+          }
+        } 
       }
     }
 
@@ -184,50 +214,107 @@ button {
     }
   }
 
-  .open-history {
+  
+}
+
+::ng-deep .mat-menu-panel.brand-menu-2 {
+   background: radial-gradient(112.63% 391.25% at 102.56% 100%, #1c2021 0%, #646667 55.21%, #2c2e30 99.25%) !important;
+
+  .mat-menu-item {
+    color: rgba(237, 237, 237, 0.54);
+    font-weight: 350;
+    font-family: 'Avenir';
+  }
+}
+
+::ng-deep .mat-menu-panel.brand-menu-2::before {
+  background: linear-gradient(66.07deg, #0f1416 5.1%, #1a1d20 60%, #181c1d 100%); //new background gradient (inside)
+  width: calc(100% - 3px);
+  height: calc(100% - 3px);
+  border-radius: 26px;
+}
+
+::ng-deep .mat-menu-panel.brand-menu-2 .mat-menu-item {
+  position: relative; 
+
+  span {
+    position: relative; 
+    z-index: 1; 
+  }
+
+  &:hover span::before {
+    content: '';
     position: absolute;
-    top: 50%;
-    left: -21px;
-    transform: translate(0, -50%);
-    width: 21.5px;
-    height: 125.5px;
-    background: url('../../../../../assets/images/chibpt/open-history.png');
-    z-index: 1;
+    border-radius: 26px;
+    background: linear-gradient(to top right, #16191c 5.1%, #232627 60%, #1e2123 100%);//new background gradient of select (hover)
+    width: 174px;
+    height: 44px;
+    top: 8px;
+    left: 33.3px;
+    transform: translate(-50%, -50%);
+    z-index: -1; 
+    box-sizing: border-box;
   }
 }
 
 .menu-option {
   padding: 0 16px;
+
   ::ng-deep bego-icon {
     margin-right: 20px;
-
+    
     i {
-      color: rgba(255, 255, 255, 0.54);
+      color: rgba(237, 237, 237, 0.54) !important;
       font-size: 18px;
     }
   }
 
   &:hover:not([disabled]) {
+    
+    color: $lighter-color;
     border-radius: 26px;
-    background: linear-gradient(66.07deg, rgba(8, 12, 15, 0.5) 5.1%, rgba(85, 85, 85, 0) 100%);
-    border-image-source: linear-gradient(
-      95.86deg,
-      #1e1e1e 30.22%,
-      rgba(167, 167, 167, 0) 62.01%,
-      rgba(125, 125, 125, 0) 87.8%,
-      #7d7d7d 87.8%
-    );
-    box-shadow: 0px 2px 16px 0px rgba(4, 4, 4, 1);
-    color: rgba(255, 255, 255, 1);
+    height: 46px;
+    width: 180px;
+    background: linear-gradient(95.86deg, #1E1E1E 30.22%, #3e3f3f 62.01%, #1d2022 87.8%, #191c1e 87.8%);
 
     ::ng-deep bego-icon {
       i {
-        color: rgba(255, 255, 255, 1);
+        z-index: 3;
+        position: relative;
+        color: $lighter-color;
       }
     }
   }
 }
 
-.hide-history {
-  width: 0;
+.show-history {
+  transform: translateX(100%);
+  //position: relative;
+  //animation: mover-izquierda 3s forwards; /* duración de 2 segundos */
 }
+
+.hide-history {
+  transform: translateX(0);
+  //position: relative;
+  //animation: mover-derecha 3s forwards; /* duración de 2 segundos */
+}
+
+/*
+@keyframes mover-izquierda {
+  0% {
+      left: 200px; // Empieza desde 50 píxeles a la derecha 
+  }
+  100% {
+      left: 0;     // Termina en su posición original 
+  }
+}
+
+@keyframes mover-derecha {
+  0% {
+      left: 0px; // Empieza desde 50 píxeles a la izquierda 
+  }
+  100% {
+      left: 100%;     // Termina en su posición original 
+  }
+}
+*/

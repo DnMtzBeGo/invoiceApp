@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
 import { BegoChatBox } from '@begomx/ui-components';
 import { DateTime } from 'luxon';
 import { Subscription } from 'rxjs';
@@ -32,30 +32,13 @@ export class AppThreadsComponent implements OnInit, OnChanges, OnDestroy {
   quickQuestions: any[] = [];
 
   langChangesSuscription: any;
-/*
-quickQuestions = [
-    {
-      title: 'Write an email',
-      description: 'requesting a deadline extension for my project'
-    },
-    {
-      title: 'Write an email',
-      description: 'to request a quote from local plumbers'
-    },
-    {
-      title: 'Plan a trip',
-      description: 'to see the best of Route 57 in one week'
-    },
-    {
-      title: 'Start an online business',
-      description: 'finding a niche'
-    }
-  ];
 
-*/
   createNewHistorySub: Subscription;
 
-  constructor(private webService: AuthService, public chibiptService: ChibiptService, private notificationsService: NotificationsService, private translate: TranslateService ) {}
+  isScrolling: boolean = false; 
+
+  constructor(private webService: AuthService, public chibiptService: ChibiptService, 
+    private notificationsService: NotificationsService, private translate: TranslateService, private renderer: Renderer2 ) {}
 
   ngOnInit() {
     this.createNewHistorySub = this.chibiptService.createNewChatSub$.subscribe(() => {
@@ -65,6 +48,19 @@ quickQuestions = [
 
     this.langChangesSuscription = this.translate.onLangChange.subscribe((event) => {
       this.getQuickQuestions(event.lang);
+    })
+  }
+
+  ngAfterViewInit() {
+    this.renderer.listen(this.scrollContainer.nativeElement, 'scroll', () => {
+      this.isScrolling = true; 
+      this.showScrollbar();
+
+      clearTimeout((<any>window).scrollTimeout);
+      (<any>window).scrollTimeout = setTimeout(() => {
+        this.isScrolling = false; 
+        this.hideScrollbar();
+      }, 1000);
     })
   }
 
@@ -98,6 +94,15 @@ quickQuestions = [
         console.error('Error obtaining quick questions', error);
       }
     });
+  }
+
+  showScrollbar() {
+    
+    this.renderer.removeClass(this.scrollContainer.nativeElement, 'hide-scrollbar');
+  }
+
+  hideScrollbar() {
+    this.renderer.addClass(this.scrollContainer.nativeElement, 'hide-scrollbar');
   }
 
   cleanChat() {
