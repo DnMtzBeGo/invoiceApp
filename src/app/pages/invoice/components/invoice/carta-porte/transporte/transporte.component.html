@@ -24,7 +24,7 @@
     </mat-button-toggle-group>
   </div>
 
-  <div *ngIf="firstFormGroup.get('transp_internac').value == 'Sí'">
+  <div *ngIf="firstFormGroup.get('transp_internac').value === 'Sí'">
     <div class="grid">
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>{{ 'invoice.transporte.pais-origen-destino' | translate }}</mat-label>
@@ -79,7 +79,7 @@
     </mat-form-field> -->
   </div>
 
-  <div class="grid" *ngIf="firstFormGroup.value.transp_internac">
+  <div class="grid" *ngIf="firstFormGroup.value.transp_internac === 'Sí'">
     <mat-form-field appearance="outline" floatLabel="always">
       <mat-label>Regimenes Aduaneros</mat-label>
       <input matInput formControlName="regimenes_aduaneros" class="hide" />
@@ -89,7 +89,7 @@
         [initialValue]="selectedCustomsRegime"
         [regimes_list]="regimenesAduaneros"
         [entrada_salida_merc]="firstFormGroup.get('entrada_salida_merc').value"
-        (regimeHasChanged)="firstFormGroup.get('regimenes_aduaneros').setValue($event)" />
+        (regimeHasChanged)="firstFormGroup.get('regimenes_aduaneros').setValue($event)"></app-regimenes-aduaneros>
     </mat-form-field>
   </div>
 

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
+
 import { CartaPorteCountries } from 'src/app/pages/invoice/models/invoice/carta-porte/CartaPorteCountries';
 import { ClavesDeTransporte } from 'src/app/pages/invoice/models/invoice/carta-porte/ClavesDeTransporte';
 import { SubtiposRemolques } from 'src/app/pages/invoice/models/invoice/carta-porte/subtipos-remolques';
@@ -14,8 +15,8 @@ import { RegimenesAduaneros } from 'src/app/pages/invoice/models/invoice/carta-p
   styleUrls: ['./transporte.component.scss'],
 })
 export class TransporteComponent implements OnInit {
-  @Input() subtiposRemolques: SubtiposRemolques[] = [];
-  @Input() info: any;
+  @Input() public subtiposRemolques: SubtiposRemolques[] = [];
+  @Input() public info: any;
 
   public selectedCustomsRegime: string[] = [];
 
@@ -39,7 +40,6 @@ export class TransporteComponent implements OnInit {
   });
 
   constructor(
-    private _formBuilder: FormBuilder,
     public cataloguesListService: CataloguesListService,
     public cartaPorteInfoService: CartaPorteInfoService,
   ) {
@@ -53,7 +53,7 @@ export class TransporteComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (!this.firstFormGroup.get('transp_internac').value) this.firstFormGroup.get('transp_internac').setValue('No');
 
     this.subscribedCartaPorte = this.cartaPorteInfoService.infoRecolector.subscribe((value) => {
