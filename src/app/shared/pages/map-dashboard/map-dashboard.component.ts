@@ -2,14 +2,14 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { MapDashboardService } from './map-dashboard.service';
-import { HeaderService } from 'src/app/pages/home/services/header.service';
-
-import { NotificationsService } from '../../services/notifications.service';
 import { BegoPolygonsMap } from '@begomx/ui-components';
 import { TranslateService } from '@ngx-translate/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { MapDashboardService } from './map-dashboard.service';
+import { HeaderService } from 'src/app/pages/home/services/header.service';
+import { NotificationsService } from '../../services/notifications.service';
 import { ShareReportModalComponent } from 'src/app/pages/home/components/share-report-modal/share-report-modal.component';
 
 declare var google: any;
@@ -23,13 +23,13 @@ const DAY = 86_399_000;
   providers: [MapDashboardService],
 })
 export class MapDashboardComponent {
-  @ViewChild('map', { read: ElementRef, static: false }) mapRef!: ElementRef;
+  @ViewChild('map', { read: ElementRef, static: false }) public mapRef!: ElementRef;
 
-  subscriptions = new Subscription();
+  public subscriptions = new Subscription();
 
   /* New Variables */
   // drivers: any = [];
-  options = {
+  public options = {
     drivers: [],
     tags: [],
     polygons: [],
@@ -39,7 +39,7 @@ export class MapDashboardComponent {
     heatmap: false,
   };
 
-  lang = {
+  public lang = {
     btnFilter: '',
     filter: {
       title: '',
@@ -75,7 +75,7 @@ export class MapDashboardComponent {
     this.headerService.changeHeader(true);
   }
 
-  async ngOnInit() {
+  public async ngOnInit() {
     this.setPolygonsMapLang();
     this.translateService.onLangChange.subscribe(async () => {
       this.setPolygonsMapLang();
@@ -110,12 +110,12 @@ export class MapDashboardComponent {
     await this.getTags();
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.headerService.changeHeader(false);
     this.subscriptions.unsubscribe();
   }
 
-  async getFleetDetails(cleanRefresh: boolean) {
+  public async getFleetDetails(cleanRefresh: boolean) {
     if (!this.mapDashboardService.showFleetMap || this.mapDashboardService.userRole === 1) return;
 
     (
@@ -155,14 +155,14 @@ export class MapDashboardComponent {
       });
   }
 
-  clearMap(): void {
+  public clearMap(): void {
     this.drivers = [];
   }
 
   // #region polygons
-  heatmap: boolean = false;
+  public heatmap: boolean = false;
 
-  clearedFilter() {
+  public clearedFilter() {
     this.mapDashboardService.clearedFilter.next();
   }
 
@@ -189,9 +189,9 @@ export class MapDashboardComponent {
     },
   };
 
-  heatmaps = [];
-  polygons = [];
-  drivers = [];
+  public heatmaps = [];
+  public polygons = [];
+  public drivers = [];
   public filterPages = {
     drivers: { actual: 0, total: 0 },
     polygons: { actual: 0, total: 0 },
@@ -203,20 +203,20 @@ export class MapDashboardComponent {
     properties: {},
   };
 
-  reloadData: any;
+  public reloadData: any;
 
-  loading: boolean = false;
-  activeDrivers: boolean = false;
-  saveActiveDrivers: boolean = false;
+  public loading: boolean = false;
+  public activeDrivers: boolean = false;
+  public saveActiveDrivers: boolean = false;
 
-  activeShare: boolean = false;
-  activeModal: boolean = false;
+  public activeShare: boolean = false;
+  public activeModal: boolean = false;
 
   public heatmapSelection(status: boolean) {
     this.heatmap = status;
   }
 
-  async getDrivers(page: number = 1) {
+  public async getDrivers(page: number = 1) {
     if (this.filter.drivers.loading) return;
 
     this.filter.drivers.loading = true;
@@ -251,7 +251,7 @@ export class MapDashboardComponent {
     });
   }
 
-  async getPolygons(page: number = 1) {
+  public async getPolygons(page: number = 1) {
     if (this.filter.polygons.loading) return;
 
     this.filter.polygons.loading = true;
@@ -284,7 +284,7 @@ export class MapDashboardComponent {
     });
   }
 
-  async getTags(page: number = 1) {
+  public async getTags(page: number = 1) {
     if (this.filter.tags.loading) return;
 
     this.filter.tags.loading = true;
@@ -317,7 +317,7 @@ export class MapDashboardComponent {
     });
   }
 
-  async loadMoreData(column: string) {
+  public async loadMoreData(column: string) {
     this.filterPages[column].actual += 1;
     if (column === 'drivers') this.getDrivers(this.filterPages.drivers.actual);
     if (column === 'polygons') this.getPolygons(this.filterPages.polygons.actual);
@@ -396,7 +396,7 @@ export class MapDashboardComponent {
     }
   }
 
-  async getHeatmap(options: any) {
+  public async getHeatmap(options: any) {
     this.activeShare = false;
     const queryParams = new URLSearchParams({
       drivers: JSON.stringify(options.drivers.map(({ _id }) => _id)),
@@ -445,7 +445,7 @@ export class MapDashboardComponent {
     });
   }
 
-  async getDispersion(options: any) {
+  public async getDispersion(options: any) {
     this.activeShare = false;
 
     const newOptions = {
@@ -499,7 +499,7 @@ export class MapDashboardComponent {
     });
   }
 
-  openShareModal() {
+  public openShareModal() {
     if (!this.activeShare || !!!this.options.start_date) return;
 
     const options = {
@@ -540,7 +540,7 @@ export class MapDashboardComponent {
     this.getDispersion(this.options);
   }
 
-  clearFilters() {
+  public clearFilters() {
     this.drivers = [];
     this.polygons = [];
     this.heatmaps = [];
@@ -557,7 +557,7 @@ export class MapDashboardComponent {
     this.mapDashboardService.clearedFilter.next();
   }
 
-  setPolygonsMapLang() {
+  public setPolygonsMapLang() {
     const path = 'home.polygon-filter.';
 
     this.lang = {
