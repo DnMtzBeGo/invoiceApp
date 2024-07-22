@@ -232,9 +232,6 @@ export class HomeComponent implements OnInit {
     this.showSidebar = !this.showOrderDetails || step < 3;
   }
 
-  // mapDashboardService.activeFilter: boolean = false;
-  // mapDashboardService.openOrderMenu: boolean = false;
-
   getCoordinates() {
     if (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input) {
       this.mapDashboardService.showFleetMap = true;
