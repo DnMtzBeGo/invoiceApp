@@ -1,4 +1,5 @@
 @import 'src/app/pages/invoice/styles/colors';
+@import "src/styles.scss";
 
 .customs-regime {
   .list {
@@ -25,12 +26,17 @@
 
         button {
           margin-top: 12px;
-          background-color: $yellow;
+          background-color: $yellow-color;
           width: 30px;
           height: 30px;
           * {
-            color: #333;
+            color: #040B11;
             font-size: 15px;
+          }
+
+          ::ng-deep .mat-button-wrapper {
+            padding: 0;
+            line-height: 30px;
           }
         }
       }

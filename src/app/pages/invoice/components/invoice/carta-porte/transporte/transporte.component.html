@@ -80,8 +80,9 @@
   </div>
 
   <div class="grid" *ngIf="firstFormGroup.value.transp_internac === 'Sí'">
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Regimenes Aduaneros</mat-label>
+    <mat-form-field>
+      <!-- <mat-label>Regimenes Aduaneros</mat-label> -->
+       <div class="title">Regimenes Aduaneros</div>
       <input matInput formControlName="regimenes_aduaneros" class="hide" />
       <div *ngIf="!firstFormGroup.get('entrada_salida_merc').value">Seleccione el movimiento de mercancia</div>
       <app-regimenes-aduaneros
