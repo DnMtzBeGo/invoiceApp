@@ -26,7 +26,7 @@ import { ShareReportModalModule } from 'src/app/pages/home/components/share-repo
     MatCheckboxModule,
     TranslateModule,
     FormsModule,
-    ShareReportModalModule
+    ShareReportModalModule,
   ],
   exports: [MarkerInfoWindowComponent],
 })
