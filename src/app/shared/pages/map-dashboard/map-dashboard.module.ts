@@ -6,7 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 
 import { FleetModule } from 'src/app/pages/fleet/fleet.module';
-import { PolygonFilterModule } from 'src/app/pages/home/components/polygon-filter/polygon-filter.module';
 import { HomeModule } from 'src/app/pages/home/home.module';
 import { MapModule } from 'src/app/shared/components/map/map.module';
 import { MapDashboardRoutingModule } from './map-dashboard-routing.module';
@@ -20,7 +19,6 @@ import { MarkerInfoWindowComponent } from './components/marker-info-view.compone
     MapDashboardRoutingModule,
     HomeModule,
     FleetModule,
-    PolygonFilterModule,
     MapModule,
     BegoIconsModule,
     BegoPolygonsMapModule,
