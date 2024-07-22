@@ -1,4 +1,10 @@
-<div [class.map-faded-out]="!mapDashboardService.showFleetMap" class="polygons-map-container google-map transparent">
+<!-- [class.map-faded-out]="!mapDashboardService.showFleetMap" -->
+<div
+  class="polygons-map-container google-map transparent"
+  [ngClass]="{
+    'map-faded-out': !mapDashboardService.showFleetMap,
+    'hide-map': !mapDashboardService.showPolygons && !mapDashboardService.showFleetMap
+  }">
   <bego-polygons-map
     #polygonsMap
     [filter]="filter"
@@ -6,6 +12,7 @@
     [polygons]="polygons"
     [heatmaps]="heatmaps"
     [tooltip]="tooltip"
+    [lang]="lang"
     (reloadEmitter)="reloadMap()"
     (heatmapEmitter)="heatmapSelection($event)"
     (openTooltipEmitter)="selectedTooltip($event)"
@@ -14,7 +21,7 @@
     (scrolledToBottom)="loadMoreData($event)"
     [ngClass]="{
       'active-polygons': mapDashboardService.showFleetMap,
-      'active-filter': !mapDashboardService.openOrderMenu
+      'active-filter': (options?.start_date || reloadData?.start_date) && !mapDashboardService.openOrderMenu
     }">
     <div
       class="action-btn"

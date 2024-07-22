@@ -1,4 +1,4 @@
-import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, Injector, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -39,15 +39,36 @@ export class MapDashboardComponent {
     heatmap: false,
   };
 
+  lang = {
+    btnFilter: '',
+    filter: {
+      title: '',
+      column: {
+        drivers: '',
+        polygons: '',
+        tags: '',
+        empty: '',
+      },
+      date: '',
+      heatmap: {
+        title: '',
+        yes: '',
+        no: '',
+      },
+      actions: {
+        clear: '',
+        cancel: '',
+        apply: '',
+      },
+    },
+  };
+
   constructor(
     public mapDashboardService: MapDashboardService,
     public router: Router,
     public apiRestService: AuthService,
     public headerService: HeaderService,
     private notificationsService: NotificationsService,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector,
-    private appRef: ApplicationRef,
     private translateService: TranslateService,
     private matDialog: MatDialog,
   ) {
@@ -55,6 +76,11 @@ export class MapDashboardComponent {
   }
 
   async ngOnInit() {
+    this.setPolygonsMapLang();
+    this.translateService.onLangChange.subscribe(async () => {
+      this.setPolygonsMapLang();
+    });
+
     this.subscriptions.add(
       this.router.events.subscribe((res) => {
         if (!(res instanceof NavigationEnd)) return;
@@ -63,20 +89,19 @@ export class MapDashboardComponent {
           this.headerService.changeHeader(true);
           this.mapDashboardService.showPolygons = true;
           this.mapDashboardService.showFleetMap = true;
-          // this.polygonFilter?.clearFilters();
         }
       }),
     );
 
     this.subscriptions.add(this.mapDashboardService.clearMap.subscribe(() => this.clearMap()));
-    // this.subscriptions.add(this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic()));
+
     this.subscriptions.add(
       this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)),
     );
-    // this.subscriptions.add(
-    //   this.mapDashboardService.centerMap.subscribe((isPolygons: boolean) => this.centerMap(isPolygons)),
-    // );
-    /* this.subscriptions.add(this.mapDashboardService.clearFilter.subscribe(() => this.polygonFilter?.clearFilters())); */
+
+    this.subscriptions.add(
+      this.mapDashboardService.clearFilter.subscribe(() => this.selectedAction({ action: 'clear' })),
+    );
 
     await this.getFleetDetails(false);
 
@@ -178,7 +203,7 @@ export class MapDashboardComponent {
     properties: {},
   };
 
-  private reloadData: any;
+  reloadData: any;
 
   loading: boolean = false;
   activeDrivers: boolean = false;
@@ -344,6 +369,7 @@ export class MapDashboardComponent {
 
         this.heatmap = heatmap;
         this.reloadData = event;
+        console.log('selected action: ', this.reloadData);
         if (heatmap) await this.getHeatmap(event);
         else await this.getDispersion(event);
         this.mapDashboardService.getCoordinates.next();
@@ -360,6 +386,7 @@ export class MapDashboardComponent {
         this.activeDrivers = false;
         this.saveActiveDrivers = false;
         if (!this.options.start_date) break;
+        if (this.polygonsMap.isTrafficActive) this.polygonsMap.toggleTraffic();
         this.clearFilters();
         this.getFleetDetails(false);
         break;
@@ -526,6 +553,35 @@ export class MapDashboardComponent {
       date: null,
       heatmap: false,
     };
+    this.reloadData = null;
     this.mapDashboardService.clearedFilter.next();
+  }
+
+  setPolygonsMapLang() {
+    const path = 'home.polygon-filter.';
+
+    this.lang = {
+      btnFilter: this.translateService.instant(path + 'btn-filter'),
+      filter: {
+        title: this.translateService.instant(path + 'filter.title'),
+        column: {
+          drivers: this.translateService.instant(path + 'filter.column.drivers'),
+          polygons: this.translateService.instant(path + 'filter.column.polygons'),
+          tags: this.translateService.instant(path + 'filter.column.tags'),
+          empty: '',
+        },
+        date: this.translateService.instant(path + 'filter.date'),
+        heatmap: {
+          title: this.translateService.instant(path + 'filter.heatmap.title'),
+          yes: this.translateService.instant(path + 'filter.heatmap.yes'),
+          no: this.translateService.instant(path + 'filter.heatmap.no'),
+        },
+        actions: {
+          clear: this.translateService.instant(path + 'filter.actions.clear'),
+          cancel: this.translateService.instant(path + 'filter.actions.cancel'),
+          apply: this.translateService.instant(path + 'filter.actions.apply'),
+        },
+      },
+    };
   }
 }
