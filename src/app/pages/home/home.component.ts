@@ -149,7 +149,7 @@ export class HomeComponent implements OnInit {
   }
 
   updateMap() {
-    if (this.creatingForms) return;
+    if (this.mapDashboardService.activeFilter) return;
     this.mapDashboardService.getFleetDetails.next(false);
   }
 
@@ -196,10 +196,10 @@ export class HomeComponent implements OnInit {
   }
 
   updateLocation() {
-    if (this.creatingForms) {
+    if (this.mapDashboardService.activeFilter) {
       this.clearMap();
       this.mapDashboardService.clearFilter.next();
-      this.creatingForms = false;
+      this.mapDashboardService.activeFilter = false;
     }
   }
 
@@ -232,8 +232,8 @@ export class HomeComponent implements OnInit {
     this.showSidebar = !this.showOrderDetails || step < 3;
   }
 
-  creatingForms: boolean = false;
-  openOrderMenu: boolean = false;
+  // mapDashboardService.activeFilter: boolean = false;
+  // mapDashboardService.openOrderMenu: boolean = false;
 
   getCoordinates() {
     if (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input) {
@@ -242,29 +242,29 @@ export class HomeComponent implements OnInit {
       this.inputDirections.ClearAutocompletePickup();
     }
 
-    this.creatingForms = true;
-    this.openOrderMenu = false;
+    this.mapDashboardService.activeFilter = true;
+    this.mapDashboardService.openOrderMenu = false;
   }
 
   clearedFilter() {
-    if (!this.creatingForms && (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input)) return;
+    if (!this.mapDashboardService.activeFilter && (this.inputDirections.autocompleteDropoff.input || this.inputDirections.autocompletePickup.input)) return;
     this.clearMap();
-    this.creatingForms = false;
+    this.mapDashboardService.activeFilter = false;
     this.mapDashboardService.getFleetDetails.next(false);
   }
 
   clearMap() {
     this.mapDashboardService.clearMap.next();
-    this.openOrderMenu = true;
+    this.mapDashboardService.openOrderMenu = true;
   }
 
   reloadMap() {
-    if (this.creatingForms) this.mapDashboardService.reloadPolygons.next();
+    if (this.mapDashboardService.activeFilter) this.mapDashboardService.reloadPolygons.next();
     else this.mapDashboardService.getFleetDetails.next(false);
   }
 
   centerMap() {
-    if (this.mapDashboardService.showFleetMap) this.mapDashboardService.centerMap.next(this.creatingForms);
+    if (this.mapDashboardService.showFleetMap) this.mapDashboardService.centerMap.next(this.mapDashboardService.activeFilter);
     else this.mapDashboardService.centerRouteMap.next();
   }
 }

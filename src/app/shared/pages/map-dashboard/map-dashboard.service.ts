@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MapDashboardService {
   centerMap = new Subject();
@@ -19,6 +19,8 @@ export class MapDashboardService {
   userRole: number | null = null;
   showFleetMap = true;
   showPolygons = true;
+  activeFilter: boolean = false;
+  openOrderMenu: boolean = false;
 
   haveNotFleetMembers = false;
   haveFleetMembersErrors: string[] = [];

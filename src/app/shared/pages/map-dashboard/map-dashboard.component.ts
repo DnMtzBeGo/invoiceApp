@@ -1,44 +1,43 @@
 import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, Injector, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { fromEvent, interval, merge, of, Subscription } from 'rxjs';
-import { catchError, filter, takeUntil } from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { CustomMarker } from 'src/app/pages/home/custom.marker';
 import { MapDashboardService } from './map-dashboard.service';
 import { HeaderService } from 'src/app/pages/home/services/header.service';
-import { PolygonFilter } from 'src/app/pages/home/components/polygon-filter/polygon-filter.component';
-import { DateTime } from 'luxon';
+
 import { NotificationsService } from '../../services/notifications.service';
-import { MarkerInfoWindowComponent } from './components/marker-info-view.component';
+import { BegoPolygonsMap } from '@begomx/ui-components';
+import { TranslateService } from '@ngx-translate/core';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { ShareReportModalComponent } from 'src/app/pages/home/components/share-report-modal/share-report-modal.component';
 
 declare var google: any;
+const LIMIT = 6;
+const DAY = 86_399_000;
 
 @Component({
   selector: 'app-map-dashboard',
   templateUrl: './map-dashboard.component.html',
   styleUrls: ['./map-dashboard.component.scss'],
-  providers: [MapDashboardService]
+  providers: [MapDashboardService],
 })
 export class MapDashboardComponent {
   @ViewChild('map', { read: ElementRef, static: false }) mapRef!: ElementRef;
-  @ViewChild(PolygonFilter) polygonFilter: PolygonFilter;
-
-  trafficLayer: google.maps.TrafficLayer;
-
-  map: any;
-  bounds: any;
-  isMapDirty = false;
-  isTrafficActive = false;
-  showTrafficButton = false;
-
-  googleMarkers = [];
-  markersFromService = [];
-
-  zoom = 18;
-  maxZoom = 18;
 
   subscriptions = new Subscription();
-  isHeatmap: boolean = false;
+
+  /* New Variables */
+  // drivers: any = [];
+  options = {
+    drivers: [],
+    tags: [],
+    polygons: [],
+    start_date: null,
+    end_date: null,
+    date: null,
+    heatmap: false,
+  };
 
   constructor(
     public mapDashboardService: MapDashboardService,
@@ -48,12 +47,14 @@ export class MapDashboardComponent {
     private notificationsService: NotificationsService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    private translateService: TranslateService,
+    private matDialog: MatDialog,
   ) {
     this.headerService.changeHeader(true);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.subscriptions.add(
       this.router.events.subscribe((res) => {
         if (!(res instanceof NavigationEnd)) return;
@@ -62,17 +63,26 @@ export class MapDashboardComponent {
           this.headerService.changeHeader(true);
           this.mapDashboardService.showPolygons = true;
           this.mapDashboardService.showFleetMap = true;
-          this.polygonFilter?.clearFilters();
+          // this.polygonFilter?.clearFilters();
         }
-      })
+      }),
     );
 
     this.subscriptions.add(this.mapDashboardService.clearMap.subscribe(() => this.clearMap()));
-    this.subscriptions.add(this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic()));
-    this.subscriptions.add(this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)));
-    this.subscriptions.add(this.mapDashboardService.centerMap.subscribe((isPolygons: boolean) => this.centerMap(isPolygons)));
-    this.subscriptions.add(this.mapDashboardService.clearFilter.subscribe(() => this.polygonFilter?.clearFilters()));
-    this.getFleetDetails(false);
+    // this.subscriptions.add(this.mapDashboardService.toggleTraffic.subscribe(() => this.toggleTraffic()));
+    this.subscriptions.add(
+      this.mapDashboardService.getFleetDetails.subscribe((cleanRefresh) => this.getFleetDetails(cleanRefresh)),
+    );
+    // this.subscriptions.add(
+    //   this.mapDashboardService.centerMap.subscribe((isPolygons: boolean) => this.centerMap(isPolygons)),
+    // );
+    /* this.subscriptions.add(this.mapDashboardService.clearFilter.subscribe(() => this.polygonFilter?.clearFilters())); */
+
+    await this.getFleetDetails(false);
+
+    await this.getDrivers();
+    await this.getPolygons();
+    await this.getTags();
   }
 
   ngOnDestroy() {
@@ -85,453 +95,437 @@ export class MapDashboardComponent {
 
     (
       await this.apiRestService.apiRest('', 'carriers/home', {
-        loader: cleanRefresh
+        loader: cleanRefresh,
       })
     )
       .pipe(catchError(() => of({})))
       .subscribe((res) => {
         if (res.status === 200 && res.result) {
           // When members exist on the fleet, it saves them on this array
-          this.markersFromService = [];
 
-          res.result.members.forEach((row: any) => {
-            if (row.location) {
-              this.markersFromService.push({
-                _id: row._id,
-                title: '',
-                position: {
-                  lat: row.location.lat,
-                  lng: row.location.lng
-                },
-                icon: row.thumbnail,
-                state: !row.connected
-                  ? 'inactive'
-                  : row.availability === 1
-                  ? 'available'
-                  : row.availability === 2
-                  ? 'unavailable'
-                  : 'unavailable'
-              });
-            }
-          });
-
-          this.markersFromService = this.markersFromService;
+          this.drivers = [
+            ...res.result.members.map((member) => ({
+              ...member,
+              state: !member?.connected
+                ? 'inactive'
+                : member?.availability === 1
+                ? 'available'
+                : member?.availability === 2
+                ? 'unavailable'
+                : 'unavailable',
+            })),
+          ];
 
           this.mapDashboardService.haveNotFleetMembers = !res.result.trailers || !res.result.trucks;
+
           if (res.result.hasOwnProperty('errors') && res.result.errors.length > 0) {
             this.mapDashboardService.haveFleetMembersErrors = res.result.errors;
           }
         }
 
         const userRole = res.result.role;
+
         this.mapDashboardService.userRole = userRole;
-
-        if (userRole && this.markersFromService.length) {
-          this.updateMap(cleanRefresh);
-          this.mapDashboardService.showFleetMap = true;
-        } else {
-          this.mapDashboardService.showFleetMap = false;
-        }
+        this.mapDashboardService.showFleetMap = !!userRole && !!this.drivers.length;
       });
-  }
-
-  updateMap(cleanRefresh: boolean) {
-    // Create map
-    if (this.map == void 0) {
-      window.requestAnimationFrame(() => {
-        google.maps.event.addListener(this.map, 'drag', () => {
-          this.isMapDirty = true;
-        });
-
-        google.maps.event.addListener(this.map, 'dblclick', () => {
-          if (this.map.getZoom() + 1 <= this.maxZoom) {
-            this.isMapDirty = true;
-          }
-        });
-
-        this.mapRef.nativeElement.addEventListener(
-          'mousewheel',
-          (event: any) => {
-            // zoom in
-            if (this.map.getZoom() + 1 <= this.maxZoom && !(event.deltaY > 1)) {
-              this.isMapDirty = true;
-            }
-            // zoom out
-            else if (event.deltaY > 1) {
-              this.isMapDirty = true;
-            }
-          },
-          true
-        );
-      });
-    }
-
-    const fromShowMap = this.map && this.map.fromShowMap === true;
-    this.map =
-      this.map != void 0 && !fromShowMap
-        ? this.map
-        : new google.maps.Map(this.mapRef.nativeElement, {
-            zoom: this.zoom,
-            maxZoom: this.maxZoom,
-            mapId: '893ce2d924d01422',
-            disableDefaultUI: true,
-            backgroundColor: '#040b12',
-            keyboardShortcuts: false,
-            center: {
-              lat: this.markersFromService[0].position.lat,
-              lng: this.markersFromService[0].position.lng
-            }
-          });
-
-    // clean bounds, googleMarkers
-    this.bounds = new google.maps.LatLngBounds();
-    this.googleMarkers.forEach((marker) => {
-      marker.setMap(null);
-      marker.remove();
-    });
-
-    this.googleMarkers = [];
-
-    this.markersFromService.forEach((mark) => {
-      mark.icon ||= '../assets/images/user-outline.svg';
-
-      const marker = this.createCustomMarker(mark);
-      marker.setMap(this.map);
-
-      this.googleMarkers.push(marker);
-      this.bounds.extend(marker.getPosition());
-    });
-
-    google.maps.event.addListenerOnce(this.map, 'bounds_changed', () => {
-      this.zoom = this.map.getZoom();
-    });
-
-    if (cleanRefresh === false || fromShowMap || this.isMapDirty === false)
-      this.map.fitBounds(this.bounds, { bottom: 50, top: 50, left: 80, right: 50 + 400 + 50 });
-  }
-
-  toggleTraffic() {
-    this.isTrafficActive = !this.isTrafficActive;
-
-    const btnTraffic = document.querySelector('.btn-traffic');
-
-    if (this.isTrafficActive) {
-      btnTraffic.classList.add('active');
-    } else {
-      btnTraffic.classList.remove('active');
-    }
-
-    const map = this.map;
-
-    if (this.isTrafficActive && !this.showTrafficButton) {
-      if (map) {
-        const trafficLayer = new google.maps.TrafficLayer();
-        trafficLayer.setMap(map);
-
-        this.trafficLayer = trafficLayer;
-      }
-    } else {
-      if (this.trafficLayer) {
-        this.trafficLayer.setMap(null);
-        this.trafficLayer = null;
-      }
-    }
   }
 
   clearMap(): void {
-    this.googleMarkers?.forEach((marker) => {
-      marker.setMap(null);
-      marker.remove();
-    });
-
-    this.markersFromService = [];
-    this.googleMarkers = [];
-    this.heatmapPosition = [];
-    this.markersPosition = [];
-
-    this.heatmapPosition.forEach((point) => {
-      point.setMap(null);
-    });
-
-    this.markersPosition.forEach((point) => {
-      point.setMap(null);
-    });
-
-    if (this.heatmap) this.heatmap.setMap(null);
-
-    if (this.polygons) {
-      this.polygons.forEach((polygon) => {
-        polygon.setMap(null);
-      });
-    }
-
-    if (this.circles) {
-      this.circles.forEach((circle) => {
-        circle.setMap(null);
-      });
-      this.circles = [];
-    }
+    this.drivers = [];
   }
 
   // #region polygons
-  activeCenter = false;
-  centerCoords: any;
-  heatmap: any;
-  polygons = [];
-  circles = [];
-  heatmapPosition = [];
-  markersPosition = [];
-
-  getCoordinates({ type, geometry, locations, members }: any) {
-    this.isHeatmap = type === 'heatmap';
-    this.centerCoords = { type, geometry, locations, members };
-    this.clearMap();
-
-    if (this.isHeatmap) this.addHeatmap(locations);
-    else this.addDispersion(members);
-    this.createPolygons(geometry.features);
-    this.activeCenter = !!locations?.length || !!members?.length || !!geometry?.features?.length;
-
-    this.centerMap(true);
-    this.mapDashboardService.getCoordinates.next();
-  }
+  heatmap: boolean = false;
 
   clearedFilter() {
     this.mapDashboardService.clearedFilter.next();
   }
 
-  addHeatmap(heatmapData) {
-    const data = this.optimizedCoordinates(heatmapData);
-    // const data = this.coordinatesToLatLng(heatmapData);
-    // descomentar si es que usamos la función anterior con el array original sin modificar
-
-    this.heatmap = new google.maps.visualization.HeatmapLayer({
-      data,
-      // dissipating: false,
-      // descomentar si queremos el redondeo original
-      map: this.map,
-      radius: 12
-    });
-
-    this.heatmapPosition = data;
-    this.heatmap.set('maxIntensity', 50);
-  }
-
-  createPolygons(geometry) {
-    if (!geometry?.length) return;
-
-    geometry.forEach((polygon) => {
-      const coordinates = polygon.geometry.coordinates[0].map((coord) => {
-        return { lat: coord[1], lng: coord[0] };
-      });
-
-      const newPolygon = new google.maps.Polygon({
-        paths: coordinates,
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        strokeColor: '#FFEE00',
-        fillColor: '#FFEE00',
-        fillOpacity: 0.2,
-        editable: false,
-        draggable: false
-      });
-
-      newPolygon.setMap(this.map);
-      this.polygons.push(newPolygon);
-
-      coordinates.forEach((coordinate) => {
-        const circle = new google.maps.Marker({
-          position: coordinate,
-          map: this.map,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 7,
-            fillColor: '#FFEE00',
-            fillOpacity: 1,
-            strokeColor: '#FFEE00',
-            strokeWeight: 2
-          }
-        });
-
-        this.circles.push(circle);
-      });
-    });
-  }
-
-  addDispersion(members) {
-    if (!members?.length) return;
-
-    members.forEach((member) => {
-      if (member.location) {
-        this.markersFromService.push({
-          title: member.nickname,
-          description: {
-            email: member.email,
-            lat: member.location.lat,
-            lng: member.location.lng
-          },
-          position: {
-            lat: member.location.lat,
-            lng: member.location.lng
-          },
-          icon: member.thumbnail
-        });
-      }
-    });
-
-    this.googleMarkers = [];
-
-    this.markersPosition = this.centerCoords.members.map(({ location }) => new google.maps.LatLng(location.lat, location.lng));
-
-    for (var i = 0; i < this.markersFromService.length; i++) {
-      const marker = new CustomMarker(
-        new google.maps.LatLng(this.markersFromService[i].position.lat, this.markersFromService[i].position.lng),
-        this.map,
-        this.markersFromService[i].icon,
-        null,
-        this.markersFromService[i].title,
-        true,
-        this.markersFromService[i].description
-      );
-
-      this.googleMarkers.push(marker);
-    }
-  }
-
-  centerMap(isPolygons?: boolean) {
-    const bounds = new google.maps.LatLngBounds();
-    if (isPolygons) {
-      if (this.activeCenter) {
-        if (this.circles?.length) {
-          this.circles?.forEach((circle) => {
-            bounds.extend(circle.getPosition());
-          });
-        }
-
-        if (this.isHeatmap) {
-          this.heatmapPosition?.forEach((point) => {
-            bounds.extend(point.location);
-            // bounds.extend(point);
-            // descomentar si es que usamos la función anterior con el array original sin modificar
-          });
-        } else {
-          this.markersPosition?.forEach((marker) => {
-            bounds.extend(marker);
-          });
-        }
-
-        this.map.fitBounds(bounds);
-      } else {
-        this.map.panTo(new google.maps.LatLng(19.432608, -99.133209));
-      }
-    } else {
-      this.updateMap(false);
-    }
-  }
-
-  optimizedCoordinates(coords): any[] {
-    const newCoords = new Map();
-
-    coords.forEach(({ lat, lng }) => {
-      const key = `${lat},${lng}`;
-      if (newCoords.has(key)) newCoords.get(key).weight++;
-      else newCoords.set(key, { location: new google.maps.LatLng(lat, lng), weight: 1 });
-    });
-
-    return Array.from(newCoords.values());
-  }
-
-  coordinatesToLatLng(data: any[]): any[] {
-    return data.map((coord) => new google.maps.LatLng(coord.lat, coord.lng));
-  }
-
-  setLatLng(lat, lng) {
-    return new google.maps.LatLng(lat, lng);
-  }
-
-  actualInfoWindow: google.maps.InfoWindow | null = null;
-
-  createCustomMarker(markerData: any): any {
-    const customMarker = new google.maps.OverlayView();
-
-    const infoWindow = new google.maps.InfoWindow();
-
-    let div: HTMLElement | null = null;
-
-    customMarker.draw = () => {
-      if (!div) {
-        div = document.createElement('div');
-        div.className = 'customMarker';
-
-        switch (markerData.state) {
-          case 'inactive':
-            div.classList.add('customMarker', 'inactive-marker');
-            break;
-          case 'available':
-            div.classList.add('customMarker', 'available-marker');
-            break;
-          case 'unavailable':
-            div.classList.add('customMarker', 'unavailable-marker');
-            break;
-          default:
-            div.classList.add('customMarker', 'active-marker');
-        }
-
-        let img = document.createElement('img');
-        img.src = markerData.icon;
-        div.appendChild(img);
-
-        google.maps.event.addDomListener(div, 'click', () => {
-          const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MarkerInfoWindowComponent);
-          const componentRef = componentFactory.create(this.injector);
-          this.actualInfoWindow?.close();
-
-          componentRef.instance.memberId = markerData._id;
-          componentRef.instance.errorLoadData.subscribe(() => {
-            infoWindow.close();
-          });
-
-          this.appRef.attachView(componentRef.hostView);
-
-          const componentElement = (componentRef.hostView as any).rootNodes[0] as HTMLElement;
-
-          infoWindow.setContent(componentElement);
-
-          infoWindow.open({ anchor: customMarker, map: this.map, shouldFocus: false });
-
-          this.actualInfoWindow = infoWindow;
-
-          google.maps.event.addListener(infoWindow, 'closeclick', () => {
-            this.appRef.detachView(componentRef.hostView);
-            componentRef.destroy();
-            this.actualInfoWindow = null;
-          });
-        });
-
-        let panes = customMarker.getPanes();
-        panes.overlayImage.appendChild(div);
-      }
-
-      let point = customMarker.getProjection().fromLatLngToDivPixel(this.setLatLng(markerData.position.lat, markerData.position.lng));
-      if (point) {
-        div.style.left = point.x + 'px';
-        div.style.top = point.y + 'px';
-      }
-    };
-
-    customMarker.remove = () => {
-      if (div) {
-        div.parentNode.removeChild(div);
-        div = null;
-      }
-    };
-
-    customMarker.getPosition = () => {
-      return markerData.position;
-    };
-
-    return customMarker;
-  }
-
   // #endregion
+
+  /* New Functions for uiComponent Polygon Map */
+  @ViewChild(BegoPolygonsMap) public polygonsMap: BegoPolygonsMap;
+
+  public filter = {
+    drivers: {
+      loading: false,
+      options: [],
+      scrolleable: true,
+    },
+    polygons: {
+      loading: false,
+      options: [],
+      scrolleable: true,
+    },
+    tags: {
+      loading: false,
+      options: [],
+      scrolleable: true,
+    },
+  };
+
+  heatmaps = [];
+  polygons = [];
+  drivers = [];
+  public filterPages = {
+    drivers: { actual: 0, total: 0 },
+    polygons: { actual: 0, total: 0 },
+    tags: { actual: 0, total: 0 },
+  };
+
+  public tooltip = {
+    loading: false,
+    properties: {},
+  };
+
+  private reloadData: any;
+
+  loading: boolean = false;
+  activeDrivers: boolean = false;
+  saveActiveDrivers: boolean = false;
+
+  activeShare: boolean = false;
+  activeModal: boolean = false;
+
+  public heatmapSelection(status: boolean) {
+    this.heatmap = status;
+  }
+
+  async getDrivers(page: number = 1) {
+    if (this.filter.drivers.loading) return;
+
+    this.filter.drivers.loading = true;
+
+    (
+      await this.apiRestService.apiRestGet(`carriers/get_drivers?page=${page}&limit=${LIMIT}`, {
+        apiVersion: 'v1.1',
+        loader: false,
+      })
+    ).subscribe({
+      next: ({ result: { result, pages } }) => {
+        if (page === 1) {
+          this.filterPages.drivers.total = pages;
+          this.filterPages.drivers.actual = 1;
+        }
+
+        result = result.map((driver) => ({ ...driver, avatar: driver.thumbnail, name: driver.nickname }));
+
+        this.filter.drivers = {
+          loading: false,
+          options: [...this.filter.drivers.options, ...result],
+          scrolleable: page < pages,
+        };
+      },
+      error: (err) => {
+        console.error(err);
+        this.filter.drivers.loading = false;
+      },
+      complete: () => {
+        this.filter.drivers.loading = false;
+      },
+    });
+  }
+
+  async getPolygons(page: number = 1) {
+    if (this.filter.polygons.loading) return;
+
+    this.filter.polygons.loading = true;
+
+    (
+      await this.apiRestService.apiRestGet(`polygons?page=${page}&limit=${LIMIT}`, {
+        apiVersion: 'v1.1',
+        loader: false,
+      })
+    ).subscribe({
+      next: ({ result: { result, pages } }) => {
+        if (page === 1) {
+          this.filterPages.polygons.total = pages;
+          this.filterPages.polygons.actual = 1;
+        }
+
+        this.filter.polygons = {
+          loading: false,
+          options: [...this.filter.polygons.options, ...result],
+          scrolleable: page < pages,
+        };
+      },
+      error: (err) => {
+        console.error(err);
+        this.filter.polygons.loading = false;
+      },
+      complete: () => {
+        this.filter.polygons.loading = false;
+      },
+    });
+  }
+
+  async getTags(page: number = 1) {
+    if (this.filter.tags.loading) return;
+
+    this.filter.tags.loading = true;
+
+    (
+      await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=${LIMIT}`, {
+        apiVersion: 'v1.1',
+        loader: false,
+      })
+    ).subscribe({
+      next: ({ result: { result, pages } }) => {
+        if (page === 1) {
+          this.filterPages.tags.total = pages;
+          this.filterPages.tags.actual = 1;
+        }
+
+        this.filter.tags = {
+          loading: false,
+          options: [...this.filter.tags.options, ...result],
+          scrolleable: page < pages,
+        };
+      },
+      error: (err) => {
+        console.error(err);
+        this.filter.tags.loading = false;
+      },
+      complete: () => {
+        this.filter.tags.loading = false;
+      },
+    });
+  }
+
+  async loadMoreData(column: string) {
+    this.filterPages[column].actual += 1;
+    if (column === 'drivers') this.getDrivers(this.filterPages.drivers.actual);
+    if (column === 'polygons') this.getPolygons(this.filterPages.polygons.actual);
+    if (column === 'tags') this.getTags(this.filterPages.tags.actual);
+  }
+
+  public async selectedTooltip(userId: string) {
+    this.tooltip = {
+      loading: true,
+      properties: {},
+    };
+    const URL = `carriers/information?user_id=${userId}`;
+
+    (await this.apiRestService.apiRestGet(URL, { loader: 'false' })).subscribe({
+      next: ({ result }) => {
+        this.tooltip = {
+          loading: false,
+          properties: {
+            username: result?.raw_nickname,
+            email: result?.email,
+            lastDate: result?.location_updated_at,
+            location: result?.location,
+            speed: result?.speed_kms_ph,
+            battery: result?.device_battery,
+          },
+        };
+      },
+      error: (err) => {
+        console.error(err);
+        this.polygonsMap.closeTooltip();
+        this.notificationsService.showErrorToastr('There was an error, try again later', 10000);
+      },
+    });
+  }
+
+  public reloadMap() {
+    if (this.reloadData) this.selectedAction(this.reloadData);
+    else this.polygonsMap.centerMap();
+  }
+
+  public async selectedAction(event: any) {
+    console.log('selected action: ', event);
+    const { action, heatmap } = event;
+
+    switch (action) {
+      case 'apply':
+        if (this.loading) break;
+        this.loading = true;
+
+        this.heatmap = heatmap;
+        this.reloadData = event;
+        if (heatmap) await this.getHeatmap(event);
+        else await this.getDispersion(event);
+        this.mapDashboardService.getCoordinates.next();
+        break;
+
+      case 'cancel':
+        this.activeDrivers = this.saveActiveDrivers;
+        if (this.options.start_date) this.heatmap = this.options.heatmap;
+        else this.heatmap = false;
+        this.polygonsMap.activeFilter = false;
+        break;
+
+      case 'clear':
+        this.activeDrivers = false;
+        this.saveActiveDrivers = false;
+        if (!this.options.start_date) break;
+        this.clearFilters();
+        this.getFleetDetails(false);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  async getHeatmap(options: any) {
+    this.activeShare = false;
+    const queryParams = new URLSearchParams({
+      drivers: JSON.stringify(options.drivers.map(({ _id }) => _id)),
+      tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
+      polygons: JSON.stringify(options.polygons.map(({ _id }) => _id)),
+      start_date: options.start_date,
+      end_date: options.end_date + DAY,
+    }).toString();
+    (
+      await this.apiRestService.apiRestGet(`polygons/heatmaps?${queryParams}`, {
+        apiVersion: 'v1.1',
+        getLoader: 'true',
+        timeout: '90000',
+      })
+    ).subscribe({
+      next: ({ result }) => {
+        this.options = options;
+        this.activeDrivers = false;
+        this.polygonsMap.activeFilter = false;
+
+        if (result?.locations?.length) this.activeShare = true;
+        else
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant('home.polygon-filter.filter.no-results.heatmap'),
+            5000,
+            'brand-snackbar-2',
+          );
+
+        this.polygons = [...result.geometry.features];
+        this.heatmaps = [...result.locations];
+        this.polygonsMap.activeFilter = false;
+        this.loading = false;
+      },
+      error: ({ error }) => {
+        console.error(error);
+        this.loading = false;
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant('home.polygon-filter.filter.error'),
+          5000,
+          'brand-snackbar-2',
+        );
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+  async getDispersion(options: any) {
+    this.activeShare = false;
+
+    const newOptions = {
+      drivers: JSON.stringify(options.drivers.map(({ _id }) => _id)),
+      tags: JSON.stringify(options.tags.map(({ _id }) => _id)),
+      polygons: JSON.stringify(options.polygons.map(({ _id }) => _id)),
+      date: options.start_date + DAY,
+      include_older_locations: JSON.stringify(!this.activeDrivers),
+    };
+
+    const queryParams = new URLSearchParams(newOptions).toString();
+
+    (
+      await this.apiRestService.apiRestGet(`polygons/dispersion?${queryParams}`, {
+        apiVersion: 'v1.1',
+        getLoader: 'true',
+        timeout: '90000',
+      })
+    ).subscribe({
+      next: ({ result }) => {
+        this.options = options;
+        this.polygonsMap.activeFilter = false;
+        this.saveActiveDrivers = this.activeDrivers;
+
+        if (result?.members?.length) this.activeShare = true;
+        else
+          this.notificationsService.showErrorToastr(
+            this.translateService.instant('home.polygon-filter.filter.no-results.dispersion'),
+            5000,
+            'brand-snackbar-2',
+          );
+
+        this.polygons = [...result.geometry.features];
+        this.drivers = [...result.members];
+        this.loading = false;
+        this.saveActiveDrivers = this.activeDrivers;
+        this.polygonsMap.activeFilter = false;
+      },
+      error: ({ error }) => {
+        console.error(error);
+        this.loading = false;
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant('home.polygon-filter.filter.error'),
+          5000,
+          'brand-snackbar-2',
+        );
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+  openShareModal() {
+    if (!this.activeShare || !!!this.options.start_date) return;
+
+    const options = {
+      ...this.options,
+      drivers: this.options.drivers.map(({ _id }) => _id),
+      polygons: this.options.polygons.map(({ _id }) => _id),
+      tags: this.options.tags.map(({ _id }) => _id),
+    };
+
+    this.activeModal = true;
+    const dialogRef = this.matDialog.open(ShareReportModalComponent, {
+      data: {
+        options,
+        heatmap: this.heatmap,
+        activeDrivers: !this.activeDrivers,
+      },
+      restoreFocus: false,
+      backdropClass: ['brand-ui-dialog-2'],
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.activeModal = false;
+    });
+  }
+
+  public openFilter() {
+    if (!this.polygonsMap.activeFilter && !this.options?.start_date) this.polygonsMap.polygonFilter.useAction('clear');
+
+    if (this.polygonsMap.activeFilter) {
+      this.polygonsMap.polygonFilter?.loadState();
+      this.heatmap = this.options.heatmap;
+      this.activeDrivers = this.saveActiveDrivers;
+    }
+  }
+
+  public checkedActive() {
+    if (this.polygonsMap.activeFilter || !this.options?.start_date) return;
+    this.getDispersion(this.options);
+  }
+
+  clearFilters() {
+    this.drivers = [];
+    this.polygons = [];
+    this.heatmaps = [];
+    this.options = {
+      drivers: [],
+      tags: [],
+      polygons: [],
+      start_date: null,
+      end_date: null,
+      date: null,
+      heatmap: false,
+    };
+    this.mapDashboardService.clearedFilter.next();
+  }
 }

@@ -80,7 +80,8 @@ export class AppComponent {
 
     uiComponentsConfig.config = {
       urlBase: environment.URL_BASE,
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      onAuthError: () => {}
     };
   }
 

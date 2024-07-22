@@ -19,7 +19,7 @@
       </app-orders>
     </div>
 
-    <div class="input-directions" [ngClass]="{ 'applied-filter': creatingForms && !openOrderMenu }" [class.hide]="!showSidebar">
+    <div class="input-directions" [ngClass]="{ 'applied-filter': mapDashboardService.activeFilter && !mapDashboardService.openOrderMenu }" [class.hide]="!showSidebar">
       <app-input-directions
         [(orderType)]="orderType"
         (sendAssignedMermbers)="getMembersToAssignedOrder($event)"
@@ -37,29 +37,37 @@
         [haveFleetMembersErrors]="mapDashboardService.haveFleetMembersErrors">
       </app-input-directions>
 
-      <button *ngIf="mapDashboardService.showFleetMap" class="btn-reload" (click)="reloadMap()" [@slideInFromBottom]>
+      <!-- <button *ngIf="mapDashboardService.showFleetMap" class="btn-reload" (click)="reloadMap()" [@slideInFromBottom]>
         <bego-icon icon="begon-refresh"></bego-icon>
-      </button>
+      </button> -->
 
       <button
+        id="reset"
+        *ngIf="!mapDashboardService.showFleetMap && !showOrderDetails"
+        (click)="centerMap()"
+        [ngClass]="{ 'reset-up': mapDashboardService.userRole && mapDashboardService.showFleetMap && !showOrderDetails }"
+        [@slideInFromBottom]>
+        <i class="icon icon-gps"></i>
+      </button>
+      <!-- <button
         id="reset"
         *ngIf="!showOrderDetails"
         (click)="centerMap()"
         [ngClass]="{ 'reset-up': mapDashboardService.userRole && mapDashboardService.showFleetMap && !showOrderDetails }"
         [@slideInFromBottom]>
         <i class="icon icon-gps"></i>
-      </button>
+      </button> -->
 
-      <button
+      <!-- <button
         *ngIf="!showOrderDetails && !showTrafficButton"
         class="btn-traffic"
         (click)="mapDashboardService.toggleTraffic.next()"
         [@slideInFromBottom]>
         <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg" />
-      </button>
+      </button> -->
 
-      <div class="back" [ngStyle]="{ display: creatingForms ? 'flex' : 'none' }">
-        <div class="invisible" (click)="openOrderMenu = !openOrderMenu"></div>
+      <div class="back" [ngStyle]="{ display: mapDashboardService.activeFilter ? 'flex' : 'none' }">
+        <div class="invisible" (click)="mapDashboardService.openOrderMenu = !mapDashboardService.openOrderMenu"></div>
       </div>
     </div>
   </div>

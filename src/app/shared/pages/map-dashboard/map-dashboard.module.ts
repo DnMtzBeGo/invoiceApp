@@ -7,11 +7,26 @@ import { MapModule } from 'src/app/shared/components/map/map.module';
 import { MapDashboardRoutingModule } from './map-dashboard-routing.module';
 import { MapDashboardComponent } from './map-dashboard.component';
 import { MarkerInfoWindowComponent } from './components/marker-info-view.component';
-import { BegoIconsModule } from '@begomx/ui-components';
+import { BegoIconsModule, BegoPolygonsMapModule } from '@begomx/ui-components';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [MapDashboardComponent, MarkerInfoWindowComponent],
-  imports: [CommonModule, MapDashboardRoutingModule, HomeModule, FleetModule, PolygonFilterModule, MapModule, BegoIconsModule],
-  exports: [MarkerInfoWindowComponent]
+  imports: [
+    CommonModule,
+    MapDashboardRoutingModule,
+    HomeModule,
+    FleetModule,
+    PolygonFilterModule,
+    MapModule,
+    BegoIconsModule,
+    BegoPolygonsMapModule,
+    MatCheckboxModule,
+    TranslateModule,
+    FormsModule,
+  ],
+  exports: [MarkerInfoWindowComponent],
 })
 export class MapDashboardModule {}
