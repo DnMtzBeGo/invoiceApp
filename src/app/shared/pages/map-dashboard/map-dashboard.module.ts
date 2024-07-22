@@ -11,6 +11,7 @@ import { MapModule } from 'src/app/shared/components/map/map.module';
 import { MapDashboardRoutingModule } from './map-dashboard-routing.module';
 import { MapDashboardComponent } from './map-dashboard.component';
 import { MarkerInfoWindowComponent } from './components/marker-info-view.component';
+import { ShareReportModalModule } from 'src/app/pages/home/components/share-report-modal/share-report-modal.module';
 
 @NgModule({
   declarations: [MapDashboardComponent, MarkerInfoWindowComponent],
@@ -25,6 +26,7 @@ import { MarkerInfoWindowComponent } from './components/marker-info-view.compone
     MatCheckboxModule,
     TranslateModule,
     FormsModule,
+    ShareReportModalModule
   ],
   exports: [MarkerInfoWindowComponent],
 })
