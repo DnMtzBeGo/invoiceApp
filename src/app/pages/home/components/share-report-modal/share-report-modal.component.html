@@ -19,7 +19,10 @@
     <div class="input-container" [formGroup]="shareForm">
       <div class="input">
         <span>{{ 'home.polygon-filter.share.form.name' | translate }}</span>
-        <input type="text" [placeholder]="'home.polygon-filter.share.form.placeholder' | translate" formControlName="name" />
+        <input
+          type="text"
+          [placeholder]="'home.polygon-filter.share.form.placeholder' | translate"
+          formControlName="name" />
       </div>
 
       <div class="input">

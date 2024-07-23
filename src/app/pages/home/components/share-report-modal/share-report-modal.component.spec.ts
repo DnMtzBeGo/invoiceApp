@@ -8,9 +8,8 @@ describe('ShareReportModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShareReportModalComponent ]
-    })
-    .compileComponents();
+      declarations: [ShareReportModalComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ShareReportModalComponent);
     component = fixture.componentInstance;
