@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { SerieAttributesInterface } from '../../models/invoice/series';
@@ -14,15 +14,15 @@ import { SeriesNewComponent } from '../series-new/series-new.component';
   styleUrls: ['./series-table.component.scss'],
 })
 export class SeriesTableComponent implements OnInit {
-  @ViewChild(MatTable) table: MatTable<SerieAttributesInterface>;
-  @Input() seriesTableData: SerieAttributesInterface[];
+  @ViewChild(MatTable) public table: MatTable<SerieAttributesInterface>;
+  @Input() public seriesTableData: SerieAttributesInterface[];
 
-  @Input() readonly: boolean = false;
+  @Input() public readonly: boolean = false;
 
   public dataSource: MatTableDataSource<SerieAttributesInterface>;
-  displayedColumns: string[];
+  public displayedColumns: string[];
 
-  @Output() refresh: EventEmitter<void> = new EventEmitter();
+  @Output() public refresh: EventEmitter<void> = new EventEmitter();
 
   constructor(
     public dialog: MatDialog,
@@ -31,17 +31,17 @@ export class SeriesTableComponent implements OnInit {
     private translateService: TranslateService,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.displayedColumns = ['serie', 'comprobante', 'folio', 'use_for_automatic_stamp', 'color', 'logo'].concat(
       this.readonly ? [] : ['actions'],
     );
   }
 
-  ngOnChanges() {
+  public ngOnChanges(): void {
     this.dataSource = new MatTableDataSource<SerieAttributesInterface>(this.seriesTableData);
   }
 
-  editSerie(serie: any): void {
+  public editSerie(serie: any): void {
     const dialogRef = this.dialog.open(SeriesNewComponent, {
       data: serie,
       restoreFocus: false,
@@ -60,7 +60,7 @@ export class SeriesTableComponent implements OnInit {
     });
   }
 
-  async deleteSerie(serie: string) {
+  public async deleteSerie(serie: string) {
     let requestJson = {
       _id: serie,
     };

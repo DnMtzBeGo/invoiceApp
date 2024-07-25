@@ -1,12 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, UntypedFormControl } from '@angular/forms';
-
 import {
   MatLegacyDialogRef as MatDialogRef,
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
 } from '@angular/material/legacy-dialog';
-
 import { TranslateService } from '@ngx-translate/core';
+
 // import { ApiRestService } from "src/app/core/services";
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -43,7 +42,7 @@ export class SeriesNewComponent implements OnInit {
     private translateService: TranslateService,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isEditing = Object.keys(this.seriesData).length > 1;
 
     if (this.seriesData) {
