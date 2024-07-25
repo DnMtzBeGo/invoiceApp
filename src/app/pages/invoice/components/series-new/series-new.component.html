@@ -69,7 +69,7 @@
     mat-flat-button
     [ngClass]="['radius-s', 0 ? 'brand-btn-error' : 'brand-btn-2']"
     (click)="save()"
-    [disabled]="seriesForm.status == 'INVALID' || imageForm.status == 'INVALID'"
+    [disabled]="seriesForm.status === 'INVALID' || imageForm.status === 'INVALID'"
     style="min-width: 155px; min-height: 40px; position: absolute; bottom: 0; right: 0">
     <mat-spinner
       [style.display]="0 ? 'block' : 'none'"
