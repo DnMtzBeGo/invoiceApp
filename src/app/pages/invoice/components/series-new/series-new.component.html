@@ -1,7 +1,7 @@
 <div class="series-container">
   <div class="series-header">
     <h4 style="margin-bottom: 0rem; font-size: 20px">
-      {{ "invoice.serie-new.title" | translate }}
+      {{ 'invoice.serie-new.title' | translate }}
     </h4>
     <!-- <div class="close-btn" (click)="closeModal()">
       <mat-icon>close</mat-icon>
@@ -11,19 +11,9 @@
     <form [formGroup]="seriesForm">
       <!-- Tipo de comprobante -->
       <mat-form-field appearance="outline" class="brand-field-1">
-        <mat-label>{{
-          "invoice.serie-new.tipo-comprobante" | translate
-        }}</mat-label>
-        <mat-select
-          class="disable-custom-format"
-          name="tipo_comprobante"
-          formControlName="tipo_comprobante"
-        >
-          <mat-option
-            *ngFor="let type of receiptTypes"
-            [value]="type.clave"
-            class="brand-option-1"
-          >
+        <mat-label>{{ 'invoice.serie-new.tipo-comprobante' | translate }}</mat-label>
+        <mat-select class="disable-custom-format" name="tipo_comprobante" formControlName="tipo_comprobante">
+          <mat-option *ngFor="let type of receiptTypes" [value]="type.clave" class="brand-option-1">
             {{ type.descripcion }}
           </mat-option>
         </mat-select>
@@ -32,64 +22,45 @@
       <!-- Nombre de la serie -->
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>{{
-          seriesForm.get("serie").value
-            ? ("invoice.serie-new.serie" | translate)
-            : ("invoice.serie-new.serie-placeholder" | translate)
+          seriesForm.get('serie').value
+            ? ('invoice.serie-new.serie' | translate)
+            : ('invoice.serie-new.serie-placeholder' | translate)
         }}</mat-label>
         <input matInput name="serie" formControlName="serie" [value]="" />
       </mat-form-field>
 
       <!-- Folio inicial -->
-      <mat-form-field appearance="outline" class="brand-field-1">
-        <mat-label>{{ "invoice.serie-new.folio" | translate }}</mat-label>
-        <input
-          matInput
-          type="number"
-          name="folio"
-          formControlName="folio"
-          [value]=""
-        />
+      <mat-form-field appearance="outline" class="brand-field-1" [attr.readonly]="isEditing">
+        <mat-label>{{ 'invoice.serie-new.folio' | translate }}</mat-label>
+        <input matInput type="number" name="folio" formControlName="folio" [value]="" [readonly]="isEditing" />
       </mat-form-field>
 
       <!-- Color -->
       <mat-form-field appearance="outline" class="brand-field-1">
-        <mat-label>{{ "invoice.serie-new.color" | translate }}</mat-label>
-        <input
-          matInput
-          [ngxMatColorPicker]="picker"
-          name="color"
-          formControlName="color"
-          [value]=""
-        />
+        <mat-label>{{ 'invoice.serie-new.color' | translate }}</mat-label>
+        <input matInput [ngxMatColorPicker]="picker" name="color" formControlName="color" [value]="" />
         <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
-        <ngx-mat-color-picker
-          #picker
-          [touchUi]="touchUi"
-          [color]="color"
-        ></ngx-mat-color-picker>
+        <ngx-mat-color-picker #picker [touchUi]="touchUi" [color]="color"></ngx-mat-color-picker>
       </mat-form-field>
+
+      <mat-checkbox
+        matInput
+        [checked]="seriesForm.get('use_for_automatic_stamp').value"
+        (change)="seriesForm.get('use_for_automatic_stamp').setValue($event.checked)">
+        {{ 'invoice.serie-new.use_for_automatic_stamp' | translate }}
+      </mat-checkbox>
     </form>
 
     <div class="series-image-container">
       <mat-label>{{
-        imageSrc
-          ? ("invoice.serie-new.image" | translate)
-          : ("invoice.serie-new.image-placeholder" | translate)
+        imageSrc ? ('invoice.serie-new.image' | translate) : ('invoice.serie-new.image-placeholder' | translate)
       }}</mat-label>
       <form [formGroup]="imageForm">
-        <input
-          hidden
-          formControlName="file"
-          (change)="onFileSelected($event)"
-          #fileInput
-          type="file"
-          id="file"
-        />
+        <input hidden formControlName="file" (change)="onFileSelected($event)" #fileInput type="file" id="file" />
         <img
           mat-card-image
           [src]="imageSrc || './assets/images/invoice/logo-placeholder.png'"
-          (click)="fileInput.click()"
-        />
+          (click)="fileInput.click()" />
       </form>
     </div>
   </div>
@@ -99,32 +70,15 @@
     [ngClass]="['radius-s', 0 ? 'brand-btn-error' : 'brand-btn-2']"
     (click)="save()"
     [disabled]="seriesForm.status == 'INVALID' || imageForm.status == 'INVALID'"
-    style="
-      min-width: 155px;
-      min-height: 40px;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-    "
-  >
+    style="min-width: 155px; min-height: 40px; position: absolute; bottom: 0; right: 0">
     <mat-spinner
       [style.display]="0 ? 'block' : 'none'"
       class="brand-spinner-1"
       [diameter]="20"
       [strokeWidth]="4"
-      style="margin: 0 auto"
-    ></mat-spinner>
-    <mat-icon
-      [style.display]="0 ? 'inline-block' : 'none'"
-      style="margin-right: 4px"
-    >
-      check
-    </mat-icon>
-    <span>{{ "invoice.serie-new.btn-save" | translate }} </span>
-    <mat-icon
-      [style.display]="1 ? 'inline-block' : 'none'"
-      style="margin-right: -8px"
-      >keyboard_arrow_right</mat-icon
-    >
+      style="margin: 0 auto"></mat-spinner>
+    <mat-icon [style.display]="0 ? 'inline-block' : 'none'" style="margin-right: 4px"> check </mat-icon>
+    <span>{{ 'invoice.serie-new.btn-save' | translate }} </span>
+    <mat-icon [style.display]="1 ? 'inline-block' : 'none'" style="margin-right: -8px">keyboard_arrow_right</mat-icon>
   </button>
 </div>

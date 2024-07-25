@@ -11,7 +11,7 @@ import { SeriesNewComponent } from '../series-new/series-new.component';
 @Component({
   selector: 'app-series-table',
   templateUrl: './series-table.component.html',
-  styleUrls: ['./series-table.component.scss']
+  styleUrls: ['./series-table.component.scss'],
 })
 export class SeriesTableComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<SerieAttributesInterface>;
@@ -28,11 +28,13 @@ export class SeriesTableComponent implements OnInit {
     public dialog: MatDialog,
     private notificationsService: NotificationsService,
     private apiRestService: AuthService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
-    this.displayedColumns = ['serie', 'comprobante', 'folio', 'color', 'logo'].concat(this.readonly ? [] : ['actions']);
+    this.displayedColumns = ['serie', 'comprobante', 'folio', 'use_for_automatic_stamp', 'color', 'logo'].concat(
+      this.readonly ? [] : ['actions'],
+    );
   }
 
   ngOnChanges() {
@@ -44,7 +46,7 @@ export class SeriesTableComponent implements OnInit {
       data: serie,
       restoreFocus: false,
       autoFocus: false,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.message != '') {
@@ -60,7 +62,7 @@ export class SeriesTableComponent implements OnInit {
 
   async deleteSerie(serie: string) {
     let requestJson = {
-      _id: serie
+      _id: serie,
     };
     (await this.apiRestService.apiRest(JSON.stringify(requestJson), `invoice/series/delete`)).subscribe(
       (res) => {
@@ -69,7 +71,7 @@ export class SeriesTableComponent implements OnInit {
       },
       (err) => {
         console.log(err);
-      }
+      },
     );
   }
 }

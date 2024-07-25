@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-series-page',
   templateUrl: './series-page.component.html',
-  styleUrls: ['./series-page.component.scss']
+  styleUrls: ['./series-page.component.scss'],
 })
 export class SeriesPageComponent implements OnInit {
   public stateSubscriptionSeries: Subscription;
@@ -20,7 +20,7 @@ export class SeriesPageComponent implements OnInit {
     private notificationsService: NotificationsService,
     public apiRestService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.getSeries();
   }
@@ -30,11 +30,11 @@ export class SeriesPageComponent implements OnInit {
   newSeries(): void {
     const dialogRef = this.dialog.open(SeriesNewComponent, {
       data: {
-        emisor: this.route.snapshot.paramMap.get('id')
+        emisor: this.route.snapshot.paramMap.get('id'),
       },
       restoreFocus: false,
       autoFocus: false,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -49,7 +49,7 @@ export class SeriesPageComponent implements OnInit {
 
   public async getSeries() {
     let requestJson = {
-      emisor: this.route.snapshot.paramMap.get('id')
+      emisor: this.route.snapshot.paramMap.get('id'),
     };
     (await this.apiRestService.apiRestGet('invoice/series', requestJson)).subscribe(
       (res) => {
@@ -57,7 +57,7 @@ export class SeriesPageComponent implements OnInit {
       },
       (err) => {
         console.log(err);
-      }
+      },
     );
   }
 }
