@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { ProfileInfoService } from './pages/profile/services/profile-info.service';
-import { LanguageService } from './shared/services/language.service';
-import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { AlertService } from './shared/services/alert.service';
 import * as AOS from 'aos';
 import { uiComponentsConfig } from '@begomx/ui-components';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+
+import { AlertService } from './shared/services/alert.service';
+import { environment } from 'src/environments/environment';
+import { LanguageService } from './shared/services/language.service';
+import { ProfileInfoService } from './pages/profile/services/profile-info.service';
 
 interface IncompatibleBrowserVersion {
   /**
@@ -26,32 +27,33 @@ interface IncompatibleBrowserVersion {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'carriersDashboard';
+  public title = 'carriersDashboard';
 
   public alert$: Observable<any>;
 
-  showSmallResolutionModal: boolean = false;
-  incompatibleBrowsers: IncompatibleBrowserVersion[] = [
+  public showSmallResolutionModal: boolean = false;
+  public incompatibleBrowsers: IncompatibleBrowserVersion[] = [
     {
       navigator: 'msie',
-      minVersion: 11
-    }
+      minVersion: 11,
+    },
   ];
-  showIncompatibleBrowserModal: boolean = false;
+  public showIncompatibleBrowserModal: boolean = false;
 
-  minWidthResolution = 1024;
+  public minWidthResolution = 1024;
 
   public currentPath: string = '';
 
   constructor(
-    private languageService: LanguageService, 
+    private languageService: LanguageService,
     private alertService: AlertService,
     profileInfoService: ProfileInfoService,
     private location: Location,
-    public router: Router) {
+    public router: Router,
+  ) {
     this.alert$ = this.alertService.alert$;
 
     languageService.setInitialLanguage();
@@ -63,7 +65,8 @@ export class AppComponent {
     });
 
     // var ua=navigator.userAgent,tem;
-    const webBrowserInfo = navigator.userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    const webBrowserInfo =
+      navigator.userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
     const browser = webBrowserInfo[1];
     const browserVersion = parseInt(webBrowserInfo[2]);
 
@@ -80,13 +83,14 @@ export class AppComponent {
 
     uiComponentsConfig.config = {
       urlBase: environment.URL_BASE,
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      onAuthError: () => {},
     };
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     AOS.init({
-      duration: 1200
+      duration: 1200,
     });
 
     this.currentPath = this.location.path();
@@ -95,6 +99,7 @@ export class AppComponent {
 
     (window as any).placeholder = (img) => (img.src = '/assets/images/invoice/logo-placeholder.png');
 
-    (window as any).blank = (img) => (img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
+    (window as any).blank = (img) =>
+      (img.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
   }
 }

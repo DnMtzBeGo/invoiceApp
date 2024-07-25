@@ -1,7 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+} from '@angular/material/legacy-dialog';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 interface Data {
@@ -25,22 +28,22 @@ const DAY = 86_399_000;
 @Component({
   selector: 'app-share-report-modal',
   templateUrl: './share-report-modal.component.html',
-  styleUrls: ['./share-report-modal.component.scss']
+  styleUrls: ['./share-report-modal.component.scss'],
 })
 export class ShareReportModalComponent {
-  sended: boolean = false;
-  shareForm: FormGroup;
-  validForm: boolean = false;
+  public sended: boolean = false;
+  public shareForm: FormGroup;
+  public validForm: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Data,
     public dialogRef: MatDialogRef<ShareReportModalComponent>,
     private apiRestService: AuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
     this.shareForm = this.formBuilder.group({
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
 
     this.shareForm.valueChanges.subscribe(() => {
@@ -48,7 +51,7 @@ export class ShareReportModalComponent {
     });
   }
 
-  async sendReport() {
+  public async sendReport() {
     if (!this.shareForm.valid) return;
 
     const { start_date, ...options } = this.data.options;
@@ -60,33 +63,37 @@ export class ShareReportModalComponent {
       invitations: [
         {
           email: this.shareForm.get('email').value,
-          name: this.shareForm.get('name').value
-        }
-      ]
+          name: this.shareForm.get('name').value,
+        },
+      ],
     });
 
     (
-      await this.apiRestService.apiRest(requestJson, `polygons/${this.data.heatmap ? 'heatmaps' : 'dispersion'}/share_report`, {
-        apiVersion: 'v1.1'
-      })
+      await this.apiRestService.apiRest(
+        requestJson,
+        `polygons/${this.data.heatmap ? 'heatmaps' : 'dispersion'}/share_report`,
+        {
+          apiVersion: 'v1.1',
+        },
+      )
     ).subscribe({
       next: () => {
         this.sended = true;
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error(err),
     });
   }
 
-  async actions(action: string) {
+  public async actions(action: string) {
     if (action === 'done' && !this.sended) await this.sendReport();
     if (action === 'done' && this.sended) this.done();
   }
 
-  done() {
+  public done() {
     this.dialogRef.close();
   }
 
-  back() {
+  public back() {
     this.dialogRef.close();
   }
 }

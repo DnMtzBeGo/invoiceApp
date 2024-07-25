@@ -1,10 +1,50 @@
-<div [class.map-faded-out]="!mapDashboardService.showFleetMap" #map class="map google-map transparent"></div>
+<div
+  class="polygons-map-container google-map transparent"
+  [ngClass]="{
+    'map-faded-out': !mapDashboardService.showFleetMap,
+    'hide-map': !mapDashboardService.showPolygons && !mapDashboardService.showFleetMap
+  }">
+  <bego-polygons-map
+    #polygonsMap
+    [filter]="filter"
+    [drivers]="drivers"
+    [polygons]="polygons"
+    [heatmaps]="heatmaps"
+    [tooltip]="tooltip"
+    [lang]="lang"
+    (reloadEmitter)="reloadMap()"
+    (heatmapEmitter)="heatmapSelection($event)"
+    (openTooltipEmitter)="selectedTooltip($event)"
+    (actionEmitter)="selectedAction($event)"
+    (openFilterEmitter)="openFilter()"
+    (scrolledToBottom)="loadMoreData($event)"
+    [ngClass]="{
+      'active-polygons': mapDashboardService.showFleetMap,
+      'active-filter': (options?.start_date || reloadData?.start_date) && !mapDashboardService.openOrderMenu
+    }">
+    <div
+      class="action-btn"
+      [ngClass]="{
+        'active-btn': activeModal,
+        'disabled-btn': !activeShare || !!!options.start_date
+      }"
+      (click)="openShareModal()">
+      <bego-icon icon="begon-shared"></bego-icon>
+      <span>{{ 'home.polygon-filter.btn-share' | translate }}</span>
+    </div>
+    <ng-container
+      *ngIf="
+        (polygonsMap.activeFilter && !heatmap) || (!polygonsMap.activeFilter && !heatmap && !!options?.start_date)
+      ">
+      <div class="divider"></div>
 
-<app-polygon-filter
-  *ngIf="mapDashboardService.showPolygons"
-  class="polygon-filter"
-  (getCoordinates)="getCoordinates($event)"
-  (clearedFilter)="clearedFilter()"></app-polygon-filter>
+      <mat-checkbox class="active-checkbox" color="yellow" (change)="checkedActive()" [(ngModel)]="activeDrivers">{{
+        'home.polygon-filter.btn-active-24' | translate
+      }}</mat-checkbox>
+    </ng-container>
+  </bego-polygons-map>
+</div>
 
 <app-home *ngIf="router.routerState.snapshot.url.includes('home')"></app-home>
+
 <app-fleet-page *ngIf="router.routerState.snapshot.url.includes('fleet')"></app-fleet-page>

@@ -1612,7 +1612,8 @@
         "no-results": {
           "dispersion": "No results found",
           "heatmap": "No results found"
-        }
+        },
+        "error": "There was an error, try again later"
       },
       "share": {
         "sended": {
