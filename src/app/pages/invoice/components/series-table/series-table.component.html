@@ -6,85 +6,54 @@
       mode="indeterminate"
     ></mat-progress-bar> -->
 
-    <table
-      mat-table
-      [dataSource]="dataSource"
-      class="brand-table-1"
-      matSort
-      matSortStart="desc"
-    >
+    <table mat-table [dataSource]="dataSource" class="brand-table-1" matSort matSortStart="desc">
       <!-- Serie -->
       <ng-container matColumnDef="serie">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          class="factura-table__table-header"
-          mat-sort-header
-        >
-          {{ "invoice.serie-table.serie" | translate }}
+        <th mat-header-cell *matHeaderCellDef class="factura-table__table-header" mat-sort-header>
+          {{ 'invoice.serie-table.serie' | translate }}
         </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="factura-table__table-body"
-        >
+        <td mat-cell *matCellDef="let element" class="factura-table__table-body">
           {{ element.serie }}
         </td>
       </ng-container>
 
       <!-- Tipo de Comprobante -->
       <ng-container matColumnDef="comprobante">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          class="factura-table__table-header"
-          mat-sort-header
-        >
-          {{ "invoice.serie-table.tipo-comprobante" | translate }}
+        <th mat-header-cell *matHeaderCellDef class="factura-table__table-header" mat-sort-header>
+          {{ 'invoice.serie-table.tipo-comprobante' | translate }}
         </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="factura-table__table-body"
-        >
+        <td mat-cell *matCellDef="let element" class="factura-table__table-body">
           {{ element.tipo_comprobante }} - {{ element.tipo_comprobante_desc }}
         </td>
       </ng-container>
 
       <!-- Folio -->
       <ng-container matColumnDef="folio">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          class="factura-table__table-header"
-          mat-sort-header
-        >
-          {{ "invoice.serie-table.folio" | translate }}
+        <th mat-header-cell *matHeaderCellDef class="factura-table__table-header" mat-sort-header>
+          {{ 'invoice.serie-table.folio' | translate }}
         </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="factura-table__table-body"
-        >
+        <td mat-cell *matCellDef="let element" class="factura-table__table-body">
           {{ element.folio }}
+        </td>
+      </ng-container>
+
+      <!-- use_for_automatic_stamp -->
+      <ng-container matColumnDef="use_for_automatic_stamp">
+        <th mat-header-cell *matHeaderCellDef class="factura-table__table-header" mat-sort-header>
+          {{ 'invoice.serie-table.use_for_automatic_stamp' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let element" class="factura-table__table-body">
+          <mat-icon *ngIf="element.use_for_automatic_stamp">check</mat-icon>
+          <mat-icon *ngIf="!element.use_for_automatic_stamp">-</mat-icon>
         </td>
       </ng-container>
 
       <!-- Color -->
       <ng-container matColumnDef="color">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          class="factura-table__table-header"
-          mat-sort-header
-        >
-          {{ "invoice.serie-table.color" | translate }}
+        <th mat-header-cell *matHeaderCellDef class="factura-table__table-header" mat-sort-header>
+          {{ 'invoice.serie-table.color' | translate }}
         </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="factura-table__table-body"
-        >
+        <td mat-cell *matCellDef="let element" class="factura-table__table-body">
           <mat-icon [ngStyle]="{ color: element.color }">lens</mat-icon>
           <div></div>
         </td>
@@ -92,42 +61,24 @@
 
       <!-- Logo -->
       <ng-container matColumnDef="logo">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          class="factura-table__table-header center"
-          mat-sort-header
-        >
-          {{ "invoice.serie-table.logo" | translate }}
+        <th mat-header-cell *matHeaderCellDef class="factura-table__table-header center" mat-sort-header>
+          {{ 'invoice.serie-table.logo' | translate }}
         </th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="factura-table__table-body"
-        >
+        <td mat-cell *matCellDef="let element" class="factura-table__table-body">
           <img src="{{ element.logo }}" alt="" width="50px" />
         </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <th
-          class="factura-table__table-header"
-          mat-header-cell
-          *matHeaderCellDef
-          style="width: 50px"
-        ></th>
-        <td
-          class="factura-table__table-body"
-          mat-cell
-          *matCellDef="let element"
-        >
+        <th class="factura-table__table-header" mat-header-cell *matHeaderCellDef style="width: 50px"></th>
+        <td class="factura-table__table-body" mat-cell *matCellDef="let element">
           <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger>
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu" class="brand-menu-1">
             <button mat-menu-item (click)="editSerie(element)">
               <mat-icon>edit</mat-icon>
-              <span>{{ "invoice.serie-table.editar" | translate }}</span>
+              <span>{{ 'invoice.serie-table.editar' | translate }}</span>
             </button>
             <!-- <button mat-menu-item (click)="deleteSerie(element._id)">
               <mat-icon

@@ -1,5 +1,4 @@
-<form [formGroup]="firstFormGroup">
-
+<form [formGroup]="firstFormGroup" class="transport-component">
   <div class="grid container-row">
     <!-- <mat-slide-toggle formControlName="transp_internac">{{
       "invoice.transporte.transporte-internacional" | translate
@@ -25,13 +24,13 @@
     </mat-button-toggle-group>
   </div>
 
-
-  <div *ngIf="firstFormGroup.get('transp_internac').value == 'Sí'">
+  <div *ngIf="firstFormGroup.get('transp_internac').value === 'Sí'">
     <div class="grid">
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>{{ 'invoice.transporte.pais-origen-destino' | translate }}</mat-label>
         <mat-select class="disable-custom-format" formControlName="pais_origen_destino">
-          <mat-option [value]="country.code" *ngFor="let country of countries"> {{ country.code }} - {{ country.name }}
+          <mat-option [value]="country.code" *ngFor="let country of countries">
+            {{ country.code }} - {{ country.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -51,22 +50,24 @@
         <mat-label>{{ 'invoice.transporte.movimiento-mercancia' | translate }}</mat-label>
         <mat-select class="disable-custom-format" formControlName="entrada_salida_merc">
           <mat-option value="Entrada">{{ 'invoice.transporte.movimiento-mercancia-entrada' | translate }}</mat-option>
-          <mat-option value="salida">{{ 'invoice.transporte.movimiento-mercancia-salida' | translate }}</mat-option>
+          <mat-option value="Salida">{{ 'invoice.transporte.movimiento-mercancia-salida' | translate }}</mat-option>
         </mat-select>
       </mat-form-field>
 
-
-      <mat-form-field appearance="outline" class="brand-field-1">
+      <!-- <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>{{ 'invoice.transporte.regimen_aduanero' | translate }}</mat-label>
         <mat-select class="disable-custom-format" formControlName="regimen_aduanero">
           <ng-container *ngFor="let option of regimenesAduaneros">
-            <mat-option [value]="option.clave"
-              *ngIf="option.impo_expo.toLowerCase().includes(firstFormGroup.get('entrada_salida_merc')?.value?.toLowerCase())">
+            <mat-option
+              [value]="option.clave"
+              *ngIf="
+                option.impo_expo.toLowerCase().includes(firstFormGroup.get('entrada_salida_merc')?.value?.toLowerCase())
+              ">
               {{ option.clave }} - {{ option.descripcion }}
             </mat-option>
           </ng-container>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
     <!-- <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>Total Distancia Recorrida</mat-label>
@@ -77,6 +78,22 @@
       />
     </mat-form-field> -->
   </div>
+
+  <div class="grid" *ngIf="firstFormGroup.value.transp_internac === 'Sí'">
+    <mat-form-field>
+      <!-- <mat-label>Regimenes Aduaneros</mat-label> -->
+       <div class="title">Regimenes Aduaneros</div>
+      <input matInput formControlName="regimenes_aduaneros" class="hide" />
+      <div *ngIf="!firstFormGroup.get('entrada_salida_merc').value">Seleccione el movimiento de mercancia</div>
+      <app-regimenes-aduaneros
+        *ngIf="firstFormGroup.get('entrada_salida_merc').value"
+        [initialValue]="selectedCustomsRegime"
+        [regimes_list]="regimenesAduaneros"
+        [entrada_salida_merc]="firstFormGroup.get('entrada_salida_merc').value"
+        (regimeHasChanged)="firstFormGroup.get('regimenes_aduaneros').setValue($event)"></app-regimenes-aduaneros>
+    </mat-form-field>
+  </div>
+
   <div class="grid" *ngIf="cartaPorteType === 'autotransporte'">
     <app-autotransporte [subtiposRemolques]="subtiposRemolques" [info]="autotransportesInfo"></app-autotransporte>
   </div>

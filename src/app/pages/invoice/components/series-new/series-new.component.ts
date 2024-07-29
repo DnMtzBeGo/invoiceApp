@@ -1,16 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-
+import { FormGroup, FormControl, Validators, UntypedFormControl } from '@angular/forms';
+import {
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+} from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
+
 // import { ApiRestService } from "src/app/core/services";
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-series-new',
   templateUrl: './series-new.component.html',
-  styleUrls: ['./series-new.component.scss']
+  styleUrls: ['./series-new.component.scss'],
 })
 export class SeriesNewComponent implements OnInit {
   public imageSrc: any;
@@ -23,44 +25,38 @@ export class SeriesNewComponent implements OnInit {
     tipo_comprobante: new FormControl('', Validators.required),
     serie: new FormControl('', Validators.required),
     folio: new FormControl('', Validators.required),
-    color: new FormControl('')
+    color: new FormControl(''),
+    use_for_automatic_stamp: new UntypedFormControl(false),
   });
 
   public imageForm = new FormGroup({
-    file: new FormControl('')
+    file: new FormControl(''),
   });
 
-  private isEditing: boolean = false;
+  public isEditing: boolean = false;
 
   constructor(
     public matDialogRef: MatDialogRef<SeriesNewComponent>,
     private apiRestService: AuthService,
     @Inject(MAT_DIALOG_DATA) public seriesData,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isEditing = Object.keys(this.seriesData).length > 1;
-
-    if (this.isEditing) {
-      this.seriesForm.controls['tipo_comprobante'].disable();
-      this.seriesForm.controls['serie'].disable();
-      this.seriesForm.controls['folio'].disable();
-    }
 
     if (this.seriesData) {
       this.seriesForm.patchValue(this.seriesData);
-      if (this.seriesData.logo) {
-        this.imageSrc = this.seriesData.logo;
-      }
+      if (this.seriesData.logo) this.imageSrc = this.seriesData.logo;
     }
+
     this.getReceiptTypes();
   }
 
   public closeModal() {
     this.matDialogRef.close({
       success: true,
-      message: ''
+      message: '',
     });
   }
 
@@ -83,15 +79,15 @@ export class SeriesNewComponent implements OnInit {
     const formData = new FormData();
     const type = this.isEditing ? 'update' : 'create';
     formData.append('emisor', this.seriesData.emisor);
-    if (!this.isEditing) {
-      formData.append('serie', this.seriesForm.get('serie').value);
-      formData.append('tipo_comprobante', this.seriesForm.get('tipo_comprobante').value);
-      formData.append('folio', this.seriesForm.get('folio').value);
-    }
+
+    formData.append('serie', this.seriesForm.get('serie').value);
+    formData.append('tipo_comprobante', this.seriesForm.get('tipo_comprobante').value);
+    formData.append('folio', this.seriesForm.get('folio').value);
+
     formData.append('color', this.seriesForm.get('color').value);
-    if (this.logoFile) {
-      formData.append('logo', this.logoFile);
-    }
+    formData.append('use_for_automatic_stamp', this.seriesForm.get('use_for_automatic_stamp').value);
+
+    if (this.logoFile) formData.append('logo', this.logoFile);
     if (this.isEditing) formData.append('_id', this.seriesData._id);
 
     (await this.apiRestService.uploadFilesSerivce(formData, 'invoice/series/' + type, {})).subscribe(
@@ -100,16 +96,16 @@ export class SeriesNewComponent implements OnInit {
           success: true,
           message: this.translateService.instant('invoice.serie-new.close-' + type + '-success'),
           data: {
-            _id: res.result?._id
-          }
+            _id: res.result?._id,
+          },
         });
       },
       (err) => {
         this.matDialogRef.close({
           success: false,
-          message: this.translateService.instant('invoice.serie-new.close-error')
+          message: this.translateService.instant('invoice.serie-new.close-error'),
         });
-      }
+      },
     );
   }
 
@@ -120,7 +116,7 @@ export class SeriesNewComponent implements OnInit {
       },
       (err) => {
         console.log(err);
-      }
+      },
     );
   }
 }

@@ -1,0 +1,39 @@
+<div class="customs-regime">
+  <div class="list">
+    <div class="item" *ngFor="let item of items; let i = index">
+      <div class="item-number">{{ i + 1 }}</div>
+      <div class="item-content">
+        <mat-form-field appearance="outline" class="brand-field-1">
+          <mat-select
+            [ngModel]="items[i]"
+            (ngModelChange)="setRegimeCode(i, $event)"
+            placeholder="Seleccione un regimen"
+            class="disable-custom-format">
+            <ng-container *ngIf="regimes_list?.length">
+              <ng-container *ngFor="let regime of regimes_list">
+                <mat-option
+                  [value]="regime.clave"
+                  *ngIf="regime.impo_expo?.toLowerCase().includes(entrada_salida_merc?.toLowerCase())">
+                  {{ regime.clave }} - {{ regime.descripcion }}
+                </mat-option>
+              </ng-container>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="item-actions">
+        <button
+          title="Agregar regimen aduanero"
+          mat-mini-fab
+          *ngIf="i < 9 && i + 1 === items.length"
+          type="button"
+          (click)="addLine()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button title="Eliminar regimen aduanero" mat-mini-fab type="button" (click)="remove(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

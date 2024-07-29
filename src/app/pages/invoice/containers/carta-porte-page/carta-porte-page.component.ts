@@ -3,23 +3,25 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { v4 as uuidv4 } from 'uuid';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { InfoModalComponent } from '../../modals/info-modal/info-modal.component';
 import { CartaPorteInfoService } from '../../components/invoice/carta-porte/services/carta-porte-info.service';
 import { SubtiposRemolques } from '../../models/invoice/carta-porte/subtipos-remolques';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { v4 as uuidv4 } from 'uuid';
+
 @Component({
   selector: 'app-carta-porte-page',
   templateUrl: './carta-porte-page.component.html',
-  styleUrls: ['./carta-porte-page.component.scss']
+  styleUrls: ['./carta-porte-page.component.scss'],
 })
 export class CartaPortePageComponent {
   public subtiposRemolquesList: SubtiposRemolques;
   public catalogues: any;
   private redirectTo: string;
 
-  @Input() facturaInfo: any;
+  @Input() public facturaInfo: any;
 
   public transporteInfo: any;
   public ubicacionesInfo: any;
@@ -27,7 +29,7 @@ export class CartaPortePageComponent {
   public figuraTransporteInfo: any;
   public cartaPorteEnabled = [];
   public cartaPorteDisabled: boolean = false;
-  isLinear = false;
+  public isLinear = false;
   constructor(
     public cartaPorteInfoService: CartaPorteInfoService,
     private _location: Location,
@@ -35,12 +37,12 @@ export class CartaPortePageComponent {
     public route: ActivatedRoute,
     public apiRestService: AuthService,
     public matDialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {
     this.cartaPorteInfoService.id_ccp = '';
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges) {
     if (changes.facturaInfo?.currentValue?.carta_porte) {
       this.cartaPorteEnabled.push('carta_porte');
       this.facturaInfo.complementos = this.cartaPorteEnabled;
@@ -84,7 +86,7 @@ export class CartaPortePageComponent {
     return 'CCC' + uuidv4().substring(3, 36).toUpperCase();
   }
 
-  async gatherInfo(): Promise<void> {
+  public async gatherInfo(): Promise<void> {
     this.cartaPorteInfoService.invalidInfo = false;
     this.cartaPorteInfoService.resetCartaPorteInfo();
     this.cartaPorteInfoService.infoRecolector.next(null);
@@ -100,6 +102,13 @@ export class CartaPortePageComponent {
       delete this.facturaInfo.carta_porte.pais_origen_destino;
       delete this.facturaInfo.carta_porte.entrada_salida_merc;
       delete this.facturaInfo.carta_porte.via_entrada_salida;
+      delete this.facturaInfo.carta_porte.regimen_aduanero;
+      delete this.facturaInfo.carta_porte.regimenes_aduaneros;
+    } else {
+      if (this.facturaInfo.carta_porte.regimenes_aduaneros) {
+        const { regimenes_aduaneros } = this.facturaInfo.carta_porte;
+        this.facturaInfo.carta_porte.regimenes_aduaneros = JSON.parse(regimenes_aduaneros);
+      }
     }
 
     this.facturaInfo.carta_porte.cve_transporte = '01';
@@ -116,9 +125,9 @@ export class CartaPortePageComponent {
           } else {
             this._location.back();
           }
-        }
+        },
       },
-      restoreFocus: false
+      restoreFocus: false,
     });
   }
 
@@ -126,9 +135,9 @@ export class CartaPortePageComponent {
     this.matDialog.open(InfoModalComponent, {
       data: {
         title: this.translateService.instant('invoice.cp-page.error-title'),
-        message: error
+        message: error,
       },
-      restoreFocus: false
+      restoreFocus: false,
     });
   }
 
@@ -138,10 +147,10 @@ export class CartaPortePageComponent {
         title: this.translateService.instant('invoice.cp-page.readonly-title'),
         action: () => {
           this.router.navigateByUrl('/operations/facturas');
-        }
+        },
       },
       restoreFocus: false,
-      disableClose: true
+      disableClose: true,
     });
   }
 }
