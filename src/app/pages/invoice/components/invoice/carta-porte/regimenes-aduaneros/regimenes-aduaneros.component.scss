@@ -1,0 +1,45 @@
+@import 'src/app/pages/invoice/styles/colors';
+@import "src/styles.scss";
+
+.customs-regime {
+  .list {
+    .item {
+      display: flex;
+      gap: 10px;
+
+      .item-number {
+        width: 40px;
+        line-height: 58px;
+        text-align: center;
+      }
+
+      .item-content {
+        width: 80%;
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+
+      .item-actions {
+        display: flex;
+        gap: 10px;
+
+        button {
+          margin-top: 12px;
+          background-color: $yellow-color;
+          width: 30px;
+          height: 30px;
+          * {
+            color: #040B11;
+            font-size: 15px;
+          }
+
+          ::ng-deep .mat-button-wrapper {
+            padding: 0;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+  }
+}

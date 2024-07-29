@@ -57,6 +57,10 @@ mat-form-field {
   }
 }
 
+.mat-hint {
+  color: #ccc;
+}
+
 ::ng-deep .brand-option-1 {
   .mat-option-text {
     display: inline-flex;

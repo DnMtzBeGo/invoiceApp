@@ -1,3 +1,8 @@
+.transport-component {
+  .hide {
+    display: none;
+  }
+}
 section {
   margin-bottom: 2rem;
 
@@ -14,8 +19,7 @@ section {
     gap: 1rem 2rem;
     border-radius: 4px;
     background-color: white;
-    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
-      0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
 
     > div {
       label {
@@ -115,4 +119,12 @@ mat-form-field {
 
 button.icon {
   margin-right: 15px;
+}
+
+.title {
+  font-family: "Avenir";
+  font-size: 20px;
+  line-height: 27px;
+  color: #EDEDED;
+  margin: 0 0 25px 0;
 }

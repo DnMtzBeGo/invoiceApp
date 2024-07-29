@@ -1176,7 +1176,7 @@
       "save-error": "Serie borrada"
     },
     "cp-page": {
-      "carta-porte": "Carta Porte 3.0",
+      "carta-porte": "Carta Porte",
       "btn-save": "Guardar",
 
       "transporte": "Transporte",
@@ -1270,6 +1270,7 @@
       "peso": "Peso (Kg)",
       "valor-mercancia": "Valor Mercancía",
       "moneda": "Moneda",
+      "tipo_materia": "Tipo materia",
 
       "material-peligroso": "Material Peligroso",
 
@@ -1959,7 +1960,7 @@
       "message": {
         "error-img": "Esta imagen ha caducado"
       }
-    }, 
+    },
     "footer": "ChibiPT puede cometer errores. Comprueba la información importante.",
     "greeting": "¿Como te puedo ayudar hoy?"
   },

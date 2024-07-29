@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-
 import { BehaviorSubject, Subject } from 'rxjs';
+
 import { InfoModalComponent } from 'src/app/pages/invoice/modals/info-modal/info-modal.component';
-import { v4 as uuidv4 } from 'uuid';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartaPorteInfoService {
+  public ACTIVE_VERSION = '3.1';
+
   public id_ccp: string;
   public info: any;
   public infoRecolector = new Subject();
@@ -18,7 +20,7 @@ export class CartaPorteInfoService {
     this.info = this.resetCartaPorteInfo();
   }
 
-  addRecolectedInfo(infoToAdd: any) {
+  public addRecolectedInfo(infoToAdd: any) {
     const { isValid } = infoToAdd;
     delete infoToAdd.isValid;
     if (!isValid && !this.invalidInfo) {
@@ -33,31 +35,30 @@ export class CartaPorteInfoService {
     Object.assign(this.info, infoToAdd);
   }
 
-  addRecoletedInfoMercancias(infoToAdd: any): void {
+  public addRecoletedInfoMercancias(infoToAdd: any): void {
     if (!this.info.mercancias) this.info.mercancias = {};
     Object.assign(this.info.mercancias, infoToAdd);
   }
 
-  showInvalidInfoModal(message: string) {
+  public showInvalidInfoModal(message: string) {
     this.matDialog.open(InfoModalComponent, {
       data: {
         title: 'La información es invalida',
-        message
+        message,
       },
-      restoreFocus: false
+      restoreFocus: false,
     });
   }
 
-  resetCartaPorteInfo(): void {
+  public resetCartaPorteInfo(): void {
     this.info = {
-      version: '3.0',
-      mercancias: {}
+      version: this.ACTIVE_VERSION,
+      regimenes_aduaneros: '[]',
+      mercancias: {},
     };
   }
 
-  showSuccessModal() {}
-
-  showFraccionArancelaria(data: boolean) {
+  public showFraccionArancelaria(data: boolean) {
     this.emitShowFraccion.next(data);
     return this.emitShowFraccion;
   }
