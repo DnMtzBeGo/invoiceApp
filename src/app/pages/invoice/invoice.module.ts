@@ -81,6 +81,7 @@ import { TwoDigitDecimaNumberDirective } from '../shared/directives/decimal.dire
 import { TooltipHelpModule } from 'src/app/shared/components/tooltip-help/tooltip-help.module';
 import { AppMaterialModule } from 'src/app/material';
 import { CantidadTransportaComponent } from './components/cantidad-transporta/cantidad-transporta.component';
+import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/regimenes-aduaneros/regimenes-aduaneros.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +140,7 @@ import { CantidadTransportaComponent } from './components/cantidad-transporta/ca
     ActionSendEmailFacturaComponent,
     FacturaFiltersComponent,
     TwoDigitDecimaNumberDirective,
+    RegimenesAduanerosComponent,
   ],
   imports: [
     CommonModule,

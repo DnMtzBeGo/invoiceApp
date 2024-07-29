@@ -2,8 +2,13 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.bienes-transportados' | translate }}</mat-label>
-      <input formControlName="bienesTransportados" autocomplete="off" type="search" matInput
-        (search)="resetFilterList('bienesTransportados')" [matAutocomplete]="bienesTransportadosRef" />
+      <input
+        formControlName="bienesTransportados"
+        autocomplete="off"
+        type="search"
+        matInput
+        (search)="resetFilterList('bienesTransportados')"
+        [matAutocomplete]="bienesTransportadosRef" />
       <mat-autocomplete #bienesTransportadosRef="matAutocomplete" [displayWith]="getBienesTransportadosText.bind(this)">
         <mat-option *ngFor="let option of filteredBienesTransportados" [value]="option.code" class="brand-option-1">
           {{ option.code }} - {{ option.description }}
@@ -23,8 +28,13 @@
 
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.clave-unidad' | translate }}</mat-label>
-      <input formControlName="claveUnidad" autocomplete="off" type="search" matInput
-        (search)="resetFilterList('claveUnidad')" [matAutocomplete]="claveUnidadRef" />
+      <input
+        formControlName="claveUnidad"
+        autocomplete="off"
+        type="search"
+        matInput
+        (search)="resetFilterList('claveUnidad')"
+        [matAutocomplete]="claveUnidadRef" />
       <mat-autocomplete #claveUnidadRef="matAutocomplete" [displayWith]="getClaveUnidadText.bind(this)">
         <mat-option *ngFor="let option of filteredClaveUnidad" [value]="option.clave" class="brand-option-1">
           {{ option.clave }} - {{ option.nombre }}
@@ -58,6 +68,17 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.commodity.tipo_materia' | translate }}</mat-label>
+      <mat-select formControlName="tipoMateria" class="disable-custom-format" name="tipoMateria">
+        <mat-option *ngFor="let option of typesOfMatter" [value]="option.clave">
+          {{ option.clave }} - {{ option.descripcion }}
+        </mat-option>
+      </mat-select>
+      <mat-hint align="end">Solo transporte internacional</mat-hint>
+    </mat-form-field>
+
     <div class="hazardous-container">
       <p>{{ 'invoice.commodity.material-peligroso' | translate }}</p>
       <mat-slide-toggle formControlName="materialPeligroso"></mat-slide-toggle>
@@ -65,9 +86,15 @@
 
     <mat-form-field *ngIf="commodity.value.materialPeligroso" appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.clave-material-peligroso' | translate }}</mat-label>
-      <input formControlName="claveMaterialPeligroso" autocomplete="off" type="search" matInput
-        (search)="resetFilterList('claveMaterialPeligroso')" [matAutocomplete]="claveMaterialPeligrosoRef" />
-      <mat-autocomplete #claveMaterialPeligrosoRef="matAutocomplete"
+      <input
+        formControlName="claveMaterialPeligroso"
+        autocomplete="off"
+        type="search"
+        matInput
+        (search)="resetFilterList('claveMaterialPeligroso')"
+        [matAutocomplete]="claveMaterialPeligrosoRef" />
+      <mat-autocomplete
+        #claveMaterialPeligrosoRef="matAutocomplete"
         [displayWith]="getMaterialPeligrosoText.bind(this)">
         <mat-option *ngFor="let option of filteredMaterialPeligroso" [value]="option.clave" class="brand-option-1">
           {{ option.clave }} - {{ option.descripcion }}
@@ -78,30 +105,41 @@
     <mat-form-field *ngIf="commodity.value.materialPeligroso" appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.embalaje' | translate }} {{ commodity.value.embalaje }}</mat-label>
       <mat-select formControlName="embalaje" class="disable-custom-format" name="embalaje">
-        <mat-option *ngFor="let option of embalaje" [value]="option.clave"> {{ option.clave }} - {{ option.descripcion
-          }} </mat-option>
+        <mat-option *ngFor="let option of embalaje" [value]="option.clave">
+          {{ option.clave }} - {{ option.descripcion }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1" *ngIf="showFraccion">
       <mat-label>Fracción arancelaria</mat-label>
-      <input matInput name="fraccionArancelaria" placeholder="" type="text" formControlName="fraccionArancelaria"
+      <input
+        matInput
+        name="fraccionArancelaria"
+        placeholder=""
+        type="text"
+        formControlName="fraccionArancelaria"
         [value]="" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1" *ngIf="showFraccion">
       <mat-label>UUID del comprobante de comercio exterior</mat-label>
       <input matInput name="UUIDComercioExt" placeholder="" type="text" formControlName="UUIDComercioExt" [value]="" />
-      <mat-error>Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o plg. Ejemplo:
-        10/10/10cm</mat-error>
+      <mat-error
+        >Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o plg. Ejemplo: 10/10/10cm</mat-error
+      >
     </mat-form-field>
   </div>
 
   <h6>{{ 'invoice.commodity.cantidad_transporta.title' | translate }}</h6>
 
   <div *ngFor="let ct of cantidad_transporta; index as i">
-    <app-cantidad-transporta [totalRows]="cantidad_transporta?.length" [data]="ct" [index]="i"
-      (itemRemoved)="removeCantidadTransportaRow($event)" (itemChanged)="cantidadTransportaRowHasChanged($event)" />
+    <app-cantidad-transporta
+      [totalRows]="cantidad_transporta?.length"
+      [data]="ct"
+      [index]="i"
+      (itemRemoved)="removeCantidadTransportaRow($event)"
+      (itemChanged)="cantidadTransportaRowHasChanged($event)"></app-cantidad-transporta>
   </div>
 
   <div class="add-cantidad-transporta-btn" (click)="addCantidadTransportaRow()">
