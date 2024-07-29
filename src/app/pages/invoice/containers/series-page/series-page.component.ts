@@ -1,40 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { SeriesNewComponent } from '../../components/series-new/series-new.component';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-series-page',
   templateUrl: './series-page.component.html',
-  styleUrls: ['./series-page.component.scss']
+  styleUrls: ['./series-page.component.scss'],
 })
-export class SeriesPageComponent implements OnInit {
+export class SeriesPageComponent {
   public stateSubscriptionSeries: Subscription;
-  dataSource: unknown[];
+  public dataSource: unknown[];
 
   constructor(
     public dialog: MatDialog,
     private notificationsService: NotificationsService,
     public apiRestService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.getSeries();
   }
 
-  ngOnInit(): void {}
-
-  newSeries(): void {
+  public newSeries(): void {
     const dialogRef = this.dialog.open(SeriesNewComponent, {
       data: {
-        emisor: this.route.snapshot.paramMap.get('id')
+        emisor: this.route.snapshot.paramMap.get('id'),
       },
       restoreFocus: false,
       autoFocus: false,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -45,11 +44,9 @@ export class SeriesPageComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(): void {}
-
-  public async getSeries() {
+  public async getSeries(): Promise<void> {
     let requestJson = {
-      emisor: this.route.snapshot.paramMap.get('id')
+      emisor: this.route.snapshot.paramMap.get('id'),
     };
     (await this.apiRestService.apiRestGet('invoice/series', requestJson)).subscribe(
       (res) => {
@@ -57,7 +54,7 @@ export class SeriesPageComponent implements OnInit {
       },
       (err) => {
         console.log(err);
-      }
+      },
     );
   }
 }

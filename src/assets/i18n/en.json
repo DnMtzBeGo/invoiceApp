@@ -1067,6 +1067,8 @@
       "folio": "* Folio",
       "color": "Color (opcional)",
 
+      "use_for_automatic_stamp": "Utilizar como serie de facturación automática",
+
       "image": "Imagen (opcional)",
       "image-placeholder": "Seleccionar imagen (opcional)",
 
@@ -1168,7 +1170,7 @@
       "folio": "Folio",
       "color": "Color",
       "logo": "Logo",
-
+      "use_for_automatic_stamp": "Timbrado Automático",
       "editar": "Editar",
       "borrar": "Borrar",
 
