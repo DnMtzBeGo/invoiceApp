@@ -4,21 +4,6 @@
 
     <div class="input-directions">
       <app-fleet-widget></app-fleet-widget>
-      <div class="btns-container">
-        <button
-          id="reset"
-          (click)="updateMap()"
-          [ngClass]="{
-            'reset-up': mapDashboardService.userRole && mapDashboardService.showFleetMap
-          }"
-          [@slideInFromBottom]>
-          <i class="icon icon-gps"></i>
-        </button>
-
-        <button class="btn-traffic" (click)="mapDashboardService.toggleTraffic.next()" [@slideInFromBottom]>
-          <img id="trafficIcon" src="../../../assets/images/trafficIcon.svg" />
-        </button>
-      </div>
     </div>
   </div>
 </div>
