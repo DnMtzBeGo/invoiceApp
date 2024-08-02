@@ -35,6 +35,8 @@ export class CircularAvatarComponent implements OnChanges {
   }
 
   public get tooltipData(): string {
+    if (!this.data) return '';
+
     const lines = [];
 
     switch (this.fleetMember) {
