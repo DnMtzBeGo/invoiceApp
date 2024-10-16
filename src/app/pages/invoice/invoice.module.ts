@@ -83,6 +83,7 @@ import { AppMaterialModule } from 'src/app/material';
 import { CantidadTransportaComponent } from './components/cantidad-transporta/cantidad-transporta.component';
 import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/regimenes-aduaneros/regimenes-aduaneros.component';
 
+import { BegoTableMultipleSelectionModule } from '@begomx/ui-components';
 @NgModule({
   declarations: [
     // OrdersPageComponent,
@@ -160,6 +161,7 @@ import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/re
     BegoIconsModule,
     BegoTableModule,
     AppMaterialModule,
+    BegoTableMultipleSelectionModule,
   ],
   exports: [
     // MODALS

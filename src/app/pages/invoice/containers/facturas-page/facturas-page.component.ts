@@ -15,7 +15,7 @@ import {
   skip,
   filter,
   takeUntil,
-  startWith
+  startWith,
 } from 'rxjs/operators';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,7 +31,15 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { DatePipe } from '@angular/common';
 import { facturaPermissions } from '../factura-edit-page/factura.core';
 
-const filterParams = new Set(['fec_inicial', 'fec_final', 'emisor', 'receptor', 'tipo_de_comprobante', 'uuid', 'status']);
+const filterParams = new Set([
+  'fec_inicial',
+  'fec_final',
+  'emisor',
+  'receptor',
+  'tipo_de_comprobante',
+  'uuid',
+  'status',
+]);
 
 const status2observe = new Set([2, 4]);
 const observeTime = 5000;
@@ -42,7 +50,7 @@ const shouldObserve = (facturas) => facturas.some((factura) => status2observe.ha
   templateUrl: './facturas-page.component.html',
   styleUrls: ['./facturas-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class FacturasPageComponent implements OnInit {
   public routes: typeof routes = routes;
@@ -50,7 +58,7 @@ export class FacturasPageComponent implements OnInit {
 
   private filtersDialogRef;
 
-  vm!: {
+  public vm!: {
     tiposComprobante?: unknown;
     facturaStatus?: unknown;
     params?: {
@@ -77,11 +85,13 @@ export class FacturasPageComponent implements OnInit {
     };
   };
 
-  facturasEmitter = new Subject<['refresh' | 'filters:set' | 'template:search' | 'template:set' | 'refresh:defaultEmisor', unknown?]>();
+  public facturasEmitter = new Subject<
+    ['refresh' | 'filters:set' | 'template:search' | 'template:set' | 'refresh:defaultEmisor', unknown?]
+  >();
 
   public paginator: Paginator;
 
-  p = facturaPermissions;
+  public p = facturaPermissions;
 
   constructor(
     public router: Router,
@@ -90,13 +100,13 @@ export class FacturasPageComponent implements OnInit {
     private apiRestService: AuthService,
     private translateService: TranslateService,
     private cd: ChangeDetectorRef,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {
     this.paginator = {
       pageIndex: +this.route.snapshot.queryParams.page || 1,
       pageSize: +this.route.snapshot.queryParams.limit || 10,
       pageTotal: 1,
-      pageSearch: ''
+      pageSearch: '',
     };
   }
 
@@ -107,20 +117,23 @@ export class FacturasPageComponent implements OnInit {
 
     const facturaStatus$ = this.fetchFacturaStatus().pipe(share());
 
-    const params$ = merge(oof(this.route.snapshot.queryParams), this.route.queryParams.pipe(skip(1), debounceTime(500))).pipe(
+    const params$ = merge(
+      oof(this.route.snapshot.queryParams),
+      this.route.queryParams.pipe(skip(1), debounceTime(500)),
+    ).pipe(
       distinctUntilChanged(object_compare),
       map((params: any) => ({
         ...params,
         limit: +params.limit || this.paginator.pageSize,
         page: +params.page || this.paginator.pageIndex,
         fec_inicial: params.fec_inicial ? this.decodeFecha(params.fec_inicial) : null,
-        fec_final: params.fec_final ? this.decodeFecha(params.fec_final) : null
+        fec_final: params.fec_final ? this.decodeFecha(params.fec_final) : null,
       })),
       tap((params) => {
         this.paginator.pageSize = Number(params.limit);
         this.paginator.pageIndex = Number(params.page);
       }),
-      share()
+      share(),
     );
 
     const facturasRequest$ = combineLatest([loadDataAction$, params$]).pipe(pluck('1'), share());
@@ -134,54 +147,43 @@ export class FacturasPageComponent implements OnInit {
           this.paginator.pageTotal = result.pages;
           this.paginator.total = result.size;
         }),
-        pluck('invoices')
-      )
+        pluck('invoices'),
+      ),
     ).pipe(
       map(([tiposComprobante, facturaStatus, facturas]: any) =>
         facturas.map((factura: any) => ({
           ...factura,
           plataforma: {
-            type: factura.source == 'orden' ? 'invoice-driver' : factura.source == 'factura' ? 'invoice-cfdi' : 'invoice-order',
+            type:
+              factura.source == 'orden'
+                ? 'invoice-driver'
+                : factura.source == 'factura'
+                ? 'invoice-cfdi'
+                : 'invoice-order',
             label:
               factura.source == 'orden'
                 ? this.translate('invoice.tooltips.invoice_source.drivers')
                 : factura.source == 'factura'
                 ? this.translate('invoice.tooltips.invoice_source.factura')
-                : this.translate('invoice.tooltips.invoice_source.ordenes')
+                : this.translate('invoice.tooltips.invoice_source.ordenes'),
           },
           fecha_emision: this.getDate(factura.fecha_emision),
           serie: factura?.serie_label || factura?.serie,
           emisor: `${factura.emisor?.nombre || ''}\n${factura.emisor?.rfc || ''}`,
           receptor: `${factura.receptor?.nombre || ''}\n${factura.receptor?.rfc || ''}`,
           tipo: tiposComprobante[factura.tipo_de_comprobante] || factura.tipo_de_comprobante,
-          // tipo_de_comprobante_: tiposComprobante[factura.tipo_de_comprobante] || factura.tipo_de_comprobante,
-          status: facturaStatus[factura.status] || factura.status,
+          tipo_de_comprobante: factura.tipo_de_comprobante,
+          status_: facturaStatus[factura.status] || factura.status,
+          status: factura.status,
           // status: '',
           subtotal: this.getCurrency(factura?.subtotal),
           total: this.getCurrency(factura?.total),
-          actions: {
-            enabled: true,
-            options: {
-              edit_order_factura: this.p(factura).edit && !!factura.order,
-              edit_factura: this.p(factura).edit && !!!factura.order,
-              download_preview: this.p(factura).vistaprevia,
-              download_pdf: this.p(factura).pdf,
-              download_pdf_driver: this.p(factura).pdf_driver && factura.files?.pdf_driver,
-              download_pdf_cancelado: this.p(factura).pdf_cancelado,
-              download_xml: this.p(factura).xml,
-              download_xml_acuse: this.p(factura).xml_acuse,
-              duplicate: this.p(factura).duplicar,
-              send_by_email: this.p(factura).enviar_correo,
-              cancel_invoice: this.p(factura).cancelar,
-              delete_invoice: this.p(factura).eliminar
-            }
-          }
-        }))
+        })),
       ),
       tap(() => {
         this.cd.markForCheck();
       }),
-      share()
+      share(),
     );
 
     const facturasLoading$ = merge(facturasRequest$.pipe(mapTo(true)), facturas$.pipe(mapTo(false)));
@@ -191,14 +193,16 @@ export class FacturasPageComponent implements OnInit {
         shouldObserve(facturas)
           ? timer(observeTime).pipe(
               mapTo(1),
-              tap(() => this.facturasEmitter.next(['refresh']))
+              tap(() => this.facturasEmitter.next(['refresh'])),
             )
-          : of(0)
-      )
+          : of(0),
+      ),
     );
 
     // EMISORES
-    const defaultEmisor$ = this.fetchEmisores().pipe(repeatWhen(() => this.facturasEmitter.pipe(ofType('refresh:defaultEmisor'))));
+    const defaultEmisor$ = this.fetchEmisores().pipe(
+      repeatWhen(() => this.facturasEmitter.pipe(ofType('refresh:defaultEmisor'))),
+    );
 
     //TEMPLATES
     const emptySearch = (search: any) => search.search === '';
@@ -209,37 +213,40 @@ export class FacturasPageComponent implements OnInit {
     const searchAction$ = merge(
       this.facturasEmitter.pipe(
         ofType('template:search'),
-        map((search: string) => ({ type: 'template' as const, search }))
-      )
+        map((search: string) => ({ type: 'template' as const, search })),
+      ),
     ).pipe(share());
 
-    const cancelSearchAction$ = merge(searchAction$.pipe(filter(emptySearch)), this.facturasEmitter.pipe(ofType('template:set')));
+    const cancelSearchAction$ = merge(
+      searchAction$.pipe(filter(emptySearch)),
+      this.facturasEmitter.pipe(ofType('template:set')),
+    );
 
     const validSearch$ = searchAction$.pipe(
       filter(validSearch),
-      switchMap((search) => timer(500).pipe(takeUntil(cancelSearchAction$), mapTo(search)))
+      switchMap((search) => timer(500).pipe(takeUntil(cancelSearchAction$), mapTo(search))),
     );
 
     const searchRequest$ = validSearch$.pipe(
       switchMap((search) => this.searchTemplate(search).pipe(takeUntil(cancelSearchAction$))),
-      share()
+      share(),
     );
 
     const searchLoading$ = merge(
       oof(false),
       validSearch$.pipe(mapTo(true)),
       searchRequest$.pipe(mapTo(false)),
-      cancelSearchAction$.pipe(mapTo(false))
+      cancelSearchAction$.pipe(mapTo(false)),
     );
 
     const receptorSearch$ = merge(
       searchRequest$.pipe(
         withLatestFrom(searchAction$),
         map(([requestData, search]: any) => ({
-          [search.type]: requestData
-        }))
+          [search.type]: requestData,
+        })),
       ),
-      cancelSearchAction$.pipe(mapTo({}))
+      cancelSearchAction$.pipe(mapTo({})),
     );
 
     this.vm = this.$rx.connect({
@@ -253,7 +260,7 @@ export class FacturasPageComponent implements OnInit {
       template: template$,
       searchAction: searchAction$,
       searchLoading: searchLoading$,
-      receptorSearch: receptorSearch$
+      receptorSearch: receptorSearch$,
     });
   }
 
@@ -265,7 +272,7 @@ export class FacturasPageComponent implements OnInit {
       (params.fec_inicial &&
         params.fec_final && {
           fec_inicial: params.fec_inicial ? String(params.fec_inicial) : '',
-          fec_final: params.fec_final ? (params.fec_final.setHours(23, 59, 59), String(params.fec_final)) : ''
+          fec_final: params.fec_final ? (params.fec_final.setHours(23, 59, 59), String(params.fec_final)) : '',
         }) ||
       {};
 
@@ -276,32 +283,32 @@ export class FacturasPageComponent implements OnInit {
       this.apiRestService.apiRestGet('invoice', {
         loader: 'false',
         ...params,
-        ...fechas
-      })
+        ...fechas,
+      }),
     ).pipe(mergeAll(), pluck('result'));
   };
 
   fetchTipoComprobante() {
     return from(
       this.apiRestService.apiRestGet('invoice/catalogs/tipos-de-comprobante', {
-        loader: 'false'
-      })
+        loader: 'false',
+      }),
     ).pipe(mergeAll(), pluck('result'));
   }
 
   fetchFacturaStatus = () => {
     return from(
       this.apiRestService.apiRestGet('invoice/catalogs/statuses', {
-        loader: 'false'
-      })
+        loader: 'false',
+      }),
     ).pipe(mergeAll(), pluck('result'));
   };
 
   fetchEmisores() {
     return from(
       this.apiRestService.apiRestGet('invoice/emitters', {
-        loader: 'false'
-      })
+        loader: 'false',
+      }),
     ).pipe(
       mergeAll(),
       map((responseData) => {
@@ -314,16 +321,16 @@ export class FacturasPageComponent implements OnInit {
 
         return emisores.length === 0 ? [] : [emisores.pop()];
       }),
-      startWith(null)
+      startWith(null),
     );
   }
 
   searchTemplate(search: { type: 'template'; search: string }) {
     const endpoints = {
-      template: 'invoice/get_drafts'
+      template: 'invoice/get_drafts',
     };
     const keys = {
-      template: 'search'
+      template: 'search',
     };
 
     return from(
@@ -331,13 +338,13 @@ export class FacturasPageComponent implements OnInit {
         JSON.stringify({
           pagination: {
             size: 10,
-            page: 1
+            page: 1,
           },
-          [keys[search.type]]: search.search
+          [keys[search.type]]: search.search,
         }),
         endpoints[search.type],
-        { loader: 'false' }
-      )
+        { loader: 'false' },
+      ),
     ).pipe(mergeAll(), pluck('result'));
   }
 
@@ -349,7 +356,7 @@ export class FacturasPageComponent implements OnInit {
       data: {
         tiposComprobante: this.vm.tiposComprobante,
         facturaStatus: this.vm.facturaStatus,
-        params: clone(this.vm.params)
+        params: clone(this.vm.params),
       },
       restoreFocus: false,
       autoFocus: false,
@@ -357,8 +364,8 @@ export class FacturasPageComponent implements OnInit {
       // hasBackdrop: true,
       backdropClass: ['brand-dialog-1', 'dialog-filters'],
       position: {
-        top: '12.5rem'
-      }
+        top: '12.5rem',
+      },
     });
 
     // TODO: false/positive when close event
@@ -371,9 +378,9 @@ export class FacturasPageComponent implements OnInit {
         relativeTo: this.route,
         queryParams: {
           ...params,
-          page: 1
+          page: 1,
         },
-        queryParamsHandling: 'merge'
+        queryParamsHandling: 'merge',
       });
     });
   }
@@ -383,10 +390,10 @@ export class FacturasPageComponent implements OnInit {
       data: {
         modalTitle: this.translateService.instant('invoice.invoices.noemisor-title'),
         modalMessage: this.translateService.instant('invoice.invoices.noemisor-message'),
-        confirm: this.translateService.instant('invoice.invoices.noemisor-confirm')
+        confirm: this.translateService.instant('invoice.invoices.noemisor-confirm'),
       },
       restoreFocus: false,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
     });
 
     // TODO: false/positive when close event
@@ -401,7 +408,7 @@ export class FacturasPageComponent implements OnInit {
       restoreFocus: false,
       autoFocus: false,
       disableClose: true,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
     });
 
     dialogRef.afterClosed().subscribe((result?) => {
@@ -440,7 +447,7 @@ export class FacturasPageComponent implements OnInit {
       ? '$' +
         price.toLocaleString('en-US', {
           minimumFractionDigits: 2,
-          maximumFractionDigits: 2
+          maximumFractionDigits: 2,
         })
       : '';
 }
