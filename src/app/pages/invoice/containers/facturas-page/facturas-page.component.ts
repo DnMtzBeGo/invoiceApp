@@ -178,6 +178,7 @@ export class FacturasPageComponent implements OnInit {
           // status: '',
           subtotal: this.getCurrency(factura?.subtotal),
           total: this.getCurrency(factura?.total),
+          folio: factura?.folio,
         })),
       ),
       tap(() => {
