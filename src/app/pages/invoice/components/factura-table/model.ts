@@ -59,6 +59,8 @@ export interface IInvoicesTableItem {
   };
   actions?: any;
   selection_check: boolean;
+  folio: string;
+  order: string;
 }
 
 export interface IIndexInvoice {
@@ -109,6 +111,7 @@ export interface IIndexInvoice {
   };
   order: string;
   status_: string;
+  folio: string;
 }
 
 export interface ICartaPorte {
