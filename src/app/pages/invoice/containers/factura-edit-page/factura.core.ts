@@ -383,3 +383,41 @@ const requiredFieldF = (object) => (path) => ![void 0, ''].includes(prop(object,
 export const minimumRequiredFields = (factura) => {
   return requiredPathsFactura.every(requiredFieldF(factura));
 };
+
+export const searchInList = (
+  component: any,
+  listName: string,
+  filteredListName: string,
+  code: string,
+  listIsInVM: boolean = false,
+  propCode: string = 'code',
+  propName: string = 'name',
+): void => {
+  component[filteredListName] = _searchInList(component, listName, code, listIsInVM, propCode, propName);
+};
+
+const _searchInList = (
+  component: any,
+  listName: string,
+  code: string,
+  listIsInVM: boolean = false,
+  propCode: string = 'code',
+  propName: string = 'name',
+): any[] => {
+  return code
+    ? (listIsInVM ? component.vm[listName] : component[listName]).filter(
+        (m: any) =>
+          m[propCode].toLowerCase().startsWith(code.toLowerCase()) ||
+          _cleanLatinChars(m[propName]).toLowerCase().startsWith(code.toLowerCase()),
+      )
+    : [...(listIsInVM ? component.vm[listName] : component[listName])];
+};
+
+export const _cleanLatinChars = (str: string): string => {
+  const latinChars = ['á', 'é', 'í', 'ó', 'ú'];
+  const replaceChars = ['a', 'e', 'i', 'o', 'u'];
+
+  for (const i in latinChars) str = str.replace(new RegExp(latinChars[i], 'gi'), replaceChars[i]);
+
+  return str;
+};
