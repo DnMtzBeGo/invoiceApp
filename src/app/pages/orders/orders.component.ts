@@ -70,6 +70,8 @@ export class OrdersComponent implements OnInit {
   hazardousFileAWS: object = {};
   catalogsDescription: object = {};
 
+  multipleCargoFile?: File;
+
   @Input() orderPreview?: OrderPreview;
   public orderData: Order = {
     stamp: false,
@@ -406,6 +408,10 @@ export class OrdersComponent implements OnInit {
       this.hazardousFile = data.hazardousFile;
     }
 
+    if (data.multipleCargoFile) {
+      this.multipleCargoFile = data.multipleCargoFile;
+    }
+
     if (data.hazardous_type != 'select-catergory' && data.hazardous_type) {
       this.orderData.cargo['hazardous_type'] = data.hazardous_type;
     }
@@ -424,6 +430,7 @@ export class OrdersComponent implements OnInit {
       data.satUnitType !== '' ? (this.orderWithCPFields.unit_type = true) : (this.orderWithCPFields.unit_type = false);
       this.orderData.cargo['commodity_quantity'] = data.commodity_quantity;
     }
+    
     this.orderData.cargo.weigth = data.cargoWeight;
     this.orderData = { ...this.orderData };
   }
@@ -601,6 +608,16 @@ export class OrdersComponent implements OnInit {
       formData.append('file', this.hazardousFile);
 
       const req = await this.auth.uploadFilesSerivce(formData, 'orders/upload_hazardous');
+      await req.toPromise();
+    }
+
+    if (this.multipleCargoFile) {
+      const formData = new FormData();
+      formData.append('file', this.multipleCargoFile);
+      formData.append('load_cap', cargo['53_48']);
+      formData.append('required_units', cargo.required_units);
+
+      const req = await this.auth.uploadFilesSerivce(formData, `orders/cargo/import-ftl/${order_id}`, { apiVersion: 'v1.1' });
       await req.toPromise();
     }
   }

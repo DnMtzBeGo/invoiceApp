@@ -3,10 +3,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { TranslateService } from '@ngx-translate/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+
 import { CargoWeightComponent } from '../cargo-weight/cargo-weight.component';
+import { BegoDialogService } from "@begomx/ui-components";
 import * as moment from 'moment';
+
 import { UnitDetailsModalComponent } from '../unit-details-modal/unit-details-modal.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 type CargoType = 'general' | 'hazardous';
 
@@ -23,78 +27,86 @@ interface Catalog {
 const enum Catalogs {
   Cargo = 'sat_cp_claves_productos_servicios',
   Packaging = 'sat_cp_tipos_de_embalaje',
-  Hazardous = 'sat_cp_material_peligroso'
+  Hazardous = 'sat_cp_material_peligroso',
 }
 
 @Component({
   selector: 'app-step3',
   templateUrl: './step3.component.html',
-  styleUrls: ['./step3.component.scss']
+  styleUrls: ['./step3.component.scss'],
 })
 export class Step3Component implements OnInit {
-  @Input() creationTime: any;
-  @Input() draftData: any;
-  @Input() hazardousFileAWS: object = {};
-  @Input() catalogsDescription: object = {};
-  @Input() orderWithCP: boolean;
-  @Input() creationdatepickup: number;
-  @Input() editCargoWeightNow: boolean;
-  @Output() step3FormData: EventEmitter<any> = new EventEmitter();
-  @Output() validFormStep3: EventEmitter<boolean> = new EventEmitter();
-  @Output() cargoWeightEdited: EventEmitter<void> = new EventEmitter();
+  @Input() public creationTime: any;
+  @Input() public draftData: any;
+  @Input() public hazardousFileAWS: object = {};
+  @Input() public catalogsDescription: object = {};
+  @Input() public orderWithCP: boolean;
+  @Input() public creationdatepickup: number;
+  @Input() public editCargoWeightNow: boolean;
+  @Output() public step3FormData: EventEmitter<any> = new EventEmitter();
+  @Output() public validFormStep3: EventEmitter<boolean> = new EventEmitter();
+  @Output() public cargoWeightEdited: EventEmitter<void> = new EventEmitter();
 
-  events: string = 'DD / MM / YY';
-  editWeight: boolean = false;
+  public events: string = 'DD / MM / YY';
+  public editWeight: boolean = false;
 
-  datepicker: Date = new Date();
-  draftDate: number = 0;
-  minTime: Date = new Date();
-  maxTime: Date = new Date();
-  creationDatePickupLabel: string;
+  public datepicker: Date = new Date();
+  public draftDate: number = 0;
+  public minTime: Date = new Date();
+  public maxTime: Date = new Date();
+  public creationDatePickupLabel: string;
 
-  cargoType: CargoType = 'general';
-  hazardousType: string = 'select-catergory';
-  hazardousFile!: File;
+  public cargoType: CargoType = 'general';
+  public hazardousType: string = 'select-catergory';
+  public hazardousFile!: File;
 
-  destroyPicker: boolean = false;
-  firstLoad: boolean = true;
-  lastTime: any;
+  public destroyPicker: boolean = false;
+  public firstLoad: boolean = true;
+  public lastTime: any;
 
-  unitsData = {
+  public unitsData: any = {
     first: {
       label: '53 ft',
-      value: '53'
+      value: '53',
     },
     second: {
       label: '48 ft',
-      value: '48'
-    }
+      value: '48',
+    },
   };
 
-  calendar: any;
+  public calendar: any;
   public step3Form: FormGroup;
 
-  satUnitData: Option = {
+  public satUnitData: Option = {
     value: '',
-    displayValue: ''
+    displayValue: '',
   };
 
   public screenshotCanvas: any;
   public thumbnailMap: Array<any> = [];
   public thumbnailMapFile: Array<any> = [];
 
-  fileInfo: any = null;
+  public fileInfo: any = null;
 
   public fileLang;
 
-  cargoCatalog: Catalog[] = [];
-  packagingCatalog: Catalog[] = [];
-  hazardousCatalog: Catalog[] = [];
+  public type: string = 'tabs';
 
-  categoryCatalog: Catalog[] = [];
-  filteredCategoryCatalog: Catalog[] = [];
+  public cargoCatalog: Catalog[] = [];
+  public packagingCatalog: Catalog[] = [];
+  public hazardousCatalog: Catalog[] = [];
 
-  get cargoDescription() {
+  public categoryCatalog: Catalog[] = [];
+  public filteredCategoryCatalog: Catalog[] = [];
+
+  public fileTypes = ['.xlsx'];
+  public files: any = null;
+
+  public multipleFilesLang;
+  public multipleCargo: boolean = false;
+
+  public get cargoDescription() {
     if (!this.orderWithCP) {
       return this.step3Form.get('description')!.value;
     }
@@ -106,7 +118,7 @@ export class Step3Component implements OnInit {
     return [unitType && `Qty ${quantity} units`, unitType, description].filter(Boolean).join('\n');
   }
 
-  constructor(private translateService: TranslateService, public dialog: MatDialog, private apiRestService: AuthService) {
+  constructor(private translateService: TranslateService, public dialog: MatDialog, private apiRestService: AuthService, private begoDialog: BegoDialogService, private httpClient: HttpClient,) {
     this.step3Form = new FormGroup({
       hazardous_material: new FormControl(''),
       packaging: new FormControl(''),
@@ -121,14 +133,24 @@ export class Step3Component implements OnInit {
       cargoType: new FormControl(this.cargoType, Validators.required),
       description: new FormControl('', Validators.required),
       commodity_quantity: new FormControl(''),
-      satUnitType: new FormControl('')
+      satUnitType: new FormControl(''),
+      multipleCargoFile: new FormControl (this.files),
     });
 
     this.fileLang = {
       labelBrowse: this.translateService.instant('orders.upload-file.label-browse'),
       labelOr: this.translateService.instant('orders.upload-file.label-or'),
       btnBrowse: this.translateService.instant('orders.upload-file.btn-browse'),
-      labelMax: this.translateService.instant('orders.upload-file.label-max')
+      labelMax: this.translateService.instant('orders.upload-file.label-max'),
+    };
+
+    this.multipleFilesLang = {
+      name: this.translateService.instant('orders.upload-multiple-orders.name'),
+      labelBrowse: this.translateService.instant('orders.upload-multiple-orders.labelBrowse'),
+      labelOr: this.translateService.instant('orders.upload-multiple-orders.labelOr'),
+      btnBrowse: this.translateService.instant('orders.upload-multiple-orders.btnBrowse'),
+      labelMax: this.translateService.instant('orders.upload-multiple-orders.labelMax'),
+      uploading: this.translateService.instant('orders.upload-multiple-orders.uploading'),
     };
 
     this.minTime.setHours(1);
@@ -142,8 +164,9 @@ export class Step3Component implements OnInit {
     // this.step3Form.get("timepickup")!.setValue(new Date());
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.step3Form.statusChanges.subscribe((val) => {
+      console.log("Se valida:", val)
       if (val === 'VALID') {
         this.validFormStep3.emit(true);
       } else {
@@ -151,9 +174,9 @@ export class Step3Component implements OnInit {
       }
     });
 
-    this.handleCargoTypeChange();
+    this.handleCargoTypeChange(this.multipleCargo);
     this.step3Form.get('cargoType')!.valueChanges.subscribe((val) => {
-      this.handleCargoTypeChange();
+      this.handleCargoTypeChange(this.multipleCargo);
     });
 
     this.step3Form.get('timepickup')!.valueChanges.subscribe((val) => {
@@ -172,7 +195,7 @@ export class Step3Component implements OnInit {
     this.getHazardousTypeList();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('hazardousFileAWS') && changes.hazardousFileAWS.currentValue.hasOwnProperty('url')) {
       this.generateScreenshot(changes.hazardousFileAWS.currentValue.url);
     }
@@ -235,49 +258,70 @@ export class Step3Component implements OnInit {
     this.validFormStep3.emit(this.step3Form.valid);
   }
 
-  handleCargoTypeChange(): void {
+  public handleCargoTypeChange(multiple: boolean): void {
     const hazardousType = this.step3Form.get('hazardous_type')!;
     const hazardousFile = this.step3Form.get('hazardousFile')!;
+    const packaging = this.step3Form.get('packaging')!;
+    const hazardousMaterial = this.step3Form.get('hazardous_material')!;
+    const multipleCargoFile = this.step3Form.get('multipleCargoFile')!;
     const cargoType: CargoType = this.step3Form.get('cargoType')!.value;
+    const validators = [Validators.required];
 
-    if (cargoType === 'general') {
+    if(multiple)  {
       hazardousType.clearValidators();
       hazardousFile.clearValidators();
-
-      this.fileInfo = null;
-      this.hazardousFile = null;
+      packaging.clearValidators();
+      hazardousMaterial.clearValidators();
       this.step3Form.get('hazardousFile').reset();
       this.step3Form.get('hazardous_type').reset();
-
-      if (this.orderWithCP) {
-        this.step3Form.get('packaging').reset();
-        this.step3Form.get('hazardous_material').reset();
-      }
+      this.step3Form.get('packaging').reset();
+      this.step3Form.get('hazardous_material').reset();
+      multipleCargoFile.setValidators(validators);
+      
     } else {
-      const validators = [Validators.required];
-      hazardousType.setValidators(validators);
-      hazardousFile.setValidators(validators);
+      multipleCargoFile.clearValidators();
+      this.step3Form.get('multipleCargoFile').reset();
+
+      if (cargoType === 'general') {
+        hazardousType.clearValidators();
+        hazardousFile.clearValidators();
+        
+        this.fileInfo = null;
+        this.hazardousFile = null;
+        this.step3Form.get('hazardousFile').reset();
+        this.step3Form.get('hazardous_type').reset();
+
+
+        if (this.orderWithCP) {
+          this.step3Form.get('packaging').reset();
+          this.step3Form.get('hazardous_material').reset();
+        }
+      } else {
+        hazardousType.setValidators(validators);
+        hazardousFile.setValidators(validators);
+      }
     }
 
     hazardousType.updateValueAndValidity();
     hazardousFile.updateValueAndValidity();
+    multipleCargoFile.updateValueAndValidity();
   }
 
-  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+  public addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     this.events = moment(new Date(`${event.value}`), 'MM-DD-YYYY').format('MMMM DD YYYY');
   }
 
-  selectedUnits(unit: any): void {
+  public selectedUnits(unit: any): void {
     this.step3Form.get('unitType')!.setValue(unit.value);
   }
 
-  editUnits(): void {
+  public editUnits(): void {
     const dialogRef = this.dialog.open(CargoWeightComponent, {
       panelClass: 'bego-modal',
       backdropClass: 'backdrop',
       data: {
-        units: this.step3Form.get('cargoWeight')!.value
-      }
+        units: this.step3Form.get('cargoWeight')!.value,
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -293,17 +337,17 @@ export class Step3Component implements OnInit {
    * Sets cargotype to the value to what it was changed
    * @param value The value to what was changed an element
    */
-  setCargoType(value: CargoType): void {
+  public setCargoType(value: CargoType): void {
     this.cargoType = value;
     this.step3Form.get('cargoType')!.setValue(value);
   }
 
-  selectHazardousFile(file?: File) {
+  public selectHazardousFile(file?: File) {
     if (file) {
       this.fileInfo = {
         name: file.name,
         date: new Date(file.lastModified),
-        size: file.size
+        size: file.size,
       };
     } else {
       this.fileInfo = null;
@@ -312,11 +356,11 @@ export class Step3Component implements OnInit {
     this.step3Form.get('hazardousFile')!.setValue(file);
   }
 
-  setCargoDescirption(data: any) {
+  public setCargoDescirption(data: any) {
     this.step3Form.get('description')!.setValue(data.details);
   }
 
-  timepickerValid(data: any) {
+  public timepickerValid(data: any) {
     this.lastTime = this.step3Form.controls['timepickup'].value || this.lastTime;
     if (!data && !this.firstLoad) {
       this.destroyPicker = true;
@@ -329,32 +373,32 @@ export class Step3Component implements OnInit {
     this.firstLoad = false;
   }
 
-  addUnitDetailsFields() {
+  public addUnitDetailsFields() {
     this.step3Form.addControl('commodity_quantity', new FormControl(''));
     this.step3Form.addControl('satUnitType', new FormControl(''));
   }
 
-  showUnitDetailsModal() {
+  public showUnitDetailsModal() {
     if (!this.satUnitData) {
       this.addUnitDetailsFields();
     }
     const modalData = {
       qty: this.step3Form.value.commodity_quantity,
       satUnit: this.satUnitData,
-      description: this.step3Form.value.description
+      description: this.step3Form.value.description,
     };
     const dialogRef = this.dialog.open(UnitDetailsModalComponent, {
       panelClass: 'bego-modal',
       backdropClass: 'backdrop',
       disableClose: true,
-      data: modalData
+      data: modalData,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.step3Form.patchValue({
           description: result.description,
           commodity_quantity: result.qty,
-          satUnitType: result.value
+          satUnitType: result.value,
         });
         this.satUnitData = { value: result.value, displayValue: result.displayValue };
       }
@@ -395,7 +439,7 @@ export class Step3Component implements OnInit {
     this.setHazardousAWSFile(blob);
   }
 
-  setHazardousAWSFile(blob: Blob) {
+  public setHazardousAWSFile(blob: Blob) {
     this.thumbnailMapFile.push(blob);
     // this.step3Form.get("hazardousFile")!.setValue(blob);
     const file = new File([blob], 'AWS file');
@@ -404,7 +448,7 @@ export class Step3Component implements OnInit {
     this.fileInfo = {
       name: 'AWS file',
       date: new Date(),
-      size: blob.size
+      size: blob.size,
     };
   }
 
@@ -418,7 +462,7 @@ export class Step3Component implements OnInit {
       req.subscribe(({ result }) => {
         const catalog = result.map((item: any) => ({
           value: item.code,
-          displayValue: `${item.code} - ${item.description}`
+          displayValue: `${item.code} - ${item.description}`,
         }));
 
         resolve(catalog);
@@ -430,38 +474,78 @@ export class Step3Component implements OnInit {
     });
   }
 
-  async getCargoTypeList(query?: string) {
+  public async getCargoTypeList(query?: string) {
     const catalog = await this.getCatalogs(Catalogs.Cargo, query);
     this.cargoCatalog = catalog;
   }
 
-  async getPackagingList(query?: string) {
+  public async getPackagingList(query?: string) {
     const catalog = await this.getCatalogs(Catalogs.Packaging, query);
     this.packagingCatalog = catalog;
   }
 
-  async getHazardousTypeList(query?: string) {
+  public async getHazardousTypeList(query?: string) {
     const catalog = await this.getCatalogs(Catalogs.Hazardous, query);
     this.hazardousCatalog = catalog;
   }
 
-  getCategoryCatalog() {
+  public getCategoryCatalog() {
     const list: Record<string, string> = this.translateService.instant('orders.hazardous-list');
 
     const catalog = Object.entries(list).map(([key, value]) => ({
       value: key,
-      displayValue: value
+      displayValue: value,
     }));
 
     this.categoryCatalog = catalog;
     this.filteredCategoryCatalog = catalog;
   }
 
-  updateCategoryCatalog(value: any) {
+  public updateCategoryCatalog(value: any) {
     this.filteredCategoryCatalog = this.categoryCatalog.filter((item) => item.displayValue.toLowerCase().includes(value.toLowerCase()));
   }
 
-  updateForm(key: string, value: any) {
+  public updateForm(key: string, value: any) {
     this.step3Form.get(key)!.setValue(value);
+  }
+
+  public async handleFileChange(file?: File, type?: 'xlsx') {
+    
+    if (file) {
+      this.files = {
+        name: file.name,
+        date: new Date(file.lastModified),
+        size: file.size,
+      };
+    } else {
+      this.files = null;
+    }
+
+    this.step3Form.get('multipleCargoFile')!.setValue(file);
+  }
+
+  public invalidFile() {
+
+  }
+  
+  public stepStatus(type: number) {
+    console.log("Multiple cargo:", type);
+    if(type > 0) {
+      this.multipleCargo = true;
+    } else {
+      this.multipleCargo = false;
+    }
+  }
+
+  public downloadTemplate() {
+    const URL: string = 'https://begoclients.s3.amazonaws.com/production/layouts/orders/layout-multiple-merchandise-order.xlsx';
+    this.httpClient.get(URL, { responseType: 'blob' }).subscribe((blob) => {
+      const link = document.createElement('a');
+      const objectUrl = window.URL.createObjectURL(blob);
+      link.href = objectUrl;
+      link.download = URL.split('/').pop() || 'archivo';
+      link.click();
+      window.URL.revokeObjectURL(objectUrl);
+    });
   }
 }
