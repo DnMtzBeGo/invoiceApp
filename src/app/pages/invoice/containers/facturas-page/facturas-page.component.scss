@@ -116,7 +116,7 @@
   &.mat-active,
   &.mat-active.mat-selected {
     background: rgba(255, 255, 255, 0.03);
-    border-left: 1px solid #FFE000;
+    border-left: 1px solid #ffe000;
   }
 
   &[disabled] {
@@ -137,4 +137,9 @@
       max-width: clamp(600px, 80vw, 70rem) !important;
     }
   }
+}
+
+/** fix to void paginator overlaps table options  */
+.paginator-container {
+  z-index: 1 !important;
 }
