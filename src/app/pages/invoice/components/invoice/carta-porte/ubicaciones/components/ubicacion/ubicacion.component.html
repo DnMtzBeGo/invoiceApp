@@ -20,7 +20,10 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.ubicacion.tipo' | translate }}</mat-label>
-      <mat-select formControlName="tipo_ubicacion" class="disable-custom-format" [attr.name]="'invoice.ubicacion.tipo' | translate">
+      <mat-select
+        formControlName="tipo_ubicacion"
+        class="disable-custom-format"
+        [attr.name]="'invoice.ubicacion.tipo' | translate">
         <mat-option *ngFor="let option of tipoUbicacion" [value]="option.clave">
           {{ option.clave }}
         </mat-option>
@@ -75,11 +78,16 @@
     <mat-form-field appearance="outline" class="brand-field-1" *ngIf="isForeignRFC">
       <mat-label>{{ 'invoice.ubicacion.residencia-fiscal' | translate }}</mat-label>
       <mat-select formControlName="residencia_fiscal" class="disable-custom-format" name="Residencia Fiscal">
-        <mat-option *ngFor="let option of residenciaFiscal" [value]="option.code"> {{ option.code }} - {{ option.name }} </mat-option>
+        <mat-option *ngFor="let option of residenciaFiscal" [value]="option.code">
+          {{ option.code }} - {{ option.name }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field *ngIf="ubicacionesForm.value.tipo_ubicacion == 'Destino'" appearance="outline" class="brand-field-1">
+    <mat-form-field
+      *ngIf="ubicacionesForm.value.tipo_ubicacion == 'Destino'"
+      appearance="outline"
+      class="brand-field-1">
       <mat-label>{{ 'invoice.ubicacion.distancia-recorrida' | translate }}</mat-label>
       <!-- placeholder="Distancia en km" -->
       <input matInput formControlName="distancia_recorrida" name="Distancia Recorrida" type="number" />
@@ -106,4 +114,6 @@
       placeholder="0"
     />
   </mat-form-field> -->
-<app-location [locationInfo]="locationInfo.domicilio" (locationInfoChanges)="catchLocationInfoChanges($event)"></app-location>
+<app-location
+  [locationInfo]="locationInfo.domicilio"
+  (locationInfoChanges)="catchLocationInfoChanges($event)"></app-location>

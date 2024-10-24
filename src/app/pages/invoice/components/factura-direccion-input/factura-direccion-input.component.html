@@ -116,31 +116,11 @@
         class="brand-progress-bar-1"
         mode="indeterminate"></mat-progress-bar>
     </mat-form-field>
+    <!-- #endregion ESTADO -->
 
     <!-- #region MUNICIPIO -->
     <mat-form-field appearance="outline" class="brand-field-1" [attr.readonly]="readonly">
       <mat-label>Municipio</mat-label>
-
-      <!-- <mat-select
-        name="municipio"
-        [ngModel]="vm.direccion?.municipio"
-        (ngModelChange)="
-          vm.direccion.municipio = $event; vm.direccion.cp = ''; vm.direccion.colonia = ''; vm.colonias = []
-        "
-        [placeholder]="
-          !vm.direccion?.estado
-            ? 'Selecciona un estado'
-            : vm.municipios == null
-            ? 'Cargando...'
-            : !readonly
-            ? 'Seleciona una opción'
-            : '- -'
-        "
-        class="disable-custom-format">
-        <mat-option *ngFor="let municipio of vm.municipios" [value]="municipio.clave" class="brand-option-1">
-          {{ municipio.nombre }}
-        </mat-option>
-      </mat-select> -->
 
       <mat-select
         name="municipio"
@@ -193,7 +173,9 @@
         class="brand-progress-bar-1"
         mode="indeterminate"></mat-progress-bar>
     </mat-form-field>
+    <!-- #endregion MUNICIPIO -->
 
+    <!-- #region CODIGO_POSTAL -->
     <mat-form-field appearance="outline" class="brand-field-1" [attr.readonly]="readonly">
       <mat-label>Código Postal</mat-label>
       <input
@@ -205,27 +187,10 @@
         [readonly]="readonly"
         autocomplete="off" />
     </mat-form-field>
+    <!-- #endregion CODIGO_POSTAL -->
 
     <mat-form-field appearance="outline" class="brand-field-1" [attr.readonly]="readonly">
       <mat-label>Colonia</mat-label>
-      <!-- <mat-select
-        name="colonia"
-        [ngModel]="vm.direccion?.colonia"
-        (ngModelChange)="vm.direccion.colonia = $event"
-        [placeholder]="
-          !vm.direccion?.cp || vm.direccion?.cp.length < 5
-            ? 'Ingresa un código postal'
-            : vm.colonias == null
-            ? 'Cargando...'
-            : !readonly
-            ? 'Seleciona una opción'
-            : '- -'
-        "
-        class="disable-custom-format">
-        <mat-option *ngFor="let colonia of vm.colonias" [value]="colonia.clave" class="brand-option-1">
-          {{ colonia.nombre }}
-        </mat-option>
-      </mat-select> -->
 
       <mat-select
         name="colonia"

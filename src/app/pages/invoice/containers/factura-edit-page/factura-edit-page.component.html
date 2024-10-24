@@ -73,7 +73,7 @@
               maxlength="13"
               [matAutocomplete]="auto"
               [readonly]="vm.readonly"
-              (blur)="onReceiverRfcChanged($event)" />
+              (blur)="receiverRfcChanged($event)" />
 
             <span
               class="brand-icon-help"
@@ -446,8 +446,10 @@
                   [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
                   class="brand-select-search-1"></ngx-mat-select-search>
               </mat-option>
-              <ng-container *ngFor="let pais of filteredCountries">
-                <mat-option [value]="pais.code" class="brand-option-1"> {{ pais.code }} - {{ pais.name }} </mat-option>
+              <ng-container *ngFor="let country of filteredCountries">
+                <mat-option [value]="country.code" class="brand-option-1">
+                  {{ country.code }} - {{ country.name }}
+                </mat-option>
               </ng-container>
             </mat-select>
 
@@ -516,7 +518,7 @@
             }}</mat-label>
 
             <mat-select
-              name="estado"
+              name="municipio"
               [ngModel]="vm.form?.direccion?.municipio"
               (ngModelChange)="
                 vm.form.direccion.municipio = $event;
@@ -952,9 +954,10 @@
             </span>
           </mat-form-field>
 
+          <!-- #region MONEDA -->
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
             <mat-label>{{ 'invoice.edit.moneda' | translate }}</mat-label>
-            <mat-select
+            <!-- <mat-select
               name="moneda"
               [ngModel]="vm.form?.moneda"
               (ngModelChange)="vm.form.moneda = $event; vm.form.tipo_de_cambio = ''"
@@ -963,6 +966,27 @@
               <mat-option *ngFor="let moneda of vm.catalogos?.monedas" [value]="moneda.clave" class="brand-option-1">
                 {{ moneda.clave }} - {{ moneda.descripcion }}
               </mat-option>
+            </mat-select> -->
+
+            <mat-select
+              name="moneda"
+              [ngModel]="vm.form?.moneda"
+              (ngModelChange)="vm.form.moneda = $event; vm.form.tipo_de_cambio = ''"
+              class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order">
+              <mat-option>
+                <ngx-mat-select-search
+                  ngModel
+                  (ngModelChange)="searchCurrencies($event)"
+                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"></ngx-mat-select-search>
+              </mat-option>
+              <ng-container *ngFor="let currency of filteredCurrencies">
+                <mat-option [value]="currency.clave" class="brand-option-1">
+                  {{ currency.clave }} - {{ currency.descripcion }}
+                </mat-option>
+              </ng-container>
             </mat-select>
 
             <span
@@ -1851,7 +1875,15 @@
               (ngModelChange)="vm.form.serie = $event"
               class="disable-custom-format"
               [disabled]="!vm.tipo_de_comprobante || vm.readonly || !!vm.form?.order">
-              <ng-container *ngFor="let serie of vm.series">
+              <mat-option>
+                <ngx-mat-select-search
+                  ngModel
+                  (ngModelChange)="searchSeries($event)"
+                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"></ngx-mat-select-search>
+              </mat-option>
+              <ng-container *ngFor="let serie of filteredSeries">
                 <mat-option
                   *ngIf="vm.tipo_de_comprobante && vm.tipo_de_comprobante.clave === serie.tipo_comprobante"
                   [value]="serie._id"
@@ -1914,9 +1946,10 @@
           </span>
         </h6>
         <div class="grid-fill">
+          <!-- - ->-->
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
             <mat-label>{{ 'invoice.edit.doc-rel-tipo' | translate }}</mat-label>
-            <mat-select
+            <!-- <mat-select
               name="tipo_de_relacion"
               [ngModel]="vm.form?.tipo_de_relacion"
               (ngModelChange)="vm.form.tipo_de_relacion = $event"
@@ -1929,6 +1962,27 @@
                 {{ tipo_de_relacion.clave }} -
                 {{ tipo_de_relacion.descripcion }}
               </mat-option>
+            </mat-select> -->
+
+            <mat-select
+              name="tipo_de_relacion"
+              [ngModel]="vm.form?.tipo_de_relacion"
+              (ngModelChange)="vm.form.tipo_de_relacion = $event"
+              class="disable-custom-format"
+              [disabled]="vm.readonly || !!vm.form?.order">
+              <mat-option>
+                <ngx-mat-select-search
+                  ngModel
+                  (ngModelChange)="searchRelationshipType($event)"
+                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"></ngx-mat-select-search>
+              </mat-option>
+              <ng-container *ngFor="let option of filteredRelationshipTypes">
+                <mat-option [value]="option.clave" class="brand-option-1">
+                  {{ option.clave }} - {{ option.descripcion }}
+                </mat-option>
+              </ng-container>
             </mat-select>
 
             <span

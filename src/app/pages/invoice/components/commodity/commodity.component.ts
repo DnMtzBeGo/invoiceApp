@@ -9,6 +9,8 @@ import {
   CantidadTansportaChangedEvent,
   CantidadTransportaComponent,
 } from '../cantidad-transporta/cantidad-transporta.component';
+import { searchInList } from '../../containers/factura-edit-page/factura.core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-commodity',
@@ -19,17 +21,23 @@ export class CommodityComponent implements OnChanges {
   @ViewChildren(CantidadTransportaComponent) public cantidadTransportaRef: QueryList<CantidadTransportaComponent>;
   @ViewChild(MatTable) public table: MatTable<any>;
 
-  @Input() public dataCoin: any;
   @Input() public commodityInfo: any;
+
+  public currencies: any[];
+  public filteredCurrencies: any[];
+
+  public packagingTypes: any[];
+  public filteredPackagingTypes: any[];
 
   public typesOfMatter: any[] = [];
   public cantidadTransportaInfo: Array<CantidadTansporta>;
   public cantidad_transporta: Array<CantidadTansporta> = [{ cantidad: '', id_origen: '', id_destino: '' }];
-  public embalaje: Array<object> = [];
-  public filteredBienesTransportados: any[] = [];
-  public bienesTransportados: any[] = [];
-  public claveUnidad: any[] = [];
-  public filteredClaveUnidad: any[];
+
+  public transportedGoods: any[] = [];
+
+  public unitTypes: any[] = [];
+  public filteredUnitTypes: any[];
+
   public materialPeligroso: any[] = [];
   public filteredMaterialPeligroso: any[];
   public pedimento: any[] = [];
@@ -63,7 +71,11 @@ export class CommodityComponent implements OnChanges {
     cantidad_transporta: new FormControl([]),
   });
 
-  constructor(private catalogListService: CataloguesListService, private cartaPorteInfoService: CartaPorteInfoService) {
+  constructor(
+    private apiRestService: AuthService,
+    private catalogListService: CataloguesListService,
+    private cartaPorteInfoService: CartaPorteInfoService,
+  ) {
     this.cartaPorteInfoService.emitShowFraccion.subscribe((value) => {
       this.showFraccion = true;
       // if (value) this.showFraccion = true;
@@ -71,70 +83,50 @@ export class CommodityComponent implements OnChanges {
     });
 
     this.catalogListService.consignmentNoteSubject.subscribe((data: any) => {
-      this.embalaje = data.tipos_de_embalaje;
-      this.claveUnidad = Object.assign([], data.claves_de_unidad);
-      this.filteredClaveUnidad = Object.assign([], this.claveUnidad);
-      this.typesOfMatter = Object.assign([], data.tipo_materia);
+      this.packagingTypes = [...data.tipos_de_embalaje];
+      this.filteredPackagingTypes = [...data.tipos_de_embalaje];
 
-      this.setCatalogsFields();
+      this.unitTypes = [...data.claves_de_unidad];
+      this.filteredUnitTypes = [...this.unitTypes];
+
+      this.typesOfMatter = [...data.tipo_materia];
     });
+
+    this._getCurrencies();
   }
 
-  public setCatalogsFields() {
-    //Obtener Autocomplete de Bienes Transportados
-    this.commodity.controls.bienesTransportados.valueChanges.subscribe(async (val: string) => {
-      if (val !== '') {
-        this.bienesTransportados = await this.catalogListService.getCatalogue(
-          'consignment-note/productos-y-servicios',
-          {
-            term: val,
-            limit: 30,
-          },
-        );
-        this.filteredBienesTransportados = Object.assign([], this.bienesTransportados);
-
-        if (this.filteredBienesTransportados.length < 1) {
-          let productsCatalogs = await this.catalogListService.getCatalogue('consignment-note/productos-y-servicios', {
-            term: '01010101',
-            limit: 1,
-          });
-          this.filteredBienesTransportados = Object.assign([], productsCatalogs);
-          this.bienesTransportados = [...productsCatalogs];
-        }
-      } else {
-        this.bienesTransportados = await this.catalogListService.getCatalogue(
-          'consignment-note/productos-y-servicios',
-          {
-            term: '',
-            limit: 30,
-          },
-        );
-
-        this.filteredBienesTransportados = Object.assign([], this.bienesTransportados);
-      }
+  private _getCurrencies(): CommodityComponent {
+    this.apiRestService.apiRestGet('invoice/catalogs/moneda').then((observer) => {
+      observer.subscribe(({ result }) => {
+        this.currencies = [...result];
+        this.filteredCurrencies = [...result];
+      });
     });
 
-    //Obtener Autocomplete de Material Peligroso
-    this.commodity.controls.claveMaterialPeligroso.valueChanges.subscribe(async (val: string) => {
-      if (val !== '') {
-        this.materialPeligroso = await this.catalogListService.getCatalogue('consignment-note/material-peligroso', {
-          term: val,
-          limit: 30,
-        });
-        this.filteredMaterialPeligroso = Object.assign([], this.materialPeligroso);
-      }
-    });
+    return this;
+  }
 
-    this.commodity.controls.claveUnidad.valueChanges.subscribe(async (val: any) => {
-      if (val !== '') {
-        this.filteredClaveUnidad = this.claveUnidad.filter((e) => {
-          const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
-          const input =
-            typeof val == 'string' ? val.toLowerCase() : val ? `${val.clave} ${val.nombre}`.toLowerCase() : '';
-          return currentValue.includes(input);
-        });
-      }
-    });
+  private async _getTransportedGoodsCatalog(code?: string): Promise<void> {
+    await this.catalogListService
+      .getCatalogue('consignment-note/productos-y-servicios', {
+        term: code || '01010101',
+        limit: 30,
+      })
+      .then((catalog) => {
+        this.transportedGoods = catalog;
+      });
+  }
+
+  private async _getHazardousMaterialType(code?: string): Promise<void> {
+    await this.catalogListService
+      .getCatalogue('consignment-note/material-peligroso', {
+        term: code,
+        limit: 30,
+      })
+      .then((catalog) => {
+        this.materialPeligroso = [...catalog];
+        this.filteredMaterialPeligroso = [...catalog];
+      });
   }
 
   public async ngOnChanges(changes: SimpleChanges): Promise<void> {
@@ -156,23 +148,11 @@ export class CommodityComponent implements OnChanges {
         tipo_materia,
       } = this.commodityInfo;
 
-      console.log({ com: this.commodityInfo });
+      // Ensure fields with backend search is filled at loading
+      if (bienesTransportados) this.searchTransportedGoods(bienesTransportados);
+      if (claveMaterialPeligroso) this.searchHazardousMaterialType(claveMaterialPeligroso);
 
       if (pedimentos) this.dataSourcePedimento = pedimentos;
-      if (bienesTransportados) {
-        this.bienesTransportados = await this.catalogListService.getCatalogue(
-          'consignment-note/productos-y-servicios',
-          {
-            term: bienesTransportados,
-          },
-        );
-      }
-      if (claveMaterialPeligroso) {
-        this.materialPeligroso = await this.catalogListService.getCatalogue('consignment-note/material-peligroso', {
-          term: claveMaterialPeligroso,
-          limit: 30,
-        });
-      }
 
       if (cantidad_transporta?.length) {
         this.cantidad_transporta = cantidad_transporta;
@@ -211,24 +191,6 @@ export class CommodityComponent implements OnChanges {
     this.commodity.patchValue({ pedimento: this.dataSourcePedimento });
   }
 
-  public getBienesTransportadosText(option: string) {
-    const optionInfo = this.bienesTransportados?.find((e) => e.code == option);
-    this.commodity.patchValue({
-      bienesTransportadosDescripcion: optionInfo?.description,
-    });
-    return optionInfo ? `${optionInfo.code} - ${optionInfo.description}` : '';
-  }
-
-  public getClaveUnidadText(option) {
-    let stateFound = option ? this.claveUnidad.find((x) => x.clave === option) : undefined;
-    return stateFound ? `${stateFound.clave} - ${stateFound.nombre}` : undefined;
-  }
-
-  public getMaterialPeligrosoText(option: string) {
-    const optionInfo = this.materialPeligroso.find((e) => e.clave == option);
-    return optionInfo ? `${optionInfo.clave} - ${optionInfo.descripcion}` : '';
-  }
-
   public removeData(id) {
     this.dataSourcePedimento = this.dataSourcePedimento.filter((item, index) => index !== id);
     this.table.renderRows();
@@ -236,20 +198,6 @@ export class CommodityComponent implements OnChanges {
 
   public acceptOnlyNumbers(event: Event): void {
     event.target['value'] = event.target['value'].replace(/\D/g, '');
-  }
-
-  public resetFilterList(list) {
-    switch (list) {
-      case 'bienesTransportados':
-        this.filteredBienesTransportados = this.bienesTransportados;
-        break;
-      case 'claveUnidad':
-        this.filteredClaveUnidad = this.claveUnidad;
-        break;
-      case 'claveMaterialPeligroso':
-        this.filteredMaterialPeligroso = this.materialPeligroso;
-        break;
-    }
   }
 
   public addCantidadTransportaRow(): void {
@@ -276,5 +224,25 @@ export class CommodityComponent implements OnChanges {
 
   private updateCantidadTransportaInfo() {
     this.commodity.controls['cantidad_transporta'].setValue(this.cantidadTransportaInfo);
+  }
+
+  public searchTransportedGoods(code: string): void {
+    this._getTransportedGoodsCatalog(code);
+  }
+
+  public searchHazardousMaterialType(code: string): void {
+    this._getHazardousMaterialType(code);
+  }
+
+  public searchUnitType(code: string): void {
+    searchInList(this, 'unitTypes', 'filteredUnitTypes', code, 'clave', 'nombre');
+  }
+
+  public searchCurrency(code: string): void {
+    searchInList(this, 'currencies', 'filteredCurrencies', code, 'clave', 'descripcion');
+  }
+
+  public searchPackagingType(code: string): void {
+    searchInList(this, 'packagingTypes', 'filteredPackagingTypes', code, 'clave', 'descripcion');
   }
 }

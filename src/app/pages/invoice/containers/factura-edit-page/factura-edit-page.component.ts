@@ -32,7 +32,6 @@ import {
   distinctUntilChanged,
   take,
   scan,
-  repeat,
   repeatWhen,
 } from 'rxjs/operators';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
@@ -225,6 +224,10 @@ export class FacturaEditPageComponent implements OnInit {
   public filteredLocations: any[] = [];
   public filteredSuburbs: any[] = [];
   public filteredMunicipalities: any[] = [];
+  public filteredCurrencies: any[] = [];
+
+  public filteredSeries: any[] = [];
+  public filteredRelationshipTypes: any[] = [];
 
   public formEmitter = new Subject<
     [
@@ -264,10 +267,10 @@ export class FacturaEditPageComponent implements OnInit {
     ]
   >();
 
-  id;
-  mode: 'create' | 'update';
+  public id;
+  public mode: 'create' | 'update';
   public model: 'factura' | 'template';
-  sliderDotsOpts: BegoSliderDotsOpts = {
+  public sliderDotsOpts: BegoSliderDotsOpts = {
     totalElements: this.tabs.length,
     value: 0,
     // valueChange: (slideIndex: number): void => {
@@ -277,9 +280,9 @@ export class FacturaEditPageComponent implements OnInit {
   };
 
   // FORM CONTORLS
-  valor_unitario = new FormControl(null);
-  cantidad = new FormControl(null);
-  descuento = new FormControl(null);
+  public valor_unitario = new FormControl(null);
+  public cantidad = new FormControl(null);
+  public descuento = new FormControl(null);
 
   public isForeignReceiver = false;
   public paisCatalogue = [];
@@ -304,7 +307,7 @@ export class FacturaEditPageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     //TAB
     const tab$ = merge(
       of(this.route.snapshot.queryParams.tab ?? 'receptor'),
@@ -843,7 +846,7 @@ export class FacturaEditPageComponent implements OnInit {
     }) as VM;
   }
 
-  onReceiverRfcChanged(event: any) {
+  public receiverRfcChanged(event: any) {
     if (event.target.value == 'XEXX010101000') this.isForeignReceiver = true;
     else {
       this.isForeignReceiver = false;
@@ -852,7 +855,7 @@ export class FacturaEditPageComponent implements OnInit {
     }
   }
 
-  createForm() {
+  private createForm() {
     return of({
       rfc: '',
       nombre: '',
@@ -883,7 +886,7 @@ export class FacturaEditPageComponent implements OnInit {
   }
 
   // API calls
-  fetchForm(_id) {
+  private fetchForm(_id) {
     if (this.model === 'template') {
       return from(
         this.apiRestService.apiRest(
@@ -914,19 +917,24 @@ export class FacturaEditPageComponent implements OnInit {
     );
   }
 
-  fetchCatalogosSAT() {
+  private fetchCatalogosSAT() {
     return from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(
       mergeAll(),
-      map((d) => d?.result),
+      map((d) => {
+        this.filteredCurrencies = d?.result?.monedas;
+        this.filteredRelationshipTypes = d?.result?.tipos_de_relacion;
+
+        return d?.result;
+      }),
       map(optimizeInvoiceCatalog),
     );
   }
 
-  fetchHelpTooltips() {
+  public fetchHelpTooltips() {
     return oof(this.translateService.instant('invoice.tooltips'));
   }
 
-  fetchFacturaStatus = () => {
+  private fetchFacturaStatus = () => {
     return from(
       this.apiRestService.apiRestGet('invoice/catalogs/statuses', {
         loader: 'false',
@@ -937,14 +945,14 @@ export class FacturaEditPageComponent implements OnInit {
     );
   };
 
-  fetchDefaultEmisor = () => {
+  private fetchDefaultEmisor = () => {
     return from(this.apiRestService.apiRest('', 'invoice/config')).pipe(
       mergeAll(),
       map((d) => d?.result?.emisor),
     );
   };
 
-  fetchLugaresExpedicion = (rfc: string) => {
+  private fetchLugaresExpedicion = (rfc: string) => {
     return rfc == void 0 || rfc === '' || !validRFC(rfc)
       ? of([])
       : from(
@@ -964,7 +972,7 @@ export class FacturaEditPageComponent implements OnInit {
         );
   };
 
-  fetchSeries = (id: string) => {
+  private fetchSeries = (id: string) => {
     return id == void 0 || id === ''
       ? of([])
       : from(
@@ -974,12 +982,15 @@ export class FacturaEditPageComponent implements OnInit {
           }),
         ).pipe(
           mergeAll(),
-          map((d) => d?.result?.series),
+          map((d) => {
+            this.filteredSeries = d?.result?.series || [];
+            return d?.result?.series;
+          }),
           startWith(null),
         );
   };
 
-  fetchPaises() {
+  private fetchPaises() {
     return from(
       this.apiRestService.apiRestGet('invoice/catalogs/countries', {
         loader: 'false',
@@ -994,7 +1005,7 @@ export class FacturaEditPageComponent implements OnInit {
     );
   }
 
-  fetchEstados = (pais?: string) => {
+  private fetchEstados = (pais?: string) => {
     return pais == void 0 || pais === ''
       ? of([])
       : from(
@@ -1012,7 +1023,7 @@ export class FacturaEditPageComponent implements OnInit {
         );
   };
 
-  fetchMunicipios = (estado?: string) => {
+  private fetchMunicipios = (estado?: string) => {
     return estado == void 0 || estado === ''
       ? of([])
       : from(
@@ -1031,7 +1042,7 @@ export class FacturaEditPageComponent implements OnInit {
         );
   };
 
-  fetchColonias = (cp?: string) => {
+  private fetchColonias = (cp?: string) => {
     return cp == void 0 || cp.trim() === '' || cp.length < 5
       ? of([])
       : from(
@@ -1049,7 +1060,7 @@ export class FacturaEditPageComponent implements OnInit {
         );
   };
 
-  searchReceptor(search) {
+  public searchReceptor(search: { type: string; search: any; rfc?: string }) {
     const endpoints = {
       rfc: 'invoice/receivers',
       nombre: 'invoice/receivers/by-name',
@@ -1127,7 +1138,7 @@ export class FacturaEditPageComponent implements OnInit {
     );
   }
 
-  fetchDirecciones = (rfc?) => {
+  private fetchDirecciones = (rfc?) => {
     return rfc == void 0 || rfc === '' || !validRFC(rfc)
       ? of([])
       : from(
@@ -1145,7 +1156,7 @@ export class FacturaEditPageComponent implements OnInit {
         );
   };
 
-  submitFactura = ([mode, saveMode, factura]) => {
+  public submitFactura = ([mode, saveMode, factura]: any[]) => {
     if (this.model === 'template') {
       factura = clone(factura);
 
@@ -1178,7 +1189,7 @@ export class FacturaEditPageComponent implements OnInit {
   };
 
   // MODALS
-  manageDirecciones(data) {
+  public manageDirecciones(data: any) {
     const dialogRef = this.matDialog.open(FacturaManageDireccionesComponent, {
       data,
       restoreFocus: false,
@@ -1194,7 +1205,7 @@ export class FacturaEditPageComponent implements OnInit {
     });
   }
 
-  emisorConceptos(data) {
+  public emisorConceptos(data: any): void {
     this.matDialog.open(FacturaEmisorConceptosComponent, {
       data,
       restoreFocus: false,
@@ -1204,7 +1215,7 @@ export class FacturaEditPageComponent implements OnInit {
     });
   }
 
-  sendEmailFactura(_id: string) {
+  public sendEmailFactura(_id: string): void {
     this.matDialog.open(ActionSendEmailFacturaComponent, {
       data: {
         _id,
@@ -1216,7 +1227,7 @@ export class FacturaEditPageComponent implements OnInit {
     });
   }
 
-  cancelarFactura(_id: string) {
+  public cancelarFactura(_id: string): void {
     this.matDialog.open(ActionCancelarFacturaComponent, {
       data: {
         _id,
@@ -1234,7 +1245,7 @@ export class FacturaEditPageComponent implements OnInit {
     });
   }
 
-  deleteFactura(_id: string) {
+  public deleteFactura(_id: string) {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
         modalTitle: this.translateService.instant('invoice.invoice-table.delete-title'),
@@ -1262,7 +1273,7 @@ export class FacturaEditPageComponent implements OnInit {
     });
   }
 
-  deleteTemplate(_id: string) {
+  public deleteTemplate(_id: string) {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
         modalTitle: this.translateService.instant('invoice.edit.template-delete-title'),
@@ -1290,7 +1301,7 @@ export class FacturaEditPageComponent implements OnInit {
     });
   }
 
-  createEditSerie(data) {
+  public createEditSerie(data) {
     const dialogRef = this.matDialog.open(SeriesNewComponent, {
       data,
       restoreFocus: false,
@@ -1311,7 +1322,7 @@ export class FacturaEditPageComponent implements OnInit {
     });
   }
 
-  newEmisor(emisor?) {
+  public newEmisor(emisor?) {
     const dialogRef = this.matDialog.open(FacturaEmitterComponent, {
       data: emisor,
       restoreFocus: false,
@@ -1330,74 +1341,74 @@ export class FacturaEditPageComponent implements OnInit {
   }
 
   // FORMS
-  resetConceptoControls() {
+  public resetConceptoControls() {
     this.valor_unitario.reset();
     this.cantidad.reset();
     this.descuento.reset();
   }
 
   // UTILS
-  clone = clone;
+  public clone = clone;
 
-  log = (...args) => {
+  public log = (...args) => {
     console.log(...args);
   };
 
-  showError = (error: any) => {
+  public showError = (error: any) => {
     error = error?.message || error?.error;
 
     return Array.isArray(error) ? error.map((e) => e.error ?? e.message).join(',\n') : error;
   };
 
-  compareImpuesto = (a, b) => {
+  public compareImpuesto = (a, b) => {
     return a != void 0 && b != void 0 && a.descripcion === b.descripcion;
   };
 
-  compareId = (a, b) => {
+  public compareId = (a, b) => {
     return a != void 0 && b != void 0 && a._id === b._id;
   };
 
-  validRFC = validRFC;
+  public validRFC = validRFC;
 
-  getImpuestoDescripcion = getImpuestoDescripcion;
+  public getImpuestoDescripcion = getImpuestoDescripcion;
 
-  calcImporte = calcImporte;
+  public calcImporte = calcImporte;
 
-  calcConcepto = calcConcepto;
+  public calcConcepto = calcConcepto;
 
-  calcSubtotal = calcSubtotal;
+  public calcSubtotal = calcSubtotal;
 
-  calcDescuentos = calcDescuentos;
+  public calcDescuentos = calcDescuentos;
 
-  calcTotal = calcTotal;
+  public calcTotal = calcTotal;
 
-  resolveImpuesto = resolveImpuesto;
+  public resolveImpuesto = resolveImpuesto;
 
-  resolveImpuestoLabel = resolveImpuestoLabel;
+  public resolveImpuestoLabel = resolveImpuestoLabel;
 
-  resolveImpuestosGroup = resolveImpuestosGroup;
+  public resolveImpuestosGroup = resolveImpuestosGroup;
 
-  p = facturaPermissions;
+  public p = facturaPermissions;
 
-  Boolean = Boolean;
+  public Boolean = Boolean;
 
-  JSON = window.JSON;
+  public JSON = window.JSON;
 
-  minimumRequiredFields = minimumRequiredFields;
+  public minimumRequiredFields = minimumRequiredFields;
 
-  toFactura = toFactura;
+  public toFactura = toFactura;
 
-  resolveUrl = (commands: any[]) => {
+  public resolveUrl = (commands: any[]) => {
     return this.router.serializeUrl(this.router.createUrlTree(commands));
   };
 
-  findById = (_id: string) => (item) => item._id === _id;
+  public findById = (_id: string) => (item) => item._id === _id;
 
-  v = validators;
+  public v = validators;
 
-  facturaStatus = facturaStatus;
+  public facturaStatus = facturaStatus;
 
-  downloadPreview = () => {
+  public downloadPreview = () => {
     this.cartaporteCmp.gatherInfo();
     const factura = this.vm.form;
 
@@ -1441,14 +1452,33 @@ export class FacturaEditPageComponent implements OnInit {
   }
 
   public searchStates(code: string): void {
-    searchInList(this, 'estados', 'filteredStates', code, true, 'clave', 'nombre');
+    searchInList(this, ['vm', 'estados'], 'filteredStates', code, 'clave', 'nombre');
   }
 
   public searchMunicipalities(code: string): void {
-    searchInList(this, 'municipios', 'filteredMunicipalities', code, true, 'clave', 'nombre');
+    searchInList(this, ['vm', 'municipios'], 'filteredMunicipalities', code, 'clave', 'nombre');
   }
 
   public searchSuburbs(code: string): void {
-    searchInList(this, 'colonias', 'filteredSuburbs', code, true, 'clave', 'nombre');
+    searchInList(this, ['vm', 'colonias'], 'filteredSuburbs', code, 'clave', 'nombre');
+  }
+
+  public searchCurrencies(code: string): void {
+    searchInList(this, ['vm', 'catalogos', 'monedas'], 'filteredCurrencies', code, 'clave', 'descripcion');
+  }
+
+  public searchRelationshipType(code: string): void {
+    searchInList(
+      this,
+      ['vm', 'catalogos', 'tipos_de_relacion'],
+      'filteredRelationshipTypes',
+      code,
+      'clave',
+      'descripcion',
+    );
+  }
+
+  public searchSeries(code: string): void {
+    searchInList(this, ['vm', 'series'], 'filteredSeries', code, '_id', 'serie');
   }
 }

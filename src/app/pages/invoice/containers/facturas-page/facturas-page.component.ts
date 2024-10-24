@@ -30,6 +30,7 @@ import { arrayToObject, object_compare, clone } from 'src/app/shared/utils/objec
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DatePipe } from '@angular/common';
 import { facturaPermissions } from '../factura-edit-page/factura.core';
+import { ApiRestService } from 'src/app/services/api-rest.service';
 
 const filterParams = new Set([
   'fec_inicial',
@@ -98,6 +99,7 @@ export class FacturasPageComponent implements OnInit {
     public route: ActivatedRoute,
     private matDialog: MatDialog,
     private apiRestService: AuthService,
+    private apiService: ApiRestService,
     private translateService: TranslateService,
     private cd: ChangeDetectorRef,
     private datePipe: DatePipe,
@@ -110,7 +112,7 @@ export class FacturasPageComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const loadDataAction$ = merge(oof(''), this.facturasEmitter.pipe(ofType('refresh')));
 
     const tiposComprobante$ = this.fetchTipoComprobante().pipe(share());
@@ -179,6 +181,7 @@ export class FacturasPageComponent implements OnInit {
           subtotal: this.getCurrency(factura?.subtotal),
           total: this.getCurrency(factura?.total),
           folio: factura?.folio,
+          files: factura?.files,
         })),
       ),
       tap(() => {

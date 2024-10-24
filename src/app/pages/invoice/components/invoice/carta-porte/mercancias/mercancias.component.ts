@@ -6,6 +6,7 @@ import { Pedimento } from '../../../../models/invoice/carta-porte/ubicaciones';
 import { CartaPorteInfoService } from '../services/carta-porte-info.service';
 import { CommodityComponent } from '../../../commodity/commodity.component';
 import { CataloguesListService } from '../services/catalogues-list.service';
+import { searchInList } from 'src/app/pages/invoice/containers/factura-edit-page/factura.core';
 
 const ELEMENT_DATA: Pedimento[] = [];
 
@@ -24,15 +25,13 @@ export class MercanciasComponent {
   public dataSource = [...ELEMENT_DATA];
 
   public pesoBrutoTotal: number;
-  public filteredUnidadPeso: any[] = [];
-  public unidadPeso: any[];
+
+  public weightUnits: any[];
+  public filteredWeightUnits: any[] = [];
+
   public numTotalMercancias: number;
 
   public commodities: Array<any> = [1];
-  public monedas: any[] = [
-    { clave: 'MXN', valor: 'MXN' },
-    { clave: 'USD', valor: 'USD' },
-  ];
 
   public mercanciasForm = new FormGroup({
     peso_bruto_total: new FormControl('', Validators.required),
@@ -45,8 +44,8 @@ export class MercanciasComponent {
   ) {
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
       if (data?.unidades_de_peso) {
-        this.unidadPeso = data.unidades_de_peso;
-        this.filteredUnidadPeso = Object.assign([], this.unidadPeso);
+        this.weightUnits = data.unidades_de_peso;
+        this.filteredWeightUnits = Object.assign([], this.weightUnits);
 
         this.setCatalogsFields();
       }
@@ -65,19 +64,6 @@ export class MercanciasComponent {
         mercancia,
         // isValid: this.isValid()
       });
-    });
-
-    this.mercanciasForm.controls.unidad_peso.valueChanges.subscribe((inputValue: any) => {
-      if (inputValue) {
-        this.filteredUnidadPeso = this.unidadPeso?.filter((e) => {
-          const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
-          const input =
-            inputValue && typeof inputValue == 'object'
-              ? `${inputValue.clave} ${inputValue.nombre}`.toLowerCase()
-              : inputValue.toLowerCase();
-          return currentValue.includes(input);
-        });
-      }
     });
 
     this.mercanciasForm.patchValue(this.info);
@@ -106,7 +92,6 @@ export class MercanciasComponent {
     return this.commodityRef.toArray().map((e) => {
       const info = e.commodity.value;
 
-      console.log({ toService: info });
       const response = {
         clave_unidad: info.claveUnidad,
         peso_en_kg: info.peso,
@@ -146,15 +131,19 @@ export class MercanciasComponent {
   }
 
   public getUnidadPesoText(option: string): string {
-    let stateFound = option ? this.unidadPeso?.find((x) => x.clave === option) : undefined;
+    let stateFound = option ? this.weightUnits?.find((x) => x.clave === option) : undefined;
     return stateFound ? `${stateFound.clave} - ${stateFound.nombre}` : undefined;
   }
 
   public resetFilterList(list) {
     switch (list) {
       case 'permisosSCT':
-        this.filteredUnidadPeso = this.unidadPeso;
+        this.filteredWeightUnits = this.weightUnits;
         break;
     }
+  }
+
+  public searchWeightUnit(code: string): void {
+    searchInList(this, 'weightUnits', 'filteredWeightUnits', code, 'clave', 'nombre');
   }
 }

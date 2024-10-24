@@ -5,15 +5,16 @@ import { Remolques } from 'src/app/pages/invoice/models/invoice/carta-porte/remo
 import { SubtiposRemolques } from 'src/app/pages/invoice/models/invoice/carta-porte/subtipos-remolques';
 import { CataloguesListService } from '../services/catalogues-list.service';
 import { CartaPorteInfoService } from '../services/carta-porte-info.service';
+import { searchInList } from 'src/app/pages/invoice/containers/factura-edit-page/factura.core';
 
 const REMOLQUES_DATA: Remolques[] = [];
 
 @Component({
   selector: 'app-autotransporte',
   templateUrl: './autotransporte.component.html',
-  styleUrls: ['./autotransporte.component.scss']
+  styleUrls: ['./autotransporte.component.scss'],
 })
-export class AutotransporteComponent implements OnInit {
+export class AutotransporteComponent {
   @ViewChild(MatTable) table: MatTable<Remolques>;
   @Input() subtiposRemolques: SubtiposRemolques[];
   @Input() info: any;
@@ -22,16 +23,16 @@ export class AutotransporteComponent implements OnInit {
   remolquesSource = [...REMOLQUES_DATA];
 
   public permisosSCT: any[] = [];
-  public filteredPermisosSCT: any[];
+  public filteredSCTPermissions: any[];
 
-  validRemolquesConfig = false;
-  validRemolquesPlates = false;
+  public validRemolquesConfig = false;
+  public validRemolquesPlates = false;
 
-  public identificacionVehicular: any[] = [];
-  public filteredIdentificacionVehicular: any[];
+  public vehicleConfigurations: any[] = [];
+  public filteredVehicleConfigurations: any[];
 
-  public remolquesConfig: any[] = [];
-  public filteredRemolquesConfig: any[];
+  public trailerConfigurations: any[] = [];
+  public filteredTrailerConfigurations: any[];
 
   autotransporteForm = new FormGroup({
     permisoSCT: new FormControl(''),
@@ -48,28 +49,31 @@ export class AutotransporteComponent implements OnInit {
     identificacionVehicularConfig: new FormControl(''),
     truckPlates: new FormControl('', Validators.compose([Validators.pattern(/^[a-zA-Z0-9]{5,7}$/)])),
     truckModel: new FormControl('', Validators.compose([Validators.pattern(/^19\d{2}$|20\d{2}$/)])),
-    vehicleGrossWeight: new FormControl('')
+    vehicleGrossWeight: new FormControl(''),
   });
 
   remolquesForm = new FormGroup({
     subtipoRemolque: new FormControl(''),
-    Placa: new FormControl('')
+    Placa: new FormControl(''),
   });
 
-  constructor(public cataloguesListService: CataloguesListService, public cartaPorteInfoService: CartaPorteInfoService) {
+  constructor(
+    public cataloguesListService: CataloguesListService,
+    public cartaPorteInfoService: CartaPorteInfoService,
+  ) {
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
       if (data?.tipos_de_permiso) {
         //permisosSCT
         this.permisosSCT = data.tipos_de_permiso;
-        this.filteredPermisosSCT = Object.assign([], this.permisosSCT);
+        this.filteredSCTPermissions = [...this.permisosSCT];
 
         //identificación vehicular => Configuración
-        this.identificacionVehicular = data.config_autotransporte;
-        this.filteredIdentificacionVehicular = Object.assign([], this.identificacionVehicular);
+        this.vehicleConfigurations = data.config_autotransporte;
+        this.filteredVehicleConfigurations = [...this.vehicleConfigurations];
 
         //remolques => Configuración
-        this.remolquesConfig = data.subtipos_de_remolques;
-        this.filteredRemolquesConfig = Object.assign([], this.remolquesConfig);
+        this.trailerConfigurations = data.subtipos_de_remolques;
+        this.filteredTrailerConfigurations = [...this.trailerConfigurations];
 
         // Evita que no se seleccionen los valores que provienen de catalogos
         this.setCatalogsFields();
@@ -77,43 +81,8 @@ export class AutotransporteComponent implements OnInit {
     });
   }
 
-  setCatalogsFields() {
+  private setCatalogsFields(): void {
     this.autotransporteForm.patchValue(this.autotransporteForm.value);
-
-    this.autotransporteForm.controls.permisoSCT.valueChanges.subscribe((inputValue: any) => {
-      if (inputValue) {
-        this.filteredPermisosSCT = this.permisosSCT?.filter((e) => {
-          const currentValue = `${e.clave} ${e.descripcion}`.toLowerCase();
-          const input =
-            typeof inputValue == 'string' ? inputValue.toLowerCase() : `${inputValue.clave} ${inputValue.descripcion}`.toLowerCase();
-          return currentValue.includes(input);
-        });
-      }
-    });
-
-    this.autotransporteForm.controls.identificacionVehicularConfig.valueChanges.subscribe((inputValue: any) => {
-      if (inputValue) {
-        this.filteredIdentificacionVehicular = this.identificacionVehicular?.filter((e) => {
-          const currentValue = `${e.clave} ${e.descripcion}`.toLowerCase();
-          const input =
-            inputValue && typeof inputValue == 'string'
-              ? inputValue.toLowerCase()
-              : `${inputValue.clave} ${inputValue.descripcion}`.toLowerCase();
-          return currentValue.includes(input);
-        });
-      }
-    });
-
-    this.autotransporteForm.controls.remolquesConfig.valueChanges.subscribe((inputValue: any) => {
-      if (inputValue) {
-        this.filteredRemolquesConfig = this.remolquesConfig?.filter((e) => {
-          const currentValue = `${e.clave} ${e.descripcion}`.toLowerCase();
-          const input =
-            typeof inputValue == 'string' ? inputValue.toLowerCase() : `${inputValue.clave} ${inputValue.descripcion}`.toLowerCase();
-          return currentValue.includes(input);
-        });
-      }
-    });
 
     this.cartaPorteInfoService.infoRecolector.subscribe(() => {
       const info = this.autotransporteForm.value;
@@ -126,7 +95,7 @@ export class AutotransporteComponent implements OnInit {
           config_vehicular: info.identificacionVehicularConfig,
           placa_v_m: info.truckPlates,
           anio_modelo_v_m: info.truckModel,
-          peso_bruto_vehicular: info.vehicleGrossWeight
+          peso_bruto_vehicular: info.vehicleGrossWeight,
         },
 
         seguros: {
@@ -139,25 +108,23 @@ export class AutotransporteComponent implements OnInit {
           asegura_med_ambiente: info.nombreAmbiental,
           poliza_ambiente: info.numeroAmbiental,
 
-          prima_seguro: info.primaSeguro
+          prima_seguro: info.primaSeguro,
         },
 
         remolques: {
           sub_tipo_rem: info.remolquesConfig,
-          placa: info.remolquesPlates
-        }
+          placa: info.remolquesPlates,
+        },
       };
 
       this.cartaPorteInfoService.addRecoletedInfoMercancias({
-        autotransporte: response
+        autotransporte: response,
         // isValid: this.autotransporteForm.status,
       });
     });
   }
 
-  async ngOnInit(): Promise<void> {}
-
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.info && this.info) {
       const { seguros, remolques, identificacion_vehicular } = this.info;
 
@@ -176,42 +143,45 @@ export class AutotransporteComponent implements OnInit {
         remolquesPlates: Array.isArray(remolques) ? remolques[0]?.placa : remolques?.placa,
         truckModel: identificacion_vehicular?.anio_modelo_v_m,
         truckPlates: identificacion_vehicular?.placa_v_m,
-        vehicleGrossWeight: identificacion_vehicular?.peso_bruto_vehicular
+        vehicleGrossWeight: identificacion_vehicular?.peso_bruto_vehicular,
       });
     }
   }
 
-  addRemolque() {
-    if (this.autotransporteForm.get('remolquesConfig').value && this.autotransporteForm.get('remolquesPlates').value) {
+  public addRemolque() {
+    if (
+      this.autotransporteForm.get('trailerConfigurations').value &&
+      this.autotransporteForm.get('remolquesPlates').value
+    ) {
       this.remolquesSource.push({
-        configuracion: this.autotransporteForm.get('remolquesConfig').value,
-        placa: this.autotransporteForm.get('remolquesPlates').value
+        configuracion: this.autotransporteForm.get('trailerConfigurations').value,
+        placa: this.autotransporteForm.get('remolquesPlates').value,
       });
       this.table?.renderRows();
-      this.autotransporteForm.get('remolquesConfig').reset();
+      this.autotransporteForm.get('trailerConfigurations').reset();
       this.autotransporteForm.get('remolquesPlates').reset();
-      this.filteredRemolquesConfig = this.remolquesConfig;
+      // this.filteredTrailerConfigurations = this.trailerConfigurations;
     }
   }
 
-  addData() {
+  public addData() {
     const randomElementIndex = Math.floor(Math.random() * REMOLQUES_DATA.length);
     this.remolquesSource.push(REMOLQUES_DATA[randomElementIndex]);
     this.table.renderRows();
   }
 
-  omitSpecialChar(event) {
+  public omitSpecialChar(event) {
     var k;
     k = event.charCode;
     return (k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57);
   }
 
-  removeRemolque(id) {
+  public removeRemolque(id) {
     this.remolquesSource = this.remolquesSource.filter((item, index) => index !== id);
     this.table.renderRows();
   }
 
-  getOptionText(filtered, option) {
+  public getOptionText(filtered, option) {
     if (undefined != this[filtered]) {
       let stateFound = option ? this[filtered].find((x) => x.clave === option) : undefined;
       return stateFound ? `${stateFound.clave} - ${stateFound.descripcion}` : undefined;
@@ -219,29 +189,50 @@ export class AutotransporteComponent implements OnInit {
     return undefined;
   }
 
-  permisoSCTSearch() {
-    this.filteredPermisosSCT = this.permisosSCT;
-  }
-
-  identificacionVehicularConfigSearch() {
-    this.filteredIdentificacionVehicular = this.identificacionVehicular;
-  }
-
-  remolquesConfigSearch() {
-    this.filteredRemolquesConfig = this.remolquesConfig;
-  }
-
-  resetFilterList(list) {
+  public resetFilterList(list) {
     switch (list) {
       case 'permisosSCT':
-        this.filteredPermisosSCT = this.permisosSCT;
+        this.filteredSCTPermissions = this.permisosSCT;
         break;
       case 'identificacionVehicularConfig':
-        this.filteredIdentificacionVehicular = this.identificacionVehicular;
+        this.filteredVehicleConfigurations = this.vehicleConfigurations;
         break;
-      case 'remolquesConfig':
-        this.filteredRemolquesConfig = this.remolquesConfig;
+      case 'trailerConfigurations':
+        this.filteredTrailerConfigurations = this.trailerConfigurations;
         break;
     }
+  }
+
+  public checkIfIsListValueOrEmpty($event: any, formGroup: string, listName: string): void {
+    const controlName = $event.target.attributes.formcontrolname.value;
+    const currentValue = $event.target.value;
+    const control = this[formGroup].get(controlName);
+
+    if (!this?.[listName]) console.log(`La lista ${listName} no existe en el componente`);
+    else {
+      const byCode = this[listName].find((item) => item.clave === currentValue?.toUpperCase().trim());
+
+      if (!this[listName].length || currentValue?.trim() === '')
+        // if the filtered list or value is empty sets control value empty
+        control.setValue('');
+      else if (byCode)
+        // enables selection by code
+        control.setValue(byCode.clave);
+      else if (!this[listName].find((item) => item.clave + ' - ' + item.descripcion === currentValue))
+        // empty value if entered values have not result
+        control.setValue('');
+    }
+  }
+
+  public searchSCTPermissions(code: string): void {
+    searchInList(this, 'permisosSCT', 'filteredSCTPermissions', code, 'clave', 'descripcion');
+  }
+
+  public searchVehicleConfiguration(code: string): void {
+    searchInList(this, 'vehicleConfigurations', 'filteredVehicleConfigurations', code, 'clave', 'descripcion');
+  }
+
+  public searchTrailerConfiguration(code: string): void {
+    searchInList(this, 'trailerConfigurations', 'filteredTrailerConfigurations', code, 'clave', 'descripcion');
   }
 }

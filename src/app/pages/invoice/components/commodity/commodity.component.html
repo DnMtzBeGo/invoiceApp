@@ -2,18 +2,21 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.bienes-transportados' | translate }}</mat-label>
-      <input
-        formControlName="bienesTransportados"
-        autocomplete="off"
-        type="search"
-        matInput
-        (search)="resetFilterList('bienesTransportados')"
-        [matAutocomplete]="bienesTransportadosRef" />
-      <mat-autocomplete #bienesTransportadosRef="matAutocomplete" [displayWith]="getBienesTransportadosText.bind(this)">
-        <mat-option *ngFor="let option of filteredBienesTransportados" [value]="option.code" class="brand-option-1">
-          {{ option.code }} - {{ option.description }}
+
+      <mat-select name="bienesTransportados" formControlName="bienesTransportados" class="disable-custom-format">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchTransportedGoods($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
         </mat-option>
-      </mat-autocomplete>
+        <ng-container *ngFor="let option of transportedGoods">
+          <mat-option [value]="option.code" class="brand-option-1">
+            {{ option.code }} - {{ option.description }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
     </mat-form-field>
     <!-- input es de tipo ferroviario -->
     <!-- <mat-form-field appearance="outline" class="brand-field-1">
@@ -28,18 +31,20 @@
 
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.clave-unidad' | translate }}</mat-label>
-      <input
-        formControlName="claveUnidad"
-        autocomplete="off"
-        type="search"
-        matInput
-        (search)="resetFilterList('claveUnidad')"
-        [matAutocomplete]="claveUnidadRef" />
-      <mat-autocomplete #claveUnidadRef="matAutocomplete" [displayWith]="getClaveUnidadText.bind(this)">
-        <mat-option *ngFor="let option of filteredClaveUnidad" [value]="option.clave" class="brand-option-1">
-          {{ option.clave }} - {{ option.nombre }}
+      <mat-select name="claveUnidad" formControlName="claveUnidad" class="disable-custom-format">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchUnitType($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
         </mat-option>
-      </mat-autocomplete>
+        <ng-container *ngFor="let option of filteredUnitTypes">
+          <mat-option [value]="option.clave" class="brand-option-1">
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
@@ -62,10 +67,20 @@
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.moneda' | translate }}</mat-label>
-      <mat-select formControlName="moneda" class="disable-custom-format" name="moneda">
-        <mat-option *ngFor="let option of dataCoin" [value]="option.clave">
-          {{ option.clave }}
+
+      <mat-select name="moneda" formControlName="moneda" class="disable-custom-format">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchCurrency($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
         </mat-option>
+        <ng-container *ngFor="let option of filteredCurrencies">
+          <mat-option [value]="option.clave" class="brand-option-1">
+            {{ option.clave }} - {{ option.descripcion }}
+          </mat-option>
+        </ng-container>
       </mat-select>
     </mat-form-field>
 
@@ -86,28 +101,39 @@
 
     <mat-form-field *ngIf="commodity.value.materialPeligroso" appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.clave-material-peligroso' | translate }}</mat-label>
-      <input
-        formControlName="claveMaterialPeligroso"
-        autocomplete="off"
-        type="search"
-        matInput
-        (search)="resetFilterList('claveMaterialPeligroso')"
-        [matAutocomplete]="claveMaterialPeligrosoRef" />
-      <mat-autocomplete
-        #claveMaterialPeligrosoRef="matAutocomplete"
-        [displayWith]="getMaterialPeligrosoText.bind(this)">
-        <mat-option *ngFor="let option of filteredMaterialPeligroso" [value]="option.clave" class="brand-option-1">
-          {{ option.clave }} - {{ option.descripcion }}
+
+      <mat-select name="claveMaterialPeligroso" formControlName="claveMaterialPeligroso" class="disable-custom-format">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchHazardousMaterialType($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
         </mat-option>
-      </mat-autocomplete>
+        <ng-container *ngFor="let option of filteredMaterialPeligroso">
+          <mat-option [value]="option.clave" class="brand-option-1">
+            {{ option.clave }} - {{ option.descripcion }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field *ngIf="commodity.value.materialPeligroso" appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.embalaje' | translate }} {{ commodity.value.embalaje }}</mat-label>
-      <mat-select formControlName="embalaje" class="disable-custom-format" name="embalaje">
-        <mat-option *ngFor="let option of embalaje" [value]="option.clave">
-          {{ option.clave }} - {{ option.descripcion }}
+
+      <mat-select name="embalaje" formControlName="embalaje" class="disable-custom-format">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchPackagingType($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
         </mat-option>
+        <ng-container *ngFor="let option of filteredPackagingTypes">
+          <mat-option [value]="option.clave" class="brand-option-1">
+            {{ option.clave }} - {{ option.descripcion }}
+          </mat-option>
+        </ng-container>
       </mat-select>
     </mat-form-field>
 

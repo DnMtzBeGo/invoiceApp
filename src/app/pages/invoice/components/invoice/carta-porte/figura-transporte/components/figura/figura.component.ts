@@ -3,18 +3,19 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
 import { CataloguesListService } from '../../../services/catalogues-list.service';
 import { MatTable } from '@angular/material/table';
+import { searchInList } from 'src/app/pages/invoice/containers/factura-edit-page/factura.core';
 
 @Component({
   selector: 'app-figura',
   templateUrl: './figura.component.html',
-  styleUrls: ['./figura.component.scss']
+  styleUrls: ['./figura.component.scss'],
 })
 export class FiguraComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<any>;
   @Input() figuraInfo: any;
 
-  dataSource: Array<object> = [];
-  displayedColumns: string[] = ['value', 'action'];
+  public dataSource: Array<object> = [];
+  public displayedColumns: string[] = ['value', 'action'];
 
   public locationComponentInfo: any;
 
@@ -25,14 +26,14 @@ export class FiguraComponent implements OnInit {
       '',
       Validators.compose([
         Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d&]{2}(?:[A\d]))?$/),
-        Validators.required
-      ])
+        Validators.required,
+      ]),
     ),
     nombre_figura: new FormControl(''),
     residencia_fiscal_figura: new FormControl('', Validators.required),
     num_reg_id_trib_figura: new FormControl('', Validators.required),
-    parteTransporte: new FormControl(''),
-    num_licencia: new FormControl('')
+    transportParts: new FormControl(''),
+    num_licencia: new FormControl(''),
   });
 
   public domicilioForm = new FormGroup({
@@ -45,13 +46,13 @@ export class FiguraComponent implements OnInit {
     numero_exterior: new FormControl('', Validators.pattern('^[0-9]*$')),
     numero_interior: new FormControl('', Validators.pattern('^[0-9]*$')),
     colonia: new FormControl(''),
-    referencia: new FormControl('')
+    referencia: new FormControl(''),
   });
 
   public tiposDeTransporte;
 
-  public parteTransporte: any[] = [];
-  public filteredParteTransporte: any[];
+  public transportParts: any[] = [];
+  public filteredTransportParts: any[];
 
   public estados: any[] = [];
   public filteredEstados: any[];
@@ -66,76 +67,75 @@ export class FiguraComponent implements OnInit {
   public filteredColonias: any[];
 
   public tipoEstacionOptions: any[];
+
   public tipoUbicacion: any[] = [
     {
       clave: 'Origen',
-      descripcion: 'Origen'
+      descripcion: 'Origen',
     },
     {
       clave: 'Destino',
-      descripcion: 'Destino'
-    }
+      descripcion: 'Destino',
+    },
   ];
-  public residenciaFiscal: any[];
-  public paisCatalogue: any[];
 
-  public hideResidenciaRegistro: boolean = false;
+  public countriesOfResidence: any[];
+  public filteredCountriesOfResidence: any[];
 
-  constructor(public cataloguesListService: CataloguesListService, public cartaPorteInfoService: CartaPorteInfoService) {
+  public hideCountryOfResidence: boolean = true;
+
+  constructor(
+    public cataloguesListService: CataloguesListService,
+    public cartaPorteInfoService: CartaPorteInfoService,
+  ) {
     this.cataloguesListService.countriesSubject.subscribe((data: any[]) => {
-      this.residenciaFiscal = data;
-      this.paisCatalogue = data;
+      this.countriesOfResidence = data;
+      this.filteredCountriesOfResidence = [...data];
     });
 
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
-      this.parteTransporte = data.partes_del_transporte;
+      this.transportParts = data.partes_del_transporte;
+      this.filteredTransportParts = [...data.partes_del_transporte];
+
       this.tiposDeTransporte = data.figuras_de_transporte;
-      this.filteredParteTransporte = Object.assign([], this.parteTransporte);
 
       this.loadCatalogs1();
     });
   }
 
-  async loadCatalogs1() {
+  public async loadCatalogs1() {
     this.updatePartesTransporte();
 
+    this.figuraTransporteForm.get('rfc_figura').valueChanges.subscribe((val) => {
+      if (val.toUpperCase() === 'XEXX010101000') {
+        if (!this.figuraTransporteForm.get('residencia_fiscal_figura'))
+          this.figuraTransporteForm.addControl('residencia_fiscal_figura', new FormControl('', Validators.required));
+        if (!this.figuraTransporteForm.get('num_reg_id_trib_figura'))
+          this.figuraTransporteForm.addControl('num_reg_id_trib_figura', new FormControl('', Validators.required));
+
+        this.hideCountryOfResidence = false;
+      } else {
+        this.figuraTransporteForm.removeControl('residencia_fiscal_figura');
+        this.figuraTransporteForm.removeControl('num_reg_id_trib_figura');
+        this.hideCountryOfResidence = true;
+      }
+    });
+
     this.figuraTransporteForm.get('rfc_figura').statusChanges.subscribe((val) => {
-      if (val === 'VALID') {
+      if (val === 'VALID')
         if (!this.figuraTransporteForm.get('rfc_figura'))
           this.figuraTransporteForm.addControl(
             'rfc_figura',
             new FormControl(
               '',
               Validators.compose([
-                Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d&]{2}(?:[A\d]))?$/),
-                Validators.required
-              ])
-            )
+                Validators.pattern(
+                  /^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d&]{2}(?:[A\d]))?$/,
+                ),
+                Validators.required,
+              ]),
+            ),
           );
-        this.figuraTransporteForm.removeControl('residencia_fiscal_figura');
-        this.figuraTransporteForm.removeControl('num_reg_id_trib_figura');
-        this.hideResidenciaRegistro = true;
-      } else {
-        // this.figuraTransporteForm.removeControl("rfc_figura");
-        if (!this.figuraTransporteForm.get('residencia_fiscal_figura'))
-          this.figuraTransporteForm.addControl('residencia_fiscal_figura', new FormControl('', Validators.required));
-        if (!this.figuraTransporteForm.get('num_reg_id_trib_figura'))
-          this.figuraTransporteForm.addControl('num_reg_id_trib_figura', new FormControl('', Validators.required));
-        this.hideResidenciaRegistro = false;
-      }
-    });
-
-    this.figuraTransporteForm.controls.parteTransporte.valueChanges.subscribe((inputValue: any) => {
-      if (inputValue) {
-        this.filteredParteTransporte = this.parteTransporte.filter((e) => {
-          const currentValue = `${e.clave} ${e.descripcion}`.toLowerCase();
-          const input =
-            inputValue && typeof inputValue == 'object'
-              ? `${inputValue.clave} ${inputValue.descripcion}`.toLowerCase()
-              : inputValue.toLowerCase();
-          return currentValue.includes(input);
-        });
-      }
     });
   }
 
@@ -143,7 +143,7 @@ export class FiguraComponent implements OnInit {
     this.domicilioForm.controls.pais.valueChanges.subscribe(async (newVal: any) => {
       if (newVal) {
         this.estados = await this.cataloguesListService.getCatalogue('states', {
-          pais: newVal
+          pais: newVal,
         });
         this.filteredEstados = Object.assign([], this.estados);
       }
@@ -153,14 +153,17 @@ export class FiguraComponent implements OnInit {
     this.domicilioForm.controls.estado.valueChanges.subscribe(async (inputValue: any = '') => {
       this.filteredEstados = this.estados.filter((e) => {
         const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
-        const input = inputValue && typeof inputValue == 'object' ? `${inputValue.clave} ${inputValue.nombre}` : inputValue.toLowerCase();
+        const input =
+          inputValue && typeof inputValue == 'object'
+            ? `${inputValue.clave} ${inputValue.nombre}`
+            : inputValue.toLowerCase();
         return currentValue.includes(input);
       });
       //if value just changed
       if (typeof inputValue == 'string') {
         if (inputValue) {
           this.localidades = await this.cataloguesListService.getCatalogue('locations', {
-            estado: inputValue
+            estado: inputValue,
           });
           this.municipios = await this.cataloguesListService.getCatalogue('municipalities', { estado: inputValue });
         }
@@ -169,14 +172,17 @@ export class FiguraComponent implements OnInit {
       }
       this.domicilioForm.patchValue({
         municipio: '',
-        localidad: ''
+        localidad: '',
       });
     });
 
     this.domicilioForm.controls.municipio.valueChanges.subscribe((inputValue: any = '') => {
       this.filteredMunicipios = this.municipios.filter((e) => {
         const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
-        const input = inputValue && typeof inputValue == 'object' ? `${inputValue.clave} ${inputValue.nombre}` : inputValue.toLowerCase();
+        const input =
+          inputValue && typeof inputValue == 'object'
+            ? `${inputValue.clave} ${inputValue.nombre}`
+            : inputValue.toLowerCase();
         return currentValue.includes(input);
       });
     });
@@ -192,13 +198,16 @@ export class FiguraComponent implements OnInit {
     this.domicilioForm.controls.localidad.valueChanges.subscribe((inputValue: any = '') => {
       this.filteredLocalidades = this.localidades.filter((e) => {
         const currentValue = `${e.clave} ${e.nombre}`.toLowerCase();
-        const input = inputValue && typeof inputValue == 'object' ? `${inputValue.clave} ${inputValue.nombre}` : inputValue.toLowerCase();
+        const input =
+          inputValue && typeof inputValue == 'object'
+            ? `${inputValue.clave} ${inputValue.nombre}`
+            : inputValue.toLowerCase();
         return currentValue.includes(input);
       });
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.figuraInfo?.currentValue) {
       this.figuraTransporteForm.patchValue(this.figuraInfo);
       this.updatePartesTransporte();
@@ -210,50 +219,50 @@ export class FiguraComponent implements OnInit {
   //   console.log("Domicilio: ", this.domicilioForm);
   // }
 
-  getAutoCompleteText(option) {
+  public getAutoCompleteText(option) {
     return '';
     return option ? `${option.clave} - ${option.descripcion}` : '';
   }
 
-  getLocationText(filtered, option) {
+  public getLocationText(filtered, option) {
     let stateFound = option ? this[filtered].find((x) => x.clave === option) : undefined;
     return stateFound ? `${stateFound.clave} - ${stateFound.nombre}` : undefined;
   }
 
-  async addParteTransporte(valueParteTransporte) {
+  public async addParteTransporte(valueParteTransporte) {
     this.dataSource.push({
       clave: valueParteTransporte.clave,
-      descripcion: valueParteTransporte.descripcion
+      descripcion: valueParteTransporte.descripcion,
     });
     this.table?.renderRows();
-    this.figuraTransporteForm.get('parteTransporte').reset();
+    this.figuraTransporteForm.get('transportParts').reset();
 
     let partes_transporte = this.dataSource.map((x: any) => ({
-      parte_transporte: x.clave
+      parte_transporte: x.clave,
     }));
 
     this.figuraTransporteForm.patchValue({ partes_transporte });
-    this.filteredParteTransporte = this.parteTransporte;
+    this.filteredTransportParts = this.transportParts;
     (document.activeElement as HTMLElement).blur();
   }
 
-  removeData(id) {
+  public removeData(id) {
     console.log(this.figuraInfo);
     this.dataSource = this.dataSource.filter((item, index) => index !== id);
     this.figuraInfo.partes_transporte.splice(id, 1);
     this.table.renderRows();
   }
 
-  catchLocationInfoChanges(info: any) {
+  public catchLocationInfoChanges(info: any) {
     this.locationComponentInfo = info;
   }
 
-  updatePartesTransporte() {
+  public updatePartesTransporte() {
     this.dataSource = this.figuraInfo?.partes_transporte || [];
     if (this.figuraInfo?.partes_transporte) {
-      if (this.parteTransporte?.length) {
+      if (this.transportParts?.length) {
         const dataSource = this.figuraInfo.partes_transporte.map((el) => {
-          return this.parteTransporte.find((t) => {
+          return this.transportParts.find((t) => {
             return el.parte_transporte == t.clave;
           });
         });
@@ -265,7 +274,11 @@ export class FiguraComponent implements OnInit {
     }
   }
 
-  parte_transporteCatalogueRefSearch() {
-    this.filteredParteTransporte = this.parteTransporte;
+  public searchCountryOfResidence(code: string): void {
+    searchInList(this, 'countriesOfResidence', 'filteredCountriesOfResidence', code);
+  }
+
+  public searchTransportPart(code: string): void {
+    searchInList(this, 'transportParts', 'filteredTransportParts', code, 'clave', 'descripcion');
   }
 }
