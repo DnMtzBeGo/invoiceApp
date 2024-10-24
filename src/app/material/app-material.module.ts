@@ -33,7 +33,11 @@ import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/mat
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule,
+} from '@angular-material-components/datetime-picker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
   declarations: [],
@@ -73,7 +77,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
     MatBadgeModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   exports: [
     MatCardModule,
@@ -111,7 +115,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     NgxMatNativeDateModule,
     MatBadgeModule,
     MatSnackBarModule,
-    
-  ]
+  ],
 })
 export class AppMaterialModule {}

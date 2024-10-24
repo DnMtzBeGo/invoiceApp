@@ -1,0 +1,22 @@
+@import '../../../styles/colors.scss';
+@import '../global.scss';
+@import '../inputs.scss';
+
+.bills-dialog-component {
+  .mat-flat-button {
+    background-color: darken($dark-grey, 30%);
+    color: darken($white, 25%);
+  }
+
+  ::ng-deep {
+    .mat-form-field-appearance-outline {
+      .mat-form-field-flex {
+        height: 46px;
+      }
+      .mat-form-field-infix {
+        padding: 0.5em 0 0.5em 0;
+        height: 15px;
+      }
+    }
+  }
+}

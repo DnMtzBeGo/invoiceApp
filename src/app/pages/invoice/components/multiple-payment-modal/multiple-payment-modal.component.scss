@@ -1,0 +1,125 @@
+@import '../../styles/colors.scss';
+@import './global.scss';
+@import './inputs.scss';
+
+.payment-complement {
+  color: $shadow-white;
+  min-width: 950px;
+  padding: 15px;
+
+  .mat-flat-button {
+    background-color: #ffe000;
+  }
+
+  header {
+    h2 {
+      color: $yellow;
+    }
+  }
+
+  main {
+    position: relative;
+    overflow-y: auto;
+    min-height: 540px;
+    max-height: 80vh;
+
+    h3,
+    h4 {
+      font-size: $fontSize * 1.5;
+      margin-top: 35px;
+      color: $white-blue;
+      display: inline-block;
+      margin-bottom: 0px;
+      padding: 5px 25px;
+      border: 1px solid darken($white-80, 66%);
+      border-bottom: 0px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    h4 {
+      text-align: center;
+      display: block;
+      border: 0px;
+      border-bottom: 1px solid darken($white-80, 66%);
+      margin-bottom: 15px;
+    }
+
+    .content-box {
+      padding: 5%;
+      border: 1px solid darken($white-80, 76%);
+      border-radius: 10px;
+      max-width: 86%;
+      border-top-left-radius: 0px;
+    }
+
+    .mat-expansion-panel {
+      background-color: $shadow-dark-grey;
+
+      .mat-expansion-panel-header-title {
+        color: $shadow-white;
+      }
+    }
+
+    .amounts {
+      display: flex;
+      gap: 250px;
+      justify-content: center;
+
+      span,
+      strong {
+        display: block;
+        margin-top: 15px;
+      }
+
+      span {
+        font-size: 16px;
+      }
+
+      strong {
+        font-size: 20px;
+      }
+
+      .warning {
+        color: $yellow;
+      }
+    }
+
+    .text-white {
+      color: #fff;
+      font-size: 14px;
+    }
+
+    ::ng-deep {
+      .ui-table {
+        .mat-mdc-card-content {
+          height: auto;
+          &::-webkit-scrollbar {
+            width: 12px;
+          }
+        }
+
+        .top-container {
+          display: none !important;
+        }
+      }
+
+      .time-picker {
+        .mat-form-field-infix {
+          display: flex;
+          .ngx-material-timepicker-toggle {
+            fill: white;
+            margin-top: -10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .timepicker-backdrop-overlay,
+  .timepicker-overlay {
+    z-index: 1001 !important;
+  }
+}

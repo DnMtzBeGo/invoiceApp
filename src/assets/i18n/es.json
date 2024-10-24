@@ -808,13 +808,15 @@
       "fecha_emision": "Emisión",
       "folio": "Folio",
       "status_": "Estatus",
-      "emisor": "Emisor",
-      "receptor": "Receptor",
+      "emisor_": "Emisor",
+      "receptor_": "Receptor",
       "serie": "Serie",
       "tipo": "Tipo",
       "status": "Status",
       "subtotal": "Subtotal",
-      "total": "Total"
+      "total": "Total",
+      "metodo_de_pago": "Metodo Pago",
+      "status_pago": "Estado Pago"
     },
     "filters": {
       "apply": "Aplicar",

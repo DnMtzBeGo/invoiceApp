@@ -4,6 +4,8 @@
       <h1>{{ 'invoice.invoices.title' | translate }}</h1>
     </div>
     <div class="toolbar-right">
+      <button mat-flat-button class="brand-btn-1" (click)="openMultiplePaymenDialog()">Pago Múltiple</button>
+
       <div>
         <button
           mat-flat-button
@@ -137,6 +139,7 @@
           queryParamsHandling: 'merge'
         })
       "
-      (refresh)="facturasEmitter.next(['refresh'])"></app-factura-table>
+      (refresh)="facturasEmitter.next(['refresh'])"
+      (selectedRowsChange)="invoiceSelectionChanged($event)"></app-factura-table>
   </div>
 </div>

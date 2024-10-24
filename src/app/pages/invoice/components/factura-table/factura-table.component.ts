@@ -7,7 +7,7 @@ import { NotificationsService } from 'src/app/shared/services/notifications.serv
 import { Paginator } from '../../models';
 import { routes } from '../../consts';
 import { environment } from 'src/environments/environment';
-import { facturaPermissions, facturaStatus } from '../../containers/factura-edit-page/factura.core';
+import { facturaPermissions, facturaStatus, toFactura } from '../../containers/factura-edit-page/factura.core';
 
 import {
   ActionSendEmailFacturaComponent,
@@ -17,6 +17,9 @@ import {
 import { IIndexInvoice, IInvoicesTable, IInvoicesTableItem, ITablePageUI, ITableSelectingAction } from './model';
 import { InvoicePDF } from '../../containers/facturas-page/InvoicePDF';
 import { ApiRestService } from 'src/app/services/api-rest.service';
+import { IInvoiceChildPayment, IInvoicePayment } from '../multiple-payment-modal';
+import { from } from 'rxjs';
+import { _importe } from '../multiple-payment-modal/helpers';
 
 @Component({
   selector: 'app-factura-table',
@@ -34,14 +37,18 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
   @Input() public invoicesData: IIndexInvoice[];
   //Paginator
   @Input() public page: Paginator;
+  @Input() public duplicateInput: string;
+
   @Output() public pageChange: EventEmitter<Paginator> = new EventEmitter();
+  @Output() public selectedRowsChange: EventEmitter<IInvoicePayment[]> = new EventEmitter<IInvoicePayment[]>();
+  //Refresh
+  @Output() public refresh: EventEmitter<void> = new EventEmitter();
+
+  public selectedRows: IInvoicePayment[] = [];
 
   public sizeOptions = [5, 10, 20, 50, 100];
   //Filter
   public isShowFilterInput: boolean = false;
-
-  //Refresh
-  @Output() public refresh: EventEmitter<void> = new EventEmitter();
 
   public lang = {
     selected: 'en',
@@ -96,14 +103,16 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
       columns: [
         { id: 'plataforma', label: 'Plataforma', input: 'icon' },
         { id: 'fecha_emision', label: 'Fec. Emision' },
-        { id: 'emisor', label: 'Emisor' },
-        { id: 'receptor', label: 'Receptor' },
+        { id: 'emisor_', label: 'Emisor' },
+        { id: 'receptor_', label: 'Receptor' },
         { id: 'serie', label: 'Serie' },
         { id: 'folio', label: 'Folio' },
         { id: 'tipo', label: 'Tipo' },
         { id: 'status_', label: 'Estatus' },
         { id: 'subtotal', label: 'Subtotal' },
         { id: 'total', label: 'Total' },
+        { id: 'metodo_de_pago', label: 'Metodo Pago' },
+        { id: 'status_pago', label: 'Estatus Pago', input: 'style' },
       ],
       values: [],
       actions: [
@@ -242,7 +251,72 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
             break;
         }
       },
-      rowSelected: ($invoice: IInvoicesTableItem): void => {},
+      rowSelected: ($event: IInvoicePayment[]): void => {
+        for (const invoice of $event) {
+          if (!invoice?.emisor?.rfc) {
+            const index = this.invoicesTable.values.findIndex((el) => el._id === invoice._id);
+            this.invoicesTable.values[index].selection_check = false;
+            this.invoicesTable.values = [...this.invoicesTable.values];
+          } else {
+            if (!this.selectedRows.find((el: IInvoicePayment) => el._id === invoice._id)) {
+              const {
+                _id,
+                uuid,
+                folio,
+                moneda,
+                monto = 0,
+                np = 0,
+                tipo_de_cambio = 1,
+                serie,
+                serie_label,
+                total,
+                emisor,
+                receptor,
+                emisor_,
+                receptor_,
+                metodo_de_pago,
+                objeto_imp,
+                impuestos,
+                tipo_de_comprobante,
+                payments,
+                status,
+              } = invoice;
+              this.selectedRows.push({
+                uuid,
+                moneda,
+                tipo_de_cambio,
+                monto,
+                folio,
+                np,
+                serie: serie,
+                serie_label,
+                total,
+                _id,
+                emisor,
+                emisor_,
+                receptor,
+                receptor_,
+                metodo_de_pago,
+                objeto_imp,
+                impuestos,
+                tipo_de_comprobante,
+                payments,
+                status,
+              });
+            }
+          }
+        }
+        this.invoicesTable.values.forEach((tableValue: any) => {
+          if (!$event.find((el) => el._id === tableValue._id)) {
+            const index = this.selectedRows.findIndex((el) => el._id === tableValue._id);
+
+            if (index > -1) this.selectedRows.splice(index, 1);
+            tableValue.selection_check = false;
+          }
+        });
+
+        this.selectedRowsChange.emit(this.selectedRows);
+      },
     };
 
     return this;
@@ -268,6 +342,10 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
           order,
           files,
           folio,
+          metodo_de_pago,
+          uuid,
+          emisor_,
+          receptor_,
         } = item;
 
         plataforma.icon = plataforma.type;
@@ -287,12 +365,65 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
           delete_invoice: this.p(item).eliminar,
         };
 
+        /**
+         * Calculates total of payments for current invoice and return value and corresponding style properties
+         * @param invoice
+         * @returns {style: string, value: string}
+         */
+        const _getPaymentStatus = (invoice: any): { style: any; value: string } => {
+          const paymentStatusStyles = {
+            success: {
+              'background': 'green',
+              'borderRadius': '5px',
+              'padding': '4px 8px',
+              'text-wrap': 'nowrap',
+            },
+            pending: {
+              'background': 'red',
+              'borderRadius': '5px',
+              'padding': '4px 8px',
+              'text-wrap': 'nowrap',
+            },
+            partial: {
+              'color': '#000',
+              'background': 'yellow',
+              'borderRadius': '5px',
+              'padding': '4px 8px',
+              'text-wrap': 'nowrap',
+            },
+          };
+
+          if (invoice.payments?.length) {
+            const paymentsTotal = this._toValidFormattedAmount(
+              +invoice.payments.reduce(
+                (accumulator: number, payment: IInvoiceChildPayment) => accumulator + payment.amount,
+                0,
+              ),
+            );
+
+            return {
+              style:
+                this._toValidFormattedAmount(invoice.total) === paymentsTotal
+                  ? paymentStatusStyles.success
+                  : paymentStatusStyles.partial,
+              value: '$ ' + paymentsTotal,
+            };
+          }
+
+          return { style: paymentStatusStyles.pending, value: '$ 0.00' };
+        };
+
+        const status_pago = metodo_de_pago === 'PPD' ? _getPaymentStatus(item) : { style: '', value: '-' };
+
         return {
           _id,
+          uuid,
           plataforma,
           fecha_emision,
           emisor,
+          emisor_,
           receptor,
+          receptor_,
           serie: serie_label,
           folio,
           status,
@@ -303,6 +434,8 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
           total,
           order,
           files,
+          metodo_de_pago,
+          status_pago,
           actions: {
             enabled: Object.values(options).includes(true),
             options,
@@ -463,5 +596,9 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
     console.log(pdfLink);
 
     if (pdfLink) window.open(pdfLink, '_blank');
+  }
+
+  private _toValidFormattedAmount(val: number | string): string {
+    return _importe(val).toFixed(2);
   }
 }

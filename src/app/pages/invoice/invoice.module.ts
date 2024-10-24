@@ -75,6 +75,10 @@ import { SeriesPageComponent } from './containers/series-page/series-page.compon
 import { SeriesTableComponent } from './components/series-table/series-table.component';
 import { SeriesNewComponent } from './components/series-new/series-new.component';
 import { LocationComponent } from './components/location/location.component';
+import { MultiplePaymentModalComponent } from './components/multiple-payment-modal/multiple-payment-modal.component';
+import { BillsDialogComponent } from './components/multiple-payment-modal/bills-dialog/bills-dialog.component';
+import { EditPaymentBillComponent } from './components/multiple-payment-modal/edit-payment-bill/edit-payment-bill.component';
+
 // Services
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { TwoDigitDecimaNumberDirective } from '../shared/directives/decimal.directive';
@@ -84,6 +88,7 @@ import { CantidadTransportaComponent } from './components/cantidad-transporta/ca
 import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/regimenes-aduaneros/regimenes-aduaneros.component';
 
 import { BegoTableMultipleSelectionModule } from '@begomx/ui-components';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 @NgModule({
   declarations: [
     // OrdersPageComponent,
@@ -142,9 +147,13 @@ import { BegoTableMultipleSelectionModule } from '@begomx/ui-components';
     FacturaFiltersComponent,
     TwoDigitDecimaNumberDirective,
     RegimenesAduanerosComponent,
+    MultiplePaymentModalComponent,
+    BillsDialogComponent,
+    EditPaymentBillComponent,
   ],
   imports: [
     CommonModule,
+    MatFormFieldModule,
     TranslateModule,
     // NgxPermissionsModule,
     InvoiceRoutingModule,
