@@ -807,6 +807,8 @@
       "plataforma": "",
       "fecha_emision": "Emisión",
       "emisor": "Emisor",
+      "folio": "Folio",
+      "status_": "Estatus",
       "receptor": "Receptor",
       "serie": "Serie",
       "tipo": "Tipo",

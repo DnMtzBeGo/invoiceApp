@@ -61,6 +61,7 @@ export interface IInvoicesTableItem {
   selection_check: boolean;
   folio: string;
   order: string;
+  files: any;
 }
 
 export interface IIndexInvoice {

@@ -75,6 +75,10 @@
   .mat-mdc-cell:nth-child(5) {
     white-space: pre-line;
   }
+
+  .mat-mdc-cell:nth-child(9) {
+    width: 180px;
+  }
 }
 
 .factura-table {

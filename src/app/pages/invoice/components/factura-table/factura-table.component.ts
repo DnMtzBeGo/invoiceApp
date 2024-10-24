@@ -1,32 +1,22 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-  OnChanges,
-  AfterViewInit,
-  Output,
-  EventEmitter,
-  ViewEncapsulation,
-} from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-//import { MatSort } from '@angular/material/sort';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { Router } from '@angular/router';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
-import { Paginator, TableFactura } from '../../models';
+import { Paginator } from '../../models';
 import { routes } from '../../consts';
 import { environment } from 'src/environments/environment';
-import { facturaPermissions, previewFactura, facturaStatus } from '../../containers/factura-edit-page/factura.core';
-import { clone } from '../../../../shared/utils/object';
+import { facturaPermissions, facturaStatus } from '../../containers/factura-edit-page/factura.core';
+
 import {
   ActionSendEmailFacturaComponent,
   ActionCancelarFacturaComponent,
   ActionConfirmationComponent,
 } from '../../modals';
 import { IIndexInvoice, IInvoicesTable, IInvoicesTableItem, ITablePageUI, ITableSelectingAction } from './model';
+import { InvoicePDF } from '../../containers/facturas-page/InvoicePDF';
+import { ApiRestService } from 'src/app/services/api-rest.service';
 
 @Component({
   selector: 'app-factura-table',
@@ -34,7 +24,7 @@ import { IIndexInvoice, IInvoicesTable, IInvoicesTableItem, ITablePageUI, ITable
   styleUrls: ['./factura-table.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class FacturaTableComponent implements OnInit, OnChanges {
+export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChanges {
   public routes: typeof routes = routes;
   public URL_BASE = environment.URL_BASE;
   public token = localStorage.getItem('token') || '';
@@ -47,29 +37,11 @@ export class FacturaTableComponent implements OnInit, OnChanges {
   @Output() public pageChange: EventEmitter<Paginator> = new EventEmitter();
 
   public sizeOptions = [5, 10, 20, 50, 100];
-
-  // public displayedColumns: string[] = [
-  //   'plataforma',
-  //   'fecha_emision',
-  //   'emisor',
-  //   'receptor',
-  //   'serie',
-  //   'tipo',
-  //   'status',
-  //   'subtotal',
-  //   'total',
-  //   'actions',
-  // ];
-  // public dataSource: MatTableDataSource<TableFactura>;
-
   //Filter
   public isShowFilterInput: boolean = false;
 
-  //Sorting
-  //@ViewChild(MatSort) sort: MatSort;
-
   //Refresh
-  @Output() refresh: EventEmitter<void> = new EventEmitter();
+  @Output() public refresh: EventEmitter<void> = new EventEmitter();
 
   public lang = {
     selected: 'en',
@@ -90,11 +62,13 @@ export class FacturaTableComponent implements OnInit, OnChanges {
   public invoicesTable: IInvoicesTable;
 
   constructor(
-    private matDialog: MatDialog,
-    private router: Router,
-    private notificationsService: NotificationsService,
-    private translateService: TranslateService,
+    private readonly matDialog: MatDialog,
+    private readonly router: Router,
+    private readonly notificationsService: NotificationsService,
+    private readonly translateService: TranslateService,
+    private readonly apiRestService: ApiRestService,
   ) {
+    super(apiRestService, notificationsService);
     this._initTable().setLang();
   }
 
@@ -102,9 +76,7 @@ export class FacturaTableComponent implements OnInit, OnChanges {
     this.handleUpdateTable();
   }
 
-  public async ngOnInit() {
-    console.log(this.page);
-
+  public async ngOnInit(): Promise<void> {
     this.pageUI = {
       size: 0,
       index: 0,
@@ -127,6 +99,7 @@ export class FacturaTableComponent implements OnInit, OnChanges {
         { id: 'emisor', label: 'Emisor' },
         { id: 'receptor', label: 'Receptor' },
         { id: 'serie', label: 'Serie' },
+        { id: 'folio', label: 'Folio' },
         { id: 'tipo', label: 'Tipo' },
         { id: 'status_', label: 'Estatus' },
         { id: 'subtotal', label: 'Subtotal' },
@@ -213,6 +186,8 @@ export class FacturaTableComponent implements OnInit, OnChanges {
         keyPrimaryRow: 'id',
       },
       selectingAction: ({ type, data }: ITableSelectingAction): void => {
+        console.log({ type, data });
+
         switch (type) {
           case 'edit_order_factura':
             this.router.navigateByUrl(`${routes.EDIT_ORDER_FACTURA};id=${data.order}`);
@@ -223,7 +198,7 @@ export class FacturaTableComponent implements OnInit, OnChanges {
             break;
 
           case 'download_preview':
-            this.downloadPreview(data);
+            this.downloadPreviewById(data._id);
             break;
 
           case 'download_pdf':
@@ -273,10 +248,6 @@ export class FacturaTableComponent implements OnInit, OnChanges {
     return this;
   };
 
-  // public ngAfterViewInit(): void {
-  //   this.dataSource.sort = this.sort;
-  // }
-
   //Table data
   public handleUpdateTable(): FacturaTableComponent {
     this.invoicesTable.values =
@@ -296,6 +267,7 @@ export class FacturaTableComponent implements OnInit, OnChanges {
           plataforma,
           order,
           files,
+          folio,
         } = item;
 
         plataforma.icon = plataforma.type;
@@ -322,12 +294,15 @@ export class FacturaTableComponent implements OnInit, OnChanges {
           emisor,
           receptor,
           serie: serie_label,
+          folio,
           status,
           status_,
           tipo,
           tipo_de_comprobante,
           subtotal,
           total,
+          order,
+          files,
           actions: {
             enabled: Object.values(options).includes(true),
             options,
@@ -376,7 +351,7 @@ export class FacturaTableComponent implements OnInit, OnChanges {
   // Actions
 
   // MODALS
-  public sendEmailFactura(_id: string) {
+  public sendEmailFactura(_id: string): void {
     this.matDialog.open(ActionSendEmailFacturaComponent, {
       data: {
         _id,
@@ -388,7 +363,7 @@ export class FacturaTableComponent implements OnInit, OnChanges {
     });
   }
 
-  public cancelarFactura(_id: string) {
+  public cancelarFactura(_id: string): void {
     this.matDialog.open(ActionCancelarFacturaComponent, {
       data: {
         _id,
@@ -401,7 +376,7 @@ export class FacturaTableComponent implements OnInit, OnChanges {
     });
   }
 
-  public deleteFactura(_id: string) {
+  public deleteFactura(_id: string): void {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
         modalTitle: this.translateService.instant('invoice.invoice-table.delete-title'),
@@ -434,42 +409,11 @@ export class FacturaTableComponent implements OnInit, OnChanges {
 
   public facturaStatus = facturaStatus;
 
-  public downloadPreview = (factura?) => {
-    if (factura == void 0) return;
+  public ngOnDestroy(): void {
+    this.revokePdfUrl();
+  }
 
-    window
-      .fetch(this.URL_BASE + 'invoice/preview', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Acceontrol-Allow-Headers': 'Content-Type, Accept',
-          'Access-Css-Control-Allow-Methods': 'POST,GET,OPTIONS',
-          'Authorization': `Bearer ${this.token}`,
-        },
-        body: JSON.stringify(previewFactura(clone(factura))),
-      })
-      .then((responseData) => responseData.arrayBuffer())
-      .then((buffer) => {
-        const blob = new Blob([buffer], {
-          type: 'application/pdf',
-        });
-
-        const linkSource = URL.createObjectURL(blob);
-
-        const downloadLink = document.createElement('a');
-        downloadLink.href = linkSource;
-        downloadLink.target = '_blank';
-        // downloadLink.download = 'Vista previa.pdf'
-        downloadLink.click();
-        setTimeout(() => URL.revokeObjectURL(linkSource), 5000);
-      })
-      .catch(() => {
-        this.notificationsService.showErrorToastr(this.translateService.instant('invoice.invoice-table.preview-error'));
-      });
-  };
-
-  public showError = (error: any) => {
+  public showError = (error: any): string => {
     error = error?.message || error?.error;
 
     return Array.isArray(error) ? error.map((e) => e.error ?? e.message).join('\n') : error;
@@ -477,21 +421,7 @@ export class FacturaTableComponent implements OnInit, OnChanges {
 
   public newPageData = { index: 0, total: 0, size: 0 };
 
-  // plate number type carrier fleet availability
-
-  // public columns: any[] = [
-  //   { id: 'plataforma', label: '', input: 'icon' },
-  //   { id: 'fecha_emision', label: '' },
-  //   { id: 'emisor', label: '' },
-  //   { id: 'receptor', label: '' },
-  //   { id: 'serie', label: '' },
-  //   { id: 'tipo', label: '' },
-  //   { id: 'status', label: '' },
-  //   { id: 'subtotal', label: '' },
-  //   { id: 'total', label: '' },
-  // ];
-
-  public changingPage({ index, size }: any) {
+  public changingPage({ index, size }: any): void {
     this.page.pageIndex = index;
     this.pageUI.index = index;
     if (this.pageUI.size !== size) {
@@ -502,7 +432,7 @@ export class FacturaTableComponent implements OnInit, OnChanges {
     this.pageChange.emit(this.page);
   }
 
-  public translate(type: string, word: string) {
+  public translate(type: string, word: string): string {
     return this.translateService.instant(`${type}.${word}`);
   }
 
@@ -520,17 +450,18 @@ export class FacturaTableComponent implements OnInit, OnChanges {
       selector: this.translate('filter', 'selector'),
     };
 
-    // this.statusOptions.forEach((status) => (status.label = this.translate(status.value, 'status')));
-    //this.invoicesTable.columns.forEach((column) => (column.label = this.translate('invoice.table', column.id)));
+    //this.statusOptions.forEach((status) => (status.label = this.translate(status.value, 'status')));
+    this.invoicesTable.columns.forEach((column) => (column.label = this.translate('invoice.table', column.id)));
     this.invoicesTable.actions.forEach((action) => {
-      console.log({ action });
       action.label = this.translate('invoice.invoice-table', action.translate);
     });
 
     return this;
   }
 
-  downloadPdf(pdfLink: string) {
+  public downloadPdf(pdfLink: string): void {
+    console.log(pdfLink);
+
     if (pdfLink) window.open(pdfLink, '_blank');
   }
 }

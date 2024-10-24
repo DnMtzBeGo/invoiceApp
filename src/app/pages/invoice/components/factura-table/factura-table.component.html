@@ -1,17 +1,5 @@
 <mat-card class="factura-table-wrapper">
   <mat-card-content class="factura-table__content">
-    <!-- <bego-table
-      [loading]="loading"
-      [columns]="columns"
-      [debounce]="1000"
-      [lang]="lang"
-      [page]="newPageData"
-      [values]="orderTableData"
-      [actions]="actions"
-      (pageChangeEmitter)="changingPage($event)"
-      (selectedActionEmitter)="selectingAction($event)">
-    </bego-table> -->
-
     <bego-table-multiple-selection
       (selectorRowsCheckEmitter)="invoicesTable.rowSelected($event)"
       [selectRowCheck]="invoicesTable.selectRow"

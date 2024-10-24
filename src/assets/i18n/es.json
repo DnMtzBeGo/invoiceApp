@@ -806,6 +806,8 @@
     "table": {
       "plataforma": "",
       "fecha_emision": "Emisión",
+      "folio": "Folio",
+      "status_": "Estatus",
       "emisor": "Emisor",
       "receptor": "Receptor",
       "serie": "Serie",

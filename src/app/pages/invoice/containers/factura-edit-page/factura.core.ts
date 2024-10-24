@@ -386,31 +386,37 @@ export const minimumRequiredFields = (factura) => {
 
 export const searchInList = (
   component: any,
-  listName: string,
+  listName: string | string[],
   filteredListName: string,
   code: string,
-  listIsInVM: boolean = false,
   propCode: string = 'code',
   propName: string = 'name',
 ): void => {
-  component[filteredListName] = _searchInList(component, listName, code, listIsInVM, propCode, propName);
+  component[filteredListName] = _searchInList(component, listName, code, propCode, propName);
 };
 
 const _searchInList = (
   component: any,
-  listName: string,
+  listName: string | string[],
   code: string,
-  listIsInVM: boolean = false,
   propCode: string = 'code',
   propName: string = 'name',
 ): any[] => {
+  let listContainer: any = null;
+  if (Array.isArray(listName))
+    for (const key of listName) {
+      if (!listContainer) listContainer = component[key];
+      else listContainer = listContainer[key];
+    }
+  else listContainer = component[listName];
+
   return code
-    ? (listIsInVM ? component.vm[listName] : component[listName]).filter(
+    ? listContainer.filter(
         (m: any) =>
           m[propCode].toLowerCase().startsWith(code.toLowerCase()) ||
           _cleanLatinChars(m[propName]).toLowerCase().startsWith(code.toLowerCase()),
       )
-    : [...(listIsInVM ? component.vm[listName] : component[listName])];
+    : [...listContainer];
 };
 
 export const _cleanLatinChars = (str: string): string => {
