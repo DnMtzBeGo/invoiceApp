@@ -166,6 +166,7 @@ export class OrdersComponent implements OnInit {
   public btnStatusNext: boolean = false;
 
   public lang: string = 'en';
+  public clearMultipleFile: boolean = false;
 
   @ViewChild(BegoStepper) stepperRef: BegoStepper;
   @ViewChild(BegoMarks) marksRef: BegoMarks;
@@ -639,6 +640,7 @@ export class OrdersComponent implements OnInit {
     );
 
     await req.toPromise().catch(({ error: { error } }) => {
+      this.clearMultipleFile = !this.clearMultipleFile;
       const { message, errors } = error;
       let errMsg = `${message[this.lang] || ''}.`;
       console.error(errMsg);

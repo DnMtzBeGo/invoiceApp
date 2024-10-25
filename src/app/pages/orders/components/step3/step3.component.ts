@@ -37,12 +37,14 @@ const enum Catalogs {
 })
 export class Step3Component implements OnInit {
   @Input() public creationTime: any;
+  @Input() public orderId: string = '';
   @Input() public draftData: any;
   @Input() public hazardousFileAWS: object = {};
   @Input() public catalogsDescription: object = {};
   @Input() public orderWithCP: boolean;
   @Input() public creationdatepickup: number;
   @Input() public editCargoWeightNow: boolean;
+  @Input() public clearMultipleFile!: boolean;
   @Output() public step3FormData: EventEmitter<any> = new EventEmitter();
   @Output() public validFormStep3: EventEmitter<boolean> = new EventEmitter();
   @Output() public cargoWeightEdited: EventEmitter<void> = new EventEmitter();
@@ -272,6 +274,11 @@ export class Step3Component implements OnInit {
 
     if (changes.editCargoWeightNow && changes.editCargoWeightNow.currentValue) {
       this.editUnits();
+    }
+
+    if (changes.clearMultipleFile && changes.clearMultipleFile.currentValue) {
+      this.files = null;
+      this.step3Form.get('multipleCargoFile')!.setValue(null, { emitEvent: false });
     }
 
     this.validFormStep3.emit(this.step3Form.valid);
@@ -535,7 +542,10 @@ export class Step3Component implements OnInit {
         date: new Date(file.lastModified),
         size: file.size,
       };
-    } else this.files = null;
+    } else {
+      this.files = null;
+      this.deleteMultipleCargoFile(this.orderId);
+    }
 
     this.step3Form.get('multipleCargoFile')!.setValue(file);
   }
@@ -606,5 +616,13 @@ export class Step3Component implements OnInit {
     const regex = /\/[^/]*_([^/]+)$/;
     const match = filePath.match(regex);
     return match ? match[1] : '';
+  }
+
+  private async deleteMultipleCargoFile(order_id: string) {
+    const req = await this.apiRestService.apiRest(null, `orders/cargo/remove-multiple/${order_id}`, {
+      apiVersion: 'v1.1',
+      timeout: '300000',
+    });
+    await req.toPromise();
   }
 }
