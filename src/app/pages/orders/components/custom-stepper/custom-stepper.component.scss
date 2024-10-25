@@ -1,0 +1,40 @@
+.stepper-container {
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Añadir posición relativa */
+}
+
+.steps {
+  display: flex;
+  border-bottom: 1px solid #333;
+  position: relative; /* Posición relativa para alinear la línea activa */
+  justify-content: space-around;
+}
+
+.step {
+  padding: 10px 20px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888; /* Color gris apagado para los tabs inactivos */
+  position: relative; /* Posición relativa para el tab */
+  transition: color 0.3s; /* Transición para el cambio de color */
+}
+
+.step.active {
+  color: white; /* Texto blanco para el tab activo */
+}
+
+.step-content {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+/* Línea activa */
+.active-line {
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  background-color: yellow; /* Línea amarilla */
+  transition: left 0.3s ease; /* Animación para el movimiento horizontal */
+  /* Se eliminará el width de aquí ya que se ajustará dinámicamente */
+}

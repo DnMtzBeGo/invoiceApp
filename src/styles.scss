@@ -100,8 +100,8 @@ body {
 // Font face
 // =============================================================================
 
-$font-url: 'assets/fonts/avenir/';
-$gotham-url: 'assets/fonts/gotham/';
+$font-url: './assets/fonts/avenir/';
+$gotham-url: './assets/fonts/gotham/';
 
 @font-face {
   font-family: 'Avenir';

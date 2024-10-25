@@ -1,103 +1,152 @@
 <div class="steps">
   <form [formGroup]="step3Form">
-    <div class="steps-container">
-      <bego-search-select
-        *ngIf="orderWithCP"
-        [debounce]="500"
-        [defaultValue]="step3Form.get('cargo_goods')!.value"
-        [catalogs]="cargoCatalog"
-        (searchValueChange)="getCargoTypeList($event)"
-        (catalogValueChange)="updateForm('cargo_goods', $event)"
-        [inputPlaceHolder]="'orders.slct-input-cargo_goods' | translate"></bego-search-select>
-
-      <div class="field section">
-        <h2 class="formgroup-title-required">{{ 'orders.txt-select-units' | translate }}</h2>
-
-        <div class="select-units-input">
-          <app-cargo-units
-            [units]="this.step3Form.get('cargoWeight').value"
-            (unitsChange)="updateForm('cargoWeight', $event)"></app-cargo-units>
-
-          <bego-button-toggle
-            (statusChanged)="selectedUnits($event)"
-            [enabled]="step3Form.get('unitType').value === unitsData.second.value"
-            [noPadding]="true"
-            [first]="unitsData.first"
-            [second]="unitsData.second"></bego-button-toggle>
-        </div>
-      </div>
-
-      <div class="field section right">
-        <div class="btn-weight" (click)="editUnits()">
-          <i class="icon icon-plus"></i
-          ><span>{{ !editWeight ? ('orders.btn-add-weight' | translate) : ('orders.btn-edit-weight' | translate) }}</span>
-        </div>
-      </div>
-
-      <!--  select cargo -->
-      <div class="field section select-cargo-section">
-        <h2 class="formgroup-title-required">{{ 'orders.txt-select-cargo' | translate }}</h2>
-
-        <bego-select [(selected)]="cargoType">
-          <bego-select-item value="general" (click)="setCargoType('general')">
-            <bego-icon icon="begon-truck"></bego-icon>
-            {{ 'orders.btn-general' | translate }}
-          </bego-select-item>
-
-          <bego-select-item value="hazardous" (click)="setCargoType('hazardous')">
-            <bego-icon icon="begon-truck"></bego-icon>
-            {{ 'orders.btn-hazardous' | translate }}
-          </bego-select-item>
-        </bego-select>
-      </div>
-
-      <div class="field selectableHazard" *ngIf="cargoType == 'hazardous'">
-        <div class="selectableHazard-details">
+    <app-custom-stepper
+      [onlyStep]="!orderWithCP"
+      [labels]="['Mercancías', 'Múltiples mercancías']"
+      (stepStatus)="stepStatus($event)"
+      [currentStep]="stepIndex">
+      <ng-template #step>
+        <div class="steps-container">
           <bego-search-select
-            [debounce]="100"
-            [catalogs]="filteredCategoryCatalog"
-            [defaultValue]="step3Form.get('hazardous_type')!.value"
-            (searchValueChange)="updateCategoryCatalog($event)"
-            (catalogValueChange)="updateForm('hazardous_type', $event)"
-            [inputPlaceHolder]="'orders.choose-category' | translate"></bego-search-select>
+            *ngIf="orderWithCP"
+            [debounce]="500"
+            [defaultValue]="step3Form.get('cargo_goods')!.value"
+            [catalogs]="cargoCatalog"
+            (searchValueChange)="getCargoTypeList($event)"
+            (catalogValueChange)="updateForm('cargo_goods', $event)"
+            [inputPlaceHolder]="'orders.slct-input-cargo_goods' | translate"></bego-search-select>
 
-          <ng-container *ngIf="orderWithCP" )>
-            <bego-search-select
-              [debounce]="500"
-              [catalogs]="packagingCatalog"
-              (searchValueChange)="getPackagingList($event)"
-              (catalogValueChange)="updateForm('packaging', $event)"
-              [defaultValue]="step3Form.get('packaging')!.value"
-              [inputPlaceHolder]="'orders.slct-input-packaging' | translate"></bego-search-select>
-            <bego-search-select
-              [debounce]="500"
-              [catalogs]="hazardousCatalog"
-              [defaultValue]="step3Form.get('hazardous_material')!.value"
-              (searchValueChange)="getHazardousTypeList($event)"
-              (catalogValueChange)="updateForm('hazardous_material', $event)"
-              [inputPlaceHolder]="'orders.slct-input-hzrd_material' | translate"></bego-search-select>
-          </ng-container>
+          <div class="field section">
+            <h2 class="formgroup-title-required">{{ 'orders.txt-select-units' | translate }}</h2>
+
+            <div class="select-units-input">
+              <app-cargo-units
+                [units]="this.step3Form.get('cargoWeight').value"
+                (unitsChange)="updateForm('cargoWeight', $event)"></app-cargo-units>
+
+              <bego-button-toggle
+                (statusChanged)="selectedUnits($event)"
+                [enabled]="step3Form.get('unitType').value === unitsData.second.value"
+                [noPadding]="true"
+                [first]="unitsData.first"
+                [second]="unitsData.second"></bego-button-toggle>
+            </div>
+          </div>
+
+          <div class="field section right">
+            <div class="btn-weight" (click)="editUnits()">
+              <i class="icon icon-plus"></i
+              ><span>{{
+                !editWeight ? ('orders.btn-add-weight' | translate) : ('orders.btn-edit-weight' | translate)
+              }}</span>
+            </div>
+          </div>
+
+          <!--  select cargo -->
+          <div class="field section select-cargo-section">
+            <h2 class="formgroup-title-required">{{ 'orders.txt-select-cargo' | translate }}</h2>
+
+            <bego-select [(selected)]="cargoType">
+              <bego-select-item value="general" (click)="setCargoType('general')">
+                <bego-icon icon="begon-truck"></bego-icon>
+                {{ 'orders.btn-general' | translate }}
+              </bego-select-item>
+
+              <bego-select-item value="hazardous" (click)="setCargoType('hazardous')">
+                <bego-icon icon="begon-truck"></bego-icon>
+                {{ 'orders.btn-hazardous' | translate }}
+              </bego-select-item>
+            </bego-select>
+          </div>
+
+          <div class="field selectableHazard" *ngIf="cargoType == 'hazardous'">
+            <div class="selectableHazard-details">
+              <bego-search-select
+                [debounce]="100"
+                [catalogs]="filteredCategoryCatalog"
+                [defaultValue]="step3Form.get('hazardous_type')!.value"
+                (searchValueChange)="updateCategoryCatalog($event)"
+                (catalogValueChange)="updateForm('hazardous_type', $event)"
+                [inputPlaceHolder]="'orders.choose-category' | translate"></bego-search-select>
+
+              <ng-container *ngIf="orderWithCP">
+                <bego-search-select
+                  [debounce]="500"
+                  [catalogs]="packagingCatalog"
+                  (searchValueChange)="getPackagingList($event)"
+                  (catalogValueChange)="updateForm('packaging', $event)"
+                  [defaultValue]="step3Form.get('packaging')!.value"
+                  [inputPlaceHolder]="'orders.slct-input-packaging' | translate"></bego-search-select>
+                <bego-search-select
+                  [debounce]="500"
+                  [catalogs]="hazardousCatalog"
+                  [defaultValue]="step3Form.get('hazardous_material')!.value"
+                  (searchValueChange)="getHazardousTypeList($event)"
+                  (catalogValueChange)="updateForm('hazardous_material', $event)"
+                  [inputPlaceHolder]="'orders.slct-input-hzrd_material' | translate"></bego-search-select>
+              </ng-container>
+            </div>
+
+            <bego-drag-drop
+              [maxSize]="10000000"
+              [lang]="fileLang"
+              [fileInfo]="fileInfo"
+              [disabled]="hazardousType == 'select-catergory'"
+              (fileSelected)="selectHazardousFile($event)"></bego-drag-drop>
+          </div>
+
+          <div class="cargo-description">
+            <h2 class="formgroup-title-required">{{ 'orders.txt-cargo' | translate }}</h2>
+
+            <bego-text-area
+              keyValue="description"
+              [customPlaceholder]="'orders.placeholder-cargo' | translate"
+              [customTextarea]="orderWithCP"
+              [defaultValue]="cargoDescription"
+              (openModal)="orderWithCP && showUnitDetailsModal()"
+              (sendData)="setCargoDescirption($event)"></bego-text-area>
+          </div>
         </div>
+      </ng-template>
 
+      <ng-template #step>
+        <div class="field section multiple-type-cargo">
+          <h2 class="formgroup-title-required">{{ 'orders.txt-select-units' | translate }}</h2>
+
+          <div class="select-units-input">
+            <app-cargo-units
+              [units]="this.step3Form.get('cargoWeight').value"
+              (unitsChange)="updateForm('cargoWeight', $event)"></app-cargo-units>
+
+            <bego-button-toggle
+              (statusChanged)="selectedUnits($event)"
+              [enabled]="step3Form.get('unitType').value === unitsData.second.value"
+              [noPadding]="true"
+              [first]="unitsData.first"
+              [second]="unitsData.second"></bego-button-toggle>
+          </div>
+        </div>
+        <div class="multiple-container instructions">
+          <h2>Instrucciones</h2>
+          <button bego-button theme="main" (click)="downloadTemplate()">
+            <bego-icon icon="begon-download"></bego-icon>
+            Plantilla Excel
+          </button>
+        </div>
+        <div class="multiple-container">
+          <p>
+            Para subir tus múltiples mercancías, debes descargar la plantilla en Excel, la cual deberás llenar en su
+            totalidad y subirlo.
+          </p>
+        </div>
         <bego-drag-drop
-          [maxSize]="10000000"
-          [lang]="fileLang"
-          [fileInfo]="fileInfo"
-          [disabled]="hazardousType == 'select-catergory'"
-          (fileSelected)="selectHazardousFile($event)"></bego-drag-drop>
-      </div>
-
-      <div class="cargo-description">
-        <h2 class="formgroup-title-required">{{ 'orders.txt-cargo' | translate }}</h2>
-
-        <bego-text-area
-          keyValue="description"
-          [customPlaceholder]="'orders.placeholder-cargo' | translate"
-          [customTextarea]="orderWithCP"
-          [defaultValue]="cargoDescription"
-          (openModal)="orderWithCP && showUnitDetailsModal()"
-          (sendData)="setCargoDescirption($event)"></bego-text-area>
-      </div>
-    </div>
+          style="min-height: 200px"
+          [validTypes]="fileTypes"
+          [lang]="multipleFilesLang"
+          [fileInfo]="files"
+          (fileSelected)="handleFileChange($event, 'xlsx')"
+          (invalidFiletype)="invalidFile()"></bego-drag-drop>
+      </ng-template>
+    </app-custom-stepper>
   </form>
 </div>

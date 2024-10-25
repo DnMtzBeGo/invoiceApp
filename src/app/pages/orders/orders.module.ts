@@ -53,6 +53,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { AppMaterialModule } from 'src/app/material';
 import { SelectFleetModalComponent } from './components/select-fleet-modal/select-fleet-modal.component';
 import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/circular-avatar.module';
+import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -82,6 +83,7 @@ export const MY_FORMATS = {
     CargoUnitsComponent,
     PricingStepComponent,
     SelectFleetModalComponent,
+    CustomStepperComponent,
   ],
   imports: [
     CommonModule,

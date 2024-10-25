@@ -8,7 +8,7 @@ export const environment = {
   website_url: 'https://bego.ai/',
   URL_BASE: 'https://dev.bego.ai/v1.0/',
   // URL_BASE_ROCKET: 'https://rocket.bego.ai/v1.1/',
-  SOCKET_URI: 'https://slb.bego.ai/'
+  SOCKET_URI: 'https://slb.bego.ai/',
   // URL_BASE: 'http://localhost:3002/v1.0/',
   // SOCKET_URI: 'http://localhost:3008'
 };
