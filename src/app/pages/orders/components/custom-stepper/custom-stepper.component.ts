@@ -1,15 +1,25 @@
-import { Component, AfterContentInit, ContentChildren, QueryList, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  AfterContentInit,
+  ContentChildren,
+  QueryList,
+  TemplateRef,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 
 @Component({
   selector: 'app-custom-stepper',
   templateUrl: './custom-stepper.component.html',
-  styleUrls: ['./custom-stepper.component.scss']
+  styleUrls: ['./custom-stepper.component.scss'],
 })
 export class CustomStepperComponent implements AfterContentInit {
-  @Input() labels: string[] = [];  // Recibe los labels personalizados desde el HTML
+  @Input() labels: string[] = []; // Recibe los labels personalizados desde el HTML
   @Output() stepStatus: any = new EventEmitter<number>();
-  currentStep = 0;
-  steps: { label: string, template: TemplateRef<any> }[] = [];
+  @Input() currentStep = 0;
+  @Input() onlyStep: boolean = false;
+  steps: { label: string; template: TemplateRef<any> }[] = [];
   linePosition: number = 0; // Para almacenar la posición de la línea activa
   lineWidth: number = 0; // Ancho de la línea activa en porcentaje
 

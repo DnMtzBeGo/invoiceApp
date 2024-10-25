@@ -376,7 +376,8 @@ export class MapComponent implements OnInit {
     let pathStyles = 'color:0xFFD200ff|weight:2';
     url += `&path=${pathStyles}`;
 
-    let encode = `|enc:${this.resEncoder}`;
+    // let encode = `|enc:${this.resEncoder}`;
+    let encode = `|enc:${encodeURIComponent(this.resEncoder)}`;
     url += `${encode}`;
 
     let originMarker = `&markers=anchor:32,25|icon:https://begomaps.s3.amazonaws.com/origin.png%7C${this.pickupLat},${this.pickupLng}`;

@@ -36,12 +36,14 @@
 
         <bego-step [completed]="stepsValidate[2]">
           <app-step3
+            [orderId]="orderPreview?.order_id"
             [creationdatepickup]="datepickup"
             [creationTime]="creationTime"
             (step3FormData)="getStep3FormData($event)"
             (validFormStep3)="validStep3($event)"
             [draftData]="draftData"
             [orderWithCP]="isOrderWithCP"
+            [clearMultipleFile]="clearMultipleFile"
             [editCargoWeightNow]="editCargoWeightNow"
             (cargoWeightEdited)="cargoWeightEdited()"
             [hazardousFileAWS]="hazardousFileAWS"
