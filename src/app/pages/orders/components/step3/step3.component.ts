@@ -329,6 +329,8 @@ export class Step3Component implements OnInit {
     hazardousType.updateValueAndValidity();
     hazardousFile.updateValueAndValidity();
     multipleCargoFile.updateValueAndValidity();
+
+    console.log('hazardous type: ', typeof this.hazardousType);
   }
 
   public addEvent(type: string, event: MatDatepickerInputEvent<Date>) {

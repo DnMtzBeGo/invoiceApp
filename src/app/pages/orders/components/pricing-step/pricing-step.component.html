@@ -8,16 +8,21 @@
     </p>
 
     <div class="subtotal">
-      <input formControlName="subtotal" (blur)="updateSubtotalInput($event.target)" nullable="false" currencyMask [options]="{
-        align: 'center',
-        prefix: '$',
-        min: 0,
-        nullable: false,
-        thousands: ',',
-        decimal: '.',
-        precision: 0,
-        allowNegative: false
-      }" />
+      <input
+        formControlName="subtotal"
+        (blur)="updateSubtotalInput($event.target)"
+        nullable="false"
+        currencyMask
+        [options]="{
+          align: 'center',
+          prefix: '$',
+          min: 0,
+          nullable: false,
+          thousands: ',',
+          decimal: '.',
+          precision: 0,
+          allowNegative: false
+        }" />
 
       <bego-button-toggle
         class="pricing-toggle"
@@ -25,7 +30,7 @@
         [noPadding]="true"
         [first]="currencyOptions.mxn"
         [second]="currencyOptions.usd"
-        [enabled]="pricingForm.get('currency')!.value == 'usd' || pricingForm.get('currency')!.value == 'USD'" 
+        [enabled]="pricingForm.get('currency')!.value === 'usd' || pricingForm.get('currency')!.value === 'USD'"
         (statusChanged)="changePricingMethod($event)"></bego-button-toggle>
     </div>
 
@@ -35,10 +40,14 @@
         size="small"
         [first]="payModeOptions.pue"
         [second]="payModeOptions.ppd"
-        [enabled]="pricingForm.get('deferred_payment')!.value == true" 
+        [enabled]="pricingForm.get('deferred_payment')!.value"
         (statusChanged)="changePay($event)"></bego-button-toggle>
-      <p *ngIf="!pricingForm.get('deferred_payment')!.value">{{ 'checkout.insurance-modal.deferred-PUE' | translate }}</p>
-      <p *ngIf="pricingForm.get('deferred_payment')!.value">{{ 'checkout.insurance-modal.deferred-PPD' | translate }}</p>
+      <p *ngIf="!pricingForm.get('deferred_payment')!.value">
+        {{ 'checkout.insurance-modal.deferred-PUE' | translate }}
+      </p>
+      <p *ngIf="pricingForm.get('deferred_payment')!.value">
+        {{ 'checkout.insurance-modal.deferred-PPD' | translate }}
+      </p>
     </div>
   </form>
 </section>

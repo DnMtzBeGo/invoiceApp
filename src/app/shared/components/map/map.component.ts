@@ -1,22 +1,24 @@
 import { Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
+
 import { HeaderService } from 'src/app/pages/home/services/header.service';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
 import { MapDashboardService } from '../../pages/map-dashboard/map-dashboard.service';
 
 declare var google: any;
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'bego-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
-  @Input() hide: boolean = false;
+  @Input() public hide: boolean = false;
 
   private mapStyle: any;
-  @Input() typeMap?: string;
-  @Input() headerTransparent?: boolean;
-  @Output() renderRoute? = new EventEmitter<any>();
+  @Input() public typeMap?: string;
+  @Input() public headerTransparent?: boolean;
+  @Output() public renderRoute? = new EventEmitter<any>();
   @Output() public createGoogleImage: any = new EventEmitter();
 
   private map: any;
@@ -48,8 +50,8 @@ export class MapComponent implements OnInit {
     polylineOptions: {
       strokeColor: '#FFFFFF',
       strokeWeight: 2,
-      visible: false
-    }
+      visible: false,
+    },
   });
   private route = new google.maps.Polyline({
     path: [],
@@ -57,7 +59,7 @@ export class MapComponent implements OnInit {
     strokeColor: '#FFE000',
     strokeWeight: 3,
     editable: false,
-    zIndex: 2
+    zIndex: 2,
   });
 
   private markersArray: any = [];
@@ -66,12 +68,12 @@ export class MapComponent implements OnInit {
     new google.maps.Size(22, 22),
     new google.maps.Point(0, 0),
     new google.maps.Point(11, 11),
-    new google.maps.Size(22, 22)
+    new google.maps.Size(22, 22),
   ];
 
   private icons = {
     start: new google.maps.MarkerImage('../assets/images/maps/marker-yellow.svg', ...this.markerStyle),
-    end: new google.maps.MarkerImage('../assets/images/maps/marker-white.svg', ...this.markerStyle)
+    end: new google.maps.MarkerImage('../assets/images/maps/marker-white.svg', ...this.markerStyle),
   };
 
   private iconLocation = {
@@ -80,8 +82,8 @@ export class MapComponent implements OnInit {
       new google.maps.Size(22, 22),
       new google.maps.Point(0, 0),
       new google.maps.Point(11, 11),
-      new google.maps.Size(22, 22)
-    )
+      new google.maps.Size(22, 22),
+    ),
   };
 
   private zoom = 17;
@@ -103,18 +105,22 @@ export class MapComponent implements OnInit {
       //Begins recursion
       this.routeAnimation(this.anim.index++, this.anim.pathCoords);
       this.anim.id = window.requestAnimationFrame(this.anim.mainFunc);
-    }
+    },
   };
 
-  @ViewChild('map', { read: ElementRef, static: false }) mapRef!: ElementRef;
+  @ViewChild('map', { read: ElementRef, static: false }) private mapRef!: ElementRef;
 
-  subs = new Subscription();
+  private subs = new Subscription();
 
-  center = { origin: null, destination: null, routeCenter: null };
+  private center = { origin: null, destination: null, routeCenter: null };
 
-  constructor(private googlemaps: GoogleMapsService, private elementRef: ElementRef, public mapDashboardService: MapDashboardService) {}
+  constructor(
+    private googlemaps: GoogleMapsService,
+    private elementRef: ElementRef,
+    public mapDashboardService: MapDashboardService,
+  ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (this.typeMap !== 'draft' && this.typeMap !== 'tracking') {
       this.showMap();
     }
@@ -154,31 +160,31 @@ export class MapComponent implements OnInit {
         this.pickupLng = data.pickupLng;
         this.dropoffLat = data.dropoffLat;
         this.dropoffLng = data.dropoffLng;
-      })
+      }),
     );
     this.subs.add(
       this.mapDashboardService.centerRouteMap.subscribe(() =>
-        this.centerMap(this.center.origin, this.center.destination, this.center.routeCenter)
-      )
+        this.centerMap(this.center.origin, this.center.destination, this.center.routeCenter),
+      ),
     );
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // if(changes.hide && this.mapRef){
-    //   setTimeout(() => {
-    //     console.log('Hide element after this moment');
-    //     console.log('elem : ', this.mapRef.nativeElement);
-    //     const displayStatus = this.hide ? 'none' : 'block';
-    //     this.mapRef.nativeElement.style.display = displayStatus;
-    //   },500)
-    // }
-  }
+  // public ngOnChanges(changes: SimpleChanges): void {
+  // if(changes.hide && this.mapRef){
+  //   setTimeout(() => {
+  //     console.log('Hide element after this moment');
+  //     console.log('elem : ', this.mapRef.nativeElement);
+  //     const displayStatus = this.hide ? 'none' : 'block';
+  //     this.mapRef.nativeElement.style.display = displayStatus;
+  //   },500)
+  // }
+  // }
 
-  async showMap() {
+  private async showMap() {
     let perm = await navigator.permissions.query({ name: 'geolocation' });
 
     if (perm.state === 'granted') {
@@ -186,7 +192,7 @@ export class MapComponent implements OnInit {
         (position: GeolocationPosition) => {
           this.lat = position.coords.latitude;
           this.lng = position.coords.longitude;
-        }
+        },
       );
     } else {
       console.log('User not allowing to access location');
@@ -212,7 +218,7 @@ export class MapComponent implements OnInit {
         else this.zoom += 1;
         this.map.setZoom(this.zoom);
       },
-      true
+      true,
     );
 
     if (perm.state === 'granted') {
@@ -220,18 +226,18 @@ export class MapComponent implements OnInit {
     }
   }
 
-  makeMarker(position: any, icon: any, title: string) {
+  private makeMarker(position: any, icon: any, title: string) {
     this.markersArray.push(
       new google.maps.Marker({
         position,
         map: this.map,
         icon,
-        title
-      })
+        title,
+      }),
     );
   }
 
-  createMap(lat: number, lng: number) {
+  private createMap(lat: number, lng: number) {
     this.start = new google.maps.LatLng(lat, lng);
     const mapOptions = {
       mapId: '893ce2d924d01422',
@@ -242,7 +248,7 @@ export class MapComponent implements OnInit {
       disableDefaultUI: true,
       backgroundColor: '#040b12',
       keyboardShortcuts: false,
-      draggable: true
+      draggable: true,
     };
     this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions);
     this.map.addListener('dblclick', () => {
@@ -251,14 +257,14 @@ export class MapComponent implements OnInit {
     });
   }
 
-  resetLocation() {
+  public resetLocation() {
     let bounds = new google.maps.LatLngBounds();
     bounds.extend(this.startMarker.position);
     bounds.extend(this.endMarker.position);
     this.map.fitBounds(bounds);
   }
 
-  centerMap(origin: any, destination: any, routeCenter: any) {
+  private centerMap(origin: any, destination: any, routeCenter: any) {
     this.center = { origin, destination, routeCenter };
     let bounds = new google.maps.LatLngBounds();
     bounds.extend(origin);
@@ -268,20 +274,31 @@ export class MapComponent implements OnInit {
     this.map.fitBounds(bounds, { bottom: 50, top: 0, left: 0, right: 0 });
   }
 
-  displayRoute(startMarker: any, endMarker: any) {
+  private displayRoute(startMarker: any, endMarker: any) {
     if (startMarker.position && endMarker.position) {
       this.directionsRenderer.setMap(null);
-      this.directionsRenderer.setOptions({ draggable: true, zoomControl: true, scrollwheel: true, disableDoubleClickZoom: false });
+      this.directionsRenderer.setOptions({
+        draggable: true,
+        zoomControl: true,
+        scrollwheel: true,
+        disableDoubleClickZoom: false,
+      });
 
       this.route.setMap(null);
       this.route.setPath([]);
-      this.createRoute(this.map, startMarker.position, endMarker.position, this.directionsRenderer, this.directionsService);
+      this.createRoute(
+        this.map,
+        startMarker.position,
+        endMarker.position,
+        this.directionsRenderer,
+        this.directionsService,
+      );
     } else {
       console.log('you are missing fields');
     }
   }
 
-  createRoute(map: any, startPoint: any, endPoint: any, directionsRenderer: any, directionsService: any) {
+  private createRoute(map: any, startPoint: any, endPoint: any, directionsRenderer: any, directionsService: any) {
     this.clearOverlays();
 
     directionsRenderer.setMap(map);
@@ -289,7 +306,7 @@ export class MapComponent implements OnInit {
     const request = {
       origin: startPoint,
       destination: endPoint,
-      travelMode: 'DRIVING'
+      travelMode: 'DRIVING',
     };
 
     directionsService.route(request, (result: any, status: any) => {
@@ -302,7 +319,7 @@ export class MapComponent implements OnInit {
         this.drawRoute(map, result.routes[0].overview_path, leg.start_location);
         (this.routeCenter = new google.maps.LatLng(
           result.routes[0].overview_path[Math.floor(result.routes[0].overview_path.length / 2)].lat(),
-          result.routes[0].overview_path[Math.floor(result.routes[0].overview_path.length / 2)].lng()
+          result.routes[0].overview_path[Math.floor(result.routes[0].overview_path.length / 2)].lng(),
         )),
           setTimeout(() => {
             this.centerMap(leg.start_location, leg.end_location, this.routeCenter);
@@ -311,7 +328,7 @@ export class MapComponent implements OnInit {
     });
   }
 
-  drawRoute(map: any, pathCoords: any, startLocation: any) {
+  private drawRoute(map: any, pathCoords: any, startLocation: any) {
     let i: number = 0;
     this.makeMarker(startLocation, this.icons.end, 'white');
     this.route.setMap(map);
@@ -323,14 +340,14 @@ export class MapComponent implements OnInit {
     this.anim.mainFunc(pathCoords);
   }
 
-  routeAnimation(index: any, pathCoords: any) {
+  private routeAnimation(index: any, pathCoords: any) {
     if (index < pathCoords.length) {
       this.route.getPath().push(pathCoords[index]);
       this.markersArray[1].setPosition(pathCoords[index]);
     }
   }
 
-  showRoute(data: any) {
+  public showRoute(data: any) {
     this.origin = data;
     this.startMarker.position = new google.maps.LatLng(data.pickupLat, data.pickupLng);
     this.endMarker.position = new google.maps.LatLng(data.dropoffLat, data.dropoffLng);
@@ -340,7 +357,7 @@ export class MapComponent implements OnInit {
     this.displayRoute(this.startMarker, this.endMarker);
   }
 
-  clearOverlays() {
+  private clearOverlays() {
     if (this.markersArray && this.markersArray.length > 0) {
       for (var i = 0; i < this.markersArray.length; i++) {
         this.markersArray[i].setMap(null);
@@ -354,7 +371,7 @@ export class MapComponent implements OnInit {
     }
   }
 
-  fadeOut() {
+  public fadeOut() {
     this.mapFadedOut = true;
     setTimeout(() => {
       this.mapFadedOut = false;

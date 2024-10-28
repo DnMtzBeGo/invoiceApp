@@ -58,13 +58,20 @@
         </bego-step>
 
         <bego-step [completed]="stepsValidate[4]">
-          <app-step4 [draftData]="draftData" [orderData]="orderData" (step4FormData)="getStep4FormData($event)"
+          <app-step4
+            [draftData]="draftData"
+            [orderData]="orderData"
+            (step4FormData)="getStep4FormData($event)"
             (validFormStep4)="validStep4($event)"></app-step4>
         </bego-step>
       </bego-stepper>
 
       <ng-template #isOCL>
-        <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions" (stepChange)="updateStatus()">
+        <bego-stepper
+          [withControls]="false"
+          [allowKeysMovement]="false"
+          [config]="stepperOptions"
+          (stepChange)="updateStatus()">
           <bego-step [completed]="stepsValidateOCL[0]">
             <app-ocl-step1
               [datePickup]="datepickup"
@@ -74,7 +81,9 @@
           </bego-step>
 
           <bego-step [completed]="stepsValidateOCL[1]">
-            <app-ocl-step2 (statusChange)="validStepOCL(1, $event)" (dataChange)="updateStep2OCL($event)"></app-ocl-step2>
+            <app-ocl-step2
+              (statusChange)="validStepOCL(1, $event)"
+              (dataChange)="updateStep2OCL($event)"></app-ocl-step2>
           </bego-step>
         </bego-stepper>
       </ng-template>

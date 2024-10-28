@@ -9,11 +9,12 @@
       {{ step.label }}
     </div>
     <!-- Línea activa que se mueve horizontalmente -->
-    <div class="active-line"
-         [ngStyle]="{
-           'left': linePosition + '%',
-           'width': lineWidth + '%'
-         }"></div>
+    <div
+      class="active-line"
+      [ngStyle]="{
+        left: linePosition + '%',
+        width: lineWidth + '%'
+      }"></div>
   </div>
 
   <!-- Mostrar dinámicamente el contenido de los pasos -->
