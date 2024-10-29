@@ -128,7 +128,7 @@ export class HomeComponent implements OnInit {
   public restoreDraft() {
     const data = this.location.getState() as any;
 
-    if (!data.draft) {
+    if (!data?.draft) {
       this.updateMap();
       return;
     }

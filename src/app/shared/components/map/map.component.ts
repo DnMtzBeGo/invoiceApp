@@ -185,9 +185,9 @@ export class MapComponent implements OnInit {
   // }
 
   private async showMap() {
-    let perm = await navigator.permissions.query({ name: 'geolocation' });
+    let perm = await navigator.permissions?.query({ name: 'geolocation' });
 
-    if (perm.state === 'granted') {
+    if (perm?.state === 'granted') {
       await new Promise((resolve, error) => navigator.geolocation.getCurrentPosition(resolve, error)).then(
         (position: GeolocationPosition) => {
           this.lat = position.coords.latitude;
@@ -221,7 +221,7 @@ export class MapComponent implements OnInit {
       true,
     );
 
-    if (perm.state === 'granted') {
+    if (perm?.state === 'granted') {
       this.makeMarker(this.start, this.iconLocation.start, 'yellow');
     }
   }
