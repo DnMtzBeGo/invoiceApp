@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SelectFleetModalComponent } from './select-fleet-modal.component';
 import { MAT_LEGACY_DIALOG_DATA, MatLegacyDialogRef } from '@angular/material/legacy-dialog';
 import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { SelectFleetModalComponent } from './select-fleet-modal.component';
 
 describe('SelectFleetModalComponent', () => {
   let component: SelectFleetModalComponent;
