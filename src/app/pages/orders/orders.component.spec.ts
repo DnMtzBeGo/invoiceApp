@@ -1,4 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { HttpClientModule } from '@angular/common/http';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { OrdersComponent } from './orders.component';
 
@@ -8,9 +13,10 @@ describe('OrdersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OrdersComponent ]
-    })
-    .compileComponents();
+      declarations: [OrdersComponent],
+      imports: [TranslateModule.forRoot(), HttpClientModule, MatLegacyDialogModule, MatSnackBarModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {

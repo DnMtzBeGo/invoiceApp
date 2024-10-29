@@ -19,7 +19,7 @@ export class CustomStepperComponent implements AfterContentInit {
 
   @Input() public labels: string[] = []; // Recibe los labels personalizados desde el HTML
   @Input() public currentStep = 0;
-  @Input() public onlyStep: boolean = false;
+  @Input() public blockFirstStep: boolean = false;
 
   public steps: { label: string; template: TemplateRef<any> }[] = [];
   public linePosition: number = 0; // Para almacenar la posición de la línea activa

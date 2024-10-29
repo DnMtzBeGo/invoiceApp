@@ -1,63 +1,64 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Step } from '../../../../shared/components/stepper/interfaces/Step';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
+import { BegoStepper, StepperOptions } from '@begomx/ui-components';
+
+import { Step } from '../../../../shared/components/stepper/interfaces/Step';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { emitterData } from './interfaces/emitterData';
 import { receiverData } from './interfaces/receiverData';
 import { environment } from 'src/environments/environment';
-import { BegoStepper, StepperOptions } from '@begomx/ui-components';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.scss']
+  styleUrls: ['./checkout.component.scss'],
 })
-export class CheckoutComponent implements OnInit {
-  checkoutSteps: Step[] = [];
+export class CheckoutComponent implements OnInit, AfterViewInit {
+  public checkoutSteps: Step[] = [];
 
-  selectedCard: string = 'pickup';
-  validateRoute: boolean = true;
-  summaryData: any;
-  customsCruce: any;
+  public selectedCard: string = 'pickup';
+  private validateRoute: boolean = true;
+  public summaryData: any;
+  public customsCruce: any;
 
-  invoiceData: any;
+  public invoiceData: any;
 
-  emitterData: emitterData = {
+  public emitterData: emitterData = {
     address: '',
     place_id: '',
     tax_regime: '',
     archivo_cer: null,
     archivo_key: null,
-    archivo_key_pswd: ''
+    archivo_key_pswd: '',
   };
 
-  receiverData: receiverData = {
+  public receiverData: receiverData = {
     address: '',
     place_id: '',
     company: '',
     rfc: '',
     cfdi: '',
-    taxRegime: ''
+    taxRegime: '',
   };
 
-  checkoutProgress: number = 0;
-  weights: any;
-  orderId: string = '';
+  public checkoutProgress: number = 0;
+  public weights: any;
+  private orderId: string = '';
 
-  @ViewChild(BegoStepper) stepperRef: BegoStepper;
+  @ViewChild('stepper') public stepperRef: BegoStepper;
 
-  stepperOptions: StepperOptions = {
+  public stepperOptions: StepperOptions = {
     allowTouchMove: false,
-    autoHeight: true
+    autoHeight: true,
   };
 
-  get currentStepIndex(): number {
-    return this.stepperRef?.controller.currentStep ?? 0;
+  public get currentStepIndex(): number {
+    return this.stepperRef?.controller?.currentStep ?? 0;
   }
 
-  set currentStepIndex(step: number) {
+  public set currentStepIndex(step: number) {
     this.stepperRef.controller.setStep(step);
   }
 
@@ -65,7 +66,7 @@ export class CheckoutComponent implements OnInit {
     public translateService: TranslateService,
     private webService: AuthService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
   ) {
     this.router.events.subscribe((res) => {
       if (res instanceof NavigationEnd && res.url === '/checkout') {
@@ -91,9 +92,9 @@ export class CheckoutComponent implements OnInit {
                 action: async () => {
                   this.alertService.close();
                   this.router.navigate(['/home']);
-                }
-              }
-            ]
+                },
+              },
+            ],
           });
         }
       }
@@ -102,13 +103,13 @@ export class CheckoutComponent implements OnInit {
       {
         text: translateService.instant('checkout.invoice'),
         nextBtnTxt: translateService.instant('checkout.stepper-btns.continue-to-invoice'),
-        step: 'invoice'
+        step: 'invoice',
       },
       {
         text: translateService.instant('checkout.summary'),
         nextBtnTxt: translateService.instant('checkout.stepper-btns.summary'),
-        step: 'summary'
-      }
+        step: 'summary',
+      },
     ];
     this.translateService.onLangChange.subscribe(() => {
       this.checkoutSteps = this.checkoutSteps.map((e) => {
@@ -118,16 +119,16 @@ export class CheckoutComponent implements OnInit {
             e.step === 'summary'
               ? translateService.instant(`checkout.stepper-btns.summary`)
               : translateService.instant(`checkout.stepper-btns.continue-to-${e.step}`),
-          step: e.step
+          step: e.step,
         };
       });
       this.calculateProgress();
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  public async ngOnInit(): Promise<void> {
     const jsonRequest = {
-      order_id: this.orderId
+      order_id: this.orderId,
       // order_id: '618416317db4b43949779efb' // with imgs
       // order_id: '61847409a0a3d50d3b968592' //hazardous
       // order_id: '6184240d7db4b43949779f15'
@@ -138,7 +139,7 @@ export class CheckoutComponent implements OnInit {
         this.summaryData = res.result;
         console.log('summary data: ', this.summaryData);
       },
-      (err: any) => {}
+      (err: any) => {},
     );
 
     (await this.webService.apiRest('', 'carriers/select_attributes')).subscribe(
@@ -148,7 +149,7 @@ export class CheckoutComponent implements OnInit {
       },
       (err: any) => {
         console.error('An error ocurred', err);
-      }
+      },
     );
 
     (await this.webService.apiRest('', 'profile/get_emitter_files')).subscribe(
@@ -157,9 +158,9 @@ export class CheckoutComponent implements OnInit {
         this.checkoutSteps.unshift({
           text: this.translateService.instant('checkout.emitter'),
           nextBtnTxt: this.translateService.instant('checkout.stepper-btns.continue-to-emitter'),
-          step: 'emitter'
+          step: 'emitter',
         });
-      }
+      },
     );
 
     (await this.webService.apiRest('', 'orders/get_customs_cruce')).subscribe(
@@ -170,11 +171,15 @@ export class CheckoutComponent implements OnInit {
 
       (error: any) => {
         console.error('Error on customs cruce : ', error.customsCruce);
-      }
+      },
     );
   }
 
-  calculateProgress(): number {
+  public ngAfterViewInit() {
+    console.log('CHECKOUT STEPPER: ', this.stepperRef);
+  }
+
+  public calculateProgress(): number {
     console.log('Current index:', this.currentStepIndex, 'total elements:¨', this.checkoutSteps.length);
     this.checkoutProgress = (this.currentStepIndex / (this.checkoutSteps.length - 1)) * 100;
     console.log('calculateProgress', this.checkoutProgress);
@@ -192,22 +197,22 @@ export class CheckoutComponent implements OnInit {
     return this.checkoutProgress;
   }
 
-  changeSelectedCard(newValue: string) {
+  public changeSelectedCard(newValue: string) {
     this.selectedCard = newValue;
     console.log('Selected card is ', this.selectedCard);
   }
 
-  async updatereceiverData(data: any) {
+  public async updatereceiverData(data: any) {
     this.receiverData = data;
   }
 
-  updateEmitterData(data: emitterData) {
+  public updateEmitterData(data: emitterData) {
     this.emitterData = data;
   }
   /**
    * Moves checkout stepper to the next step
    */
-  nextStep(): void {
+  private nextStep(): void {
     if (this.currentStepIndex < this.checkoutSteps.length - 1) {
       this.currentStepIndex++;
       this.calculateProgress();
@@ -216,7 +221,7 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  validate() {
+  public validate() {
     if (this.currentStepIndex === 0 && this.checkoutSteps.length === 3) {
       this.validateEmitter();
     } else {
@@ -224,17 +229,17 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  setDefaultMapImg(): void {
+  public setDefaultMapImg(): void {
     if (this.summaryData) this.summaryData.map.thumbnail_url = '../../../../../assets/images/checkout/map.png';
   }
 
-  async updateOrder() {
+  public async updateOrder() {
     if (!this.validateRoute) {
       this.changeStatusOrder(-3);
     } else {
       let datos = {
         orderId: this.orderId,
-        propertyToUpdate: 'invoice'
+        propertyToUpdate: 'invoice',
         // "newValue": this.userValidateData
       };
 
@@ -250,10 +255,10 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  async changeStatusOrder(status: number) {
+  public async changeStatusOrder(status: number) {
     let datos = {
       order_id: this.orderId,
-      order_status: status
+      order_status: status,
     };
 
     let requestJson = JSON.stringify(datos);
@@ -263,7 +268,7 @@ export class CheckoutComponent implements OnInit {
         if (!this.validateRoute) {
           this.routeInvalidAlert(
             this.translateService.instant('checkout.title-valid-route'),
-            this.translateService.instant('checkout.txt-valid-route')
+            this.translateService.instant('checkout.txt-valid-route'),
           );
         } else {
           this.orderPlacedModal();
@@ -273,14 +278,14 @@ export class CheckoutComponent implements OnInit {
         if (res.status == 406) {
           this.verificationAlert(
             this.translateService.instant('checkout.alerts.title-user-verified'),
-            this.translateService.instant('checkout.alerts.txt-user-verified')
+            this.translateService.instant('checkout.alerts.txt-user-verified'),
           );
         }
-      }
+      },
     );
   }
 
-  async orderPlacedModal() {
+  private async orderPlacedModal() {
     this.alertService.create({
       title: this.translateService.instant('checkout.alerts.title-order-placed'),
       body: this.translateService.instant('checkout.alerts.txt-order-placed'),
@@ -291,13 +296,13 @@ export class CheckoutComponent implements OnInit {
           action: async () => {
             this.alertService.close();
             this.router.navigate(['history']);
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
   }
 
-  async verificationAlert(title: string, message: string) {
+  public async verificationAlert(title: string, message: string) {
     this.alertService.create({
       title: title,
       body: message,
@@ -308,13 +313,13 @@ export class CheckoutComponent implements OnInit {
           action: async () => {
             this.alertService.close();
             this.router.navigate(['/home']);
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
   }
 
-  async routeInvalidAlert(title: string, message: string) {
+  public async routeInvalidAlert(title: string, message: string) {
     this.alertService.create({
       title: title,
       body: message,
@@ -325,13 +330,13 @@ export class CheckoutComponent implements OnInit {
           action: async () => {
             this.alertService.close();
             this.router.navigate(['/home']);
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
   }
 
-  async validateEmitter() {
+  private async validateEmitter() {
     if (this.emitterData.tax_regime) {
       let attributes = {};
       attributes['tax_regime'] = this.emitterData.tax_regime;
@@ -340,7 +345,7 @@ export class CheckoutComponent implements OnInit {
 
       let request = {
         carrier_id: this.summaryData.user_id,
-        attributes
+        attributes,
       };
 
       await this.webService.apiRest(JSON.stringify(request), 'carriers/insert_attributes');
@@ -356,9 +361,9 @@ export class CheckoutComponent implements OnInit {
               color: '#FFE000',
               action: async () => {
                 this.alertService.close();
-              }
-            }
-          ]
+              },
+            },
+          ],
         });
       } else {
         let form = new FormData();
@@ -376,14 +381,16 @@ export class CheckoutComponent implements OnInit {
                   action: async () => {
                     this.alertService.close();
                     this.nextStep();
-                  }
-                }
-              ]
+                  },
+                },
+              ],
             });
           },
           (err) => {
             let message: string;
-            Array.isArray(err.error.error) ? (message = err.error.error[0].error.split(',').join('\n')) : (message = err.error.error.error);
+            Array.isArray(err.error.error)
+              ? (message = err.error.error[0].error.split(',').join('\n'))
+              : (message = err.error.error.error);
             this.alertService.create({
               title: this.translateService.instant('checkout.alerts.emitter-validated-fail'),
               body: message,
@@ -393,7 +400,7 @@ export class CheckoutComponent implements OnInit {
                   color: '#FFE000',
                   action: async () => {
                     this.alertService.close();
-                  }
+                  },
                 },
                 {
                   text: this.translateService.instant('checkout.btn-continue'),
@@ -401,11 +408,11 @@ export class CheckoutComponent implements OnInit {
                   action: async () => {
                     this.alertService.close();
                     this.nextStep();
-                  }
-                }
-              ]
+                  },
+                },
+              ],
             });
-          }
+          },
         );
       }
     } else {
@@ -413,13 +420,17 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  validateReceiver() {
+  private validateReceiver() {
     let faltates = [];
-    this.receiverData.address ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-address') + '\n');
+    this.receiverData.address
+      ? null
+      : faltates.push(this.translateService.instant('checkout.alerts.receiver-address') + '\n');
     this.receiverData.company ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-company'));
     this.receiverData.cfdi ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-cfdi'));
     this.receiverData.rfc ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-rfc'));
-    this.receiverData.taxRegime ? null : faltates.push(this.translateService.instant('checkout.alerts.receiver-tax_regime'));
+    this.receiverData.taxRegime
+      ? null
+      : faltates.push(this.translateService.instant('checkout.alerts.receiver-tax_regime'));
 
     if (faltates.length > 0) {
       let errores = faltates.join('<br>');
@@ -432,7 +443,7 @@ export class CheckoutComponent implements OnInit {
             color: '#FFE000',
             action: async () => {
               this.alertService.close();
-            }
+            },
           },
           {
             text: this.translateService.instant('checkout.btn-continue'),
@@ -440,29 +451,29 @@ export class CheckoutComponent implements OnInit {
             action: async () => {
               this.alertService.close();
               this.updateInvoiceData();
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
     } else {
       this.updateInvoiceData();
     }
   }
 
-  async updateInvoiceData() {
+  private async updateInvoiceData() {
     let receiver = {
       address: {
         address: this.receiverData.address,
-        place_id: this.receiverData.place_id
+        place_id: this.receiverData.place_id,
       },
       company: this.receiverData.company,
       rfc: this.receiverData.rfc,
       cfdi: this.receiverData.cfdi,
-      tax_regime: this.receiverData.taxRegime
+      tax_regime: this.receiverData.taxRegime,
     };
     let request = {
       order_id: this.orderId,
-      receiver
+      receiver,
     };
 
     (await this.webService.apiRest(JSON.stringify(request), 'orders/update_invoice')).subscribe(
@@ -479,16 +490,16 @@ export class CheckoutComponent implements OnInit {
               color: '#FFE000',
               action: async () => {
                 this.alertService.close();
-              }
-            }
-          ]
+              },
+            },
+          ],
         });
         console.log(err);
-      }
+      },
     );
   }
 
-  async getInvoicePreview() {
+  public async getInvoicePreview() {
     const token = await localStorage.getItem('token');
     window.open(`${environment.URL_BASE}/invoice/get_preview_consignment/${this.orderId}/?token=${token}`, '_blank');
   }

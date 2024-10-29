@@ -170,11 +170,11 @@ export class OrdersComponent implements OnInit {
   public lang: string = 'en';
   public clearMultipleFile: boolean = false;
 
-  @ViewChild(BegoStepper) private stepperRef: BegoStepper;
-  @ViewChild(BegoMarks) private marksRef: BegoMarks;
+  @ViewChild('stepper') private stepperRef: BegoStepper;
+  @ViewChild('marks') private marksRef: BegoMarks;
 
   public get currentStepIndex(): number {
-    return this.stepperRef?.controller.currentStep ?? 0;
+    return this.stepperRef?.controller?.currentStep ?? 0;
   }
 
   public set currentStepIndex(step: number) {

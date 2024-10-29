@@ -2,7 +2,7 @@
 <div class="steps">
   <form [formGroup]="step3Form">
     <app-custom-stepper
-      [onlyStep]="!orderWithCP"
+      [blockFirstStep]="!orderWithCP"
       [labels]="['Mercancías', 'Múltiples mercancías']"
       (stepStatus)="stepStatus($event)"
       [currentStep]="stepIndex">

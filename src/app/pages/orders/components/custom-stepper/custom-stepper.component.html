@@ -1,5 +1,5 @@
 <div class="stepper-container">
-  <div class="steps" *ngIf="!onlyStep">
+  <div class="steps" *ngIf="!blockFirstStep">
     <!-- Generar dinámicamente las etiquetas de los pasos personalizados -->
     <div
       *ngFor="let step of steps; let i = index"
