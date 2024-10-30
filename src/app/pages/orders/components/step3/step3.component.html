@@ -1,7 +1,8 @@
+<span> Hazardous value: {{ hazardousType }}</span>
 <div class="steps">
   <form [formGroup]="step3Form">
     <app-custom-stepper
-      [onlyStep]="!orderWithCP"
+      [blockFirstStep]="!orderWithCP"
       [labels]="['Mercancías', 'Múltiples mercancías']"
       (stepStatus)="stepStatus($event)"
       [currentStep]="stepIndex">
@@ -59,7 +60,7 @@
             </bego-select>
           </div>
 
-          <div class="field selectableHazard" *ngIf="cargoType == 'hazardous'">
+          <div class="field selectableHazard" *ngIf="cargoType === 'hazardous'">
             <div class="selectableHazard-details">
               <bego-search-select
                 [debounce]="100"
@@ -91,7 +92,7 @@
               [maxSize]="10000000"
               [lang]="fileLang"
               [fileInfo]="fileInfo"
-              [disabled]="hazardousType == 'select-catergory'"
+              [disabled]="hazardousType === 'select-catergory'"
               (fileSelected)="selectHazardousFile($event)"></bego-drag-drop>
           </div>
 

@@ -1,22 +1,16 @@
 <div>
   <bego-ticket>
-
     <div header>
-      <h1 class="order-number">
-        {{ 'checkout.txt-order' | translate }} #{{ orderData?.order_number }}
-      </h1>
+      <h1 class="order-number">{{ 'checkout.txt-order' | translate }} #{{ orderData?.order_number }}</h1>
     </div>
 
     <div body>
-      
-
       <form [formGroup]="summaryForm">
-
         <div class="ticket-row">
           <div class="title">
             {{ 'orders.title-personal-info' | translate }}
           </div>
-        </div>    
+        </div>
 
         <!-- full name -->
         <div class="ticket-row">
@@ -24,14 +18,11 @@
             {{ 'checkout.placeholder-fullname' | translate }}
           </div>
           <div>
-            <mat-form-field class="inner-shadow" >
-              <input
-                [disabled]="formIsDisabled"
-                matInput  
-                [value]="orderData?.[selectedCard].contact_info.name">
+            <mat-form-field class="inner-shadow">
+              <input [disabled]="formIsDisabled" matInput [value]="orderData?.[selectedCard]?.contact_info.name" />
             </mat-form-field>
           </div>
-        </div> 
+        </div>
 
         <!-- phone number -->
         <div class="ticket-row">
@@ -42,13 +33,13 @@
             <bego-phone-input
               design="inner-shadow"
               [arrow]="false"
-              [(phoneFlag)]="orderData?.[selectedCard].contact_info.country_code"
-              [(phoneCode)]="orderData?.[selectedCard].contact_info.dialCode"
-              [(phoneNumber)]="orderData?.[selectedCard].contact_info.barePhone"
+              [(phoneFlag)]="orderData?.[selectedCard]?.contact_info.country_code"
+              [(phoneCode)]="orderData?.[selectedCard]?.contact_info.dialCode"
+              [(phoneNumber)]="orderData?.[selectedCard]?.contact_info.barePhone"
               [disabled]="formIsDisabled">
             </bego-phone-input>
           </div>
-        </div> 
+        </div>
 
         <!-- email -->
         <div class="ticket-row">
@@ -56,14 +47,11 @@
             {{ 'checkout.placeholder-email' | translate }}
           </div>
           <div>
-            <mat-form-field class="inner-shadow" >
-              <input 
-                [disabled]="formIsDisabled"
-                matInput  
-                [value]="orderData?.[selectedCard].contact_info.email">
+            <mat-form-field class="inner-shadow">
+              <input [disabled]="formIsDisabled" matInput [value]="orderData?.[selectedCard]?.contact_info.email" />
             </mat-form-field>
           </div>
-        </div> 
+        </div>
 
         <!-- reference -->
         <div class="ticket-row" *ngIf="selectedCard === 'pickup'">
@@ -71,86 +59,90 @@
             {{ 'checkout.txt-reference' | translate }}
           </div>
           <div>
-            <mat-form-field class="inner-shadow" >
-              <input 
-                [disabled]="formIsDisabled"
-                matInput
-                [value]="orderData?.reference_number">
+            <mat-form-field class="inner-shadow">
+              <input [disabled]="formIsDisabled" matInput [value]="orderData?.reference_number" />
             </mat-form-field>
           </div>
-        </div> 
+        </div>
 
-        <hr>
-
+        <hr />
 
         <div class="ticket-row">
           <div class="title">
             {{ 'orders.title-cargo-info' | translate }}
           </div>
         </div>
-        
-        <div *ngIf=" selectedCard == 'pickup' ">
-        <!-- units -->
-        <div class="ticket-row">
-          <div>
-            {{ 'checkout.units' | translate }}
-          </div>
-          <div>
-            <mat-form-field class="inner-shadow" >
-              <input 
-                [disabled]="formIsDisabled"
-                matInput  
-                value="({{orderData?.cargo.required_units}}) {{orderData?.cargo['53_48']}} {{ 'checkout.units' | translate }} = {{orderData?.pricing.subtotal | number : '1.2'}} MXN">
-            </mat-form-field>
-          </div>
-        </div> 
 
-        <!-- weight -->
-        <div class="ticket-row">
-          <div>
-            {{ 'checkout.weight' | translate }}
+        <div *ngIf="selectedCard === 'pickup'">
+          <!-- units -->
+          <div class="ticket-row">
+            <div>
+              {{ 'checkout.units' | translate }}
+            </div>
+            <div>
+              <mat-form-field class="inner-shadow">
+                <input
+                  [disabled]="formIsDisabled"
+                  matInput
+                  value="({{ orderData?.cargo?.required_units }}) {{ orderData?.cargo?.['53_48'] }} {{
+                    'checkout.units' | translate
+                  }} = {{ orderData?.pricing?.subtotal | number: '1.2' }} MXN" />
+              </mat-form-field>
+            </div>
           </div>
-          <div>
-              <div  class="weight-details">
-                <div  *ngFor="let weight of orderData?.cargo.weigth; index as i ">
-                  <p>{{ 'checkout.unit' | translate }} {{i+1}} - {{weight}} {{ 'checkout.tons' | translate }}</p>
+
+          <!-- weight -->
+          <div class="ticket-row">
+            <div>
+              {{ 'checkout.weight' | translate }}
+            </div>
+            <div>
+              <div class="weight-details">
+                <div *ngFor="let weight of orderData?.cargo?.weigth; index as i">
+                  <p>{{ 'checkout.unit' | translate }} {{ i + 1 }} - {{ weight }} {{ 'checkout.tons' | translate }}</p>
                 </div>
-
               </div>
+            </div>
           </div>
-        </div> 
 
-        <!-- cargo type -->
-        <div class="ticket-row">
-          <div>
-            {{ 'checkout.cargo-type' | translate }}
+          <!-- cargo type -->
+          <div class="ticket-row">
+            <div>
+              {{ 'checkout.cargo-type' | translate }}
+            </div>
+            <div>
+              <mat-form-field class="inner-shadow">
+                <input
+                  [disabled]="formIsDisabled"
+                  matInput
+                  [value]="
+                    orderData?.cargo?.type === 'general'
+                      ? (orderData?.cargo?.type | titlecase)
+                      : orderData?.cargo?.type === 'hazardous'
+                      ? ('checkout.hazardous' | translate | titlecase) +
+                        ' ' +
+                        (orderData?.cargo.hazardous_type | titlecase)
+                      : ''
+                  " />
+              </mat-form-field>
+            </div>
           </div>
-          <div>
-            <mat-form-field class="inner-shadow" >
-              <input 
-                [disabled]="formIsDisabled"
-                matInput  
-                [value]="(orderData?.cargo.type === 'general' ? (orderData?.cargo.type | titlecase) : orderData?.cargo.type == 'hazardous' ? ('checkout.hazardous' | translate | titlecase ) +' '+ (orderData?.cargo.hazardous_type | titlecase) : ''  ) ">
-            </mat-form-field>
-          </div>
-        </div> 
-
         </div>
 
-         <!-- merchandise type -->
+        <!-- merchandise type -->
         <div class="ticket-row" *ngIf="selectedCard === 'pickup'">
           <div>
             {{ 'checkout.merchandise_type' | translate }}
           </div>
           <div>
-            <mat-form-field class="inner-shadow" >
+            <mat-form-field class="inner-shadow">
               <input
                 [disabled]="formIsDisabled"
-                matInput  
-                [value]="orderData?.cargo.cargo_goods ? orderData?.cargo.cargo_goods : ''">
+                matInput
+                [value]="orderData?.cargo?.cargo_goods ? orderData?.cargo.cargo_goods : ''" />
             </mat-form-field>
           </div>
-        </div> 
+        </div>
 
         <!-- date -->
         <div class="ticket-row">
@@ -158,14 +150,14 @@
             {{ 'checkout.date' | translate }}
           </div>
           <div>
-            <mat-form-field class="inner-shadow" >
+            <mat-form-field class="inner-shadow">
               <input
                 [disabled]="formIsDisabled"
-                matInput  
-                [value]="orderData?.[selectedCard]?.startDate | date:'MMMM dd'">
+                matInput
+                [value]="orderData?.[selectedCard]?.startDate | date:'MMMM dd'" />
             </mat-form-field>
           </div>
-        </div> 
+        </div>
 
         <!-- time -->
         <div class="ticket-row">
@@ -173,27 +165,20 @@
             {{ 'checkout.time' | translate }}
           </div>
           <div>
-            <mat-form-field class="inner-shadow" >
+            <mat-form-field class="inner-shadow">
               <input
                 [disabled]="formIsDisabled"
-                matInput 
-                [value]="orderData?.[selectedCard].startDate | date:'hh:mm'" >
+                matInput
+                [value]="orderData?.[selectedCard]?.startDate | date:'hh:mm'" />
             </mat-form-field>
           </div>
-        </div> 
+        </div>
 
         <!-- cargo description & order comments -->
-        <textarea
-          [disabled]="formIsDisabled" 
-          class="comments" >{{ selectedCard == 'pickup' ? orderData?.cargo.description : orderData?.dropoff.extra_notes}}
+        <textarea [disabled]="formIsDisabled" class="comments"
+          >{{ selectedCard === 'pickup' ? orderData?.cargo?.description : orderData?.dropoff.extra_notes }}
         </textarea>
-
-
-
-
       </form>
     </div>
-
   </bego-ticket>
-
 </div>

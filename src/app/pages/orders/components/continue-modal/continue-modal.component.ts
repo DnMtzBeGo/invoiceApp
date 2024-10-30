@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-continue-modal',
   templateUrl: './continue-modal.component.html',
-  styleUrls: ['./continue-modal.component.scss']
+  styleUrls: ['./continue-modal.component.scss'],
 })
 export class ContinueModalComponent implements OnInit {
   public title;
@@ -17,10 +17,10 @@ export class ContinueModalComponent implements OnInit {
     this.translateList = translateService.instant('orders.continue-modal-list');
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.title = this.data.title;
-    console.log('CONTINUE:', this.data.list);
-    if (this.data.list.length > 0) {
+
+    if (this.data.list?.length > 0) {
       for (const field of this.data.list) {
         this.items.push(this.translateList[field]);
       }

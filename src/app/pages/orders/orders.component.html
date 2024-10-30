@@ -6,9 +6,10 @@
         <h2 class="order-number">{{ 'orders.title-order_number' | translate }}: #{{ orderPreview?.order_number }}</h2>
       </div>
 
-      <bego-marks class="order-stepper-wrapper" type="number"></bego-marks>
+      <bego-marks #marks class="order-stepper-wrapper" type="number"></bego-marks>
 
       <bego-stepper
+        #stepper
         *ngIf="orderType === 'FTL'; else isOCL"
         [withControls]="false"
         [allowKeysMovement]="false"
@@ -58,13 +59,21 @@
         </bego-step>
 
         <bego-step [completed]="stepsValidate[4]">
-          <app-step4 [draftData]="draftData" [orderData]="orderData" (step4FormData)="getStep4FormData($event)"
+          <app-step4
+            [draftData]="draftData"
+            [orderData]="orderData"
+            (step4FormData)="getStep4FormData($event)"
             (validFormStep4)="validStep4($event)"></app-step4>
         </bego-step>
       </bego-stepper>
 
       <ng-template #isOCL>
-        <bego-stepper [withControls]="false" [allowKeysMovement]="false" [config]="stepperOptions" (stepChange)="updateStatus()">
+        <bego-stepper
+          #stepper
+          [withControls]="false"
+          [allowKeysMovement]="false"
+          [config]="stepperOptions"
+          (stepChange)="updateStatus()">
           <bego-step [completed]="stepsValidateOCL[0]">
             <app-ocl-step1
               [datePickup]="datepickup"
@@ -74,7 +83,9 @@
           </bego-step>
 
           <bego-step [completed]="stepsValidateOCL[1]">
-            <app-ocl-step2 (statusChange)="validStepOCL(1, $event)" (dataChange)="updateStep2OCL($event)"></app-ocl-step2>
+            <app-ocl-step2
+              (statusChange)="validStepOCL(1, $event)"
+              (dataChange)="updateStep2OCL($event)"></app-ocl-step2>
           </bego-step>
         </bego-stepper>
       </ng-template>

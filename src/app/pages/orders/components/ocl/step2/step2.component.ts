@@ -7,13 +7,13 @@ const MAIL_REGEX =
 @Component({
   selector: 'app-ocl-step2',
   templateUrl: './step2.component.html',
-  styleUrls: ['./step2.component.scss']
+  styleUrls: ['./step2.component.scss'],
 })
 export class OclStep2Component {
-  @Output() statusChange = new EventEmitter<boolean>();
-  @Output() dataChange = new EventEmitter<typeof this.form.value>();
+  @Output() public statusChange = new EventEmitter<boolean>();
+  @Output() public dataChange = new EventEmitter<typeof this.form.value>();
 
-  form: FormGroup<{
+  public form: FormGroup<{
     name: FormControl<string>;
     phone_flag: FormControl<string>;
     phone_code: FormControl<string>;
@@ -30,13 +30,13 @@ export class OclStep2Component {
         phone_code: ['+52'],
         phone_number: ['', Validators.required],
         email: ['', [Validators.required, Validators.pattern(MAIL_REGEX)]],
-        aditional_details: ['', Validators.required]
+        aditional_details: ['', Validators.required],
       },
-      { updateOn: 'blur' }
+      { updateOn: 'blur' },
     );
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.form.statusChanges.subscribe((status) => {
       const isValid = status === 'VALID';
 
@@ -45,15 +45,15 @@ export class OclStep2Component {
     });
   }
 
-  updatePhoneCode(ev: any) {
+  public updatePhoneCode(ev: any) {
     this.form.patchValue({
       phone_code: ev.dial_code,
       phone_flag: ev.code.toLowerCase(),
-      phone_number: ''
+      phone_number: '',
     });
   }
 
-  updateDetails(ev: any) {
+  public updateDetails(ev: any) {
     this.form.controls.aditional_details.setValue(ev.details);
   }
 }

@@ -1,141 +1,121 @@
 <div>
-    <bego-ticket [removeHeaderSeparator]="true">
-      <div centeredHeader>
-        <div class="ticket-row header">
-          <div class="title">
-            {{ 'checkout.title-emitter' | translate }}
-          </div>
-        </div>    
-  
+  <bego-ticket [removeHeaderSeparator]="true">
+    <div centeredHeader>
+      <div class="ticket-row header">
+        <div class="title">
+          {{ 'checkout.title-emitter' | translate }}
+        </div>
       </div>
-  
-      <div body>
-        
-        <form [formGroup]="receiverForm">
-  
-           <!-- address -->
-           <div class="ticket-row">
-            <div>
-              {{ 'checkout.placeholder-address' | translate }}
-            </div>
-            <div class="address">
-              <bego-address-autocomplete
-                [address]="addressName"
-                (addressChange)="setAddressName($event)"
-                (placeIdChange)='setPlaceId($event)'>
-              </bego-address-autocomplete>
-            </div>
-          </div> 
-  
+    </div>
 
-          <!-- tax_regime -->
-          <div class="ticket-row">
-           <div>
-             {{ 'checkout.placeholder-tax_regime' | translate }}
-           </div>
-           <div>
-             <mat-form-field class="small-input-inner-shadow">
-               <mat-select 
-                 formControlName="tax_regime"
-                 (valueChange)="updateTaxRegime($event)">
-           
-                   <mat-option value="select-document" [disabled]="true"> 
-                       {{ 'checkout.select-tax' | translate }}
-                   </mat-option>
-           
-                   <mat-option *ngFor="let j of tax_regimes" [value]="j.code">
-                       {{ j.code }} - {{ j.description }}
-                   </mat-option>
-           
-               </mat-select>
-             </mat-form-field>
-           </div>
-         </div> 
-
-         <!-- file Cer -->
-         <div class="ticket-row">
-             <div>
-                  {{ 'checkout.placeholder-file_cer' | translate }}
-             </div>
-             <div>
-                <button
-                *ngIf="!hasCer; else elseBlockCer"
-                class="button-file"
-                (click)="fileInputCer.click()">
-                <app-button class="icon icon-cloud-upload icon only"></app-button> {{ 'checkout.upload' | translate }}
-                </button>
-
-                <ng-template #elseBlockCer>
-                    <div class="fileUpload">
-                        <app-button class="icon icon-document icon-only"></app-button>
-                        <div class="name">
-                            <span>Certificate.cer</span>
-                            <span>{{ cerDate | date: 'dd MMM yyyy' }} | {{ cerSize }} </span>
-                        </div>
-                        <app-button class="icon icon-trash icon-only" (click)="removeFile('cer')"></app-button>
-                    </div>
-                </ng-template>
-
-                <input
-                 #fileInputCer
-                 type="file"
-                 (change)="onFileChange($event.target.files, 'cer')"
-                 hidden
-                 name="fileInputCer"
-                 />
-             </div>
-         </div>
-
-          <!-- file Key -->
-          <div class="ticket-row">
-            <div>
-                 {{ 'checkout.placeholder-file_key' | translate }}
-            </div>
-            <div>
-               <button
-               *ngIf="!hasKey; else elseBlockKey"
-               class="button-file"
-               (click)="fileInputKey.click()">
-               <app-button class="icon icon-cloud-upload icon only"></app-button> {{ 'checkout.upload' | translate }}
-               </button>
-
-               <ng-template #elseBlockKey>
-                   <div class="fileUpload">
-                       <app-button class="icon icon-document icon-only"></app-button>
-                       <div class="name">
-                           <span>Key.key</span>
-                           <span>{{ keyDate | date: 'dd MMM yyyy' }} | {{ keySize }} </span>
-                       </div>
-                       <app-button class="icon icon-trash icon-only" (click)="removeFile('key')"></app-button>
-                   </div>
-               </ng-template>
-
-               <input
-                #fileInputKey
-                type="file"
-                (change)="onFileChange($event.target.files, 'key')"
-                hidden
-                name="fileInputKey"
-                />
-            </div>
+    <div body>
+      <form [formGroup]="receiverForm">
+        <!-- address -->
+        <div class="ticket-row">
+          <div>
+            {{ 'checkout.placeholder-address' | translate }}
+          </div>
+          <div class="address">
+            <bego-address-autocomplete
+              [address]="addressName"
+              (addressChange)="setAddressName($event)"
+              (placeIdChange)="setPlaceId($event)">
+            </bego-address-autocomplete>
+          </div>
         </div>
 
-            <!-- Password -->
-            <div class="ticket-row">
-                <div>
-                  {{ 'checkout.placeholder-password' | translate }}
-                </div>
-                <div>
-                  <mat-form-field  class="inner-shadow" >
-                    <input matInput (focusout)="emit()" formControlName="archivo_key_pswd">
-                  </mat-form-field>
-                </div>
-              </div> 
-  
-       </form>
+        <!-- tax_regime -->
+        <div class="ticket-row">
+          <div>
+            {{ 'checkout.placeholder-tax_regime' | translate }}
+          </div>
+          <div>
+            <mat-form-field class="small-input-inner-shadow">
+              <mat-select formControlName="tax_regime" (valueChange)="updateTaxRegime($event)">
+                <mat-option value="select-document" [disabled]="true">
+                  {{ 'checkout.select-tax' | translate }}
+                </mat-option>
 
-      </div>
-    </bego-ticket>
-  </div>
-  
-  
+                <mat-option *ngFor="let j of tax_regimes" [value]="j.code">
+                  {{ j.code }} - {{ j.description }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- file Cer -->
+        <div class="ticket-row">
+          <div>
+            {{ 'checkout.placeholder-file_cer' | translate }}
+          </div>
+          <div>
+            <button *ngIf="!hasCer; else elseBlockCer" class="button-file" (click)="fileInputCer.click()">
+              <app-button class="icon icon-cloud-upload icon only"></app-button> {{ 'checkout.upload' | translate }}
+            </button>
+
+            <ng-template #elseBlockCer>
+              <div class="fileUpload">
+                <app-button class="icon icon-document icon-only"></app-button>
+                <div class="name">
+                  <span>Certificate.cer</span>
+                  <span>{{ cerDate | date: 'dd MMM yyyy' }} | {{ cerSize }} </span>
+                </div>
+                <app-button class="icon icon-trash icon-only" (click)="removeFile('cer')"></app-button>
+              </div>
+            </ng-template>
+
+            <input
+              #fileInputCer
+              type="file"
+              (change)="onFileChange($event.target.files, 'cer')"
+              hidden
+              name="fileInputCer" />
+          </div>
+        </div>
+
+        <!-- file Key -->
+        <div class="ticket-row">
+          <div>
+            {{ 'checkout.placeholder-file_key' | translate }}
+          </div>
+          <div>
+            <button *ngIf="!hasKey; else elseBlockKey" class="button-file" (click)="fileInputKey.click()">
+              <app-button class="icon icon-cloud-upload icon only"></app-button> {{ 'checkout.upload' | translate }}
+            </button>
+
+            <ng-template #elseBlockKey>
+              <div class="fileUpload">
+                <app-button class="icon icon-document icon-only"></app-button>
+                <div class="name">
+                  <span>Key.key</span>
+                  <span>{{ keyDate | date: 'dd MMM yyyy' }} | {{ keySize }} </span>
+                </div>
+                <app-button class="icon icon-trash icon-only" (click)="removeFile('key')"></app-button>
+              </div>
+            </ng-template>
+
+            <input
+              #fileInputKey
+              type="file"
+              (change)="onFileChange($event.target.files, 'key')"
+              hidden
+              name="fileInputKey" />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="ticket-row">
+          <div>
+            {{ 'checkout.placeholder-password' | translate }}
+          </div>
+          <div>
+            <mat-form-field class="inner-shadow">
+              <input matInput (focusout)="emit()" formControlName="archivo_key_pswd" />
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </div>
+  </bego-ticket>
+</div>
