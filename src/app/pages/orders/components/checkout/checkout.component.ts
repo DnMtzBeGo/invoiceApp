@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { BegoStepper, StepperOptions } from '@begomx/ui-components';
@@ -15,7 +15,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
 })
-export class CheckoutComponent implements OnInit, AfterViewInit {
+export class CheckoutComponent implements OnInit {
   public checkoutSteps: Step[] = [];
 
   public selectedCard: string = 'pickup';
@@ -173,10 +173,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         console.error('Error on customs cruce : ', error.customsCruce);
       },
     );
-  }
-
-  public ngAfterViewInit() {
-    console.log('CHECKOUT STEPPER: ', this.stepperRef);
   }
 
   public calculateProgress(): number {

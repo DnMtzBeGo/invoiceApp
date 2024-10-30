@@ -60,11 +60,11 @@ export class EmitterComponent implements OnInit {
     if (changes.userData && this.userData) {
       const { attributes } = this.userData;
 
-      this.taxSelected = attributes.tax_regime;
+      this.taxSelected = attributes?.tax_regime;
 
       this.receiverForm.patchValue({
         address: attributes.address,
-        tax_regime: attributes.tax_regime,
+        tax_regime: attributes?.tax_regime,
         place_id: attributes.place_id,
       });
     }
