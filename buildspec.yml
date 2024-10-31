@@ -19,7 +19,14 @@ phases:
   build:
     commands:
       - echo Starting production build...
-      - ng build --configuration production
+      - |
+        if [ "$CODEBUILD_WEBHOOK_HEAD_REF" == "refs/heads/main" ]; then
+          echo "Building for production..."
+          ng build --configuration production
+        else
+          echo "Building for development..."
+          ng build
+        fi
 artifacts:
   files:
     - "**/*"
