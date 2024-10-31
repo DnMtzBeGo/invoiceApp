@@ -1,19 +1,20 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import * as moment from 'moment';
+import { Router } from '@angular/router';
+import { Subject, Subscription } from 'rxjs';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
+
 import { Step } from '../../shared/components/stepper/interfaces/Step';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Order } from '../../shared/interfaces/order.model';
-import * as moment from 'moment';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
-import { Router } from '@angular/router';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { Subject, Subscription } from 'rxjs';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
 import { SelectFleetModalComponent } from './components/select-fleet-modal/select-fleet-modal.component';
-import { BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
 import { LocationsService } from '../../services/locations.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
@@ -30,11 +31,11 @@ export interface OrderPreview {
 })
 export class OrdersComponent implements OnInit {
   @ViewChild('ordersRef') public ordersRef!: ElementRef;
-  @Input() cardIsOpen: boolean = false;
-  @Output() cardIsOpenChange = new EventEmitter<boolean>();
-  @Output() stepChange = new EventEmitter<number>();
-  @Input() draftData: any;
-  @Input() locations: GoogleLocation = {
+  @Input() public cardIsOpen: boolean = false;
+  @Output() public cardIsOpenChange = new EventEmitter<boolean>();
+  @Output() public stepChange = new EventEmitter<number>();
+  @Input() public draftData: any;
+  @Input() public locations: GoogleLocation = {
     pickup: '',
     dropoff: '',
     pickupLat: '',
@@ -44,27 +45,28 @@ export class OrdersComponent implements OnInit {
     pickupPostalCode: 0,
     dropoffPostalCode: 0,
   };
-  @Input() datepickup: number;
-  @Input() datedropoff: number;
-  @Input() imageFromGoogle: any;
-  @Input() membersToAssigned: any;
-  @Input() userWantCP: boolean = false;
-  @Input() orderType: string;
+  @Input() public datepickup: number;
+  @Input() public datedropoff: number;
+  @Input() public imageFromGoogle: any;
+  @Input() public membersToAssigned: any;
+  @Input() public userWantCP: boolean = false;
+  @Input() public orderType: string;
 
-  screenshotOrderMap: any;
-  requestScreenshotOrderMap: FormData = new FormData();
+  private screenshotOrderMap: any;
+  private requestScreenshotOrderMap: FormData = new FormData();
 
-  creationTime: any;
-  ordersSteps: Step[];
-  ordersStepsOCL: Step[];
+  public creationTime: any;
+  public ordersSteps: Step[];
+  public ordersStepsOCL: Step[];
 
-  hazardousFile?: File;
-  hazardousFileAWS: object = {};
-  catalogsDescription: object = {};
+  private hazardousFile?: File;
+  public hazardousFileAWS: object = {};
+  public catalogsDescription: object = {};
 
-  multipleCargoFile?: File;
+  private multipleCargoFile?: File;
 
-  @Input() orderPreview?: OrderPreview;
+  @Input() public orderPreview?: OrderPreview;
+
   public orderData: Order = {
     stamp: false,
     reference_number: null,
@@ -130,12 +132,12 @@ export class OrdersComponent implements OnInit {
   public minDropoff: any;
   public sendMap: boolean = false;
 
-  isLinear = false;
-  firstFormGroup!: FormGroup;
-  secondFormGroup!: FormGroup;
+  public isLinear = false;
+  public firstFormGroup!: FormGroup;
+  public secondFormGroup!: FormGroup;
 
-  stepsValidate = [false, false, false, false, false];
-  stepsValidateOCL = [false, false];
+  public stepsValidate = [false, false, false, false, false];
+  public stepsValidateOCL = [false, false];
 
   private subscription: Subscription;
 
@@ -168,18 +170,18 @@ export class OrdersComponent implements OnInit {
   public lang: string = 'en';
   public clearMultipleFile: boolean = false;
 
-  @ViewChild(BegoStepper) stepperRef: BegoStepper;
-  @ViewChild(BegoMarks) marksRef: BegoMarks;
+  @ViewChild('stepper') private stepperRef: BegoStepper;
+  @ViewChild('marks') private marksRef: BegoMarks;
 
-  get currentStepIndex(): number {
-    return this.stepperRef?.controller.currentStep ?? 0;
+  public get currentStepIndex(): number {
+    return this.stepperRef?.controller?.currentStep ?? 0;
   }
 
-  set currentStepIndex(step: number) {
+  public set currentStepIndex(step: number) {
     this.stepperRef?.controller.setStep(step);
   }
 
-  stepperOptions: StepperOptions = {
+  public stepperOptions: StepperOptions = {
     allowTouchMove: false,
     autoHeight: true,
   };
@@ -209,7 +211,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required],
     });
@@ -224,15 +226,15 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.marksRef.controller = this.stepperRef.controller;
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges) {
     if (changes.orderType) {
       Promise.resolve().then(() => {
         if (this.marksRef) this.marksRef.controller = this.stepperRef.controller;
@@ -293,11 +295,11 @@ export class OrdersComponent implements OnInit {
       this.isOrderWithCP = this.userWantCP;
     }
   }
-  toggleCard() {
+  public toggleCard() {
     this.cardIsOpen = !this.cardIsOpen;
   }
 
-  updateStatus() {
+  public updateStatus() {
     this.updateTitleText();
 
     if (this.stepperRef?.controller.isLastStep()) {
@@ -309,13 +311,13 @@ export class OrdersComponent implements OnInit {
     this.stepChange.emit(this.currentStepIndex);
   }
 
-  validateForm() {
+  private validateForm() {
     const validate = this.orderType === 'FTL' ? this.stepsValidate.slice(0, -2) : this.stepsValidateOCL;
 
     return validate.every(Boolean);
   }
 
-  nextSlide() {
+  public nextSlide() {
     if (!this.stepperRef.controller.isLastStep()) {
       if (
         this.orderType === 'FTL' &&
@@ -341,7 +343,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  prevSlide() {
+  public prevSlide() {
     if (this.currentStepIndex === 0) return;
     if (this.currentStepIndex > 0) this.currentStepIndex = this.currentStepIndex - 1;
     else this.cardIsOpenChange.emit(false);
@@ -351,11 +353,11 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  jumpStepTitle() {
+  public jumpStepTitle() {
     this.updateTitleText();
   }
 
-  getStep1FormData(data: any) {
+  public getStep1FormData(data: any) {
     this.orderData.pickup.contact_info.name = data.fullname;
     this.orderData.pickup.contact_info.telephone = data.phoneCode.concat(' ', data.phonenumber);
     this.orderData.pickup.contact_info.email = data.email;
@@ -379,7 +381,7 @@ export class OrdersComponent implements OnInit {
     this.orderData = { ...this.orderData };
   }
 
-  getStep2FormData(data: any) {
+  public getStep2FormData(data: any) {
     this.orderData.dropoff.contact_info.name = data.fullname;
     this.orderData.dropoff.contact_info.telephone = data.phoneCode.concat(' ', data.phonenumber);
     this.orderData.dropoff.contact_info.email = data.email;
@@ -402,7 +404,7 @@ export class OrdersComponent implements OnInit {
     this.orderData = { ...this.orderData };
   }
 
-  getStep3FormData(data: any) {
+  public getStep3FormData(data: any) {
     this.orderData.cargo['53_48'] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoWeight.length;
@@ -441,27 +443,27 @@ export class OrdersComponent implements OnInit {
     this.orderData = { ...this.orderData };
   }
 
-  getStep4FormData(data: any) {
+  public getStep4FormData(data: any) {
     Object.assign(this.orderData.invoice, data);
   }
 
-  getPricingStepFormData(data: any) {
+  public getPricingStepFormData(data: any) {
     Object.assign(this.orderData.pricing, data);
   }
 
-  validStep1(valid: boolean) {
+  public validStep1(valid: boolean) {
     this.stepsValidate[0] = valid;
     if (valid) this.sendPickup();
     this.updateStatus();
   }
 
-  validStep2(valid: boolean) {
+  public validStep2(valid: boolean) {
     this.stepsValidate[1] = valid;
     if (valid) this.sendDropoff();
     this.updateStatus();
   }
 
-  validStep3(valid: boolean) {
+  public validStep3(valid: boolean) {
     this.stepsValidate[2] = valid;
 
     if (valid) {
@@ -474,25 +476,25 @@ export class OrdersComponent implements OnInit {
     this.updateStatus();
   }
 
-  validPricingStep(valid: boolean) {
+  public validPricingStep(valid: boolean) {
     this.stepsValidate[3] = valid;
     if (valid) this.sendPricing();
     this.updateStatus();
   }
 
-  validStep4(valid: boolean) {
+  public validStep4(valid: boolean) {
     this.stepsValidate[4] = valid;
     //TODO: In drafts, if all inputs are not valid, it won't be sent
     if (valid) this.sendInvoice();
     this.updateStatus();
   }
 
-  validStepOCL(idx: number, valid: boolean) {
+  public validStepOCL(idx: number, valid: boolean) {
     this.stepsValidateOCL[idx] = valid;
     this.updateStatus();
   }
 
-  updateStep1OCL(data: any) {
+  public updateStep1OCL(data: any) {
     Object.assign(this.orderData, {
       reference_number: data.reference,
       pickup: {
@@ -509,7 +511,7 @@ export class OrdersComponent implements OnInit {
     this.sendPickup();
   }
 
-  updateStep2OCL(data: any) {
+  public updateStep2OCL(data: any) {
     Object.assign(this.orderData.dropoff, {
       extra_notes: data.aditional_details,
       contact_info: {
@@ -523,7 +525,7 @@ export class OrdersComponent implements OnInit {
     this.sendDropoff();
   }
 
-  async sendPickup() {
+  private async sendPickup() {
     const { pickup, reference_number } = this.orderData;
     const { startDate, contact_info, tax_information } = pickup;
     const [id] = this.orderPreview?.destinations || [];
@@ -545,7 +547,7 @@ export class OrdersComponent implements OnInit {
     if (id) this.sendDestination(destinationPayload, id);
   }
 
-  async sendDropoff() {
+  private async sendDropoff() {
     const { dropoff } = this.orderData;
     const { contact_info, tax_information, extra_notes } = dropoff;
 
@@ -572,7 +574,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  async sendCargo() {
+  private async sendCargo() {
     const { cargo }: { cargo: any } = this.orderData;
     const { order_id } = this.orderPreview;
 
@@ -662,7 +664,7 @@ export class OrdersComponent implements OnInit {
     await req.toPromise();
   }
 
-  async sendDestination(payload: any, id: string) {
+  private async sendDestination(payload: any, id: string) {
     const req = await this.auth.apiRestPut(JSON.stringify(this.removeEmpty(payload)), `orders/destination/${id}`, {
       apiVersion: 'v1.1',
     });
@@ -670,7 +672,7 @@ export class OrdersComponent implements OnInit {
     await req.toPromise();
   }
 
-  async sendInvoice() {
+  private async sendInvoice() {
     const { invoice } = this.orderData;
 
     const sendInvoice = async (payload) => {
@@ -705,7 +707,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  async sendPricing() {
+  private async sendPricing() {
     const { pricing } = this.orderData;
 
     const sendPricing = async (payload) => {
@@ -732,7 +734,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  async getETA(locations: GoogleLocation) {
+  private async getETA(locations: GoogleLocation) {
     if (!locations.pickup || !locations.dropoff) return;
 
     let datos = {
@@ -760,7 +762,7 @@ export class OrdersComponent implements OnInit {
     );
   }
 
-  async getCreationTime(locations: GoogleLocation) {
+  private async getCreationTime(locations: GoogleLocation) {
     (await this.auth.apiRest('', 'orders/get_creation_time')).subscribe(
       async (res) => {
         this.creationTime = moment().add(res.result.creation_time, 'ms').toDate();
@@ -771,7 +773,7 @@ export class OrdersComponent implements OnInit {
     );
   }
 
-  async getHazardous(orderId: string) {
+  private async getHazardous(orderId: string) {
     let dataRequest = {
       order_id: orderId,
     };
@@ -803,7 +805,7 @@ export class OrdersComponent implements OnInit {
     );
   }
 
-  convertDateMs(date: Date, time: Date) {
+  public convertDateMs(date: Date, time: Date) {
     let event = new Date(date);
     let hour = moment(time).hour();
     let minute = moment(time).minute();
@@ -811,7 +813,7 @@ export class OrdersComponent implements OnInit {
     return Date.parse(event.toString());
   }
 
-  async completeOrder() {
+  private async completeOrder() {
     await this.confirmOrder();
     await this.assignOrder();
     if (this.orderType === 'FTL' && this.locations.dropoff) await this.uploadScreenShotOrderMap();
@@ -821,7 +823,7 @@ export class OrdersComponent implements OnInit {
     await this.router.navigate(['/home'], { state: { showCompleteModal: true } });
   }
 
-  async confirmOrder() {
+  private async confirmOrder() {
     const confirmPayload = {
       order_id: this.orderPreview.order_id,
     };
@@ -833,7 +835,7 @@ export class OrdersComponent implements OnInit {
     return req.toPromise();
   }
 
-  assignOrder() {
+  private assignOrder() {
     const sendFleet = async (orderData) => {
       const payload: any = {
         order_id: this.orderPreview.order_id,
@@ -930,7 +932,7 @@ export class OrdersComponent implements OnInit {
     this.hasEditedCargoWeight = true;
   }
 
-  updateTitleText() {
+  private updateTitleText() {
     const keys = [
       'orders.title-pickup',
       'orders.title-dropoff',
@@ -942,7 +944,7 @@ export class OrdersComponent implements OnInit {
     this.typeOrder = this.translateService.instant(keys[this.currentStepIndex]);
   }
 
-  updateStepTexts() {
+  private updateStepTexts() {
     this.ordersSteps = [
       { text: '1', nextBtnTxt: this.translateService.instant('orders.next-step') },
       { text: '2', nextBtnTxt: this.translateService.instant('orders.next-step') },

@@ -7,15 +7,15 @@ const MAIL_REGEX =
 @Component({
   selector: 'app-ocl-step1',
   templateUrl: './step1.component.html',
-  styleUrls: ['./step1.component.scss']
+  styleUrls: ['./step1.component.scss'],
 })
 export class OclStep1Component {
-  @Input() cardIsOpen = false;
-  @Input() datePickup: number;
-  @Output() statusChange = new EventEmitter<boolean>();
-  @Output() dataChange = new EventEmitter<typeof this.form.value>();
+  @Input() public cardIsOpen = false;
+  @Input() public datePickup: number;
+  @Output() public statusChange = new EventEmitter<boolean>();
+  @Output() public dataChange = new EventEmitter<typeof this.form.value>();
 
-  form: FormGroup<{
+  public form: FormGroup<{
     name: FormControl<string>;
     phone_flag: FormControl<string>;
     phone_code: FormControl<string>;
@@ -34,13 +34,13 @@ export class OclStep1Component {
         phone_number: ['', Validators.required],
         email: ['', [Validators.required, Validators.pattern(MAIL_REGEX)]],
         reference: ['', Validators.required],
-        date: [null as number, Validators.required]
+        date: [null as number, Validators.required],
       },
-      { updateOn: 'blur' }
+      { updateOn: 'blur' },
     );
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.form.statusChanges.subscribe((status) => {
       const isValid = status === 'VALID';
 
@@ -49,21 +49,21 @@ export class OclStep1Component {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges) {
     if (changes.datePickup) {
       this.form.controls.date.setValue(this.datePickup);
     }
   }
 
-  updatePhoneCode(ev: any) {
+  public updatePhoneCode(ev: any) {
     this.form.patchValue({
       phone_code: ev.dial_code,
       phone_flag: ev.code.toLowerCase(),
-      phone_number: ''
+      phone_number: '',
     });
   }
 
-  updateDate(date: number) {
+  public updateDate(date: number) {
     this.form.controls.date.setValue(date);
   }
 }

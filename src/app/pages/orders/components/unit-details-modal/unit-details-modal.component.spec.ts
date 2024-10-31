@@ -1,4 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAT_LEGACY_DIALOG_DATA, MatLegacyDialogModule, MatLegacyDialogRef } from '@angular/material/legacy-dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { UnitDetailsModalComponent } from './unit-details-modal.component';
 
@@ -8,9 +13,14 @@ describe('UnitDetailsModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UnitDetailsModalComponent ]
-    })
-    .compileComponents();
+      declarations: [UnitDetailsModalComponent],
+      imports: [MatLegacyDialogModule, ReactiveFormsModule, HttpClientModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: MatLegacyDialogRef, useValue: {} },
+        { provide: MAT_LEGACY_DIALOG_DATA, useValue: {} }, // Mock vacío para MatLegacyDialogRef
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {

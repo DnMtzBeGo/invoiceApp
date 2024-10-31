@@ -1,22 +1,17 @@
 <div mat-dialog-content class="alert-wrapper">
   <div class="alert-header">
     <h1>
-      {{ "orders.continue-modal-list.cp-title" | translate }}
+      {{ 'orders.continue-modal-list.cp-title' | translate }}
     </h1>
   </div>
   <div *ngFor="let item of items">{{ item }}</div>
 
   <div class="alert-button-group">
     <button mat-raised-button [mat-dialog-close]="false" class="bego-btn gray">
-      {{ "orders.continue-modal-list.cp-cancel" | translate }}
+      {{ 'orders.continue-modal-list.cp-cancel' | translate }}
     </button>
-    <button
-      mat-raised-button
-      [mat-dialog-close]="true"
-      class="bego-btn yellow medium-size"
-      style="margin-left: 10px"
-    >
-    {{ "orders.continue-modal-list.cp-confirm" | translate }}
+    <button mat-raised-button [mat-dialog-close]="true" class="bego-btn yellow medium-size" style="margin-left: 10px">
+      {{ 'orders.continue-modal-list.cp-confirm' | translate }}
     </button>
   </div>
 </div>

@@ -1,5 +1,5 @@
 <div class="stepper-container">
-  <div class="steps" *ngIf="!onlyStep">
+  <div class="steps" *ngIf="!blockFirstStep">
     <!-- Generar dinámicamente las etiquetas de los pasos personalizados -->
     <div
       *ngFor="let step of steps; let i = index"
@@ -9,11 +9,12 @@
       {{ step.label }}
     </div>
     <!-- Línea activa que se mueve horizontalmente -->
-    <div class="active-line"
-         [ngStyle]="{
-           'left': linePosition + '%',
-           'width': lineWidth + '%'
-         }"></div>
+    <div
+      class="active-line"
+      [ngStyle]="{
+        left: linePosition + '%',
+        width: lineWidth + '%'
+      }"></div>
   </div>
 
   <!-- Mostrar dinámicamente el contenido de los pasos -->

@@ -4,22 +4,23 @@
     [title]="'orders.title-pickup' | translate"
     [btnLabel]="'orders.btn-edit' | translate"
     [content]="pickupContent"
-    (editSignal)="redirectToStep(0)"
-  ></bego-checkout-card>
+    (editSignal)="redirectToStep(0)"></bego-checkout-card>
   <bego-checkout-card
     class="card"
     [title]="'orders.title-dropoff' | translate"
     [btnLabel]="'orders.btn-edit' | translate"
     [content]="dropoffContent"
     (editSignal)="redirectToStep(1)">
-  ></bego-checkout-card>
+    ></bego-checkout-card
+  >
   <bego-checkout-card
     class="card"
     [title]="'orders.title-cargo-info' | translate"
     [btnLabel]="'orders.btn-edit' | translate"
     [content]="cargoContent"
     (editSignal)="redirectToStep(2)">
-  ></bego-checkout-card>
+    ></bego-checkout-card
+  >
   <bego-checkout-card
     class="card"
     [title]="'orders.title-invoice' | translate"
@@ -27,6 +28,5 @@
     [content]="invoiceContent"
     [editable]="invoiceEditable"
     (editSignal)="editInvoice()"
-    (formValueChange)="updateInvoice($event)"
-  ></bego-checkout-card>
+    (formValueChange)="updateInvoice($event)"></bego-checkout-card>
 </div>

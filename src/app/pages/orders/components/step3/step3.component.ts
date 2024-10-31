@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { TranslateService } from '@ngx-translate/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { BegoDialogService } from '@begomx/ui-components';
 import * as moment from 'moment';
 import { HttpClient } from '@angular/common/http';
 
@@ -126,7 +125,6 @@ export class Step3Component implements OnInit {
     private translateService: TranslateService,
     public dialog: MatDialog,
     private apiRestService: AuthService,
-    private begoDialog: BegoDialogService,
     private httpClient: HttpClient,
     private notificationsService: NotificationsService,
   ) {
