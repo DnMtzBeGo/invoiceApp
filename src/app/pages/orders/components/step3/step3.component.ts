@@ -43,7 +43,8 @@ export class Step3Component implements OnInit {
   @Input() public orderWithCP: boolean;
   @Input() public creationdatepickup: number;
   @Input() public editCargoWeightNow: boolean;
-  @Input() public clearMultipleFile!: boolean;
+  @Input() public clearFailedMultipleFile!: boolean;
+  @Input() public clearUploadedMultipleFile!: boolean;
   @Output() public step3FormData: EventEmitter<any> = new EventEmitter();
   @Output() public validFormStep3: EventEmitter<boolean> = new EventEmitter();
   @Output() public cargoWeightEdited: EventEmitter<void> = new EventEmitter();
@@ -188,6 +189,10 @@ export class Step3Component implements OnInit {
       this.handleCargoTypeChange(this.multipleCargo);
     });
 
+    /* this.step3Form.get('multipleCargoFile')!.valueChanges.subscribe(() => {
+      this.setFileValidators();
+    }); */
+
     this.step3Form.get('timepickup')!.valueChanges.subscribe((val) => {
       // if(val===null) {
       // }
@@ -228,15 +233,21 @@ export class Step3Component implements OnInit {
           this.step3Form.get('hazardous_material').setValue(cargo.hazardous_material);
         }
 
-        /* if (cargo?.imported_file) {
-          this.fileInfo = {
+        console.log('cargo data: ', cargo);
+        if (cargo?.imported_file) {
+          // const emptyFile = new File([''], this.getFileName(cargo?.imported_file), { type: 'text/plain' });
+          const emptyFile = this.createEmptyFile(cargo?.imported_file);
+
+          this.files = {
             name: this.getFileName(cargo?.imported_file),
             date: new Date(),
             size: 0,
           };
+          this.step3Form.get('multipleCargoFile')!.setValue(emptyFile, { emitEvent: false });
           this.stepIndex = 1;
           this.stepStatus(1);
-        } */
+          // this.clearFileValidators();
+        }
       }
 
       if (pickup.startDate !== null) {
@@ -274,9 +285,15 @@ export class Step3Component implements OnInit {
       this.editUnits();
     }
 
-    if (changes.clearMultipleFile && changes.clearMultipleFile.currentValue) {
+    if (changes.clearFailedMultipleFile && changes.clearFailedMultipleFile.currentValue) {
       this.files = null;
-      this.step3Form.get('multipleCargoFile')!.setValue(null, { emitEvent: false });
+      this.step3Form.get('multipleCargoFile')!.setValue(this.createEmptyFile(), { emitEvent: false });
+    }
+    if (changes.clearUploadedMultipleFile && changes.clearUploadedMultipleFile.currentValue) {
+      // this.files = null;
+      const emptyFile = this.createEmptyFile(this.files.name);
+      console.log('STEP 3 - multiple file updated successfully - cleaning init file: ', emptyFile);
+      this.step3Form.get('multipleCargoFile')!.setValue(emptyFile);
     }
 
     this.validFormStep3.emit(this.step3Form.valid);
@@ -540,6 +557,7 @@ export class Step3Component implements OnInit {
         date: new Date(file.lastModified),
         size: file.size,
       };
+      // this.setFileValidators();
     } else {
       this.files = null;
       this.deleteMultipleCargoFile(this.orderId);
@@ -609,6 +627,13 @@ export class Step3Component implements OnInit {
       this.step3Form.get('description')?.updateValueAndValidity({ emitEvent: true });
     }
   }
+  private async deleteMultipleCargoFile(order_id: string) {
+    const req = await this.apiRestService.apiRest(null, `orders/cargo/remove-multiple/${order_id}`, {
+      apiVersion: 'v1.1',
+      timeout: '300000',
+    });
+    await req.toPromise();
+  }
 
   public getFileName(filePath: string) {
     const regex = /\/[^/]*_([^/]+)$/;
@@ -616,11 +641,7 @@ export class Step3Component implements OnInit {
     return match ? match[1] : '';
   }
 
-  private async deleteMultipleCargoFile(order_id: string) {
-    const req = await this.apiRestService.apiRest(null, `orders/cargo/remove-multiple/${order_id}`, {
-      apiVersion: 'v1.1',
-      timeout: '300000',
-    });
-    await req.toPromise();
+  public createEmptyFile(fileName: string = '') {
+    return new File([''], fileName ? this.getFileName(fileName) : 'empty.txt', { type: 'text/plain' });
   }
 }

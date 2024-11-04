@@ -168,7 +168,8 @@ export class OrdersComponent implements OnInit {
   public btnStatusNext: boolean = false;
 
   public lang: string = 'en';
-  public clearMultipleFile: boolean = false;
+  public clearFailedMultipleFile: boolean = false;
+  public clearUploadedMultipleFile: boolean = false;
 
   @ViewChild('stepper') private stepperRef: BegoStepper;
   @ViewChild('marks') private marksRef: BegoMarks;
@@ -405,6 +406,7 @@ export class OrdersComponent implements OnInit {
   }
 
   public getStep3FormData(data: any) {
+    console.log('getting step 3 Data: ', data);
     this.orderData.cargo['53_48'] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoWeight.length;
@@ -621,13 +623,23 @@ export class OrdersComponent implements OnInit {
     }
 
     if (this.multipleCargoFile) {
+      console.log('saving multiple cargo: ', this.multipleCargoFile.size);
+
+      if (!this.multipleCargoFile.size) return;
+
       const formData = new FormData();
+
       formData.append('file', this.multipleCargoFile);
       formData.append('load_cap', cargo['53_48']);
       formData.append('required_units', cargo.required_units);
 
       await this.uploadMultipleCargoFile(formData, order_id);
     } else {
+      console.log('deleting multiple cargo: ', this.multipleCargoFile, this.draftData.cargo);
+      if (this.draftData.cargo.imported_file) {
+        console.log('this draft contains a multiple cargo file: ', this.draftData.cargo.imported_file);
+        return;
+      }
       const { order_id } = this.orderPreview;
       await this.deleteMultipleCargoFile(order_id);
     }
@@ -641,19 +653,25 @@ export class OrdersComponent implements OnInit {
       { timeout: '300000' },
     );
 
-    await req.toPromise().catch(({ error: { error } }) => {
-      this.clearMultipleFile = !this.clearMultipleFile;
-      const { message, errors } = error;
-      let errMsg = `${message[this.lang] || ''}.`;
-      console.error(errMsg);
+    await req
+      .toPromise()
+      .then(() => {
+        console.log('multiple cargo files uploaded: ');
+        this.clearUploadedMultipleFile = !this.clearUploadedMultipleFile;
+      })
+      .catch(({ error: { error } }) => {
+        this.clearFailedMultipleFile = !this.clearFailedMultipleFile;
+        const { message, errors } = error;
+        let errMsg = `${message[this.lang] || ''}.`;
+        console.error(errMsg);
 
-      if (errors?.en) {
-        errMsg += `
+        if (errors?.en) {
+          errMsg += `
         ${errors[this.lang] || ''}`;
-      }
+        }
 
-      this.notificationService.showErrorToastr(errMsg, errors?.en ? 10000 : 5000, 'brand-snackbar-2');
-    });
+        this.notificationService.showErrorToastr(errMsg, errors?.en ? 10000 : 5000, 'brand-snackbar-2');
+      });
   }
 
   private async deleteMultipleCargoFile(order_id: string) {
