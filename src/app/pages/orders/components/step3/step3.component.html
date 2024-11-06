@@ -139,13 +139,14 @@
             totalidad y subirlo.
           </p>
         </div>
-        <bego-drag-drop
-          style="min-height: 200px"
-          [validTypes]="fileTypes"
-          [lang]="multipleFilesLang"
-          [fileInfo]="files"
-          (fileSelected)="handleFileChange($event, 'xlsx')"
-          (invalidFiletype)="invalidFile()"></bego-drag-drop>
+        <div class="drag-drop-container">
+          <bego-drag-drop
+            [validTypes]="fileTypes"
+            [lang]="multipleFilesLang"
+            [fileInfo]="files"
+            (fileSelected)="handleFileChange($event, 'xlsx')"
+            (invalidFiletype)="invalidFile()"></bego-drag-drop>
+        </div>
       </ng-template>
     </app-custom-stepper>
   </form>

@@ -623,8 +623,6 @@ export class OrdersComponent implements OnInit {
     }
 
     if (this.multipleCargoFile) {
-      console.log('saving multiple cargo: ', this.multipleCargoFile.size);
-
       if (!this.multipleCargoFile.size) return;
 
       const formData = new FormData();
@@ -635,11 +633,8 @@ export class OrdersComponent implements OnInit {
 
       await this.uploadMultipleCargoFile(formData, order_id);
     } else {
-      console.log('deleting multiple cargo: ', this.multipleCargoFile, this.draftData.cargo);
-      if (this.draftData.cargo.imported_file) {
-        console.log('this draft contains a multiple cargo file: ', this.draftData.cargo.imported_file);
-        return;
-      }
+      if (this.draftData.cargo.imported_file) return;
+
       const { order_id } = this.orderPreview;
       await this.deleteMultipleCargoFile(order_id);
     }
@@ -656,7 +651,6 @@ export class OrdersComponent implements OnInit {
     await req
       .toPromise()
       .then(() => {
-        console.log('multiple cargo files uploaded: ');
         this.clearUploadedMultipleFile = !this.clearUploadedMultipleFile;
       })
       .catch(({ error: { error } }) => {
@@ -693,6 +687,8 @@ export class OrdersComponent implements OnInit {
   private async sendInvoice() {
     const { invoice } = this.orderData;
 
+    console.log('invoice data: ', invoice);
+
     const sendInvoice = async (payload) => {
       const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/update_invoice', { apiVersion: 'v1.1' });
       await req.toPromise();
@@ -701,25 +697,29 @@ export class OrdersComponent implements OnInit {
     if (this.orderPreview) {
       sendInvoice({
         order_id: this.orderPreview.order_id,
-        // receiver: {
-        cfdi: invoice.cfdi,
-        rfc: invoice.rfc,
-        company: invoice.company,
-        tax_regime: invoice.tax_regime,
-        place_id: invoice.address,
-        // },
-      });
-    } else {
-      this.afterOrderPreviewReceived('invoice', (orderPreview) => {
-        sendInvoice({
-          order_id: orderPreview.order_id,
-          // receiver: {
+        receiver: {
+          address: {
+            place_id: invoice.address,
+          },
           cfdi: invoice.cfdi,
           rfc: invoice.rfc,
           company: invoice.company,
           tax_regime: invoice.tax_regime,
-          place_id: (invoice.address as any).place_id,
-          // },
+        },
+      });
+    } else {
+      this.afterOrderPreviewReceived('invoice', (orderPreview) => {
+        sendInvoice({
+          order_id: this.orderPreview.order_id,
+          receiver: {
+            address: {
+              place_id: invoice.address,
+            },
+            cfdi: invoice.cfdi,
+            rfc: invoice.rfc,
+            company: invoice.company,
+            tax_regime: invoice.tax_regime,
+          },
         });
       });
     }

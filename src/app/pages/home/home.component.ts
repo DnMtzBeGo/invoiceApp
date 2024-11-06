@@ -187,90 +187,26 @@ export class HomeComponent implements OnInit {
       const { result } = await req.toPromise();
 
       this.orderPreview = result;
-      console.log('creating new draft...', this.orderPreview);
     } else {
       this.orderPreview = {
         order_id: this.draftData._id,
         order_number: this.draftData.order_number,
         destinations: [this.draftData.destinations[0]._id, this.draftData.destinations[1]._id],
       };
-
-      console.log('restoring draft...', this.orderPreview, '  draft data: ', this.draftData);
-
-      /*
-          {
-        "order_id": "672912fa887d27bb6f8b022c",
-        "order_number": "6AX8OS2H",
-        "destinations": [
-            "672912fa887d27bb6f8b022a",
-            "672912fa887d27bb6f8b022b"
-        ]
-        }
-      */
-
-      /*
-
-        {
-  "_id": "672912fa887d27bb6f8b022c",
-  "stamp": false,
-  "type": "FTL",
-  "order_number": "6AX8OS2H",
-  "documents": {},
-  "cargo": {
-    "loaded": 0
-  },
-  "version": "v2.0.0",
-  "created_date": "04/11/2024",
-  "created_time": "12:31 hrs",
-  "destinations": [
-    {
-      "_id": "672912fa887d27bb6f8b022a",
-      "type": "pickup",
-      "lat": 19.433681,
-      "lng": -99.2121884,
-      "address": "San Isidro 44, Reforma Soc, Miguel Hidalgo, 11650 Ciudad de México, CDMX, Mexico",
-      "location": "65158c390a0c854283c84585",
-      "raw_address": "san isidro 44, reforma soc, miguel hidalgo, 11650 ciudad de mexico, cdmx, mexico",
-      "place_id": "ChIJz_ml3yEC0oURMz2Pe2tGYyo",
-      "nickname": "Recolección"
-    },
-    {
-      "_id": "672912fa887d27bb6f8b022b",
-      "type": "dropoff",
-      "lat": 19.5475331,
-      "lng": -99.2110099,
-      "address": "Perif. Blvd. Manuel Ávila Camacho 3130, Valle Dorado, 54020 Tlalnepantla de Baz, Méx., Mexico",
-      "location": "638a3e8ff4b69f3000b15e5f",
-      "raw_address": "perif. blvd. manuel avila camacho 3130, valle dorado, 54020 tlalnepantla de baz, mex., mexico",
-      "place_id": "ChIJsUDXn2od0oURpAnsjV2k44A",
-      "nickname": "Entrega"
     }
-  ],
-  "completion_percentage": 0.07,
-  "terminal": {
-    "lat": 19.433681,
-    "lng": -99.2121884
-  },
-  "map": {
-    "original_url": "",
-    "thumbnail_url": ""
-  }
-}
 
-        */
-    }
-  }
-
-  public async showNewOrderCard(initDraft: boolean = false) {
-    console.log('showing new order card...');
-    // if (initDraft)
-    await this.createDraft(initDraft);
-    /* else {
-      console.log('restoring draft');
-    } */
     this.showOrderDetails = true;
     this.mapDashboardService.showPolygons = false;
     this.mapDashboardService.showFleetMap = false;
+  }
+
+  public async showNewOrderCard(initDraft: boolean = false) {
+    // al mostrar el mapa sin tener listo la data del draft/order, falla la visualizacion del los STEPS
+    /* this.showOrderDetails = true;
+    this.mapDashboardService.showPolygons = false;
+    this.mapDashboardService.showFleetMap = false; */
+
+    await this.createDraft(initDraft);
   }
 
   private async getLocationId(place_id: string): Promise<string> {
