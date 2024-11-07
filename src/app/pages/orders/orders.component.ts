@@ -221,6 +221,7 @@ export class OrdersComponent implements OnInit {
       secondCtrl: ['', Validators.required],
     });
 
+    this.lang = localStorage.getItem('lang') || 'en';
     this.updateStepTexts();
     this.subscription = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
       this.updateStepTexts();
