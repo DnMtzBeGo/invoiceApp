@@ -129,14 +129,11 @@ export class HomeComponent implements OnInit {
     const data = this.location.getState() as any;
 
     if (!data?.draft?._id) {
-      // if (!data?.draft) {
       this.updateMap();
       return;
     }
 
-    console.log('restoring draft into home: ', data.draft);
-
-    this.draftData = data.draft;
+    this.draftData = { ...data.draft };
     const [pickup, dropoff] = this.draftData.destinations;
     this.locations.pickup = pickup.address;
     this.locations.dropoff = dropoff.address;
@@ -202,11 +199,6 @@ export class HomeComponent implements OnInit {
   }
 
   public async showNewOrderCard(initDraft: boolean = false) {
-    // al mostrar el mapa sin tener listo la data del draft/order, falla la visualizacion del los STEPS
-    /* this.showOrderDetails = true;
-    this.mapDashboardService.showPolygons = false;
-    this.mapDashboardService.showFleetMap = false; */
-
     await this.createDraft(initDraft);
   }
 

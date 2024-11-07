@@ -1,6 +1,5 @@
 <section>
   <div class="draft-container" [ngClass]="{ hidden: showDraftList }">
-    <h2>DRAFT IN PROGRESS</h2>
     <div class="search-bar" *ngIf="draftData" [@enterAnimation]>
       <bego-input-search (inputData)="searchDraft({ dataInput: $event, page: 1 })"></bego-input-search>
       <app-button class="btn-filter icon icon-filter" [text]="'draft.txt-filter' | translate"></app-button>

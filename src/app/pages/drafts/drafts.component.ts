@@ -127,7 +127,6 @@ export class DraftsComponent implements OnInit {
   }
 
   public continueOrder() {
-    // console.log('selected draft: ', this.draftData[this.indexSelectedDraft]);
     this.router.navigate(['/home'], {
       state: {
         draft: this.draftData[this.indexSelectedDraft],

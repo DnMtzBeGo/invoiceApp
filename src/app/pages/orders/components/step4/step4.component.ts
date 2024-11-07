@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BegoCheckoutCardContent, StepperService } from '@begomx/ui-components';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './step4.component.html',
   styleUrls: ['./step4.component.scss'],
 })
-export class Step4Component implements OnInit {
+export class Step4Component implements OnInit, OnChanges {
   @Input() public orderData: Order;
   @Input() public draftData: any;
   @Output() public step4FormData: EventEmitter<any> = new EventEmitter();
@@ -187,10 +187,14 @@ export class Step4Component implements OnInit {
     this.updateDropoff(orderData);
     this.updateCargo(orderData);
 
-    if (changes.draftData && changes.draftData.currentValue) {
-      console.log('step 4 draft data: ', this.draftData);
+    console.log('step 4 draft data: ', this.draftData);
+    console.log('step 4 order data: ', this.orderData);
 
+    if (changes.draftData && changes.draftData.currentValue) {
       const { invoice } = changes.draftData.currentValue;
+
+      console.log('invoice ', invoice);
+
       if (invoice?.receiver) {
         const { receiver } = invoice;
 

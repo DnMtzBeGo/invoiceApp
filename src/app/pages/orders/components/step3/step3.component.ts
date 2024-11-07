@@ -189,10 +189,6 @@ export class Step3Component implements OnInit {
       this.handleCargoTypeChange(this.multipleCargo);
     });
 
-    /* this.step3Form.get('multipleCargoFile')!.valueChanges.subscribe(() => {
-      this.setFileValidators();
-    }); */
-
     this.step3Form.get('timepickup')!.valueChanges.subscribe((val) => {
       // if(val===null) {
       // }
@@ -235,7 +231,6 @@ export class Step3Component implements OnInit {
 
         console.log('cargo data: ', cargo);
         if (cargo?.imported_file) {
-          // const emptyFile = new File([''], this.getFileName(cargo?.imported_file), { type: 'text/plain' });
           const emptyFile = this.createEmptyFile(cargo?.imported_file);
 
           this.files = {
@@ -290,7 +285,6 @@ export class Step3Component implements OnInit {
       this.step3Form.get('multipleCargoFile')!.setValue(this.createEmptyFile(), { emitEvent: false });
     }
     if (changes.clearUploadedMultipleFile && changes.clearUploadedMultipleFile.currentValue) {
-      // this.files = null;
       const emptyFile = this.createEmptyFile(this.files.name);
       console.log('STEP 3 - multiple file updated successfully - cleaning init file: ', emptyFile);
       this.step3Form.get('multipleCargoFile')!.setValue(emptyFile);
