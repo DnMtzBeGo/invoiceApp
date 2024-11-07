@@ -285,7 +285,6 @@ export class OrdersComponent implements OnInit {
         '53_48': draftData.cargo?.trailer?.load_cap,
       };
 
-      console.log('orders changes, draftData: ', this.draftData);
       this.draftData = { ...draftData };
     }
 
@@ -410,7 +409,6 @@ export class OrdersComponent implements OnInit {
   }
 
   public getStep3FormData(data: any) {
-    console.log('getting step 3 Data: ', data);
     this.orderData.cargo['53_48'] = data.unitType;
     this.orderData.cargo.type = data.cargoType;
     this.orderData.cargo.required_units = data.cargoWeight.length;
@@ -450,7 +448,6 @@ export class OrdersComponent implements OnInit {
   }
 
   public getStep4FormData(data: any) {
-    console.log('getting step 4 data: ', data);
     Object.assign(this.orderData.invoice, data);
   }
 
@@ -691,7 +688,6 @@ export class OrdersComponent implements OnInit {
 
   private async sendInvoice() {
     const { invoice } = this.orderData;
-    console.log('invoice data: ', invoice);
 
     const sendInvoice = async (payload) => {
       const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/update_invoice', { apiVersion: 'v1.1' });

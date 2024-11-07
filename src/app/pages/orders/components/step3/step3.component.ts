@@ -229,7 +229,6 @@ export class Step3Component implements OnInit {
           this.step3Form.get('hazardous_material').setValue(cargo.hazardous_material);
         }
 
-        console.log('cargo data: ', cargo);
         if (cargo?.imported_file) {
           const emptyFile = this.createEmptyFile(cargo?.imported_file);
 
@@ -274,7 +273,6 @@ export class Step3Component implements OnInit {
       const isoDateString = isoDate.toISOString();
 
       this.step3Form.get('timepickup').setValue(isoDateString);
-      // this.step3Form.get("timepickup").setValue(new Date(date));
     }
 
     if (changes.editCargoWeightNow && changes.editCargoWeightNow.currentValue) {
@@ -283,11 +281,10 @@ export class Step3Component implements OnInit {
 
     if (changes.clearFailedMultipleFile && changes.clearFailedMultipleFile.currentValue) {
       this.files = null;
-      this.step3Form.get('multipleCargoFile')!.setValue(this.createEmptyFile(), { emitEvent: false });
+      this.step3Form.get('multipleCargoFile')!.setValue(null, { emitEvent: false });
     }
     if (changes.clearUploadedMultipleFile && changes.clearUploadedMultipleFile.currentValue) {
       const emptyFile = this.createEmptyFile(this.files.name);
-      console.log('STEP 3 - multiple file updated successfully - cleaning init file: ', emptyFile);
       this.step3Form.get('multipleCargoFile')!.setValue(emptyFile);
     }
 

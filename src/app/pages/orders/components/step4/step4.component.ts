@@ -165,7 +165,6 @@ export class Step4Component implements OnInit, OnChanges {
     });
 
     this.step4Form.valueChanges.subscribe(() => {
-      // console.log('step4form changes: ', this.step4Form.value);
       this.step4FormData.emit(this.step4Form.value);
     });
   }
@@ -225,10 +224,8 @@ export class Step4Component implements OnInit, OnChanges {
 
           if (e.propertyName == 'series_id') {
             await this.fetchSerie();
-            console.log('filtering series...', receiver[e.propertyName], this.serieOptions);
             const el = this.serieOptions.find((el) => el._id == receiver[e.propertyName]);
             if (el) {
-              console.log('series_id: ', el);
               e.value = el.serie;
               return e;
             }
@@ -241,7 +238,6 @@ export class Step4Component implements OnInit, OnChanges {
 
         //Fill info
         this.invoiceContent = await Promise.all(this.invoiceContent.map(async (e) => await setInvoiceContent(e)));
-        // console.log('setting invoice content: ', this.invoiceContent);
       }
     }
   }
@@ -321,7 +317,6 @@ export class Step4Component implements OnInit, OnChanges {
   private updateCargo(orderdata: Order) {
     const { cargo } = orderdata;
 
-    // console.log('cargo data: ', cargo);
     this.cargoContent[0].value = 1;
     this.cargoContent[1].value = cargo.weigth || cargo['weight'] ? this.formatWeight(cargo.weigth) : '';
     this.cargoContent[2].value = cargo.type;
@@ -329,7 +324,6 @@ export class Step4Component implements OnInit, OnChanges {
   }
 
   public updateInvoice(data: any) {
-    console.log('updating invoice: ', data, ' draft config: ', this.draftConfig);
     this.invoiceContent[0].value = data.address;
     this.invoiceContent[1].value = data.company;
     this.invoiceContent[2].value = data.rfc;
