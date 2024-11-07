@@ -24,6 +24,7 @@ export class Step4Component implements OnInit, OnChanges {
   private serieOptions: any[] = [];
 
   private step4Form: FormGroup;
+  private draftConfig: any;
 
   public pickupContent: BegoCheckoutCardContent[] = [
     { propertyName: 'Full name', value: '' },
@@ -125,11 +126,10 @@ export class Step4Component implements OnInit, OnChanges {
       value: '',
       type: 'select',
       filterOptions: (search) => {
-        console.log('searching series... ', search, this.serieOptions);
         const formattedOptions = this.serieOptions.map((e) => ({
           title: e.serie,
           description: '',
-          code: e.serie,
+          code: e._id,
         }));
 
         return formattedOptions.filter((e) => `${e.title}`.toLowerCase().includes(search.toLowerCase()));
@@ -165,7 +165,7 @@ export class Step4Component implements OnInit, OnChanges {
     });
 
     this.step4Form.valueChanges.subscribe(() => {
-      console.log('step4form changes: ', this.step4Form.value);
+      // console.log('step4form changes: ', this.step4Form.value);
       this.step4FormData.emit(this.step4Form.value);
     });
   }
@@ -187,22 +187,24 @@ export class Step4Component implements OnInit, OnChanges {
     this.updateDropoff(orderData);
     this.updateCargo(orderData);
 
-    console.log('step 4 draft data: ', this.draftData);
-    console.log('step 4 order data: ', this.orderData);
-
     if (changes.draftData && changes.draftData.currentValue) {
       const { invoice } = changes.draftData.currentValue;
 
-      console.log('invoice ', invoice);
-
       if (invoice?.receiver) {
-        const { receiver } = invoice;
+        const { receiver, series_id } = invoice;
 
-        this.step4Form.setValue(receiver);
+        this.draftConfig = {
+          ...receiver,
+          address: receiver.address.place_id,
+          series_id,
+        };
+
+        this.step4Form.setValue(this.draftConfig);
+
         receiver.address = receiver.address.address;
+        receiver.series_id = series_id;
 
         const setInvoiceContent = async (e) => {
-          console.log('setting invoice content: ', e);
           if (e.propertyName == 'cfdi') {
             await this.fetchCFDI();
             const el = this.cfdiOptions.find((el) => el.code == receiver[e.propertyName]);
@@ -222,12 +224,12 @@ export class Step4Component implements OnInit, OnChanges {
           }
 
           if (e.propertyName == 'series_id') {
-            console.log('filtering series...', receiver[e.propertyName]);
             await this.fetchSerie();
-            const el = this.serieOptions.find((el) => el.code == receiver[e.propertyName]);
+            console.log('filtering series...', receiver[e.propertyName], this.serieOptions);
+            const el = this.serieOptions.find((el) => el._id == receiver[e.propertyName]);
             if (el) {
               console.log('series_id: ', el);
-              e.value = el.code;
+              e.value = el.serie;
               return e;
             }
           }
@@ -239,7 +241,7 @@ export class Step4Component implements OnInit, OnChanges {
 
         //Fill info
         this.invoiceContent = await Promise.all(this.invoiceContent.map(async (e) => await setInvoiceContent(e)));
-        console.log('setting invoice content: ', this.invoiceContent);
+        // console.log('setting invoice content: ', this.invoiceContent);
       }
     }
   }
@@ -284,7 +286,10 @@ export class Step4Component implements OnInit, OnChanges {
   }
 
   private async fetchSerie() {
-    const req = await this.apiRestService.apiRestGet(`invoice/series/by-carrier/${'626c27f50eb3fd2dbbd68f3b'}`);
+    const carrierId = localStorage.getItem('profileId');
+    if (!carrierId) return;
+
+    const req = await this.apiRestService.apiRestGet(`invoice/series/by-carrier/${carrierId}`);
     const { result } = await req.toPromise();
 
     this.serieOptions = [...result];
@@ -316,14 +321,15 @@ export class Step4Component implements OnInit, OnChanges {
   private updateCargo(orderdata: Order) {
     const { cargo } = orderdata;
 
+    // console.log('cargo data: ', cargo);
     this.cargoContent[0].value = 1;
-    this.cargoContent[1].value = this.formatWeight(cargo.weigth || cargo['weight']);
+    this.cargoContent[1].value = cargo.weigth || cargo['weight'] ? this.formatWeight(cargo.weigth) : '';
     this.cargoContent[2].value = cargo.type;
     this.cargoContent[3].value = cargo.description;
   }
 
   public updateInvoice(data: any) {
-    console.log('updating invoice: ', data);
+    console.log('updating invoice: ', data, ' draft config: ', this.draftConfig);
     this.invoiceContent[0].value = data.address;
     this.invoiceContent[1].value = data.company;
     this.invoiceContent[2].value = data.rfc;
@@ -333,10 +339,10 @@ export class Step4Component implements OnInit, OnChanges {
 
     this.step4Form.patchValue({
       ...data,
-      address: data.addressselected.place_id,
-      cfdi: data.cfdiselected.code,
-      tax_regime: data.tax_regimeselected.code,
-      series_id: data.series_idselected.code,
+      address: data.addressselected?.place_id || this.draftConfig?.address,
+      cfdi: data.cfdiselected?.code || this.draftConfig?.cfdi,
+      tax_regime: data.tax_regimeselected?.code || this.draftConfig?.tax_regime,
+      series_id: data.series_idselected?.code || this.draftConfig?.series_id,
     });
 
     this.invoiceEditable = false;
@@ -361,6 +367,7 @@ export class Step4Component implements OnInit, OnChanges {
   }
 
   public formatWeight(weight: number[]): string {
+    if (!weight?.length) return '';
     const unit = this.translateService.instant('orders.cargo-weight.unit');
     const quanitity = weight[0];
 

@@ -286,6 +286,7 @@ export class OrdersComponent implements OnInit {
       };
 
       console.log('orders changes, draftData: ', this.draftData);
+      this.draftData = { ...draftData };
     }
 
     if (changes.datepickup && changes.datepickup.currentValue) {
@@ -690,6 +691,7 @@ export class OrdersComponent implements OnInit {
 
   private async sendInvoice() {
     const { invoice } = this.orderData;
+    console.log('invoice data: ', invoice);
 
     const sendInvoice = async (payload) => {
       const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/update_invoice', { apiVersion: 'v1.1' });
