@@ -125,6 +125,7 @@ export class OrdersComponent implements OnInit {
       rfc: '',
       cfdi: '',
       tax_regime: '',
+      series_id: '',
     },
   };
 
@@ -283,6 +284,8 @@ export class OrdersComponent implements OnInit {
         ...draftData.cargo,
         '53_48': draftData.cargo?.trailer?.load_cap,
       };
+
+      console.log('orders changes, draftData: ', this.draftData);
     }
 
     if (changes.datepickup && changes.datepickup.currentValue) {
@@ -446,6 +449,7 @@ export class OrdersComponent implements OnInit {
   }
 
   public getStep4FormData(data: any) {
+    console.log('getting step 4 data: ', data);
     Object.assign(this.orderData.invoice, data);
   }
 
@@ -687,8 +691,6 @@ export class OrdersComponent implements OnInit {
   private async sendInvoice() {
     const { invoice } = this.orderData;
 
-    console.log('invoice data: ', invoice);
-
     const sendInvoice = async (payload) => {
       const req = await this.auth.apiRestPut(JSON.stringify(payload), 'orders/update_invoice', { apiVersion: 'v1.1' });
       await req.toPromise();
@@ -697,29 +699,23 @@ export class OrdersComponent implements OnInit {
     if (this.orderPreview) {
       sendInvoice({
         order_id: this.orderPreview.order_id,
-        receiver: {
-          address: {
-            place_id: invoice.address,
-          },
-          cfdi: invoice.cfdi,
-          rfc: invoice.rfc,
-          company: invoice.company,
-          tax_regime: invoice.tax_regime,
-        },
+        place_id: invoice.address,
+        cfdi: invoice.cfdi,
+        rfc: invoice.rfc,
+        company: invoice.company,
+        tax_regime: invoice.tax_regime,
+        series_id: invoice.series_id,
       });
     } else {
       this.afterOrderPreviewReceived('invoice', (orderPreview) => {
         sendInvoice({
           order_id: this.orderPreview.order_id,
-          receiver: {
-            address: {
-              place_id: invoice.address,
-            },
-            cfdi: invoice.cfdi,
-            rfc: invoice.rfc,
-            company: invoice.company,
-            tax_regime: invoice.tax_regime,
-          },
+          place_id: invoice.address,
+          cfdi: invoice.cfdi,
+          rfc: invoice.rfc,
+          company: invoice.company,
+          tax_regime: invoice.tax_regime,
+          series_id: invoice.series_id,
         });
       });
     }

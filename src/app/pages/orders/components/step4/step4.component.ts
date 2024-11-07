@@ -21,6 +21,7 @@ export class Step4Component implements OnInit {
   public invoiceEditable = false;
   private cfdiOptions: any[] = [];
   private taxRegimeOptions: any[] = [];
+  private serieOptions: any[] = [];
 
   private step4Form: FormGroup;
 
@@ -118,6 +119,22 @@ export class Step4Component implements OnInit {
         );
       },
     },
+    {
+      propertyName: 'series_id',
+      label: 'Serie',
+      value: '',
+      type: 'select',
+      filterOptions: (search) => {
+        console.log('searching series... ', search, this.serieOptions);
+        const formattedOptions = this.serieOptions.map((e) => ({
+          title: e.serie,
+          description: '',
+          code: e.serie,
+        }));
+
+        return formattedOptions.filter((e) => `${e.title}`.toLowerCase().includes(search.toLowerCase()));
+      },
+    },
   ];
 
   constructor(
@@ -140,6 +157,7 @@ export class Step4Component implements OnInit {
       ],
       cfdi: ['', Validators.required],
       tax_regime: ['', Validators.required],
+      series_id: ['', Validators.required],
     });
 
     this.step4Form.statusChanges.subscribe((val) => {
@@ -147,6 +165,7 @@ export class Step4Component implements OnInit {
     });
 
     this.step4Form.valueChanges.subscribe(() => {
+      console.log('step4form changes: ', this.step4Form.value);
       this.step4FormData.emit(this.step4Form.value);
     });
   }
@@ -154,6 +173,7 @@ export class Step4Component implements OnInit {
   public ngOnInit(): void {
     this.fetchCFDI();
     this.fetchTaxRegime();
+    this.fetchSerie();
 
     this.updateCardTitles();
     this.translateService.onLangChange.subscribe(() => {
@@ -168,6 +188,8 @@ export class Step4Component implements OnInit {
     this.updateCargo(orderData);
 
     if (changes.draftData && changes.draftData.currentValue) {
+      console.log('step 4 draft data: ', this.draftData);
+
       const { invoice } = changes.draftData.currentValue;
       if (invoice?.receiver) {
         const { receiver } = invoice;
@@ -176,6 +198,7 @@ export class Step4Component implements OnInit {
         receiver.address = receiver.address.address;
 
         const setInvoiceContent = async (e) => {
+          console.log('setting invoice content: ', e);
           if (e.propertyName == 'cfdi') {
             await this.fetchCFDI();
             const el = this.cfdiOptions.find((el) => el.code == receiver[e.propertyName]);
@@ -194,6 +217,17 @@ export class Step4Component implements OnInit {
             }
           }
 
+          if (e.propertyName == 'series_id') {
+            console.log('filtering series...', receiver[e.propertyName]);
+            await this.fetchSerie();
+            const el = this.serieOptions.find((el) => el.code == receiver[e.propertyName]);
+            if (el) {
+              console.log('series_id: ', el);
+              e.value = el.code;
+              return e;
+            }
+          }
+
           e.value = receiver[e.propertyName];
 
           return e;
@@ -201,6 +235,7 @@ export class Step4Component implements OnInit {
 
         //Fill info
         this.invoiceContent = await Promise.all(this.invoiceContent.map(async (e) => await setInvoiceContent(e)));
+        console.log('setting invoice content: ', this.invoiceContent);
       }
     }
   }
@@ -244,6 +279,13 @@ export class Step4Component implements OnInit {
     this.taxRegimeOptions = result.catalogs[0].documents;
   }
 
+  private async fetchSerie() {
+    const req = await this.apiRestService.apiRestGet(`invoice/series/by-carrier/${'626c27f50eb3fd2dbbd68f3b'}`);
+    const { result } = await req.toPromise();
+
+    this.serieOptions = [...result];
+  }
+
   private updatePickup(orderData: Order) {
     const { pickup, reference_number } = orderData;
     const { contact_info, tax_information } = pickup;
@@ -277,17 +319,20 @@ export class Step4Component implements OnInit {
   }
 
   public updateInvoice(data: any) {
+    console.log('updating invoice: ', data);
     this.invoiceContent[0].value = data.address;
     this.invoiceContent[1].value = data.company;
     this.invoiceContent[2].value = data.rfc;
     this.invoiceContent[3].value = data.cfdi;
     this.invoiceContent[4].value = data.tax_regime;
+    this.invoiceContent[5].value = data.series_id;
 
     this.step4Form.patchValue({
       ...data,
       address: data.addressselected.place_id,
       cfdi: data.cfdiselected.code,
       tax_regime: data.tax_regimeselected.code,
+      series_id: data.series_idselected.code,
     });
 
     this.invoiceEditable = false;
