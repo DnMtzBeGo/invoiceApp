@@ -241,14 +241,15 @@ export class Step3Component implements OnInit {
           this.step3Form.get('multipleCargoFile')!.setValue(emptyFile, { emitEvent: false });
           this.stepIndex = 1;
           this.stepStatus(1);
-          // this.clearFileValidators();
         }
       }
 
       if (pickup.startDate !== null) {
         this.draftDate = pickup.startDate;
       }
-      this.step3Form.get('unitType')!.setValue(cargo?.trailer?.load_cap);
+
+      if (cargo?.trailer?.load_cap) this.step3Form.get('unitType')!.setValue(cargo.trailer.load_cap);
+
       if (cargo?.weight) {
         this.step3Form.get('cargoWeight')!.setValue(cargo?.weight);
         this.editWeight = true;
