@@ -1,11 +1,21 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
+import { BegoChibiAlert, BegoDialogService, BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
 
 import { Step } from '../../shared/components/stepper/interfaces/Step';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
@@ -28,6 +38,8 @@ export interface OrderPreview {
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss'],
+
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersComponent implements OnInit {
   @ViewChild('ordersRef') public ordersRef!: ElementRef;
@@ -200,6 +212,7 @@ export class OrdersComponent implements OnInit {
     private locationsService: LocationsService,
     private dialog: MatDialog,
     private readonly notificationService: NotificationsService,
+    private begoDialog: BegoDialogService,
   ) {}
 
   private afterOrderPreviewReceived(identifier: string, callback: (orderPreview: Record<string, any>) => any) {
@@ -667,7 +680,15 @@ export class OrdersComponent implements OnInit {
         ${errors[this.lang] || ''}`;
         }
 
-        this.notificationService.showErrorToastr(errMsg, errors?.en ? 10000 : 5000, 'brand-snackbar-2');
+        this.begoDialog.open({
+          title: message?.[this.lang],
+          content: errors?.[this.lang] || '',
+          type: 'informative',
+          iconComponent: BegoChibiAlert,
+          btnCopies: {
+            confirm: 'Ok',
+          },
+        });
       });
   }
 
