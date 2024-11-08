@@ -65,11 +65,11 @@ import { FerroviarioComponent } from './components/invoice/carta-porte/ferroviar
 import { FiguraTransporteComponent } from './components/invoice/carta-porte/figura-transporte/figura-transporte.component';
 import { FiguraComponent } from './components/invoice/carta-porte/figura-transporte/components/figura/figura.component';
 import { MaritimoComponent } from './components/invoice/carta-porte/maritimo/maritimo.component';
-import { MercanciasComponent } from './components/invoice/carta-porte/mercancias/mercancias.component';
+//import { MercanciasComponent } from './components/invoice/carta-porte/mercancias/mercancias.component';
 import { TransporteComponent } from './components/invoice/carta-porte/transporte/transporte.component';
 import { UbicacionesComponent } from './components/invoice/carta-porte/ubicaciones/ubicaciones.component';
 import { UbicacionComponent } from './components/invoice/carta-porte/ubicaciones/components/ubicacion/ubicacion.component';
-import { CommodityComponent } from './components/commodity/commodity.component';
+
 import { EmisoresTableComponent } from './components/emisores-table/emisores-table.component';
 import { SeriesPageComponent } from './containers/series-page/series-page.component';
 import { SeriesTableComponent } from './components/series-table/series-table.component';
@@ -84,11 +84,15 @@ import { NotificationsService } from 'src/app/shared/services/notifications.serv
 import { TwoDigitDecimaNumberDirective } from '../shared/directives/decimal.directive';
 import { TooltipHelpModule } from 'src/app/shared/components/tooltip-help/tooltip-help.module';
 import { AppMaterialModule } from 'src/app/material';
-import { CantidadTransportaComponent } from './components/cantidad-transporta/cantidad-transporta.component';
+
 import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/regimenes-aduaneros/regimenes-aduaneros.component';
 
 import { BegoTableMultipleSelectionModule } from '@begomx/ui-components';
 import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MercanciasTableComponent } from './components/invoice/carta-porte/mercanciasv2.0/components/mercancias-table/mercancias-table.component';
+import { Mercanciasv20Component } from './components/invoice/carta-porte/mercanciasv2.0/mercanciasv2.0.component';
+import { CommodityComponent } from './components/invoice/carta-porte/mercanciasv2.0/components/commodity/commodity.component';
+import { CantidadTransportaComponent } from './components/invoice/carta-porte/mercanciasv2.0/components/cantidad-transporta/cantidad-transporta.component';
 @NgModule({
   declarations: [
     // OrdersPageComponent,
@@ -127,7 +131,7 @@ import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/materia
     FiguraTransporteComponent,
     FiguraComponent,
     MaritimoComponent,
-    MercanciasComponent,
+    //MercanciasComponent,
     TransporteComponent,
     UbicacionesComponent,
     UbicacionComponent,
@@ -150,6 +154,8 @@ import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/materia
     MultiplePaymentModalComponent,
     BillsDialogComponent,
     EditPaymentBillComponent,
+    MercanciasTableComponent,
+    Mercanciasv20Component,
   ],
   imports: [
     CommonModule,

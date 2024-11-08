@@ -1,12 +1,12 @@
-<form [formGroup]="commodity">
+<form [formGroup]="commodityForm">
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.bienes-transportados' | translate }}</mat-label>
 
-      <mat-select name="bienesTransportados" formControlName="bienesTransportados" class="disable-custom-format">
+      <mat-select name="bienes_transp" formControlName="bienes_transp" class="disable-custom-format">
         <mat-option>
           <ngx-mat-select-search
-            (keyup)="searchTransportedGoods($event.target.value)"
+            (input)="searchTransportedGoods($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -18,6 +18,7 @@
         </ng-container>
       </mat-select>
     </mat-form-field>
+
     <!-- input es de tipo ferroviario -->
     <!-- <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>Clave STCC (Opcional)</mat-label>
@@ -28,10 +29,14 @@
         [value]=""
       />
     </mat-form-field> -->
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.commodity.cantidad' | translate }}</mat-label>
+      <input matInput name="cantidad" type="number" formControlName="cantidad" [value]="" />
+    </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.clave-unidad' | translate }}</mat-label>
-      <mat-select name="claveUnidad" formControlName="claveUnidad" class="disable-custom-format">
+      <mat-select name="clave_unidad" formControlName="clave_unidad" class="disable-custom-format">
         <mat-option>
           <ngx-mat-select-search
             (keyup)="searchUnitType($event.target.value)"
@@ -48,22 +53,12 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ 'invoice.commodity.cantidad' | translate }}</mat-label>
-      <input matInput name="cantidad" type="number" formControlName="cantidad" [value]="" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ 'invoice.commodity.dimensiones' | translate }}</mat-label>
-      <input matInput name="dimensiones" formControlName="dimensiones" [value]="" />
-      <mat-error>{{ 'invoice.commodity.dimensiones-error' | translate }}</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.peso' | translate }}</mat-label>
-      <input matInput name="peso" type="number" formControlName="peso" [value]="" />
+      <input matInput name="peso" type="number" formControlName="peso_en_kg" [value]="" />
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.valor-mercancia' | translate }}</mat-label>
-      <input matInput name="valorMercancia" type="number" formControlName="valorMercancia" [value]="" />
+      <input matInput name="valor_mercancia" type="number" formControlName="valor_mercancia" [value]="" />
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.moneda' | translate }}</mat-label>
@@ -82,11 +77,25 @@
           </mat-option>
         </ng-container>
       </mat-select>
+
+      <button
+        *ngIf="commodityForm.get('moneda').value"
+        mat-icon-button
+        matSuffix
+        (click)="commodityForm.get('moneda').setValue(''); $event.stopPropagation()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.commodity.dimensiones' | translate }}</mat-label>
+      <input matInput name="dimensiones" formControlName="dimensiones" [value]="" />
+      <mat-error>{{ 'invoice.commodity.dimensiones-error' | translate }}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.tipo_materia' | translate }}</mat-label>
-      <mat-select formControlName="tipoMateria" class="disable-custom-format" name="tipoMateria">
+      <mat-select formControlName="tipo_materia" class="disable-custom-format" name="tipo_materia">
         <mat-option *ngFor="let option of typesOfMatter" [value]="option.clave">
           {{ option.clave }} - {{ option.descripcion }}
         </mat-option>
@@ -96,13 +105,13 @@
 
     <div class="hazardous-container">
       <p>{{ 'invoice.commodity.material-peligroso' | translate }}</p>
-      <mat-slide-toggle formControlName="materialPeligroso"></mat-slide-toggle>
+      <mat-slide-toggle formControlName="material_peligroso"></mat-slide-toggle>
     </div>
 
-    <mat-form-field *ngIf="commodity.value.materialPeligroso" appearance="outline" class="brand-field-1">
+    <mat-form-field *ngIf="commodityForm.value.material_peligroso" appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.clave-material-peligroso' | translate }}</mat-label>
 
-      <mat-select name="claveMaterialPeligroso" formControlName="claveMaterialPeligroso" class="disable-custom-format">
+      <mat-select name="cve_material_peligroso" formControlName="cve_material_peligroso" class="disable-custom-format">
         <mat-option>
           <ngx-mat-select-search
             (keyup)="searchHazardousMaterialType($event.target.value)"
@@ -118,8 +127,8 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field *ngIf="commodity.value.materialPeligroso" appearance="outline" class="brand-field-1">
-      <mat-label>{{ 'invoice.commodity.embalaje' | translate }} {{ commodity.value.embalaje }}</mat-label>
+    <mat-form-field *ngIf="commodityForm.value.material_peligroso" appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.commodity.embalaje' | translate }} {{ commodityForm.value.embalaje }}</mat-label>
 
       <mat-select name="embalaje" formControlName="embalaje" class="disable-custom-format">
         <mat-option>
@@ -141,16 +150,22 @@
       <mat-label>Fracción arancelaria</mat-label>
       <input
         matInput
-        name="fraccionArancelaria"
+        name="fraccion_arancelaria"
         placeholder=""
         type="text"
-        formControlName="fraccionArancelaria"
+        formControlName="fraccion_arancelaria"
         [value]="" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1" *ngIf="showFraccion">
       <mat-label>UUID del comprobante de comercio exterior</mat-label>
-      <input matInput name="UUIDComercioExt" placeholder="" type="text" formControlName="UUIDComercioExt" [value]="" />
+      <input
+        matInput
+        name="uuid_comercio_ext"
+        placeholder=""
+        type="text"
+        formControlName="uuid_comercio_ext"
+        [value]="" />
       <mat-error
         >Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o plg. Ejemplo: 10/10/10cm</mat-error
       >
@@ -178,12 +193,22 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.pedimento' | translate }}</mat-label>
-      <input matInput autocomplete="off" (keyup.enter)="addPedimento($event)" (keyup)="acceptOnlyNumbers($event)" />
+      <input
+        placeholder="Ingrese el numero de pedimento y presione Enter"
+        matInput
+        autocomplete="off"
+        (keyup.enter)="addPedimento($event)"
+        (keyup)="acceptOnlyNumbers($event)" />
     </mat-form-field>
   </div>
 
   <div class="grid">
-    <table mat-table [dataSource]="dataSourcePedimento" class="cartaPorteTable" *ngIf="dataSourcePedimento.length > 0">
+    <table
+      #pedimentosTable
+      mat-table
+      [dataSource]="dataSourcePedimento"
+      class="cartaPorteTable"
+      *ngIf="dataSourcePedimento.length > 0">
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef>
           {{ 'invoice.commodity.table-pedimento' | translate }}
@@ -201,6 +226,26 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row matRipple *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+  </div>
+
+  <div class="buttons">
+    <div class="add-merchandise-btn">
+      <div (click)="addCommodityRow()">
+        <div class="icon icon-check" *ngIf="commodityForm.get('id').value; else addCommodityIcon"></div>
+        <ng-template #addCommodityIcon>
+          <div class="icon icon-plus"></div>
+        </ng-template>
+        <span *ngIf="commodityForm.get('id').value; else addCommodity">Guardar cambios</span>
+        <ng-template #addCommodity>Agregar mercancia</ng-template>
+      </div>
+    </div>
+
+    <div class="cancel-merchandise-btn" *ngIf="commodityForm.get('id').value">
+      <div (click)="cancelAddCommodityRow()">
+        <div class="icon icon-close"></div>
+        <span *ngIf="commodityForm.get('id').value">Cancelar</span>
+      </div>
+    </div>
   </div>
 </form>
 <mat-divider></mat-divider>

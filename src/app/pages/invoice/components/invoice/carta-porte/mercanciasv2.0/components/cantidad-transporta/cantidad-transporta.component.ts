@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 export interface CantidadTansporta {
@@ -16,7 +16,7 @@ export interface CantidadTansportaChangedEvent {
 @Component({
   selector: 'app-cantidad-transporta',
   templateUrl: './cantidad-transporta.component.html',
-  styleUrls: ['./cantidad-transporta.component.scss']
+  styleUrls: ['./cantidad-transporta.component.scss'],
 })
 export class CantidadTransportaComponent implements OnInit {
   @Input() data: CantidadTansporta;
@@ -39,7 +39,7 @@ export class CantidadTransportaComponent implements OnInit {
     this.bindOnFormChanges();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.form.patchValue(this.data);
   }
 
