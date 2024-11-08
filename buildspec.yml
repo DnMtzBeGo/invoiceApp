@@ -12,12 +12,21 @@ phases:
     commands:
       - echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc
       - echo "@OWNER:registry=https://npm.pkg.github.com" >> ~/.npmrc
+      - echo Setting Node.js memory limit...
+      - export NODE_OPTIONS="--max-old-space-size=4096"
       - echo Installing NPM packages...
       - npm install
   build:
     commands:
       - echo Starting production build...
-      - ng build --configuration production
+      - |
+        if [ "$CODEBUILD_WEBHOOK_HEAD_REF" == "refs/heads/main" ]; then
+          echo "Building for production..."
+          ng build --configuration production
+        else
+          echo "Building for development..."
+          ng build
+        fi
 artifacts:
   files:
     - "**/*"

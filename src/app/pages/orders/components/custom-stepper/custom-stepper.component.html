@@ -1,0 +1,26 @@
+<div class="stepper-container">
+  <div class="steps" *ngIf="!blockFirstStep">
+    <div
+      *ngFor="let step of steps; let i = index"
+      class="step"
+      [class.active]="i === currentStep"
+      (click)="goToStep(i)">
+      {{ step.label }}
+    </div>
+
+    <div
+      class="active-line"
+      [ngStyle]="{
+        left: linePosition + '%',
+        width: lineWidth + '%'
+      }"></div>
+  </div>
+
+  <div class="step-content">
+    <ng-container *ngFor="let step of steps; let i = index">
+      <ng-container *ngIf="i === currentStep">
+        <ng-container *ngTemplateOutlet="step.template"></ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

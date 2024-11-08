@@ -25,7 +25,11 @@
     </bego-input>
     <bego-input>
       <span>{{ 'orders.title-reference' | translate }}*</span>
-      <input uiInput type="text" [placeholder]="'orders.placeholder-reference' | translate" formControlName="reference" />
+      <input
+        uiInput
+        type="text"
+        [placeholder]="'orders.placeholder-reference' | translate"
+        formControlName="reference" />
     </bego-input>
 
     <bego-calendar-time

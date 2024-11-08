@@ -128,12 +128,12 @@ export class HomeComponent implements OnInit {
   public restoreDraft() {
     const data = this.location.getState() as any;
 
-    if (!data.draft) {
+    if (!data?.draft?._id) {
       this.updateMap();
       return;
     }
 
-    this.draftData = data.draft;
+    this.draftData = { ...data.draft };
     const [pickup, dropoff] = this.draftData.destinations;
     this.locations.pickup = pickup.address;
     this.locations.dropoff = dropoff.address;
@@ -146,8 +146,9 @@ export class HomeComponent implements OnInit {
     this.locations.place_id_pickup = pickup.place_id;
     this.locations.place_id_dropoff = dropoff.place_id;
     this.typeMap = 'draft';
+
     window.requestAnimationFrame(() => this.googlemaps.updateDataLocations(this.locations));
-    this.showNewOrderCard();
+    this.showNewOrderCard(false);
     this.location.replaceState(''); // removing draft data once consuming
   }
 
@@ -156,7 +157,7 @@ export class HomeComponent implements OnInit {
     this.mapDashboardService.getFleetDetails.next(false);
   }
 
-  public async createDraft() {
+  public async createDraft(initDraft: boolean = false) {
     const dropoffId = this.locations.place_id_dropoff;
 
     const draftPayload = {
@@ -176,19 +177,29 @@ export class HomeComponent implements OnInit {
       origin: 'web',
     };
 
-    const req = await this.webService.apiRest(JSON.stringify(draftPayload), 'orders/create_draft', {
-      apiVersion: 'v1.1',
-    });
-    const { result } = await req.toPromise();
+    if (initDraft) {
+      const req = await this.webService.apiRest(JSON.stringify(draftPayload), 'orders/create_draft', {
+        apiVersion: 'v1.1',
+      });
 
-    this.orderPreview = result;
-  }
+      const { result } = await req.toPromise();
 
-  public async showNewOrderCard() {
-    await this.createDraft();
+      this.orderPreview = result;
+    } else {
+      this.orderPreview = {
+        order_id: this.draftData._id,
+        order_number: this.draftData.order_number,
+        destinations: [this.draftData.destinations[0]._id, this.draftData.destinations[1]._id],
+      };
+    }
+
     this.showOrderDetails = true;
     this.mapDashboardService.showPolygons = false;
     this.mapDashboardService.showFleetMap = false;
+  }
+
+  public async showNewOrderCard(initDraft: boolean = false) {
+    await this.createDraft(initDraft);
   }
 
   private async getLocationId(place_id: string): Promise<string> {

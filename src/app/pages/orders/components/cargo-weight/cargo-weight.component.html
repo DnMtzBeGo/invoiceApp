@@ -1,4 +1,9 @@
-<bego-alert-customer [showChibi]="false" [simple]="true" [arrayButtons]="arrayButtons" (closeEmitter)="save()" class="cargo-weight">
+<bego-alert-customer
+  [showChibi]="false"
+  [simple]="true"
+  [arrayButtons]="arrayButtons"
+  (closeEmitter)="save()"
+  class="cargo-weight">
   <h2 class="title">{{ 'orders.cargo-weight.subtitule' | translate }}</h2>
 
   <app-cargo-units [(units)]="data.units"></app-cargo-units>
@@ -6,7 +11,9 @@
   <ul class="unit-list">
     <li class="unit" *ngFor="let unit of data.units; index as i; trackBy: trackByIndex">
       <p>{{ 'orders.cargo-weight.unit' | translate }} {{ i + 1 }}</p>
-      <bego-input-increment-decrement [(value)]="data.units[i]" (sendValue)="updateUnit(i, $event)"></bego-input-increment-decrement>
+      <bego-input-increment-decrement
+        [(value)]="data.units[i]"
+        (sendValue)="updateUnit(i, $event)"></bego-input-increment-decrement>
     </li>
   </ul>
 </bego-alert-customer>

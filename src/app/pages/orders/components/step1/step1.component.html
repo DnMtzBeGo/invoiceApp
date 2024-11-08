@@ -10,7 +10,6 @@
           (value)="updateFormGroup($event)"
           [placeholder]="'orders.placeholder-fullname' | translate"
           [setValue]="step1Form.get('fullname')!.value"></bego-input>
-          
       </div>
 
       <div class="row-field">
@@ -59,7 +58,9 @@
 
       <div class="field" *ngIf="orderWithCP">
         <bego-label-input size="small" [textLabel]="('orders.title-company_name' | translate) + '*'"></bego-label-input>
-        <bego-input keyValue="company_name" (value)="updateFormGroup($event)"
+        <bego-input
+          keyValue="company_name"
+          (value)="updateFormGroup($event)"
           [placeholder]="'orders.placeholder-company_name' | translate"
           [setValue]="step1Form.get('company_name')!.value"></bego-input>
       </div>
@@ -73,7 +74,11 @@
           [setValue]="step1Form.get('reference')!.value"></bego-input>
       </div>
       <ng-container *ngIf="isDraft">
-        <bego-calendar-time *ngIf="cardIsOpen" [disabled]="false" [defaultDate]="datePickup" (changeValue)="getPickupDate($event)"></bego-calendar-time>
+        <bego-calendar-time
+          *ngIf="cardIsOpen"
+          [disabled]="false"
+          [defaultDate]="datePickup"
+          (changeValue)="getPickupDate($event)"></bego-calendar-time>
       </ng-container>
     </div>
   </form>

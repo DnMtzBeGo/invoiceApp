@@ -1,23 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { SummaryComponent } from './summary.component';
+import { CustomStepperComponent } from './custom-stepper.component';
 
-describe('SummaryComponent', () => {
-  let component: SummaryComponent;
-  let fixture: ComponentFixture<SummaryComponent>;
+describe('CustomStepperComponent', () => {
+  let component: CustomStepperComponent;
+  let fixture: ComponentFixture<CustomStepperComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SummaryComponent],
-      imports: [TranslateModule.forRoot()],
+      declarations: [CustomStepperComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SummaryComponent);
+    fixture = TestBed.createComponent(CustomStepperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

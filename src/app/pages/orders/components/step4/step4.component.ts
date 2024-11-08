@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BegoCheckoutCardContent, StepperService } from '@begomx/ui-components';
 import { TranslateService } from '@ngx-translate/core';
+
 import { CfdiService } from 'src/app/services/cfdi.service';
 import { Order } from 'src/app/shared/interfaces/order.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -9,45 +10,47 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 @Component({
   selector: 'app-step4',
   templateUrl: './step4.component.html',
-  styleUrls: ['./step4.component.scss']
+  styleUrls: ['./step4.component.scss'],
 })
-export class Step4Component implements OnInit {
-  @Input() orderData: Order;
-  @Input() draftData: any;
-  @Output() step4FormData: EventEmitter<any> = new EventEmitter();
-  @Output() validFormStep4: EventEmitter<any> = new EventEmitter();
+export class Step4Component implements OnInit, OnChanges {
+  @Input() public orderData: Order;
+  @Input() public draftData: any;
+  @Output() public step4FormData: EventEmitter<any> = new EventEmitter();
+  @Output() public validFormStep4: EventEmitter<any> = new EventEmitter();
 
-  invoiceEditable = false;
-  cfdiOptions: any[] = [];
-  taxRegimeOptions: any[] = [];
+  public invoiceEditable = false;
+  private cfdiOptions: any[] = [];
+  private taxRegimeOptions: any[] = [];
+  private serieOptions: any[] = [];
 
-  step4Form: FormGroup;
+  private step4Form: FormGroup;
+  private draftConfig: any;
 
-  pickupContent: BegoCheckoutCardContent[] = [
+  public pickupContent: BegoCheckoutCardContent[] = [
     { propertyName: 'Full name', value: '' },
     { propertyName: 'Phone number', value: '' },
     { propertyName: 'Email', value: '' },
     { propertyName: 'Reference', value: '' },
     { propertyName: 'RFC', value: '' },
     { propertyName: 'Date', value: '' },
-    { propertyName: 'Time', value: '' }
+    { propertyName: 'Time', value: '' },
   ];
 
-  dropoffContent: BegoCheckoutCardContent[] = [
+  public dropoffContent: BegoCheckoutCardContent[] = [
     { propertyName: 'Full name', value: '' },
     { propertyName: 'Phone number', value: '' },
     { propertyName: 'Email', value: '' },
-    { propertyName: 'Description', value: '' }
+    { propertyName: 'Description', value: '' },
   ];
 
-  cargoContent: BegoCheckoutCardContent[] = [
+  public cargoContent: BegoCheckoutCardContent[] = [
     { propertyName: 'Units', value: '' },
     { propertyName: 'Weight', value: '' },
     { propertyName: 'Cargo type', value: '' },
-    { propertyName: 'Description', value: '' }
+    { propertyName: 'Description', value: '' },
   ];
 
-  invoiceContent: BegoCheckoutCardContent[] = [
+  public invoiceContent: BegoCheckoutCardContent[] = [
     {
       propertyName: 'address',
       label: 'Address',
@@ -72,14 +75,14 @@ export class Step4Component implements OnInit {
           autoCompleteService.getPlacePredictions(
             {
               input: search,
-              componentRestrictions: { country: ['mx', 'us'] }
+              componentRestrictions: { country: ['mx', 'us'] },
             },
             (predictions) => {
               resolve(formatPredictions(predictions));
-            }
+            },
           );
         });
-      }
+      },
     },
     { propertyName: 'company', label: 'Company name', value: '', type: 'input' },
     { propertyName: 'rfc', label: 'RFC', value: '', type: 'input' },
@@ -92,11 +95,13 @@ export class Step4Component implements OnInit {
         const formattedOptions = this.cfdiOptions.map((e) => ({
           title: e.code,
           description: e.description,
-          code: e.code
+          code: e.code,
         }));
 
-        return formattedOptions.filter((e) => `${e.title} ${e.description}`.toLowerCase().includes(search.toLowerCase()));
-      }
+        return formattedOptions.filter((e) =>
+          `${e.title} ${e.description}`.toLowerCase().includes(search.toLowerCase()),
+        );
+      },
     },
     {
       propertyName: 'tax_regime',
@@ -107,12 +112,29 @@ export class Step4Component implements OnInit {
         const formattedOptions = this.taxRegimeOptions.map((e) => ({
           title: e.code,
           description: e.description,
-          code: e.code
+          code: e.code,
         }));
 
-        return formattedOptions.filter((e) => `${e.title} ${e.description}`.toLowerCase().includes(search.toLowerCase()));
-      }
-    }
+        return formattedOptions.filter((e) =>
+          `${e.title} ${e.description}`.toLowerCase().includes(search.toLowerCase()),
+        );
+      },
+    },
+    {
+      propertyName: 'series_id',
+      label: 'Serie',
+      value: '',
+      type: 'select',
+      filterOptions: (search) => {
+        const formattedOptions = this.serieOptions.map((e) => ({
+          title: e.serie,
+          description: '',
+          code: e._id,
+        }));
+
+        return formattedOptions.filter((e) => `${e.title}`.toLowerCase().includes(search.toLowerCase()));
+      },
+    },
   ];
 
   constructor(
@@ -120,7 +142,7 @@ export class Step4Component implements OnInit {
     private formBuilder: FormBuilder,
     private cfdiService: CfdiService,
     private apiRestService: AuthService,
-    private stepperService: StepperService
+    private stepperService: StepperService,
   ) {
     this.step4Form = this.formBuilder.group({
       address: ['', Validators.required],
@@ -130,11 +152,12 @@ export class Step4Component implements OnInit {
         Validators.compose([
           Validators.required,
           Validators.minLength(12),
-          Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/)
-        ])
+          Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z&\d]{2}(?:[A&\d]))?$/),
+        ]),
       ],
       cfdi: ['', Validators.required],
-      tax_regime: ['', Validators.required]
+      tax_regime: ['', Validators.required],
+      series_id: ['', Validators.required],
     });
 
     this.step4Form.statusChanges.subscribe((val) => {
@@ -144,12 +167,12 @@ export class Step4Component implements OnInit {
     this.step4Form.valueChanges.subscribe(() => {
       this.step4FormData.emit(this.step4Form.value);
     });
-
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.fetchCFDI();
     this.fetchTaxRegime();
+    this.fetchSerie();
 
     this.updateCardTitles();
     this.translateService.onLangChange.subscribe(() => {
@@ -157,7 +180,7 @@ export class Step4Component implements OnInit {
     });
   }
 
-  async ngOnChanges(changes: SimpleChanges) {
+  public async ngOnChanges(changes: SimpleChanges) {
     const orderData = changes.orderData.currentValue;
     this.updatePickup(orderData);
     this.updateDropoff(orderData);
@@ -165,21 +188,26 @@ export class Step4Component implements OnInit {
 
     if (changes.draftData && changes.draftData.currentValue) {
       const { invoice } = changes.draftData.currentValue;
+
       if (invoice?.receiver) {
+        const { receiver, series_id } = invoice;
 
-        const { receiver } = invoice;
+        this.draftConfig = {
+          ...receiver,
+          address: receiver.address.place_id,
+          series_id,
+        };
 
-        this.step4Form.setValue(receiver);
+        this.step4Form.setValue(this.draftConfig);
+
         receiver.address = receiver.address.address;
+        receiver.series_id = series_id;
 
-        const setInvoiceContent = async  (e) => {
-
-
+        const setInvoiceContent = async (e) => {
           if (e.propertyName == 'cfdi') {
             await this.fetchCFDI();
-            const el = this.cfdiOptions.find(el => el.code == receiver[e.propertyName]);
+            const el = this.cfdiOptions.find((el) => el.code == receiver[e.propertyName]);
             if (el) {
-
               e.value = `${el.code} - ${el.description}`;
               return e;
             }
@@ -187,9 +215,18 @@ export class Step4Component implements OnInit {
 
           if (e.propertyName == 'tax_regime') {
             await this.fetchTaxRegime();
-            const el = this.taxRegimeOptions.find(el => el.code == receiver[e.propertyName]);
+            const el = this.taxRegimeOptions.find((el) => el.code == receiver[e.propertyName]);
             if (el) {
               e.value = `${el.code} - ${el.description}`;
+              return e;
+            }
+          }
+
+          if (e.propertyName == 'series_id') {
+            await this.fetchSerie();
+            const el = this.serieOptions.find((el) => el._id == receiver[e.propertyName]);
+            if (el) {
+              e.value = el.serie;
               return e;
             }
           }
@@ -197,7 +234,6 @@ export class Step4Component implements OnInit {
           e.value = receiver[e.propertyName];
 
           return e;
-
         };
 
         //Fill info
@@ -206,7 +242,7 @@ export class Step4Component implements OnInit {
     }
   }
 
-  updateCardTitles() {
+  private updateCardTitles() {
     this.pickupContent[0].label = this.translateService.instant('orders.title-fullname');
     this.pickupContent[1].label = this.translateService.instant('orders.phone_text');
     this.pickupContent[3].label = this.translateService.instant('orders.title-reference');
@@ -227,16 +263,16 @@ export class Step4Component implements OnInit {
     this.invoiceContent[4].label = this.translateService.instant('checkout.txt-tax_regime');
   }
 
-  async fetchCFDI() {
+  private async fetchCFDI() {
     const { currentLang } = this.translateService;
     const observable = currentLang === 'es' ? this.cfdiService.getCFDI_es() : this.cfdiService.getCFDI_en();
 
     this.cfdiOptions = await observable.toPromise();
   }
 
-  async fetchTaxRegime() {
+  private async fetchTaxRegime() {
     const payload = {
-      catalogs: [{ name: 'sat_regimen_fiscal', version: '0' }]
+      catalogs: [{ name: 'sat_regimen_fiscal', version: '0' }],
     };
 
     const req = await this.apiRestService.apiRest(JSON.stringify(payload), 'invoice/catalogs/fetch');
@@ -245,7 +281,17 @@ export class Step4Component implements OnInit {
     this.taxRegimeOptions = result.catalogs[0].documents;
   }
 
-  updatePickup(orderData: Order) {
+  private async fetchSerie() {
+    const carrierId = localStorage.getItem('profileId');
+    if (!carrierId) return;
+
+    const req = await this.apiRestService.apiRestGet(`invoice/series/by-carrier/${carrierId}`);
+    const { result } = await req.toPromise();
+
+    this.serieOptions = [...result];
+  }
+
+  private updatePickup(orderData: Order) {
     const { pickup, reference_number } = orderData;
     const { contact_info, tax_information } = pickup;
 
@@ -258,7 +304,7 @@ export class Step4Component implements OnInit {
     this.pickupContent[6].value = this.formatTime(pickup.startDate);
   }
 
-  updateDropoff(orderdata: Order) {
+  private updateDropoff(orderdata: Order) {
     const { dropoff } = orderdata;
     const { contact_info, extra_notes } = dropoff;
 
@@ -268,62 +314,65 @@ export class Step4Component implements OnInit {
     this.dropoffContent[3].value = extra_notes;
   }
 
-  updateCargo(orderdata: Order) {
+  private updateCargo(orderdata: Order) {
     const { cargo } = orderdata;
 
     this.cargoContent[0].value = 1;
-    this.cargoContent[1].value = this.formatWeight(cargo.weigth || cargo['weight']);
+    this.cargoContent[1].value = cargo.weigth || cargo['weight'] ? this.formatWeight(cargo.weigth) : '';
     this.cargoContent[2].value = cargo.type;
     this.cargoContent[3].value = cargo.description;
   }
 
-  updateInvoice(data: any) {
+  public updateInvoice(data: any) {
     this.invoiceContent[0].value = data.address;
     this.invoiceContent[1].value = data.company;
     this.invoiceContent[2].value = data.rfc;
     this.invoiceContent[3].value = data.cfdi;
     this.invoiceContent[4].value = data.tax_regime;
+    this.invoiceContent[5].value = data.series_id;
 
     this.step4Form.patchValue({
       ...data,
-      address: data.addressselected.place_id,
-      cfdi: data.cfdiselected.code,
-      tax_regime: data.tax_regimeselected.code
+      address: data.addressselected?.place_id || this.draftConfig?.address,
+      cfdi: data.cfdiselected?.code || this.draftConfig?.cfdi,
+      tax_regime: data.tax_regimeselected?.code || this.draftConfig?.tax_regime,
+      series_id: data.series_idselected?.code || this.draftConfig?.series_id,
     });
 
     this.invoiceEditable = false;
   }
 
-  formatDate(date: Date | number): string {
+  public formatDate(date: Date | number): string {
     if (!date) return '';
 
     return new Intl.DateTimeFormat(this.translateService.currentLang, {
       month: 'long',
-      day: '2-digit'
+      day: '2-digit',
     }).format(date);
   }
 
-  formatTime(date: Date | number): string {
+  public formatTime(date: Date | number): string {
     if (!date) return '';
 
     return new Intl.DateTimeFormat(this.translateService.currentLang, {
       minute: '2-digit',
-      day: '2-digit'
+      day: '2-digit',
     }).format(date);
   }
 
-  formatWeight(weight: number[]): string {
+  public formatWeight(weight: number[]): string {
+    if (!weight?.length) return '';
     const unit = this.translateService.instant('orders.cargo-weight.unit');
     const quanitity = weight[0];
 
     return `${unit} 1 - ${quanitity} kg`;
   }
 
-  redirectToStep(step: number) {
+  public redirectToStep(step: number) {
     this.stepperService.setStep(step);
   }
 
-  editInvoice() {
+  public editInvoice() {
     this.invoiceEditable = true;
   }
 }

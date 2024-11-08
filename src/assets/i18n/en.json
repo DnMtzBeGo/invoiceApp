@@ -143,6 +143,14 @@
     "prime": {
       "no-vehicle": "Without vehicle",
       "walking": "Walking"
+    },
+    "upload-multiple-orders": {
+      "name": "File Name",
+      "labelBrowse": "Browse your file",
+      "labelOr": "or",
+      "btnBrowse": "Choose File",
+      "labelMax": "max",
+      "uploading": "Uploading..."
     }
   },
   "checkout": {

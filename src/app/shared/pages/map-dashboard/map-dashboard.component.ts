@@ -103,7 +103,7 @@ export class MapDashboardComponent {
       this.mapDashboardService.clearFilter.subscribe(() => this.selectedAction({ action: 'clear' })),
     );
 
-    await this.getFleetDetails(false);
+    // await this.getFleetDetails(false);
 
     await this.getDrivers();
     await this.getPolygons();
