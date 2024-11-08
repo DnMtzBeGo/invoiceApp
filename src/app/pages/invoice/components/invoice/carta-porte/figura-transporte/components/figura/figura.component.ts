@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatTable } from '@angular/material/table';
+
 import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
 import { CataloguesListService } from '../../../services/catalogues-list.service';
-import { MatTable } from '@angular/material/table';
 import { searchInList } from 'src/app/pages/invoice/containers/factura-edit-page/factura.core';
 
 @Component({
@@ -11,8 +12,8 @@ import { searchInList } from 'src/app/pages/invoice/containers/factura-edit-page
   styleUrls: ['./figura.component.scss'],
 })
 export class FiguraComponent implements OnInit {
-  @ViewChild(MatTable) table: MatTable<any>;
-  @Input() figuraInfo: any;
+  @ViewChild(MatTable) public table: MatTable<any>;
+  @Input() public figuraInfo: any;
 
   public dataSource: Array<object> = [];
   public displayedColumns: string[] = ['value', 'action'];
@@ -139,7 +140,7 @@ export class FiguraComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  public async ngOnInit(): Promise<void> {
     this.domicilioForm.controls.pais.valueChanges.subscribe(async (newVal: any) => {
       if (newVal) {
         this.estados = await this.cataloguesListService.getCatalogue('states', {

@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Observable, from, of, merge, Subject } from 'rxjs';
 import { mergeAll, pluck, distinctUntilChanged, share, switchMap, tap, map, startWith } from 'rxjs/operators';
+
 import { reactiveComponent } from 'src/app/shared/utils/decorators';
 import { ofType, oof } from 'src/app/shared/utils/operators.rx';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -28,14 +29,14 @@ export class FacturaDireccionInputComponent implements OnInit {
   private _direccion: FacturaDireccion | null = null;
 
   @Input()
-  set direccion(d: FacturaDireccion | null) {
+  public set direccion(d: FacturaDireccion | null) {
     // console.log('changes.direccion ', d || null);
 
     this._direccion = d;
     this.direccionEmitter.next(['direccion:set', d || null]);
   }
 
-  get direccion() {
+  public get direccion() {
     return this._direccion;
   }
 

@@ -17,9 +17,12 @@ import {
   takeUntil,
   startWith,
 } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { BegoDialogService } from '@begomx/ui-components';
+
 import { routes } from '../../consts';
 import { Paginator } from '../../models';
 import { FacturaFiltersComponent, ActionConfirmationComponent } from '../../modals';
@@ -28,12 +31,9 @@ import { reactiveComponent } from 'src/app/shared/utils/decorators';
 import { ofType, oof } from 'src/app/shared/utils/operators.rx';
 import { arrayToObject, object_compare, clone } from 'src/app/shared/utils/object';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { DatePipe } from '@angular/common';
 import { facturaPermissions } from '../factura-edit-page/factura.core';
 import { ApiRestService } from 'src/app/services/api-rest.service';
-import { BegoDialogService } from '@begomx/ui-components';
 import { IInvoicePayment, IPaymentComplementDialogParams } from '../../components/multiple-payment-modal/interfaces';
-import { MatDialogConfig } from '@angular/material/dialog';
 import { MultiplePaymentModalComponent } from '../../components/multiple-payment-modal/multiple-payment-modal.component';
 
 const filterParams = new Set([
@@ -60,7 +60,7 @@ const shouldObserve = (facturas) => facturas.some((factura) => status2observe.ha
 })
 export class FacturasPageComponent implements OnInit {
   public routes: typeof routes = routes;
-  $rx = reactiveComponent(this);
+  public $rx = reactiveComponent(this);
 
   private selectedInvoices: IInvoicePayment[] = [];
 

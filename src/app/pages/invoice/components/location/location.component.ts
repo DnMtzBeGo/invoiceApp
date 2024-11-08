@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { CataloguesListService } from '../invoice/carta-porte/services/catalogues-list.service';
 import { searchInList } from '../../containers/factura-edit-page/factura.core';
 
@@ -12,8 +13,8 @@ import { searchInList } from '../../containers/factura-edit-page/factura.core';
   ],
 })
 export class LocationComponent implements OnInit {
-  @Input() locationInfo: any;
-  @Output() locationInfoChanges = new EventEmitter<any>();
+  @Input() public locationInfo: any;
+  @Output() public locationInfoChanges = new EventEmitter<any>();
 
   public infoIsLoaded: boolean = false;
 

@@ -16,7 +16,6 @@ import {
   CantidadTansportaChangedEvent,
   CantidadTransportaComponent,
 } from '../cantidad-transporta/cantidad-transporta.component';
-
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CataloguesListService } from '../../../services/catalogues-list.service';
 import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';

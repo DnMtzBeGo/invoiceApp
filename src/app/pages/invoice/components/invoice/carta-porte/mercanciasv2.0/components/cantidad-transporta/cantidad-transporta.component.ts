@@ -19,7 +19,7 @@ export interface CantidadTansportaChangedEvent {
   styleUrls: ['./cantidad-transporta.component.scss'],
 })
 export class CantidadTransportaComponent implements OnInit {
-  @Input() data: CantidadTansporta;
+  @Input() public data: CantidadTansporta;
   @Input() public index: number;
   @Input() public totalRows: number;
 

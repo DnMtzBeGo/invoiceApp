@@ -5,7 +5,6 @@ import { BegoDialogService } from '@begomx/ui-components';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 import { BillsDialogComponent } from './bills-dialog/bills-dialog.component';
-
 import {
   IAmounts,
   IEmitterCatalogs,

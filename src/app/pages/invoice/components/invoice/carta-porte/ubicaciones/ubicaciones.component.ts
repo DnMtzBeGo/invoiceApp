@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+
 import { CartaPorteInfoService } from '../services/carta-porte-info.service';
 import { CataloguesListService } from '../services/catalogues-list.service';
 import { UbicacionComponent } from './components/ubicacion/ubicacion.component';

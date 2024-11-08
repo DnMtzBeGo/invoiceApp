@@ -1,14 +1,13 @@
 import { Component, Input, OnInit, OnChanges, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-
 import { Router } from '@angular/router';
+
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { Paginator } from '../../models';
 import { routes } from '../../consts';
 import { environment } from 'src/environments/environment';
 import { facturaPermissions, facturaStatus } from '../../containers/factura-edit-page/factura.core';
-
 import {
   ActionSendEmailFacturaComponent,
   ActionCancelarFacturaComponent,
@@ -18,7 +17,6 @@ import { IIndexInvoice, IInvoicesTable, IInvoicesTableItem, ITablePageUI, ITable
 import { InvoicePDF } from '../../containers/facturas-page/InvoicePDF';
 import { ApiRestService } from 'src/app/services/api-rest.service';
 import { IInvoiceChildPayment, IInvoicePayment } from '../multiple-payment-modal';
-
 import { _importe } from '../multiple-payment-modal/helpers';
 
 @Component({

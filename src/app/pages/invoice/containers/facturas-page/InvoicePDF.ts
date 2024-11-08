@@ -1,6 +1,5 @@
 import { previewFactura, toFactura } from '../factura-edit-page/factura.core';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
-
 import { ApiRestService } from 'src/app/services/api-rest.service';
 
 export class InvoicePDF {

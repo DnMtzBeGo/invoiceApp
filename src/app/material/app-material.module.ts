@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 //MATERIAL MODULES
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -39,6 +38,7 @@ import {
   NgxMatTimepickerModule,
 } from '@angular-material-components/datetime-picker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 @NgModule({
   declarations: [],
   imports: [

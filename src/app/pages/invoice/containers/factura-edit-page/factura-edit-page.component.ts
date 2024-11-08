@@ -38,8 +38,9 @@ import {
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from 'src/environments/environment';
 import omitEmpty from 'omit-empty';
+
+import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { reactiveComponent } from 'src/app/shared/utils/decorators';
@@ -289,7 +290,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
   public isForeignReceiver = false;
   public paisCatalogue = [];
 
-  @ViewChild('cartaporteCmp') cartaporteCmp: any;
+  @ViewChild('cartaporteCmp') public cartaporteCmp: any;
 
   constructor(
     private router: Router,

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { Remolques } from 'src/app/pages/invoice/models/invoice/carta-porte/remolques';
 import { SubtiposRemolques } from 'src/app/pages/invoice/models/invoice/carta-porte/subtipos-remolques';
 import { CataloguesListService } from '../services/catalogues-list.service';
@@ -15,12 +16,12 @@ const REMOLQUES_DATA: Remolques[] = [];
   styleUrls: ['./autotransporte.component.scss'],
 })
 export class AutotransporteComponent {
-  @ViewChild(MatTable) table: MatTable<Remolques>;
-  @Input() subtiposRemolques: SubtiposRemolques[];
-  @Input() info: any;
+  @ViewChild(MatTable) public table: MatTable<Remolques>;
+  @Input() public subtiposRemolques: SubtiposRemolques[];
+  @Input() public info: any;
 
-  displayedColumns: string[] = ['conf', 'plate', 'action'];
-  remolquesSource = [...REMOLQUES_DATA];
+  public displayedColumns: string[] = ['conf', 'plate', 'action'];
+  public remolquesSource = [...REMOLQUES_DATA];
 
   public permisosSCT: any[] = [];
   public filteredSCTPermissions: any[];
@@ -34,7 +35,7 @@ export class AutotransporteComponent {
   public trailerConfigurations: any[] = [];
   public filteredTrailerConfigurations: any[];
 
-  autotransporteForm = new FormGroup({
+  public autotransporteForm = new FormGroup({
     permisoSCT: new FormControl(''),
     numeroSCT: new FormControl(''),
     nombreCivil: new FormControl(''),
@@ -52,7 +53,7 @@ export class AutotransporteComponent {
     vehicleGrossWeight: new FormControl(''),
   });
 
-  remolquesForm = new FormGroup({
+  public remolquesForm = new FormGroup({
     subtipoRemolque: new FormControl(''),
     Placa: new FormControl(''),
   });

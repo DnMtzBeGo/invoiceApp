@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { CataloguesListService } from '../services/catalogues-list.service';
 import { MercanciasTableComponent } from './components/mercancias-table/mercancias-table.component';
 import { searchInList } from 'src/app/pages/invoice/containers/factura-edit-page/factura.core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CartaPorteInfoService } from '../services/carta-porte-info.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { CartaPorteInfoService } from '../services/carta-porte-info.service';
 export class Mercanciasv20Component implements OnChanges {
   @Input() public info: any;
   @Input() public invoice_id: string = '';
-  @ViewChild('commoditiesTable') commoditiesTable: MercanciasTableComponent;
+  @ViewChild('commoditiesTable') public commoditiesTable: MercanciasTableComponent;
 
   public editId: string = null;
 
