@@ -1,0 +1,8 @@
+.commodities-table-wrapper {
+  ::ng-deep {
+    .mat-mdc-card {
+      margin: 0px;
+      padding: 0px;
+    }
+  }
+}
