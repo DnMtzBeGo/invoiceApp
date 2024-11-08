@@ -39,6 +39,18 @@
   <div class="page-wrapper">
     <!-- forms -->
     <div id="form">
+      <!--  afeter try to stamp error(s)-->
+      <div class="stamp-errors" *ngIf="vm.form?.error?.length && ![3, 4].includes(+vm.form?.status)">
+        <h3>Se encontraron errores en el timbrado:</h3>
+        <div>
+          {{ vm.form?.error?.length > 0 && !vm.readonly ? showError(vm.form) : '' }}
+          <p style="margin-top: 15px">
+            NOTA: Aún cuando se corrijan estos errores, seguirá apareciendo este mensaje hasta el próximo intento de
+            timbrado.
+          </p>
+        </div>
+      </div>
+
       <!-- <span
         style="
           position: absolute;
@@ -2058,7 +2070,7 @@
       </section>
 
       <section id="complementos" [style.display]="vm.readonly || vm.tab === 'complementos' ? 'block' : 'none'">
-        <app-carta-porte-page [facturaInfo]="vm.form" #cartaporteCmp></app-carta-porte-page>
+        <app-carta-porte-page [invoice_id]="vm.form?._id" [facturaInfo]="vm.form" #cartaporteCmp></app-carta-porte-page>
       </section>
 
       <div *ngIf="!vm.readonly" id="form-footer">
@@ -2093,7 +2105,6 @@
       </nav>
 
       <div class="actions" *ngIf="!vm.readonly">
-        <!-- Errors -->
         <div
           style="
             grid-column: span 2;
@@ -2103,9 +2114,10 @@
             flex: 1;
             white-space: pre-line;
           ">
-          {{ showError(vm.formError) || (vm.form?.error?.length > 0 && !vm.readonly ? showError(vm.form) : '') }}
+          {{ showError(vm.formError) }}
         </div>
 
+        <!-- Immediate validation errors -->
         <div *ngIf="model === 'factura'" style="grid-column: span 2">
           <button
             mat-flat-button

@@ -5,6 +5,7 @@ import {
   ChangeDetectionStrategy,
   ViewChild,
   ChangeDetectorRef,
+  OnDestroy,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
@@ -79,6 +80,7 @@ import { FacturaEmitterComponent } from '../../components/factura-emitter/factur
 import { SeriesNewComponent } from '../../components/series-new/series-new.component';
 import { BegoSliderDotsOpts } from 'src/app/shared/components/bego-slider-dots/bego-slider-dots.component';
 import { CataloguesListService } from '../../components/invoice/carta-porte/services/catalogues-list.service';
+import { CartaPorteInfoService } from '../../components/invoice/carta-porte/services/carta-porte-info.service';
 
 interface VM {
   // "receptor" | "emisor" | "conceptos" | "complementos";
@@ -209,7 +211,7 @@ interface VM {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FacturaEditPageComponent implements OnInit {
+export class FacturaEditPageComponent implements OnInit, OnDestroy {
   public routes: typeof routes = routes;
   public URL_BASE = environment.URL_BASE;
   public token = localStorage.getItem('token') || '';
@@ -298,6 +300,7 @@ export class FacturaEditPageComponent implements OnInit {
     private translateService: TranslateService,
     private cataloguesListService: CataloguesListService,
     private cd: ChangeDetectorRef,
+    private consignmentNoteService: CartaPorteInfoService,
   ) {
     this.model = this.route.snapshot?.data.model;
 
@@ -308,7 +311,7 @@ export class FacturaEditPageComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    //TAB
+    //TABS
     const tab$ = merge(
       of(this.route.snapshot.queryParams.tab ?? 'receptor'),
       (this.formEmitter.pipe(ofType('tab')) as Observable<string>).pipe(
@@ -902,16 +905,20 @@ export class FacturaEditPageComponent implements OnInit {
       );
     }
 
-    return from(this.apiRestService.apiRestGet('invoice', { loader: 'false', _id })).pipe(
+    return from(this.apiRestService.apiRestGet(`invoice/read-one/${_id}`, { loader: 'false', merch: 0 })).pipe(
       mergeAll(),
       map((responseData) => {
         const factura = fromFactura(
-          responseData?.result?.invoices?.[0] ?? {
+          responseData?.result ?? {
             _notExists: true,
           },
         );
 
         if (factura.rfc === 'XEXX010101000') this.isForeignReceiver = true;
+
+        // setting invoice_id for consignment note
+        if (factura?._id) this.consignmentNoteService.invoice_id = factura?._id;
+
         return factura;
       }),
     );
@@ -1480,5 +1487,9 @@ export class FacturaEditPageComponent implements OnInit {
 
   public searchSeries(code: string): void {
     searchInList(this, ['vm', 'series'], 'filteredSeries', code, '_id', 'serie');
+  }
+
+  public ngOnDestroy(): void {
+    this.consignmentNoteService.unloadService();
   }
 }
