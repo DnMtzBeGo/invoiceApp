@@ -16,8 +16,6 @@ export class CircularAvatarComponent implements OnChanges {
   constructor() {}
 
   public ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.data);
-
     if (changes.hasOwnProperty('fleetMember')) {
       switch (this.fleetMember) {
         case 'drivers':
@@ -39,17 +37,17 @@ export class CircularAvatarComponent implements OnChanges {
 
     switch (this.fleetMember) {
       case 'drivers':
-        lines.push(this.data.nickname);
+        lines.push(this.data?.nickname);
         break;
       case 'vehicle':
-        lines.push(this.data.attributes.vehicle_number);
+        lines.push(this.data?.attributes.vehicle_number);
         break;
       default:
-        lines.push(this.data.model);
+        lines.push(this.data?.model);
         break;
     }
 
-    if (this.data.original_fleet) {
+    if (this.data?.original_fleet) {
       lines.push(this.data.original_fleet.name);
     }
 

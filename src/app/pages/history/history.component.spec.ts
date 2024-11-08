@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { HistoryComponent } from './history.component';
 
@@ -8,9 +10,9 @@ describe('HistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HistoryComponent ]
-    })
-    .compileComponents();
+      declarations: [HistoryComponent],
+      imports: [HttpClientModule, TranslateModule.forRoot()],
+    }).compileComponents();
   });
 
   beforeEach(() => {
