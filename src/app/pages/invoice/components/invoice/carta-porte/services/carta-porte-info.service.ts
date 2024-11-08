@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { ApiRestService } from '@begomx/ui-components';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { generateIDCCP } from 'src/app/pages/invoice/containers/factura-edit-page/factura.core';
 import { InfoModalComponent } from 'src/app/pages/invoice/modals/info-modal/info-modal.component';
 import { ICommodity } from '../mercanciasv2.0/model';
 import { Paginator } from 'src/app/pages/invoice/models';
+import { ApiRestService } from 'src/app/services/api-rest.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,15 +31,8 @@ export class CartaPorteInfoService {
   public addRecolectedInfo(infoToAdd: any) {
     const { isValid } = infoToAdd;
     delete infoToAdd.isValid;
-    if (!isValid && !this.invalidInfo) {
-      this.invalidInfo = true;
-      // this.showInvalidInfoModal(
-      //   `Se encontró un error en ${Object.keys(infoToAdd)[0].replace(
-      //     /_/g,
-      //     ' '
-      //   )}`
-      // );
-    }
+    if (!isValid && !this.invalidInfo) this.invalidInfo = true;
+
     this.info = { ...this.info, ...infoToAdd };
   }
 
@@ -97,7 +90,7 @@ export class CartaPorteInfoService {
   public getMerchandise(component: any, pagination: Paginator): void {
     if (this.invoice_id) {
       this.api
-        .request('GET', `v1.0/consignment-note/merchandise/${this.invoice_id}`, {
+        .request('GET', `consignment-note/merchandise/${this.invoice_id}`, {
           params: { page: pagination.pageIndex.toString(), limit: pagination.pageSize.toString() },
         })
         .subscribe((response) => {
@@ -109,12 +102,6 @@ export class CartaPorteInfoService {
                 total: response.result.total,
                 size: response.result.limit,
               };
-              // component.page = {
-              //   pageIndex: response.result.page,
-              //   pageSize: response.result.limit,
-              //   pageTotal: response.result.pages,
-              //   pageSearch: '',
-              // };
             }
           });
         });
@@ -124,7 +111,7 @@ export class CartaPorteInfoService {
   public createOrUpdateCommodityAtDatabase(data: ICommodity): Observable<any> {
     const body = { ...data };
     delete body.id; // removing local id
-    return this.api.request('POST', `v1.0/consignment-note/merchandise/create-or-update/${this.invoice_id}`, { body });
+    return this.api.request('POST', `consignment-note/merchandise/create-or-update/${this.invoice_id}`, { body });
   }
 
   private async _setCommodities(commodities: ICommodity[]): Promise<void> {
