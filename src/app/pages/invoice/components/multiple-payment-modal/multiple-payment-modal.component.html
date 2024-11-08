@@ -21,7 +21,7 @@
             <span>4.0</span>
           </div>
 
-          <mat-form-field appearance="outline" [attr.readonly]="readonly">
+          <mat-form-field appearance="outline" class="disable-custom-format" [attr.readonly]="readonly">
             <mat-label>RFC</mat-label>
             <input matInput formControlName="rfc" [readonly]="readonly" />
             <mat-error>El RFC es obligatorio</mat-error>

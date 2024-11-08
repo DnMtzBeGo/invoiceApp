@@ -44,6 +44,7 @@ const filterParams = new Set([
   'tipo_de_comprobante',
   'uuid',
   'status',
+  'metodo_de_pago',
 ]);
 
 const status2observe = new Set([2, 4]);
@@ -76,6 +77,7 @@ export class FacturasPageComponent implements OnInit {
       receptor?: string;
       tipo_de_comprobante?: string;
       status?: string;
+      metodo_de_pago?: string;
     };
     facturas?: unknown[];
     facturasLoading?: boolean;
@@ -366,10 +368,22 @@ export class FacturasPageComponent implements OnInit {
   public openFilters() {
     if (this.filtersDialogRef) return;
 
+    const metodosDePago = [
+      {
+        clave: 'PUE',
+        descripcion: 'Pago en una sola exhibición',
+      },
+      {
+        clave: 'PPD',
+        descripcion: 'Pago diferido o en parcialidades',
+      },
+    ];
+
     this.filtersDialogRef = this.matDialog.open(FacturaFiltersComponent, {
       data: {
         tiposComprobante: this.vm.tiposComprobante,
         facturaStatus: this.vm.facturaStatus,
+        metodosDePago,
         params: clone(this.vm.params),
       },
       restoreFocus: false,

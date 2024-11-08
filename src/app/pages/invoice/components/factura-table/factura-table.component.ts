@@ -7,7 +7,7 @@ import { NotificationsService } from 'src/app/shared/services/notifications.serv
 import { Paginator } from '../../models';
 import { routes } from '../../consts';
 import { environment } from 'src/environments/environment';
-import { facturaPermissions, facturaStatus, toFactura } from '../../containers/factura-edit-page/factura.core';
+import { facturaPermissions, facturaStatus } from '../../containers/factura-edit-page/factura.core';
 
 import {
   ActionSendEmailFacturaComponent,
@@ -18,7 +18,7 @@ import { IIndexInvoice, IInvoicesTable, IInvoicesTableItem, ITablePageUI, ITable
 import { InvoicePDF } from '../../containers/facturas-page/InvoicePDF';
 import { ApiRestService } from 'src/app/services/api-rest.service';
 import { IInvoiceChildPayment, IInvoicePayment } from '../multiple-payment-modal';
-import { from } from 'rxjs';
+
 import { _importe } from '../multiple-payment-modal/helpers';
 
 @Component({
@@ -46,7 +46,6 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
 
   public selectedRows: IInvoicePayment[] = [];
 
-  public sizeOptions = [5, 10, 20, 50, 100];
   //Filter
   public isShowFilterInput: boolean = false;
 

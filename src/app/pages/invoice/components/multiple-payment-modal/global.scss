@@ -107,5 +107,13 @@ main {
         font-size: 12px;
       }
     }
+
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding-top: 0.75em !important;
+    }
+    .mat-select:not(.disable-custom-format) {
+      padding: 0px;
+      border: 0px;
+    }
   }
 }

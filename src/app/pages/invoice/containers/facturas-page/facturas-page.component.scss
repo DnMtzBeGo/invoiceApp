@@ -136,6 +136,11 @@
       margin-right: auto;
       max-width: clamp(600px, 80vw, 70rem) !important;
     }
+
+    .mat-mdc-dialog-surface {
+      background-color: #111;
+      padding: 45px 25px;
+    }
   }
 }
 
