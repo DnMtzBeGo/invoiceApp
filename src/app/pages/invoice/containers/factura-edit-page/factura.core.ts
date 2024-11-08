@@ -1,4 +1,5 @@
 import { addObjectKeys, prop } from '../../../../shared/utils/object';
+import { v4 as uuidv4 } from 'uuid';
 
 const add = (x, y) => x + y;
 
@@ -210,18 +211,39 @@ export const toFactura = (factura: any) => {
 };
 
 export const fromFacturaCopy = (factura) => {
-  delete factura._id;
-  delete factura.status;
-  delete factura.updated_at;
-  delete factura.canceled;
-  delete factura.error;
-  delete factura.source;
-  delete factura.stamped;
-  delete factura.exportacion;
-  delete factura.fecha_emision;
-  delete factura.order;
+  const nonDuplicableProps = [
+    '_id',
+    'canceled',
+    'status',
+    'update_at',
+    'uuid',
+    'files',
+    'folio',
+    'error',
+    'source',
+    'stamped',
+    'exportacion',
+    'fecha_emision',
+    'fecha_certificacion',
+    'order',
+    'notifications',
+    'payments',
+    'serie_text',
+    'user_id',
+  ];
+
+  for (const key of nonDuplicableProps) delete factura?.[key];
+
+  // avoid to use same id_ccp for duplicated invoice
+  if (factura?.carta_porte && Object.keys(factura.carta_porte)) factura.carta_porte.id_ccp = generateIDCCP();
+
+  factura.documentos_relacionados = [];
+
   return factura;
 };
+
+export const generateIDCCP = (): string => 'CCC' + uuidv4().substring(3, 36).toUpperCase();
+export const generateUUID = (): string => uuidv4().toUpperCase();
 
 export const facturaPermissions = (factura) => {
   const edit = !factura?.status || [1, 9].includes(factura.status);

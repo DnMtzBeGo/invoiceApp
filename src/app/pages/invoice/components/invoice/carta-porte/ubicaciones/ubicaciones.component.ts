@@ -42,7 +42,7 @@ export class UbicacionesComponent implements OnInit {
     });
   }
 
-  public publicngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     // console.log(changes)
     // console.log(changes.info)
     if (changes.info.currentValue) {
