@@ -34,7 +34,7 @@
               {
                 "glob": "**/*",
                 "input": "node_modules/@begomx/ui-components/assets",
-                "output": "/"
+                "output": "assets"
               }
             ],
             "styles": [
@@ -101,10 +101,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
