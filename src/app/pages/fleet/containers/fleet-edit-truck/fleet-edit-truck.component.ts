@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +15,7 @@ import { UploadFileInfo, UploadFilesComponent } from '../../components/upload-fi
 @Component({
   selector: 'app-fleet-edit',
   templateUrl: './fleet-edit-truck.component.html',
-  styleUrls: ['./fleet-edit-truck.component.scss']
+  styleUrls: ['./fleet-edit-truck.component.scss'],
 })
 export class FleetEditTruckComponent implements OnInit {
   @ViewChild('sliderRef') sliderRef: ElementRef;
@@ -50,14 +49,14 @@ export class FleetEditTruckComponent implements OnInit {
     private authService: AuthService,
     private matDialog: MatDialog,
     private webService: AuthService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
   ) {
     this.route.params;
 
     this.fleetTabs = [
       this.translateService.instant('fleet.trucks.truck_details'),
       this.translateService.instant('fleet.trucks.truck_settings'),
-      this.translateService.instant('fleet.trucks.truck_insurance')
+      this.translateService.instant('fleet.trucks.truck_insurance'),
     ];
   }
 
@@ -74,7 +73,7 @@ export class FleetEditTruckComponent implements OnInit {
       truck_settings: ['', Validators.required],
       truck_settings_text: [''],
       insurer: ['', Validators.required],
-      policy_number: ['', Validators.required]
+      policy_number: ['', Validators.required],
     });
 
     await this.fillCataloguesFromDb();
@@ -137,9 +136,9 @@ export class FleetEditTruckComponent implements OnInit {
               fileInfo.uploadPercentage = (resp.loaded / resp.total) * 100;
             });
           }
-        }
+        },
       },
-      backdropClass: ['brand-dialog-1', 'no-padding']
+      backdropClass: ['brand-dialog-1', 'no-padding'],
     });
   }
 
@@ -197,16 +196,18 @@ export class FleetEditTruckComponent implements OnInit {
       catalogs: [
         {
           name: 'sat_cp_tipos_de_permiso',
-          version: 0
+          version: 0,
         },
         {
           name: 'sat_cp_config_autotransporte',
-          version: 0
-        }
-      ]
+          version: 0,
+        },
+      ],
     };
 
-    const { result } = await (await this.webService.apiRest(JSON.stringify(payload), 'invoice/catalogs/fetch')).toPromise();
+    const { result } = await (
+      await this.webService.apiRest(JSON.stringify(payload), 'invoice/catalogs/fetch')
+    ).toPromise();
 
     this.catalogs = result.catalogs;
     this.filteredPermisosSCT = this.getCatalogue('sat_cp_tipos_de_permiso');
@@ -223,10 +224,10 @@ export class FleetEditTruckComponent implements OnInit {
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
       data: {
         modalTitle: this.translateService.instant('invoice.invoice-table.delete-title'),
-        modalMessage: this.translateService.instant('fleet.trucks.delete-insurance-warning')
+        modalMessage: this.translateService.instant('fleet.trucks.delete-insurance-warning'),
       },
       restoreFocus: false,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
     });
 
     dialogRef.afterClosed().subscribe((response: boolean) => {
@@ -257,14 +258,16 @@ export class FleetEditTruckComponent implements OnInit {
 
     const requestOptions = {
       reportProgress: true,
-      observe: 'events'
+      observe: 'events',
     };
 
     const appBehaviourOptions = {
-      loader: 'false'
+      loader: 'false',
     };
 
-    (await this.webService.uploadFilesSerivce(formData, 'trucks/upload_files', requestOptions, appBehaviourOptions)).subscribe((resp) => {
+    (
+      await this.webService.uploadFilesSerivce(formData, 'trucks/upload_files', requestOptions, appBehaviourOptions)
+    ).subscribe((resp) => {
       if (resp.status == 200) this.getInsuranceFile({ id });
     });
   }
@@ -280,7 +283,7 @@ export class FleetEditTruckComponent implements OnInit {
   async updateChanges() {
     const payload = {
       id_truck: this.route.snapshot.params.id,
-      attributes: this.truckDetailsForm.value
+      attributes: this.truckDetailsForm.value,
     };
     (await this.webService.apiRest(JSON.stringify(payload), 'trucks/insert_attributes')).subscribe(() => {
       this.router.navigateByUrl('fleet/trucks');
@@ -357,14 +360,19 @@ export class FleetEditTruckComponent implements OnInit {
 
     const requestOptions = {
       reportProgress: true,
-      observe: 'events'
+      observe: 'events',
     };
 
     const appBehaviourOptions = {
-      loader: 'false'
+      loader: 'false',
     };
 
-    return await this.webService.uploadFilesSerivce(formData, 'trucks/upload_pictures', requestOptions, appBehaviourOptions);
+    return await this.webService.uploadFilesSerivce(
+      formData,
+      'trucks/upload_pictures',
+      requestOptions,
+      appBehaviourOptions,
+    );
   }
 
   arePlatesValid = ({ value }: FormControl): ValidationErrors | null => {
