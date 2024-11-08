@@ -97,7 +97,7 @@ export class CartaPorteInfoService {
   public getMerchandise(component: any, pagination: Paginator): void {
     if (this.invoice_id) {
       this.api
-        .request('GET', `consignment-note/merchandise/${this.invoice_id}`, {
+        .request('GET', `v1.0/consignment-note/merchandise/${this.invoice_id}`, {
           params: { page: pagination.pageIndex.toString(), limit: pagination.pageSize.toString() },
         })
         .subscribe((response) => {
@@ -124,7 +124,7 @@ export class CartaPorteInfoService {
   public createOrUpdateCommodityAtDatabase(data: ICommodity): Observable<any> {
     const body = { ...data };
     delete body.id; // removing local id
-    return this.api.request('POST', `consignment-note/merchandise/create-or-update/${this.invoice_id}`, { body });
+    return this.api.request('POST', `v1.0/consignment-note/merchandise/create-or-update/${this.invoice_id}`, { body });
   }
 
   private async _setCommodities(commodities: ICommodity[]): Promise<void> {
