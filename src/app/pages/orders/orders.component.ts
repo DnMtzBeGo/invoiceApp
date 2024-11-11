@@ -38,8 +38,6 @@ export interface OrderPreview {
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss'],
-
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersComponent implements OnInit {
   @ViewChild('ordersRef') public ordersRef!: ElementRef;
@@ -670,6 +668,7 @@ export class OrdersComponent implements OnInit {
         this.clearUploadedMultipleFile = !this.clearUploadedMultipleFile;
       })
       .catch(({ error: { error } }) => {
+        this.multipleCargoFile = null;
         this.clearFailedMultipleFile = !this.clearFailedMultipleFile;
         const { message, errors } = error;
         let errMsg = `${message[this.lang] || ''}.`;
