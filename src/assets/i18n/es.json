@@ -1609,7 +1609,8 @@
           "drivers": "Drivers",
           "polygons": "Polígonos",
           "tags": "Etiquetas",
-          "empty": ""
+          "empty": "",
+          "search": "Buscar..."
         },
         "date": "Fecha",
         "heatmap": {

@@ -1605,7 +1605,8 @@
           "drivers": "Drivers",
           "polygons": "Polygon",
           "tags": "Tags",
-          "empty": ""
+          "empty": "",
+          "search": "Search..."
         },
         "date": "Date",
         "heatmap": {
