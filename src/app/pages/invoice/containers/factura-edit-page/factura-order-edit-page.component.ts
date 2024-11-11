@@ -1,8 +1,19 @@
 import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { of, timer, Subject, merge, from, Observable, forkJoin } from 'rxjs';
-import { tap, filter, switchMap, share, map, withLatestFrom, takeUntil, mergeAll, distinctUntilChanged } from 'rxjs/operators';
+import {
+  tap,
+  filter,
+  switchMap,
+  share,
+  map,
+  withLatestFrom,
+  takeUntil,
+  mergeAll,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { reactiveComponent } from 'src/app/shared/utils/decorators';
 import { ofType, simpleFilters, oof } from 'src/app/shared/utils/operators.rx';
@@ -36,7 +47,7 @@ interface VM {
       deferred_payment: boolean;
     };
     destinations: {
-      destination_id: string,
+      destination_id: string;
       tax_information?: {
         rfc?: string;
         company_name?: string;
@@ -90,7 +101,7 @@ interface VM {
   selector: 'app-factura-order-edit-page',
   templateUrl: './factura-order-edit-page.component.html',
   styleUrls: ['./factura-edit-page.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FacturaOrderEditPageComponent implements OnInit {
@@ -114,7 +125,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
         | 'cargo:search_material'
         | 'submit'
       ),
-      unknown
+      unknown,
     ]
   >();
 
@@ -127,7 +138,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
     value: 0,
     valueChange: (slideIndex: number): void => {
       this.sliderDotsOpts.value = slideIndex;
-      this.formEmitter.next(["tab", this.tabs[slideIndex]]);
+      this.formEmitter.next(['tab', this.tabs[slideIndex]]);
     },
   };
 
@@ -136,7 +147,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
     private apiRestService: AuthService,
     private route: ActivatedRoute,
     private translateService: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   public ngOnInit(): void {
@@ -153,12 +164,12 @@ export class FacturaOrderEditPageComponent implements OnInit {
           this.vm.readonly &&
             window.scrollTo({
               top: 112 + window.document.getElementById(tab)?.offsetTop - 16,
-              behavior: 'smooth'
+              behavior: 'smooth',
             });
 
           return tab;
-        })
-      )
+        }),
+      ),
     );
 
     //DATA FETCHING
@@ -173,22 +184,25 @@ export class FacturaOrderEditPageComponent implements OnInit {
       switchMap(() => {
         return this.mode === 'create' ? this.createForm() : this.fetchForm(this.id);
       }),
-      share()
+      share(),
     );
 
     const readonly$ = merge(
       loadDataAction$.pipe(
         map(() => ({
-          status: Number(this.route.snapshot.paramMap.get('status'))
-        }))
+          status: Number(this.route.snapshot.paramMap.get('status')),
+        })),
       ),
-      form$
+      form$,
     ).pipe(
       map(orderPermissions),
       map((d) => d?.readonly),
-      distinctUntilChanged()
+      distinctUntilChanged(),
     );
-    const catalogos$ = this.fetchCatalogosSAT().pipe(simpleFilters(this.formEmitter.pipe(ofType('catalogos:search'), share())), share());
+    const catalogos$ = this.fetchCatalogosSAT().pipe(
+      simpleFilters(this.formEmitter.pipe(ofType('catalogos:search'), share())),
+      share(),
+    );
     const helpTooltips$ = this.fetchHelpTooltips();
 
     //RECEPTOR
@@ -206,63 +220,66 @@ export class FacturaOrderEditPageComponent implements OnInit {
           // this.vm.form.invoice.receiver.cfdi = "";
           // this.vm.form.invoice.receiver.tax_regime = "";
           // this.vm.form.invoice.receiver.address = {};
-        })
+        }),
       ),
       this.formEmitter.pipe(
         ofType('nombre:search'),
-        map((search: string) => ({ type: 'nombre' as const, search }))
+        map((search: string) => ({ type: 'nombre' as const, search })),
       ),
       this.formEmitter.pipe(
         ofType('conceptos:search_cve'),
-        map((search: string) => ({ type: 'cve_sat' as const, search }))
+        map((search: string) => ({ type: 'cve_sat' as const, search })),
       ),
       this.formEmitter.pipe(
         ofType('cargo:search_material'),
-        map((search: string) => ({ type: 'cve_material' as const, search }))
-      )
+        map((search: string) => ({ type: 'cve_material' as const, search })),
+      ),
     ).pipe(share());
 
-    const cancelSearchAction$ = merge(searchAction$.pipe(filter(emptySearch)), this.formEmitter.pipe(ofType('autocomplete:cancel')));
+    const cancelSearchAction$ = merge(
+      searchAction$.pipe(filter(emptySearch)),
+      this.formEmitter.pipe(ofType('autocomplete:cancel')),
+    );
 
     const validSearch$ = searchAction$.pipe(
       filter(validSearch),
       switchMap((search) =>
         timer(500).pipe(
           takeUntil(cancelSearchAction$),
-          map(() => search)
-        )
-      )
+          map(() => search),
+        ),
+      ),
     );
 
     const searchRequest$ = validSearch$.pipe(
       switchMap((search) => this.searchReceptor(search).pipe(takeUntil(cancelSearchAction$))),
-      share()
+      share(),
     );
 
     const searchLoading$ = merge(
       oof(false),
       validSearch$.pipe(map(() => true)),
       searchRequest$.pipe(map(() => false)),
-      cancelSearchAction$.pipe(map(() => false))
+      cancelSearchAction$.pipe(map(() => false)),
     );
 
     const receptorSearch$ = merge(
       searchRequest$.pipe(
         withLatestFrom(searchAction$),
         map(([requestData, search]: any) => ({
-          [search.type]: requestData
+          [search.type]: requestData,
         })),
         tap(() => {
           this.cd.markForCheck();
-        })
+        }),
       ),
-      cancelSearchAction$.pipe(map(() => {}))
+      cancelSearchAction$.pipe(map(() => {})),
     );
 
     const receptorRFC$ = merge(
       form$.pipe(map((d) => d?.invoice?.receiver?.rfc)),
       this.formEmitter.pipe(ofType('rfc:search')),
-      this.formEmitter.pipe(ofType('rfc:set'), map(normalizeRFC))
+      this.formEmitter.pipe(ofType('rfc:set'), map(normalizeRFC)),
     ).pipe(share());
 
     const tipoPersona$ = receptorRFC$.pipe(distinctUntilChanged(), map(getTipoPersona));
@@ -270,19 +287,20 @@ export class FacturaOrderEditPageComponent implements OnInit {
     //FORM SUBMIT
     const formMode$ = this.formEmitter.pipe(
       ofType('submit'),
-      map((d) => d[1])
+      map((d) => d[1]),
     );
 
     const {
       loading$: formLoading$,
       error$: formError$,
-      success$: formSuccess$
+      success$: formSuccess$,
     } = makeRequestStream({
       fetch$: this.formEmitter.pipe(ofType('submit')),
       fetch: this.submitFactura,
       afterSuccess: () => {},
       afterSuccessDelay: () => {
-        (this.route.snapshot.paramMap.get('redirectTo') && this.router.navigateByUrl(this.route.snapshot.paramMap.get('redirectTo'))) ||
+        (this.route.snapshot.paramMap.get('redirectTo') &&
+          this.router.navigateByUrl(this.route.snapshot.paramMap.get('redirectTo'))) ||
           this.router.navigate([routes.FACTURAS]);
       },
       afterError: () => {
@@ -291,7 +309,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
         //   top: 9999999,
         //   behavior: "smooth",
         // });
-      }
+      },
     });
 
     this.vm = this.$rx.connect({
@@ -307,8 +325,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
       formMode: formMode$,
       formLoading: formLoading$,
       formError: formError$,
-      formSuccess: formSuccess$
-
+      formSuccess: formSuccess$,
     }) as VM;
   }
 
@@ -318,39 +335,34 @@ export class FacturaOrderEditPageComponent implements OnInit {
         receiver: {
           address: {
             place_id: '',
-            address: ''
+            address: '',
           },
           company: '',
           rfc: '',
           cfdi: '',
-          tax_regime: ''
-        }
+          tax_regime: '',
+        },
       },
-      destinations: [
-        { contact_info: { rfc: '' } },
-        { contact_info: { rfc: '' } },
-      ],
+      destinations: [{ contact_info: { rfc: '' } }, { contact_info: { rfc: '' } }],
       cargo: {
         cargo_goods: '',
         commodity_quantity: 0,
         unit_type: '',
         packaging: '',
-        hazardous_material: ''
+        hazardous_material: '',
       },
       pricing: {
         subtotal: 0,
-        deferred_payment: false
-      }
+        deferred_payment: false,
+      },
     });
   }
 
   // API calls
   public fetchForm(_id) {
-    return from(
-      this.apiRestService.apiRest('', `carriers/orders/${_id}`, { apiVersion: 'v1.1' })
-    ).pipe(
+    return from(this.apiRestService.apiRest('', `carriers/orders/${_id}`, { apiVersion: 'v1.1' })).pipe(
       mergeAll(),
-      map((responseData) => fromOrder(responseData?.result))
+      map((responseData) => fromOrder(responseData?.result)),
     );
   }
 
@@ -359,17 +371,17 @@ export class FacturaOrderEditPageComponent implements OnInit {
       // facturación
       from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(
         mergeAll(),
-        map((d) => d?.result)
+        map((d) => d?.result),
       ),
       // carta porte
       from(this.apiRestService.apiRestGet('invoice/catalogs/consignment-note')).pipe(
         mergeAll(),
-        map((d) => d?.result)
-      )
+        map((d) => d?.result),
+      ),
     ).pipe(map((catalogs) => Object.assign.apply(null, catalogs)));
   }
 
-  fetchHelpTooltips() {
+  public fetchHelpTooltips() {
     return oof(this.translateService.instant('invoice.tooltips'));
   }
 
@@ -378,13 +390,13 @@ export class FacturaOrderEditPageComponent implements OnInit {
       rfc: 'invoice/receivers',
       nombre: 'invoice/receivers/by-name',
       cve_sat: 'invoice/catalogs/consignment-note/productos-y-servicios',
-      cve_material: 'invoice/catalogs/consignment-note/material-peligroso'
+      cve_material: 'invoice/catalogs/consignment-note/material-peligroso',
     };
     const keys = {
       rfc: 'rfc',
       nombre: 'name',
       cve_sat: 'term',
-      cve_material: 'term'
+      cve_material: 'term',
     };
 
     return from(
@@ -392,14 +404,14 @@ export class FacturaOrderEditPageComponent implements OnInit {
         JSON.stringify({
           [keys[search.type]]: search.search,
           limit: 15,
-          ...(search.rfc != void 0 ? { rfc: search.rfc } : {})
+          ...(search.rfc != void 0 ? { rfc: search.rfc } : {}),
         }),
         endpoints[search.type],
-        { loader: 'false' }
-      )
+        { loader: 'false' },
+      ),
     ).pipe(
       mergeAll(),
-      map((d) => d?.result)
+      map((d) => d?.result),
     );
   }
 
@@ -410,14 +422,14 @@ export class FacturaOrderEditPageComponent implements OnInit {
 
     return from(
       this.apiRestService.apiRest(JSON.stringify(data), 'orders/update_consignment_note_info', {
-        loader: 'false'
-      })
+        loader: 'false',
+      }),
     ).pipe(
       mergeAll(),
       // NOTE: wrap success response
       map((responseData) => ({
-        result: responseData
-      }))
+        result: responseData,
+      })),
     );
   };
 
@@ -426,13 +438,13 @@ export class FacturaOrderEditPageComponent implements OnInit {
   // FORMS
 
   // UTILS
-  p = orderPermissions;
+  public p = orderPermissions;
 
-  log = (...args) => {
+  public log = (...args) => {
     console.log(...args);
   };
 
-  showError = (error: any) => {
+  public showError = (error: any) => {
     error = error?.message || error?.error;
     // lang
     error = error?.[this.translateService.currentLang];
@@ -444,7 +456,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
 const fromOrder = (order) => {
   const newOrder = {
     ...order,
-    metodo_de_pago: order.pricing?.deferred_payment ? 'PPD' : 'PUE'
+    metodo_de_pago: order.pricing?.deferred_payment ? 'PPD' : 'PUE',
   };
 
   // create keys if null
@@ -460,7 +472,7 @@ const fromOrder = (order) => {
   if (!newOrder.invoice?.receiver?.address)
     newOrder.invoice.receiver.address = {
       address: '',
-      place_id: ''
+      place_id: '',
     };
 
   return newOrder;
@@ -484,6 +496,6 @@ const orderPermissions = (order) => {
   return {
     edit,
     readonly: !edit,
-    hazardous: order?.cargo?.type === 'hazardous'
+    hazardous: order?.cargo?.type === 'hazardous',
   };
 };
