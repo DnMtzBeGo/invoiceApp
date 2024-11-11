@@ -1,24 +1,25 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import EmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
 import { Observable, Observer } from 'rxjs';
+
 import { ActionConfirmationComponent } from 'src/app/pages/invoice/modals';
 import { PickerSelectedColor } from 'src/app/shared/components/color-picker/color-picker.component';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 import { ReceviedPicture } from '../../components/pictures-grid/pictures-grid.component';
 import { UploadFileInfo, UploadFilesComponent } from '../../components/upload-files/upload-files.component';
+
 @Component({
   selector: 'app-fleet-edit',
   templateUrl: './fleet-edit-truck.component.html',
   styleUrls: ['./fleet-edit-truck.component.scss'],
 })
 export class FleetEditTruckComponent implements OnInit {
-  @ViewChild('sliderRef') sliderRef: ElementRef;
+  @ViewChild('sliderRef') public sliderRef: ElementRef;
   public slider: EmblaCarouselType;
 
   public fleetTabs: string[];
@@ -60,7 +61,7 @@ export class FleetEditTruckComponent implements OnInit {
     ];
   }
 
-  async ngOnInit(): Promise<void> {
+  public async ngOnInit(): Promise<void> {
     this.truckDetailsForm = this.formBuilder.group({
       brand: ['', Validators.required],
       year: ['', Validators.required],
@@ -91,12 +92,12 @@ export class FleetEditTruckComponent implements OnInit {
     this.truckDetailsForm.valueChanges.subscribe(changesAction);
   }
 
-  setAutocompleteValue = (catalogueName: string, selectedCode: string): string => {
+  public setAutocompleteValue = (catalogueName: string, selectedCode: string): string => {
     const selectedValue = this.getCatalogue(catalogueName)?.find((e) => e.code == selectedCode) || {};
     return `${selectedValue.code} - ${selectedValue.description}`;
   };
 
-  ngAfterViewInit() {
+  public ngAfterViewInit(): void {
     var emblaNode = this.sliderRef.nativeElement;
     var options: EmblaOptionsType = { loop: false, draggable: false };
 
@@ -106,11 +107,11 @@ export class FleetEditTruckComponent implements OnInit {
     this.slider.canScrollNext();
   }
 
-  updateTruckColor(color) {
+  public updateTruckColor(color) {
     this.truckDetailsForm.patchValue(color);
   }
 
-  openFileEditor(flag: boolean) {
+  public openFileEditor(flag: boolean) {
     if (!flag) return;
     const dialog = this.matDialog.open(UploadFilesComponent, {
       data: {
@@ -142,7 +143,7 @@ export class FleetEditTruckComponent implements OnInit {
     });
   }
 
-  async getTruckInfo({ id }: { id: string }) {
+  public async getTruckInfo({ id }: { id: string }) {
     const payload = { id_truck: id };
 
     const { result } = await (await this.authService.apiRest(JSON.stringify(payload), '/trucks/get_by_id')).toPromise();
@@ -156,7 +157,7 @@ export class FleetEditTruckComponent implements OnInit {
     this.selectedColor = { color, colorName };
   }
 
-  async getInsuranceFile({ id }: { id: string }) {
+  public async getInsuranceFile({ id }: { id: string }) {
     const payload = { id_truck: id };
 
     const { result } = await (await this.authService.apiRest(JSON.stringify(payload), '/trucks/get_files')).toPromise();
@@ -173,11 +174,11 @@ export class FleetEditTruckComponent implements OnInit {
     }
   }
 
-  getCatalogue(catalogueName: string) {
+  public getCatalogue(catalogueName: string) {
     return this.catalogs?.find((c) => c.name == catalogueName).documents;
   }
 
-  setOption(selectedValue, formControlName: string) {
+  public setOption(selectedValue, formControlName: string) {
     const values = {};
     values[formControlName] = selectedValue.code;
     values[formControlName + '_text'] = selectedValue.description;
@@ -185,13 +186,13 @@ export class FleetEditTruckComponent implements OnInit {
     this.truckDetailsForm.patchValue(values);
   }
 
-  resetOption({ target }: { target: HTMLInputElement }, catalog: any[], formControlName: string) {
+  public resetOption({ target }: { target: HTMLInputElement }, catalog: any[], formControlName: string) {
     const selectedValue = catalog.find((e) => e.code == this.truckDetailsForm.value[formControlName]);
     target.value = selectedValue ? this.displayFn(selectedValue) : '';
     this.truckDetailsForm.get(formControlName).markAsTouched();
   }
 
-  async fillCataloguesFromDb(): Promise<any> {
+  public async fillCataloguesFromDb(): Promise<any> {
     const payload = {
       catalogs: [
         {
@@ -214,11 +215,11 @@ export class FleetEditTruckComponent implements OnInit {
     this.filteredTruckSettings = this.getCatalogue('sat_cp_config_autotransporte');
   }
 
-  showInsuranceFile() {
+  public showInsuranceFile() {
     window.open(this.insuranceFile.url);
   }
 
-  editInsuranceFile(event: PointerEvent) {
+  public editInsuranceFile(event: PointerEvent) {
     event.stopPropagation();
 
     const dialogRef = this.matDialog.open(ActionConfirmationComponent, {
@@ -243,7 +244,7 @@ export class FleetEditTruckComponent implements OnInit {
     });
   }
 
-  async updateInsuranceFile(file: File) {
+  public async updateInsuranceFile(file: File) {
     if (this.router.url == '/fleet/trucks/new') {
       this.insuranceFile = file;
       this.onTruckInfoChanged();
@@ -272,7 +273,7 @@ export class FleetEditTruckComponent implements OnInit {
     });
   }
 
-  async saveChanges() {
+  public async saveChanges() {
     if (this.router.url == '/fleet/trucks/new') {
       this.createTruck();
     } else {
@@ -280,7 +281,7 @@ export class FleetEditTruckComponent implements OnInit {
     }
   }
 
-  async updateChanges() {
+  public async updateChanges() {
     const payload = {
       id_truck: this.route.snapshot.params.id,
       attributes: this.truckDetailsForm.value,
@@ -290,7 +291,7 @@ export class FleetEditTruckComponent implements OnInit {
     });
   }
 
-  async createTruck() {
+  public async createTruck() {
     const formData = new FormData();
     formData.append('id_fleet', this.fleetId);
 
@@ -313,22 +314,22 @@ export class FleetEditTruckComponent implements OnInit {
     });
   }
 
-  async getFleetOverview() {
+  public async getFleetOverview() {
     return (await (await this.webService.apiRest('', 'fleet/overview')).toPromise()).result;
   }
 
-  onTruckInfoUpdated = () => {
+  public onTruckInfoUpdated = () => {
     this.disableSaveBtn = !this.valuesFormChanged() || this.truckDetailsForm.status == 'INVALID';
   };
   /**
    * Called only when creating a new truck
    */
-  onTruckInfoChanged = () => {
+  public onTruckInfoChanged = () => {
     const enoughPictures = this.newTruckPictures.length >= 3;
     this.disableSaveBtn = this.truckDetailsForm.status == 'INVALID' || !enoughPictures || !this.insuranceFile;
   };
 
-  valuesFormChanged(): boolean {
+  public valuesFormChanged(): boolean {
     const changes = this.truckDetailsForm.value;
     for (let key of Object.keys(changes)) {
       const originalValue = this.originalInfo[key];
@@ -340,7 +341,7 @@ export class FleetEditTruckComponent implements OnInit {
     return false;
   }
 
-  searchFunction(options: any[], input: string) {
+  public searchFunction(options: any[], input: string) {
     return options.filter((e: any) => {
       const currentValue = `${e.code} ${e.description}`.toLowerCase();
       return currentValue.includes(input.toLowerCase());
@@ -375,16 +376,16 @@ export class FleetEditTruckComponent implements OnInit {
     );
   }
 
-  arePlatesValid = ({ value }: FormControl): ValidationErrors | null => {
+  public arePlatesValid = ({ value }: FormControl): ValidationErrors | null => {
     let platesRegex = /^[^(?!.*\s)-]{5,7}$/;
     return platesRegex.test(value) ? null : { errors: true };
   };
 
-  displayFn(element: any): string {
+  public displayFn(element: any): string {
     return `${element.code} - ${element.description}`;
   }
 
-  selectedValueAutoComplete(input: string, catalogName: string): Observable<string> {
+  public selectedValueAutoComplete(input: string, catalogName: string): Observable<string> {
     return new Observable<string>((observer: Observer<string>) => {
       this.truckDetailsForm.get(input)?.valueChanges.subscribe((value) => {
         const catalog = this.catalogs.find((e) => e.name == catalogName);
