@@ -87,11 +87,15 @@ export class CartaPorteInfoService {
     return this.emitShowFraccion;
   }
 
-  public getMerchandise(component: any, pagination: Paginator): void {
+  public getMerchandise(component: any, pagination: Paginator, filter?: any): void {
     if (this.invoice_id) {
+      const search = {};
+
+      if (filter.type) search[filter.type] = filter.search.toString();
+
       this.api
         .request('GET', `consignment-note/merchandise/${this.invoice_id}`, {
-          params: { page: pagination.pageIndex.toString(), limit: pagination.pageSize.toString() },
+          params: { page: pagination.pageIndex.toString(), limit: pagination.pageSize.toString(), ...search },
         })
         .subscribe((response) => {
           this._setCommodities(response.result.merchandise).then(() => {

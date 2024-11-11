@@ -5,4 +5,12 @@
       padding: 0px;
     }
   }
+
+  .hide-refresh-button {
+    ::ng-deep {
+      .refresh-table {
+        display: none;
+      }
+    }
+  }
 }

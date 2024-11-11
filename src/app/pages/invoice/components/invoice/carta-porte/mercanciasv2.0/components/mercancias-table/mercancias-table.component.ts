@@ -10,7 +10,6 @@ import { generateUUID } from 'src/app/pages/invoice/containers/factura-edit-page
   styleUrls: ['./mercancias-table.component.scss'],
 })
 export class MercanciasTableComponent implements OnInit {
-  @Output() public refresh: EventEmitter<void> = new EventEmitter();
   @Output() public pageChange: EventEmitter<Paginator> = new EventEmitter();
   @Output() public editRecord: EventEmitter<string> = new EventEmitter();
   @Output() public dataChanged: EventEmitter<any> = new EventEmitter();
@@ -21,6 +20,8 @@ export class MercanciasTableComponent implements OnInit {
   public commoditiesTable: any;
 
   constructor(public consignmentNoteService: CartaPorteInfoService, private readonly cd: ChangeDetectorRef) {}
+
+  private filter: any = {};
 
   public ngOnInit(): void {
     this.page = {
@@ -37,7 +38,7 @@ export class MercanciasTableComponent implements OnInit {
     this.commoditiesTable = {
       loading: false,
       columns: [
-        { id: 'line', label: 'Línea' },
+        { id: 'line', label: 'Línea', filter: 'input' },
         { id: 'bienes_transp', label: 'Bienes transportados' },
         { id: 'descripcion', label: 'Descripción' },
         { id: 'cantidad', label: 'Cantidad' },
@@ -92,8 +93,12 @@ export class MercanciasTableComponent implements OnInit {
   }
 
   private _initializeData(): MercanciasTableComponent {
-    this.consignmentNoteService.getMerchandise(this, this.page);
+    this.consignmentNoteService.getMerchandise(this, this.page, this.filter);
     return this;
+  }
+
+  public reloadData(): void {
+    this._initializeData().handleUpdate();
   }
 
   public handleUpdate(): MercanciasTableComponent {
@@ -133,5 +138,19 @@ export class MercanciasTableComponent implements OnInit {
 
   private _toggleLoading(): void {
     this.commoditiesTable = { ...this.commoditiesTable, loading: !this.commoditiesTable.loading };
+  }
+
+  public _getTableCSSClass(): string {
+    return this.consignmentNoteService.invoice_id ? '' : 'hide-refresh-button';
+  }
+
+  public filterChanged($event: any): void {
+    console.log($event);
+    this.filter = $event;
+    this.reloadData();
+  }
+
+  public canSearchLocal(): boolean {
+    return this.consignmentNoteService.invoice_id ? false : true;
   }
 }
