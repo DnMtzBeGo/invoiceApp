@@ -24,7 +24,7 @@
         #back {
           padding: 4px;
           color: #ededed;
-          font-family: "Avenir";
+          font-family: 'Avenir';
           font-weight: 600;
           font-size: 16px;
           cursor: pointer;
@@ -44,7 +44,7 @@
         list-style: none;
 
         li {
-          font-family: "Avenir";
+          font-family: 'Avenir';
           font-style: normal;
           font-weight: 500;
           font-size: 19px;
@@ -70,8 +70,8 @@
             font-size: 22px;
             color: #ededed;
             background: linear-gradient(270deg, #090d12 5.77%, #0a0f14 100%);
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.7),
-              inset 0px -4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 6px #1c232a;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.7), inset 0px -4px 4px rgba(0, 0, 0, 0.25),
+              inset 0px 4px 6px #1c232a;
             border-radius: 0 99px 99px 0;
           }
 
@@ -101,7 +101,7 @@
       margin-bottom: 2rem;
 
       > h6 {
-        font-family: "Avenir";
+        font-family: 'Avenir';
         font-style: normal;
         font-size: 20px;
         color: #ededed;
@@ -115,6 +115,166 @@
             display: block;
             margin-bottom: 4px;
             color: rgba(0, 0, 0, 0.6);
+          }
+        }
+      }
+    }
+
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+
+      .section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &.right {
+          justify-content: flex-end;
+        }
+
+        &.multiple-type-cargo {
+          margin: 0 0 40px 0;
+        }
+
+        .hazardous-container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          gap: 40px;
+
+          > div:first-child {
+            min-width: 315px;
+          }
+
+          > div:last-child {
+            width: 100%;
+          }
+
+          .hazardous-drag-file-container {
+            font-size: 14px;
+            font-weight: 300;
+          }
+
+          .upload-file-bar {
+            font-size: 12px;
+            background-color: red;
+          }
+
+          .hazardous-input {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+
+        .selectableHazard {
+          width: 100%;
+        }
+
+        .select-units-input {
+          position: relative;
+
+          app-cargo-units {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+
+            bego-increment-decrement .increment-decrement-container button {
+              // ::ng-deep .increment-decrement-container button {
+              background: none;
+            }
+          }
+
+          bego-button-toggle {
+            .toggle-container {
+              // ::ng-deep {
+              .option-label {
+                padding: 20px;
+
+                &.first {
+                  justify-content: flex-start;
+                }
+                &.second {
+                  justify-content: flex-end;
+                }
+              }
+              // }
+            }
+          }
+        }
+
+        .select-units-input {
+          position: relative;
+
+          .input-increment {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 126px;
+            height: 46px;
+            display: flex;
+            background: #e3e3e3;
+            box-shadow: inset 0px 2px 4px rgba(134, 134, 134, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.5);
+            border-radius: 50px;
+            color: #040b11;
+            font-size: 18px;
+            z-index: 1;
+            height: 46px;
+            justify-content: space-evenly;
+            align-items: center;
+
+            .icon {
+              padding: 14px;
+              cursor: pointer;
+            }
+
+            div {
+              background: #fff;
+              border-radius: 50%;
+              width: 42px;
+              height: 42px;
+              text-align: center;
+              line-height: 42px;
+            }
+          }
+
+          .mat-button-toggle-appearance-standard {
+            &:first-child {
+              padding-right: 63px;
+            }
+
+            &:last-child {
+              padding-left: 63px;
+            }
+          }
+        }
+      }
+
+      // ::ng-deep.mat-form-field-appearence-legacy.mat-form-field-can-float.mat-form-field-should-float.mat-form-field-label {
+      //     transform: unset;
+      // }
+
+      .section-padding {
+        padding-bottom: 50px;
+      }
+
+      .formgroup-title {
+        font-size: 18px;
+        font-weight: 500;
+        text-transform: capitalize;
+
+        &-required {
+          @extend .formgroup-title;
+
+          &::before {
+            content: '* ';
+            color: #ff0;
           }
         }
       }
@@ -143,10 +303,6 @@
       grid-template-columns: 2fr 2fr 1fr;
       gap: 1rem 2rem;
     }
-
-    // .mat-form-field-wrapper {
-    //   padding-bottom: 0;
-    // }
 
     mat-form-field {
       .textarea {
@@ -178,16 +334,12 @@
       gap: 2rem;
       border: 1px solid #1c232a;
       border-radius: 8px;
-      background: linear-gradient(
-        32.19deg,
-        rgba(24, 28, 32, 0.59) 15.17%,
-        rgba(13, 16, 19, 0.35) 56.6%
-      );
+      background: linear-gradient(32.19deg, rgba(24, 28, 32, 0.59) 15.17%, rgba(13, 16, 19, 0.35) 56.6%);
 
       > div {
         text-align: right;
         font-weight: 500;
-        font-family: "Avenir";
+        font-family: 'Avenir';
         font-style: normal;
 
         > div:nth-child(1) {
@@ -217,17 +369,9 @@
       .separator {
         width: 1px;
         height: 100%;
-        background: linear-gradient(
-          0deg,
-          rgba(80, 80, 80, 1) 0%,
-          rgba(52, 57, 63, 0.15) 100%
-        );
+        background: linear-gradient(0deg, rgba(80, 80, 80, 1) 0%, rgba(52, 57, 63, 0.15) 100%);
       }
     }
-
-    // .mat-form-field .mat-input-element {
-    //   color: initial;
-    // }
   }
 
   .impuestos-table,
@@ -263,7 +407,7 @@
 
   .impuestos-table {
     thead th {
-      font-family: "Avenir";
+      font-family: 'Avenir';
       font-style: normal;
       font-weight: 800;
       font-size: 15px;
@@ -281,7 +425,7 @@
 
   .facturas-table {
     thead th {
-      font-family: "Avenir";
+      font-family: 'Avenir';
       font-style: normal;
       font-weight: 800;
       font-size: 14px;
@@ -290,7 +434,7 @@
     }
 
     tbody td {
-      font-family: "Avenir";
+      font-family: 'Avenir';
       font-style: normal;
       font-weight: 300;
       font-size: 14px;
@@ -324,4 +468,24 @@
       }
     }
   }
+}
+
+.multiple-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+
+  p {
+    margin: 20px 40px;
+  }
+
+  &.instructions {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.drag-drop-container {
+  min-height: 200px;
 }

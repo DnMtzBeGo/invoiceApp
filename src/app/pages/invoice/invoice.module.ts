@@ -11,7 +11,13 @@ import {
   NgxMatColorPickerModule,
   NGX_MAT_COLOR_FORMATS,
 } from '@angular-material-components/color-picker';
-import { BegoIconsModule, BegoTableModule } from '@begomx/ui-components';
+import {
+  BegoButtonModule,
+  BegoButtonToggleModule,
+  BegoDragDropModule,
+  BegoIconsModule,
+  BegoTableModule,
+} from '@begomx/ui-components';
 
 import { SharedModule } from '../../shared/shared.module';
 import { InvoiceRoutingModule } from './invoice-routing.module';
@@ -82,6 +88,8 @@ import { TooltipHelpModule } from 'src/app/shared/components/tooltip-help/toolti
 import { AppMaterialModule } from 'src/app/material';
 import { CantidadTransportaComponent } from './components/cantidad-transporta/cantidad-transporta.component';
 import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/regimenes-aduaneros/regimenes-aduaneros.component';
+import { CustomStepperModule } from '../orders/components/custom-stepper/custom-stepper.module';
+import { CargoUnitsModule } from '../orders/components/cargo-units/cargo-units.module';
 
 @NgModule({
   declarations: [
@@ -160,6 +168,11 @@ import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/re
     BegoIconsModule,
     BegoTableModule,
     AppMaterialModule,
+    CustomStepperModule,
+    BegoDragDropModule,
+    BegoButtonModule,
+    CargoUnitsModule,
+    BegoButtonToggleModule,
   ],
   exports: [
     // MODALS

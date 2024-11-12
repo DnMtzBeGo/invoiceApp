@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { of, timer, Subject, merge, from, Observable, forkJoin } from 'rxjs';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { of, timer, Subject, merge, from, Observable, forkJoin, Subscription } from 'rxjs';
 import {
   tap,
   filter,
@@ -12,7 +12,8 @@ import {
   distinctUntilChanged,
 } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { reactiveComponent } from 'src/app/shared/utils/decorators';
@@ -21,6 +22,7 @@ import { makeRequestStream } from 'src/app/shared/utils/http.rx';
 import { clone } from 'src/app/shared/utils/object';
 import { routes } from '../../consts';
 import { BegoSliderDotsOpts } from 'src/app/shared/components/bego-slider-dots/bego-slider-dots.component';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 interface VM {
   // "receptor" | "precio" | "orden";
@@ -60,6 +62,11 @@ interface VM {
       unit_type: string;
       packaging: string;
       hazardous_material: string;
+      required_units?: number;
+      trailer?: {
+        load_cap: string;
+      };
+      weight?: number[];
     };
     // computed
     metodo_de_pago?: string;
@@ -106,7 +113,18 @@ interface VM {
   encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FacturaOrderEditPageComponent implements OnInit {
+export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
+  public unitsData: any = {
+    first: {
+      label: '53 ft',
+      value: '53',
+    },
+    second: {
+      label: '48 ft',
+      value: '48',
+    },
+  };
+
   public routes: typeof routes = routes;
 
   public $rx = reactiveComponent(this);
@@ -132,6 +150,17 @@ export class FacturaOrderEditPageComponent implements OnInit {
     ]
   >();
 
+  public lang: string = 'en';
+  public orderWithCP: boolean = true;
+  // public orderWithCP: boolean = false;
+  public stepIndex: number = 0;
+  public fileTypes = ['.xlsx'];
+  public multipleFilesLang;
+  public files: any = null;
+  public langSub: Subscription;
+  public multipleCargo: boolean = false;
+  public Array = Array;
+
   public id: string;
   public mode: 'create' | 'update';
   public model: 'order' = 'order';
@@ -151,9 +180,26 @@ export class FacturaOrderEditPageComponent implements OnInit {
     private route: ActivatedRoute,
     private translateService: TranslateService,
     private cd: ChangeDetectorRef,
-  ) {}
+    private httpClient: HttpClient,
+    private notificationsService: NotificationsService,
+  ) {
+    this.multipleFilesLang = {
+      name: this.translateService.instant('orders.upload-multiple-orders.name'),
+      labelBrowse: this.translateService.instant('orders.upload-multiple-orders.labelBrowse'),
+      labelOr: this.translateService.instant('orders.upload-multiple-orders.labelOr'),
+      btnBrowse: this.translateService.instant('orders.upload-multiple-orders.btnBrowse'),
+      labelMax: this.translateService.instant('orders.upload-multiple-orders.labelMax'),
+      uploading: this.translateService.instant('orders.upload-multiple-orders.uploading'),
+    };
+  }
 
   public ngOnInit(): void {
+    this.lang = localStorage.getItem('lang') || 'en';
+
+    this.langSub = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
+      this.lang = langChangeEvent.lang;
+    });
+
     //TAB
     const tab$ = merge(
       of(this.route.snapshot.queryParams.tab ?? 'receptor'),
@@ -169,7 +215,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
               top: 112 + window.document.getElementById(tab)?.offsetTop - 16,
               behavior: 'smooth',
             });
-
+          this.stepStatus(this.stepIndex);
           return tab;
         }),
       ),
@@ -339,6 +385,10 @@ export class FacturaOrderEditPageComponent implements OnInit {
     }) as VM;
   }
 
+  public ngOnDestroy(): void {
+    this.langSub.unsubscribe();
+  }
+
   public createForm() {
     return of({
       invoice: {
@@ -372,7 +422,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
   public fetchForm(_id) {
     return from(this.apiRestService.apiRest('', `carriers/orders/${_id}`, { apiVersion: 'v1.1' })).pipe(
       mergeAll(),
-      map((responseData) => fromOrder(responseData?.result)),
+      map((responseData) => this.fromOrder(responseData?.result)),
     );
   }
 
@@ -473,32 +523,150 @@ export class FacturaOrderEditPageComponent implements OnInit {
 
     return Array.isArray(error) ? error.map((e) => e.error ?? e.message).join(',\n') : error;
   };
-}
 
-const fromOrder = (order) => {
-  const newOrder = {
-    ...order,
-    metodo_de_pago: order.pricing?.deferred_payment ? 'PPD' : 'PUE',
-  };
+  public async stepStatus(type: number) {
+    if (type > 0) {
+      this.multipleCargo = true;
+    } else {
+      this.handleFileChange(null);
+      this.multipleCargo = false;
+    }
+    // this.updateValidators(type > 0);
+  }
 
-  // create keys if null
-  if (!newOrder.invoice?.receiver) newOrder.invoice.receiver = {};
-
-  if (order.destinations) {
-    order.destinations.forEach((destination: any) => {
-      destination.destination_id = destination._id;
-      delete destination._id;
+  public downloadTemplate() {
+    const URL: string =
+      'https://begoclients.s3.amazonaws.com/production/layouts/orders/layout-multiple-merchandise-order.xlsx';
+    this.httpClient.get(URL, { responseType: 'blob' }).subscribe((blob) => {
+      const link = document.createElement('a');
+      const objectUrl = window.URL.createObjectURL(blob);
+      link.href = objectUrl;
+      link.download = URL.split('/').pop() || 'archivo';
+      link.click();
+      window.URL.revokeObjectURL(objectUrl);
     });
   }
 
-  if (!newOrder.invoice?.receiver?.address)
-    newOrder.invoice.receiver.address = {
-      address: '',
-      place_id: '',
+  public async handleFileChange(file?: File, type?: 'xlsx') {
+    if (file) {
+      this.files = {
+        name: file.name,
+        date: new Date(file.lastModified),
+        size: file.size,
+      };
+      // this.setFileValidators();
+      this.uploadMultipleCargoFile(file);
+    } else {
+      this.files = null;
+      this.deleteMultipleCargoFile();
+    }
+
+    // this.step3Form.get('multipleCargoFile')!.setValue(file);
+  }
+
+  private async uploadMultipleCargoFile(file: File) {
+    if (!this.id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('load_cap', this.vm.form.cargo?.trailer?.load_cap);
+    formData.append('required_units', String(this.vm.form?.cargo?.commodity_quantity));
+
+    const req = await this.apiRestService.uploadFilesSerivce(
+      formData,
+      `orders/cargo/import-ftl/${this.id}`,
+      { apiVersion: 'v1.1' },
+      { timeout: '300000' },
+    );
+
+    await req
+      .toPromise()
+      .then(() => {
+        // this.clearUploadedMultipleFile = !this.clearUploadedMultipleFile;
+      })
+      .catch(({ error: { error } }) => {
+        // this.clearFailedMultipleFile = !this.clearFailedMultipleFile;
+        const { message, errors } = error;
+        let errMsg = `${message[this.lang] || ''}.`;
+        console.error(errMsg);
+
+        if (errors?.en) {
+          errMsg += `
+        ${errors[this.lang] || ''}`;
+        }
+
+        this.notificationsService.showErrorToastr(errMsg, errors?.en ? 10000 : 5000, 'brand-snackbar-2');
+      });
+  }
+
+  private async deleteMultipleCargoFile() {
+    if (!this.id) return;
+    const req = await this.apiRestService.apiRest(null, `orders/cargo/remove-multiple/${this.id}`, {
+      apiVersion: 'v1.1',
+      timeout: '300000',
+    });
+    await req.toPromise();
+  }
+
+  public invalidFile() {
+    this.notificationsService.showErrorToastr('Archivo inválido');
+  }
+
+  public createEmptyFile(fileName: string = '') {
+    return new File([''], fileName ? this.getFileName(fileName) : 'empty.txt', { type: 'text/plain' });
+  }
+
+  public getFileName(filePath: string) {
+    const regex = /\/[^/]*_([^/]+)$/;
+    const match = filePath.match(regex);
+    return match ? match[1] : '';
+  }
+
+  public fromOrder(order) {
+    const newOrder = {
+      ...order,
+      metodo_de_pago: order.pricing?.deferred_payment ? 'PPD' : 'PUE',
     };
 
-  return newOrder;
-};
+    // create keys if null
+    if (!newOrder.invoice?.receiver) newOrder.invoice.receiver = {};
+
+    if (order.destinations) {
+      order.destinations.forEach((destination: any) => {
+        destination.destination_id = destination._id;
+        delete destination._id;
+      });
+    }
+
+    if (order?.cargo?.imported_file) {
+      const url: string = order.cargo.imported_file;
+
+      this.files = {
+        name: this.getFileName(url),
+        date: new Date(),
+        size: 0,
+      };
+
+      this.stepIndex = 1;
+    }
+
+    if (!newOrder.invoice?.receiver?.address)
+      newOrder.invoice.receiver.address = {
+        address: '',
+        place_id: '',
+      };
+
+    return newOrder;
+  }
+
+  public units: number[] = [];
+  public updateUnits(value: number[]) {
+    this.vm.form.cargo.weight = value;
+  }
+
+  public selectedUnits(unit: any) {
+    this.vm.form.cargo.trailer.load_cap = unit.value;
+  }
+}
 
 const toOrder = (order: any) => {
   order.pricing.deferred_payment = order.metodo_de_pago === 'PPD';

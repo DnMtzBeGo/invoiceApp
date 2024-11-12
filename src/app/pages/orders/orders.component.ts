@@ -644,6 +644,7 @@ export class OrdersComponent implements OnInit {
   }
 
   private async uploadMultipleCargoFile(formData: FormData, order_id: string) {
+    if (!order_id) return;
     const req = await this.auth.uploadFilesSerivce(
       formData,
       `orders/cargo/import-ftl/${order_id}`,
@@ -672,6 +673,8 @@ export class OrdersComponent implements OnInit {
   }
 
   private async deleteMultipleCargoFile(order_id: string) {
+    if (!order_id) return;
+
     const req = await this.auth.apiRest(null, `orders/cargo/remove-multiple/${order_id}`, {
       apiVersion: 'v1.1',
       timeout: '300000',
