@@ -192,8 +192,6 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
         keyPrimaryRow: 'id',
       },
       selectingAction: ({ type, data }: ITableSelectingAction): void => {
-        console.log({ type, data });
-
         switch (type) {
           case 'edit_order_factura':
             this.router.navigateByUrl(`${routes.EDIT_ORDER_FACTURA};id=${data.order}`);
