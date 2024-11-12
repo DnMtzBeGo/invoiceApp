@@ -119,7 +119,8 @@ export class CartaPorteInfoService {
   }
 
   private async _setCommodities(commodities: ICommodity[]): Promise<void> {
-    this.commodities = [...commodities];
+    if (commodities && commodities.length) this.commodities = [...commodities];
+    else this.commodities = [];
   }
 
   public unloadService() {
