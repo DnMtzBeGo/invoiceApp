@@ -179,6 +179,7 @@
             </span>
           </mat-form-field>
 
+          <!-- <pre>regimen: {{ vm.catalogos?.regimen_fiscal | json }}</pre> -->
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
             <mat-label>{{
               vm.form?.invoice?.receiver?.tax_regime
@@ -223,6 +224,54 @@
               matTooltipClass="brand-tooltip-1">
               <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
             </span>
+          </mat-form-field>
+
+          <!-- Series -->
+          <pre>series: {{ vm.series?.[0] | json }}</pre>
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
+            <mat-label>
+              Series
+              <!-- {{
+                vm.form?.invoice?.receiver?.tax_regime
+                  ? ('invoice.edit.regimen' | translate)
+                  : vm.form?.invoice?.receiver?.rfc && !vm.tipoPersona
+                  ? ('invoice.edit.regimen-placeholder-3' | translate)
+                  : ('invoice.edit.regimen-placeholder' | translate)
+              }} -->
+            </mat-label>
+            <mat-select
+              name="series_id"
+              [ngModel]="vm.form?.invoice?.receiver?.series_id"
+              (ngModelChange)="vm.form.invoice.receiver.series_id = $event"
+              class="disable-custom-format"
+              [disabled]="!vm.tipoPersona || vm.readonly">
+              <mat-option>
+                <ngx-mat-select-search
+                  ngModel
+                  (ngModelChange)="formEmitter.next(['series:search', ['series', $event.toLowerCase()]])"
+                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"></ngx-mat-select-search>
+              </mat-option>
+              <ng-container *ngFor="let serie of vm.series?.[0]">
+                <!-- *ngIf="
+                    (vm.tipoPersona && serie.persona_fisica && vm.tipoPersona === 'fisica') ||
+                    (serie.persona_moral && vm.tipoPersona === 'moral')
+                  " -->
+                <mat-option [value]="serie._id" class="brand-option-1" [title]="serie.serie">
+                  {{ serie.serie }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+
+            <!-- <span
+              class="brand-icon-help"
+              [matTooltip]="vm.helpTooltips?.receptor?.regimen_fiscal"
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1">
+              <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
+            </span> -->
           </mat-form-field>
         </div>
       </section>

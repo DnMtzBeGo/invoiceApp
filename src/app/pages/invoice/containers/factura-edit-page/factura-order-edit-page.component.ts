@@ -40,6 +40,7 @@ interface VM {
         rfc?: string;
         cfdi?: string;
         tax_regime?: string;
+        series_id?: string;
       };
     };
     pricing?: {
@@ -77,6 +78,7 @@ interface VM {
     // carta porte
     tipos_de_embalaje?: unknown[];
   };
+  series?: unknown[];
   helpTooltips?: any;
   searchAction?: {
     type: 'rfc' | 'nombre' | 'cve_sat' | 'cve_material';
@@ -117,6 +119,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
         | 'tab'
         | 'refresh'
         | 'rfc:search'
+        | 'series:search'
         | 'nombre:search'
         | 'autocomplete:cancel'
         | 'catalogos:search'
@@ -199,10 +202,16 @@ export class FacturaOrderEditPageComponent implements OnInit {
       map((d) => d?.readonly),
       distinctUntilChanged(),
     );
+
     const catalogos$ = this.fetchCatalogosSAT().pipe(
       simpleFilters(this.formEmitter.pipe(ofType('catalogos:search'), share())),
       share(),
     );
+    const series$ = this.fetchSeries().pipe(
+      simpleFilters(this.formEmitter.pipe(ofType('series:search'), share())),
+      share(),
+    );
+
     const helpTooltips$ = this.fetchHelpTooltips();
 
     //RECEPTOR
@@ -317,6 +326,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
       form: form$,
       readonly: readonly$,
       catalogos: catalogos$,
+      series: series$,
       helpTooltips: helpTooltips$,
       searchAction: searchAction$,
       receptorSearch: receptorSearch$,
@@ -379,6 +389,18 @@ export class FacturaOrderEditPageComponent implements OnInit {
         map((d) => d?.result),
       ),
     ).pipe(map((catalogs) => Object.assign.apply(null, catalogs)));
+  }
+
+  public fetchSeries() {
+    const carrierId = localStorage.getItem('profileId');
+
+    return forkJoin(
+      // facturación
+      from(this.apiRestService.apiRestGet(`invoice/series/by-carrier/${carrierId}`)).pipe(
+        mergeAll(),
+        map((d) => d?.result),
+      ),
+    ); /* .pipe(map((catalogs) => Object.assign.apply(null, catalogs))); */
   }
 
   public fetchHelpTooltips() {
