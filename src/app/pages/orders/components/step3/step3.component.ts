@@ -343,7 +343,6 @@ export class Step3Component implements OnInit {
   }
 
   public selectedUnits(unit: any): void {
-    console.log('selecting units', unit);
     this.step3Form.get('unitType')!.setValue(unit.value);
   }
 
@@ -540,7 +539,6 @@ export class Step3Component implements OnInit {
   }
 
   public updateForm(key: string, value: any) {
-    console.log('updating units: ', value, ' step3: ', this.step3Form.get('cargoWeight').value);
     this.step3Form.get(key)!.setValue(value);
   }
 
@@ -622,6 +620,7 @@ export class Step3Component implements OnInit {
     }
   }
   private async deleteMultipleCargoFile(order_id: string) {
+    if (!order_id) return;
     const req = await this.apiRestService.apiRest(null, `orders/cargo/remove-multiple/${order_id}`, {
       apiVersion: 'v1.1',
       timeout: '300000',
