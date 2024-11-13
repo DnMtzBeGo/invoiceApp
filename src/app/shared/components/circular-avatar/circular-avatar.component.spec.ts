@@ -8,9 +8,8 @@ describe('CircularAvatarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CircularAvatarComponent ]
-    })
-    .compileComponents();
+      declarations: [CircularAvatarComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

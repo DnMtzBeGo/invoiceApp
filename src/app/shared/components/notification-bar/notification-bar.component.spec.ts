@@ -1,14 +1,17 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 
-import { NotificationBarComponent } from "./notification-bar.component";
+import { NotificationBarComponent } from './notification-bar.component';
 
-describe("NotificationBarComponent", () => {
+describe('NotificationBarComponent', () => {
   let component: NotificationBarComponent;
   let fixture: ComponentFixture<NotificationBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [NotificationBarComponent],
+      imports: [HttpClientModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -18,7 +21,7 @@ describe("NotificationBarComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
