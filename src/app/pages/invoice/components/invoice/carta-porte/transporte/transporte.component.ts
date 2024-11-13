@@ -79,7 +79,7 @@ export class TransporteComponent implements OnInit {
     });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.subscribedCartaPorte.unsubscribe();
   }
 

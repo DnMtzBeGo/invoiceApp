@@ -281,7 +281,7 @@ export class Step3Component implements OnInit {
 
     if (changes.clearFailedMultipleFile && changes.clearFailedMultipleFile.currentValue) {
       this.files = null;
-      this.step3Form.get('multipleCargoFile')!.setValue(null, { emitEvent: false });
+      this.step3Form.get('multipleCargoFile')!.setValue(this.createEmptyFile(), { emitEvent: false });
     }
     if (changes.clearUploadedMultipleFile && changes.clearUploadedMultipleFile.currentValue) {
       const emptyFile = this.createEmptyFile(this.files.name);

@@ -1,0 +1,55 @@
+<div class="mercancias20">
+  <app-commodity [editId]="editId" (dataChanged)="refreshTableData()" (editCanceled)="editId = null"></app-commodity>
+
+  <mat-divider></mat-divider>
+
+  <div class="mercancias-inputs" [formGroup]="mercanciasForm">
+    <mat-form-field appearance="outline" class="brand-field-1 readonly">
+      <mat-label>{{ 'invoice.mercancias.peso-bruto' | translate }}</mat-label>
+      <input
+        matInput
+        name="peso_bruto_total"
+        type="number"
+        formControlName="peso_bruto_total"
+        [value]=""
+        [readonly]="true" />
+      <mat-hint>campo calculado</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="brand-field-1 unidad-peso">
+      <mat-label>{{ 'invoice.mercancias.unidad-peso' | translate }}</mat-label>
+      <mat-select name="unidad_peso" formControlName="unidad_peso" class="disable-custom-format">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchWeightUnit($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
+        </mat-option>
+        <ng-container *ngFor="let option of filteredWeightUnits">
+          <mat-option [value]="option.clave" class="brand-option-1">
+            {{ option.clave }} - {{ option.nombre }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <app-mercancias-table
+    #commoditiesTable
+    (editRecord)="setActiveEditId($event)"
+    (pageChange)="tableDataPageChange($event)"
+    (dataChanged)="updateMercanciasForm()"></app-mercancias-table>
+
+  <div class="top-margin-50"></div>
+
+  <div class="grid">
+    <button mat-button matStepperPrevious>
+      {{ 'invoice.cp-page.anterior' | translate }}
+    </button>
+    <button mat-button matStepperNext>
+      {{ 'invoice.cp-page.siguiente' | translate }}
+    </button>
+  </div>
+</div>

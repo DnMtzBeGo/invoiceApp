@@ -15,6 +15,29 @@
       background-color: #0a0f14;
       z-index: 2;
 
+      .stamp-errors {
+        color: #fff !important;
+        white-space: pre-line;
+        padding: 2.5%;
+        border: 1px solid #ffddff;
+        border-radius: 10px;
+        margin-bottom: 25px;
+
+        div {
+          max-height: 100px;
+          overflow-y: auto;
+
+          &::-webkit-scrollbar {
+            width: 12px;
+          }
+        }
+
+        h3 {
+          margin-bottom: 5px;
+          font-size: 16px;
+        }
+      }
+
       #form-footer {
         display: flex;
         justify-content: space-between;

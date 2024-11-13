@@ -30,9 +30,13 @@
           </div>
         </form> -->
       </mat-step>
+
+      <!-- region Mercancias-->
       <mat-step [label]="'invoice.cp-page.mercancias' | translate">
-        <app-mercancias [info]="mercanciasInfo"></app-mercancias>
+        <app-mercanciasv20 [invoice_id]="invoice_id" [info]="mercanciasInfo"></app-mercanciasv20>
       </mat-step>
+      <!-- endRegion Mercancias -->
+
       <mat-step [label]="'invoice.cp-page.figura-transporte' | translate">
         <app-figura-transporte [info]="figuraTransporteInfo"></app-figura-transporte>
       </mat-step>

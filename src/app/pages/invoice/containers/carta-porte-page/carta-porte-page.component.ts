@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { InfoModalComponent } from '../../modals/info-modal/info-modal.component';
 import { CartaPorteInfoService } from '../../components/invoice/carta-porte/services/carta-porte-info.service';
 import { SubtiposRemolques } from '../../models/invoice/carta-porte/subtipos-remolques';
+import { generateIDCCP } from '../factura-edit-page/factura.core';
 
 @Component({
   selector: 'app-carta-porte-page',
@@ -21,6 +22,7 @@ export class CartaPortePageComponent {
   public catalogues: any;
   private redirectTo: string;
 
+  @Input() public invoice_id: string = '';
   @Input() public facturaInfo: any;
 
   public transporteInfo: any;
@@ -44,7 +46,8 @@ export class CartaPortePageComponent {
 
   public ngOnChanges(changes: SimpleChanges) {
     if (changes.facturaInfo?.currentValue?.carta_porte) {
-      this.cartaPorteEnabled.push('carta_porte');
+      if (!this.cartaPorteEnabled.includes('carta_porte')) this.cartaPorteEnabled.push('carta_porte');
+
       this.facturaInfo.complementos = this.cartaPorteEnabled;
       this.facturaInfo = changes.facturaInfo?.currentValue;
       const { carta_porte } = this.facturaInfo;
@@ -54,13 +57,9 @@ export class CartaPortePageComponent {
       this.mercanciasInfo = carta_porte.mercancias;
     }
 
-    if (changes.facturaInfo?.currentValue?.complementos?.length > 0) {
-      this.cartaPorteDisabled = true;
-      // console.log('El switch se prende', this.cartaPorteDisabled);
-    } else {
-      this.cartaPorteDisabled = false;
-      // console.log('El switch se apaga', this.cartaPorteDisabled);
-    }
+    if (changes.facturaInfo?.currentValue?.complementos?.length > 0) this.cartaPorteDisabled = true;
+    else this.cartaPorteDisabled = false;
+
     this.setIDCCP(this.cartaPorteDisabled, this.facturaInfo?.carta_porte?.id_ccp);
   }
 
@@ -75,20 +74,17 @@ export class CartaPortePageComponent {
 
   private setIDCCP(checked: boolean, forcedValue: string = ''): void {
     if (checked) {
-      if (!this.cartaPorteInfoService.id_ccp) this.cartaPorteInfoService.id_ccp = this.genIDCCP();
+      if (!this.cartaPorteInfoService.id_ccp) this.cartaPorteInfoService.id_ccp = generateIDCCP();
     } else this.cartaPorteInfoService.id_ccp = null;
 
     if (forcedValue) {
       this.cartaPorteInfoService.id_ccp = forcedValue;
     }
   }
-  private genIDCCP(): string {
-    return 'CCC' + uuidv4().substring(3, 36).toUpperCase();
-  }
 
   public async gatherInfo(): Promise<void> {
     this.cartaPorteInfoService.invalidInfo = false;
-    this.cartaPorteInfoService.resetCartaPorteInfo();
+    // this.cartaPorteInfoService.resetCartaPorteInfo();
     this.cartaPorteInfoService.infoRecolector.next(null);
     this.facturaInfo.carta_porte = this.cartaPorteInfoService.info;
     this.facturaInfo.carta_porte.id_ccp = this.cartaPorteInfoService.id_ccp;

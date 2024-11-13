@@ -1,0 +1,119 @@
+@import '../../styles/colors.scss';
+
+$fontSize: 12px;
+
+.dialog-content {
+  background-color: $shadow-dark-grey;
+  color: $shadow-white;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+header {
+  h2 {
+    font-size: $fontSize * 1.5;
+    color: $shadow-white;
+  }
+
+  .close-btn {
+    cursor: pointer;
+    right: 20px;
+    top: 20px;
+    position: absolute;
+    color: $shadow-white;
+  }
+}
+
+main {
+  .text-center {
+    text-align: center;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  .mt-25 {
+    margin-top: 25px;
+  }
+
+  .mr-5 {
+    margin-right: 5px;
+  }
+
+  .mb-25 {
+    margin-bottom: 25px;
+  }
+
+  .mb-50 {
+    margin-bottom: 50px;
+  }
+
+  .gridbox {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, 32%);
+
+    &.columns-3fr {
+      grid-template-columns: repeat(auto-fit, 80%);
+    }
+
+    &.columns-2 {
+      grid-template-columns: repeat(auto-fit, 48.5%);
+    }
+
+    &.columns-4 {
+      grid-template-columns: repeat(auto-fit, 24%);
+    }
+  }
+
+  ::ng-deep {
+    .ui-table {
+      .mat-mdc-card {
+        margin: 0px;
+      }
+    }
+
+    .ui-table {
+      position: relative !important;
+      height: 300px !important;
+      overflow: auto;
+
+      &.no-pagination {
+        .paginator-container {
+          display: none;
+        }
+      }
+
+      .mat-mdc-card-content {
+        overflow: auto;
+        height: 456px;
+        &::-webkit-scrollbar {
+          width: 12px;
+        }
+      }
+
+      .top-container {
+        display: none !important;
+      }
+    }
+
+    .brand-table-1 {
+      .mat-mdc-header-cell {
+        font-size: 12px;
+      }
+
+      .mdc-data-table__cell {
+        font-size: 12px;
+      }
+    }
+
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding-top: 0.75em !important;
+    }
+    .mat-select:not(.disable-custom-format) {
+      padding: 0px;
+      border: 0px;
+    }
+  }
+}

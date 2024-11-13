@@ -1,19 +1,10 @@
-import {
-  Component,
-  OnInit,
-  Inject,
-  ChangeDetectionStrategy,
-  ViewEncapsulation,
-} from "@angular/core";
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { Router, ActivatedRoute } from "@angular/router";
-import { from, of, throwError, Subject } from "rxjs";
-import { mergeAll, pluck, catchError, tap } from "rxjs/operators";
-import { reactiveComponent } from "src/app/shared/utils/decorators";
-import { ofType, oof } from "src/app/shared/utils/operators.rx";
-import { makeRequestStream } from "src/app/shared/utils/http.rx";
-import { AuthService } from "src/app/shared/services/auth.service";
-import { groupStatus } from "../../containers/factura-edit-page/factura.core";
+import { Component, OnInit, Inject, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router, ActivatedRoute } from '@angular/router';
+
+import { reactiveComponent } from 'src/app/shared/utils/decorators';
+import { oof } from 'src/app/shared/utils/operators.rx';
+import { groupStatus } from '../../containers/factura-edit-page/factura.core';
 
 const parseNumbers = (str?: string) => {
   str = str || '';
@@ -26,12 +17,12 @@ const parseNumbers = (str?: string) => {
   templateUrl: './factura-filters.component.html',
   styleUrls: ['./factura-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class FacturaFiltersComponent implements OnInit {
-  $rx = reactiveComponent(this);
+  public $rx = reactiveComponent(this);
 
-  vm: {
+  public vm: {
     form?: {
       invoice: string;
       motivo_cancelacion: string;
@@ -39,6 +30,7 @@ export class FacturaFiltersComponent implements OnInit {
     };
     tiposComprobante?: unknown[];
     facturaStatus?: unknown[];
+    metodosDePago?: unknown[];
     params?: {
       uuid?: string;
       fec_inicial?: Date;
@@ -47,6 +39,7 @@ export class FacturaFiltersComponent implements OnInit {
       receptor?: string;
       tipo_de_comprobante?: string;
       status?: string;
+      metodo_de_pago?: string;
     };
   };
 
@@ -54,38 +47,40 @@ export class FacturaFiltersComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private dialogRef: MatDialogRef<FacturaFiltersComponent>,
     public router: Router,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     //FORM
     const form$ = oof({
       invoice: this.data._id,
       motivo_cancelacion: '',
-      uuid_relacion: ''
+      uuid_relacion: '',
     });
 
     //CATALOGOS
     const tiposComprobante$ = oof(this.data.tiposComprobante);
     const facturaStatus$ = oof(groupStatus(this.data.facturaStatus));
-
+    const metodosDePago$ = oof(this.data.metodosDePago);
     //PARAMS
+
     const params$ = oof(this.data.params);
 
     this.vm = this.$rx.connect({
       form: form$,
       tiposComprobante: tiposComprobante$,
       facturaStatus: facturaStatus$,
-      params: params$
+      params: params$,
+      metodosDePago: metodosDePago$,
     });
   }
 
   //METHODS
-  apply() {
+  public apply(): void {
     this.dialogRef.close(this.vm.params);
   }
 
-  deselectRadio(event) {
+  public deselectRadio(event: any): void {
     window.requestAnimationFrame(() => {
       const el = event.target?.closest('mat-radio-group')?.querySelector('mat-radio-button.empty-radio input');
       el?.click();
@@ -93,19 +88,21 @@ export class FacturaFiltersComponent implements OnInit {
   }
 
   // UTILS
-  log = (...args: any[]) => {
+  public log = (...args: any[]): void => {
     console.log(...args);
   };
 
-  showError = (error: any) => {
+  public showError = (error: any): string => {
     error = error?.message || error?.error;
 
     return Array.isArray(error) ? error.map((e) => e.error).join(',\n') : error;
   };
 
-  parseNumbers = parseNumbers;
+  public parseNumbers = parseNumbers;
 
-  filterClave = (clave) => (item) => {
-    return item !== clave;
-  };
+  public filterClave =
+    (clave) =>
+    (item): boolean => {
+      return item !== clave;
+    };
 }
