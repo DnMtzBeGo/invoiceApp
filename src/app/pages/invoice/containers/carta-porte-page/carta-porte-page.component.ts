@@ -46,7 +46,8 @@ export class CartaPortePageComponent {
 
   public ngOnChanges(changes: SimpleChanges) {
     if (changes.facturaInfo?.currentValue?.carta_porte) {
-      this.cartaPorteEnabled.push('carta_porte');
+      if (!this.cartaPorteEnabled.includes('carta_porte')) this.cartaPorteEnabled.push('carta_porte');
+
       this.facturaInfo.complementos = this.cartaPorteEnabled;
       this.facturaInfo = changes.facturaInfo?.currentValue;
       const { carta_porte } = this.facturaInfo;
@@ -56,13 +57,9 @@ export class CartaPortePageComponent {
       this.mercanciasInfo = carta_porte.mercancias;
     }
 
-    if (changes.facturaInfo?.currentValue?.complementos?.length > 0) {
-      this.cartaPorteDisabled = true;
-      // console.log('El switch se prende', this.cartaPorteDisabled);
-    } else {
-      this.cartaPorteDisabled = false;
-      // console.log('El switch se apaga', this.cartaPorteDisabled);
-    }
+    if (changes.facturaInfo?.currentValue?.complementos?.length > 0) this.cartaPorteDisabled = true;
+    else this.cartaPorteDisabled = false;
+
     this.setIDCCP(this.cartaPorteDisabled, this.facturaInfo?.carta_porte?.id_ccp);
   }
 

@@ -176,14 +176,15 @@
           [maxlength]="7" />
       </mat-form-field>
       <!-- <button mat-mini-fab color="primary" aria-label="Add"> -->
-      <!-- <button mat-mini-fab color="primary" aria-label="Add" (click)="addRemolque(mercanciasForm.get('pedimento').value)"> -->
-      <!-- <mat-icon>add</mat-icon> -->
-      <!-- </button> -->
+      <button class="action" mat-mini-fab color="primary" aria-label="Add" (click)="addRemolque()">
+        <mat-icon>add</mat-icon>
+      </button>
     </div>
-    <table mat-table [dataSource]="remolquesSource" class="cartaPorteTable" *ngIf="remolquesSource.length > 0">
+
+    <table mat-table [dataSource]="remolquesSource" class="cartaPorteTable striped" *ngIf="remolquesSource.length > 0">
       <ng-container matColumnDef="conf">
         <th mat-header-cell *matHeaderCellDef>Configuración</th>
-        <td mat-cell *matCellDef="let element">{{ element.configuracion }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.configuracion || element.sub_tipo_rem }}</td>
       </ng-container>
 
       <ng-container matColumnDef="plate">
@@ -194,7 +195,7 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element; let i = index">
-          <button mat-icon-button color="warn" (click)="removeRemolque(i)">
+          <button class="delete-action" mat-icon-button color="warn" (click)="removeRemolque(i)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

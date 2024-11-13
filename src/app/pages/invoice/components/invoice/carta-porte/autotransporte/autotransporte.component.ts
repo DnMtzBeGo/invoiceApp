@@ -7,16 +7,17 @@ import { SubtiposRemolques } from 'src/app/pages/invoice/models/invoice/carta-po
 import { CataloguesListService } from '../services/catalogues-list.service';
 import { CartaPorteInfoService } from '../services/carta-porte-info.service';
 import { searchInList } from 'src/app/pages/invoice/containers/factura-edit-page/factura.core';
+import { BegoDialogService } from '@begomx/ui-components';
 
 const REMOLQUES_DATA: Remolques[] = [];
-
+const MAX_TRAILERS_ALLOWED = 2;
 @Component({
   selector: 'app-autotransporte',
   templateUrl: './autotransporte.component.html',
   styleUrls: ['./autotransporte.component.scss'],
 })
 export class AutotransporteComponent {
-  @ViewChild(MatTable) public table: MatTable<Remolques>;
+  @ViewChild(MatTable) public table: MatTable<Remolques[]>;
   @Input() public subtiposRemolques: SubtiposRemolques[];
   @Input() public info: any;
 
@@ -47,6 +48,7 @@ export class AutotransporteComponent {
     primaSeguro: new FormControl('', Validators.pattern('^[0-9]*$')),
     remolquesConfig: new FormControl(''),
     remolquesPlates: new FormControl(''),
+    remolques: new FormControl([]),
     identificacionVehicularConfig: new FormControl(''),
     truckPlates: new FormControl('', Validators.compose([Validators.pattern(/^[a-zA-Z0-9]{5,7}$/)])),
     truckModel: new FormControl('', Validators.compose([Validators.pattern(/^19\d{2}$|20\d{2}$/)])),
@@ -61,6 +63,7 @@ export class AutotransporteComponent {
   constructor(
     public cataloguesListService: CataloguesListService,
     public cartaPorteInfoService: CartaPorteInfoService,
+    private readonly begoDialog: BegoDialogService,
   ) {
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
       if (data?.tipos_de_permiso) {
@@ -83,7 +86,8 @@ export class AutotransporteComponent {
   }
 
   private setCatalogsFields(): void {
-    this.autotransporteForm.patchValue(this.autotransporteForm.value);
+    console.log({ 0: this.autotransporteForm.value });
+    //this.autotransporteForm.patchValue(this.autotransporteForm.value);
 
     this.cartaPorteInfoService.infoRecolector.subscribe(() => {
       const info = this.autotransporteForm.value;
@@ -112,10 +116,7 @@ export class AutotransporteComponent {
           prima_seguro: info.primaSeguro,
         },
 
-        remolques: {
-          sub_tipo_rem: info.remolquesConfig,
-          placa: info.remolquesPlates,
-        },
+        remolques: info.remolques || [],
       };
 
       this.cartaPorteInfoService.addRecoletedInfoMercancias({
@@ -128,7 +129,7 @@ export class AutotransporteComponent {
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.info && this.info) {
       const { seguros, remolques, identificacion_vehicular } = this.info;
-
+      console.log({ remolques });
       this.autotransporteForm.patchValue({
         identificacionVehicularConfig: identificacion_vehicular?.config_vehicular,
         nombreAmbiental: seguros?.asegura_med_ambiente,
@@ -140,35 +141,21 @@ export class AutotransporteComponent {
         numeroSCT: this.info.num_permiso_sct,
         permisoSCT: this.info.perm_sct,
         primaSeguro: seguros?.prima_seguro,
-        remolquesConfig: Array.isArray(remolques) ? remolques[0]?.sub_tipo_rem : remolques?.sub_tipo_rem,
-        remolquesPlates: Array.isArray(remolques) ? remolques[0]?.placa : remolques?.placa,
+        remolquesConfig: '',
+        remolquesPlates: '',
         truckModel: identificacion_vehicular?.anio_modelo_v_m,
         truckPlates: identificacion_vehicular?.placa_v_m,
         vehicleGrossWeight: identificacion_vehicular?.peso_bruto_vehicular,
+        remolques,
       });
-    }
-  }
 
-  public addRemolque() {
-    if (
-      this.autotransporteForm.get('trailerConfigurations').value &&
-      this.autotransporteForm.get('remolquesPlates').value
-    ) {
-      this.remolquesSource.push({
-        configuracion: this.autotransporteForm.get('trailerConfigurations').value,
-        placa: this.autotransporteForm.get('remolquesPlates').value,
-      });
-      this.table?.renderRows();
-      this.autotransporteForm.get('trailerConfigurations').reset();
-      this.autotransporteForm.get('remolquesPlates').reset();
-      // this.filteredTrailerConfigurations = this.trailerConfigurations;
+      this.remolquesSource = [...(Array.isArray(remolques) ? remolques : remolques ? [remolques] : [])];
     }
   }
 
   public addData() {
     const randomElementIndex = Math.floor(Math.random() * REMOLQUES_DATA.length);
     this.remolquesSource.push(REMOLQUES_DATA[randomElementIndex]);
-    this.table.renderRows();
   }
 
   public omitSpecialChar(event) {
@@ -177,9 +164,37 @@ export class AutotransporteComponent {
     return (k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57);
   }
 
+  public addRemolque() {
+    if (this.autotransporteForm.get('remolquesConfig').value && this.autotransporteForm.get('remolquesPlates').value) {
+      if (this.remolquesSource.length < MAX_TRAILERS_ALLOWED) {
+        this.remolquesSource = [
+          ...this.remolquesSource,
+          {
+            sub_tipo_rem: this.autotransporteForm.get('remolquesConfig').value,
+            placa: this.autotransporteForm.get('remolquesPlates').value,
+          },
+        ];
+
+        this.autotransporteForm.get('remolques').setValue([...this.remolquesSource]);
+        this.autotransporteForm.get('remolquesConfig').reset();
+        this.autotransporteForm.get('remolquesPlates').reset();
+      } else {
+        this.begoDialog.open({
+          type: 'informative',
+          title: 'Máximo alcanzado',
+          content: `El máximo de remolques permitidos es ${MAX_TRAILERS_ALLOWED}.`,
+          btnCopies: {
+            confirm: 'Ok',
+          },
+        });
+      }
+    }
+  }
+
   public removeRemolque(id) {
     this.remolquesSource = this.remolquesSource.filter((item, index) => index !== id);
-    this.table.renderRows();
+
+    this.autotransporteForm.get('remolques').setValue([...this.remolquesSource]);
   }
 
   public getOptionText(filtered, option) {
