@@ -49,6 +49,7 @@ export interface IInvoicesTableItem {
   emisor: any;
   receptor: any;
   serie: string;
+  serie_label: string;
   tipo: string;
   tipo_de_comprobante: string;
   status: string;
@@ -69,6 +70,7 @@ export interface IInvoicesTableItem {
   receptor_: string;
   status_pago: any;
   metodo_de_pago: string;
+  moneda: string;
 }
 
 export interface IIndexInvoice {
