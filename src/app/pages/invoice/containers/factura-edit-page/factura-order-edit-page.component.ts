@@ -63,9 +63,7 @@ interface VM {
       packaging: string;
       hazardous_material: string;
       required_units?: number;
-      trailer?: {
-        load_cap: string;
-      };
+      ['53_48']: string;
       weight?: number[];
     };
     // computed
@@ -84,8 +82,8 @@ interface VM {
     usos_cfdi?: unknown[];
     // carta porte
     tipos_de_embalaje?: unknown[];
+    series?: unknown[];
   };
-  series?: unknown[];
   helpTooltips?: any;
   searchAction?: {
     type: 'rfc' | 'nombre' | 'cve_sat' | 'cve_material';
@@ -137,7 +135,6 @@ export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
         | 'tab'
         | 'refresh'
         | 'rfc:search'
-        | 'series:search'
         | 'nombre:search'
         | 'autocomplete:cancel'
         | 'catalogos:search'
@@ -251,10 +248,6 @@ export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
 
     const catalogos$ = this.fetchCatalogosSAT().pipe(
       simpleFilters(this.formEmitter.pipe(ofType('catalogos:search'), share())),
-      share(),
-    );
-    const series$ = this.fetchSeries().pipe(
-      simpleFilters(this.formEmitter.pipe(ofType('series:search'), share())),
       share(),
     );
 
@@ -372,7 +365,6 @@ export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
       form: form$,
       readonly: readonly$,
       catalogos: catalogos$,
-      series: series$,
       helpTooltips: helpTooltips$,
       searchAction: searchAction$,
       receptorSearch: receptorSearch$,
@@ -427,6 +419,8 @@ export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
   }
 
   public fetchCatalogosSAT() {
+    const carrierId = localStorage.getItem('profileId');
+
     return forkJoin(
       // facturación
       from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(
@@ -438,19 +432,11 @@ export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
         mergeAll(),
         map((d) => d?.result),
       ),
-    ).pipe(map((catalogs) => Object.assign.apply(null, catalogs)));
-  }
-
-  public fetchSeries() {
-    const carrierId = localStorage.getItem('profileId');
-
-    return forkJoin(
-      // facturación
       from(this.apiRestService.apiRestGet(`invoice/series/by-carrier/${carrierId}`)).pipe(
         mergeAll(),
-        map((d) => d?.result),
+        map((d) => ({ series: d?.result })),
       ),
-    ); /* .pipe(map((catalogs) => Object.assign.apply(null, catalogs))); */
+    ).pipe(map((catalogs) => Object.assign.apply(null, catalogs)));
   }
 
   public fetchHelpTooltips() {
@@ -568,7 +554,7 @@ export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
     if (!this.id) return;
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('load_cap', this.vm.form.cargo?.trailer?.load_cap);
+    formData.append('load_cap', this.vm.form.cargo?.['53_48']);
     formData.append('required_units', String(this.vm.form?.cargo?.commodity_quantity));
 
     const req = await this.apiRestService.uploadFilesSerivce(
@@ -664,7 +650,7 @@ export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
   }
 
   public selectedUnits(unit: any) {
-    this.vm.form.cargo.trailer.load_cap = unit.value;
+    this.vm.form.cargo['53_48'] = unit.value;
   }
 }
 

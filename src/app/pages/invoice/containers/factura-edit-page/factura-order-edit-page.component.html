@@ -179,7 +179,6 @@
             </span>
           </mat-form-field>
 
-          <!-- <pre>regimen: {{ vm.catalogos?.regimen_fiscal | json }}</pre> -->
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
             <mat-label>{{
               vm.form?.invoice?.receiver?.tax_regime
@@ -238,16 +237,12 @@
               <mat-option>
                 <ngx-mat-select-search
                   ngModel
-                  (ngModelChange)="formEmitter.next(['series:search', ['series', $event.toLowerCase()]])"
+                  (ngModelChange)="formEmitter.next(['catalogos:search', ['series', $event.toLowerCase()]])"
                   [placeholderLabel]="'invoice.edit.type-to-search' | translate"
                   [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
                   class="brand-select-search-1"></ngx-mat-select-search>
               </mat-option>
-              <ng-container *ngFor="let serie of vm.series?.[0]">
-                <!-- *ngIf="
-                    (vm.tipoPersona && serie.persona_fisica && vm.tipoPersona === 'fisica') ||
-                    (serie.persona_moral && vm.tipoPersona === 'moral')
-                  " -->
+              <ng-container *ngFor="let serie of vm.catalogos?.series">
                 <mat-option [value]="serie._id" class="brand-option-1" [title]="serie.serie">
                   {{ serie.serie }}
                 </mat-option>
@@ -256,7 +251,7 @@
 
             <!-- <span
               class="brand-icon-help"
-              [matTooltip]="vm.helpTooltips?.receptor?.regimen_fiscal"
+              [matTooltip]="vm.helpTooltips?.receptor?.series"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
               matTooltipClass="brand-tooltip-1">
@@ -362,17 +357,15 @@
           [currentStep]="stepIndex">
           <ng-template #step>
             <div class="flex-column">
-              <div class="field section multiple-type-cargo">
+              <div class="field section multiple-type-cargo" *ngIf="vm?.form?.cargo?.weight?.length">
                 <h2 class="formgroup-title-required">{{ 'orders.txt-select-units' | translate }}</h2>
 
                 <div class="select-units-input">
-                  <app-cargo-units
-                    [units]="vm?.form?.cargo?.weight"
-                    (unitsChange)="updateUnits($event)"></app-cargo-units>
+                  <app-cargo-units [units]="vm.form.cargo.weight" (unitsChange)="updateUnits($event)"></app-cargo-units>
 
                   <bego-button-toggle
                     (statusChanged)="selectedUnits($event)"
-                    [enabled]="vm.form.cargo?.trailer?.load_cap === unitsData.second.value"
+                    [enabled]="vm.form?.cargo?.['53_48'] === unitsData.second.value"
                     [noPadding]="true"
                     [first]="unitsData.first"
                     [second]="unitsData.second"></bego-button-toggle>
@@ -618,17 +611,15 @@
 
           <ng-template #step>
             <div class="flex-column">
-              <div class="field section multiple-type-cargo">
+              <div class="field section multiple-type-cargo" *ngIf="vm?.form?.cargo?.weight?.length">
                 <h2 class="formgroup-title-required">{{ 'orders.txt-select-units' | translate }}</h2>
 
                 <div class="select-units-input">
-                  <app-cargo-units
-                    [units]="vm?.form?.cargo?.weight"
-                    (unitsChange)="updateUnits($event)"></app-cargo-units>
+                  <app-cargo-units [units]="vm.form.cargo.weight" (unitsChange)="updateUnits($event)"></app-cargo-units>
 
                   <bego-button-toggle
                     (statusChanged)="selectedUnits($event)"
-                    [enabled]="vm.form.cargo?.trailer?.load_cap === unitsData.second.value"
+                    [enabled]="vm.form.cargo?.['53_48'] === unitsData.second.value"
                     [noPadding]="true"
                     [first]="unitsData.first"
                     [second]="unitsData.second"></bego-button-toggle>
