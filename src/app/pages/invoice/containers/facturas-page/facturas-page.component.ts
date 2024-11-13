@@ -180,7 +180,8 @@ export class FacturasPageComponent implements OnInit {
           },
           uuid: factura.uuid,
           fecha_emision: this.getDate(factura.fecha_emision),
-          serie: factura?.serie_label || factura?.serie,
+          serie: factura?.serie,
+          serie_label: factura?.serie_label,
           emisor: factura.emisor,
           emisor_: `${factura.emisor?.nombre || ''}\n${factura.emisor?.rfc || ''}`,
           receptor: factura.receptor,
@@ -471,13 +472,12 @@ export class FacturasPageComponent implements OnInit {
     return this.datePipe.transform(parsedDate, 'MMM d, yy');
   };
   public getCurrency = (price: number) =>
-    price
-      ? '$' +
-        price.toLocaleString('en-US', {
+    +(price
+      ? price.toLocaleString('en-US', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })
-      : '';
+      : 0);
 
   private _validatePaymentDialogOpening(invoices: IInvoicePayment[]): boolean {
     let emitter_rfc = '';
