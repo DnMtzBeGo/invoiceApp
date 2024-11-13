@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -27,7 +28,7 @@ import { ICommodity } from '../../model';
   templateUrl: './commodity.component.html',
   styleUrls: ['./commodity.component.scss'],
 })
-export class CommodityComponent implements OnChanges {
+export class CommodityComponent implements OnInit, OnChanges {
   @ViewChildren(CantidadTransportaComponent) public cantidadTransportaRef: QueryList<CantidadTransportaComponent>;
   @Input() public editId: string = null;
   @Output() public dataChanged: EventEmitter<any> = new EventEmitter<any>();
@@ -118,6 +119,10 @@ export class CommodityComponent implements OnChanges {
     this._setFieldsListeners();
 
     _normalizeMaterialPeligrosoBoolean();
+  }
+
+  public ngOnInit(): void {
+    this.searchTransportedGoods('01010101');
   }
 
   private _setFieldsListeners(): void {
@@ -212,7 +217,7 @@ export class CommodityComponent implements OnChanges {
       else this.commodityForm.get('material_peligroso').setValue('No');
     };
 
-    if (this.commodityForm.get('bienes_transp').value.trim()) {
+    if (this.commodityForm.get('bienes_transp').value?.trim()) {
       _normalizeMaterialPeligrosoValue();
 
       const data = {
