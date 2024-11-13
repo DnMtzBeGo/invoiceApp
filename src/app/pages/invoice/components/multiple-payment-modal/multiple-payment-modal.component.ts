@@ -465,21 +465,23 @@ export class MultiplePaymentModalComponent implements OnInit {
         cta_beneficiario: this.pago.get('cuenta_beneficiario').value,
         tipo_cadena_de_pago: this.pago.get('tipo_cadena_de_pago').value,
         documentos_relacionados: this.billsTable.tableValues.map(
-          ({ uuid, impuestos, serie_label, folio, moneda, np, total, monto_a_pagar, objeto_imp }: IInvoicePayment) => ({
-            id_documento: uuid,
-            impuestos_dr: _buildTaxesDR(impuestos),
-            serie: serie_label,
-            folio,
-            moneda_dr: moneda,
-            // TODO: consider cases when currency type is different between payment and related document
-            equivalencia_dr: 1,
-            num_parcialidad: np,
-            imp_saldo_ant: _importe(total),
-            imp_pagado: _importe(monto_a_pagar),
-            // TODO: SALDO PENDIENTE
-            imp_saldo_insoluto: +(_importe(total) - _importe(monto_a_pagar)).toFixed(2),
-            objeto_imp_dr: _parseObjectImp(objeto_imp),
-          }),
+          ({ uuid, impuestos, serie_label, folio, moneda, np, total, monto_a_pagar, objeto_imp }: IInvoicePayment) => {
+            return {
+              id_documento: uuid,
+              impuestos_dr: _buildTaxesDR(impuestos),
+              serie: serie_label,
+              folio,
+              moneda_dr: moneda,
+              // TODO: consider cases when currency type is different between payment and related document
+              equivalencia_dr: 1,
+              num_parcialidad: np,
+              imp_saldo_ant: _importe(total),
+              imp_pagado: _importe(monto_a_pagar),
+              // TODO: SALDO PENDIENTE
+              imp_saldo_insoluto: +(_importe(total) - _importe(monto_a_pagar)).toFixed(2),
+              objeto_imp_dr: _parseObjectImp(objeto_imp),
+            };
+          },
         ),
         impuestos_p: {},
       };
@@ -640,9 +642,8 @@ export class MultiplePaymentModalComponent implements OnInit {
 
     this.billsTable.tableValues = [
       ...this.billsTable.tableValues.map((bill: IInvoicePayment) => {
-        if (!paymentAmount) {
-          bill.monto_a_pagar = 0;
-        } else if (paymentAmount - bill.saldo_pendiente >= 0) {
+        if (!paymentAmount) bill.monto_a_pagar = 0;
+        else if (paymentAmount - bill.saldo_pendiente >= 0) {
           bill.monto_a_pagar = bill.saldo_pendiente;
           paymentAmount -= bill.saldo_pendiente;
         } else {
