@@ -86,8 +86,7 @@ export class AutotransporteComponent {
   }
 
   private setCatalogsFields(): void {
-    console.log({ 0: this.autotransporteForm.value });
-    //this.autotransporteForm.patchValue(this.autotransporteForm.value);
+    this.autotransporteForm.patchValue(this.autotransporteForm.value);
 
     this.cartaPorteInfoService.infoRecolector.subscribe(() => {
       const info = this.autotransporteForm.value;
@@ -121,7 +120,6 @@ export class AutotransporteComponent {
 
       this.cartaPorteInfoService.addRecoletedInfoMercancias({
         autotransporte: response,
-        // isValid: this.autotransporteForm.status,
       });
     });
   }
@@ -129,7 +127,7 @@ export class AutotransporteComponent {
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.info && this.info) {
       const { seguros, remolques, identificacion_vehicular } = this.info;
-      console.log({ remolques });
+
       this.autotransporteForm.patchValue({
         identificacionVehicularConfig: identificacion_vehicular?.config_vehicular,
         nombreAmbiental: seguros?.asegura_med_ambiente,
@@ -153,18 +151,17 @@ export class AutotransporteComponent {
     }
   }
 
-  public addData() {
+  public addData(): void {
     const randomElementIndex = Math.floor(Math.random() * REMOLQUES_DATA.length);
     this.remolquesSource.push(REMOLQUES_DATA[randomElementIndex]);
   }
 
-  public omitSpecialChar(event) {
-    var k;
-    k = event.charCode;
+  public omitSpecialChar(event: any): boolean {
+    const k = event.charCode;
     return (k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57);
   }
 
-  public addRemolque() {
+  public addRemolque(): void {
     if (this.autotransporteForm.get('remolquesConfig').value && this.autotransporteForm.get('remolquesPlates').value) {
       if (this.remolquesSource.length < MAX_TRAILERS_ALLOWED) {
         this.remolquesSource = [
@@ -191,13 +188,13 @@ export class AutotransporteComponent {
     }
   }
 
-  public removeRemolque(id) {
+  public removeRemolque(id: number): void {
     this.remolquesSource = this.remolquesSource.filter((item, index) => index !== id);
 
     this.autotransporteForm.get('remolques').setValue([...this.remolquesSource]);
   }
 
-  public getOptionText(filtered, option) {
+  public getOptionText(filtered: any, option: any): any {
     if (undefined != this[filtered]) {
       let stateFound = option ? this[filtered].find((x) => x.clave === option) : undefined;
       return stateFound ? `${stateFound.clave} - ${stateFound.descripcion}` : undefined;
@@ -205,7 +202,7 @@ export class AutotransporteComponent {
     return undefined;
   }
 
-  public resetFilterList(list) {
+  public resetFilterList(list: string): void {
     switch (list) {
       case 'permisosSCT':
         this.filteredSCTPermissions = this.permisosSCT;
