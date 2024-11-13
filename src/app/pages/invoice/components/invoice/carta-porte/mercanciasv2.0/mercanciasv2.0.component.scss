@@ -1,0 +1,37 @@
+.mercancias20 {
+  mat-hint {
+    color: #fff;
+  }
+
+  .top-margin-50 {
+    margin-top: 50px;
+  }
+
+  .mercancias-inputs {
+    display: flex;
+    gap: 2rem;
+    margin: 10px 0px;
+
+    .unidad-peso {
+      flex-grow: 1;
+    }
+  }
+
+  .mercancias-inputs {
+    .mat-form-field-appearance-outline.brand-field-1.readonly {
+      & * {
+        cursor: not-allowed;
+      }
+
+      ::ng-deep {
+        .mat-form-field-outline-thick {
+          opacity: 0;
+        }
+      }
+
+      input {
+        text-align: center;
+      }
+    }
+  }
+}

@@ -70,46 +70,37 @@
   }
 }
 
+.brand-table-1 {
+  .mat-mdc-cell:nth-child(4),
+  .mat-mdc-cell:nth-child(5) {
+    white-space: pre-line;
+  }
+
+  .mat-mdc-cell:nth-child(9) {
+    width: 180px;
+  }
+}
+
 .factura-table {
   &__content {
     overflow-x: scroll;
     position: relative;
 
-    // ::ng-deep {
-    bego-table {
-      .invoice-user {
-        --color: #ffe000;
-      }
-
-      .invoice-driver {
-        --color: #ededed;
-      }
-
-      .invoice-order,
-      .invoice-cfdi {
-        --color: #2568ef;
-      }
+    .begon-invoice-order,
+    .begon-invoice-cfdi {
+      --color: #2568ef;
+      --font-size: 30px;
     }
-    // }
-  }
 
-  &__table {
-  }
+    .begon-invoice-driver {
+      --color: #ededed;
+      --font-size: 30px;
+    }
 
-  &__table-checkbox {
-    width: 32px;
-    padding-left: 24px;
-  }
-
-  &__table-header {
-    font-size: $fs-small;
-    padding: 0 8px;
-  }
-
-  &__table-body {
-    font-size: $fs-small;
-    padding: 0 8px;
-    text-align: center;
+    .begon-invoice-user {
+      --color: #ffe000;
+      --font-size: 30px;
+    }
   }
 
   &__content-badge {

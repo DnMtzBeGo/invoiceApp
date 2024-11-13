@@ -814,13 +814,17 @@
     "table": {
       "plataforma": "",
       "fecha_emision": "Emisión",
-      "emisor": "Emisor",
-      "receptor": "Receptor",
+      "folio": "Folio",
+      "status_": "Estatus",
+      "emisor_": "Emisor",
+      "receptor_": "Receptor",
       "serie": "Serie",
       "tipo": "Tipo",
       "status": "Status",
       "subtotal": "Subtotal",
-      "total": "Total"
+      "total": "Total",
+      "metodo_de_pago": "Metodo Pago",
+      "status_pago": "Estado Pago"
     },
     "filters": {
       "apply": "Aplicar",

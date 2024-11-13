@@ -38,7 +38,7 @@ mat-expansion-panel {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem 2rem;
+  gap: 1rem;
 }
 
 mat-form-field {
@@ -60,6 +60,16 @@ mat-form-field {
 .mat-hint {
   color: #ccc;
 }
+
+// ::ng-deep {
+//   .mat-form-field-appearance-outline {
+//     .mat-form-field-wrapper {
+//       padding-bottom: unset;
+//       margin: 0px !important;
+//       margin-bottom: 10px !important;
+//     }
+//   }
+// }
 
 ::ng-deep .brand-option-1 {
   .mat-option-text {
@@ -127,7 +137,9 @@ h6 {
   padding-bottom: 1.34375em;
 }
 
-.add-cantidad-transporta-btn {
+.add-cantidad-transporta-btn,
+.add-merchandise-btn,
+.cancel-merchandise-btn {
   padding-top: 12px;
   display: flex;
   gap: 8px;
@@ -146,5 +158,36 @@ h6 {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  .add-merchandise-btn,
+  .cancel-merchandise-btn {
+    align-items: center;
+    justify-content: center;
+
+    & > div {
+      &:hover {
+        background: #222;
+      }
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      width: 240px;
+      border: 1px solid #ffd200;
+      border-radius: 10px;
+    }
+  }
+
+  .cancel-merchandise-btn {
+    & > div {
+      width: 150px;
+    }
   }
 }

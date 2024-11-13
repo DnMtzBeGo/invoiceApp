@@ -15,6 +15,29 @@
       background-color: #0a0f14;
       z-index: 2;
 
+      .stamp-errors {
+        color: #fff !important;
+        white-space: pre-line;
+        padding: 2.5%;
+        border: 1px solid #ffddff;
+        border-radius: 10px;
+        margin-bottom: 25px;
+
+        div {
+          max-height: 100px;
+          overflow-y: auto;
+
+          &::-webkit-scrollbar {
+            width: 12px;
+          }
+        }
+
+        h3 {
+          margin-bottom: 5px;
+          font-size: 16px;
+        }
+      }
+
       #form-footer {
         display: flex;
         justify-content: space-between;
@@ -24,7 +47,7 @@
         #back {
           padding: 4px;
           color: #ededed;
-          font-family: "Avenir";
+          font-family: 'Avenir';
           font-weight: 600;
           font-size: 16px;
           cursor: pointer;
@@ -44,7 +67,7 @@
         list-style: none;
 
         li {
-          font-family: "Avenir";
+          font-family: 'Avenir';
           font-style: normal;
           font-weight: 500;
           font-size: 19px;
@@ -70,8 +93,8 @@
             font-size: 22px;
             color: #ededed;
             background: linear-gradient(270deg, #090d12 5.77%, #0a0f14 100%);
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.7),
-              inset 0px -4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 6px #1c232a;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.7), inset 0px -4px 4px rgba(0, 0, 0, 0.25),
+              inset 0px 4px 6px #1c232a;
             border-radius: 0 99px 99px 0;
           }
 
@@ -101,7 +124,7 @@
       margin-bottom: 2rem;
 
       > h6 {
-        font-family: "Avenir";
+        font-family: 'Avenir';
         font-style: normal;
         font-size: 20px;
         color: #ededed;
@@ -178,16 +201,12 @@
       gap: 2rem;
       border: 1px solid #1c232a;
       border-radius: 8px;
-      background: linear-gradient(
-        32.19deg,
-        rgba(24, 28, 32, 0.59) 15.17%,
-        rgba(13, 16, 19, 0.35) 56.6%
-      );
+      background: linear-gradient(32.19deg, rgba(24, 28, 32, 0.59) 15.17%, rgba(13, 16, 19, 0.35) 56.6%);
 
       > div {
         text-align: right;
         font-weight: 500;
-        font-family: "Avenir";
+        font-family: 'Avenir';
         font-style: normal;
 
         > div:nth-child(1) {
@@ -217,11 +236,7 @@
       .separator {
         width: 1px;
         height: 100%;
-        background: linear-gradient(
-          0deg,
-          rgba(80, 80, 80, 1) 0%,
-          rgba(52, 57, 63, 0.15) 100%
-        );
+        background: linear-gradient(0deg, rgba(80, 80, 80, 1) 0%, rgba(52, 57, 63, 0.15) 100%);
       }
     }
 
@@ -263,7 +278,7 @@
 
   .impuestos-table {
     thead th {
-      font-family: "Avenir";
+      font-family: 'Avenir';
       font-style: normal;
       font-weight: 800;
       font-size: 15px;
@@ -281,7 +296,7 @@
 
   .facturas-table {
     thead th {
-      font-family: "Avenir";
+      font-family: 'Avenir';
       font-style: normal;
       font-weight: 800;
       font-size: 14px;
@@ -290,7 +305,7 @@
     }
 
     tbody td {
-      font-family: "Avenir";
+      font-family: 'Avenir';
       font-style: normal;
       font-weight: 300;
       font-size: 14px;
