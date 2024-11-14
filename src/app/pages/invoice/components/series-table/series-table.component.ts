@@ -52,10 +52,7 @@ export class SeriesTableComponent implements OnInit {
       if (result && result.message != '') {
         this.notificationsService[result.success ? 'showSuccessToastr' : 'showErrorToastr'](result.message);
 
-        if (result.success) {
-          this.refresh.emit();
-          this.table.renderRows();
-        }
+        if (result.success) this.refresh.emit();
       }
     });
   }
