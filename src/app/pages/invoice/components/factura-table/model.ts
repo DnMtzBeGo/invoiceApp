@@ -54,8 +54,10 @@ export interface IInvoicesTableItem {
   tipo_de_comprobante: string;
   status: string;
   status_: string;
-  subtotal: number;
   total: number;
+  subtotal: number;
+  total_: string;
+  subtotal_: string;
   plataforma: {
     label: string;
     type: string;
@@ -78,11 +80,13 @@ export interface IIndexInvoice {
   fecha_emision: Date;
   condiciones_de_pago: string;
   forma_de_pago: string;
-  subtotal: number;
   descuento: number;
   serie: string;
   moneda: string;
   total: number;
+  total_: string;
+  subtotal: number;
+  subtotal_: string;
   tipo_de_comprobante: string;
   metodo_de_pago: string;
   lugar_de_expedicion: ILugarDeExpedicion;

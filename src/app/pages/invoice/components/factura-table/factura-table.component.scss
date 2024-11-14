@@ -79,6 +79,12 @@
   .mat-mdc-cell:nth-child(9) {
     width: 180px;
   }
+
+  .mat-mdc-cell:nth-child(10),
+  .mat-mdc-cell:nth-child(11),
+  .mat-mdc-cell:nth-child(13) {
+    text-align: right;
+  }
 }
 
 .factura-table {

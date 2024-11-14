@@ -819,12 +819,16 @@
       "status_": "Estatus",
       "receptor_": "Receptor",
       "serie": "Serie",
+      "serie_label": "Serie",
       "tipo": "Tipo",
       "status": "Status",
       "subtotal": "Subtotal",
+      "subtotal_": "Subtotal",
       "total": "Total",
+      "total_": "Total",
       "metodo_de_pago": "Metodo Pago",
-      "status_pago": "Estado Pago"
+      "status_pago": "Estado Pago",
+      "select_row": " "
     },
     "filters": {
       "apply": "Aplicar",

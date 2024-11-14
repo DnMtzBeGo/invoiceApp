@@ -191,8 +191,12 @@ export class FacturasPageComponent implements OnInit {
           status_: facturaStatus[factura.status] || factura.status,
           status: factura.status,
           // status: '',
-          subtotal: this.getCurrency(factura?.subtotal),
-          total: this.getCurrency(factura?.total),
+          subtotal: factura?.subtotal,
+          total: factura?.total,
+          // formatted subtotal and total
+          subtotal_: this.getCurrency(factura?.subtotal),
+          total_: this.getCurrency(factura?.total),
+
           folio: factura?.folio,
           files: factura?.files,
         })),
@@ -471,13 +475,14 @@ export class FacturasPageComponent implements OnInit {
 
     return this.datePipe.transform(parsedDate, 'MMM d, yy');
   };
-  public getCurrency = (price: number) =>
-    +(price
-      ? price.toLocaleString('en-US', {
+  public getCurrency = (price: number): string =>
+    price
+      ? '$ ' +
+        price.toLocaleString('en-US', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })
-      : 0);
+      : '';
 
   private _validatePaymentDialogOpening(invoices: IInvoicePayment[]): boolean {
     let emitter_rfc = '';
