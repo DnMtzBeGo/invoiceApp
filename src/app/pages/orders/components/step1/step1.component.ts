@@ -145,10 +145,18 @@ export class Step1Component implements OnInit {
       this.step1Form.get('fullname')!.setValue(pickup?.contact_info?.name || '');
       this.step1Form.get('email')!.setValue(pickup?.contact_info?.email || '');
       this.step1Form.get('reference')!.setValue(changes.draftData.currentValue?.reference_number || '');
-      this.step1Form.get('country_code')!.setValue(pickup?.contact_info?.country_code || '');
+
+      const countryCode = pickup?.contact_info?.country_code || '';
+      if (countryCode) this.step1Form.get('country_code')!.setValue(countryCode);
 
       this.validFormStep1.emit(this.step1Form.valid);
       this.datePickup = pickup.start_date;
+
+      if (!pickup?.start_date) {
+        const validators = [Validators.required];
+        const start_date = this.step1Form.get('start_date')!;
+        start_date.setValidators(validators);
+      }
 
       if (this.draftData['stamp']) {
         if (pickup.tax_information) {

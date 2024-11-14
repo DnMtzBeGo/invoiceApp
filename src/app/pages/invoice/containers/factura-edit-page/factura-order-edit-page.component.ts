@@ -68,6 +68,7 @@ interface VM {
     };
     // computed
     metodo_de_pago?: string;
+    stamp?: boolean;
   };
   readonly?: boolean;
   catalogos?: {
@@ -148,8 +149,7 @@ export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
   >();
 
   public lang: string = 'en';
-  public orderWithCP: boolean = true;
-  // public orderWithCP: boolean = false;
+
   public stepIndex: number = 0;
   public fileTypes = ['.xlsx'];
   public multipleFilesLang;
