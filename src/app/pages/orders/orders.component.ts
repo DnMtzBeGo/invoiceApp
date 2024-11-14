@@ -631,7 +631,7 @@ export class OrdersComponent implements OnInit {
     });
     await req.toPromise();
 
-    if (this.hazardousFile) {
+    if (this.hazardousFile && this.hazardousFile instanceof File) {
       const formData = new FormData();
       formData.append('order_id', order_id);
       formData.append('file', this.hazardousFile);
@@ -651,7 +651,7 @@ export class OrdersComponent implements OnInit {
 
       await this.uploadMultipleCargoFile(formData, order_id);
     } else {
-      if (this.draftData.cargo.imported_file) return;
+      if (this.draftData?.cargo?.imported_file) return;
 
       const { order_id } = this.orderPreview;
       await this.deleteMultipleCargoFile(order_id);
