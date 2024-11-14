@@ -8,13 +8,16 @@
   min-width: 950px;
   padding: 15px;
 
-  .mat-flat-button {
+  .mat-flat-button,
+  .secondary-task {
     background-color: #ffe000;
   }
 
   header {
     h2 {
       color: $yellow;
+      font-size: 22px;
+      margin-bottom: 15px;
     }
   }
 
@@ -44,6 +47,10 @@
       border: 0px;
       border-bottom: 1px solid darken($white-80, 66%);
       margin-bottom: 15px;
+
+      &.related-bills {
+        padding-bottom: 25px !important;
+      }
     }
 
     .content-box {
@@ -122,5 +129,9 @@
   .timepicker-backdrop-overlay,
   .timepicker-overlay {
     z-index: 1001 !important;
+  }
+
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    background-color: transparent !important;
   }
 }
