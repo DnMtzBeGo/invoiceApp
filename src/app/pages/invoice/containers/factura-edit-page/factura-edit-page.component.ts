@@ -1189,7 +1189,6 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
     }
 
     // formatting carta porte data side effect
-    console.log('submitting', 'gathering');
     this.cartaporteCmp.gatherInfo();
     factura = clone(this.vm?.form);
 
