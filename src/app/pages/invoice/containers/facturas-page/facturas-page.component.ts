@@ -491,8 +491,6 @@ export class FacturasPageComponent implements OnInit {
 
     if (invoices?.length) {
       for (const invoice of invoices) {
-        console.log(invoice);
-
         const payments = +invoice.payments?.length ? invoice.payments.reduce((acc, { amount }) => acc + amount, 0) : 0;
 
         if (payments && payments === +invoice.total)

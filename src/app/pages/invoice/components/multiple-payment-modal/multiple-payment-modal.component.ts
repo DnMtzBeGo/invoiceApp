@@ -170,8 +170,6 @@ export class MultiplePaymentModalComponent implements OnInit {
 
   private _loadRelatedEmitterCatalogs(): void {
     this.api.request('GET', `invoice/catalogs/multiple-payment/emitter`).subscribe((res) => {
-      console.log({ emitters: res });
-
       this.emitterCatalogs = {
         ...res.result,
       };
