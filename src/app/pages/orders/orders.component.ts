@@ -541,6 +541,8 @@ export class OrdersComponent implements OnInit {
     this.sendDropoff();
   }
 
+  public pickupStartDate: number = 0;
+
   private async sendPickup() {
     const { pickup, reference_number } = this.orderData;
     const { startDate, contact_info, tax_information } = pickup;
@@ -559,6 +561,8 @@ export class OrdersComponent implements OnInit {
       registration_number: tax_information?.registration_number,
       country_of_residence: tax_information?.country_of_residence,
     };
+
+    this.pickupStartDate = startDate;
 
     if (id) this.sendDestination(destinationPayload, id);
   }
@@ -895,11 +899,13 @@ export class OrdersComponent implements OnInit {
 
     return new Promise(async (resolve, reject) => {
       //if we are finishing a draft and don't have the information
+
       if (!Object.keys(this.membersToAssigned).length) {
         const [pickup] = this.draftData.destinations;
+
         const dialogRef = this.dialog.open(SelectFleetModalComponent, {
           panelClass: 'modal',
-          data: { start_date: pickup.start_date, end_date: pickup.end_date },
+          data: { start_date: this.pickupStartDate, end_date: this.pickupStartDate },
         });
 
         dialogRef.afterClosed().subscribe(async (data) => {

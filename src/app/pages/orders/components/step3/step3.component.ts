@@ -170,8 +170,6 @@ export class Step3Component implements OnInit {
     const isoDateString = isoDate.toISOString();
 
     this.step3Form.get('timepickup').setValue(isoDateString);
-
-    // this.step3Form.get("timepickup")!.setValue(new Date());
   }
 
   public ngOnInit(): void {
@@ -233,8 +231,8 @@ export class Step3Component implements OnInit {
           const emptyFile = this.createEmptyFile(cargo?.imported_file);
 
           this.files = {
-            name: this.getFileName(cargo?.imported_file),
-            date: new Date(),
+            name: this.getFileData(cargo?.imported_file).name,
+            date: this.getFileData(cargo?.imported_file).date,
             size: 0,
           };
           this.step3Form.get('multipleCargoFile')!.setValue(emptyFile, { emitEvent: false });
@@ -546,10 +544,9 @@ export class Step3Component implements OnInit {
     if (file) {
       this.files = {
         name: file.name,
-        date: new Date(file.lastModified),
+        date: new Date(),
         size: file.size,
       };
-      // this.setFileValidators();
     } else {
       this.files = null;
       this.deleteMultipleCargoFile(this.orderId);
@@ -628,13 +625,14 @@ export class Step3Component implements OnInit {
     await req.toPromise();
   }
 
-  public getFileName(filePath: string) {
-    const regex = /\/[^/]*_([^/]+)$/;
+  public getFileData(filePath: string) {
+    const regex = /\/(\d+)_([^/]+)$/;
     const match = filePath.match(regex);
-    return match ? match[1] : '';
+
+    return { date: match?.[1] || '', name: match?.[2] || '' };
   }
 
   public createEmptyFile(fileName: string = '') {
-    return new File([''], fileName ? this.getFileName(fileName) : 'empty.txt', { type: 'text/plain' });
+    return new File([''], fileName ? this.getFileData(fileName).name : 'empty.txt', { type: 'text/plain' });
   }
 }
