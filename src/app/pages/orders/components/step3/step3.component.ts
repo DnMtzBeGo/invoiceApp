@@ -620,6 +620,7 @@ export class Step3Component implements OnInit {
     }
   }
   private async deleteMultipleCargoFile(order_id: string) {
+    if (!order_id) return;
     const req = await this.apiRestService.apiRest(null, `orders/cargo/remove-multiple/${order_id}`, {
       apiVersion: 'v1.1',
       timeout: '300000',

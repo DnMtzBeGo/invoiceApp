@@ -12,7 +12,14 @@ import {
   NgxMatColorPickerModule,
   NGX_MAT_COLOR_FORMATS,
 } from '@angular-material-components/color-picker';
-import { BegoIconsModule, BegoTableModule, BegoTableMultipleSelectionModule } from '@begomx/ui-components';
+import {
+  BegoButtonModule,
+  BegoButtonToggleModule,
+  BegoDragDropModule,
+  BegoIconsModule,
+  BegoTableModule,
+  BegoTableMultipleSelectionModule,
+} from '@begomx/ui-components';
 
 import { InvoiceRoutingModule } from './invoice-routing.module';
 import {
@@ -53,6 +60,8 @@ import { TwoDigitDecimaNumberDirective } from '../shared/directives/decimal.dire
 import { TooltipHelpModule } from 'src/app/shared/components/tooltip-help/tooltip-help.module';
 import { AppMaterialModule } from 'src/app/material';
 import { RegimenesAduanerosComponent } from './components/invoice/carta-porte/regimenes-aduaneros/regimenes-aduaneros.component';
+import { CustomStepperModule } from '../orders/components/custom-stepper/custom-stepper.module';
+import { CargoUnitsModule } from '../orders/components/cargo-units/cargo-units.module';
 import { MercanciasTableComponent } from './components/invoice/carta-porte/mercanciasv2.0/components/mercancias-table/mercancias-table.component';
 import { Mercanciasv20Component } from './components/invoice/carta-porte/mercanciasv2.0/mercanciasv2.0.component';
 import { CommodityComponent } from './components/invoice/carta-porte/mercanciasv2.0/components/commodity/commodity.component';
@@ -116,6 +125,11 @@ import { SharedModule } from '../../shared/shared.module';
     BegoIconsModule,
     BegoTableModule,
     AppMaterialModule,
+    CustomStepperModule,
+    BegoDragDropModule,
+    BegoButtonModule,
+    CargoUnitsModule,
+    BegoButtonToggleModule,
     BegoTableMultipleSelectionModule,
   ],
   exports: [

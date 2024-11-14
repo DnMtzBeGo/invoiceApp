@@ -1,8 +1,20 @@
-import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { of, timer, Subject, merge, from, Observable, forkJoin } from 'rxjs';
-import { tap, filter, switchMap, share, map, withLatestFrom, takeUntil, mergeAll, distinctUntilChanged } from 'rxjs/operators';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { of, timer, Subject, merge, from, Observable, forkJoin, Subscription } from 'rxjs';
+import {
+  tap,
+  filter,
+  switchMap,
+  share,
+  map,
+  withLatestFrom,
+  takeUntil,
+  mergeAll,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { reactiveComponent } from 'src/app/shared/utils/decorators';
 import { ofType, simpleFilters, oof } from 'src/app/shared/utils/operators.rx';
@@ -10,6 +22,7 @@ import { makeRequestStream } from 'src/app/shared/utils/http.rx';
 import { clone } from 'src/app/shared/utils/object';
 import { routes } from '../../consts';
 import { BegoSliderDotsOpts } from 'src/app/shared/components/bego-slider-dots/bego-slider-dots.component';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 interface VM {
   // "receptor" | "precio" | "orden";
@@ -29,6 +42,7 @@ interface VM {
         rfc?: string;
         cfdi?: string;
         tax_regime?: string;
+        series_id?: string;
       };
     };
     pricing?: {
@@ -36,7 +50,7 @@ interface VM {
       deferred_payment: boolean;
     };
     destinations: {
-      destination_id: string,
+      destination_id: string;
       tax_information?: {
         rfc?: string;
         company_name?: string;
@@ -48,6 +62,9 @@ interface VM {
       unit_type: string;
       packaging: string;
       hazardous_material: string;
+      required_units?: number;
+      ['53_48']: string;
+      weight?: number[];
     };
     // computed
     metodo_de_pago?: string;
@@ -65,6 +82,7 @@ interface VM {
     usos_cfdi?: unknown[];
     // carta porte
     tipos_de_embalaje?: unknown[];
+    series?: unknown[];
   };
   helpTooltips?: any;
   searchAction?: {
@@ -90,10 +108,21 @@ interface VM {
   selector: 'app-factura-order-edit-page',
   templateUrl: './factura-order-edit-page.component.html',
   styleUrls: ['./factura-edit-page.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FacturaOrderEditPageComponent implements OnInit {
+export class FacturaOrderEditPageComponent implements OnInit, OnDestroy {
+  public unitsData: any = {
+    first: {
+      label: '53 ft',
+      value: '53',
+    },
+    second: {
+      label: '48 ft',
+      value: '48',
+    },
+  };
+
   public routes: typeof routes = routes;
 
   public $rx = reactiveComponent(this);
@@ -114,9 +143,20 @@ export class FacturaOrderEditPageComponent implements OnInit {
         | 'cargo:search_material'
         | 'submit'
       ),
-      unknown
+      unknown,
     ]
   >();
+
+  public lang: string = 'en';
+  public orderWithCP: boolean = true;
+  // public orderWithCP: boolean = false;
+  public stepIndex: number = 0;
+  public fileTypes = ['.xlsx'];
+  public multipleFilesLang;
+  public files: any = null;
+  public langSub: Subscription;
+  public multipleCargo: boolean = false;
+  public Array = Array;
 
   public id: string;
   public mode: 'create' | 'update';
@@ -127,7 +167,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
     value: 0,
     valueChange: (slideIndex: number): void => {
       this.sliderDotsOpts.value = slideIndex;
-      this.formEmitter.next(["tab", this.tabs[slideIndex]]);
+      this.formEmitter.next(['tab', this.tabs[slideIndex]]);
     },
   };
 
@@ -136,10 +176,27 @@ export class FacturaOrderEditPageComponent implements OnInit {
     private apiRestService: AuthService,
     private route: ActivatedRoute,
     private translateService: TranslateService,
-    private cd: ChangeDetectorRef
-  ) {}
+    private cd: ChangeDetectorRef,
+    private httpClient: HttpClient,
+    private notificationsService: NotificationsService,
+  ) {
+    this.multipleFilesLang = {
+      name: this.translateService.instant('orders.upload-multiple-orders.name'),
+      labelBrowse: this.translateService.instant('orders.upload-multiple-orders.labelBrowse'),
+      labelOr: this.translateService.instant('orders.upload-multiple-orders.labelOr'),
+      btnBrowse: this.translateService.instant('orders.upload-multiple-orders.btnBrowse'),
+      labelMax: this.translateService.instant('orders.upload-multiple-orders.labelMax'),
+      uploading: this.translateService.instant('orders.upload-multiple-orders.uploading'),
+    };
+  }
 
   public ngOnInit(): void {
+    this.lang = localStorage.getItem('lang') || 'en';
+
+    this.langSub = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
+      this.lang = langChangeEvent.lang;
+    });
+
     //TAB
     const tab$ = merge(
       of(this.route.snapshot.queryParams.tab ?? 'receptor'),
@@ -153,12 +210,12 @@ export class FacturaOrderEditPageComponent implements OnInit {
           this.vm.readonly &&
             window.scrollTo({
               top: 112 + window.document.getElementById(tab)?.offsetTop - 16,
-              behavior: 'smooth'
+              behavior: 'smooth',
             });
-
+          this.stepStatus(this.stepIndex);
           return tab;
-        })
-      )
+        }),
+      ),
     );
 
     //DATA FETCHING
@@ -173,22 +230,27 @@ export class FacturaOrderEditPageComponent implements OnInit {
       switchMap(() => {
         return this.mode === 'create' ? this.createForm() : this.fetchForm(this.id);
       }),
-      share()
+      share(),
     );
 
     const readonly$ = merge(
       loadDataAction$.pipe(
         map(() => ({
-          status: Number(this.route.snapshot.paramMap.get('status'))
-        }))
+          status: Number(this.route.snapshot.paramMap.get('status')),
+        })),
       ),
-      form$
+      form$,
     ).pipe(
       map(orderPermissions),
       map((d) => d?.readonly),
-      distinctUntilChanged()
+      distinctUntilChanged(),
     );
-    const catalogos$ = this.fetchCatalogosSAT().pipe(simpleFilters(this.formEmitter.pipe(ofType('catalogos:search'), share())), share());
+
+    const catalogos$ = this.fetchCatalogosSAT().pipe(
+      simpleFilters(this.formEmitter.pipe(ofType('catalogos:search'), share())),
+      share(),
+    );
+
     const helpTooltips$ = this.fetchHelpTooltips();
 
     //RECEPTOR
@@ -206,63 +268,66 @@ export class FacturaOrderEditPageComponent implements OnInit {
           // this.vm.form.invoice.receiver.cfdi = "";
           // this.vm.form.invoice.receiver.tax_regime = "";
           // this.vm.form.invoice.receiver.address = {};
-        })
+        }),
       ),
       this.formEmitter.pipe(
         ofType('nombre:search'),
-        map((search: string) => ({ type: 'nombre' as const, search }))
+        map((search: string) => ({ type: 'nombre' as const, search })),
       ),
       this.formEmitter.pipe(
         ofType('conceptos:search_cve'),
-        map((search: string) => ({ type: 'cve_sat' as const, search }))
+        map((search: string) => ({ type: 'cve_sat' as const, search })),
       ),
       this.formEmitter.pipe(
         ofType('cargo:search_material'),
-        map((search: string) => ({ type: 'cve_material' as const, search }))
-      )
+        map((search: string) => ({ type: 'cve_material' as const, search })),
+      ),
     ).pipe(share());
 
-    const cancelSearchAction$ = merge(searchAction$.pipe(filter(emptySearch)), this.formEmitter.pipe(ofType('autocomplete:cancel')));
+    const cancelSearchAction$ = merge(
+      searchAction$.pipe(filter(emptySearch)),
+      this.formEmitter.pipe(ofType('autocomplete:cancel')),
+    );
 
     const validSearch$ = searchAction$.pipe(
       filter(validSearch),
       switchMap((search) =>
         timer(500).pipe(
           takeUntil(cancelSearchAction$),
-          map(() => search)
-        )
-      )
+          map(() => search),
+        ),
+      ),
     );
 
     const searchRequest$ = validSearch$.pipe(
       switchMap((search) => this.searchReceptor(search).pipe(takeUntil(cancelSearchAction$))),
-      share()
+      share(),
     );
 
     const searchLoading$ = merge(
       oof(false),
       validSearch$.pipe(map(() => true)),
       searchRequest$.pipe(map(() => false)),
-      cancelSearchAction$.pipe(map(() => false))
+      cancelSearchAction$.pipe(map(() => false)),
     );
 
     const receptorSearch$ = merge(
       searchRequest$.pipe(
         withLatestFrom(searchAction$),
         map(([requestData, search]: any) => ({
-          [search.type]: requestData
+          [search.type]: requestData,
         })),
         tap(() => {
           this.cd.markForCheck();
-        })
+        }),
       ),
-      cancelSearchAction$.pipe(map(() => {}))
+      cancelSearchAction$.pipe(map(() => {})),
     );
 
     const receptorRFC$ = merge(
       form$.pipe(map((d) => d?.invoice?.receiver?.rfc)),
       this.formEmitter.pipe(ofType('rfc:search')),
-      this.formEmitter.pipe(ofType('rfc:set'), map(normalizeRFC))
+      this.formEmitter.pipe(ofType('rfc:set'), map(normalizeRFC)),
     ).pipe(share());
 
     const tipoPersona$ = receptorRFC$.pipe(distinctUntilChanged(), map(getTipoPersona));
@@ -270,19 +335,20 @@ export class FacturaOrderEditPageComponent implements OnInit {
     //FORM SUBMIT
     const formMode$ = this.formEmitter.pipe(
       ofType('submit'),
-      map((d) => d[1])
+      map((d) => d[1]),
     );
 
     const {
       loading$: formLoading$,
       error$: formError$,
-      success$: formSuccess$
+      success$: formSuccess$,
     } = makeRequestStream({
       fetch$: this.formEmitter.pipe(ofType('submit')),
       fetch: this.submitFactura,
       afterSuccess: () => {},
       afterSuccessDelay: () => {
-        (this.route.snapshot.paramMap.get('redirectTo') && this.router.navigateByUrl(this.route.snapshot.paramMap.get('redirectTo'))) ||
+        (this.route.snapshot.paramMap.get('redirectTo') &&
+          this.router.navigateByUrl(this.route.snapshot.paramMap.get('redirectTo'))) ||
           this.router.navigate([routes.FACTURAS]);
       },
       afterError: () => {
@@ -291,7 +357,7 @@ export class FacturaOrderEditPageComponent implements OnInit {
         //   top: 9999999,
         //   behavior: "smooth",
         // });
-      }
+      },
     });
 
     this.vm = this.$rx.connect({
@@ -307,9 +373,12 @@ export class FacturaOrderEditPageComponent implements OnInit {
       formMode: formMode$,
       formLoading: formLoading$,
       formError: formError$,
-      formSuccess: formSuccess$
-
+      formSuccess: formSuccess$,
     }) as VM;
+  }
+
+  public ngOnDestroy(): void {
+    this.langSub.unsubscribe();
   }
 
   public createForm() {
@@ -318,58 +387,59 @@ export class FacturaOrderEditPageComponent implements OnInit {
         receiver: {
           address: {
             place_id: '',
-            address: ''
+            address: '',
           },
           company: '',
           rfc: '',
           cfdi: '',
-          tax_regime: ''
-        }
+          tax_regime: '',
+        },
       },
-      destinations: [
-        { contact_info: { rfc: '' } },
-        { contact_info: { rfc: '' } },
-      ],
+      destinations: [{ contact_info: { rfc: '' } }, { contact_info: { rfc: '' } }],
       cargo: {
         cargo_goods: '',
         commodity_quantity: 0,
         unit_type: '',
         packaging: '',
-        hazardous_material: ''
+        hazardous_material: '',
       },
       pricing: {
         subtotal: 0,
-        deferred_payment: false
-      }
+        deferred_payment: false,
+      },
     });
   }
 
   // API calls
   public fetchForm(_id) {
-    return from(
-      this.apiRestService.apiRest('', `carriers/orders/${_id}`, { apiVersion: 'v1.1' })
-    ).pipe(
+    return from(this.apiRestService.apiRest('', `carriers/orders/${_id}`, { apiVersion: 'v1.1' })).pipe(
       mergeAll(),
-      map((responseData) => fromOrder(responseData?.result))
+      map((responseData) => this.fromOrder(responseData?.result)),
     );
   }
 
   public fetchCatalogosSAT() {
+    const carrierId = localStorage.getItem('profileId');
+
     return forkJoin(
       // facturación
       from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(
         mergeAll(),
-        map((d) => d?.result)
+        map((d) => d?.result),
       ),
       // carta porte
       from(this.apiRestService.apiRestGet('invoice/catalogs/consignment-note')).pipe(
         mergeAll(),
-        map((d) => d?.result)
-      )
+        map((d) => d?.result),
+      ),
+      from(this.apiRestService.apiRestGet(`invoice/series/by-carrier/${carrierId}`)).pipe(
+        mergeAll(),
+        map((d) => ({ series: d?.result })),
+      ),
     ).pipe(map((catalogs) => Object.assign.apply(null, catalogs)));
   }
 
-  fetchHelpTooltips() {
+  public fetchHelpTooltips() {
     return oof(this.translateService.instant('invoice.tooltips'));
   }
 
@@ -378,13 +448,13 @@ export class FacturaOrderEditPageComponent implements OnInit {
       rfc: 'invoice/receivers',
       nombre: 'invoice/receivers/by-name',
       cve_sat: 'invoice/catalogs/consignment-note/productos-y-servicios',
-      cve_material: 'invoice/catalogs/consignment-note/material-peligroso'
+      cve_material: 'invoice/catalogs/consignment-note/material-peligroso',
     };
     const keys = {
       rfc: 'rfc',
       nombre: 'name',
       cve_sat: 'term',
-      cve_material: 'term'
+      cve_material: 'term',
     };
 
     return from(
@@ -392,14 +462,14 @@ export class FacturaOrderEditPageComponent implements OnInit {
         JSON.stringify({
           [keys[search.type]]: search.search,
           limit: 15,
-          ...(search.rfc != void 0 ? { rfc: search.rfc } : {})
+          ...(search.rfc != void 0 ? { rfc: search.rfc } : {}),
         }),
         endpoints[search.type],
-        { loader: 'false' }
-      )
+        { loader: 'false' },
+      ),
     ).pipe(
       mergeAll(),
-      map((d) => d?.result)
+      map((d) => d?.result),
     );
   }
 
@@ -410,14 +480,14 @@ export class FacturaOrderEditPageComponent implements OnInit {
 
     return from(
       this.apiRestService.apiRest(JSON.stringify(data), 'orders/update_consignment_note_info', {
-        loader: 'false'
-      })
+        loader: 'false',
+      }),
     ).pipe(
       mergeAll(),
       // NOTE: wrap success response
       map((responseData) => ({
-        result: responseData
-      }))
+        result: responseData,
+      })),
     );
   };
 
@@ -426,45 +496,163 @@ export class FacturaOrderEditPageComponent implements OnInit {
   // FORMS
 
   // UTILS
-  p = orderPermissions;
+  public p = orderPermissions;
 
-  log = (...args) => {
+  public log = (...args) => {
     console.log(...args);
   };
 
-  showError = (error: any) => {
+  public showError = (error: any) => {
     error = error?.message || error?.error;
     // lang
     error = error?.[this.translateService.currentLang];
 
     return Array.isArray(error) ? error.map((e) => e.error ?? e.message).join(',\n') : error;
   };
-}
 
-const fromOrder = (order) => {
-  const newOrder = {
-    ...order,
-    metodo_de_pago: order.pricing?.deferred_payment ? 'PPD' : 'PUE'
-  };
+  public async stepStatus(type: number) {
+    if (type > 0) {
+      this.multipleCargo = true;
+    } else {
+      this.handleFileChange(null);
+      this.multipleCargo = false;
+    }
+    // this.updateValidators(type > 0);
+  }
 
-  // create keys if null
-  if (!newOrder.invoice?.receiver) newOrder.invoice.receiver = {};
-
-  if (order.destinations) {
-    order.destinations.forEach((destination: any) => {
-      destination.destination_id = destination._id;
-      delete destination._id;
+  public downloadTemplate() {
+    const URL: string =
+      'https://begoclients.s3.amazonaws.com/production/layouts/orders/layout-multiple-merchandise-order.xlsx';
+    this.httpClient.get(URL, { responseType: 'blob' }).subscribe((blob) => {
+      const link = document.createElement('a');
+      const objectUrl = window.URL.createObjectURL(blob);
+      link.href = objectUrl;
+      link.download = URL.split('/').pop() || 'archivo';
+      link.click();
+      window.URL.revokeObjectURL(objectUrl);
     });
   }
 
-  if (!newOrder.invoice?.receiver?.address)
-    newOrder.invoice.receiver.address = {
-      address: '',
-      place_id: ''
+  public async handleFileChange(file?: File, type?: 'xlsx') {
+    if (file) {
+      this.files = {
+        name: file.name,
+        date: new Date(file.lastModified),
+        size: file.size,
+      };
+      // this.setFileValidators();
+      this.uploadMultipleCargoFile(file);
+    } else {
+      this.files = null;
+      this.deleteMultipleCargoFile();
+    }
+
+    // this.step3Form.get('multipleCargoFile')!.setValue(file);
+  }
+
+  private async uploadMultipleCargoFile(file: File) {
+    if (!this.id) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('load_cap', this.vm.form.cargo?.['53_48']);
+    formData.append('required_units', String(this.vm.form?.cargo?.commodity_quantity));
+
+    const req = await this.apiRestService.uploadFilesSerivce(
+      formData,
+      `orders/cargo/import-ftl/${this.id}`,
+      { apiVersion: 'v1.1' },
+      { timeout: '300000' },
+    );
+
+    await req
+      .toPromise()
+      .then(() => {
+        // this.clearUploadedMultipleFile = !this.clearUploadedMultipleFile;
+      })
+      .catch(({ error: { error } }) => {
+        // this.clearFailedMultipleFile = !this.clearFailedMultipleFile;
+        const { message, errors } = error;
+        let errMsg = `${message[this.lang] || ''}.`;
+        console.error(errMsg);
+
+        if (errors?.en) {
+          errMsg += `
+        ${errors[this.lang] || ''}`;
+        }
+
+        this.notificationsService.showErrorToastr(errMsg, errors?.en ? 10000 : 5000, 'brand-snackbar-2');
+      });
+  }
+
+  private async deleteMultipleCargoFile() {
+    if (!this.id) return;
+    const req = await this.apiRestService.apiRest(null, `orders/cargo/remove-multiple/${this.id}`, {
+      apiVersion: 'v1.1',
+      timeout: '300000',
+    });
+    await req.toPromise();
+  }
+
+  public invalidFile() {
+    this.notificationsService.showErrorToastr('Archivo inválido');
+  }
+
+  public createEmptyFile(fileName: string = '') {
+    return new File([''], fileName ? this.getFileName(fileName) : 'empty.txt', { type: 'text/plain' });
+  }
+
+  public getFileName(filePath: string) {
+    const regex = /\/[^/]*_([^/]+)$/;
+    const match = filePath.match(regex);
+    return match ? match[1] : '';
+  }
+
+  public fromOrder(order) {
+    const newOrder = {
+      ...order,
+      metodo_de_pago: order.pricing?.deferred_payment ? 'PPD' : 'PUE',
     };
 
-  return newOrder;
-};
+    // create keys if null
+    if (!newOrder.invoice?.receiver) newOrder.invoice.receiver = {};
+
+    if (order.destinations) {
+      order.destinations.forEach((destination: any) => {
+        destination.destination_id = destination._id;
+        delete destination._id;
+      });
+    }
+
+    if (order?.cargo?.imported_file) {
+      const url: string = order.cargo.imported_file;
+
+      this.files = {
+        name: this.getFileName(url),
+        date: new Date(),
+        size: 0,
+      };
+
+      this.stepIndex = 1;
+    }
+
+    if (!newOrder.invoice?.receiver?.address)
+      newOrder.invoice.receiver.address = {
+        address: '',
+        place_id: '',
+      };
+
+    return newOrder;
+  }
+
+  public units: number[] = [];
+  public updateUnits(value: number[]) {
+    this.vm.form.cargo.weight = value;
+  }
+
+  public selectedUnits(unit: any) {
+    this.vm.form.cargo['53_48'] = unit.value;
+  }
+}
 
 const toOrder = (order: any) => {
   order.pricing.deferred_payment = order.metodo_de_pago === 'PPD';
@@ -484,6 +672,6 @@ const orderPermissions = (order) => {
   return {
     edit,
     readonly: !edit,
-    hazardous: order?.cargo?.type === 'hazardous'
+    hazardous: order?.cargo?.type === 'hazardous',
   };
 };
