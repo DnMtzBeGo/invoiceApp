@@ -102,12 +102,12 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
         { id: 'fecha_emision', label: 'Fec. Emision' },
         { id: 'emisor_', label: 'Emisor' },
         { id: 'receptor_', label: 'Receptor' },
-        { id: 'serie', label: 'Serie' },
+        { id: 'serie_label', label: 'Serie' },
         { id: 'folio', label: 'Folio' },
         { id: 'tipo', label: 'Tipo' },
         { id: 'status_', label: 'Estatus' },
-        { id: 'subtotal', label: 'Subtotal' },
-        { id: 'total', label: 'Total' },
+        { id: 'subtotal_', label: 'Subtotal' },
+        { id: 'total_', label: 'Total' },
         { id: 'metodo_de_pago', label: 'Metodo Pago' },
         { id: 'status_pago', label: 'Estatus Pago', input: 'style' },
       ],
@@ -264,7 +264,6 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
                 tipo_de_cambio = 1,
                 serie,
                 serie_label,
-                total,
                 emisor,
                 receptor,
                 emisor_,
@@ -275,6 +274,8 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
                 tipo_de_comprobante,
                 payments,
                 status,
+                total,
+                total_,
               } = invoice;
               this.selectedRows.push({
                 uuid,
@@ -286,6 +287,7 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
                 serie: serie,
                 serie_label,
                 total,
+                total_,
                 _id,
                 emisor,
                 emisor_,
@@ -327,12 +329,15 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
           emisor,
           fecha_emision,
           receptor,
+          serie,
           serie_label,
           status,
           status_,
           tipo_de_comprobante,
           subtotal,
+          subtotal_,
           total,
+          total_,
           plataforma,
           order,
           files,
@@ -341,6 +346,7 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
           uuid,
           emisor_,
           receptor_,
+          moneda,
         } = item;
 
         plataforma.icon = plataforma.type;
@@ -419,18 +425,22 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
           emisor_,
           receptor,
           receptor_,
-          serie: serie_label,
+          serie,
+          serie_label,
           folio,
           status,
           status_,
           tipo,
           tipo_de_comprobante,
-          subtotal,
           total,
+          total_,
+          subtotal,
+          subtotal_,
           order,
           files,
           metodo_de_pago,
           status_pago,
+          moneda,
           actions: {
             enabled: Object.values(options).includes(true),
             options,
@@ -588,8 +598,6 @@ export class FacturaTableComponent extends InvoicePDF implements OnInit, OnChang
   }
 
   public downloadPdf(pdfLink: string): void {
-    console.log(pdfLink);
-
     if (pdfLink) window.open(pdfLink, '_blank');
   }
 

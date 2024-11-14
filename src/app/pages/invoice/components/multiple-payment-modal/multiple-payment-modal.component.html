@@ -41,7 +41,7 @@
               formControlName="direccion"
               placeholder="Seleccione una dirección..."
               [attr.readonly]="readonly">
-              <ng-container *ngIf="receiverCatalogs.addresses.length">
+              <ng-container *ngIf="receiverCatalogs.addresses && receiverCatalogs.addresses.length">
                 <mat-option *ngFor="let item of receiverCatalogs.addresses" [value]="item._id">
                   {{ item.cp }} - {{ item.identificador }}
                 </mat-option>
@@ -91,7 +91,7 @@
           <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
             <mat-label>Serie</mat-label>
             <mat-select formControlName="serie" placeholder="Seleccione una Serie..." [attr.readonly]="readonly">
-              <ng-container *ngIf="emitterCatalogs.series.length">
+              <ng-container *ngIf="emitterCatalogs.series && emitterCatalogs.series.length">
                 <mat-option *ngFor="let item of emitterCatalogs.series" [value]="item._id">
                   {{ item.serie }}
                 </mat-option>
@@ -107,7 +107,7 @@
               placeholder="Lugar de Expedición"
               [attr.readonly]="readonly">
               <mat-option value="">Seleccione un Lugar de Expedición</mat-option>
-              <ng-container *ngIf="emitterCatalogs.expedition_places.length">
+              <ng-container *ngIf="emitterCatalogs.expedition_places && emitterCatalogs.expedition_places.length">
                 <mat-option *ngFor="let item of emitterCatalogs.expedition_places" [value]="item._id">
                   {{ item.cp }} {{ item.nombre }}
                 </mat-option>
@@ -231,7 +231,7 @@
         </div>
 
         <div class="grid">
-          <h4>Comprobantes Relacionados</h4>
+          <h4 class="related-bills">Comprobantes Relacionados</h4>
         </div>
 
         <div class="gridbox">

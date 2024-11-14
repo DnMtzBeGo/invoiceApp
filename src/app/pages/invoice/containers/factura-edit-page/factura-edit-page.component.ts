@@ -82,6 +82,7 @@ import { SeriesNewComponent } from '../../components/series-new/series-new.compo
 import { BegoSliderDotsOpts } from 'src/app/shared/components/bego-slider-dots/bego-slider-dots.component';
 import { CataloguesListService } from '../../components/invoice/carta-porte/services/catalogues-list.service';
 import { CartaPorteInfoService } from '../../components/invoice/carta-porte/services/carta-porte-info.service';
+import { CartaPortePageComponent } from '../carta-porte-page/carta-porte-page.component';
 
 interface VM {
   // "receptor" | "emisor" | "conceptos" | "complementos";
@@ -290,7 +291,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
   public isForeignReceiver = false;
   public paisCatalogue = [];
 
-  @ViewChild('cartaporteCmp') public cartaporteCmp: any;
+  @ViewChild('cartaporteCmp') public cartaporteCmp: CartaPortePageComponent;
 
   constructor(
     private router: Router,
@@ -1165,6 +1166,8 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
   };
 
   public submitFactura = ([mode, saveMode, factura]: any[]) => {
+    factura = { ...factura };
+
     if (this.model === 'template') {
       factura = clone(factura);
 

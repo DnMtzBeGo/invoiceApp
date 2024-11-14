@@ -784,6 +784,7 @@
       "emisor": "Emisor",
       "receptor": "Receptor",
       "serie": "Serie",
+
       "tipo": "Tipo",
       "status": "Status",
       "subtotal": "Subtotal",
@@ -819,12 +820,16 @@
       "emisor_": "Emisor",
       "receptor_": "Receptor",
       "serie": "Serie",
+      "serie_label": "Serie",
       "tipo": "Tipo",
       "status": "Status",
       "subtotal": "Subtotal",
+      "subtotal_": "Subtotal",
       "total": "Total",
+      "total_": "Total",
       "metodo_de_pago": "Metodo Pago",
-      "status_pago": "Estado Pago"
+      "status_pago": "Estado Pago",
+      "select_row": " "
     },
     "filters": {
       "apply": "Aplicar",
@@ -837,7 +842,8 @@
       "receptor-placeholder": "Buscar por Nombre o RFC",
       "tipo-comprobante": "Tipo de Comprobante",
       "tipo-comprobante-placeholder": "Todos",
-      "uuid-placeholder": "Buscar por UUID"
+      "uuid-placeholder": "Buscar por UUID",
+      "metodo-de-pago": "Metodo de Pago"
     },
     "edit": {
       "receptor": "Receptor",

@@ -52,15 +52,12 @@ export class CartaPorteInfoService {
       data.peso_bruto_total = _getTotalWeight();
       data.num_total_mercancias = this.commodities.length;
       data.mercancia = [...this.commodities];
-      data.peso_bruto_total = _getTotalWeight();
     } else {
       if (infoToAdd.num_total_mercancias) data.num_total_mercancias = infoToAdd.num_total_mercancias;
       if (infoToAdd.peso_bruto_total) data.peso_bruto_total = infoToAdd.peso_bruto_total;
     }
 
     this.info = { ...this.info, mercancias: data };
-
-    //console.log({ info2: this.info });
   }
 
   public showInvalidInfoModal(message: string) {
@@ -124,26 +121,10 @@ export class CartaPorteInfoService {
   }
 
   public unloadService() {
-    this.resetCartaPorteInfo();
     this.commodities = [];
-    this.infoRecolector.complete();
-    this.emitShowFraccion.complete();
     this.invalidInfo = false;
     this.invoice_id = '';
     this.id_ccp = '';
     this.info = null;
-    this.infoRecolector.next(null);
-    this.emitShowFraccion.next(false);
-    this.invalidInfo = false;
-    this.commodities = [];
-    this.info = null;
-    this.infoRecolector.next(null);
-    this.emitShowFraccion.next(false);
-    this.invalidInfo = false;
-    this.invoice_id = '';
-    this.id_ccp = '';
-    this.info = null;
-    this.infoRecolector.next(null);
-    this.emitShowFraccion.next(false);
   }
 }

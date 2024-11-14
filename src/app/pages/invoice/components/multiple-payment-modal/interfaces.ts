@@ -54,6 +54,7 @@ export interface IInvoicePayment {
   serie: string;
   serie_label: string;
   total: number;
+  total_: string;
   _id: string;
   uuid: string;
   tipo_de_cambio: number;

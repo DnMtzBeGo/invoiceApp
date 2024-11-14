@@ -180,7 +180,8 @@ export class FacturasPageComponent implements OnInit {
           },
           uuid: factura.uuid,
           fecha_emision: this.getDate(factura.fecha_emision),
-          serie: factura?.serie_label || factura?.serie,
+          serie: factura?.serie,
+          serie_label: factura?.serie_label,
           emisor: factura.emisor,
           emisor_: `${factura.emisor?.nombre || ''}\n${factura.emisor?.rfc || ''}`,
           receptor: factura.receptor,
@@ -190,8 +191,12 @@ export class FacturasPageComponent implements OnInit {
           status_: facturaStatus[factura.status] || factura.status,
           status: factura.status,
           // status: '',
-          subtotal: this.getCurrency(factura?.subtotal),
-          total: this.getCurrency(factura?.total),
+          subtotal: factura?.subtotal,
+          total: factura?.total,
+          // formatted subtotal and total
+          subtotal_: this.getCurrency(factura?.subtotal),
+          total_: this.getCurrency(factura?.total),
+
           folio: factura?.folio,
           files: factura?.files,
         })),
@@ -470,9 +475,9 @@ export class FacturasPageComponent implements OnInit {
 
     return this.datePipe.transform(parsedDate, 'MMM d, yy');
   };
-  public getCurrency = (price: number) =>
+  public getCurrency = (price: number): string =>
     price
-      ? '$' +
+      ? '$ ' +
         price.toLocaleString('en-US', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
@@ -486,8 +491,6 @@ export class FacturasPageComponent implements OnInit {
 
     if (invoices?.length) {
       for (const invoice of invoices) {
-        console.log(invoice);
-
         const payments = +invoice.payments?.length ? invoice.payments.reduce((acc, { amount }) => acc + amount, 0) : 0;
 
         if (payments && payments === +invoice.total)
