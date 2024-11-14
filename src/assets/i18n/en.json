@@ -841,7 +841,8 @@
       "receptor-placeholder": "Buscar por Nombre o RFC",
       "tipo-comprobante": "Tipo de Comprobante",
       "tipo-comprobante-placeholder": "All",
-      "uuid-placeholder": "Search by UUID"
+      "uuid-placeholder": "Search by UUID",
+      "metodo-de-pago": "Metodo de Pago"
     },
     "edit": {
       "receptor": "Receptor",
