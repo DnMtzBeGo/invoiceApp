@@ -6,13 +6,18 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
 .figura-container {
   position: relative;
   padding-bottom: 35px;
+
+  .top-note {
+    display: block;
+    margin-bottom: 20px;
+  }
 
   .add-figura-btn {
     position: absolute;
@@ -25,8 +30,8 @@ input[type="number"] {
     gap: 8px;
 
     .icon {
-      background: linear-gradient(180deg, #FFD200 0%, #FFBE00 100%);
-      color:#040B11;
+      background: linear-gradient(180deg, #ffd200 0%, #ffbe00 100%);
+      color: #040b11;
       width: 30px;
       height: 30px;
       border-radius: 50%;
@@ -56,8 +61,8 @@ input[type="number"] {
         border-radius: 50%;
         width: 20px;
         height: 20px;
-        background: linear-gradient(180deg, #FFD200 0%, #FFBE00 100%);
-        color: #040B11;
+        background: linear-gradient(180deg, #ffd200 0%, #ffbe00 100%);
+        color: #040b11;
         cursor: initial;
         display: flex;
         align-items: center;

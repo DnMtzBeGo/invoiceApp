@@ -1,103 +1,69 @@
 <form [formGroup]="figuraTransporteForm" autocomplete="off">
-  <h6>{{ "invoice.figura.figura-transporte" | translate }}</h6>
+  <h6>{{ 'invoice.figura.figura-transporte' | translate }}</h6>
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ "invoice.figura.tipo-figura" | translate }}</mat-label>
-      <mat-select
-        class="disable-custom-format"
-        name="tipo_figura"
-        formControlName="tipo_figura"
-      >
-        <mat-option
-          *ngFor="let option of tiposDeTransporte"
-          [value]="option.clave"
-        >
+      <mat-label>{{ 'invoice.figura.tipo-figura' | translate }}</mat-label>
+      <mat-select class="disable-custom-format" name="tipo_figura" formControlName="tipo_figura">
+        <mat-option *ngFor="let option of tiposDeTransporte" [value]="option.clave">
           {{ option.descripcion }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ "invoice.figura.rfc-figura" | translate }}</mat-label>
-      <input
-        matInput
-        name="rfc_figura"
-        formControlName="rfc_figura"
-        [value]=""
-      />
+      <mat-label>{{ 'invoice.figura.rfc-figura' | translate }}</mat-label>
+      <input matInput name="rfc_figura" formControlName="rfc_figura" [value]="" />
     </mat-form-field>
-    <mat-form-field appearance="outline" class="brand-field-1" *ngIf="!hideResidenciaRegistro">
-      <mat-label>{{
-        "invoice.figura.residencia-figura" | translate
-      }}</mat-label>
+    <mat-form-field appearance="outline" class="brand-field-1" *ngIf="!hideCountryOfResidence">
+      <mat-label>{{ 'invoice.figura.residencia-figura' | translate }}</mat-label>
       <mat-select
         class="disable-custom-format"
         formControlName="residencia_fiscal_figura"
-        name="País"
-      >
-        <mat-option *ngFor="let option of paisCatalogue" [value]="option.code">
-          {{ option.code }} - {{ option.name }}
+        name="residencia_fiscal_figura">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchCountryOfResidence($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
         </mat-option>
+        <ng-container *ngFor="let option of filteredCountriesOfResidence">
+          <mat-option [value]="option.code" class="brand-option-1"> {{ option.code }} - {{ option.name }} </mat-option>
+        </ng-container>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline" class="brand-field-1" *ngIf="!hideResidenciaRegistro">
-      <mat-label>{{
-        "invoice.figura.registro-trib-figura" | translate
-      }}</mat-label>
-      <input
-        matInput
-        name="num_reg_id_trib_figura"
-        formControlName="num_reg_id_trib_figura"
-        [value]=""
-      />
+    <mat-form-field appearance="outline" class="brand-field-1" *ngIf="!hideCountryOfResidence">
+      <mat-label>{{ 'invoice.figura.registro-trib-figura' | translate }}</mat-label>
+      <input matInput name="num_reg_id_trib_figura" formControlName="num_reg_id_trib_figura" [value]="" />
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ "invoice.figura.nombre-figura" | translate }}</mat-label>
-      <input
-        matInput
-        name="nombre_figura"
-        formControlName="nombre_figura"
-        [value]=""
-      />
+      <mat-label>{{ 'invoice.figura.nombre-figura' | translate }}</mat-label>
+      <input matInput name="nombre_figura" formControlName="nombre_figura" [value]="" />
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ "invoice.figura.num-licencia" | translate }}</mat-label>
-      <input
-        matInput
-        name="num_licencia"
-        formControlName="num_licencia"
-        [value]=""
-      />
+      <mat-label>{{ 'invoice.figura.num-licencia' | translate }}</mat-label>
+      <input matInput name="num_licencia" formControlName="num_licencia" [value]="" />
     </mat-form-field>
   </div>
-  <h6>{{ "invoice.figura.partes-transporte" | translate }}</h6>
-  <div class="grid">
+  <h6 *ngIf="['02', '03'].includes(figuraTransporteForm.get('tipo_figura').value)">
+    {{ 'invoice.figura.partes-transporte' | translate }}
+  </h6>
+  <div class="grid" *ngIf="['02', '03'].includes(figuraTransporteForm.get('tipo_figura').value)">
     <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ "invoice.figura.parte-transporte" | translate }}</mat-label>
-      <input
-        formControlName="partes_transporte"
-        autocomplete="off"
-        type="search"
-        matInput
-        (search)="parte_transporteCatalogueRefSearch()"
-        [matAutocomplete]="parte_transporteCatalogueRef"
-      />
-      <mat-autocomplete
-        #parte_transporteCatalogueRef="matAutocomplete"
-        [displayWith]="getAutoCompleteText"
-        (optionSelected)="
-          addParteTransporte(
-            figuraTransporteForm.get('partes_transporte').value
-          )
-        "
-      >
-        <mat-option
-          *ngFor="let option of filteredParteTransporte"
-          [value]="option"
-          class="brand-option-1"
-        >
-          {{ option.clave }} - {{ option.descripcion }}
+      <mat-label>{{ 'invoice.figura.parte-transporte' | translate }}</mat-label>
+      <mat-select formControlName="partes_transporte" name="partes_transporte" class="disable-custom-format">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchTransportPart($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
         </mat-option>
-      </mat-autocomplete>
+        <ng-container *ngFor="let option of filteredTransportParts">
+          <mat-option [value]="option.clave" class="brand-option-1">
+            {{ option.clave }} - {{ option.descripcion }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
     </mat-form-field>
 
     <!-- <button mat-icon-button color="primary" aria-label="Add" (click)="$event.preventDefault(); addparte_transporte(figuraTransporteForm.get('parte_transporte').value)">
@@ -106,19 +72,12 @@
   </div>
 
   <div class="grid">
-    <table
-      mat-table
-      [dataSource]="dataSource"
-      class="cartaPorteTable"
-      *ngIf="dataSource?.length > 0"
-    >
+    <table mat-table [dataSource]="dataSource" class="cartaPorteTable" *ngIf="dataSource?.length > 0">
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef>
-          {{ "invoice.figura.table-parte-transporte" | translate }}
+          {{ 'invoice.figura.table-parte-transporte' | translate }}
         </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.clave }} – {{ element.descripcion }}
-        </td>
+        <td mat-cell *matCellDef="let element">{{ element.clave }} – {{ element.descripcion }}</td>
       </ng-container>
 
       <ng-container matColumnDef="action">
@@ -129,17 +88,12 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        mat-row
-        matRipple
-        *matRowDef="let row; columns: displayedColumns"
-      ></tr>
+      <tr mat-row matRipple *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
 </form>
 
 <app-location
   [locationInfo]="figuraInfo.domicilio"
-  (locationInfoChanges)="catchLocationInfoChanges($event)"
-></app-location>
+  (locationInfoChanges)="catchLocationInfoChanges($event)"></app-location>
 <!-- <button (click)="formChanged()">Status Check</button> -->

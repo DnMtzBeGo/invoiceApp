@@ -1,40 +1,56 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { Observable, from, of, merge, Subject } from 'rxjs';
 import { mergeAll, pluck, distinctUntilChanged, share, switchMap, tap, map, startWith } from 'rxjs/operators';
+
 import { reactiveComponent } from 'src/app/shared/utils/decorators';
 import { ofType, oof } from 'src/app/shared/utils/operators.rx';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { FacturaDireccion, FacturaPais, FacturaEstado, FacturaMunicipio, FacturaColonia } from '../../models';
+import { searchInList } from '../../containers/factura-edit-page/factura.core';
 
 @Component({
   selector: 'app-factura-direccion-input',
   templateUrl: './factura-direccion-input.component.html',
   styleUrls: ['./factura-direccion-input.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FacturaDireccionInputComponent implements OnInit {
-  $rx = reactiveComponent(this);
+  private $rx = reactiveComponent(this);
 
   private _direccion: FacturaDireccion | null = null;
 
   @Input()
-  set direccion(d: FacturaDireccion | null) {
+  public set direccion(d: FacturaDireccion | null) {
     // console.log('changes.direccion ', d || null);
 
     this._direccion = d;
     this.direccionEmitter.next(['direccion:set', d || null]);
   }
 
-  get direccion() {
+  public get direccion() {
     return this._direccion;
   }
 
-  @Input() readonly? = false;
+  @Input() public readonly? = false;
 
-  @Output() direccionChange = new EventEmitter<string>();
+  @Output() public direccionChange = new EventEmitter<string>();
 
-  vm: {
+  public filteredCountries: any[] = [];
+  public filteredStates: any[] = [];
+  public filteredLocations: any[] = [];
+  public filteredSuburbs: any[] = [];
+  public filteredMunicipalities: any[] = [];
+
+  public vm: {
     direccion?: FacturaDireccion;
     paises?: FacturaPais[];
     estados?: FacturaEstado[];
@@ -42,17 +58,19 @@ export class FacturaDireccionInputComponent implements OnInit {
     colonias?: FacturaColonia[];
   };
 
-  direccionEmitter = new Subject<['direccion:set' | 'pais:select' | 'estado:select' | 'cp:input' | 'refresh' | 'submit', unknown]>();
+  public direccionEmitter = new Subject<
+    ['direccion:set' | 'pais:select' | 'estado:select' | 'cp:input' | 'refresh' | 'submit', unknown]
+  >();
 
   constructor(private apiRestService: AuthService) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     //DATA FETCHING
     const direccion$: Observable<FacturaDireccion | null> = this.direccionEmitter.pipe(
       ofType('direccion:set'),
       tap((direccion) => null),
       map((direccion: FacturaDireccion | null) => direccion),
-      share()
+      share(),
     );
 
     const paises$ = this.fetchPaises();
@@ -61,7 +79,7 @@ export class FacturaDireccionInputComponent implements OnInit {
       oof(''),
       direccion$.pipe(
         map((direccion?) => direccion?.pais),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       ),
       this.direccionEmitter.pipe(
         ofType('pais:select'),
@@ -72,15 +90,15 @@ export class FacturaDireccionInputComponent implements OnInit {
           this.vm.direccion.cp = '';
           this.vm.direccion.colonia = '';
           this.vm.colonias = [];
-        })
-      )
+        }),
+      ),
     ).pipe(switchMap(this.fetchEstados));
 
     const municipios$ = merge(
       oof(''),
       direccion$.pipe(
         map((direccion?) => direccion?.estado),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       ),
       this.direccionEmitter.pipe(
         ofType('estado:select'),
@@ -89,22 +107,22 @@ export class FacturaDireccionInputComponent implements OnInit {
           this.vm.direccion.cp = '';
           this.vm.direccion.colonia = '';
           this.vm.colonias = [];
-        })
-      )
+        }),
+      ),
     ).pipe(switchMap(this.fetchMunicipios));
 
     const colonias$ = merge(
       oof(''),
       direccion$.pipe(
         map((direccion?) => direccion?.cp),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       ),
       this.direccionEmitter.pipe(
         ofType('cp:input'),
         tap(() => {
           this.vm.direccion.colonia = '';
-        })
-      )
+        }),
+      ),
     ).pipe(switchMap(this.fetchColonias));
 
     this.vm = this.$rx.connect({
@@ -112,60 +130,93 @@ export class FacturaDireccionInputComponent implements OnInit {
       paises: paises$,
       estados: estados$,
       municipios: municipios$,
-      colonias: colonias$
+      colonias: colonias$,
     });
   }
 
   //API calls
-  fetchPaises() {
+  private fetchPaises() {
     return from(
       this.apiRestService.apiRestGet('invoice/catalogs/countries', {
-        loader: 'false'
-      })
-    ).pipe(mergeAll(), pluck('result'), startWith(null));
+        loader: 'false',
+      }),
+    ).pipe(
+      mergeAll(),
+      tap((d) => {
+        this.filteredCountries = d?.result || [];
+      }),
+      pluck('result'),
+      startWith(null),
+    );
   }
 
-  fetchEstados = (pais?: string) => {
+  private fetchEstados = (pais?: string) => {
     return pais == void 0 || pais === ''
       ? of([])
       : from(
           this.apiRestService.apiRestGet('invoice/catalogs/states', {
             loader: 'false',
-            pais
-          })
-        ).pipe(mergeAll(), pluck('result'), startWith(null));
+            pais,
+          }),
+        ).pipe(
+          mergeAll(),
+          tap((d) => {
+            this.filteredStates = d?.result || [];
+          }),
+          pluck('result'),
+          startWith(null),
+        );
   };
 
-  fetchMunicipios = (estado?: string) => {
+  private fetchMunicipios = (estado?: string) => {
     return estado == void 0 || estado === ''
       ? of([])
       : from(
           this.apiRestService.apiRestGet('invoice/catalogs/municipalities', {
             loader: 'false',
-            estado
-          })
-        ).pipe(mergeAll(), pluck('result'), startWith(null));
+            estado,
+          }),
+        ).pipe(
+          mergeAll(),
+          tap((d) => {
+            this.filteredMunicipalities = d?.result || [];
+          }),
+          pluck('result'),
+          startWith(null),
+        );
   };
 
-  fetchColonias = (cp?: string) => {
+  private fetchColonias = (cp?: string) => {
     return cp == void 0 || cp.trim() === '' || cp.length < 5
       ? of([])
       : from(
           this.apiRestService.apiRestGet('invoice/catalogs/suburbs', {
             loader: 'false',
-            cp
-          })
-        ).pipe(mergeAll(), pluck('result'), startWith(null));
+            cp,
+          }),
+        ).pipe(
+          mergeAll(),
+          tap((d) => {
+            this.filteredSuburbs = d?.result || [];
+          }),
+          pluck('result'),
+          startWith(null),
+        );
   };
 
-  // UTILS
-  log = (...args) => {
-    console.log(...args);
-  };
+  public searchCountries(code: string): void {
+    searchInList(this, ['vm', 'paises'], 'filteredCountries', code);
+  }
 
-  showError = (error: any) => {
-    error = error?.message || error?.error;
+  public searchStates(code: string): void {
+    searchInList(this, ['vm', 'estados'], 'filteredStates', code, 'clave', 'nombre');
+  }
 
-    return Array.isArray(error) ? error.map((e) => e.error).join(',\n') : error;
-  };
+  public searchMunicipalities(code: string): void {
+    searchInList(this, ['vm', 'municipios'], 'filteredMunicipalities', code, 'clave', 'nombre');
+  }
+
+  public searchSuburbs(code: string): void {
+    searchInList(this, ['vm', 'colonias'], 'filteredSuburbs', code, 'clave', 'nombre');
+  }
 }

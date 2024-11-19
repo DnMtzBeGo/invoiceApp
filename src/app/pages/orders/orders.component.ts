@@ -1,11 +1,21 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
+import { BegoChibiAlert, BegoDialogService, BegoMarks, BegoStepper, StepperOptions } from '@begomx/ui-components';
 
 import { Step } from '../../shared/components/stepper/interfaces/Step';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
@@ -125,6 +135,7 @@ export class OrdersComponent implements OnInit {
       rfc: '',
       cfdi: '',
       tax_regime: '',
+      series_id: '',
     },
   };
 
@@ -168,7 +179,8 @@ export class OrdersComponent implements OnInit {
   public btnStatusNext: boolean = false;
 
   public lang: string = 'en';
-  public clearMultipleFile: boolean = false;
+  public clearFailedMultipleFile: boolean = false;
+  public clearUploadedMultipleFile: boolean = false;
 
   @ViewChild('stepper') private stepperRef: BegoStepper;
   @ViewChild('marks') private marksRef: BegoMarks;
@@ -198,6 +210,7 @@ export class OrdersComponent implements OnInit {
     private locationsService: LocationsService,
     private dialog: MatDialog,
     private readonly notificationService: NotificationsService,
+    private begoDialog: BegoDialogService,
   ) {}
 
   private afterOrderPreviewReceived(identifier: string, callback: (orderPreview: Record<string, any>) => any) {
@@ -219,6 +232,7 @@ export class OrdersComponent implements OnInit {
       secondCtrl: ['', Validators.required],
     });
 
+    this.lang = localStorage.getItem('lang') || 'en';
     this.updateStepTexts();
     this.subscription = this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
       this.updateStepTexts();
@@ -282,6 +296,8 @@ export class OrdersComponent implements OnInit {
         ...draftData.cargo,
         '53_48': draftData.cargo?.trailer?.load_cap,
       };
+
+      this.draftData = { ...draftData };
     }
 
     if (changes.datepickup && changes.datepickup.currentValue) {
@@ -525,6 +541,8 @@ export class OrdersComponent implements OnInit {
     this.sendDropoff();
   }
 
+  public pickupStartDate: number = 0;
+
   private async sendPickup() {
     const { pickup, reference_number } = this.orderData;
     const { startDate, contact_info, tax_information } = pickup;
@@ -543,6 +561,8 @@ export class OrdersComponent implements OnInit {
       registration_number: tax_information?.registration_number,
       country_of_residence: tax_information?.country_of_residence,
     };
+
+    this.pickupStartDate = startDate;
 
     if (id) this.sendDestination(destinationPayload, id);
   }
@@ -611,7 +631,7 @@ export class OrdersComponent implements OnInit {
     });
     await req.toPromise();
 
-    if (this.hazardousFile) {
+    if (this.hazardousFile && this.hazardousFile instanceof File) {
       const formData = new FormData();
       formData.append('order_id', order_id);
       formData.append('file', this.hazardousFile);
@@ -621,19 +641,25 @@ export class OrdersComponent implements OnInit {
     }
 
     if (this.multipleCargoFile) {
+      if (!this.multipleCargoFile.size) return;
+
       const formData = new FormData();
+
       formData.append('file', this.multipleCargoFile);
       formData.append('load_cap', cargo['53_48']);
       formData.append('required_units', cargo.required_units);
 
       await this.uploadMultipleCargoFile(formData, order_id);
     } else {
+      if (this.draftData?.cargo?.imported_file) return;
+
       const { order_id } = this.orderPreview;
       await this.deleteMultipleCargoFile(order_id);
     }
   }
 
   private async uploadMultipleCargoFile(formData: FormData, order_id: string) {
+    if (!order_id) return;
     const req = await this.auth.uploadFilesSerivce(
       formData,
       `orders/cargo/import-ftl/${order_id}`,
@@ -641,22 +667,38 @@ export class OrdersComponent implements OnInit {
       { timeout: '300000' },
     );
 
-    await req.toPromise().catch(({ error: { error } }) => {
-      this.clearMultipleFile = !this.clearMultipleFile;
-      const { message, errors } = error;
-      let errMsg = `${message[this.lang] || ''}.`;
-      console.error(errMsg);
+    await req
+      .toPromise()
+      .then(() => {
+        this.clearUploadedMultipleFile = !this.clearUploadedMultipleFile;
+      })
+      .catch(({ error: { error } }) => {
+        this.multipleCargoFile = null;
+        this.clearFailedMultipleFile = !this.clearFailedMultipleFile;
+        const { message, errors } = error;
+        let errMsg = `${message[this.lang] || ''}.`;
+        console.error(errMsg);
 
-      if (errors?.en) {
-        errMsg += `
+        if (errors?.en) {
+          errMsg += `
         ${errors[this.lang] || ''}`;
-      }
+        }
 
-      this.notificationService.showErrorToastr(errMsg, errors?.en ? 10000 : 5000, 'brand-snackbar-2');
-    });
+        this.begoDialog.open({
+          title: message?.[this.lang],
+          content: errors?.[this.lang] || '',
+          type: 'informative',
+          iconComponent: BegoChibiAlert,
+          btnCopies: {
+            confirm: 'Ok',
+          },
+        });
+      });
   }
 
   private async deleteMultipleCargoFile(order_id: string) {
+    if (!order_id) return;
+
     const req = await this.auth.apiRest(null, `orders/cargo/remove-multiple/${order_id}`, {
       apiVersion: 'v1.1',
       timeout: '300000',
@@ -683,25 +725,23 @@ export class OrdersComponent implements OnInit {
     if (this.orderPreview) {
       sendInvoice({
         order_id: this.orderPreview.order_id,
-        // receiver: {
+        place_id: invoice.address,
         cfdi: invoice.cfdi,
         rfc: invoice.rfc,
         company: invoice.company,
         tax_regime: invoice.tax_regime,
-        place_id: invoice.address,
-        // },
+        series_id: invoice.series_id,
       });
     } else {
       this.afterOrderPreviewReceived('invoice', (orderPreview) => {
         sendInvoice({
-          order_id: orderPreview.order_id,
-          // receiver: {
+          order_id: this.orderPreview.order_id,
+          place_id: invoice.address,
           cfdi: invoice.cfdi,
           rfc: invoice.rfc,
           company: invoice.company,
           tax_regime: invoice.tax_regime,
-          place_id: (invoice.address as any).place_id,
-          // },
+          series_id: invoice.series_id,
         });
       });
     }
@@ -859,11 +899,13 @@ export class OrdersComponent implements OnInit {
 
     return new Promise(async (resolve, reject) => {
       //if we are finishing a draft and don't have the information
+
       if (!Object.keys(this.membersToAssigned).length) {
         const [pickup] = this.draftData.destinations;
+
         const dialogRef = this.dialog.open(SelectFleetModalComponent, {
           panelClass: 'modal',
-          data: { start_date: pickup.start_date, end_date: pickup.end_date },
+          data: { start_date: this.pickupStartDate, end_date: this.pickupStartDate },
         });
 
         dialogRef.afterClosed().subscribe(async (data) => {

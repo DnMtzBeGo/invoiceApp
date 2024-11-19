@@ -1,0 +1,83 @@
+<div class="bills-dialog-component dialog-content">
+  <header>
+    <h2>Comprobantes</h2>
+    <mat-icon class="close-btn" (click)="close()">close</mat-icon>
+  </header>
+  <main>
+    <div class="search" [formGroup]="searchForm">
+      <div class="gridbox columns-4">
+        <mat-form-field appearance="outline" floatLabel="always" class="calendar">
+          <mat-label>Fecha Inicial</mat-label>
+          <input matInput formControlName="date_start" [matDatepicker]="picker_start" placeholder="DD/MM/YYYY" />
+
+          <mat-datepicker-toggle matIconSuffix [for]="picker_start"></mat-datepicker-toggle>
+          <mat-datepicker #picker_start></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="calendar">
+          <mat-label>Fecha Final</mat-label>
+          <input matInput formControlName="date_end" [matDatepicker]="picker_end" placeholder="DD/MM/YYYY" />
+
+          <mat-datepicker-toggle matIconSuffix [for]="picker_end"></mat-datepicker-toggle>
+          <mat-datepicker #picker_end></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Serie</mat-label>
+          <mat-select formControlName="serie" placeholder="Seleccione una serie">
+            <ng-container *ngIf="series.length">
+              <mat-option value="">Todas las series</mat-option>
+              <mat-option [value]="s._id" *ngFor="let s of series">
+                {{ s.serie }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Folio</mat-label>
+          <input matInput aria-label="Folio" formControlName="folio" placeholder="Folio" />
+        </mat-form-field>
+      </div>
+
+      <div class="gridbox">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>UUID</mat-label>
+          <input matInput aria-label="UUID" formControlName="uuid" placeholder="UUID" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Versión</mat-label>
+          <mat-select formControlName="version">
+            <mat-option value="">Todas las versiones</mat-option>
+            <ng-container *ngIf="versions.length">
+              <mat-option *ngFor="let v of versions" [value]="v.version"> Versión {{ v.version }} </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="text-center mb-25">
+      <button class="mr-5" mat-flat-button (click)="search()">Buscar</button>
+      <button mat-flat-button (click)="clearForm()">Limpiar</button>
+    </div>
+
+    <bego-table-multiple-selection
+      class="ui-table"
+      [selectRowCheck]="billsTable.selectRow"
+      [loading]="billsTable.loading"
+      [values]="billsTable.tableValues"
+      [columns]="billsTable.tableColumns"
+      [actions]="billsTable.tableActions"
+      [page]="billsTable.pageUi"
+      [debounce]="1000"
+      (pageChangeEmitter)="billsTable.changePage($event)"
+      (selectedActionEmitter)="billsTable.selectAction($event)"
+      (selectorRowsCheckEmitter)="rowSelected($event)"></bego-table-multiple-selection>
+
+    <div class="text-center mt-25">
+      <button mat-flat-button (click)="accept()">Agregar comprobantes</button>
+    </div>
+  </main>
+</div>

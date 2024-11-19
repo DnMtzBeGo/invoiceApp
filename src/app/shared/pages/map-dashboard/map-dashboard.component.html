@@ -6,6 +6,7 @@
   }">
   <bego-polygons-map
     #polygonsMap
+    [enablePolygonsFilter]="primeService?.isPrime"
     [filter]="filter"
     [drivers]="drivers"
     [polygons]="polygons"

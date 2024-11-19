@@ -1,0 +1,63 @@
+@import '../../../styles/colors.scss';
+
+.edit-payment-bill {
+  background: rgba(154, 154, 154, 0.1019607843);
+  margin-top: 15px;
+  border: 1px solid $white-blue;
+  border-radius: 15px;
+  padding: 15px;
+
+  $fontSize: 12px;
+
+  h3 {
+    font-size: $fontSize * 1.5;
+    color: $white-blue;
+  }
+
+  .gridbox {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, 32%);
+  }
+
+  .uuid {
+    font-size: 12px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    .mat-flat-button {
+      background-color: darken($dark-grey, 30%);
+      color: darken($white, 25%);
+
+      &:hover {
+        background-color: $yellow;
+        color: #333;
+      }
+
+      &[disabled='true'] {
+        color: #666;
+
+        &:hover {
+          background-color: #333;
+          color: #666;
+        }
+      }
+    }
+
+    ::ng-deep {
+      .mat-form-field-appearance-outline {
+        .mat-form-field-flex {
+          height: 46px;
+        }
+        .mat-form-field-infix {
+          padding: 0.5em 0 0.5em 0;
+          height: 15px;
+        }
+      }
+    }
+  }
+}

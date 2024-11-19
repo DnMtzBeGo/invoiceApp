@@ -2,19 +2,44 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.permiso-sct' | translate }}</mat-label>
-      <input type="search" autocomplete="off" formControlName="permisoSCT" matInput
-        (search)="resetFilterList('permisoSCT')" [matAutocomplete]="sctRef" />
+      <!-- <input
+        type="search"
+        autocomplete="off"
+        formControlName="permisoSCT"
+        matInput
+        (search)="resetFilterList('permisoSCT')"
+        [matAutocomplete]="sctRef"
+        (blur)="checkIfIsListValueOrEmpty($event, 'autotransporteForm', 'filteredPermisosSCT')" />
 
       <mat-autocomplete #sctRef="matAutocomplete" [displayWith]="getOptionText.bind(this, 'permisosSCT')">
-        <mat-option *ngFor="let option of filteredPermisosSCT" [value]="option.clave" class="brand-option-1">
+        <mat-option *ngFor="let option of filteredSCTPermissions" [value]="option.clave" class="brand-option-1">
           {{ option.clave }} - {{ option.descripcion }}
         </mat-option>
-      </mat-autocomplete>
+      </mat-autocomplete> -->
+
+      <mat-select name="permisoSCT" formControlName="permisoSCT" matInput class="disable-custom-format">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchSCTPermissions($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
+        </mat-option>
+        <ng-container *ngFor="let permission of filteredSCTPermissions">
+          <mat-option [value]="permission.clave" class="brand-option-1">
+            {{ permission.clave }} - {{ permission.descripcion }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.num-permiso-sct' | translate }}</mat-label>
-      <input matInput [name]="'invoice.autotransporte.num-permiso-sct' | translate" formControlName="numeroSCT" />
+      <input
+        autocomplete="off"
+        matInput
+        [name]="'invoice.autotransporte.num-permiso-sct' | translate"
+        formControlName="numeroSCT" />
     </mat-form-field>
   </div>
 
@@ -32,12 +57,16 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.nombre-ambiental' | translate }}</mat-label>
-      <input matInput [name]="'invoice.autotransporte.nombre-ambiental' | translate"
+      <input
+        matInput
+        [name]="'invoice.autotransporte.nombre-ambiental' | translate"
         formControlName="nombreAmbiental" />
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.numero-ambiental' | translate }}</mat-label>
-      <input matInput [name]="'invoice.autotransporte.numero-ambiental' | translate"
+      <input
+        matInput
+        [name]="'invoice.autotransporte.numero-ambiental' | translate"
         formControlName="numeroAmbiental" />
     </mat-form-field>
   </div>
@@ -52,7 +81,10 @@
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.prima-seguro' | translate }}</mat-label>
-      <input matInput [name]="'invoice.autotransporte.prima-seguro' | translate" formControlName="primaSeguro"
+      <input
+        matInput
+        [name]="'invoice.autotransporte.prima-seguro' | translate"
+        formControlName="primaSeguro"
         appTwoDigitDecimaNumber />
     </mat-form-field>
   </div>
@@ -61,27 +93,43 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.configuracion' | translate }}</mat-label>
-      <input type="search" autocomplete="off" formControlName="identificacionVehicularConfig" matInput
-        (search)="resetFilterList('identificacionVehicularConfig')"
-        [matAutocomplete]="identificacionVehicularConfigRef" />
-      <mat-autocomplete #identificacionVehicularConfigRef="matAutocomplete"
-        [displayWith]="getOptionText.bind(this, 'identificacionVehicular')">
-        <mat-option *ngFor="let option of filteredIdentificacionVehicular" [value]="option.clave"
-          class="brand-option-1">
-          {{ option.clave }} - {{ option.descripcion }}
+
+      <mat-select
+        name="identificacionVehicularConfig"
+        formControlName="identificacionVehicularConfig"
+        matInput
+        class="disable-custom-format">
+        <mat-option>
+          <ngx-mat-select-search
+            (keyup)="searchVehicleConfiguration($event.target.value)"
+            [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+            [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+            class="brand-select-search-1"></ngx-mat-select-search>
         </mat-option>
-      </mat-autocomplete>
+        <ng-container *ngFor="let config of filteredVehicleConfigurations">
+          <mat-option [value]="config.clave" class="brand-option-1">
+            {{ config.clave }} - {{ config.descripcion }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.placa' | translate }}</mat-label>
-      <input matInput [name]="'invoice.autotransporte.placa' | translate" formControlName="truckPlates"
-        (keypress)="omitSpecialChar($event)" [maxlength]="7" />
+      <input
+        matInput
+        [name]="'invoice.autotransporte.placa' | translate"
+        formControlName="truckPlates"
+        (keypress)="omitSpecialChar($event)"
+        [maxlength]="7" />
       <mat-error>Las placas deben ser entre 5 a 7 caracteres</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.autotransporte.año-modelo' | translate }}</mat-label>
-      <input matInput type="number" [name]="'invoice.autotransporte.año-modelo' | translate"
+      <input
+        matInput
+        type="number"
+        [name]="'invoice.autotransporte.año-modelo' | translate"
         formControlName="truckModel" />
       <mat-error>{{ 'invoice.autotransporte.año-modelo-error' | translate }}</mat-error>
     </mat-form-field>
@@ -99,45 +147,44 @@
   <h6>{{ 'invoice.autotransporte.remolques' | translate }}</h6>
   <mat-card>
     <div class="grid">
-      <!-- <mat-form-field appearance="outline" class="brand-field-1">
-        <mat-label>* Configuración</mat-label>
-        <mat-select
-          placeholder="Seleciona una opción"
-          class="disable-custom-format"
-          name="Configuración"
-        >
-          <mat-option>
-            Option
-          </mat-option>
-        </mat-select>
-      </mat-form-field> -->
-
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>{{ 'invoice.autotransporte.configuracion' | translate }}</mat-label>
-        <input type="search" autocomplete="off" formControlName="remolquesConfig" matInput
-          (search)="resetFilterList('remolquesConfig')" [matAutocomplete]="remolquesConfigRef" />
-        <mat-autocomplete #remolquesConfigRef="matAutocomplete"
-          [displayWith]="getOptionText.bind(this, 'remolquesConfig')">
-          <mat-option *ngFor="let option of filteredRemolquesConfig" [value]="option.clave" class="brand-option-1">
-            {{ option.clave }} - {{ option.descripcion }}
+
+        <mat-select name="remolquesConfig" formControlName="remolquesConfig" matInput class="disable-custom-format">
+          <mat-option>
+            <ngx-mat-select-search
+              (keyup)="searchTrailerConfiguration($event.target.value)"
+              [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+              [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+              class="brand-select-search-1"></ngx-mat-select-search>
           </mat-option>
-        </mat-autocomplete>
+          <ng-container *ngFor="let config of filteredTrailerConfigurations">
+            <mat-option [value]="config.clave" class="brand-option-1">
+              {{ config.clave }} - {{ config.descripcion }}
+            </mat-option>
+          </ng-container>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="brand-field-1">
         <mat-label>{{ 'invoice.autotransporte.placa' | translate }}</mat-label>
-        <input matInput [name]="'invoice.autotransporte.placa' | translate" formControlName="remolquesPlates"
-          (keypress)="omitSpecialChar($event)" [maxlength]="7" />
+        <input
+          matInput
+          [name]="'invoice.autotransporte.placa' | translate"
+          formControlName="remolquesPlates"
+          (keypress)="omitSpecialChar($event)"
+          [maxlength]="7" />
       </mat-form-field>
       <!-- <button mat-mini-fab color="primary" aria-label="Add"> -->
-      <!-- <button mat-mini-fab color="primary" aria-label="Add" (click)="addRemolque(mercanciasForm.get('pedimento').value)"> -->
-      <!-- <mat-icon>add</mat-icon> -->
-      <!-- </button> -->
+      <button class="action" mat-mini-fab color="primary" aria-label="Add" (click)="addRemolque()">
+        <mat-icon>add</mat-icon>
+      </button>
     </div>
-    <table mat-table [dataSource]="remolquesSource" class="cartaPorteTable" *ngIf="remolquesSource.length > 0">
+
+    <table mat-table [dataSource]="remolquesSource" class="cartaPorteTable striped" *ngIf="remolquesSource.length > 0">
       <ng-container matColumnDef="conf">
         <th mat-header-cell *matHeaderCellDef>Configuración</th>
-        <td mat-cell *matCellDef="let element">{{ element.configuracion }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.configuracion || element.sub_tipo_rem }}</td>
       </ng-container>
 
       <ng-container matColumnDef="plate">
@@ -148,7 +195,7 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element; let i = index">
-          <button mat-icon-button color="warn" (click)="removeRemolque(i)">
+          <button class="delete-action" mat-icon-button color="warn" (click)="removeRemolque(i)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

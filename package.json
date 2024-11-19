@@ -11,7 +11,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "low": "node --max-old-space-size=6144 ./node_modules/.bin/ng serve"
+    "low": "node --max-old-space-size=6144 ./node_modules/.bin/ng serve",
+    "clean-install":"rm -rf .angular package-lock.json node_modules/ && npm cache clean -f && npm i && npm start"
   },
   "private": true,
   "dependencies": {
@@ -53,6 +54,7 @@
     "omit-empty": "1.0.0",
     "rxfire": "^6.0.3",
     "rxjs": "~6.6.0",
+    "signature_pad": "^5.0.3",
     "socket.io-client": "4.5.1",
     "source-map-support": "^0.5.21",
     "swiper": "^7.2.0",

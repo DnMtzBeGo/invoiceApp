@@ -43,7 +43,8 @@ export class Step3Component implements OnInit {
   @Input() public orderWithCP: boolean;
   @Input() public creationdatepickup: number;
   @Input() public editCargoWeightNow: boolean;
-  @Input() public clearMultipleFile!: boolean;
+  @Input() public clearFailedMultipleFile!: boolean;
+  @Input() public clearUploadedMultipleFile!: boolean;
   @Output() public step3FormData: EventEmitter<any> = new EventEmitter();
   @Output() public validFormStep3: EventEmitter<boolean> = new EventEmitter();
   @Output() public cargoWeightEdited: EventEmitter<void> = new EventEmitter();
@@ -169,8 +170,6 @@ export class Step3Component implements OnInit {
     const isoDateString = isoDate.toISOString();
 
     this.step3Form.get('timepickup').setValue(isoDateString);
-
-    // this.step3Form.get("timepickup")!.setValue(new Date());
   }
 
   public ngOnInit(): void {
@@ -228,21 +227,26 @@ export class Step3Component implements OnInit {
           this.step3Form.get('hazardous_material').setValue(cargo.hazardous_material);
         }
 
-        /* if (cargo?.imported_file) {
-          this.fileInfo = {
-            name: this.getFileName(cargo?.imported_file),
-            date: new Date(),
+        if (cargo?.imported_file) {
+          const emptyFile = this.createEmptyFile(cargo?.imported_file);
+
+          this.files = {
+            name: this.getFileData(cargo?.imported_file).name,
+            date: this.getFileData(cargo?.imported_file).date,
             size: 0,
           };
+          this.step3Form.get('multipleCargoFile')!.setValue(emptyFile, { emitEvent: false });
           this.stepIndex = 1;
           this.stepStatus(1);
-        } */
+        }
       }
 
       if (pickup.startDate !== null) {
         this.draftDate = pickup.startDate;
       }
-      this.step3Form.get('unitType')!.setValue(cargo?.trailer?.load_cap);
+
+      if (cargo?.trailer?.load_cap) this.step3Form.get('unitType')!.setValue(cargo.trailer.load_cap);
+
       if (cargo?.weight) {
         this.step3Form.get('cargoWeight')!.setValue(cargo?.weight);
         this.editWeight = true;
@@ -267,16 +271,19 @@ export class Step3Component implements OnInit {
       const isoDateString = isoDate.toISOString();
 
       this.step3Form.get('timepickup').setValue(isoDateString);
-      // this.step3Form.get("timepickup").setValue(new Date(date));
     }
 
     if (changes.editCargoWeightNow && changes.editCargoWeightNow.currentValue) {
       this.editUnits();
     }
 
-    if (changes.clearMultipleFile && changes.clearMultipleFile.currentValue) {
+    if (changes.clearFailedMultipleFile && changes.clearFailedMultipleFile.currentValue) {
       this.files = null;
-      this.step3Form.get('multipleCargoFile')!.setValue(null, { emitEvent: false });
+      this.step3Form.get('multipleCargoFile')!.setValue(this.createEmptyFile(), { emitEvent: false });
+    }
+    if (changes.clearUploadedMultipleFile && changes.clearUploadedMultipleFile.currentValue) {
+      const emptyFile = this.createEmptyFile(this.files.name);
+      this.step3Form.get('multipleCargoFile')!.setValue(emptyFile);
     }
 
     this.validFormStep3.emit(this.step3Form.valid);
@@ -537,7 +544,7 @@ export class Step3Component implements OnInit {
     if (file) {
       this.files = {
         name: file.name,
-        date: new Date(file.lastModified),
+        date: new Date(),
         size: file.size,
       };
     } else {
@@ -609,18 +616,23 @@ export class Step3Component implements OnInit {
       this.step3Form.get('description')?.updateValueAndValidity({ emitEvent: true });
     }
   }
-
-  public getFileName(filePath: string) {
-    const regex = /\/[^/]*_([^/]+)$/;
-    const match = filePath.match(regex);
-    return match ? match[1] : '';
-  }
-
   private async deleteMultipleCargoFile(order_id: string) {
+    if (!order_id) return;
     const req = await this.apiRestService.apiRest(null, `orders/cargo/remove-multiple/${order_id}`, {
       apiVersion: 'v1.1',
       timeout: '300000',
     });
     await req.toPromise();
+  }
+
+  public getFileData(filePath: string) {
+    const regex = /\/(\d+)_([^/]+)$/;
+    const match = filePath.match(regex);
+
+    return { date: match?.[1] || '', name: match?.[2] || '' };
+  }
+
+  public createEmptyFile(fileName: string = '') {
+    return new File([''], fileName ? this.getFileData(fileName).name : 'empty.txt', { type: 'text/plain' });
   }
 }

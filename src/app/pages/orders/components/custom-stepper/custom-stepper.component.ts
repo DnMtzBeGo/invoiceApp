@@ -7,6 +7,8 @@ import {
   Input,
   Output,
   EventEmitter,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 
 @Component({
@@ -14,34 +16,40 @@ import {
   templateUrl: './custom-stepper.component.html',
   styleUrls: ['./custom-stepper.component.scss'],
 })
-export class CustomStepperComponent implements AfterContentInit {
+export class CustomStepperComponent implements AfterContentInit, OnChanges {
   @Output() public stepStatus: any = new EventEmitter<number>();
 
-  @Input() public labels: string[] = []; // Recibe los labels personalizados desde el HTML
-  @Input() public currentStep = 0;
+  @Input() public labels: string[] = [];
+  @Input() public currentStep: number = 0;
+
   @Input() public blockFirstStep: boolean = false;
 
   public steps: { label: string; template: TemplateRef<any> }[] = [];
-  public linePosition: number = 0; // Para almacenar la posición de la línea activa
-  public lineWidth: number = 0; // Ancho de la línea activa en porcentaje
+  public linePosition: number = 0;
+  public lineWidth: number = 0;
 
-  // Capturar todos los templates con el atributo 'step'
   @ContentChildren('step') public stepElements!: QueryList<TemplateRef<any>>;
 
-  public ngAfterContentInit() {
-    // Crear la lista de pasos con las etiquetas personalizadas
+  public ngAfterContentInit(): void {
     this.steps = this.stepElements.toArray().map((stepElement, index) => {
       const label = this.labels[index] || `Paso ${index + 1}`;
       return { label, template: stepElement };
     });
-    this.lineWidth = 100 / this.steps.length; // Calcular el ancho de la línea activa
-    this.linePosition = 0; // Inicializa la posición de la línea activa
+
+    this.lineWidth = 100 / this.steps.length;
+    this.linePosition = 0;
+    this.goToStep(this.currentStep, false);
   }
 
-  // Cambiar el paso actual cuando se hace clic en una etiqueta
-  public goToStep(index: number) {
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.currentStep) {
+      this.goToStep(changes.currentStep.currentValue);
+    }
+  }
+
+  public goToStep(index: number, emit: boolean = true): void {
     this.currentStep = index;
-    this.linePosition = index * this.lineWidth; // Establecer la posición de la línea activa
-    this.stepStatus.emit(index);
+    this.linePosition = index * this.lineWidth;
+    if (emit) this.stepStatus.emit(index);
   }
 }

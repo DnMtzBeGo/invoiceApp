@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, QueryList, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-
 import { TranslateService } from '@ngx-translate/core';
+
 import { InfoModalComponent } from '../../../../../../modals/info-modal/info-modal.component';
 import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
 import { CataloguesListService } from '../../../services/catalogues-list.service';
@@ -10,12 +10,12 @@ import { CataloguesListService } from '../../../services/catalogues-list.service
 @Component({
   selector: 'app-ubicacion',
   templateUrl: './ubicacion.component.html',
-  styleUrls: ['./ubicacion.component.scss']
+  styleUrls: ['./ubicacion.component.scss'],
 })
 export class UbicacionComponent implements OnInit {
-  @Input() allUbicaciones: QueryList<UbicacionComponent>;
-  @Input() locationInfo: any;
-  @ViewChild('picker') pickerRef: ElementRef;
+  @Input() public allUbicaciones: QueryList<UbicacionComponent>;
+  @Input() public locationInfo: any;
+  @ViewChild('picker') public pickerRef: ElementRef;
 
   public origenInfoAlreadySet: boolean;
   public locationComponentInfo: any;
@@ -31,11 +31,11 @@ export class UbicacionComponent implements OnInit {
       '',
       Validators.compose([
         Validators.pattern(/^([A-Z&]{3,4})(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01]))([A-Z\d&]{2}(?:[A\d]))?$/),
-        Validators.required
-      ])
+        Validators.required,
+      ]),
     ),
     num_reg_id_trib: new FormControl(''),
-    residencia_fiscal: new FormControl('')
+    residencia_fiscal: new FormControl(''),
     // numeroEstacion: new FormControl(''),
     // nombreEstacion: new FormControl(''),
     // tipoEstacion: new FormControl(''),
@@ -47,12 +47,12 @@ export class UbicacionComponent implements OnInit {
   public tipoUbicacion: any[] = [
     {
       clave: 'Origen',
-      descripcion: 'Origen'
+      descripcion: 'Origen',
     },
     {
       clave: 'Destino',
-      descripcion: 'Destino'
-    }
+      descripcion: 'Destino',
+    },
   ];
   public residenciaFiscal: any[];
 
@@ -60,7 +60,7 @@ export class UbicacionComponent implements OnInit {
     public cataloguesListService: CataloguesListService,
     public cartaPorteInfoService: CartaPorteInfoService,
     public matDialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {
     this.cataloguesListService.countriesSubject.subscribe((data: any[]) => {
       this.residenciaFiscal = data;
@@ -71,7 +71,7 @@ export class UbicacionComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  public async ngOnInit(): Promise<void> {
     this.ubicacionesForm.controls.tipo_ubicacion.valueChanges.subscribe((inputValue) => {
       if (this.allUbicaciones) {
         const ubicacionesSeleccionadas = this.allUbicaciones.map((e: UbicacionComponent) => {
@@ -98,18 +98,18 @@ export class UbicacionComponent implements OnInit {
     this.infoIsLoaded = true;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.locationInfo?.currentValue) {
       this.ubicacionesForm.patchValue(this.locationInfo);
       this.locationComponentInfo = this.locationInfo.domicilio;
     }
   }
 
-  onDestinationRfcChanged(event: any) {
+  public onDestinationRfcChanged(event: any): void {
     this.toggleForeignFields(event.target.value);
   }
 
-  toggleForeignFields(value: string) {
+  public toggleForeignFields(value: string): void {
     if (value !== 'XEXX010101000') {
       this.ubicacionesForm.controls['num_reg_id_trib'].setValue('');
       this.ubicacionesForm.controls['residencia_fiscal'].setValue('');
@@ -119,17 +119,17 @@ export class UbicacionComponent implements OnInit {
     }
   }
 
-  showOriginAlreadySetModal() {
+  public showOriginAlreadySetModal(): void {
     this.matDialog.open(InfoModalComponent, {
       data: {
         title: this.translateService.instant('invoice.ubicacion.origin-already-title'),
-        message: this.translateService.instant('invoice.ubicacion.origin-already-message')
+        message: this.translateService.instant('invoice.ubicacion.origin-already-message'),
       },
-      restoreFocus: false
+      restoreFocus: false,
     });
   }
 
-  getFormattedUbicacion() {
+  public getFormattedUbicacion(): any {
     const ubicacion: any = Object.assign({}, this.ubicacionesForm.value);
     ubicacion.domicilio = this.locationComponentInfo;
 
@@ -137,13 +137,13 @@ export class UbicacionComponent implements OnInit {
     return ubicacion;
   }
 
-  checkIfFormValid(): boolean {
+  public checkIfFormValid(): boolean {
     return this.ubicacionesForm.valid;
     //MUST BE CHANGED TO THE VALIDATION OF THE COMPONENT
     // && this.domicilioForm.valid;
   }
 
-  catchLocationInfoChanges(val) {
+  public catchLocationInfoChanges(val): void {
     this.locationComponentInfo = val;
   }
 }

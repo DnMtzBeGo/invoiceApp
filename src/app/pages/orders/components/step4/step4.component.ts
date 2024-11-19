@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BegoCheckoutCardContent, StepperService } from '@begomx/ui-components';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './step4.component.html',
   styleUrls: ['./step4.component.scss'],
 })
-export class Step4Component implements OnInit {
+export class Step4Component implements OnInit, OnChanges {
   @Input() public orderData: Order;
   @Input() public draftData: any;
   @Output() public step4FormData: EventEmitter<any> = new EventEmitter();
@@ -21,8 +21,10 @@ export class Step4Component implements OnInit {
   public invoiceEditable = false;
   private cfdiOptions: any[] = [];
   private taxRegimeOptions: any[] = [];
+  private serieOptions: any[] = [];
 
   private step4Form: FormGroup;
+  private draftConfig: any;
 
   public pickupContent: BegoCheckoutCardContent[] = [
     { propertyName: 'Full name', value: '' },
@@ -118,6 +120,21 @@ export class Step4Component implements OnInit {
         );
       },
     },
+    {
+      propertyName: 'series_id',
+      label: 'Serie',
+      value: '',
+      type: 'select',
+      filterOptions: (search) => {
+        const formattedOptions = this.serieOptions.map((e) => ({
+          title: e.serie,
+          description: '',
+          code: e._id,
+        }));
+
+        return formattedOptions.filter((e) => `${e.title}`.toLowerCase().includes(search.toLowerCase()));
+      },
+    },
   ];
 
   constructor(
@@ -140,6 +157,7 @@ export class Step4Component implements OnInit {
       ],
       cfdi: ['', Validators.required],
       tax_regime: ['', Validators.required],
+      series_id: ['', Validators.required],
     });
 
     this.step4Form.statusChanges.subscribe((val) => {
@@ -154,6 +172,7 @@ export class Step4Component implements OnInit {
   public ngOnInit(): void {
     this.fetchCFDI();
     this.fetchTaxRegime();
+    this.fetchSerie();
 
     this.updateCardTitles();
     this.translateService.onLangChange.subscribe(() => {
@@ -169,11 +188,20 @@ export class Step4Component implements OnInit {
 
     if (changes.draftData && changes.draftData.currentValue) {
       const { invoice } = changes.draftData.currentValue;
-      if (invoice?.receiver) {
-        const { receiver } = invoice;
 
-        this.step4Form.setValue(receiver);
+      if (invoice?.receiver) {
+        const { receiver, series_id } = invoice;
+
+        this.draftConfig = {
+          ...receiver,
+          address: receiver.address.place_id,
+          series_id,
+        };
+
+        this.step4Form.setValue(this.draftConfig);
+
         receiver.address = receiver.address.address;
+        receiver.series_id = series_id;
 
         const setInvoiceContent = async (e) => {
           if (e.propertyName == 'cfdi') {
@@ -190,6 +218,15 @@ export class Step4Component implements OnInit {
             const el = this.taxRegimeOptions.find((el) => el.code == receiver[e.propertyName]);
             if (el) {
               e.value = `${el.code} - ${el.description}`;
+              return e;
+            }
+          }
+
+          if (e.propertyName == 'series_id') {
+            await this.fetchSerie();
+            const el = this.serieOptions.find((el) => el._id == receiver[e.propertyName]);
+            if (el) {
+              e.value = el.serie;
               return e;
             }
           }
@@ -244,6 +281,16 @@ export class Step4Component implements OnInit {
     this.taxRegimeOptions = result.catalogs[0].documents;
   }
 
+  private async fetchSerie() {
+    const carrierId = localStorage.getItem('profileId');
+    if (!carrierId) return;
+
+    const req = await this.apiRestService.apiRestGet(`invoice/series/by-carrier/${carrierId}`);
+    const { result } = await req.toPromise();
+
+    this.serieOptions = [...result];
+  }
+
   private updatePickup(orderData: Order) {
     const { pickup, reference_number } = orderData;
     const { contact_info, tax_information } = pickup;
@@ -271,7 +318,7 @@ export class Step4Component implements OnInit {
     const { cargo } = orderdata;
 
     this.cargoContent[0].value = 1;
-    this.cargoContent[1].value = this.formatWeight(cargo.weigth || cargo['weight']);
+    this.cargoContent[1].value = cargo.weigth || cargo['weight'] ? this.formatWeight(cargo.weigth) : '';
     this.cargoContent[2].value = cargo.type;
     this.cargoContent[3].value = cargo.description;
   }
@@ -282,12 +329,14 @@ export class Step4Component implements OnInit {
     this.invoiceContent[2].value = data.rfc;
     this.invoiceContent[3].value = data.cfdi;
     this.invoiceContent[4].value = data.tax_regime;
+    this.invoiceContent[5].value = data.series_id;
 
     this.step4Form.patchValue({
       ...data,
-      address: data.addressselected.place_id,
-      cfdi: data.cfdiselected.code,
-      tax_regime: data.tax_regimeselected.code,
+      address: data.addressselected?.place_id || this.draftConfig?.address,
+      cfdi: data.cfdiselected?.code || this.draftConfig?.cfdi,
+      tax_regime: data.tax_regimeselected?.code || this.draftConfig?.tax_regime,
+      series_id: data.series_idselected?.code || this.draftConfig?.series_id,
     });
 
     this.invoiceEditable = false;
@@ -312,6 +361,7 @@ export class Step4Component implements OnInit {
   }
 
   public formatWeight(weight: number[]): string {
+    if (!weight?.length) return '';
     const unit = this.translateService.instant('orders.cargo-weight.unit');
     const quanitity = weight[0];
 

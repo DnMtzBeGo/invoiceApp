@@ -11,6 +11,7 @@ import { MapDashboardService } from './map-dashboard.service';
 import { HeaderService } from 'src/app/pages/home/services/header.service';
 import { NotificationsService } from '../../services/notifications.service';
 import { ShareReportModalComponent } from 'src/app/pages/home/components/share-report-modal/share-report-modal.component';
+import { PrimeService } from '../../services/prime.service';
 
 declare var google: any;
 const LIMIT = 6;
@@ -48,6 +49,7 @@ export class MapDashboardComponent {
         polygons: '',
         tags: '',
         empty: '',
+        search: '',
       },
       date: '',
       heatmap: {
@@ -71,6 +73,7 @@ export class MapDashboardComponent {
     private notificationsService: NotificationsService,
     private translateService: TranslateService,
     private matDialog: MatDialog,
+    public readonly primeService: PrimeService,
   ) {
     this.headerService.changeHeader(true);
   }
@@ -103,7 +106,7 @@ export class MapDashboardComponent {
       this.mapDashboardService.clearFilter.subscribe(() => this.selectedAction({ action: 'clear' })),
     );
 
-    await this.getFleetDetails(false);
+    // await this.getFleetDetails(false);
 
     await this.getDrivers();
     await this.getPolygons();
@@ -569,6 +572,7 @@ export class MapDashboardComponent {
           polygons: this.translateService.instant(path + 'filter.column.polygons'),
           tags: this.translateService.instant(path + 'filter.column.tags'),
           empty: '',
+          search: this.translateService.instant(path + 'filter.column.search'),
         },
         date: this.translateService.instant(path + 'filter.date'),
         heatmap: {
