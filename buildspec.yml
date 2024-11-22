@@ -18,6 +18,7 @@ phases:
       - npm install
   build:
     commands:
+      - echo "CODEBUILD_WEBHOOK_HEAD_REF value: $CODEBUILD_WEBHOOK_HEAD_REF"
       - echo Choosing build configuration...
       - |
         if [ "$CODEBUILD_WEBHOOK_HEAD_REF" = "refs/heads/main" ]; then
