@@ -18,16 +18,8 @@ phases:
       - npm install
   build:
     commands:
-      - echo Choosing build configuration...
-      - echo "CODEBUILD_SOURCE_VERSION value: $CODEBUILD_SOURCE_VERSION"
-      - |
-      if [ "$CODEBUILD_SOURCE_VERSION" = "refs/heads/main" ]; then
-        echo "Building for production..."
-        ng build --configuration production
-      else
-        echo "Building for development..."
-        ng build
-      fi
+      - echo Building for configuration...
+      - ng build --configuration production
 artifacts:
   files:
     - "**/*"
