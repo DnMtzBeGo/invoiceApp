@@ -18,9 +18,9 @@ phases:
       - npm install
   build:
     commands:
-      - echo Starting production build...
+      - echo Choosing build configuration...
       - |
-        if [ "$CODEBUILD_WEBHOOK_HEAD_REF" == "refs/heads/main" ]; then
+        if [ "$CODEBUILD_WEBHOOK_HEAD_REF" = "refs/heads/main" ]; then
           echo "Building for production..."
           ng build --configuration production
         else
