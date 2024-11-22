@@ -1,9 +1,16 @@
-<bego-alert-customer [showChibi]="false" [simple]="true" [arrayButtons]="actionButtons" (closeEmitter)="save()" class="cargo-details">
+<bego-alert-customer
+  [showChibi]="false"
+  [simple]="true"
+  [arrayButtons]="actionButtons"
+  (closeEmitter)="save()"
+  class="cargo-details">
   <h2 class="title">{{ 'orders.unit-details-list.title' | translate }}</h2>
 
   <div class="quantity">
     <div class="quantity-title">{{ 'orders.unit-details-list.qty' | translate }}</div>
-    <bego-increment-decrement [units]="unitForm.get('qty').value" (changeUnits)="updateQuantity($event)"></bego-increment-decrement>
+    <bego-increment-decrement
+      [units]="unitForm.get('qty').value"
+      (changeUnits)="updateQuantity($event)"></bego-increment-decrement>
   </div>
 
   <bego-search-select

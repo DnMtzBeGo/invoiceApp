@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { addObjectKeys, prop } from '../../../../shared/utils/object';
 
 const add = (x, y) => x + y;
@@ -6,7 +8,8 @@ const isaN = (n) => !isNaN(n);
 
 export const validRFC = (rfc) => rfc != void 0 && rfc.length >= 12 && rfc.length <= 13;
 
-const isRetencion = (impuesto) => impuesto.retencion === true || impuesto.es_retencion === true || impuesto.es_retencion === 'true';
+const isRetencion = (impuesto) =>
+  impuesto.retencion === true || impuesto.es_retencion === true || impuesto.es_retencion === 'true';
 
 export const getImpuestoDescripcion = (impuesto) => {
   if (impuesto.descripcion) return impuesto.descripcion;
@@ -61,7 +64,9 @@ export const calcTotal = (conceptos) => (conceptos || []).map(calcConcepto).redu
 export const resolveImpuestoLabel = (impuestos, key, impuesto) => {
   const label =
     impuesto[key] ||
-    (impuestos || []).find((impuesto_) => getImpuestoDescripcion(impuesto_) === getImpuestoDescripcion(impuesto))?.[key] ||
+    (impuestos || []).find((impuesto_) => getImpuestoDescripcion(impuesto_) === getImpuestoDescripcion(impuesto))?.[
+      key
+    ] ||
     '';
 
   const tasa_cuota = !isNaN(impuesto.tasa_cuota) ? `${Number(impuesto.tasa_cuota * 100)}%` : '';
@@ -78,11 +83,11 @@ export const resolveImpuesto = (concepto, impuesto) => {
     : isRetencion(impuesto)
     ? `($${Math.abs(calc).toLocaleString('en-US', {
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        maximumFractionDigits: 2,
       })})`
     : `$${calc.toLocaleString('en-US', {
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        maximumFractionDigits: 2,
       })}`;
 };
 
@@ -95,21 +100,23 @@ export const resolveImpuestosGroup = (impuestos, key, conceptos) => {
 
         return [
           {
-            [label]: Math.abs(calcImpuesto(calcConceptoSubtotal(concepto))(impuesto))
+            [label]: Math.abs(calcImpuesto(calcConceptoSubtotal(concepto))(impuesto)),
           },
-          { [label]: isRetencion(impuesto) }
+          { [label]: isRetencion(impuesto) },
         ];
-      })
+      }),
   );
 
-  const impuestosGroupImpositivo = allImpuestos.map((result) => result[1]).reduce((o1, o2) => Object.assign(o1, o2), {});
+  const impuestosGroupImpositivo = allImpuestos
+    .map((result) => result[1])
+    .reduce((o1, o2) => Object.assign(o1, o2), {});
 
   const impuestosGroup = allImpuestos.map((result) => result[0]).reduce(addObjectKeys, {});
 
   return Object.entries(impuestosGroup).map(([label, impuesto]) => ({
     label,
     impuesto,
-    retencion: impuestosGroupImpositivo[label]
+    retencion: impuestosGroupImpositivo[label],
   }));
 };
 
@@ -139,7 +146,7 @@ export const fromFactura = (factura) => {
     lugar_de_expedicion,
     conceptos,
     documentos_relacionados,
-    ...factura
+    ...factura,
   };
 
   delete newFactura.receptor;
@@ -157,7 +164,7 @@ export const toFactura = (factura: any) => {
     direccion: { ...(factura.direccion || {}) },
 
     num_reg_id_trib: factura.num_reg_id_trib,
-    residencia_fiscal: factura.residencia_fiscal
+    residencia_fiscal: factura.residencia_fiscal,
   };
 
   if (factura.rfc !== 'XEXX010101000') {
@@ -181,16 +188,16 @@ export const toFactura = (factura: any) => {
         ...impuesto,
         cve_sat: impuesto.clave ?? impuesto.cve_sat,
         es_retencion: impuesto.retencion ?? impuesto.es_retencion,
-        tipo_factor: impuesto.factor ?? impuesto.tipo_factor
+        tipo_factor: impuesto.factor ?? impuesto.tipo_factor,
       };
-    })
+    }),
   }));
 
   const newFactura = {
     ...factura,
     receptor,
     conceptos,
-    fecha_emision: new Date().toString()
+    fecha_emision: new Date().toString(),
   };
 
   delete newFactura.rfc;
@@ -205,18 +212,39 @@ export const toFactura = (factura: any) => {
 };
 
 export const fromFacturaCopy = (factura) => {
-  delete factura._id;
-  delete factura.status;
-  delete factura.updated_at;
-  delete factura.canceled;
-  delete factura.error;
-  delete factura.source;
-  delete factura.stamped;
-  delete factura.exportacion;
-  delete factura.fecha_emision;
-  delete factura.order;
+  const nonDuplicableProps = [
+    '_id',
+    'canceled',
+    'status',
+    'update_at',
+    'uuid',
+    'files',
+    'folio',
+    'error',
+    'source',
+    'stamped',
+    'exportacion',
+    'fecha_emision',
+    'fecha_certificacion',
+    'order',
+    'notifications',
+    'payments',
+    'serie_text',
+    'user_id',
+  ];
+
+  for (const key of nonDuplicableProps) delete factura?.[key];
+
+  // avoid to use same id_ccp for duplicated invoice
+  if (factura?.carta_porte && Object.keys(factura.carta_porte)) factura.carta_porte.id_ccp = generateIDCCP();
+
+  factura.documentos_relacionados = [];
+
   return factura;
 };
+
+export const generateIDCCP = (): string => 'CCC' + uuidv4().substring(3, 36).toUpperCase();
+export const generateUUID = (): string => uuidv4().toUpperCase();
 
 export const facturaPermissions = (factura) => {
   const edit = !factura?.status || [1, 9].includes(factura.status);
@@ -235,7 +263,7 @@ export const facturaPermissions = (factura) => {
     cancelar: factura?.status && [3].includes(factura.status),
     eliminar: factura?.status && [1, 9].includes(factura.status),
     cartaporte: factura?.tipo_de_comprobante && ['I', 'T'].includes(factura.tipo_de_comprobante),
-    showError: factura?.status && factura.status !== 3
+    showError: factura?.status && factura.status !== 3,
   };
 };
 
@@ -245,9 +273,9 @@ export const makeReceptorTemplate = (user) => {
       receptor: {
         rfc: user?.rfc,
         nombre: user?.company,
-        uso_cfdi: user?.cfdi
-      }
-    })
+        uso_cfdi: user?.cfdi,
+      },
+    }),
   );
 };
 
@@ -256,9 +284,9 @@ export const makeEmisorTemplate = (user) => {
     JSON.stringify({
       emisor: {
         rfc: user?.rfc,
-        nombre: user?.company
-      }
-    })
+        nombre: user?.company,
+      },
+    }),
   );
 };
 
@@ -276,24 +304,30 @@ export const previewFactura = (factura) => {
         impuestos: (concepto.impuestos || []).map((impuesto) => {
           return {
             ...impuesto,
-            total: calcImpuesto(subtotal)(impuesto)
+            total: calcImpuesto(subtotal)(impuesto),
           };
-        })
+        }),
       };
     }),
-    fecha_emision: new Date().toISOString()
+    fecha_emision: new Date().toISOString(),
   };
 };
 
 const empty = () => '';
 export const validators = {
   valor_unitario: (control, value) => {
-    const validations = [(v) => !Boolean(String(v ?? '')) && 'Campo numérico requerido', (v) => +v < 0 && 'Valor mínimo requerido de 0'];
+    const validations = [
+      (v) => !Boolean(String(v ?? '')) && 'Campo numérico requerido',
+      (v) => +v < 0 && 'Valor mínimo requerido de 0',
+    ];
 
     return control.dirty || control.touched ? (validations.find((f) => f(value)) || empty)(value) : '';
   },
   cantidad: (control, value) => {
-    const validations = [(v) => !Boolean(String(v ?? '')) && 'Campo numérico requerido', (v) => +v < 0 && 'Valor mínimo requerido de 0'];
+    const validations = [
+      (v) => !Boolean(String(v ?? '')) && 'Campo numérico requerido',
+      (v) => +v < 0 && 'Valor mínimo requerido de 0',
+    ];
 
     return control.dirty || control.touched ? (validations.find((f) => f(value)) || empty)(value) : '';
   },
@@ -301,20 +335,22 @@ export const validators = {
     const validations = [
       (v) => isNaN(v ?? undefined) && 'Campo numérico requerido',
       (v) => +v < 0 && 'Valor mínimo requerido de 0',
-      (v) => +v > calcImporte(concepto) && 'El descuento no puede superar el importe'
+      (v) => +v > calcImporte(concepto) && 'El descuento no puede superar el importe',
     ];
 
-    return (control.dirty || control.touched) && value != null ? (validations.find((f) => f(value)) || empty)(value) : '';
-  }
+    return (control.dirty || control.touched) && value != null
+      ? (validations.find((f) => f(value)) || empty)(value)
+      : '';
+  },
 };
 
 export const facturaStatus = (key, status?) => {
   const defaults = {
-    color: '#ededed'
+    color: '#ededed',
   };
 
   const map = {
-    [9]: { color: '#fa3c00' }
+    [9]: { color: '#fa3c00' },
   };
 
   return map[status]?.[key] ?? defaults?.[key];
@@ -362,11 +398,55 @@ const requiredPathsFactura = [
   'conceptos.0.unidad_de_medida',
   'conceptos.0.valor_unitario',
   'conceptos.0.cantidad',
-  'conceptos.0.descripcion'
+  'conceptos.0.descripcion',
 ];
 
 const requiredFieldF = (object) => (path) => ![void 0, ''].includes(prop(object, path.split('.')));
 
 export const minimumRequiredFields = (factura) => {
   return requiredPathsFactura.every(requiredFieldF(factura));
+};
+
+export const searchInList = (
+  component: any,
+  listName: string | string[],
+  filteredListName: string,
+  code: string,
+  propCode: string = 'code',
+  propName: string = 'name',
+): void => {
+  component[filteredListName] = _searchInList(component, listName, code, propCode, propName);
+};
+
+const _searchInList = (
+  component: any,
+  listName: string | string[],
+  code: string,
+  propCode: string = 'code',
+  propName: string = 'name',
+): any[] => {
+  let listContainer: any = null;
+  if (Array.isArray(listName))
+    for (const key of listName) {
+      if (!listContainer) listContainer = component[key];
+      else listContainer = listContainer[key];
+    }
+  else listContainer = component[listName];
+
+  return code
+    ? listContainer.filter(
+        (m: any) =>
+          m[propCode].toLowerCase().startsWith(code.toLowerCase()) ||
+          _cleanLatinChars(m[propName]).toLowerCase().startsWith(code.toLowerCase()),
+      )
+    : [...listContainer];
+};
+
+export const _cleanLatinChars = (str: string): string => {
+  const latinChars = ['á', 'é', 'í', 'ó', 'ú'];
+  const replaceChars = ['a', 'e', 'i', 'o', 'u'];
+
+  for (const i in latinChars) str = str.replace(new RegExp(latinChars[i], 'gi'), replaceChars[i]);
+
+  return str;
 };

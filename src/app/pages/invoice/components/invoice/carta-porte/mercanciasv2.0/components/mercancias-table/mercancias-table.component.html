@@ -1,0 +1,18 @@
+<div class="commodities-table-wrapper">
+  <bego-table-multiple-selection
+    [class]="_getTableCSSClass()"
+    (selectorRowsCheckEmitter)="commoditiesTable.rowSelected($event)"
+    [selectRowCheck]="commoditiesTable.selectRow"
+    [loading]="commoditiesTable.loading"
+    [columns]="commoditiesTable.columns"
+    [values]="commoditiesTable.values"
+    [actions]="commoditiesTable.actions"
+    [page]="commoditiesTable.pageUI"
+    [debounce]="1000"
+    (pageChangeEmitter)="commoditiesTable.changingPage($event)"
+    (selectedActionEmitter)="commoditiesTable.selectingAction($event)"
+    (reloadTable)="reloadData()"
+    [filter]="!canSearchLocal()"
+    [localSearch]="canSearchLocal()"
+    (filterEmitter)="filterChanged($event)"></bego-table-multiple-selection>
+</div>

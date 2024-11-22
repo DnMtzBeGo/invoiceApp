@@ -1,32 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-
-import { OrdersRoutingModule } from './orders-routing.module';
-import { OrdersComponent } from './orders.component';
-
-import { Step1Component } from './components/step1/step1.component';
-import { Step2Component } from './components/step2/step2.component';
-import { Step3Component } from './components/step3/step3.component';
-import { Step4Component } from './components/step4/step4.component';
-import { PricingStepComponent } from './components/pricing-step/pricing-step.component';
-
-import { OclStep1Component } from './components/ocl/step1/step1.component';
-import { OclStep2Component } from './components/ocl/step2/step2.component';
-
-import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-file-bar.module';
-import { StepperModule } from 'src/app/shared/components/stepper/stepper.module';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MomentDatePipe } from 'src/app/shared/pipes/momentDate/moment-date.pipe';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
-import { CargoWeightComponent } from './components/cargo-weight/cargo-weight.component';
-import { GoogleAddressModule } from 'src/app/shared/pipes/google-address/google-address.module';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
-import { UnitDetailsModalComponent } from './components/unit-details-modal/unit-details-modal.component';
 import {
   BegoAlertCustomerModule,
   BegoButtonModule,
@@ -46,24 +24,45 @@ import {
   BegoStepModule,
   BegoStepperModule,
   BegoTextAreaModule,
-  BegoTextInputModule
+  BegoTextInputModule,
 } from '@begomx/ui-components';
-import { CargoUnitsComponent } from './components/cargo-units/cargo-units.component';
 import { NgxCurrencyModule } from 'ngx-currency';
+
+import { OrdersRoutingModule } from './orders-routing.module';
+import { OrdersComponent } from './orders.component';
+import { Step1Component } from './components/step1/step1.component';
+import { Step2Component } from './components/step2/step2.component';
+import { Step3Component } from './components/step3/step3.component';
+import { Step4Component } from './components/step4/step4.component';
+import { PricingStepComponent } from './components/pricing-step/pricing-step.component';
+import { OclStep1Component } from './components/ocl/step1/step1.component';
+import { OclStep2Component } from './components/ocl/step2/step2.component';
+import { DragFileBarModule } from 'src/app/shared/components/drag-file-bar/drag-file-bar.module';
+import { StepperModule } from 'src/app/shared/components/stepper/stepper.module';
+import { MomentDatePipe } from 'src/app/shared/pipes/momentDate/moment-date.pipe';
+import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
+import { CargoWeightComponent } from './components/cargo-weight/cargo-weight.component';
+import { GoogleAddressModule } from 'src/app/shared/pipes/google-address/google-address.module';
+import { ContinueModalComponent } from './components/continue-modal/continue-modal.component';
+import { UnitDetailsModalComponent } from './components/unit-details-modal/unit-details-modal.component';
+// import { CargoUnitsComponent } from './components/cargo-units/cargo-units.component';
 import { AppMaterialModule } from 'src/app/material';
 import { SelectFleetModalComponent } from './components/select-fleet-modal/select-fleet-modal.component';
 import { CircularAvatarModule } from 'src/app/shared/components/circular-avatar/circular-avatar.module';
+import { CustomStepperModule } from './components/custom-stepper/custom-stepper.module';
+import { CargoUnitsModule } from './components/cargo-units/cargo-units.module';
+// import { CustomStepperComponent } from './components/custom-stepper/custom-stepper.component';
 
 export const MY_FORMATS = {
   parse: {
-    dateInput: 'LL'
+    dateInput: 'LL',
   },
   display: {
     dateInput: 'LL',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  }
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
 };
 
 @NgModule({
@@ -79,9 +78,10 @@ export const MY_FORMATS = {
     CargoWeightComponent,
     ContinueModalComponent,
     UnitDetailsModalComponent,
-    CargoUnitsComponent,
+    // CargoUnitsComponent,
     PricingStepComponent,
     SelectFleetModalComponent,
+    // CustomStepperComponent,
   ],
   imports: [
     CommonModule,
@@ -121,8 +121,10 @@ export const MY_FORMATS = {
     BegoRfcInputModule,
     AppMaterialModule,
     BegoPhoneCodeSelectModule,
+    CustomStepperModule,
+    CargoUnitsModule,
   ],
-  exports: [OrdersComponent]
+  exports: [OrdersComponent],
   // providers: [
   //   {
   //     provide: DateAdapter,

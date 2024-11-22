@@ -1,8 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { marked } from 'marked';
-import DOMPurify from 'dompurify';
 @Component({
   selector: 'app-app-chibibot-message',
   templateUrl: './app-chibibot-message.component.html',
@@ -26,30 +25,32 @@ import DOMPurify from 'dompurify';
   ]
 })
 export class AppChibibotMessageComponent implements OnInit {
-  @Input() message: string;
-  @Input() image: string = '';
-  @Input() loader: boolean = false;
-  formattedString: SafeHtml;
+  @Input() public message: string;
+  @Input() public image: string = '';
+  @Input() public loader: boolean = false;
+  public formattedString: SafeHtml;
 
-  loadingImage: boolean = true;
-  errorImage: boolean = false;
+  public loadingImage: boolean = true;
+  public errorImage: boolean = false;
 
   constructor(private sanitizer: DomSanitizer) {}
 
-  ngOnInit() {
+  public async ngOnInit(): Promise<void> {
     if (this.loader) return;
 
-    const rawHtml = marked(this.message);
-    const cleanHtml = DOMPurify.sanitize(rawHtml);
+    const messageString = this.message;
+    const rawHtml = await marked(messageString);
+    const cleanHtml = this.sanitizer.sanitize(SecurityContext.HTML, rawHtml) || '';
+
     this.formattedString = this.sanitizer.bypassSecurityTrustHtml(cleanHtml);
 
    //this.formattedString = this.sanitizer.bypassSecurityTrustHtml(this.message.replace(/\n/g, '<br>'));
   }
 
-  onLoad() {
+  public onLoad(): void  {
     this.loadingImage = false;
   }
-  onError() {
+  public onError(): void {
     this.loadingImage = false;
     this.errorImage = true;
   }

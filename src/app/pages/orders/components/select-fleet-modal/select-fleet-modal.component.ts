@@ -1,33 +1,35 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
+
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+
 @Component({
   selector: 'app-select-fleet-modal',
   templateUrl: './select-fleet-modal.component.html',
-  styleUrls: ['./select-fleet-modal.component.scss']
+  styleUrls: ['./select-fleet-modal.component.scss'],
 })
 export class SelectFleetModalComponent {
-  drivers: Array<object> = [];
-  vehicle: Array<object> = [];
-  trucks: Array<object>[];
-  trailers: Array<object> = [];
+  public drivers: Array<object> = [];
+  public vehicle: Array<object> = [];
+  public trucks: Array<object>[];
+  public trailers: Array<object> = [];
 
   //TODO: Must be updated to turn to true if info comes from driver
-  walkingData: boolean = false;
+  public walkingData: boolean = false;
 
   //TODO: this won't work for things other than FTL
-  orderType = 'FTL';
+  public orderType = 'FTL';
 
   //TODO:  Fill this info properly given the order info
-  userWantCP: boolean = false;
+  public userWantCP: boolean = false;
 
-  selectMembersToAssign: any = {};
+  public selectMembersToAssign: any = {};
 
   public enableBtn: boolean = false;
 
-  lang = 'en'
+  public lang = 'en';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -47,10 +49,10 @@ export class SelectFleetModalComponent {
     this.translateService.onLangChange.subscribe((ev) => (this.lang = ev.lang));
   }
 
-  async getFleet(data: any) {
+  public async getFleet(data: any) {
     const payload = {
       fromDate: data.start_date,
-      toDate: data.end_date
+      toDate: data.end_date,
     };
     return (await this.authService.apiRest(JSON.stringify(payload), '/orders/calendar', { apiVersion: 'v1.1' }))
       .toPromise()
@@ -66,9 +68,9 @@ export class SelectFleetModalComponent {
           color: '#FFE000',
           action: async () => {
             this.alertservice.close();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
   }
 
@@ -77,7 +79,8 @@ export class SelectFleetModalComponent {
       return this.showAlert(this.translateService.instant(`home.alerts.cant-cp-${String(typeMember)}`));
     }
 
-    if (!member.availability) this.showAlert(this.translateService.instant(`home.alerts.not-available-${String(typeMember)}`));
+    if (!member.availability)
+      this.showAlert(this.translateService.instant(`home.alerts.not-available-${String(typeMember)}`));
 
     if (this.selectMembersToAssign[typeMember]) {
       this.selectMembersToAssign[typeMember].isSelected = false;
@@ -90,5 +93,4 @@ export class SelectFleetModalComponent {
       this.enableBtn = true;
     }
   }
-
 }

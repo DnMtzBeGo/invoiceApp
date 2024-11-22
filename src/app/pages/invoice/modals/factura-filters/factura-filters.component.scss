@@ -1,4 +1,8 @@
 .app-factura-filters {
+  .title {
+    margin-bottom: 25px;
+  }
+
   .filters {
     padding: 0;
     display: grid;
@@ -15,14 +19,14 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 19px;
-    font-family: "Avenir";
+    font-family: 'Avenir';
   }
 
   mat-label,
   .mat-select-value,
   .mat-radio-label .mat-radio-label-content {
     color: #ededed;
-    font-family: "Avenir";
+    font-family: 'Avenir';
     font-style: normal;
     font-weight: 400;
   }

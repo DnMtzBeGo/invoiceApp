@@ -5,18 +5,20 @@
   </mat-form-field>
   <mat-form-field appearance="outline" class="brand-field-1 unidad-peso">
     <mat-label>{{ 'invoice.mercancias.unidad-peso' | translate }}</mat-label>
-    <input
-      formControlName="unidad_peso"
-      autocomplete="off"
-      type="search"
-      matInput
-      [matAutocomplete]="unidadPesoRef"
-      (search)="resetFilterList('unidad_peso')" />
-    <mat-autocomplete #unidadPesoRef="matAutocomplete" [displayWith]="getUnidadPesoText.bind(this)">
-      <mat-option *ngFor="let option of filteredUnidadPeso" [value]="option.clave" class="brand-option-1">
-        {{ option.clave }} - {{ option.nombre }}
+    <mat-select name="unidad_peso" formControlName="unidad_peso" class="disable-custom-format">
+      <mat-option>
+        <ngx-mat-select-search
+          (keyup)="searchWeightUnit($event.target.value)"
+          [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+          [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+          class="brand-select-search-1"></ngx-mat-select-search>
       </mat-option>
-    </mat-autocomplete>
+      <ng-container *ngFor="let option of filteredWeightUnits">
+        <mat-option [value]="option.clave" class="brand-option-1">
+          {{ option.clave }} - {{ option.nombre }}
+        </mat-option>
+      </ng-container>
+    </mat-select>
   </mat-form-field>
 </div>
 <mat-divider></mat-divider>
@@ -30,7 +32,7 @@
       </span>
       <span (click)="removeData()">Eliminar</span>
     </div>
-    <app-commodity [commodityInfo]="commodity" [dataCoin]="monedas"></app-commodity>
+    <app-commodity [commodityInfo]="commodity"></app-commodity>
     <mat-divider *ngIf="i != commodities.length - 1"></mat-divider>
   </div>
   <div class="add-merchandise-btn" (click)="addMerchandise()">

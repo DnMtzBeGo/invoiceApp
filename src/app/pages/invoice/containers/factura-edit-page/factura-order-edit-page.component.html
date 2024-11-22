@@ -2,103 +2,61 @@
   <div class="page-wrapper">
     <!-- forms -->
     <div id="form">
-      <span
-        style="
-          position: absolute;
-          display: block;
-          height: 2px;
-          top: -2px;
-          left: 0;
-          width: 100%;
-        "
-      >
+      <span style="position: absolute; display: block; height: 2px; top: -2px; left: 0; width: 100%">
         <mat-progress-bar
           [style.display]="!vm.form ? 'block' : 'none'"
           style="height: 2px"
           class="brand-progress-bar-1"
-          mode="indeterminate"
-        ></mat-progress-bar>
+          mode="indeterminate"></mat-progress-bar>
       </span>
 
-      <section
-        id="receptor"
-        [style.display]="
-          vm.readonly || vm.tab === 'receptor' ? 'block' : 'none'
-        "
-      >
-        <h6>{{ "invoice.edit.receptor" | translate }}</h6>
+      <section id="receptor" [style.display]="vm.readonly || vm.tab === 'receptor' ? 'block' : 'none'">
+        <h6>{{ 'invoice.edit.receptor' | translate }}</h6>
 
         <div class="grid">
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
             <mat-label>{{
               vm.form?.invoice?.receiver?.rfc
-                ? ("invoice.edit.rfc" | translate)
-                : ("invoice.edit.rfc-placeholder" | translate)
+                ? ('invoice.edit.rfc' | translate)
+                : ('invoice.edit.rfc-placeholder' | translate)
             }}</mat-label>
             <input
               matInput
               name="rfc"
               [ngModel]="vm.form?.invoice?.receiver?.rfc"
               (ngModelChange)="
-                formEmitter.next([
-                  'rfc:search',
-                  (vm.form.invoice.receiver.rfc = $event.toUpperCase().trim())
-                ])
+                formEmitter.next(['rfc:search', (vm.form.invoice.receiver.rfc = $event.toUpperCase().trim())])
               "
               maxlength="13"
               [matAutocomplete]="auto"
-              [readonly]="vm.readonly"
-            />
+              [readonly]="vm.readonly" />
 
             <span
               class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.rfc"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
+              matTooltipClass="brand-tooltip-1">
+              <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
             </span>
 
             <mat-progress-bar
-              [style.display]="
-                vm.searchAction?.type === 'rfc' && vm.searchLoading
-                  ? 'block'
-                  : 'none'
-              "
+              [style.display]="vm.searchAction?.type === 'rfc' && vm.searchLoading ? 'block' : 'none'"
               class="brand-progress-bar-1"
-              mode="indeterminate"
-            ></mat-progress-bar>
+              mode="indeterminate"></mat-progress-bar>
 
             <mat-autocomplete
               autoActiveFirstOption
               #auto="matAutocomplete"
               (optionSelected)="
-                vm.form.invoice.receiver.company =
-                  $event.option._element.nativeElement.dataset.company;
-                vm.form.invoice.receiver.cfdi =
-                  $event.option._element.nativeElement.dataset.cfdi;
-                vm.form.invoice.receiver.tax_regime =
-                  $event.option._element.nativeElement.dataset.tax_regime;
+                vm.form.invoice.receiver.company = $event.option._element.nativeElement.dataset.company;
+                vm.form.invoice.receiver.cfdi = $event.option._element.nativeElement.dataset.cfdi;
+                vm.form.invoice.receiver.tax_regime = $event.option._element.nativeElement.dataset.tax_regime;
                 formEmitter.next(['rfc:set', $event.option.value]);
                 formEmitter.next(['autocomplete:cancel', ''])
-              "
-            >
-              <mat-option
-                *ngIf="vm.receptorSearch?.rfc?.length === 0"
-                value=""
-                class="brand-option-1"
-                disabled
-              >
-                {{ "invoice.edit.no-results" | translate }}
+              ">
+              <mat-option *ngIf="vm.receptorSearch?.rfc?.length === 0" value="" class="brand-option-1" disabled>
+                {{ 'invoice.edit.no-results' | translate }}
               </mat-option>
               <mat-option
                 *ngFor="let receptor of vm.receptorSearch?.rfc; let i = index"
@@ -106,123 +64,81 @@
                 class="brand-option-1"
                 [attr.data-company]="receptor.razon_social"
                 [attr.data-cfdi]="receptor.uso_cfdi"
-                [attr.data-tax_regime]="receptor.regimen_fiscal"
-              >
+                [attr.data-tax_regime]="receptor.regimen_fiscal">
                 <div>
-                  <span style="text-transform: uppercase">{{
-                    receptor.rfc
-                  }}</span>
+                  <span style="text-transform: uppercase">{{ receptor.rfc }}</span>
                   <span class="sublabel">{{ receptor.razon_social }}</span>
                 </div>
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
 
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
             <mat-label>{{
               vm.form?.invoice?.receiver?.company
-                ? ("invoice.edit.nombre" | translate)
-                : ("invoice.edit.nombre-placeholder" | translate)
+                ? ('invoice.edit.nombre' | translate)
+                : ('invoice.edit.nombre-placeholder' | translate)
             }}</mat-label>
             <input
               matInput
               name="company"
               [ngModel]="vm.form?.invoice?.receiver?.company"
-              (ngModelChange)="
-                formEmitter.next([
-                  'nombre:search',
-                  (vm.form.invoice.receiver.company = $event)
-                ])
-              "
+              (ngModelChange)="formEmitter.next(['nombre:search', (vm.form.invoice.receiver.company = $event)])"
               [matAutocomplete]="auto2"
-              [readonly]="vm.readonly"
-            />
+              [readonly]="vm.readonly" />
 
             <span
               class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.nombre"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
+              matTooltipClass="brand-tooltip-1">
+              <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
             </span>
 
             <mat-progress-bar
-              [style.display]="
-                vm.searchAction?.type === 'nombre' && vm.searchLoading
-                  ? 'block'
-                  : 'none'
-              "
+              [style.display]="vm.searchAction?.type === 'nombre' && vm.searchLoading ? 'block' : 'none'"
               class="brand-progress-bar-1"
-              mode="indeterminate"
-            ></mat-progress-bar>
+              mode="indeterminate"></mat-progress-bar>
 
             <mat-autocomplete
               autoActiveFirstOption
               #auto2="matAutocomplete"
               (optionSelected)="
-                vm.form.invoice.receiver.cfdi =
-                  $event.option._element.nativeElement.dataset.cfdi;
-                vm.form.invoice.receiver.tax_regime =
-                  $event.option._element.nativeElement.dataset.tax_regime;
+                vm.form.invoice.receiver.cfdi = $event.option._element.nativeElement.dataset.cfdi;
+                vm.form.invoice.receiver.tax_regime = $event.option._element.nativeElement.dataset.tax_regime;
                 formEmitter.next([
                   'rfc:set',
-                  (vm.form.invoice.receiver.rfc =
-                    $event.option._element.nativeElement.dataset.rfc)
+                  (vm.form.invoice.receiver.rfc = $event.option._element.nativeElement.dataset.rfc)
                 ]);
                 formEmitter.next(['autocomplete:cancel', ''])
-              "
-            >
-              <mat-option
-                *ngIf="vm.receptorSearch?.nombre?.length === 0"
-                value=""
-                class="brand-option-1"
-                disabled
-              >
-                {{ "invoice.edit.no-results" | translate }}
+              ">
+              <mat-option *ngIf="vm.receptorSearch?.nombre?.length === 0" value="" class="brand-option-1" disabled>
+                {{ 'invoice.edit.no-results' | translate }}
               </mat-option>
               <mat-option
-                *ngFor="
-                  let receptor of vm.receptorSearch?.nombre;
-                  let i = index
-                "
+                *ngFor="let receptor of vm.receptorSearch?.nombre; let i = index"
                 [value]="receptor.razon_social"
                 class="brand-option-1"
                 [attr.data-rfc]="receptor.rfc"
                 [attr.data-cfdi]="receptor.cfdi"
-                [attr.data-tax_regime]="receptor.tax_regime"
-              >
+                [attr.data-tax_regime]="receptor.tax_regime">
                 <div>
                   <span>{{ receptor.razon_social }}</span>
-                  <span class="sublabel" style="text-transform: uppercase">{{
-                    receptor.rfc
-                  }}</span>
+                  <span class="sublabel" style="text-transform: uppercase">{{ receptor.rfc }}</span>
                 </div>
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
 
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
             <mat-label>
               {{
                 vm.form?.invoice?.receiver?.cfdi
-                  ? ("invoice.edit.usocfdi" | translate)
+                  ? ('invoice.edit.usocfdi' | translate)
                   : !vm.form?.invoice?.receiver?.rfc || vm.tipoPersona
-                  ? ("invoice.edit.usocfdi-placeholder" | translate)
-                  : ("invoice.edit.usocfdi-placeholder-2" | translate)
+                  ? ('invoice.edit.usocfdi-placeholder' | translate)
+                  : ('invoice.edit.usocfdi-placeholder-2' | translate)
               }}
             </mat-label>
             <mat-select
@@ -230,34 +146,24 @@
               [ngModel]="vm.form?.invoice?.receiver?.cfdi"
               (ngModelChange)="vm.form.invoice.receiver.cfdi = $event"
               class="disable-custom-format"
-              [disabled]="!vm.tipoPersona || vm.readonly"
-            >
+              [disabled]="!vm.tipoPersona || vm.readonly">
               <mat-option>
                 <ngx-mat-select-search
                   ngModel
-                  (ngModelChange)="
-                    formEmitter.next([
-                      'catalogos:search',
-                      ['usos_cfdi', $event.toLowerCase()]
-                    ])
-                  "
+                  (ngModelChange)="formEmitter.next(['catalogos:search', ['usos_cfdi', $event.toLowerCase()]])"
                   [placeholderLabel]="'invoice.edit.type-to-search' | translate"
                   [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
-                  class="brand-select-search-1"
-                ></ngx-mat-select-search>
+                  class="brand-select-search-1"></ngx-mat-select-search>
               </mat-option>
               <ng-container *ngFor="let uso of vm.catalogos?.usos_cfdi">
                 <mat-option
                   *ngIf="
-                    (vm.tipoPersona &&
-                      uso.persona_fisica &&
-                      vm.tipoPersona === 'fisica') ||
+                    (vm.tipoPersona && uso.persona_fisica && vm.tipoPersona === 'fisica') ||
                     (uso.persona_moral && vm.tipoPersona === 'moral')
                   "
                   [value]="uso.clave"
                   class="brand-option-1"
-                  [title]="uso.descripcion"
-                >
+                  [title]="uso.descripcion">
                   {{ uso.clave }} - {{ uso.descripcion }}
                 </mat-option>
               </ng-container>
@@ -268,63 +174,42 @@
               [matTooltip]="vm.helpTooltips?.receptor?.uso_cfdi"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
+              matTooltipClass="brand-tooltip-1">
+              <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
             </span>
           </mat-form-field>
 
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
             <mat-label>{{
               vm.form?.invoice?.receiver?.tax_regime
-                ? ("invoice.edit.regimen" | translate)
+                ? ('invoice.edit.regimen' | translate)
                 : vm.form?.invoice?.receiver?.rfc && !vm.tipoPersona
-                ? ("invoice.edit.regimen-placeholder-3" | translate)
-                : ("invoice.edit.regimen-placeholder" | translate)
+                ? ('invoice.edit.regimen-placeholder-3' | translate)
+                : ('invoice.edit.regimen-placeholder' | translate)
             }}</mat-label>
             <mat-select
               name="tax_regime"
               [ngModel]="vm.form?.invoice?.receiver?.tax_regime"
               (ngModelChange)="vm.form.invoice.receiver.tax_regime = $event"
               class="disable-custom-format"
-              [disabled]="!vm.tipoPersona || vm.readonly"
-            >
+              [disabled]="!vm.tipoPersona || vm.readonly">
               <mat-option>
                 <ngx-mat-select-search
                   ngModel
-                  (ngModelChange)="
-                    formEmitter.next([
-                      'catalogos:search',
-                      ['regimen_fiscal', $event.toLowerCase()]
-                    ])
-                  "
+                  (ngModelChange)="formEmitter.next(['catalogos:search', ['regimen_fiscal', $event.toLowerCase()]])"
                   [placeholderLabel]="'invoice.edit.type-to-search' | translate"
                   [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
-                  class="brand-select-search-1"
-                ></ngx-mat-select-search>
+                  class="brand-select-search-1"></ngx-mat-select-search>
               </mat-option>
-              <ng-container
-                *ngFor="let regimen of vm.catalogos?.regimen_fiscal"
-              >
+              <ng-container *ngFor="let regimen of vm.catalogos?.regimen_fiscal">
                 <mat-option
                   *ngIf="
-                    (vm.tipoPersona &&
-                      regimen.persona_fisica &&
-                      vm.tipoPersona === 'fisica') ||
+                    (vm.tipoPersona && regimen.persona_fisica && vm.tipoPersona === 'fisica') ||
                     (regimen.persona_moral && vm.tipoPersona === 'moral')
                   "
                   [value]="regimen.clave"
                   class="brand-option-1"
-                  [title]="regimen.descripcion"
-                >
+                  [title]="regimen.descripcion">
                   {{ regimen.clave }} - {{ regimen.descripcion }}
                 </mat-option>
               </ng-container>
@@ -335,25 +220,50 @@
               [matTooltip]="vm.helpTooltips?.receptor?.regimen_fiscal"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
+              matTooltipClass="brand-tooltip-1">
+              <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
             </span>
+          </mat-form-field>
+
+          <!-- Series -->
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
+            <mat-label> Serie </mat-label>
+            <mat-select
+              name="series_id"
+              [ngModel]="vm.form?.invoice?.receiver?.series_id"
+              (ngModelChange)="vm.form.invoice.receiver.series_id = $event"
+              class="disable-custom-format"
+              [disabled]="!vm.tipoPersona || vm.readonly">
+              <mat-option>
+                <ngx-mat-select-search
+                  ngModel
+                  (ngModelChange)="formEmitter.next(['catalogos:search', ['series', $event.toLowerCase()]])"
+                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"></ngx-mat-select-search>
+              </mat-option>
+              <ng-container *ngFor="let serie of vm.catalogos?.series">
+                <mat-option [value]="serie._id" class="brand-option-1" [title]="serie.serie">
+                  {{ serie.serie }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+
+            <!-- <span
+              class="brand-icon-help"
+              [matTooltip]="vm.helpTooltips?.receptor?.series"
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1">
+              <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
+            </span> -->
           </mat-form-field>
         </div>
       </section>
 
-      <section
-        [style.display]="
-          vm.readonly || vm.tab === 'receptor' ? 'block' : 'none'
-        "
-      >
+      <section [style.display]="vm.readonly || vm.tab === 'receptor' ? 'block' : 'none'">
         <h6>
-          {{ "invoice.edit.direccion" | translate }}
+          {{ 'invoice.edit.direccion' | translate }}
           <span
             *ngIf="!vm.readonly"
             class="brand-icon-help"
@@ -361,13 +271,8 @@
             matTooltipPosition="right"
             matTooltipHideDelay="100"
             matTooltipClass="brand-tooltip-1"
-            style="margin-left: 8px"
-          >
-            <mat-icon
-              ><img
-                src="./assets/images/invoice/help.png"
-                style="width: inherit"
-            /></mat-icon>
+            style="margin-left: 8px">
+            <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
           </span>
         </h6>
 
@@ -379,40 +284,30 @@
             (placeIdChange)="vm.form.invoice.receiver.address.place_id = $event"
             formFieldClass="bego-address-autocomplete brand-field-1"
             formFieldAppearance="outline"
-            [readonly]="vm.readonly"
-          >
+            [readonly]="vm.readonly">
           </bego-address-autocomplete>
         </div>
       </section>
 
-      <section
-        id="precio"
-        [style.display]="vm.readonly || vm.tab === 'precio' ? 'block' : 'none'"
-      >
+      <section id="precio" [style.display]="vm.readonly || vm.tab === 'precio' ? 'block' : 'none'">
         <h6 style="display: flex; justify-content: space-between">
-          {{ "invoice.edit.precio" | translate }}
+          {{ 'invoice.edit.precio' | translate }}
         </h6>
 
         <div class="grid">
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
-            <mat-label>{{ "invoice.edit.metodo-pago" | translate }}</mat-label>
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
+            <mat-label>{{ 'invoice.edit.metodo-pago' | translate }}</mat-label>
             <mat-select
               name="metodo_de_pago"
               [ngModel]="vm.form?.metodo_de_pago"
               (ngModelChange)="vm.form.metodo_de_pago = $event"
               class="disable-custom-format"
-              [disabled]="vm.readonly"
-            >
+              [disabled]="vm.readonly">
               <mat-option
                 *ngFor="let metodopago of vm.catalogos?.metodos_de_pago"
                 [value]="metodopago.clave"
                 class="brand-option-1"
-                [title]="metodopago.descripcion"
-              >
+                [title]="metodopago.descripcion">
                 {{ metodopago.clave }} - {{ metodopago.descripcion }}
               </mat-option>
             </mat-select>
@@ -422,22 +317,13 @@
               [matTooltip]="vm.helpTooltips?.metodo_de_pago"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
+              matTooltipClass="brand-tooltip-1">
+              <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
             </span>
           </mat-form-field>
 
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
-            <mat-label>{{ "invoice.edit.subtotal" | translate }}</mat-label>
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
+            <mat-label>{{ 'invoice.edit.subtotal' | translate }}</mat-label>
             <input
               matInput
               type="number"
@@ -445,63 +331,68 @@
               name="subtotal"
               [ngModel]="vm.form?.pricing?.subtotal"
               (ngModelChange)="vm.form.pricing.subtotal = $event"
-              [readonly]="vm.readonly"
-            />
+              [readonly]="vm.readonly" />
 
             <span
               class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.precio?.subtotal"
               matTooltipPosition="right"
               matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
+              matTooltipClass="brand-tooltip-1">
+              <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
             </span>
           </mat-form-field>
         </div>
       </section>
 
-      <section
-        id="orden"
-        [style.display]="vm.readonly || vm.tab === 'orden' ? 'block' : 'none'"
-      >
+      <section id="orden" [style.display]="vm.readonly || vm.tab === 'orden' ? 'block' : 'none'">
         <h6 style="display: flex; justify-content: space-between">
-          {{ "invoice.edit.pickup" | translate }}
+          {{ 'invoice.edit.pickup' | translate }}
         </h6>
 
-        <div class="grid">
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
-            <mat-label>{{
-              vm.form?.destinations[0]?.tax_information?.rfc
-                ? ("invoice.edit.rfc" | translate)
-                : ("invoice.edit.rfc-placeholder" | translate)
-            }}</mat-label>
-            <input
-              matInput
-              name="pickup_rfc"
-              [ngModel]="vm.form?.destinations[0]?.tax_information?.rfc"
-              (ngModelChange)="
-                formEmitter.next([
-                  'rfc:search',
-                  (vm.form.destinations[0].tax_information.rfc = $event
-                    .toUpperCase()
-                    .trim())
-                ])
-              "
-              maxlength="13"
-              [readonly]="vm.readonly"
-            />
+        <app-custom-stepper
+          [blockFirstStep]="!vm?.form?.stamp"
+          [labels]="['Mercancías', 'Múltiples mercancías']"
+          (stepStatus)="stepStatus($event)"
+          [currentStep]="stepIndex">
+          <ng-template #step>
+            <div class="flex-column">
+              <div class="field section multiple-type-cargo" *ngIf="vm?.form?.cargo?.weight?.length">
+                <h2 class="formgroup-title-required">{{ 'orders.txt-select-units' | translate }}</h2>
 
-            <!-- TODO: pending copy -->
-            <!-- <span
+                <div class="select-units-input">
+                  <app-cargo-units [units]="vm.form.cargo.weight" (unitsChange)="updateUnits($event)"></app-cargo-units>
+
+                  <bego-button-toggle
+                    (statusChanged)="selectedUnits($event)"
+                    [enabled]="vm.form?.cargo?.['53_48'] === unitsData.second.value"
+                    [noPadding]="true"
+                    [first]="unitsData.first"
+                    [second]="unitsData.second"></bego-button-toggle>
+                </div>
+              </div>
+              <div class="grid">
+                <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
+                  <mat-label>{{
+                    vm.form?.destinations[0]?.tax_information?.rfc
+                      ? ('invoice.edit.rfc' | translate)
+                      : ('invoice.edit.rfc-placeholder' | translate)
+                  }}</mat-label>
+                  <input
+                    matInput
+                    name="pickup_rfc"
+                    [ngModel]="vm.form?.destinations[0]?.tax_information?.rfc"
+                    (ngModelChange)="
+                      formEmitter.next([
+                        'rfc:search',
+                        (vm.form.destinations[0].tax_information.rfc = $event.toUpperCase().trim())
+                      ])
+                    "
+                    maxlength="13"
+                    [readonly]="vm.readonly" />
+
+                  <!-- TODO: pending copy -->
+                  <!-- <span
               class="brand-icon-help"
               [matTooltip]="vm.helpTooltips?.receptor?.rfc"
               matTooltipPosition="right"
@@ -514,324 +405,298 @@
                   style="width: inherit"
               /></mat-icon>
             </span> -->
-          </mat-form-field>
+                </mat-form-field>
 
-          <mat-form-field class="brand-field-1" appearance="outline">
-            <mat-label>{{ "invoice.edit.cargo_goods" | translate }}</mat-label>
-            <input
-              matInput
-              name="cargo_goods"
-              [ngModel]="vm.form?.cargo?.cargo_goods"
-              (ngModelChange)="
-                formEmitter.next([
-                  'conceptos:search_cve',
-                  (vm.form.cargo.cargo_goods = $event)
-                ])
-              "
-              [matAutocomplete]="auto5"
-              autocomplete="off"
-              (focusin)="
-                vm.receptorSearch?.cve_sat == null &&
-                  vm.form?.cargo?.cargo_goods &&
-                  formEmitter.next([
-                    'conceptos:search_cve',
-                    vm.form?.cargo?.cargo_goods
-                  ])
-              "
-            />
+                <mat-form-field class="brand-field-1" appearance="outline">
+                  <mat-label>{{ 'invoice.edit.cargo_goods' | translate }}</mat-label>
+                  <input
+                    matInput
+                    name="cargo_goods"
+                    [ngModel]="vm.form?.cargo?.cargo_goods"
+                    (ngModelChange)="formEmitter.next(['conceptos:search_cve', (vm.form.cargo.cargo_goods = $event)])"
+                    [matAutocomplete]="auto5"
+                    autocomplete="off"
+                    (focusin)="
+                      !vm.receptorSearch?.cve_sat &&
+                        vm.form?.cargo?.cargo_goods &&
+                        formEmitter.next(['conceptos:search_cve', vm.form?.cargo?.cargo_goods])
+                    " />
 
-            <span
-              class="brand-icon-help"
-              [matTooltip]="vm.helpTooltips?.concepto?.cve_sat"
-              matTooltipPosition="right"
-              matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
-            </span>
+                  <span
+                    class="brand-icon-help"
+                    [matTooltip]="vm.helpTooltips?.concepto?.cve_sat"
+                    matTooltipPosition="right"
+                    matTooltipHideDelay="100"
+                    matTooltipClass="brand-tooltip-1">
+                    <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
+                  </span>
 
-            <mat-progress-bar
-              [style.display]="
-                vm.searchAction?.type === 'cve_sat' && vm.searchLoading
-                  ? 'block'
-                  : 'none'
-              "
-              class="brand-progress-bar-1"
-              mode="indeterminate"
-            ></mat-progress-bar>
+                  <mat-progress-bar
+                    [style.display]="vm.searchAction?.type === 'cve_sat' && vm.searchLoading ? 'block' : 'none'"
+                    class="brand-progress-bar-1"
+                    mode="indeterminate"></mat-progress-bar>
 
-            <mat-autocomplete
-              autoActiveFirstOption
-              #auto5="matAutocomplete"
-              (optionSelected)="formEmitter.next(['autocomplete:cancel', ''])"
-            >
-              <mat-option
-                *ngIf="vm.receptorSearch?.cve_sat?.length === 0"
-                value=""
-                class="brand-option-1"
-                disabled
-              >
-                {{ "invoice.edit.no-results" | translate }}
-              </mat-option>
-              <mat-option
-                *ngFor="let clave of vm.receptorSearch?.cve_sat; let i = index"
-                [value]="clave.code"
-                class="brand-option-1"
-              >
-                <div>
-                  <span style="text-transform: uppercase">{{
-                    clave.code
-                  }}</span>
-                  <span class="sublabel">{{ clave.description }}</span>
+                  <mat-autocomplete
+                    autoActiveFirstOption
+                    #auto5="matAutocomplete"
+                    (optionSelected)="formEmitter.next(['autocomplete:cancel', ''])">
+                    <mat-option
+                      *ngIf="vm.receptorSearch?.cve_sat?.length === 0"
+                      value=""
+                      class="brand-option-1"
+                      disabled>
+                      {{ 'invoice.edit.no-results' | translate }}
+                    </mat-option>
+                    <mat-option
+                      *ngFor="let clave of vm.receptorSearch?.cve_sat; let i = index"
+                      [value]="clave.code"
+                      class="brand-option-1">
+                      <div>
+                        <span style="text-transform: uppercase">{{ clave.code }}</span>
+                        <span class="sublabel">{{ clave.description }}</span>
+                      </div>
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
+                  <mat-label>{{ 'invoice.edit.commodity_quantity' | translate }}</mat-label>
+                  <input
+                    matInput
+                    min="0"
+                    type="number"
+                    name="pickup_rfc"
+                    [ngModel]="vm.form?.cargo?.commodity_quantity"
+                    (ngModelChange)="vm.form.cargo.commodity_quantity = $event"
+                    [readonly]="vm.readonly" />
+
+                  <span
+                    class="brand-icon-help"
+                    [matTooltip]="vm.helpTooltips?.concepto?.cantidad"
+                    matTooltipPosition="right"
+                    matTooltipHideDelay="100"
+                    matTooltipClass="brand-tooltip-1">
+                    <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
+                  </span>
+                </mat-form-field>
+
+                <mat-form-field class="brand-field-1" appearance="outline">
+                  <mat-label>{{ 'invoice.edit.concepto-unidad-medida' | translate }}</mat-label>
+                  <mat-select
+                    name="unit_type"
+                    [ngModel]="vm.form?.cargo?.unit_type"
+                    (ngModelChange)="vm.form.cargo.unit_type = $event"
+                    class="disable-custom-format">
+                    <mat-option>
+                      <ngx-mat-select-search
+                        ngModel
+                        (ngModelChange)="
+                          formEmitter.next(['catalogos:search', ['unidades_de_medida', $event.toLowerCase()]])
+                        "
+                        [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                        [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                        class="brand-select-search-1"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                      *ngFor="let unidad of vm.catalogos?.unidades_de_medida"
+                      [value]="unidad.clave"
+                      class="brand-option-1"
+                      [title]="unidad.descripcion">
+                      {{ unidad.clave }} - {{ unidad.descripcion }}
+                    </mat-option>
+                  </mat-select>
+
+                  <span
+                    class="brand-icon-help"
+                    [matTooltip]="vm.helpTooltips?.concepto?.unidad_de_medida"
+                    matTooltipPosition="right"
+                    matTooltipHideDelay="100"
+                    matTooltipClass="brand-tooltip-1">
+                    <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
+                  </span>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="p(vm.form).hazardous" class="brand-field-1" appearance="outline">
+                  <mat-label>{{ 'invoice.commodity.clave-material-peligroso' | translate }}</mat-label>
+                  <input
+                    matInput
+                    name="hazardous_material"
+                    [ngModel]="vm.form?.cargo?.hazardous_material"
+                    (ngModelChange)="
+                      formEmitter.next(['cargo:search_material', (vm.form.cargo.hazardous_material = $event)])
+                    "
+                    [matAutocomplete]="auto6"
+                    autocomplete="off"
+                    (focusin)="
+                      !vm.receptorSearch?.cve_material &&
+                        vm.form?.cargo?.hazardous_material &&
+                        formEmitter.next(['cargo:search_material', vm.form?.cargo?.hazardous_material])
+                    " />
+
+                  <span
+                    class="brand-icon-help"
+                    [matTooltip]="vm.helpTooltips?.commodity?.cve_material_peligroso"
+                    matTooltipPosition="right"
+                    matTooltipHideDelay="100"
+                    matTooltipClass="brand-tooltip-1">
+                    <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
+                  </span>
+
+                  <mat-progress-bar
+                    [style.display]="vm.searchAction?.type === 'cve_material' && vm.searchLoading ? 'block' : 'none'"
+                    class="brand-progress-bar-1"
+                    mode="indeterminate"></mat-progress-bar>
+
+                  <mat-autocomplete
+                    autoActiveFirstOption
+                    #auto6="matAutocomplete"
+                    (optionSelected)="formEmitter.next(['autocomplete:cancel', ''])">
+                    <mat-option
+                      *ngIf="vm.receptorSearch?.cve_material?.length === 0"
+                      value=""
+                      class="brand-option-1"
+                      disabled>
+                      {{ 'invoice.edit.no-results' | translate }}
+                    </mat-option>
+                    <mat-option
+                      *ngFor="let clave of vm.receptorSearch?.cve_material; let i = index"
+                      [value]="clave.clave"
+                      class="brand-option-1">
+                      <div>
+                        <span style="text-transform: uppercase">{{ clave.clave }}</span>
+                        <span class="sublabel">{{ clave.descripcion }}</span>
+                      </div>
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="p(vm.form).hazardous" class="brand-field-1" appearance="outline">
+                  <mat-label>{{ 'invoice.commodity.embalaje' | translate }}</mat-label>
+                  <mat-select
+                    name="packaging"
+                    [ngModel]="vm.form?.cargo?.packaging"
+                    (ngModelChange)="vm.form.cargo.packaging = $event"
+                    class="disable-custom-format">
+                    <mat-option>
+                      <ngx-mat-select-search
+                        ngModel
+                        (ngModelChange)="
+                          formEmitter.next(['catalogos:search', ['tipos_de_embalaje', $event.toLowerCase()]])
+                        "
+                        [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                        [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                        class="brand-select-search-1"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                      *ngFor="let unidad of vm.catalogos?.tipos_de_embalaje"
+                      [value]="unidad.clave"
+                      class="brand-option-1"
+                      [title]="unidad.descripcion">
+                      {{ unidad.clave }} - {{ unidad.descripcion }}
+                    </mat-option>
+                  </mat-select>
+
+                  <span
+                    class="brand-icon-help"
+                    [matTooltip]="vm.helpTooltips?.commodity?.embalaje"
+                    matTooltipPosition="right"
+                    matTooltipHideDelay="100"
+                    matTooltipClass="brand-tooltip-1">
+                    <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
+                  </span>
+                </mat-form-field>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template #step>
+            <div class="flex-column">
+              <div class="field section multiple-type-cargo" *ngIf="vm?.form?.cargo?.weight?.length">
+                <h2 class="formgroup-title-required">{{ 'orders.txt-select-units' | translate }}</h2>
+
+                <div class="select-units-input">
+                  <app-cargo-units [units]="vm.form.cargo.weight" (unitsChange)="updateUnits($event)"></app-cargo-units>
+
+                  <bego-button-toggle
+                    (statusChanged)="selectedUnits($event)"
+                    [enabled]="vm.form.cargo?.['53_48'] === unitsData.second.value"
+                    [noPadding]="true"
+                    [first]="unitsData.first"
+                    [second]="unitsData.second"></bego-button-toggle>
                 </div>
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
+              </div>
 
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
-            <mat-label>{{
-              "invoice.edit.commodity_quantity" | translate
-            }}</mat-label>
-            <input
-              matInput
-              min="0"
-              type="number"
-              name="pickup_rfc"
-              [ngModel]="vm.form?.cargo?.commodity_quantity"
-              (ngModelChange)="vm.form.cargo.commodity_quantity = $event"
-              [readonly]="vm.readonly"
-            />
-
-            <span
-              class="brand-icon-help"
-              [matTooltip]="vm.helpTooltips?.concepto?.cantidad"
-              matTooltipPosition="right"
-              matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
-            </span>
-          </mat-form-field>
-
-          <mat-form-field class="brand-field-1" appearance="outline">
-            <mat-label>{{
-              "invoice.edit.concepto-unidad-medida" | translate
-            }}</mat-label>
-            <mat-select
-              name="unit_type"
-              [ngModel]="vm.form?.cargo?.unit_type"
-              (ngModelChange)="vm.form.cargo.unit_type = $event"
-              class="disable-custom-format"
-            >
-              <mat-option>
-                <ngx-mat-select-search
-                  ngModel
+              <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
+                <mat-label>{{
+                  vm.form?.destinations[0]?.tax_information?.rfc
+                    ? ('invoice.edit.rfc' | translate)
+                    : ('invoice.edit.rfc-placeholder' | translate)
+                }}</mat-label>
+                <input
+                  matInput
+                  name="pickup_rfc"
+                  [ngModel]="vm.form?.destinations[0]?.tax_information?.rfc"
                   (ngModelChange)="
                     formEmitter.next([
-                      'catalogos:search',
-                      ['unidades_de_medida', $event.toLowerCase()]
+                      'rfc:search',
+                      (vm.form.destinations[0].tax_information.rfc = $event.toUpperCase().trim())
                     ])
                   "
-                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
-                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
-                  class="brand-select-search-1"
-                ></ngx-mat-select-search>
-              </mat-option>
-              <mat-option
-                *ngFor="let unidad of vm.catalogos?.unidades_de_medida"
-                [value]="unidad.clave"
-                class="brand-option-1"
-                [title]="unidad.descripcion"
-              >
-                {{ unidad.clave }} - {{ unidad.descripcion }}
-              </mat-option>
-            </mat-select>
+                  maxlength="13"
+                  [readonly]="vm.readonly" />
 
-            <span
-              class="brand-icon-help"
-              [matTooltip]="vm.helpTooltips?.concepto?.unidad_de_medida"
-              matTooltipPosition="right"
-              matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
+                <!-- TODO: pending copy -->
+                <!-- <span
+                  class="brand-icon-help"
+                  [matTooltip]="vm.helpTooltips?.receptor?.rfc"
+                  matTooltipPosition="right"
+                  matTooltipHideDelay="100"
+                  matTooltipClass="brand-tooltip-1"
+                  >
+                  <mat-icon
+                  ><img
                   src="./assets/images/invoice/help.png"
                   style="width: inherit"
-              /></mat-icon>
-            </span>
-          </mat-form-field>
+                  /></mat-icon>
+                </span> -->
+              </mat-form-field>
 
-          <mat-form-field
-            *ngIf="p(vm.form).hazardous"
-            class="brand-field-1"
-            appearance="outline"
-          >
-            <mat-label>{{
-              "invoice.commodity.clave-material-peligroso" | translate
-            }}</mat-label>
-            <input
-              matInput
-              name="hazardous_material"
-              [ngModel]="vm.form?.cargo?.hazardous_material"
-              (ngModelChange)="
-                formEmitter.next([
-                  'cargo:search_material',
-                  (vm.form.cargo.hazardous_material = $event)
-                ])
-              "
-              [matAutocomplete]="auto6"
-              autocomplete="off"
-              (focusin)="
-                vm.receptorSearch?.cve_material == null &&
-                  vm.form?.cargo?.hazardous_material &&
-                  formEmitter.next([
-                    'cargo:search_material',
-                    vm.form?.cargo?.hazardous_material
-                  ])
-              "
-            />
+              <div class="multiple-container instructions">
+                <h2>Instrucciones</h2>
+                <button bego-button theme="main" (click)="downloadTemplate()">
+                  <bego-icon icon="begon-download"></bego-icon>
+                  Plantilla Excel
+                </button>
+              </div>
+              <div class="multiple-container">
+                <p>
+                  Para subir tus múltiples mercancías, debes descargar la plantilla en Excel, la cual deberás llenar en
+                  su totalidad y subirlo.
+                </p>
+              </div>
 
-            <span
-              class="brand-icon-help"
-              [matTooltip]="vm.helpTooltips?.commodity?.cve_material_peligroso"
-              matTooltipPosition="right"
-              matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
-            </span>
-
-            <mat-progress-bar
-              [style.display]="
-                vm.searchAction?.type === 'cve_material' && vm.searchLoading
-                  ? 'block'
-                  : 'none'
-              "
-              class="brand-progress-bar-1"
-              mode="indeterminate"
-            ></mat-progress-bar>
-
-            <mat-autocomplete
-              autoActiveFirstOption
-              #auto6="matAutocomplete"
-              (optionSelected)="formEmitter.next(['autocomplete:cancel', ''])"
-            >
-              <mat-option
-                *ngIf="vm.receptorSearch?.cve_material?.length === 0"
-                value=""
-                class="brand-option-1"
-                disabled
-              >
-                {{ "invoice.edit.no-results" | translate }}
-              </mat-option>
-              <mat-option
-                *ngFor="
-                  let clave of vm.receptorSearch?.cve_material;
-                  let i = index
-                "
-                [value]="clave.clave"
-                class="brand-option-1"
-              >
-                <div>
-                  <span style="text-transform: uppercase">{{
-                    clave.clave
-                  }}</span>
-                  <span class="sublabel">{{ clave.descripcion }}</span>
-                </div>
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-
-          <mat-form-field
-            *ngIf="p(vm.form).hazardous"
-            class="brand-field-1"
-            appearance="outline"
-          >
-            <mat-label>{{
-              "invoice.commodity.embalaje" | translate
-            }}</mat-label>
-            <mat-select
-              name="packaging"
-              [ngModel]="vm.form?.cargo?.packaging"
-              (ngModelChange)="vm.form.cargo.packaging = $event"
-              class="disable-custom-format"
-            >
-              <mat-option>
-                <ngx-mat-select-search
-                  ngModel
-                  (ngModelChange)="
-                    formEmitter.next([
-                      'catalogos:search',
-                      ['tipos_de_embalaje', $event.toLowerCase()]
-                    ])
-                  "
-                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
-                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
-                  class="brand-select-search-1"
-                ></ngx-mat-select-search>
-              </mat-option>
-              <mat-option
-                *ngFor="let unidad of vm.catalogos?.tipos_de_embalaje"
-                [value]="unidad.clave"
-                class="brand-option-1"
-                [title]="unidad.descripcion"
-              >
-                {{ unidad.clave }} - {{ unidad.descripcion }}
-              </mat-option>
-            </mat-select>
-
-            <span
-              class="brand-icon-help"
-              [matTooltip]="vm.helpTooltips?.commodity?.embalaje"
-              matTooltipPosition="right"
-              matTooltipHideDelay="100"
-              matTooltipClass="brand-tooltip-1"
-            >
-              <mat-icon
-                ><img
-                  src="./assets/images/invoice/help.png"
-                  style="width: inherit"
-              /></mat-icon>
-            </span>
-          </mat-form-field>
-        </div>
+              <bego-drag-drop
+                [validTypes]="fileTypes"
+                [lang]="multipleFilesLang"
+                [fileInfo]="files"
+                (fileSelected)="handleFileChange($event, 'xlsx')"
+                (invalidFiletype)="invalidFile()"></bego-drag-drop>
+            </div>
+          </ng-template>
+        </app-custom-stepper>
       </section>
 
-      <section
-        id="orden"
-        [style.display]="vm.readonly || vm.tab === 'orden' ? 'block' : 'none'"
-      >
+      <section id="orden" [style.display]="vm.readonly || vm.tab === 'orden' ? 'block' : 'none'">
         <h6 style="display: flex; justify-content: space-between">
-          {{ "invoice.edit.dropoff" | translate }}
+          {{ 'invoice.edit.dropoff' | translate }}
         </h6>
 
         <div class="grid">
-          <mat-form-field
-            class="brand-field-1"
-            appearance="outline"
-            [attr.readonly]="vm.readonly"
-          >
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly">
             <mat-label>{{
               vm.form?.destinations[1]?.tax_information?.rfc
-                ? ("invoice.edit.rfc" | translate)
-                : ("invoice.edit.rfc-placeholder" | translate)
+                ? ('invoice.edit.rfc' | translate)
+                : ('invoice.edit.rfc-placeholder' | translate)
             }}</mat-label>
             <input
               matInput
@@ -840,14 +705,11 @@
               (ngModelChange)="
                 formEmitter.next([
                   'rfc:search',
-                  (vm.form.destinations[1].tax_information.rfc = $event
-                    .toUpperCase()
-                    .trim())
+                  (vm.form.destinations[1].tax_information.rfc = $event.toUpperCase().trim())
                 ])
               "
               maxlength="13"
-              [readonly]="vm.readonly"
-            />
+              [readonly]="vm.readonly" />
 
             <!-- TODO: pending copy -->
             <!-- <span
@@ -873,32 +735,19 @@
           (click)="
             formEmitter.next([
               'tab',
-              (sliderDotsOpts.value === 0
-                ? tabs.length - 1
-                : sliderDotsOpts.value - 1
-              ).toString()
+              (sliderDotsOpts.value === 0 ? tabs.length - 1 : sliderDotsOpts.value - 1).toString()
             ])
           "
-          >{{ "invoice.edit.back" | translate }}</span
+          >{{ 'invoice.edit.back' | translate }}</span
         >
 
-        <bego-slider-dots
-          [opts]="sliderDotsOpts"
-          style="width: 100%; max-width: 200px"
-        >
-        </bego-slider-dots>
+        <bego-slider-dots [opts]="sliderDotsOpts" style="width: 100%; max-width: 200px"> </bego-slider-dots>
 
         <button
           mat-flat-button
           [class]="'brand-btn-2 radius-30'"
-          (click)="
-            formEmitter.next([
-              'tab',
-              ((sliderDotsOpts.value + 1) % tabs.length).toString()
-            ])
-          "
-        >
-          {{ "invoice.edit.next" | translate }}
+          (click)="formEmitter.next(['tab', ((sliderDotsOpts.value + 1) % tabs.length).toString()])">
+          {{ 'invoice.edit.next' | translate }}
         </button>
       </div>
     </div>
@@ -906,12 +755,8 @@
     <!-- sidebar -->
     <div id="sidebar">
       <nav id="menu">
-        <li
-          *ngFor="let tab of tabs"
-          [class.selected]="vm.tab === tab"
-          (click)="formEmitter.next(['tab', tab])"
-        >
-          <span>{{ "invoice.edit." + tab | translate }}</span>
+        <li *ngFor="let tab of tabs" [class.selected]="vm.tab === tab" (click)="formEmitter.next(['tab', tab])">
+          <span>{{ 'invoice.edit.' + tab | translate }}</span>
         </li>
       </nav>
 
@@ -926,60 +771,42 @@
             flex: 1;
             text-align: right;
           "
-          [style.white-space]="'pre-line'"
-        >
-          {{ showError(vm.formError) || "" }}
+          [style.white-space]="'pre-line'">
+          {{ showError(vm.formError) || '' }}
         </div>
 
         <div style="grid-column: span 2">
           <button
             mat-flat-button
-            [class]="
-              vm.formMode === 'save' && vm.formSuccess === false
-                ? 'brand-btn-error'
-                : 'brand-btn-2'
-            "
+            [class]="vm.formMode === 'save' && vm.formSuccess === false ? 'brand-btn-error' : 'brand-btn-2'"
             (click)="formEmitter.next(['submit', [mode, 'save', vm.form]])"
-            [style.pointer-events]="
-              vm.formLoading || vm.formSuccess ? 'none' : 'all'
-            "
-            style="min-width: 97px; min-height: 43px"
-          >
+            [style.pointer-events]="vm.formLoading || vm.formSuccess ? 'none' : 'all'"
+            style="min-width: 97px; min-height: 43px">
             <mat-spinner
-              [style.display]="
-                vm.formMode === 'save' && vm.formLoading ? 'block' : 'none'
-              "
+              [style.display]="vm.formMode === 'save' && vm.formLoading ? 'block' : 'none'"
               class="brand-spinner-1"
               [diameter]="20"
               [strokeWidth]="4"
-              style="margin: 0 auto"
-            ></mat-spinner>
+              style="margin: 0 auto"></mat-spinner>
             <mat-icon
-              [style.display]="
-                vm.formMode === 'save' && vm.formSuccess
-                  ? 'inline-block'
-                  : 'none'
-              "
+              [style.display]="vm.formMode === 'save' && vm.formSuccess ? 'inline-block' : 'none'"
               style="margin-right: 4px"
               >check</mat-icon
             >
             <span
               [style.display]="
-                vm.formMode !== 'save' ||
-                (vm.formMode === 'save' && !vm.formLoading)
-                  ? 'inline-block'
-                  : 'none'
+                vm.formMode !== 'save' || (vm.formMode === 'save' && !vm.formLoading) ? 'inline-block' : 'none'
               "
               >{{
-                vm.formMode === "save" && vm.formError
-                  ? ("invoice.edit.btn-save-retry" | translate)
-                  : vm.formMode === "save" && mode === "update"
-                  ? vm.formMode === "save" && vm.formSuccess
-                    ? ("invoice.edit.btn-save-update-success" | translate)
-                    : ("invoice.edit.btn-save-update" | translate)
-                  : vm.formMode === "save" && vm.formSuccess
-                  ? ("invoice.edit.btn-save-save-success" | translate)
-                  : ("invoice.edit.btn-save-save" | translate)
+                vm.formMode === 'save' && vm.formError
+                  ? ('invoice.edit.btn-save-retry' | translate)
+                  : vm.formMode === 'save' && mode === 'update'
+                  ? vm.formMode === 'save' && vm.formSuccess
+                    ? ('invoice.edit.btn-save-update-success' | translate)
+                    : ('invoice.edit.btn-save-update' | translate)
+                  : vm.formMode === 'save' && vm.formSuccess
+                  ? ('invoice.edit.btn-save-save-success' | translate)
+                  : ('invoice.edit.btn-save-save' | translate)
               }}
             </span>
           </button>
@@ -988,3 +815,4 @@
     </div>
   </div>
 </div>
+<!--  -->

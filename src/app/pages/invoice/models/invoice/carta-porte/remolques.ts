@@ -1,4 +1,4 @@
 export interface Remolques {
-  configuracion: string;
+  sub_tipo_rem: string;
   placa: string;
 }

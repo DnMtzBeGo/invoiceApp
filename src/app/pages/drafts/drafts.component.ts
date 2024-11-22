@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
-import { AuthService } from 'src/app/shared/services/auth.service';
 import { trigger, style, animate, transition } from '@angular/animations';
-import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
 import { Router } from '@angular/router';
 
+import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
 
 interface SearchDraft {
   dataInput: string;
-  page: number
+  page: number;
 }
 
 @Component({
@@ -20,7 +20,6 @@ interface SearchDraft {
   ],
 })
 export class DraftsComponent implements OnInit {
-
   public draftData: any;
   public selectedDraft: any;
   public loader: boolean = false;
@@ -36,33 +35,28 @@ export class DraftsComponent implements OnInit {
     dropoffLat: '',
     dropoffLng: '',
     pickupPostalCode: 0,
-    dropoffPostalCode: 0
+    dropoffPostalCode: 0,
   };
 
   public search: string = '';
 
-  constructor(
-    private auth: AuthService,
-    private  googlemaps: GoogleMapsService,
-    private router: Router
-  ) { }
+  constructor(private auth: AuthService, private googlemaps: GoogleMapsService, private router: Router) {}
 
-  async ngOnInit(): Promise<void> {
+  public async ngOnInit(): Promise<void> {
     await this.searchDraft();
-    this.googlemaps.updateDataLocations(this.mapData)
-
+    this.googlemaps.updateDataLocations(this.mapData);
   }
 
-  updateDataDraft(draftData: any) {
+  public updateDataDraft(draftData: any) {
     this.setMapData(draftData);
     this.googlemaps.updateDataLocations(this.mapData);
   }
 
-  indexDraft(index: number) {
+  public indexDraft(index: number) {
     this.indexSelectedDraft = index;
   }
 
-  async deleteDraft() {
+  public async deleteDraft() {
     const requestJson = {
       order_id: this.draftData[this.indexSelectedDraft]._id,
       order_status: -2,
@@ -73,11 +67,11 @@ export class DraftsComponent implements OnInit {
       },
       async (res) => {
         console.log(res);
-      }
+      },
     );
   }
 
-  async loadMoreDrafts(page: any) {
+  public async loadMoreDrafts(page: any) {
     const drafts = await this.getDrafts({ dataInput: this.search, page });
     if (drafts.length) {
       let newArray = this.draftData.concat(drafts);
@@ -86,8 +80,7 @@ export class DraftsComponent implements OnInit {
     this.draftData.concat(drafts);
   }
 
-  setMapData(draftData){
-
+  private setMapData(draftData) {
     const [pickup, dropoff] = draftData.destinations;
     this.mapData.pickup = pickup.address;
     this.mapData.dropoff = dropoff.address;
@@ -99,9 +92,13 @@ export class DraftsComponent implements OnInit {
     this.mapData.dropoffPostalCode = dropoff.zip_code;
   }
 
-  async getDrafts({ dataInput, page }: SearchDraft) {
+  private async getDrafts({ dataInput, page }: SearchDraft) {
     this.loader = true;
-    return (await this.auth.apiRestGet(`orders/carriers/drafts?search=${dataInput}&page=${page}&size=10`, { apiVersion: 'v1.1' }))
+    return (
+      await this.auth.apiRestGet(`orders/carriers/drafts?search=${dataInput}&page=${page}&size=10`, {
+        apiVersion: 'v1.1',
+      })
+    )
       .toPromise()
       .then(({ result }) => {
         this.loader = false;
@@ -109,7 +106,7 @@ export class DraftsComponent implements OnInit {
       });
   }
 
-  async searchDraft({ dataInput = '', page = 1 }: SearchDraft = { dataInput: '', page: 1 }) {
+  public async searchDraft({ dataInput = '', page = 1 }: SearchDraft = { dataInput: '', page: 1 }) {
     this.search = dataInput;
 
     const drafts = await this.getDrafts({ dataInput, page });
@@ -129,11 +126,11 @@ export class DraftsComponent implements OnInit {
     this.loader = false;
   }
 
-  continueOrder() {
+  public continueOrder() {
     this.router.navigate(['/home'], {
       state: {
-        draft: this.draftData[this.indexSelectedDraft]
-      }
+        draft: this.draftData[this.indexSelectedDraft],
+      },
     });
   }
 }

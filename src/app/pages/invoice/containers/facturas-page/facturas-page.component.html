@@ -4,6 +4,8 @@
       <h1>{{ 'invoice.invoices.title' | translate }}</h1>
     </div>
     <div class="toolbar-right">
+      <button mat-flat-button class="brand-btn-1" (click)="openMultiplePaymenDialog()">Pago Múltiple</button>
+
       <div>
         <button
           mat-flat-button
@@ -13,39 +15,22 @@
           [matBadge]="filtersCount(vm.params)"
           matBadgeColor="warn"
           matBadgeSize="small"
-          matBadgeOverlap="true"
-        >
-          {{ "invoice.invoices.filters" | translate }}
-          <img
-            src="/assets/images/invoice/filters.svg"
-            class="brand-filter-1"
-            style="margin-left: 4px"
-          />
+          matBadgeOverlap="true">
+          {{ 'invoice.invoices.filters' | translate }}
+          <img src="/assets/images/invoice/filters.svg" class="brand-filter-1" style="margin-left: 4px" />
         </button>
       </div>
-      <button
-        mat-flat-button
-        class="brand-btn-1"
-        [routerLink]="routes.EMISORES"
-      >
-        {{ "invoice.invoices.emisor-btn" | translate }}
+      <button mat-flat-button class="brand-btn-1" [routerLink]="routes.EMISORES">
+        {{ 'invoice.invoices.emisor-btn' | translate }}
       </button>
 
-      <mat-form-field
-        *ngIf="0"
-        appearance="outline"
-        floatLabel="always"
-        class="suffix-btn"
-        style="max-width: 245px"
-      >
+      <mat-form-field *ngIf="0" appearance="outline" floatLabel="always" class="suffix-btn" style="max-width: 245px">
         <input
           matInput
           aria-label="Template"
           name="template"
           [ngModel]="vm.template"
-          (ngModelChange)="
-            facturasEmitter.next(['template:search', (vm.template = $event)])
-          "
+          (ngModelChange)="facturasEmitter.next(['template:search', (vm.template = $event)])"
           maxlength="13"
           [placeholder]="'invoice.invoices.template-placeholder' | translate"
           [matAutocomplete]="auto"
@@ -62,25 +47,13 @@
                   })
                 }
               ])
-          "
-        />
+          " />
 
         <mat-progress-bar
-          style="
-            bottom: 0px;
-            position: absolute;
-            width: calc(100% + 16px);
-            height: 2px;
-            left: -9px;
-          "
-          [style.display]="
-            vm.searchAction?.type === 'template' && vm.searchLoading
-              ? 'block'
-              : 'none'
-          "
+          style="bottom: 0px; position: absolute; width: calc(100% + 16px); height: 2px; left: -9px"
+          [style.display]="vm.searchAction?.type === 'template' && vm.searchLoading ? 'block' : 'none'"
           class="brand-progress-bar-1"
-          mode="indeterminate"
-        ></mat-progress-bar>
+          mode="indeterminate"></mat-progress-bar>
 
         <mat-autocomplete
           autoActiveFirstOption
@@ -92,25 +65,16 @@
                 template: $event.option._element.nativeElement.dataset.template
               }
             ])
-          "
-        >
+          ">
           <mat-option
             *ngFor="let template of vm.receptorSearch?.template"
             [value]="template.name"
             class="brand-option-2"
             [attr.data-template]="makeTemplate(template)"
-            [routerLink]="[
-              routes.NEW_FACTURA,
-              { template: makeTemplate(template) }
-            ]"
-          >
+            [routerLink]="[routes.NEW_FACTURA, { template: makeTemplate(template) }]">
             <a
-              [routerLink]="[
-                routes.NEW_FACTURA,
-                { template: makeTemplate(template) }
-              ]"
-              style="color: inherit; text-decoration: unset"
-            >
+              [routerLink]="[routes.NEW_FACTURA, { template: makeTemplate(template) }]"
+              style="color: inherit; text-decoration: unset">
               {{ template.name }}
               <mat-icon
                 (click)="
@@ -122,8 +86,7 @@
                       id: template._id
                     }
                   ])
-                "
-              >
+                ">
                 edit
               </mat-icon>
             </a>
@@ -149,16 +112,13 @@
             : null
         "
         (click)="!vm.defaultEmisor?.[0] && noEmisorAlert()"
-        [style.pointer-events]="
-          vm.receptorSearch?.template?.length > 0 ? 'none' : 'unset'
-        "
-      >
+        [style.pointer-events]="vm.receptorSearch?.template?.length > 0 ? 'none' : 'unset'">
         {{
           vm.template && vm.receptorSearch?.template?.length === 0
-            ? ("invoice.invoices.template-new" | translate)
+            ? ('invoice.invoices.template-new' | translate)
             : vm.template && vm.receptorSearch?.template?.length > 0
-            ? ("invoice.invoices.template-open" | translate)
-            : ("invoice.invoices.new-invoice" | translate)
+            ? ('invoice.invoices.template-open' | translate)
+            : ('invoice.invoices.new-invoice' | translate)
         }}
       </button>
     </div>
@@ -166,7 +126,7 @@
 
   <div>
     <app-factura-table
-      [orderTableData]="vm.facturas"
+      [invoicesData]="vm.facturas"
       [loading]="vm.facturasLoading"
       [page]="paginator"
       (pageChange)="
@@ -180,6 +140,6 @@
         })
       "
       (refresh)="facturasEmitter.next(['refresh'])"
-    ></app-factura-table>
+      (selectedRowsChange)="invoiceSelectionChanged($event)"></app-factura-table>
   </div>
 </div>

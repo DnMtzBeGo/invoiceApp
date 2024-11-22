@@ -1,0 +1,293 @@
+<div class="payment-complement">
+  <header>
+    <h2>Pago Múltiple</h2>
+
+    <mat-icon class="close-btn" (click)="close()">close</mat-icon>
+  </header>
+
+  <p>Relaciona CFDI de ingreso, al complemento de pago, revisa el monto pagado de cada uno de los CFDI</p>
+
+  <main>
+    <div>
+      <div>
+        <h3>Información del Receptor</h3>
+      </div>
+
+      <form [formGroup]="receptor" class="content-box">
+        <div class="gridbox">
+          <div class="text-center">
+            <strong>Versión</strong>
+            <br />
+            <span>4.0</span>
+          </div>
+
+          <mat-form-field appearance="outline" class="disable-custom-format" [attr.readonly]="readonly">
+            <mat-label>RFC</mat-label>
+            <input matInput formControlName="rfc" [readonly]="readonly" />
+            <mat-error>El RFC es obligatorio</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [attr.readonly]="readonly">
+            <mat-label>Nombre o Razón Social</mat-label>
+            <input matInput formControlName="razon_social" [readonly]="readonly" />
+            <mat-error>El Nombre o Razón Social es obligatorio</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="gridbox columns-2">
+          <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+            <mat-label>Dirección</mat-label>
+            <mat-select
+              formControlName="direccion"
+              placeholder="Seleccione una dirección..."
+              [attr.readonly]="readonly">
+              <ng-container *ngIf="receiverCatalogs.addresses && receiverCatalogs.addresses.length">
+                <mat-option *ngFor="let item of receiverCatalogs.addresses" [value]="item._id">
+                  {{ item.cp }} - {{ item.identificador }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error>Indique la dirección del Receptor</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+            <mat-label>Regimen Fiscal</mat-label>
+            <mat-select
+              formControlName="regimen_fiscal"
+              placeholder="Seleccione un Regimen Fiscal..."
+              [attr.readonly]="readonly">
+              <ng-container *ngIf="catalogs.regimen_fiscal.length">
+                <mat-option *ngFor="let item of catalogs.regimen_fiscal" [value]="item.code">
+                  {{ item.code }} - {{ item.description }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error>Indique el Regimen Fiscal del Receptor</mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+
+      <h3>Información del Emisor</h3>
+
+      <form [formGroup]="emisor" class="content-box">
+        <div class="gridbox columns-3fr">
+          <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+            <mat-label>Regimen fiscal</mat-label>
+            <mat-select
+              formControlName="regimen_fiscal"
+              placeholder="Seleccione un Regimen Fiscal..."
+              [attr.readonly]="readonly">
+              <ng-container *ngIf="catalogs.regimen_fiscal.length">
+                <mat-option *ngFor="let item of catalogs.regimen_fiscal" [value]="item.code">
+                  {{ item.code }} - {{ item.description }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error>Indique el regimen fiscal del Emisor</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="gridbox columns-2">
+          <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+            <mat-label>Serie</mat-label>
+            <mat-select formControlName="serie" placeholder="Seleccione una Serie..." [attr.readonly]="readonly">
+              <ng-container *ngIf="emitterCatalogs.series && emitterCatalogs.series.length">
+                <mat-option *ngFor="let item of emitterCatalogs.series" [value]="item._id">
+                  {{ item.serie }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error>Indique la serie</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+            <mat-label>Lugar de Expedición</mat-label>
+            <mat-select
+              formControlName="lugar_de_expedicion"
+              placeholder="Lugar de Expedición"
+              [attr.readonly]="readonly">
+              <mat-option value="">Seleccione un Lugar de Expedición</mat-option>
+              <ng-container *ngIf="emitterCatalogs.expedition_places && emitterCatalogs.expedition_places.length">
+                <mat-option *ngFor="let item of emitterCatalogs.expedition_places" [value]="item._id">
+                  {{ item.cp }} {{ item.nombre }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error>Indique el lugar de expedición</mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+
+      <h3>Información de Complemento de Pago</h3>
+      <form [formGroup]="pago" class="content-box">
+        <div class="gridbox">
+          <mat-form-field appearance="outline" floatLabel="always" class="calendar normal">
+            <mat-label>Fecha de Pago</mat-label>
+            <input matInput formControlName="fecha" [matDatepicker]="picker_payment_date" placeholder="DD/MM/YYYY" />
+
+            <mat-datepicker-toggle matIconSuffix [for]="picker_payment_date"></mat-datepicker-toggle>
+            <mat-datepicker #picker_payment_date></mat-datepicker>
+
+            <mat-error>Indique la fecha de pago</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [attr.readonly]="readonly" class="time-picker">
+            <mat-label>Hora de Pago</mat-label>
+            <input matInput formControlName="hora" [ngxTimepicker]="payment_time_picker" readonly />
+
+            <ngx-material-timepicker-toggle [for]="payment_time_picker"></ngx-material-timepicker-toggle>
+            <ngx-material-timepicker #payment_time_picker></ngx-material-timepicker>
+
+            <mat-error>Indique la hora de pago</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="true">
+            <mat-label>Forma de Pago</mat-label>
+            <mat-select formControlName="forma" placeholder="Forma de Pago" [attr.readonly]="readonly">
+              <mat-option value="">Seleccione una Forma de Pago</mat-option>
+              <ng-container *ngIf="catalogs.formas_de_pago.length">
+                <mat-option *ngFor="let item of catalogs.formas_de_pago" [value]="item.code">
+                  {{ item.code }} - {{ item.description }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error>Indique la Forma de Pago</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="gridbox">
+          <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+            <mat-label>Moneda</mat-label>
+            <mat-select formControlName="moneda" placeholder="Seleccione una Moneda" [attr.readonly]="readonly">
+              <ng-container *ngIf="catalogs.moneda.length">
+                <mat-option *ngFor="let item of catalogs.moneda" [value]="item.code">
+                  {{ item.code }} - {{ item.description }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error>Indique la Moneda</mat-error>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            [attr.readonly]="readonly"
+            *ngIf="pago.get('moneda').value && pago.get('moneda').value !== 'MXN'">
+            <mat-label>Tipo de Cambio</mat-label>
+            <input matInput formControlName="tipo_de_cambio" [readonly]="readonly" />
+            <mat-error>Indique el tipo de cambio</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [attr.readonly]="readonly">
+            <mat-label>Número de Operación</mat-label>
+            <input matInput formControlName="numero_de_operacion" [readonly]="readonly" />
+          </mat-form-field>
+        </div>
+
+        <div class="gridbox">
+          <mat-form-field appearance="outline" [attr.readonly]="readonly" class="input-text-center">
+            <mat-label>Monto</mat-label>
+            <input matInput formControlName="monto" [readonly]="readonly" />
+            <mat-error>Indique el monto del pago</mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-expansion-panel class="mb-25" [expanded]="flags.optionalPaymentDataFlag" [attr.readonly]="readonly">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Ordenante / Beneficiario (opcionales)</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="gridbox columns-2 mt-25">
+            <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+              <mat-label>RFC Esmisor Cuenta Ordenante (opcional)</mat-label>
+              <input matInput formControlName="rfc_emisor_cuenta_ordenante" [readonly]="readonly" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+              <mat-label>Cuenta Ordenante (opcional)</mat-label>
+              <input matInput formControlName="cuenta_ordenante" [readonly]="readonly" />
+            </mat-form-field>
+          </div>
+
+          <div class="gridbox columns-2">
+            <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+              <mat-label>RFC Emisor Cuenta Beneficiario (opcional)</mat-label>
+              <input matInput formControlName="rfc_emisor_cuenta_beneficiario" [readonly]="readonly" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+              <mat-label>Cuenta Beneficiario (opcional)</mat-label>
+              <input matInput formControlName="cuenta_beneficiario" [readonly]="readonly" />
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <div class="gridbox" *ngIf="pago.get('forma').value === '03'">
+          <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="true">
+            <mat-label>Tipo de Cadena de Pago</mat-label>
+            <input matInput formControlName="tipo_cadena_de_pago" [readonly]="true" />
+            <mat-hint class="text-white">{{ paymentChainDescription }}</mat-hint>
+            <mat-error>Indique el tipo de cadena de pago</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="grid">
+          <h4 class="related-bills">Comprobantes Relacionados</h4>
+        </div>
+
+        <div class="gridbox">
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div class="text-right">
+            <button mat-raised-button class="secondary-task" type="button" (click)="openBillsDialog()">
+              Agregar comprobantes
+            </button>
+          </div>
+        </div>
+
+        <app-edit-payment-bill
+          [@slideLeft]
+          *ngIf="activeEditBill?.uuid"
+          [data]="activeEditBill"
+          (save)="saveEditedBill($event)"
+          (close)="activeEditBill = null"></app-edit-payment-bill>
+
+        <div class="mt-25">
+          <mat-error *ngIf="!this.selectedPaymentBills.length"> Debe agregar al menos un comprobante </mat-error>
+
+          <bego-table-multiple-selection
+            class="ui-table no-pagination"
+            [selectRowCheck]="billsTable.selectRow"
+            [loading]="billsTable.loading"
+            [values]="billsTable.tableValues"
+            [columns]="billsTable.tableColumns"
+            [actions]="billsTable.tableActions"
+            [page]="billsTable.pageUi"
+            [debounce]="1000"
+            columns="tableColumns"
+            actions="tableActions"
+            (pageChangeEmitter)="billsTable.changePage($event)"
+            (selectedActionEmitter)="billsTable.selectAction($event)"></bego-table-multiple-selection>
+        </div>
+      </form>
+
+      <div class="amounts text-center mt-25 mb-50">
+        <div>
+          <span>Saldo Pendiente</span>
+          <strong>${{ toValidFormattedAmount(amounts.pending) }}</strong>
+        </div>
+
+        <div>
+          <span>Monto Pagado</span>
+          <strong [class]="amounts.payed && amounts.pending !== amounts.payed ? 'warning' : ''"
+            >${{ toValidFormattedAmount(amounts.payed) }}</strong
+          >
+        </div>
+      </div>
+
+      <div class="text-center mt-25">
+        <button mat-flat-button type="button" class="mr-5" (click)="close()">Cancelar</button>
+        <button mat-flat-button (click)="submit()">Generar</button>
+      </div>
+    </div>
+  </main>
+</div>

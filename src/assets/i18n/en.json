@@ -143,6 +143,14 @@
     "prime": {
       "no-vehicle": "Without vehicle",
       "walking": "Walking"
+    },
+    "upload-multiple-orders": {
+      "name": "File Name",
+      "labelBrowse": "Browse your file",
+      "labelOr": "or",
+      "btnBrowse": "Choose File",
+      "labelMax": "max",
+      "uploading": "Uploading..."
     }
   },
   "checkout": {
@@ -806,13 +814,21 @@
     "table": {
       "plataforma": "",
       "fecha_emision": "Emisión",
-      "emisor": "Emisor",
-      "receptor": "Receptor",
+      "emisor_": "Emisor",
+      "folio": "Folio",
+      "status_": "Estatus",
+      "receptor_": "Receptor",
       "serie": "Serie",
+      "serie_label": "Serie",
       "tipo": "Tipo",
       "status": "Status",
       "subtotal": "Subtotal",
-      "total": "Total"
+      "subtotal_": "Subtotal",
+      "total": "Total",
+      "total_": "Total",
+      "metodo_de_pago": "Metodo Pago",
+      "status_pago": "Estado Pago",
+      "select_row": " "
     },
     "filters": {
       "apply": "Aplicar",
@@ -825,7 +841,8 @@
       "receptor-placeholder": "Buscar por Nombre o RFC",
       "tipo-comprobante": "Tipo de Comprobante",
       "tipo-comprobante-placeholder": "All",
-      "uuid-placeholder": "Search by UUID"
+      "uuid-placeholder": "Search by UUID",
+      "metodo-de-pago": "Metodo de Pago"
     },
     "edit": {
       "receptor": "Receptor",
@@ -1597,7 +1614,8 @@
           "drivers": "Drivers",
           "polygons": "Polygon",
           "tags": "Tags",
-          "empty": ""
+          "empty": "",
+          "search": "Search..."
         },
         "date": "Date",
         "heatmap": {

@@ -1,0 +1,56 @@
+<div class="edit-payment-bill">
+  <h3>Editar monto documento relacionado</h3>
+
+  <form [formGroup]="editPaymentForm" class="content-box">
+    <div class="gridbox">
+      <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+        <mat-label>UUID</mat-label>
+        <input matInput class="uuid" formControlName="uuid" [readonly]="readonly" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+        <mat-label>Serie</mat-label>
+        <input matInput formControlName="serie_label" [readonly]="readonly" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+        <mat-label>Folio</mat-label>
+        <input matInput formControlName="folio" [readonly]="readonly" />
+      </mat-form-field>
+    </div>
+
+    <div class="gridbox">
+      <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+        <mat-label>Moneda</mat-label>
+        <input matInput formControlName="moneda" [readonly]="readonly" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+        <mat-label>Tipo de Cambio</mat-label>
+        <input matInput formControlName="tipo_de_cambio" [readonly]="readonly" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+        <mat-label>Parcialidad</mat-label>
+        <input matInput formControlName="parcialidad" [readonly]="readonly" />
+      </mat-form-field>
+    </div>
+
+    <div class="gridbox">
+      <mat-form-field appearance="outline" floatLabel="always" [attr.readonly]="readonly">
+        <mat-label>Saldo Pendiente</mat-label>
+        <input matInput formControlName="saldo_pendiente" [readonly]="readonly" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always">
+        <mat-label>Monto a Pagar</mat-label>
+        <input matInput formControlName="monto_a_pagar" />
+      </mat-form-field>
+    </div>
+
+    <div class="actions">
+      <button mat-flat-button type="button" (click)="saveEdit()" [disabled]="editPaymentForm.invalid">Guardar</button>
+      <button mat-flat-button type="button" (click)="closeEdit()">Cancelar</button>
+    </div>
+  </form>
+</div>
