@@ -13,7 +13,7 @@ phases:
       - echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc
       - echo "@OWNER:registry=https://npm.pkg.github.com" >> ~/.npmrc
       - echo Setting Node.js memory limit...
-      - export NODE_OPTIONS="--max-old-space-size=4096"
+      - export NODE_OPTIONS="--max-old-space-size=6144"
       - echo Installing NPM packages...
       - npm install
   build:
