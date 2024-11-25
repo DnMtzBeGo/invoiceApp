@@ -34,6 +34,7 @@ export class CartaPorteInfoService {
     if (!isValid && !this.invalidInfo) this.invalidInfo = true;
 
     this.info = { ...this.info, ...infoToAdd };
+    if (!this.info.version) this.info = { ...this.info, version: this.ACTIVE_VERSION };
   }
 
   public addRecoletedInfoMercancias(infoToAdd: any): void {
