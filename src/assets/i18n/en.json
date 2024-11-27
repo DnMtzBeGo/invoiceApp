@@ -1633,7 +1633,11 @@
           "dispersion": "No results found",
           "heatmap": "No results found"
         },
-        "error": "There was an error, try again later"
+        "error": "There was an error, try again later",
+        "cluster": {
+          "init": "Cluster of",
+          "type": "drivers"
+        }
       },
       "share": {
         "sended": {
