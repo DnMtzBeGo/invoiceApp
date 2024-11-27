@@ -1638,7 +1638,11 @@
           "dispersion": "No se encontraron resultados",
           "heatmap": "No se encontraron resultados"
         },
-        "error": "Hubo un error, intente más tarde"
+        "error": "Hubo un error, intente más tarde",
+        "cluster": {
+          "init": "Grupo de",
+          "type": "drivers"
+        }
       },
       "share": {
         "sended": {
