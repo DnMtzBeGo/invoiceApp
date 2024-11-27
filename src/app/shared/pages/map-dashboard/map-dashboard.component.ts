@@ -595,5 +595,7 @@ export class MapDashboardComponent {
         type: this.translateService.instant(path + 'filter.cluster.type'),
       },
     };
+
+    this.drivers = [...this.drivers];
   }
 }
