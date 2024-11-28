@@ -63,6 +63,10 @@ export class MapDashboardComponent {
         apply: '',
       },
     },
+    cluster: {
+      init: '',
+      type: '',
+    },
   };
 
   constructor(
@@ -586,6 +590,12 @@ export class MapDashboardComponent {
           apply: this.translateService.instant(path + 'filter.actions.apply'),
         },
       },
+      cluster: {
+        init: this.translateService.instant(path + 'filter.cluster.init'),
+        type: this.translateService.instant(path + 'filter.cluster.type'),
+      },
     };
+
+    this.drivers = [...this.drivers];
   }
 }
