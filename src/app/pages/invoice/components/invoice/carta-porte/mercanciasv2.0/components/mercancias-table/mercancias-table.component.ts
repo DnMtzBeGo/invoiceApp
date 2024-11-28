@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 import { Paginator } from 'src/app/pages/invoice/models';
 import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
@@ -6,6 +6,7 @@ import { generateUUID } from 'src/app/pages/invoice/containers/factura-edit-page
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ImportMerchandiseComponent } from './components/import-merchandise/import-merchandise.component';
 import { BegoChibiAlert, BegoDialogService } from '@begomx/ui-components';
+import { CartaPortePageComponent } from 'src/app/pages/invoice/containers';
 
 @Component({
   selector: 'app-mercancias-table',
@@ -13,15 +14,13 @@ import { BegoChibiAlert, BegoDialogService } from '@begomx/ui-components';
   styleUrls: ['./mercancias-table.component.scss'],
 })
 export class MercanciasTableComponent implements OnInit {
-  @Input() public locations: any[];
   @Input() public voucherType: string = '';
   @Output() public pageChange: EventEmitter<Paginator> = new EventEmitter();
   @Output() public editRecord: EventEmitter<string> = new EventEmitter();
   @Output() public dataChanged: EventEmitter<any> = new EventEmitter();
 
-  // TODO: TYPE COMMODITIES
-
   public page: Paginator;
+  // TODO: TYPE COMMODITIES
   public commoditiesTable: any;
 
   constructor(
@@ -166,11 +165,14 @@ export class MercanciasTableComponent implements OnInit {
   private _validateInvoiceDataRequiredToImportFile(): string {
     const message: string[] = [];
 
+    this.consignmentNoteService.infoRecolector.next(null);
+    const locations = this.consignmentNoteService.info.ubicaciones;
+
     const _hasOriginAndDestinationIds = (): boolean => {
       this.cd.markForCheck();
       return (
-        this.locations.some((location: any) => location.id_ubicacion.substring(0, 2) === 'OR') &&
-        this.locations.some((location: any) => location.id_ubicacion.substring(0, 2) === 'DE')
+        locations.some((location: any) => location.id_ubicacion.substring(0, 2) === 'OR') &&
+        locations.some((location: any) => location.id_ubicacion.substring(0, 2) === 'DE')
       );
     };
 
@@ -179,12 +181,9 @@ export class MercanciasTableComponent implements OnInit {
     if (!this.voucherType || this.voucherType === '')
       message.push('- Debe capturar el tipo de comprobante de la factura.');
 
-    if (this.locations?.length < 2)
-      message.push("- Debe capturar los ID's de ubicacion de origen y destino (ID Origen/ID Destino).");
-    else if (!_hasOriginAndDestinationIds())
+    if (!_hasOriginAndDestinationIds())
       message.push('- Debe capturar al menos un id de origen y uno de destino (ID Origen (OR...)/ID Destino (DE...)).');
 
-    console.log(this.locations);
     return message.length ? message.join('\n') : null;
   }
 
