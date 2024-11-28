@@ -1624,7 +1624,7 @@
                 {{ getImpuestoDescripcion(impuesto) }}
               </td>
               <td class="center">
-                {{ impuesto.tasa_cuota != null && impuesto.tasa_cuota !== '' ? impuesto.tasa_cuota * 100 + '%' : '—' }}
+                {{ impuesto.tasa_cuota !== null && impuesto.tasa_cuota !== '' ? impuesto.tasa_cuota * 100 + '%' : '—' }}
               </td>
               <td class="center">
                 <button mat-icon-button (click)="formEmitter.next(['impuestos:remove', index])">
