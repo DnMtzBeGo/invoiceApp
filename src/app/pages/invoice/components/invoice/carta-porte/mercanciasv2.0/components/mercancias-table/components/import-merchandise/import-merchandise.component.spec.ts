@@ -11,9 +11,8 @@ describe('ImportMerchandiseComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ImportMerchandiseComponent ]
-    })
-    .compileComponents();
+      declarations: [ImportMerchandiseComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
