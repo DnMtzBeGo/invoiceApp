@@ -13,6 +13,8 @@ import { CartaPorteInfoService } from '../services/carta-porte-info.service';
 })
 export class Mercanciasv20Component implements OnChanges {
   @Input() public info: any;
+  @Input() public voucherType: string = '';
+  @Input() public locations: any; // this props its only to have easy access locations info for import validation
   @Input() public invoice_id: string = '';
   @ViewChild('commoditiesTable') public commoditiesTable: MercanciasTableComponent;
 
