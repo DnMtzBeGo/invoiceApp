@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { NotificationsService } from 'src/app/shared/services/notifications.service';
-import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from 'src/app/shared/services/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
+import { MatDialogRef } from '@angular/material/dialog';
+
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
+
 import { CartaPorteInfoService } from '../../../../../services/carta-porte-info.service';
 
 export interface IMultipleFilesLang {
