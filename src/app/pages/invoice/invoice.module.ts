@@ -67,7 +67,7 @@ import { Mercanciasv20Component } from './components/invoice/carta-porte/mercanc
 import { CommodityComponent } from './components/invoice/carta-porte/mercanciasv2.0/components/commodity/commodity.component';
 import { CantidadTransportaComponent } from './components/invoice/carta-porte/mercanciasv2.0/components/cantidad-transporta/cantidad-transporta.component';
 import { SharedModule } from '../../shared/shared.module';
-
+import { ImportMerchandiseComponent } from '../invoice/components/invoice/carta-porte/mercanciasv2.0/components/mercancias-table/components/import-merchandise/import-merchandise.component';
 @NgModule({
   declarations: [
     FacturasPageComponent,
@@ -105,6 +105,7 @@ import { SharedModule } from '../../shared/shared.module';
     EditPaymentBillComponent,
     MercanciasTableComponent,
     Mercanciasv20Component,
+    ImportMerchandiseComponent,
   ],
   imports: [
     CommonModule,
