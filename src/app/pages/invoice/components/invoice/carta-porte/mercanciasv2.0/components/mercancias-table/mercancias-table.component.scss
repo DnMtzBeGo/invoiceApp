@@ -1,4 +1,6 @@
 .commodities-table-wrapper {
+  position: relative;
+
   ::ng-deep {
     .mat-mdc-card {
       margin: 0px;
@@ -12,5 +14,25 @@
         display: none;
       }
     }
+  }
+
+  .table-options {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+}
+
+::ng-deep {
+  .dialog.informative {
+    .text-content {
+      text-align: left;
+      white-space: pre-line;
+    }
+  }
+
+  /** loader fix to avoid incomplete screen block **/
+  .loader-container {
+    top: 0px;
   }
 }

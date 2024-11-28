@@ -33,7 +33,11 @@
 
       <!-- region Mercancias-->
       <mat-step [label]="'invoice.cp-page.mercancias' | translate">
-        <app-mercanciasv20 [invoice_id]="invoice_id" [info]="mercanciasInfo"></app-mercanciasv20>
+        <app-mercanciasv20
+          [invoice_id]="invoice_id"
+          [info]="mercanciasInfo"
+          [locations]="ubicacionesInfo"
+          [voucherType]="facturaInfo.tipo_de_comprobante"></app-mercanciasv20>
       </mat-step>
       <!-- endRegion Mercancias -->
 

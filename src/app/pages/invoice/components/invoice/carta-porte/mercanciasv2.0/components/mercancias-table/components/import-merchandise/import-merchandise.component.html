@@ -1,0 +1,28 @@
+<div class="import-merchandise-dialog">
+  <header>
+    <mat-icon class="close-btn" (click)="close()">close</mat-icon>
+  </header>
+  <main>
+    <div class="multiple-container instructions">
+      <h2>Instrucciones</h2>
+      <button bego-button theme="main" (click)="downloadLayoutTemplate()">
+        <bego-icon icon="begon-download"></bego-icon>
+        Plantilla Excel
+      </button>
+    </div>
+    <div class="multiple-container">
+      <p>
+        Para subir tus múltiples mercancías, debes descargar la plantilla en Excel, la cual deberás llenar en su
+        totalidad y subirlo.
+      </p>
+      <p>Importante: La importación del archivo eliminará cualquier mercancia existente previo a la importación</p>
+    </div>
+
+    <bego-drag-drop
+      [validTypes]="allowedFileTypes"
+      [lang]="multipleFilesLang"
+      [fileInfo]="file"
+      (fileSelected)="handleFileChange($event)"
+      (invalidFiletype)="invalidFile()"></bego-drag-drop>
+  </main>
+</div>

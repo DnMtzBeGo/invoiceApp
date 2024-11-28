@@ -1,8 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { BegoChibiAlert, BegoDialogService } from '@begomx/ui-components';
 
 import { Paginator } from 'src/app/pages/invoice/models';
 import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
 import { generateUUID } from 'src/app/pages/invoice/containers/factura-edit-page/factura.core';
+import { ImportMerchandiseComponent } from './components/import-merchandise/import-merchandise.component';
 
 @Component({
   selector: 'app-mercancias-table',
@@ -10,16 +13,21 @@ import { generateUUID } from 'src/app/pages/invoice/containers/factura-edit-page
   styleUrls: ['./mercancias-table.component.scss'],
 })
 export class MercanciasTableComponent implements OnInit {
+  @Input() public voucherType: string = '';
   @Output() public pageChange: EventEmitter<Paginator> = new EventEmitter();
   @Output() public editRecord: EventEmitter<string> = new EventEmitter();
   @Output() public dataChanged: EventEmitter<any> = new EventEmitter();
 
-  // TODO: TYPE COMMODITIES
-
   public page: Paginator;
+  // TODO: TYPE COMMODITIES
   public commoditiesTable: any;
 
-  constructor(public consignmentNoteService: CartaPorteInfoService, private readonly cd: ChangeDetectorRef) {}
+  constructor(
+    public consignmentNoteService: CartaPorteInfoService,
+    private readonly matDialog: MatDialog,
+    private readonly cd: ChangeDetectorRef,
+    private readonly begoDialog: BegoDialogService,
+  ) {}
 
   private filter: any = {};
 
@@ -145,12 +153,63 @@ export class MercanciasTableComponent implements OnInit {
   }
 
   public filterChanged($event: any): void {
-    console.log($event);
     this.filter = $event;
     this.reloadData();
   }
 
   public canSearchLocal(): boolean {
     return this.consignmentNoteService.invoice_id ? false : true;
+  }
+
+  private _validateInvoiceDataRequiredToImportFile(): string {
+    const message: string[] = [];
+
+    this.consignmentNoteService.infoRecolector.next(null);
+    const locations = this.consignmentNoteService.info.ubicaciones;
+
+    const _hasOriginAndDestinationIds = (): boolean => {
+      this.cd.markForCheck();
+      return (
+        locations.some((location: any) => location.id_ubicacion.substring(0, 2) === 'OR') &&
+        locations.some((location: any) => location.id_ubicacion.substring(0, 2) === 'DE')
+      );
+    };
+
+    if (!this.consignmentNoteService.invoice_id) message.push('- Debe guardar la factura primero.');
+
+    if (!this.voucherType || this.voucherType === '')
+      message.push('- Debe capturar el tipo de comprobante de la factura.');
+
+    if (!_hasOriginAndDestinationIds())
+      message.push('- Debe capturar al menos un id de origen y uno de destino (ID Origen (OR...)/ID Destino (DE...)).');
+
+    return message.length ? message.join('\n') : null;
+  }
+
+  public openImportMerchandiseDialog(): void {
+    const errorMessage = this._validateInvoiceDataRequiredToImportFile();
+    if (errorMessage) {
+      this.begoDialog.open({
+        title: 'Antes de realizar una importación...',
+        content: errorMessage,
+        type: 'informative',
+        iconComponent: BegoChibiAlert,
+        btnCopies: {
+          confirm: 'Ok',
+        },
+      });
+    } else {
+      const data: { invoice_id: string } = { invoice_id: '' };
+      const config = new MatDialogConfig();
+      config.data = data;
+      config.disableClose = true;
+      config.autoFocus = true;
+
+      const dialogRef = this.matDialog.open(ImportMerchandiseComponent, config);
+
+      dialogRef.afterClosed().subscribe((success: boolean = false) => {
+        if (success) this.reloadData();
+      });
+    }
   }
 }

@@ -15,4 +15,8 @@
     [filter]="!canSearchLocal()"
     [localSearch]="canSearchLocal()"
     (filterEmitter)="filterChanged($event)"></bego-table-multiple-selection>
+
+  <div class="table-options">
+    <button mat-flat-button class="brand-btn-2" (click)="openImportMerchandiseDialog()">Importar...</button>
+  </div>
 </div>

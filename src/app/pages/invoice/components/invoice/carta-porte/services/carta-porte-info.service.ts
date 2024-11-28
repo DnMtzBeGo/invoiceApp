@@ -15,6 +15,7 @@ export class CartaPorteInfoService {
   public ACTIVE_VERSION = '3.1';
 
   public invoice_id: string = '';
+  public voucher_type: string = '';
 
   public id_ccp: string;
   public info: any;
