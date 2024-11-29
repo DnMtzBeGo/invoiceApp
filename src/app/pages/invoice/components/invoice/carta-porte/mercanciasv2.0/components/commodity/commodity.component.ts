@@ -244,7 +244,6 @@ export class CommodityComponent implements OnInit, OnChanges {
           .createOrUpdateCommodityAtDatabase(data)
           .toPromise()
           .then(({ result }: any) => {
-            console.log(result);
             // in this case is required to call _updateLocalData after database update
             // or the data will not be reflected in the UI
             const { peso_bruto_total, num_total_mercancias } = result;

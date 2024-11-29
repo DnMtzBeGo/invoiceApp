@@ -100,6 +100,9 @@ export class ImportMerchandiseComponent implements OnInit {
     await req
       .toPromise()
       .then((d) => {
+        const { peso_bruto_total, num_total_mercancias } = d?.result.merchandises;
+        this.consignmentNoteService.addRecoletedInfoMercancias({ peso_bruto_total, num_total_mercancias });
+
         this.dialogRef.close(true);
       })
       .catch(
