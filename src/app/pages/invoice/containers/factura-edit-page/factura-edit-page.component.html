@@ -339,7 +339,7 @@
               <mat-label>{{
                 vm.form?.rfc && validRFC(vm.form?.rfc) !== true
                   ? ('invoice.edit.direccion-placeholder-2' | translate)
-                  : vm.direcciones == null
+                  : vm.direcciones === null
                   ? ('invoice.edit.loading' | translate)
                   : validRFC(vm.form?.rfc) === true && vm.direcciones?.length === 0
                   ? ('invoice.edit.direccion-placeholder-3' | translate)
@@ -359,7 +359,7 @@
                 </mat-option>
               </mat-select>
               <mat-progress-bar
-                [style.display]="vm.direcciones == null ? 'block' : 'none'"
+                [style.display]="vm.direcciones === null ? 'block' : 'none'"
                 class="brand-progress-bar-1"
                 mode="indeterminate"></mat-progress-bar>
             </mat-form-field>
@@ -441,7 +441,7 @@
           <!-- #region PAIS -->
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
             <mat-label>{{
-              vm.paises == null ? ('invoice.edit.loading' | translate) : ('invoice.edit.addr-pais' | translate)
+              vm.paises === null ? ('invoice.edit.loading' | translate) : ('invoice.edit.addr-pais' | translate)
             }}</mat-label>
 
             <mat-select
@@ -466,7 +466,7 @@
             </mat-select>
 
             <mat-progress-bar
-              [style.display]="vm.paises == null ? 'block' : 'none'"
+              [style.display]="vm.paises === null ? 'block' : 'none'"
               style="bottom: 0px; position: absolute; height: 2px"
               class="brand-progress-bar-1"
               mode="indeterminate"></mat-progress-bar>
@@ -476,7 +476,7 @@
           <!-- #region ESTADO -->
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
             <mat-label>{{
-              vm.estados == null ? ('invoice.edit.loading' | translate) : ('invoice.edit.addr-estado' | translate)
+              vm.estados === null ? ('invoice.edit.loading' | translate) : ('invoice.edit.addr-estado' | translate)
             }}</mat-label>
 
             <mat-select
@@ -516,7 +516,7 @@
             </button>
 
             <mat-progress-bar
-              [style.display]="vm.estados == null ? 'block' : 'none'"
+              [style.display]="vm.estados === null ? 'block' : 'none'"
               style="bottom: 0px; position: absolute; height: 2px"
               class="brand-progress-bar-1"
               mode="indeterminate"></mat-progress-bar>
@@ -526,7 +526,9 @@
           <!-- #region MUNICIPIO -->
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
             <mat-label>{{
-              vm.municipios == null ? ('invoice.edit.loading' | translate) : ('invoice.edit.addr-municipio' | translate)
+              vm.municipios === null
+                ? ('invoice.edit.loading' | translate)
+                : ('invoice.edit.addr-municipio' | translate)
             }}</mat-label>
 
             <mat-select
@@ -570,7 +572,7 @@
             </button>
 
             <mat-progress-bar
-              [style.display]="vm.municipios == null ? 'block' : 'none'"
+              [style.display]="vm.municipios === null ? 'block' : 'none'"
               style="bottom: 0px; position: absolute; height: 2px"
               class="brand-progress-bar-1"
               mode="indeterminate"></mat-progress-bar>
@@ -596,7 +598,7 @@
             <mat-label>{{
               vm.form?.direccion?.cp && vm.form?.direccion?.cp.length < 5
                 ? ('invoice.edit.addr-colonia-placeholder-2' | translate)
-                : vm.colonias == null
+                : vm.colonias === null
                 ? ('invoice.edit.loading' | translate)
                 : ('invoice.edit.addr-colonia' | translate)
             }}</mat-label>
@@ -631,7 +633,7 @@
             </button>
 
             <mat-progress-bar
-              [style.display]="vm.colonias == null ? 'block' : 'none'"
+              [style.display]="vm.colonias === null ? 'block' : 'none'"
               style="bottom: 0px; position: absolute; height: 2px"
               class="brand-progress-bar-1"
               mode="indeterminate"></mat-progress-bar>
@@ -832,7 +834,7 @@
             <mat-label>{{
               vm.form?.lugar_de_expedicion?._id
                 ? ('invoice.edit.lugar-expedicion' | translate)
-                : vm.lugaresExpedicion == null
+                : vm.lugaresExpedicion === null
                 ? ('invoice.edit.loading' | translate)
                 : vm.form?.emisor?.rfc && validRFC(vm.form?.emisor?.rfc) === false
                 ? ('invoice.edit.lugar-expedicion-placeholder-2' | translate)
@@ -862,7 +864,7 @@
             </span>
 
             <mat-progress-bar
-              [style.display]="vm.lugaresExpedicion == null ? 'block' : 'none'"
+              [style.display]="vm.lugaresExpedicion === null ? 'block' : 'none'"
               style="bottom: 0px; position: absolute; height: 2px"
               class="brand-progress-bar-1"
               mode="indeterminate"></mat-progress-bar>
@@ -1563,7 +1565,7 @@
               <mat-label>
                 {{ 'invoice.edit.impuesto-tasa' | translate }}
                 {{
-                  vm.impuesto?.tasa_cuota == null || vm.impuesto?.tasa_cuota === 0
+                  vm.impuesto?.tasa_cuota === null || vm.impuesto?.tasa_cuota === 0
                     ? ' - ' +
                       ('invoice.edit.impuesto-tasa-placeholder-2' | translate)
                         .replace(':1', vm.impuesto?.tasaCuota[0].valorMinimo * 100)
@@ -1599,7 +1601,7 @@
               mat-flat-button
               class="brand-btn-2"
               (click)="formEmitter.next(['impuestos:add', vm.impuesto])"
-              [disabled]="vm.impuesto == null">
+              [disabled]="vm.impuesto === null">
               {{ 'invoice.edit.impuesto-agregar' | translate }}
             </button>
           </div>
@@ -1622,7 +1624,7 @@
                 {{ getImpuestoDescripcion(impuesto) }}
               </td>
               <td class="center">
-                {{ impuesto.tasa_cuota != null && impuesto.tasa_cuota !== '' ? impuesto.tasa_cuota * 100 + '%' : '—' }}
+                {{ impuesto.tasa_cuota !== null && impuesto.tasa_cuota !== '' ? impuesto.tasa_cuota * 100 + '%' : '—' }}
               </td>
               <td class="center">
                 <button mat-icon-button (click)="formEmitter.next(['impuestos:remove', index])">
@@ -1718,7 +1720,7 @@
               </td>
               <td class="right">
                 {{
-                  concepto.descuento == null || concepto.descuento === ''
+                  concepto.descuento === null || concepto.descuento === ''
                     ? ''
                     : '($' +
                       concepto.descuento.toLocaleString('en-US', {
@@ -1736,7 +1738,7 @@
               </td>
               <td class="right">
                 {{
-                  concepto.valor_unitario == null || concepto.valor_unitario === ''
+                  concepto.valor_unitario === null || concepto.valor_unitario === ''
                     ? ''
                     : '($' +
                       concepto.valor_unitario.toLocaleString('en-US', {
@@ -1862,7 +1864,7 @@
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
             <mat-label>
               {{
-                vm.series == null
+                vm.series === null
                   ? ('invoice.edit.loading' | translate)
                   : vm.form?.serie && vm.tipo_de_comprobante && vm.form?.emisor?._id && validRFC(vm.form?.emisor?.rfc)
                   ? ('invoice.edit.serie' | translate) +
@@ -1909,7 +1911,7 @@
             </mat-select>
 
             <mat-progress-bar
-              [style.display]="vm.series == null ? 'block' : 'none'"
+              [style.display]="vm.series === null ? 'block' : 'none'"
               style="bottom: 0px; position: absolute; height: 2px"
               class="brand-progress-bar-1"
               mode="indeterminate"></mat-progress-bar>
@@ -2109,7 +2111,7 @@
           style="
             grid-column: span 2;
             color: #fa3c00;
-            font-size: 0.7rem;
+            font-size: 1rem;
             align-self: flex-end;
             flex: 1;
             white-space: pre-line;

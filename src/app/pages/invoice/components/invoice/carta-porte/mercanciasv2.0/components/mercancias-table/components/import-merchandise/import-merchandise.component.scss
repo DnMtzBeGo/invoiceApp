@@ -1,0 +1,30 @@
+.import-merchandise-dialog {
+  padding: 15px;
+
+  header {
+    position: relative;
+    height: 35px;
+
+    .close-btn {
+      position: absolute;
+      right: 0;
+      cursor: pointer;
+    }
+  }
+
+  main {
+    padding: 2%;
+  }
+}
+::ng-deep {
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    background: black;
+    border-radius: 10px;
+  }
+
+  .mat-mdc-snack-bar-label {
+    .mdc-snackbar__label {
+      white-space: pre-line;
+    }
+  }
+}
