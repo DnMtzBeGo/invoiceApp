@@ -181,7 +181,8 @@
       .map-container .controls-container {
         transition: all 0.3s;
         --controlXPos: 430px;
-        --controlYPos: 74px;
+        --controlYPos: 21vh;
+        translate: 0 100%;
       }
     }
   }

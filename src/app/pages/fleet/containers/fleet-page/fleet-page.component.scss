@@ -1,8 +1,7 @@
 @import 'src/styles';
 
 .new-order-wrapper {
-  margin-top: 125px;
-  margin-right: 50px;
+  margin: 125px 20px 0 calc(50px + #{$bego-menu-width});
   display: flex;
   height: 80vh;
   position: absolute;
@@ -10,7 +9,6 @@
   right: 0;
   left: 0;
   bottom: 0;
-  margin-left: calc(50px + #{$bego-menu-width});
   pointer-events: none;
   z-index: 2;
   overflow: hidden;
@@ -41,21 +39,6 @@
     position: relative;
   }
 
-  .btns-container {
-    z-index: 999;
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    right: 465px;
-    bottom: 35px;
-  }
-
-  .btns-container button {
-    right: 0 !important;
-  }
-
   .btn-traffic {
     position: absolute;
     color: #ededed;
@@ -64,12 +47,12 @@
     cursor: pointer;
     border: none;
     border-radius: 30px;
-    
+
     img {
       filter: brightness(0) invert(1);
     }
   }
-  
+
   .btn-traffic.active img {
     filter: none;
   }
@@ -116,24 +99,6 @@
       border-radius: 50%;
       background: #040b12;
       object-fit: cover;
-    }
-
-    #reset {
-      position: absolute;
-      right: calc(400px + 10px);
-      border: none;
-      cursor: pointer;
-      transition: all 0.5s ease-in-out;
-      pointer-events: all;
-
-      i {
-        font-size: 2rem;
-        color: #ededed;
-      }
-
-      &.reset-up {
-        bottom: 10px;
-      }
     }
   }
 }
