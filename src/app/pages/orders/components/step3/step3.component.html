@@ -2,7 +2,7 @@
   <form [formGroup]="step3Form">
     <app-custom-stepper
       [blockFirstStep]="!orderWithCP"
-      [labels]="['Mercancías', 'Múltiples mercancías']"
+      [labels]="['orders.cargo-labels.single' | translate, 'orders.cargo-labels.multiple' | translate]"
       (stepStatus)="stepStatus($event)"
       [currentStep]="stepIndex">
       <ng-template #step>
@@ -89,7 +89,7 @@
 
             <bego-drag-drop
               [maxSize]="10000000"
-              [lang]="fileLang"
+              [lang]="fileLang | async"
               [fileInfo]="fileInfo"
               [disabled]="hazardousType === 'select-catergory'"
               (fileSelected)="selectHazardousFile($event)"></bego-drag-drop>
@@ -127,22 +127,19 @@
           </div>
         </div>
         <div class="multiple-container instructions">
-          <h2>Instrucciones</h2>
+          <h2>{{ 'orders.multiple-cargo.instructions-title' | translate }}</h2>
           <button bego-button theme="main" (click)="downloadTemplate()">
             <bego-icon icon="begon-download"></bego-icon>
-            Plantilla Excel
+            {{ 'orders.multiple-cargo.excel-template' | translate }}
           </button>
         </div>
         <div class="multiple-container">
-          <p>
-            Para subir tus múltiples mercancías, debes descargar la plantilla en Excel, la cual deberás llenar en su
-            totalidad y subirlo.
-          </p>
+          <p>{{ 'orders.multiple-cargo.instructions-txt' | translate }}</p>
         </div>
         <div class="drag-drop-container">
           <bego-drag-drop
             [validTypes]="fileTypes"
-            [lang]="multipleFilesLang"
+            [lang]="'orders.upload-multiple-orders' | translate"
             [fileInfo]="files"
             (fileSelected)="handleFileChange($event, 'xlsx')"
             (invalidFiletype)="invalidFile()"></bego-drag-drop>
