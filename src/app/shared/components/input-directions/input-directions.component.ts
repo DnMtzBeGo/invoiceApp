@@ -429,6 +429,8 @@ export class InputDirectionsComponent implements OnInit {
     this.autocompleteDropoff.input = e.target.value;
     if (this.autocompleteDropoff.input == '') {
       this.autocompleteItemsDropoff = [];
+      this.ClearAutocompleteDropoff();
+      this.invalidAddressDropoff = false;
       return;
     }
 
@@ -461,6 +463,7 @@ export class InputDirectionsComponent implements OnInit {
     this.autocompletePickup.input = e.target.value;
     if (this.autocompletePickup.input === '') {
       this.autocompleteItemsPickup = [];
+      this.invalidAddressPickup = false;
       return;
     }
     this.GoogleAutocomplete.getPlacePredictions(
