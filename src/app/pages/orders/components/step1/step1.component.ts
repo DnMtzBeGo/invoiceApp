@@ -173,8 +173,10 @@ export class Step1Component implements OnInit {
     this.phoneFlag = data.code;
     this.phoneCode = data.dial_code;
 
-    this.step1Form.get('country_code')!.setValue(data.code);
-    this.step1Form.get('phoneCode')!.setValue(data.dial_code);
+    this.step1Form.patchValue({
+      country_code: data.code,
+      phoneCode: data.dial_code,
+    });
   }
 
   public phoneNumberChangeValue(data: any) {
