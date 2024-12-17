@@ -15,7 +15,7 @@
       <div class="row-field">
         <div class="field">
           <bego-phone-code-select
-            [flag]="phoneFlag"
+            [flag]="phoneFlag | lowercase"
             [selectedPhoneCode]="phoneCode"
             (sendValues)="updateFormPhoneCode($event)"></bego-phone-code-select>
           <bego-input
