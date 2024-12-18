@@ -250,6 +250,10 @@ export class FleetBrowserComponent implements OnInit {
 
     const facturasRequest$ = combineLatest([loadDataAction$, params$]).pipe(pluck('1'), share());
 
+    loadDataAction$.subscribe(() => {
+      this.selectedCategory = ''
+    })
+
     const facturas$ = combineLatest(
       tiposComprobante$.pipe(map(arrayToObject('clave', 'descripcion'))),
       facturaStatus$.pipe(map(arrayToObject('clave', 'nombre'))),
