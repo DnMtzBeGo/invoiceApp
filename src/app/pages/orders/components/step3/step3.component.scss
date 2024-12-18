@@ -334,3 +334,12 @@ textarea {
   overflow-y: scroll;
   height: 500px;
 }
+
+.search-select-wrapper {
+  position: relative;
+  height: 60px;
+
+  ::ng-deep bego-search-select .menu {
+    z-index: 10000 !important;
+  }
+}
