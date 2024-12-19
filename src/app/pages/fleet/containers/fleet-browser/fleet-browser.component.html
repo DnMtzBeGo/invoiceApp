@@ -177,7 +177,7 @@
           <mat-form-field appearance="outline" floatLabel="always" class="brand-field-1">
             <mat-select
               [value]="paginator.pageSize"
-              (selectionChange)="navigate({ limit: $event.value })"
+              (selectionChange)="navigate({ limit: $event.value, page: 1 })"
               class="disable-custom-format">
               <mat-option
                 *ngFor="let sizeOption of paginatorDefaults[vm.view]?.sizeOptions"
