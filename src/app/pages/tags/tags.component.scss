@@ -126,3 +126,9 @@
   }
 
 }
+
+bego-table-multiple-selection {
+  ::ng-deep .paginator-container {
+    z-index: 1;
+  }
+}
