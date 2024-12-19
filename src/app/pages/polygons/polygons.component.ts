@@ -209,9 +209,8 @@ export class PolygonsComponent implements OnInit {
     }).toString();
 
     (await this.webService.apiRestGet(`polygons/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
-      next: ({ result: { result, total } }) => {
-        console.log(result);
-        this.page.total = total;
+      next: ({ result: { result, size } }) => {
+        this.page.total = size;
         this.polygons = result.map((polygons) => {
           let due_date: any = {
             value: '-',
@@ -231,7 +230,6 @@ export class PolygonsComponent implements OnInit {
           };
 
           actions.enabled = Object.values(actions.options).includes(true);
-          console.log(polygons);
           return {
             ...polygons,
             actions
