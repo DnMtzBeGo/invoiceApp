@@ -223,13 +223,16 @@ export class MapDashboardComponent {
     this.heatmap = status;
   }
 
-  public async getDrivers(page: number = 1) {
+  public async getDrivers(page: number = 1, search?: string) {
     if (this.filter.drivers.loading) return;
 
     this.filter.drivers.loading = true;
 
+    const queryParams = new URLSearchParams({ page: String(page), limit: String(LIMIT) });
+    if (search) queryParams.append('search', search);
+
     (
-      await this.apiRestService.apiRestGet(`carriers/get_drivers?page=${page}&limit=${LIMIT}`, {
+      await this.apiRestService.apiRestGet(`carriers/get_drivers?${queryParams.toString()}`, {
         apiVersion: 'v1.1',
         loader: false,
       })
@@ -258,13 +261,16 @@ export class MapDashboardComponent {
     });
   }
 
-  public async getPolygons(page: number = 1) {
+  public async getPolygons(page: number = 1, search?: string) {
     if (this.filter.polygons.loading) return;
 
     this.filter.polygons.loading = true;
 
+    const queryParams = new URLSearchParams({ page: String(page), limit: String(LIMIT) });
+    if (search) queryParams.append('search', search);
+
     (
-      await this.apiRestService.apiRestGet(`polygons?page=${page}&limit=${LIMIT}`, {
+      await this.apiRestService.apiRestGet(`polygons?${queryParams.toString()}`, {
         apiVersion: 'v1.1',
         loader: false,
       })
@@ -291,13 +297,16 @@ export class MapDashboardComponent {
     });
   }
 
-  public async getTags(page: number = 1) {
+  public async getTags(page: number = 1, search?: string) {
     if (this.filter.tags.loading) return;
 
     this.filter.tags.loading = true;
 
+    const queryParams = new URLSearchParams({ page: String(page), limit: String(LIMIT) });
+    if (search) queryParams.append('search', search);
+
     (
-      await this.apiRestService.apiRestGet(`managers_tags?page=${page}&limit=${LIMIT}`, {
+      await this.apiRestService.apiRestGet(`managers_tags?${queryParams.toString()}`, {
         apiVersion: 'v1.1',
         loader: false,
       })
@@ -597,5 +606,11 @@ export class MapDashboardComponent {
     };
 
     this.drivers = [...this.drivers];
+  }
+
+  searchPolygons({ type, value }: { type: 'drivers' | 'polygons' | 'tags'; value: string }) {
+    if (type === 'drivers') this.getDrivers(1, value);
+    else if (type === 'polygons') this.getPolygons(1, value);
+    else if (type === 'tags') this.getTags(1, value);
   }
 }
