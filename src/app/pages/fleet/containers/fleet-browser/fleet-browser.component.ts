@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
-import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity, Subscription } from 'rxjs';
+import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity, Subscription, Observable } from 'rxjs';
 import {
   mapTo,
   mergeAll,
@@ -150,6 +150,8 @@ export class FleetBrowserComponent implements OnInit {
     name: '',
     translations: {},
   };
+
+  refreshAction: Observable<void>;
 
   constructor(
     public router: Router,
@@ -347,6 +349,8 @@ export class FleetBrowserComponent implements OnInit {
       searchLoading: searchLoading$,
       receptorSearch: receptorSearch$,
     });
+
+    this.refreshAction = loadDataAction$;
   }
 
   public ngOnDestroy() {
