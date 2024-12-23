@@ -436,8 +436,9 @@ export class FleetBrowserComponent implements OnInit {
       mergeAll(),
       pluck('result'),
       tap((result) => {
-        this.paginator.pageTotal = result.pagination?.pages || 1;
-        this.paginator.total = result.pagination?.size ?? 0;
+        this.paginator.pageTotal = result.pagination?.pages ?? result?.pages ?? 1;
+        this.paginator.total = result.pagination?.size ?? result?.size ?? 0;
+        this.paginator.pageIndex = Math.min(this.paginator.pageTotal, this.paginator.pageIndex);
       }),
       this.resolver.pluck ? pluck(this.resolver.pluck) : identity,
       tap(() => {
