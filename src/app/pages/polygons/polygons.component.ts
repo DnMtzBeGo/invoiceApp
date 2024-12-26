@@ -205,7 +205,7 @@ export class PolygonsComponent implements OnInit {
       limit: limit.toString(),
       page: page.toString(),
       // ...(sort && { sort }),
-      ...(match && { match })
+      ...(match && { search: match })
     }).toString();
 
     (await this.webService.apiRestGet(`polygons/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
@@ -274,7 +274,7 @@ export class PolygonsComponent implements OnInit {
 
   filterData({ active, search, type }) {
     if (active) {
-      this.searchQueries.match = JSON.stringify({ [type]: search });
+      this.searchQueries.match = search;
     } else this.searchQueries.match = '';
     this.page.index = 1;
     this.searchQueries.page = 1;
