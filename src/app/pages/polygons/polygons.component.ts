@@ -390,7 +390,11 @@ export class PolygonsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (!result) return;
+      if (!result) {
+        this.drawnItems.clearLayers();
+        this.openPolygonMap();
+        return;
+      }
 
       if (result.action === 'create') {
         this.createPolygons(result.name, data);
