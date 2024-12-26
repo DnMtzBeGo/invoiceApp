@@ -69,4 +69,15 @@ export class DriverStatusCardComponent implements OnInit {
     })
   }
 
+  public canTrack(isPickup?: boolean): boolean {
+    const { version, status } = this.orderData;
+
+    if (version === 'v2.0.0') {
+      return status < 3;
+    }
+
+    return this.title === 'pickup'
+      ? status >= 2 && status < 3
+      : status >= 4 && status < 5;
+  }
 }
