@@ -69,6 +69,12 @@ export class MapDashboardComponent {
     },
   };
 
+  public search: Record<string, string | null> = {
+    drivers: '',
+    polygons: '',
+    tags: '',
+  };
+
   constructor(
     public mapDashboardService: MapDashboardService,
     public router: Router,
@@ -223,13 +229,13 @@ export class MapDashboardComponent {
     this.heatmap = status;
   }
 
-  public async getDrivers(page: number = 1, search?: string) {
+  public async getDrivers(page: number = 1) {
     if (this.filter.drivers.loading) return;
 
     this.filter.drivers.loading = true;
 
     const queryParams = new URLSearchParams({ page: String(page), limit: String(LIMIT) });
-    if (search) queryParams.append('search', search);
+    if (this.search.drivers) queryParams.append('search', this.search.drivers);
 
     (
       await this.apiRestService.apiRestGet(`carriers/get_drivers?${queryParams.toString()}`, {
@@ -247,7 +253,7 @@ export class MapDashboardComponent {
 
         this.filter.drivers = {
           loading: false,
-          options: [...this.filter.drivers.options, ...result],
+          options: page === 1 ? result : [...this.filter.drivers.options, ...result],
           scrolleable: page < pages,
         };
       },
@@ -261,13 +267,13 @@ export class MapDashboardComponent {
     });
   }
 
-  public async getPolygons(page: number = 1, search?: string) {
+  public async getPolygons(page: number = 1) {
     if (this.filter.polygons.loading) return;
 
     this.filter.polygons.loading = true;
 
     const queryParams = new URLSearchParams({ page: String(page), limit: String(LIMIT) });
-    if (search) queryParams.append('search', search);
+    if (this.search.polygons) queryParams.append('search', this.search.polygons);
 
     (
       await this.apiRestService.apiRestGet(`polygons?${queryParams.toString()}`, {
@@ -283,7 +289,7 @@ export class MapDashboardComponent {
 
         this.filter.polygons = {
           loading: false,
-          options: [...this.filter.polygons.options, ...result],
+          options: page === 1 ? result : [...this.filter.polygons.options, ...result],
           scrolleable: page < pages,
         };
       },
@@ -297,13 +303,13 @@ export class MapDashboardComponent {
     });
   }
 
-  public async getTags(page: number = 1, search?: string) {
+  public async getTags(page: number = 1) {
     if (this.filter.tags.loading) return;
 
     this.filter.tags.loading = true;
 
     const queryParams = new URLSearchParams({ page: String(page), limit: String(LIMIT) });
-    if (search) queryParams.append('search', search);
+    if (this.search.tags) queryParams.append('search', this.search.tags);
 
     (
       await this.apiRestService.apiRestGet(`managers_tags?${queryParams.toString()}`, {
@@ -319,7 +325,7 @@ export class MapDashboardComponent {
 
         this.filter.tags = {
           loading: false,
-          options: [...this.filter.tags.options, ...result],
+          options: page === 1 ? result : [...this.filter.tags.options, ...result],
           scrolleable: page < pages,
         };
       },
@@ -607,10 +613,16 @@ export class MapDashboardComponent {
 
     this.drivers = [...this.drivers];
   }
+  public searchPolygons({ type, value }: { type: 'drivers' | 'polygons' | 'tags'; value: string }): void {
+    this.search[type] = value;
 
-  searchPolygons({ type, value }: { type: 'drivers' | 'polygons' | 'tags'; value: string }) {
-    if (type === 'drivers') this.getDrivers(1, value);
-    else if (type === 'polygons') this.getPolygons(1, value);
-    else if (type === 'tags') this.getTags(1, value);
+    if (type === 'drivers') {
+      this.search.drivers = value ? JSON.stringify({ nickname: value }) : null;
+      this.getDrivers(1);
+    } else if (type === 'polygons') {
+      this.getPolygons(1);
+    } else if (type === 'tags') {
+      this.getTags(1);
+    }
   }
 }
