@@ -211,16 +211,6 @@ export class MapComponent implements OnInit {
       this.map.setZoom(this.zoom);
     });
 
-    this.elementRef.nativeElement.querySelector('#map').addEventListener(
-      'mousewheel',
-      (event: any) => {
-        if (event.deltaY > 1) this.zoom += -1;
-        else this.zoom += 1;
-        this.map.setZoom(this.zoom);
-      },
-      true,
-    );
-
     if (perm?.state === 'granted') {
       this.makeMarker(this.start, this.iconLocation.start, 'yellow');
     }
