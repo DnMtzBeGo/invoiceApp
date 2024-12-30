@@ -14,6 +14,7 @@ export class ProfileInfoService {
   private profilePicSubject: Subject<string> = new BehaviorSubject<string>('/assets/images/user-outline.svg');
   public data = this.profileInfoSubject.asObservable();
   public profilePicUrl = this.profilePicSubject.asObservable();
+  public isOwner: boolean;
 
   public updateDataSelection(data: any) {
     this.profileInfoSubject.next(data);
@@ -24,7 +25,7 @@ export class ProfileInfoService {
       await this.webService.apiRest(carrier_id ? JSON.stringify({ carrier_id }) : '', 'carriers/select_attributes')
     ).subscribe(
       (res) => {
-        // console.log("select attributes : ", res.result);
+        this.isOwner = res.result._id === localStorage.getItem('profileId');
         this.profileInfo = res.result;
         this.updateDataSelection(this.profileInfo);
       },

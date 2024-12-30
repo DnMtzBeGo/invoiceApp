@@ -25,6 +25,7 @@
         </mat-form-field>
 
         <bego-phone-input
+          [disabled]="!profileInfoService.isOwner"
           [hidePhoneIcon]="true"
           [phoneFlag]="personalInfoForm.value.phoneFlag"
           [phoneCode]="personalInfoForm.value.phoneCode"
@@ -92,6 +93,7 @@
 
       <div class="row">
         <bego-address-autocomplete
+          [readonly]="!profileInfoService.isOwner"
           [address]="personalInfoForm.value.address"
           (addressChange)="updateAddress($event) ">
         </bego-address-autocomplete>
