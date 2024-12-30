@@ -149,7 +149,7 @@ export class ProfileComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe((params) => {
-      const id = params.id || this.id
+      const id = params.id || localStorage.getItem('profileId')
 
       this.getOrderCount(id);
       this.profileInfoService.getProfileInfo(id);
