@@ -139,4 +139,9 @@
 
 .phonecode-disabled{
   color: #C1C7D0;
+
+  &,
+  & + .arrow {
+    cursor: default;
+  }
 }
