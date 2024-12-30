@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private webService: AuthService,
-    private profileInfoService: ProfileInfoService,
+    public profileInfoService: ProfileInfoService,
     public translateService: TranslateService,
     private router: Router,
     public route: ActivatedRoute
@@ -45,7 +45,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     // this.id = this.route.snapshot.queryParamMap.get('id') || null;
     this.id = localStorage.getItem('profileId') || null;
-    
 
     // this.orderTabs = {
     //   account: {
@@ -89,7 +88,8 @@ export class ProfileComponent implements OnInit {
         enabled: true,
         sidebar: true,
         whenActive: (): any => {
-          this.profileInfoService.getProfileInfo(this.id);
+          const id = this.route.snapshot.queryParamMap.get('id') || this.id;
+          this.profileInfoService.getProfileInfo(id);
         }
       },
       satCertificate: {
@@ -144,10 +144,16 @@ export class ProfileComponent implements OnInit {
       this.profileInfo = profileInfo;
       this.profileImg = profileInfo?.thumbnail;
       this.noProfilePic = !profileInfo?.thumbnail;
+      this.orderTabs.satCertificate.enabled = this.profileInfoService.isOwner
+      this.id = profileInfo?._id;
     });
 
-    this.getOrderCount(this.id);
-    this.profileInfoService.getProfileInfo(this.id);
+    this.route.queryParams.subscribe((params) => {
+      const id = params.id || this.id
+
+      this.getOrderCount(id);
+      this.profileInfoService.getProfileInfo(id);
+    });
   }
 
   refreshProfilePic() {
