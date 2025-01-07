@@ -162,8 +162,10 @@ export class Step2Component implements OnChanges {
     this.phoneFlag = data.code;
     this.phoneCode = data.dial_code;
 
-    this.step2Form.get('country_code')!.setValue(data.code);
-    this.step2Form.get('phoneCode')!.setValue(data.dial_code);
+    this.step2Form.patchValue({
+      country_code: data.code,
+      phoneCode: data.dial_code,
+    });
   }
 
   public updateRFC(data: BegoRfcInputInfoOutput) {
