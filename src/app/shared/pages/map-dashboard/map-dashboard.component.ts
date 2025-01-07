@@ -392,6 +392,7 @@ export class MapDashboardComponent {
       case 'clear':
         this.activeDrivers = false;
         this.saveActiveDrivers = false;
+        this.heatmap = false;
         if (!this.options.start_date) break;
         if (this.polygonsMap.isTrafficActive) this.polygonsMap.toggleTraffic();
         this.clearFilters();
