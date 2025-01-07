@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
-import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity, Subscription } from 'rxjs';
+import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity, Subscription, Observable } from 'rxjs';
 import {
   mapTo,
   mergeAll,
@@ -151,6 +151,8 @@ export class FleetBrowserComponent implements OnInit {
     translations: {},
   };
 
+  refreshAction: Observable<void>;
+
   constructor(
     public router: Router,
     public route: ActivatedRoute,
@@ -250,6 +252,10 @@ export class FleetBrowserComponent implements OnInit {
 
     const facturasRequest$ = combineLatest([loadDataAction$, params$]).pipe(pluck('1'), share());
 
+    loadDataAction$.subscribe(() => {
+      this.selectedCategory = ''
+    })
+
     const facturas$ = combineLatest(
       tiposComprobante$.pipe(map(arrayToObject('clave', 'descripcion'))),
       facturaStatus$.pipe(map(arrayToObject('clave', 'nombre'))),
@@ -347,6 +353,8 @@ export class FleetBrowserComponent implements OnInit {
       searchLoading: searchLoading$,
       receptorSearch: receptorSearch$,
     });
+
+    this.refreshAction = loadDataAction$;
   }
 
   public ngOnDestroy() {
@@ -436,8 +444,9 @@ export class FleetBrowserComponent implements OnInit {
       mergeAll(),
       pluck('result'),
       tap((result) => {
-        this.paginator.pageTotal = result.pagination?.pages ?? result.pages ?? 1;
-        this.paginator.total = result.pagination?.size ?? result.size ?? 0;
+        this.paginator.pageTotal = result.pagination?.pages ?? result?.pages ?? 1;
+        this.paginator.total = result.pagination?.size ?? result?.size ?? 0;
+        this.paginator.pageIndex = Math.min(this.paginator.pageTotal, this.paginator.pageIndex);
       }),
       this.resolver.pluck ? pluck(this.resolver.pluck) : identity,
       tap(() => {

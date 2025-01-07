@@ -31,10 +31,7 @@ export class CustomStepperComponent implements AfterContentInit, OnChanges {
   @ContentChildren('step') public stepElements!: QueryList<TemplateRef<any>>;
 
   public ngAfterContentInit(): void {
-    this.steps = this.stepElements.toArray().map((stepElement, index) => {
-      const label = this.labels[index] || `Paso ${index + 1}`;
-      return { label, template: stepElement };
-    });
+    this.steps = this.getSteps();
 
     this.lineWidth = 100 / this.steps.length;
     this.linePosition = 0;
@@ -45,11 +42,22 @@ export class CustomStepperComponent implements AfterContentInit, OnChanges {
     if (changes.currentStep) {
       this.goToStep(changes.currentStep.currentValue);
     }
+
+    if (changes.labels) {
+      this.steps = this.getSteps();
+    }
   }
 
   public goToStep(index: number, emit: boolean = true): void {
     this.currentStep = index;
     this.linePosition = index * this.lineWidth;
     if (emit) this.stepStatus.emit(index);
+  }
+
+  private getSteps(): any {
+    return this.stepElements.toArray().map((stepElement, index) => {
+      const label = this.labels[index] || `Paso ${index + 1}`;
+      return { label, template: stepElement };
+    })
   }
 }

@@ -28,6 +28,10 @@
     "create-order": "Crear Orden",
     "continue-to-dropoff": "Continuar a Dropoff",
     "phone_text": "Teléfono",
+    "cargo-labels": {
+      "single": "Mercancías",
+      "multiple": "Múltiples mercancías"
+    },
     "cargo-weight": {
       "title": "Define el peso por caja",
       "subtitule": "(por regulación máximo 20 tons por caja)",
@@ -38,7 +42,7 @@
     "title-dropoff": "Entrega",
     "title-summary": "Resumen",
     "title-invoice": "Factura",
-    "title-order_number": "Order Number",
+    "title-order_number": "Numero de orden",
     "btn-step1": "Continuar",
     "btn-step2": "Orden de Entrega",
     "btn-step3": "Continuar",
@@ -150,6 +154,11 @@
       "btnBrowse": "Seleccione Archivo",
       "labelMax": "max",
       "uploading": "Subiendo..."
+    },
+    "multiple-cargo": {
+      "instructions-title": "Instrucciones",
+      "instructions-txt": "Para subir tus múltiples mercancías, debes descargar la plantilla en Excel, la cual deberás llenar en su totalidad y subirlo.",
+      "excel-template": "Plantilla Excel"
     }
   },
   "checkout": {
@@ -722,7 +731,8 @@
     "label_dropoff": "Entrega",
     "btn-order": "Ir a Orden",
     "no-drafts-title": "No hay borradores aún",
-    "no-drafts-txt": "Aún no has hecho ningún borrador por completo. Cuando lo hagas, su estado aparecerá aquí."
+    "no-drafts-txt": "Aún no has hecho ningún borrador por completo. Cuando lo hagas, su estado aparecerá aquí.",
+    "no-results": "Sin resultados"
   },
   "menu": {
     "home": "Inicio",
@@ -1462,7 +1472,7 @@
       "btn_add": "Agregar",
       "sort_by": {
         "date_created": "Fecha creación",
-        "atributes.brand": "Marca"
+        "attributes.brand": "Marca"
       },
       "see_details": "Ver unidad",
       "btn_view": "Ver unidad",

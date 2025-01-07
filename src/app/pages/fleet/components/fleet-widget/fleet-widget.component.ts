@@ -4,7 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { TranslateService } from '@ngx-translate/core';
 import { routes } from '../../consts';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-fleet-widget',
@@ -21,6 +21,9 @@ export class FleetWidgetComponent implements OnInit {
 
   @Input()
   editName: boolean = false;
+
+  @Input()
+  refreshNotifier?: Observable<void>;
 
   fleetDetails: any;
   fleetNameFromService: string;
@@ -65,6 +68,8 @@ export class FleetWidgetComponent implements OnInit {
   ngOnInit() {
     this.getFleetDetails();
     this.changeURL();
+
+    this.refreshNotifier?.subscribe(() => this.getFleetDetails());
   }
 
   ngOnDestroy() {
