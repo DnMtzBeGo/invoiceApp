@@ -13,12 +13,14 @@
       (changeUnits)="updateQuantity($event)"></bego-increment-decrement>
   </div>
 
-  <bego-search-select
-    [catalogs]="unitsCatalog"
-    [defaultValue]="selected.displayValue"
-    [inputPlaceHolder]="'orders.unit-details-list.slct-unit' | translate"
-    (searchValueChange)="getCatalog($event)"
-    (catalogValueChange)="updateUnitType($event)"></bego-search-select>
+  <div class="search-select-wrapper">
+    <bego-search-select
+      [catalogs]="unitsCatalog"
+      [defaultValue]="selected.displayValue"
+      [inputPlaceHolder]="'orders.unit-details-list.slct-unit' | translate"
+      (searchValueChange)="getCatalog($event)"
+      (catalogValueChange)="updateUnitType($event)"></bego-search-select>
+  </div>
 
   <bego-text-area
     keyValue="description"
