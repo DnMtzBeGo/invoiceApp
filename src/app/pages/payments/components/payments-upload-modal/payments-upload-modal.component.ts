@@ -199,7 +199,7 @@ export class PaymentsUploadModalComponent implements OnInit {
 
     formData.append('order_number', this.order_number);
     formData.append('reference_number', this.reference_number);
-    if (this.files.xml.file) formData.append('files', this.files.xml.file);
+    if (this.files.xml.file && !this.foreingPayment) formData.append('files', this.files.xml.file);
     if (this.files.pdf.file) formData.append('files', this.files.pdf.file);
     formData.append('total', this.prices.total.toString());
     formData.append('subtotal', this.prices.subtotal.toString());
@@ -210,8 +210,7 @@ export class PaymentsUploadModalComponent implements OnInit {
         this.close('success');
       },
       error: ({ error: { error } }) => {
-        const { errors, message } = error;
-        this.errorAlert(error.message[this.lang]);
+        this.errorAlert(error.message[this.lang] ?? error.message);
       }
     });
   }
