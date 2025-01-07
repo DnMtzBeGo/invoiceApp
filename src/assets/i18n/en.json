@@ -29,6 +29,10 @@
     "continue-to-dropoff": "Continue to Dropoff",
     "proceed-checkout": "Proceed to checkout",
     "phone_text": "Phone",
+    "cargo-labels": {
+      "single": "Cargo",
+      "multiple": "Multiple cargo"
+    },
     "cargo-weight": {
       "title": "Add your cargo weight",
       "subtitule": "Weight (max 20000 Kg):",
@@ -151,6 +155,11 @@
       "btnBrowse": "Choose File",
       "labelMax": "max",
       "uploading": "Uploading..."
+    },
+    "multiple-cargo": {
+      "instructions-title": "Instructions",
+      "instructions-txt": "To upload your multiple merchandise, you must download the template in Excel, which you must fill out in its entirety and upload.",
+      "excel-template": "Excel Template"
     }
   },
   "checkout": {
@@ -722,7 +731,8 @@
     "label_dropoff": "dropoff",
     "btn-order": "Continue Order",
     "no-drafts-title": "No Drafts",
-    "no-drafts-txt": "You haven´t placed any completed drafts yet. When you do their status will appear here."
+    "no-drafts-txt": "You haven´t placed any completed drafts yet. When you do their status will appear here.",
+    "no-results": "No results"
   },
   "menu": {
     "home": "Home",
@@ -1799,8 +1809,8 @@
     },
     "confirm_delete_question": "Do you really want to remove the tag ",
     "delete_dialog": {
-      "done": "Si, eliminar",
-      "cancel": "Cancelar",
+      "done": "Yes, delete",
+      "cancel": "Cancel",
       "title": "Delete tag"
     },
     "send_message": {
