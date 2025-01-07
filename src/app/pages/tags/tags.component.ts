@@ -155,11 +155,14 @@ export class TagsComponent implements OnInit {
   }
 
   private configurePagination(): TagsComponent {
-    this.page = { size: 0, index: 0, total: 0 };
+    const size = 10;
+    const page = 1;
+
+    this.page = { size, index: page, total: 0 };
 
     this.searchQuery = {
-      limit: 10,
-      page: 1,
+      page,
+      limit: size,
       sort: JSON.stringify({ date_created: -1 }),
       match: ''
     };
@@ -246,8 +249,7 @@ export class TagsComponent implements OnInit {
 
     if (translated) this.tags = [];
 
-    const { limit = '10', page = '1', sort, match } = this.searchQuery;
-    console.log(match);
+    const { limit = 10, page = 1, sort, match } = this.searchQuery;
     const queryParams = new URLSearchParams({
       limit: limit.toString(),
       page: page.toString(),
@@ -256,10 +258,8 @@ export class TagsComponent implements OnInit {
     }).toString();
 
     (await this.apiService.apiRestGet(`managers_tags/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
-      next: ({ result: { result, page = '1', size = '10' } }) => {
-        this.page.size = +limit;
-        this.page.total = page * size;
-        this.page.index = page;
+      next: ({ result: { result, size } }) => {
+        this.page.total = size;
 
         // setting result
         this.tags = result.map((tag: Tag) => {
@@ -322,18 +322,18 @@ export class TagsComponent implements OnInit {
   private isTagNameUnique(tagName: string, tagIdToExclude?: string): boolean {
     return !this.tags.some(tag => tag.name === tagName && tag._id !== tagIdToExclude);
   }
-  
+
   public async createTagName() {
     const tagName = this.tagName.trim();
-    
+
     if (tagName && tagName.length >= 1) {
       if (!this.isTagNameUnique(tagName)) {
         this.notificationService.showErrorToastr(this.translateService.instant('tags.form.error_repeat_tag_name'));
         return;
       }
-  
+
       const tag = { name: tagName };
-  
+
       try {
         (await this.apiService.apiRest(JSON.stringify(tag), `managers_tags`, { apiVersion: 'v1.1' }))
           .subscribe({
@@ -349,23 +349,23 @@ export class TagsComponent implements OnInit {
               } else {
                 this.notificationService.showErrorToastr(this.translateService.instant('tags.form.error_tag_name'));
               }
-            }            
+            }
           });
       } catch (error) {
         console.log('Error creating tag:', error);
       }
     }
   }
-  
+
   public async editTagName(tagId: string, editedTagName: string) {
     try {
       editedTagName = editedTagName.trim();
-  
+
       if (!this.isTagNameUnique(editedTagName, tagId)) {
         this.notificationService.showErrorToastr(this.translateService.instant('tags.form.error_repeat_tag_name'));
         return;
       }
-  
+
       const updatedTag = { name: editedTagName };
 
       (await this.apiService.apiRestPut(JSON.stringify(updatedTag), `managers_tags/rename/${tagId}`, { apiVersion: 'v1.1' })).subscribe({
@@ -373,8 +373,8 @@ export class TagsComponent implements OnInit {
           if (data.result?._id) this.openDialog(this.translate('created', 'tags'));
         },
       })
-  
-      const tagToUpdate = this.tags.find(tag => tag._id === tagId); 
+
+      const tagToUpdate = this.tags.find(tag => tag._id === tagId);
       if (tagToUpdate) {
         tagToUpdate.name = editedTagName;
       }
@@ -382,7 +382,7 @@ export class TagsComponent implements OnInit {
     } catch (error) {
       console.error('Error al actualizar el nombre de la etiqueta:', error);
     }
-  }    
+  }
 
   onModalClose(event: string) {
     try {
