@@ -205,13 +205,12 @@ export class PolygonsComponent implements OnInit {
       limit: limit.toString(),
       page: page.toString(),
       // ...(sort && { sort }),
-      ...(match && { match })
+      ...(match && { search: match })
     }).toString();
 
     (await this.webService.apiRestGet(`polygons/?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
-      next: ({ result: { result, total } }) => {
-        console.log(result);
-        this.page.total = total;
+      next: ({ result: { result, size } }) => {
+        this.page.total = size;
         this.polygons = result.map((polygons) => {
           let due_date: any = {
             value: '-',
@@ -231,7 +230,6 @@ export class PolygonsComponent implements OnInit {
           };
 
           actions.enabled = Object.values(actions.options).includes(true);
-          console.log(polygons);
           return {
             ...polygons,
             actions
@@ -276,7 +274,7 @@ export class PolygonsComponent implements OnInit {
 
   filterData({ active, search, type }) {
     if (active) {
-      this.searchQueries.match = JSON.stringify({ [type]: search });
+      this.searchQueries.match = search;
     } else this.searchQueries.match = '';
     this.page.index = 1;
     this.searchQueries.page = 1;
