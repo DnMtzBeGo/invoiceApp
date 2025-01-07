@@ -69,8 +69,8 @@ export class ChooseFleetElementComponent implements OnInit {
 
     const [ pickup, dropoff ] = this.orderInfo.destinations;
     const payload = {
-      fromDate: pickup.startDate,
-      toDate: dropoff.endDate
+      fromDate: pickup.start_date,
+      toDate: dropoff.end_date
     };
 
     (await this.webservice.apiRest(JSON.stringify(payload), '/orders/calendar', { apiVersion: 'v1.1' })).subscribe(({ result }) => {
