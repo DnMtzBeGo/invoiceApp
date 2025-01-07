@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
-import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity, Subscription } from 'rxjs';
+import { interval, merge, timer, from, Subject, combineLatest, asapScheduler, of, identity, Subscription, Observable } from 'rxjs';
 import {
   mapTo,
   mergeAll,
@@ -150,6 +150,8 @@ export class FleetBrowserComponent implements OnInit {
     name: '',
     translations: {},
   };
+
+  refreshAction: Observable<void>;
 
   constructor(
     public router: Router,
@@ -351,6 +353,8 @@ export class FleetBrowserComponent implements OnInit {
       searchLoading: searchLoading$,
       receptorSearch: receptorSearch$,
     });
+
+    this.refreshAction = loadDataAction$;
   }
 
   public ngOnDestroy() {
@@ -440,8 +444,9 @@ export class FleetBrowserComponent implements OnInit {
       mergeAll(),
       pluck('result'),
       tap((result) => {
-        this.paginator.pageTotal = result.pagination?.pages || 1;
-        this.paginator.total = result.pagination?.size ?? 0;
+        this.paginator.pageTotal = result.pagination?.pages ?? result?.pages ?? 1;
+        this.paginator.total = result.pagination?.size ?? result?.size ?? 0;
+        this.paginator.pageIndex = Math.min(this.paginator.pageTotal, this.paginator.pageIndex);
       }),
       this.resolver.pluck ? pluck(this.resolver.pluck) : identity,
       tap(() => {
