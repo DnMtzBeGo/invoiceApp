@@ -7,6 +7,7 @@ import { debounceTime, finalize, map, switchMap } from 'rxjs/operators';
 import { GoogleLocation } from 'src/app/shared/interfaces/google-location';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { GoogleMapsService } from 'src/app/shared/services/google-maps/google-maps.service';
+import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 interface SearchDraft {
   dataInput: string;
@@ -42,7 +43,12 @@ export class DraftsComponent implements OnInit {
 
   public search: string = '';
 
-  constructor(private auth: AuthService, private googlemaps: GoogleMapsService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private googlemaps: GoogleMapsService,
+    private router: Router,
+    private notificationService: NotificationsService,
+  ) {}
 
   private searchSubject = new Subject<SearchDraft>();
 
@@ -84,9 +90,10 @@ export class DraftsComponent implements OnInit {
     (await this.auth.apiRest(JSON.stringify(requestJson), 'orders/update_status')).subscribe(
       async (res) => {
         this.searchDraft();
+        this.notificationService.showSuccessToastr(res.message);
       },
       async (res) => {
-        console.log(res);
+        this.notificationService.showErrorToastr(res.error.error.message);
       },
     );
   }
