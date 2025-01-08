@@ -13,7 +13,7 @@
             alt="">
 
             <div
-              *ngIf="!noProfilePic && id !== null"
+              *ngIf="!noProfilePic && id !== null && profileInfoService.isOwner"
               class="close-btn"
               (click)="showDeleteProfilePicModal = true">
             </div>
@@ -24,7 +24,7 @@
           <p>{{'profile.account.pic-not-uploaded' | translate }}</p>
         </div>
         
-        <div *ngIf="noProfilePic || id == null" class="edit-profile-btns">
+        <div *ngIf="(noProfilePic || id == null) && profileInfoService.isOwner" class="edit-profile-btns">
           <div class="pic-btn yellow" (click)="profilePicInput.click()">
             {{ 'profile.account.upload-btn' | translate }}
           </div>

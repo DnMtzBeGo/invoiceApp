@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { inject, NgModule } from '@angular/core';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { ProfileComponent } from './profile.component';
 
 const routes: Routes = [
@@ -22,6 +22,17 @@ const routes: Routes = [
       },
       {
         path: 'sat-certificate',
+        canActivate: [
+          (route) => {
+            const id = route.queryParams.id;
+
+            if (id && id !== localStorage.getItem('profileId')) {
+              const router = inject(Router);
+              router.navigate(['/profile/personal-info'], { queryParams: { id } });
+              return false;
+            }
+          },
+        ],
         loadChildren: () => import('./components/sat-certificate/sat-certificate.module').then((m)=>m.SatCertificateModule),
       },
       {

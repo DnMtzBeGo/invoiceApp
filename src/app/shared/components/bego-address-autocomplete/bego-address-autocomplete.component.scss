@@ -25,3 +25,15 @@
     color: $color-font-grey;
   }
 }
+
+.bego-address-autocomplete {
+  &.readonly ::ng-deep {
+    input {
+      cursor: default;
+    }
+
+    .mat-form-field-underline {
+      opacity: 0;
+    }
+  }
+}

@@ -32,7 +32,7 @@
       left: -60px;
     }
   
-    .mat-select-arrow{
+    .mat-select:not(.mat-select-disabled) .mat-select-arrow {
       color: white;
     }
   }
