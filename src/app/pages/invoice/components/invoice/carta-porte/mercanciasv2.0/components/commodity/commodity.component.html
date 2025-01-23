@@ -4,15 +4,15 @@
       <mat-label>{{ 'invoice.commodity.bienes-transportados' | translate }}</mat-label>
 
       <mat-select name="bienes_transp" formControlName="bienes_transp" class="disable-custom-format">
-        <mat-option>
+        <mat-option aria-hidden="false">
           <ngx-mat-select-search
             (input)="searchTransportedGoods($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
-            class="brand-select-search-1"></ngx-mat-select-search>
+            class="brand-select-search-1" />
         </mat-option>
         <ng-container *ngFor="let option of transportedGoods">
-          <mat-option [value]="option.code" class="brand-option-1">
+          <mat-option [value]="option.code" c lass="brand-option-1">
             {{ option.code }} - {{ option.description }}
           </mat-option>
         </ng-container>

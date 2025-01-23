@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { BegoChibiAlert, BegoDialogService } from '@begomx/ui-components';
+import { BegoChibiAlert, BegoDialogService, ApiRestService } from '@begomx/ui-components';
 
 import { Paginator } from 'src/app/pages/invoice/models';
 import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
@@ -27,6 +27,7 @@ export class MercanciasTableComponent implements OnInit {
     private readonly matDialog: MatDialog,
     private readonly cd: ChangeDetectorRef,
     private readonly begoDialog: BegoDialogService,
+    private readonly api: ApiRestService,
   ) {}
 
   private filter: any = {};
@@ -89,7 +90,34 @@ export class MercanciasTableComponent implements OnInit {
             this.editRecord.emit(data.id);
             break;
           case 'remove':
-            // this.openMessageModal(event?.element);
+            this.begoDialog.open({
+              title: 'Eliminar mercancia...',
+              content: 'Esta acción no podrá deshacerse, ¿desea continuar?',
+              type: 'action',
+              iconComponent: BegoChibiAlert,
+              btnCopies: {
+                confirm: 'Ok',
+                cancel: 'Cancelar',
+              },
+              handleAction: (action: string): void => {
+                if (action === 'confirm')
+                  this.api
+                    .request(
+                      'DELETE',
+                      `v1.0/consignment-note/merchandise/${this.consignmentNoteService.invoice_id}/${data._id}`,
+                    )
+                    .subscribe((response) => {
+                      const { num_total_mercancias, peso_bruto_total } = response.result;
+                      this.reloadData();
+
+                      this.consignmentNoteService.addRecoletedInfoMercancias({
+                        num_total_mercancias,
+                        peso_bruto_total,
+                      });
+                      this.cd.markForCheck();
+                    });
+              },
+            });
             break;
           default:
             break;

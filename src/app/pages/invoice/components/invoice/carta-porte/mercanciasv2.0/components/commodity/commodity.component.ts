@@ -224,13 +224,17 @@ export class CommodityComponent implements OnInit, OnChanges {
         ...this.commodityForm.value,
       };
 
-      const _updateLocalData = () => {
+      const _updateLocalData = (line_id?: string, line?: number) => {
         if (this.editId) {
           const tempCommodities = [...this.cartaPorteInfoService.commodities];
           const index = tempCommodities.findIndex((commodity) => commodity.id === this.editId);
           tempCommodities[index] = data;
           this.cartaPorteInfoService.commodities = [...tempCommodities];
-        } else this.cartaPorteInfoService.commodities = [...this.cartaPorteInfoService.commodities, data];
+        } else {
+          data._id = line_id;
+          data.line = line;
+          this.cartaPorteInfoService.commodities = [...this.cartaPorteInfoService.commodities, data];
+        }
 
         this.cd.markForCheck();
         this._resetForm();
@@ -238,17 +242,16 @@ export class CommodityComponent implements OnInit, OnChanges {
       };
 
       if (this.cartaPorteInfoService.invoice_id) {
-        console.log('send to database before make changes');
-
         this.cartaPorteInfoService
           .createOrUpdateCommodityAtDatabase(data)
           .toPromise()
           .then(({ result }: any) => {
+            console.log(result);
             // in this case is required to call _updateLocalData after database update
             // or the data will not be reflected in the UI
             const { peso_bruto_total, num_total_mercancias } = result;
             this.cartaPorteInfoService.addRecoletedInfoMercancias({ peso_bruto_total, num_total_mercancias });
-            _updateLocalData();
+            _updateLocalData(result.line_id, result.line);
             // this.cd.markForCheck();
           });
       } else _updateLocalData();
