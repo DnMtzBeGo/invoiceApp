@@ -9,7 +9,7 @@
             (input)="searchTransportedGoods($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
-            class="brand-select-search-1" />
+            class="brand-select-search-1"></ngx-mat-select-search>
         </mat-option>
         <ng-container *ngFor="let option of transportedGoods">
           <mat-option [value]="option.code" class="brand-option-1">
