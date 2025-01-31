@@ -90,11 +90,17 @@
         bego-icon {
           ::ng-deep {
             i {
-                color: #fff;
+              color: #fff;
             }
           }
         }
       }
+    }
+  }
+
+  ::ng-deep {
+    .paginator-container {
+      z-index: inherit;
     }
   }
 }
