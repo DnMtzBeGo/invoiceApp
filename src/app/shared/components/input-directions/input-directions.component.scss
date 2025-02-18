@@ -1,5 +1,8 @@
 @import "../../../../styles.scss";
 
+$primary-color: #ffee00;
+$lighter-color: #ededed;
+
 .fleet-type {
   display: flex;
   flex-direction: column;
@@ -635,5 +638,131 @@ app-member-card-selection:nth-last-of-type(1) {
     display: flex;
     --font-size: 0.75em;
     --color: unset;
+  }
+}
+
+/* copy from uiComponents/polygon-filter */
+::ng-deep {
+  --mdc-text-button-label-text-color: $lighter-color;
+  /*** MAT Calendar ***/
+  .mat-calendar-body-label {
+    opacity: 0;
+  }
+
+  .mat-calendar-body-label[colspan='7'] {
+    display: none;
+  }
+
+  .mat-datepicker-content {
+    box-sizing: border-box;
+    background: linear-gradient(66.07deg, rgb(8, 12, 15, 0.7) 5.1%, #1c232a 100%);
+    backdrop-filter: blur(20px);
+    pointer-events: auto;
+    border-radius: 50px !important;
+    padding: 30px;
+
+    &::before {
+      border-radius: inherit;
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(133.09deg, rgba(8, 12, 15, 0.85) 24.22%, rgba(23, 29, 35, 0.85) 94.67%);
+      z-index: -1;
+      padding: 1px;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+  }
+
+  .mat-datepicker-content,
+  .mat-calendar-body-cell-content,
+  .mat-calendar-table-header,
+  .mat-calendar-body-label,
+  .mat-datepicker-toggle,
+  .mat-datepicker-content .mat-calendar-next-button,
+  .mat-datepicker-content .mat-calendar-previous-button {
+    color: #ededed;
+  }
+
+  .mat-calendar-arrow {
+    fill: #ededed;
+  }
+
+  .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    border: 1px solid #1c232a;
+    border-radius: 8px;
+    background-color: #10161c;
+    box-shadow: inset -2px -2px 4px 0 rgba(44, 46, 50, 0.45), inset 2px 2px 4px 0 #000000;
+  }
+
+  .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover
+    > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
+  .cdk-keyboard-focused
+    .mat-calendar-body-active
+    > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
+  .cdk-program-focused
+    .mat-calendar-body-active
+    > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    background-color: #10161c;
+  }
+
+  .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover
+    > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    background-color: $primary-color;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #040b11;
+    box-shadow: inset 2px 2px 4px #ffbe00, inset -2px -2px 4px #c69400;
+  }
+
+  .mat-calendar-table-header th {
+    font-size: 16px;
+    color: #494c50;
+    font-weight: 500;
+    font-family: Avenir;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    user-select: none;
+  }
+
+  .mat-calendar-table-header-divider::after {
+    height: 0 !important;
+  }
+
+  .mat-calendar-body {
+    font-size: 16px;
+  }
+
+  .mat-calendar-body-selected {
+    background-color: $primary-color;
+    color: #040b11 !important;
+    box-shadow: inset 2px 2px 4px #ffbe00, inset -2px -2px 4px #c69400;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+
+  .mat-calendar-body-today.mat-calendar-body-selected {
+    box-shadow: inset 2px 2px 4px #ffbe00, inset -2px -2px 4px #c69400;
+    border-radius: 8px;
+  }
+
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    background: transparent;
+  }
+
+  .mat-calendar-body-disabled
+    > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    color: #89898a;
+  }
+  /*   Button Toggle   */
+
+  .mat-button-toggle-group-appearance-standard .mat-button-toggle + .mat-button-toggle {
+    border-left: none;
+  }
+
+  .mdc-button__label {
+    color: #ededed;
   }
 }

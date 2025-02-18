@@ -155,11 +155,14 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
   }
 
   private configurePagination(): TagsFormComponent {
-    this.page = { size: 0, index: 0, total: 0 };
+    const size = 10;
+    const page = 1;
+
+    this.page = { size, index: page, total: 0 };
 
     this.searchQuery = {
-      limit: 10,
-      page: 1,
+      page,
+      limit: size,
       sort: JSON.stringify({ date_created: -1 }),
       match: ''
     };
@@ -199,11 +202,13 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
 
   public changePage({ index, size }: any) {
     this.searchQuery.page = index;
+    this.page.index = index;
     if (this.searchQuery.limit !== size) {
       this.page.index = 1;
       this.searchQuery.page = 1;
     }
     this.searchQuery.limit = size;
+    this.fetchDrivers();
   }
 
   public selectColumn($event) {
@@ -224,9 +229,9 @@ export class TagsFormComponent implements OnInit, AfterViewInit {
     }).toString();
   
     (await this.apiService.apiRestGet(`managers_tags/members?${queryParams}`, { apiVersion: 'v1.1' })).subscribe({
-      next: ({ result: { result, size = '10', page = '1' } }) => {
-        this.page = { total: +size * +page, index: page, size: limit };
-  
+      next: ({ result: { result, size } }) => {
+        this.page.total = size;
+
         const activeTagId = this.tag_id;
   
         this.drivers = result.map((driver: TagDriver) => {

@@ -98,30 +98,8 @@
           (goBack)="showSavedLocations = false"
           (pickLocation)="pickSavedLocation($event)"></app-saved-locations>
 
-        <div class="list-address-container" *ngIf="invalidAddressPickup">
-          <!-- <div detail='false' >
-          <div class='item-location'>
-            <div class='list-icon-pin'></div>
-            <div class="list-map">{{'location.label_pin' | translate}}</div>
-          </div>
-        </div> -->
-          <div (click)="ClearAutocompletePickup()">
-            <div class="item-location">
-              <div class="list-icon-error"></div>
-              <div class="list-address-error">
-                <span>{{ 'location.txt-address-not-found' | translate }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div #btnOrder class="list-address-container" *ngIf="invalidAddressDropoff">
-          <!-- <div detail='false' >
-          <div class='item-location'>
-            <div class='list-icon-pin'></div>
-            <div class="list-map">{{'location.label_pin' | translate}}</div>
-          </div>
-        </div> -->
-          <div (click)="ClearAutocompleteDropoff()">
+        <div class="list-address-container" *ngIf="(activeInput === 'pickup' && invalidAddressPickup) || (activeInput === 'dropoff' && invalidAddressDropoff)">
+          <div (click)="activeInput === 'pickup' ? ClearAutocompletePickup() : ClearAutocompleteDropoff()">
             <div class="item-location">
               <div class="list-icon-error"></div>
               <div class="list-address-error">

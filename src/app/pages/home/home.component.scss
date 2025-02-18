@@ -188,43 +188,6 @@ bego-modal {
   }
 }
 
-.btn-traffic {
-  position: absolute;
-  color: #ededed;
-  bottom: 60px;
-  right: calc(100% + 10px);
-  cursor: pointer;
-  border: none;
-  border-radius: 30px;
-
-  @keyframes slideInFromBottom {
-    from {
-      transform: translateY(-250px);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  img {
-    filter: brightness(0) invert(1);
-  }
-}
-
-.btn-traffic.active img {
-  filter: none;
-}
-
-.btn-reload {
-  @extend .btn-traffic;
-  bottom: 110px;
-
-  bego-icon {
-    --color: #ededed;
-    --font-size: 2rem;
-  }
-}
-
 ::ng-deep .gm-style iframe + div {
   border: none !important;
 }

@@ -33,6 +33,11 @@ export class UploadFilesComponent implements OnInit {
     this.info = info;
     const { places, files } = this.info;
 
+    // fill empty slots
+    for (const i of files.keys()) {
+      files[i] ||= { url: '' }
+    }
+
     //if all files are already filled or even if we receive more images than expected, just show the first needed images
     if (files.length >= places) {
       this.info.files.splice(places);

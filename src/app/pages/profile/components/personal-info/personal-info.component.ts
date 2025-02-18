@@ -72,6 +72,15 @@ export class PersonalInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.queryParamMap.get('id') || null;
+
+    this.profileInfoService.data.subscribe(() => {
+      if (this.profileInfoService.isOwner) {
+        this.personalInfoForm.enable();
+      } else {
+        this.personalInfoForm.disable();
+      }
+    })
+
     // console.log('personal-info', this.route);
     // console.log('personal-info params', this.route.snapshot.params);
     // console.log('personal-info queryParams', this.route.snapshot.queryParams);

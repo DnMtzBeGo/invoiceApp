@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import * as moment from 'moment';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 import { CargoWeightComponent } from '../cargo-weight/cargo-weight.component';
 import { UnitDetailsModalComponent } from '../unit-details-modal/unit-details-modal.component';
@@ -105,7 +106,6 @@ export class Step3Component implements OnInit {
   public fileTypes = ['.xlsx'];
   public files: any = null;
 
-  public multipleFilesLang;
   public multipleCargo: boolean = false;
 
   public stepIndex: number = 0;
@@ -147,21 +147,14 @@ export class Step3Component implements OnInit {
       multipleCargoFile: new FormControl(this.files),
     });
 
-    this.fileLang = {
-      labelBrowse: this.translateService.instant('orders.upload-file.label-browse'),
-      labelOr: this.translateService.instant('orders.upload-file.label-or'),
-      btnBrowse: this.translateService.instant('orders.upload-file.btn-browse'),
-      labelMax: this.translateService.instant('orders.upload-file.label-max'),
-    };
-
-    this.multipleFilesLang = {
-      name: this.translateService.instant('orders.upload-multiple-orders.name'),
-      labelBrowse: this.translateService.instant('orders.upload-multiple-orders.labelBrowse'),
-      labelOr: this.translateService.instant('orders.upload-multiple-orders.labelOr'),
-      btnBrowse: this.translateService.instant('orders.upload-multiple-orders.btnBrowse'),
-      labelMax: this.translateService.instant('orders.upload-multiple-orders.labelMax'),
-      uploading: this.translateService.instant('orders.upload-multiple-orders.uploading'),
-    };
+    this.fileLang = this.translateService.stream('orders.upload-file').pipe(
+      map((data) => ({
+        labelBrowse: data['label-browse'],
+        labelOr: data['label-or'],
+        btnBrowse: data['btn-browse'],
+        labelMax: data['label-max'],
+      })),
+    );
 
     this.minTime.setHours(1);
     this.minTime.setMinutes(0);

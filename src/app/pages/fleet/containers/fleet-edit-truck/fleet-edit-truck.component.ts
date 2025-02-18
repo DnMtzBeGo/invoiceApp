@@ -325,7 +325,7 @@ export class FleetEditTruckComponent implements OnInit {
    * Called only when creating a new truck
    */
   public onTruckInfoChanged = () => {
-    const enoughPictures = this.newTruckPictures.length >= 3;
+    const enoughPictures = this.newTruckPictures.filter(Boolean).length >= 3;
     this.disableSaveBtn = this.truckDetailsForm.status == 'INVALID' || !enoughPictures || !this.insuranceFile;
   };
 

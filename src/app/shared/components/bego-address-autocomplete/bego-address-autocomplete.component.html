@@ -1,5 +1,5 @@
 <form action="" [formGroup]="autocompleteForm" class="bego-direction-wrapper">
-  <mat-form-field [ngClass]="formFieldClass" [appearance]="formFieldAppearance">
+  <mat-form-field [ngClass]="formFieldClass" [class.readonly]="readonly" [appearance]="formFieldAppearance">
     <mat-label>
       {{ "profile.account.txt_address" | translate }}
     </mat-label>
