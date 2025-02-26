@@ -84,6 +84,11 @@ import { CataloguesListService } from '../../components/invoice/carta-porte/serv
 import { CartaPorteInfoService } from '../../components/invoice/carta-porte/services/carta-porte-info.service';
 import { CartaPortePageComponent } from '../carta-porte-page/carta-porte-page.component';
 
+interface RelatedDoc {
+  uuid: string;
+  tipo_relacion: string;
+}
+
 interface VM {
   // "receptor" | "emisor" | "conceptos" | "complementos";
   tab?: string;
@@ -123,7 +128,7 @@ interface VM {
     conceptos: unknown[];
     // documentos relacionados
     tipo_de_relacion: string;
-    documentos_relacionados: unknown[];
+    documentos_relacionados: RelatedDoc[];
     // serie
     serie: string;
     // links
@@ -150,7 +155,7 @@ interface VM {
     tipos_de_impuesto?: unknown[];
     unidades_de_medida?: unknown[];
     tipos_de_comprobante?: unknown[];
-    tipos_de_relacion?: unknown[];
+    tipos_de_relacion?: any[];
     usos_cfdi?: unknown[];
   };
   helpTooltips?: any;
@@ -1491,6 +1496,10 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
 
   public searchSeries(code: string): void {
     searchInList(this, ['vm', 'series'], 'filteredSeries', code, '_id', 'serie');
+  }
+
+  public relationshipTypeDescription(code: string): string {
+    return this.vm.catalogos.tipos_de_relacion.find((type: any) => type.clave === code)?.descripcion;
   }
 
   public ngOnDestroy(): void {
