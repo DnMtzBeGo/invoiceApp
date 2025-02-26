@@ -1,9 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import {
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA
-} from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -13,7 +9,7 @@ import { routes } from '../../consts';
 @Component({
   selector: 'app-action-confirmation',
   templateUrl: './action-confirmation.component.html',
-  styleUrls: ['./action-confirmation.component.scss']
+  styleUrls: ['./action-confirmation.component.scss'],
 })
 export class ActionConfirmationComponent {
   public routes: typeof routes = routes;
@@ -23,11 +19,13 @@ export class ActionConfirmationComponent {
     private dialogRef: MatDialogRef<ActionConfirmationComponent>,
     private notificationsService: NotificationsService,
     private apiRestService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   public async confirmAction() {
-    (await this.apiRestService.apiRest(JSON.stringify(this.data.modalPayload.body), this.data.modalPayload.endpoint)).subscribe(
+    (
+      await this.apiRestService.apiRest(JSON.stringify(this.data.modalPayload.body), this.data.modalPayload.endpoint)
+    ).subscribe(
       (res) => {
         this.notificationsService.showSuccessToastr(this.data.modalPayload.successMessage);
         this.dialogRef.close(true);
@@ -41,7 +39,7 @@ export class ActionConfirmationComponent {
         }
 
         this.dialogRef.close();
-      }
+      },
     );
   }
 }
