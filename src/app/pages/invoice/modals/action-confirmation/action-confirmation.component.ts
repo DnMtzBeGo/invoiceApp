@@ -42,4 +42,13 @@ export class ActionConfirmationComponent {
       },
     );
   }
+
+  public readirectToEmitters() {
+    this.close();
+    this.router.navigate([this.routes.EMISORES]);
+  }
+
+  public close() {
+    this.dialogRef.close();
+  }
 }
