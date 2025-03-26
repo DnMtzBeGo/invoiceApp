@@ -1439,7 +1439,7 @@
     "btn_view_all": "VER TODOS",
     "txt_fleet_name": "Nombre de flotilla",
     "txt_team": "Conductores",
-    "txt_trucks": "Tractocamion",
+    "txt_trucks": "Tractocamiones",
     "txt_trailers": "Cajas",
     "txt_driver_truck": "Operador y unidad requeridos.",
     "txt_driver_truck_m": "Necesitas al menos un operador y una unidad para generar servicios.",
