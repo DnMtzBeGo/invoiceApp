@@ -481,9 +481,19 @@ export class MultiplePaymentModalComponent implements OnInit {
     };
 
     const _buildPayment = (): IPaymentV2 => {
-      this.amounts.totalTransfersBase16 = 0;
-      this.amounts.totalTransfersTax16 = 0;
-      this.amounts.totalIVAWithholdings = 0;
+      this.amounts = {
+        ...this.amounts,
+        totalIVAWithholdings: 0,
+        totalISRWithholdings: 0,
+        totalIEPSWithholdings: 0,
+        totalTransfersBase16: 0,
+        totalTransfersTax16: 0,
+        totalTransfersBase8: 0,
+        totalTransfersTax8: 0,
+        totalTransfersBase0: 0,
+        totalTransfersTax0: 0,
+        totalTransfersBaseExempt: 0,
+      };
 
       const payment: IPaymentV2 = {
         version: '2.0',
