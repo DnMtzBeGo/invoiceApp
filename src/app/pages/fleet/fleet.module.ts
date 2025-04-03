@@ -56,7 +56,6 @@ import { PrimeCardComponent } from './components/prime-card/prime-card.component
     PrimeCardComponent,
   ],
   imports: [
-    TranslateModule,
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
