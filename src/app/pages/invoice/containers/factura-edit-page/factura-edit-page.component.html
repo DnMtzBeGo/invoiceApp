@@ -1959,7 +1959,11 @@
         </h6>
         <div class="grid-fill">
           <!-- - ->-->
-          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
+          <mat-form-field
+            class="brand-field-1"
+            appearance="outline"
+            [attr.readonly]="vm.readonly || !!vm.form?.order"
+            [style.display]="!vm.readonly ? 'block' : 'none'">
             <mat-label>{{ 'invoice.edit.doc-rel-tipo' | translate }}</mat-label>
             <!-- <mat-select
               name="tipo_de_relacion"
@@ -1981,6 +1985,7 @@
               [ngModel]="vm.form?.tipo_de_relacion"
               (ngModelChange)="vm.form.tipo_de_relacion = $event"
               class="disable-custom-format"
+              [style.width]="'500px'"
               [disabled]="vm.readonly || !!vm.form?.order">
               <mat-option>
                 <ngx-mat-select-search
@@ -2017,7 +2022,7 @@
         </div>
 
         <div class="grid-fill" *ngIf="!vm.readonly && !vm.form?.order" style="padding-top: 0">
-          <mat-form-field class="brand-field-1" appearance="outline">
+          <mat-form-field [style.width]="'500px'" class="brand-field-1" appearance="outline">
             <mat-label>{{ 'invoice.edit.doc-rel-uuid' | translate }}</mat-label>
             <input matInput name="uuid" [ngModel]="vm.uuid" (ngModelChange)="vm.uuid = $event" autocomplete="off" />
 
@@ -2030,25 +2035,26 @@
               <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
             </span>
           </mat-form-field>
-
+          <div>&nbsp;</div>
           <div style="padding-top: 9px">
             <button
               mat-flat-button
               class="brand-btn-2"
-              (click)="vm.form.documentos_relacionados.push({ uuid: vm.uuid }); vm.uuid = ''"
+              (click)="
+                vm.form.documentos_relacionados.push({ tipo_relacion: vm.form.tipo_de_relacion, uuid: vm.uuid });
+                vm.uuid = ''
+              "
               [disabled]="!vm.form?.tipo_de_relacion">
               {{ 'invoice.edit.doc-rel-add' | translate }}
             </button>
           </div>
         </div>
 
-        <table
-          *ngIf="vm.form?.documentos_relacionados.length"
-          class="impuestos-table"
-          style="max-width: 70%; margin-bottom: 3.5rem">
+        <table *ngIf="vm.form?.documentos_relacionados.length" class="impuestos-table" style="margin-bottom: 3.5rem">
           <thead>
             <tr>
-              <th width="80%">{{ 'invoice.edit.doc-rel-uuid' | translate }}</th>
+              <th width="50%">{{ 'invoice.edit.doc-rel-tipo' | translate }}</th>
+              <th width="30%">{{ 'invoice.edit.doc-rel-uuid' | translate }}</th>
               <th *ngIf="!vm.readonly && !vm.form?.order" width="20%">
                 {{ 'invoice.edit.opciones' | translate }}
               </th>
@@ -2056,6 +2062,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let doc of vm.form?.documentos_relacionados; index as index">
+              <td>
+                {{ relationshipTypeDescription(doc.tipo_relacion) }}
+              </td>
               <td>
                 {{ doc.uuid }}
               </td>

@@ -107,7 +107,6 @@ export class FacturasPageComponent implements OnInit {
     public route: ActivatedRoute,
     private matDialog: MatDialog,
     private apiRestService: AuthService,
-    private apiService: ApiRestService,
     private translateService: TranslateService,
     private cd: ChangeDetectorRef,
     private datePipe: DatePipe,

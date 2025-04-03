@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { FleetEditTruckComponent } from './fleet-edit-truck.component';
 
@@ -9,6 +11,7 @@ describe('FleetEditTruckComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FleetEditTruckComponent],
+      imports: [HttpClientModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
