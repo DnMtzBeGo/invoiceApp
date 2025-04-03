@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FleetEditTruckComponent } from './fleet-edit-truck.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
+
+import { FleetEditTruckComponent } from './fleet-edit-truck.component';
 
 describe('FleetEditTruckComponent', () => {
   let component: FleetEditTruckComponent;
