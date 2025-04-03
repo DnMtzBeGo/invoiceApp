@@ -507,12 +507,10 @@ export class MultiplePaymentModalComponent implements OnInit {
               serie: serie_label,
               folio,
               moneda_dr: moneda,
-              // TODO: consider cases when currency type is different between payment and related document
               equivalencia_dr: 1,
               num_parcialidad: np,
               imp_saldo_ant: _importe(total),
               imp_pagado: _importe(monto_a_pagar),
-              // TODO: SALDO PENDIENTE
               imp_saldo_insoluto: +(_importe(total) - _importe(monto_a_pagar)).toFixed(2),
               objeto_imp_dr: _parseObjectImp(objeto_imp),
             };
