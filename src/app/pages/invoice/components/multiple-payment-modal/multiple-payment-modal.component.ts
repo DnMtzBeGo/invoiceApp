@@ -26,7 +26,7 @@ import {
   IRelatedDocumentEdit,
   IInvoiceChildPayment,
 } from './interfaces';
-import { TaxFactor, TaxType } from './enums';
+import { TaxFactor, TaxCodes, IVARates } from './enums';
 import { _importe, _importeMXN } from './helpers';
 import { ApiRestService } from 'src/app/services/api-rest.service';
 
@@ -67,9 +67,14 @@ export class MultiplePaymentModalComponent implements OnInit {
   public amounts: IAmounts = {
     payed: 0,
     pending: 0,
-    totalIVAWithholds: 0,
+    totalIVAWithholdings: 0,
     totalTransfersBase16: 0,
     totalTransfersTax16: 0,
+    totalTransfersBase8: 0,
+    totalTransfersTax8: 0,
+    totalTransfersBase0: 0,
+    totalTransfersTax0: 0,
+    totalTransfersBaseExempt: 0,
   };
 
   public billsTable: any = {};
@@ -385,15 +390,24 @@ export class MultiplePaymentModalComponent implements OnInit {
       return false;
     };
 
-    const _buildWithholdsDR = (retenciones: ICFDITax | ICFDITax[]) => {
+    const _buildWithholdingsDR = (retenciones: ICFDITax | ICFDITax[]) => {
       let retenciones_dr = null;
 
       retenciones = retenciones && !Array.isArray(retenciones) ? [retenciones] : retenciones;
 
       if (Array.isArray(retenciones)) {
         retenciones_dr = retenciones?.map((retencion: ICFDITax) => {
-          if (retencion.Impuesto === '002' && +retencion.TasaOCuota == 0.16)
-            this.amounts.totalIVAWithholds += _importe(retencion.Importe);
+          switch (retencion.Impuesto) {
+            case TaxCodes.IVA:
+              this.amounts.totalIVAWithholdings += _importe(retencion.Importe);
+              break;
+            case TaxCodes.ISR:
+              this.amounts.totalISRWithholdings += _importe(retencion.Importe);
+              break;
+            case TaxCodes.IEPS:
+              this.amounts.totalIEPSWithholdings += _importe(retencion.Importe);
+              break;
+          }
 
           return {
             base_dr: _importe(retencion.Base),
@@ -415,18 +429,39 @@ export class MultiplePaymentModalComponent implements OnInit {
 
       if (Array.isArray(traslados) && traslados.length) {
         traslados_dr = traslados?.map((traslado: ICFDITax) => {
-          if (traslado.Impuesto === '002' && +traslado.TasaOCuota === 0.16) {
-            this.amounts.totalTransfersBase16 += _importe(traslado.Base);
-            this.amounts.totalTransfersTax16 += _importe(traslado.Importe);
-          }
-
-          return {
+          const trasladoObj = {
             base_dr: _importe(traslado.Base),
             impuesto_dr: traslado.Impuesto,
             tipo_factor_dr: traslado.TipoFactor,
-            tasa_o_cuota_dr: _importe(traslado.TasaOCuota),
-            importe_dr: _importe(traslado.Importe),
           };
+
+          if (TaxCodes.IVA === traslado.Impuesto) {
+            if (traslado.TipoFactor === TaxFactor.Exento) {
+              this.amounts.totalTransfersBaseExempt += _importe(traslado.Base);
+            } else {
+              trasladoObj['tasa_o_cuota_dr'] = _importe(traslado.TasaOCuota);
+              trasladoObj['importe_dr'] = _importe(traslado.Importe);
+
+              switch (+traslado.TasaOCuota) {
+                case IVARates.P16:
+                  this.amounts.totalTransfersBase16 += _importe(traslado.Base);
+                  this.amounts.totalTransfersTax16 += _importe(traslado.Importe);
+                  break;
+
+                case IVARates.P08:
+                  this.amounts.totalTransfersBase8 += _importe(traslado.Base);
+                  this.amounts.totalTransfersTax8 += _importe(traslado.Importe);
+                  break;
+
+                case IVARates.P0:
+                  this.amounts.totalTransfersBase0 += _importe(traslado.Base);
+                  this.amounts.totalTransfersTax0 += _importe(traslado.Importe);
+                  break;
+              }
+            }
+          }
+
+          return trasladoObj;
         });
       }
 
@@ -436,7 +471,7 @@ export class MultiplePaymentModalComponent implements OnInit {
     const _buildTaxesDR = (impuestos: ICFDITaxes): ITaxesDR => {
       return _cleanEmpty<ITaxesDR>({
         traslados_dr: _buildTransfersDR(impuestos.traslados),
-        retenciones_dr: _buildWithholdsDR(impuestos.retenciones),
+        retenciones_dr: _buildWithholdingsDR(impuestos.retenciones),
       });
     };
 
@@ -446,9 +481,19 @@ export class MultiplePaymentModalComponent implements OnInit {
     };
 
     const _buildPayment = (): IPaymentV2 => {
-      this.amounts.totalTransfersBase16 = 0;
-      this.amounts.totalTransfersTax16 = 0;
-      this.amounts.totalIVAWithholds = 0;
+      this.amounts = {
+        ...this.amounts,
+        totalIVAWithholdings: 0,
+        totalISRWithholdings: 0,
+        totalIEPSWithholdings: 0,
+        totalTransfersBase16: 0,
+        totalTransfersTax16: 0,
+        totalTransfersBase8: 0,
+        totalTransfersTax8: 0,
+        totalTransfersBase0: 0,
+        totalTransfersTax0: 0,
+        totalTransfersBaseExempt: 0,
+      };
 
       const payment: IPaymentV2 = {
         version: '2.0',
@@ -472,12 +517,10 @@ export class MultiplePaymentModalComponent implements OnInit {
               serie: serie_label,
               folio,
               moneda_dr: moneda,
-              // TODO: consider cases when currency type is different between payment and related document
               equivalencia_dr: 1,
               num_parcialidad: np,
               imp_saldo_ant: _importe(total),
               imp_pagado: _importe(monto_a_pagar),
-              // TODO: SALDO PENDIENTE
               imp_saldo_insoluto: +(_importe(total) - _importe(monto_a_pagar)).toFixed(2),
               objeto_imp_dr: _parseObjectImp(objeto_imp),
             };
@@ -486,30 +529,86 @@ export class MultiplePaymentModalComponent implements OnInit {
         impuestos_p: {},
       };
 
+      if (
+        this.amounts.totalTransfersBase16 ||
+        this.amounts.totalTransfersBase8 ||
+        this.amounts.totalTransfersBase0 ||
+        this.amounts.totalTransfersBaseExempt
+      )
+        payment.impuestos_p.traslados_p = [];
+
+      if (this.amounts.totalIVAWithholdings || this.amounts.totalISRWithholdings || this.amounts.totalIEPSWithholdings)
+        payment.impuestos_p.retenciones_p = [];
+
       if (this.amounts.totalTransfersBase16)
-        payment.impuestos_p.traslados_p = {
-          base_p: _importe(this.amounts.totalTransfersBase16),
-          impuesto_p: TaxType.IVA,
+        payment.impuestos_p.traslados_p.push({
+          base_p: _importe(this.amounts.totalTransfersBase16 * payment.tipo_cambio_p),
+          impuesto_p: TaxCodes.IVA,
           tipo_factor_p: TaxFactor.Tasa,
           tasa_o_cuota_p: 0.16,
-          importe_p: _importe(this.amounts.totalTransfersTax16),
-        };
+          importe_p: _importe(this.amounts.totalTransfersTax16 * payment.tipo_cambio_p),
+        });
 
-      if (this.amounts.totalIVAWithholds)
-        payment.impuestos_p.retenciones_p = {
-          impuesto_p: TaxType.IVA,
-          importe_p: _importe(this.amounts.totalIVAWithholds),
-        };
+      if (this.amounts.totalTransfersBase8)
+        payment.impuestos_p.traslados_p.push({
+          base_p: _importe(this.amounts.totalTransfersBase8 * payment.tipo_cambio_p),
+          impuesto_p: TaxCodes.IVA,
+          tipo_factor_p: TaxFactor.Tasa,
+          tasa_o_cuota_p: 0.08,
+          importe_p: _importe(this.amounts.totalTransfersTax8 * payment.tipo_cambio_p),
+        });
+
+      if (this.amounts.totalTransfersBase0)
+        payment.impuestos_p.traslados_p.push({
+          base_p: _importe(this.amounts.totalTransfersBase0 * payment.tipo_cambio_p),
+          impuesto_p: TaxCodes.IVA,
+          tipo_factor_p: TaxFactor.Tasa,
+          tasa_o_cuota_p: 0,
+          importe_p: _importe(this.amounts.totalTransfersTax0 * payment.tipo_cambio_p),
+        });
+
+      if (this.amounts.totalTransfersBaseExempt)
+        payment.impuestos_p.traslados_p.push({
+          base_p: _importe(this.amounts.totalTransfersBaseExempt * payment.tipo_cambio_p),
+          impuesto_p: TaxCodes.IVA,
+          tipo_factor_p: TaxFactor.Exento,
+        });
+
+      if (this.amounts.totalIVAWithholdings)
+        payment.impuestos_p.retenciones_p.push({
+          impuesto_p: TaxCodes.IVA,
+          importe_p: _importe(this.amounts.totalIVAWithholdings * payment.tipo_cambio_p),
+        });
+
+      if (this.amounts.totalISRWithholdings)
+        payment.impuestos_p.retenciones_p.push({
+          impuesto_p: TaxCodes.ISR,
+          importe_p: _importe(this.amounts.totalISRWithholdings * payment.tipo_cambio_p),
+        });
+
+      if (this.amounts.totalIEPSWithholdings)
+        payment.impuestos_p.retenciones_p.push({
+          impuesto_p: TaxCodes.IEPS,
+          importe_p: _importe(this.amounts.totalIEPSWithholdings * payment.tipo_cambio_p),
+        });
 
       return _cleanEmpty<IPaymentV2>(payment);
     };
 
-    const _buildTotals = (): IPaymentTotals => ({
-      total_retenciones_iva: _importeMXN(this.amounts.totalIVAWithholds),
-      total_traslados_base_iva_16: _importeMXN(this.amounts.totalTransfersBase16),
-      total_traslados_impuesto_iva_16: _importeMXN(this.amounts.totalTransfersTax16),
-      monto_total_pagos: _importeMXN(this.amounts.payed),
-    });
+    const _buildTotals = (): IPaymentTotals =>
+      _cleanEmpty({
+        total_retenciones_iva: _importeMXN(this.amounts.totalIVAWithholdings),
+        total_retenciones_isr: _importeMXN(this.amounts.totalISRWithholdings),
+        total_retenciones_ieps: _importeMXN(this.amounts.totalIEPSWithholdings),
+        total_traslados_base_iva_16: _importeMXN(this.amounts.totalTransfersBase16),
+        total_traslados_impuesto_iva_16: _importeMXN(this.amounts.totalTransfersTax16),
+        total_traslados_base_iva_8: _importeMXN(this.amounts.totalTransfersBase8),
+        total_traslados_impuesto_iva_8: _importeMXN(this.amounts.totalTransfersTax8),
+        total_traslados_base_iva_0: _importeMXN(this.amounts.totalTransfersBase0),
+        total_traslados_impuesto_iva_0: _importeMXN(this.amounts.totalTransfersTax0),
+        total_traslados_base_iva_exento: _importeMXN(this.amounts.totalTransfersBaseExempt),
+        monto_total_pagos: _importeMXN(this.amounts.payed),
+      });
 
     const _getReceiverAddresData = (address_id: string): IReceiverAddress => {
       return _cleanEmpty<IReceiverAddress>(

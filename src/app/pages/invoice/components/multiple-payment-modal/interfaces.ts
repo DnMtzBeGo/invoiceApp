@@ -1,5 +1,4 @@
-import { TaxFactor, TaxType } from './enums';
-import { MultiplePaymentModalComponent } from './multiple-payment-modal.component';
+import { TaxFactor, TaxCodes } from './enums';
 
 export interface IMultiplePaymentModalFlags {
   optionalPaymentDataFlag: boolean;
@@ -106,9 +105,21 @@ export interface ISelecAtionParams {
 export interface IAmounts {
   pending: number;
   payed: number;
-  totalIVAWithholds: number;
-  totalTransfersBase16: number;
-  totalTransfersTax16: number;
+
+  totalIVAWithholdings?: number;
+  totalISRWithholdings?: number;
+  totalIEPSWithholdings?: number;
+
+  totalTransfersBase16?: number;
+  totalTransfersTax16?: number;
+
+  totalTransfersBase8?: number;
+  totalTransfersTax8?: number;
+
+  totalTransfersBase0?: number;
+  totalTransfersTax0?: number;
+
+  totalTransfersBaseExempt?: number;
 }
 
 export interface ITaxRegime {
@@ -200,21 +211,21 @@ export interface IInvoicePaymentConcept {
 }
 
 export interface IWithHoldingsP {
-  impuesto_p: TaxType;
+  impuesto_p: TaxCodes;
   importe_p: number;
 }
 
 export interface ITransfersP {
   base_p: number;
-  impuesto_p: TaxType;
+  impuesto_p: TaxCodes;
   tipo_factor_p: TaxFactor;
-  tasa_o_cuota_p: number;
-  importe_p: number;
+  tasa_o_cuota_p?: number;
+  importe_p?: number;
 }
 
 export interface ITaxesP {
-  traslados_p?: ITransfersP;
-  retenciones_p?: IWithHoldingsP;
+  traslados_p?: ITransfersP[];
+  retenciones_p?: IWithHoldingsP[];
 }
 
 export interface ITaxDR {
@@ -271,6 +282,11 @@ export interface IPaymentTotals {
   total_retenciones_ieps?: number;
   total_traslados_base_iva_16?: number;
   total_traslados_impuesto_iva_16?: number;
+  total_traslados_base_iva_8?: number;
+  total_traslados_impuesto_iva_8?: number;
+  total_traslados_base_iva_0?: number;
+  total_traslados_impuesto_iva_0?: number;
+  total_traslados_base_iva_exento?: number;
   monto_total_pagos?: number;
 }
 export interface IPaymentPayload {

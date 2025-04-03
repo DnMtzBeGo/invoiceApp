@@ -2,13 +2,25 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { FleetRoutingModule } from './fleet-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
+import {
+  BegoButtonModule,
+  BegoIconsModule,
+  BegoModalModule,
+  BegoRadioBulletModule,
+  BegoTextInputModule,
+} from '@begomx/ui-components';
+
+import { FleetRoutingModule } from './fleet-routing.module';
 import { SharedModule } from '../../shared/shared.module';
-
 import { FleetPageComponent, FleetBrowserComponent } from './containers';
-
-import { FleetWidgetComponent, MemberCardComponent, TruckCardComponent, TrailerCardComponent, FleetTableComponent } from './components';
+import {
+  FleetWidgetComponent,
+  MemberCardComponent,
+  TruckCardComponent,
+  TrailerCardComponent,
+  FleetTableComponent,
+} from './components';
 import { FleetEditTruckComponent } from './containers/fleet-edit-truck/fleet-edit-truck.component';
 import { BegoTabsModule } from 'src/app/shared/components/bego-tabs/bego-tabs.module';
 import { ColorPickerModule } from 'src/app/shared/components/color-picker/color-picker.module';
@@ -21,7 +33,6 @@ import { FleetInviteDriverComponent } from './containers/fleet-invite-driver/fle
 import { BegoPhoneInputModule } from 'src/app/shared/components/bego-phone-input/bego-phone-input.module';
 import { AppMaterialModule } from 'src/app/material';
 import { FleetEditPrimeComponent } from './containers/fleet-edit-prime/fleet-edit-prime.component';
-import { BegoButtonModule, BegoIconsModule, BegoModalModule, BegoRadioBulletModule, BegoTextInputModule } from '@begomx/ui-components';
 import { BegoColorPickerModule } from 'src/app/shared/components/color-picker-2/color-picker.module';
 import { PrimeListComponent } from './components/prime-list/prime-list.component';
 import { PrimeCardComponent } from './components/prime-card/prime-card.component';
@@ -41,7 +52,7 @@ import { PrimeCardComponent } from './components/prime-card/prime-card.component
     FleetInviteDriverComponent,
     FleetEditPrimeComponent,
     PrimeListComponent,
-    PrimeCardComponent
+    PrimeCardComponent,
   ],
   imports: [
     CommonModule,
@@ -63,8 +74,8 @@ import { PrimeCardComponent } from './components/prime-card/prime-card.component
     BegoRadioBulletModule,
     BegoButtonModule,
     BegoModalModule,
-    BegoIconsModule
+    BegoIconsModule,
   ],
-  exports: [FleetPageComponent]
+  exports: [FleetPageComponent],
 })
 export class FleetModule {}
