@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   version: 'v1.1.0',
   website_url: 'https://bego.ai/',
-  // URL_BASE: 'https://dev.bego.ai/v1.0/',
-  URL_BASE: 'https://rocket.bego.ai/v1.0/',
+  URL_BASE: 'https://dev.bego.ai/v1.0/',
+  // URL_BASE: 'https://rocket.bego.ai/v1.0/',
   SOCKET_URI: 'https://slb.bego.ai/',
   // URL_BASE: 'http://localhost:3002/v1.0/',
   // SOCKET_URI: 'http://localhost:3008'
