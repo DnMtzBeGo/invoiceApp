@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnChanges, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
