@@ -1169,6 +1169,46 @@
         <!-- first section -->
         <div class="grid-concepto" style="clear: both">
           <mat-form-field class="brand-field-1" appearance="outline">
+            <mat-label>{{ 'invoice.edit.objeto-impuesto' | translate }}</mat-label>
+            <mat-select
+              name="objeto_impuesto"
+              [ngModel]="vm.concepto?.objeto_impuesto"
+              (ngModelChange)="vm.concepto.objeto_impuesto = $event"
+              class="disable-custom-format">
+              <mat-option>
+                <ngx-mat-select-search
+                  ngModel
+                  (ngModelChange)="formEmitter.next(['catalogos:search', ['objeto_impuesto', $event.toLowerCase()]])"
+                  [placeholderLabel]="'invoice.edit.type-to-search' | translate"
+                  [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
+                  class="brand-select-search-1"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option
+                *ngFor="let objeto_impuesto of vm.catalogos?.objeto_impuesto"
+                [value]="objeto_impuesto.clave"
+                class="brand-option-1">
+                {{ objeto_impuesto.clave }} - {{ objeto_impuesto.descripcion }}
+              </mat-option>
+            </mat-select>
+
+            <span
+              class="brand-icon-help"
+              [matTooltip]="vm.helpTooltips?.concepto?.unidad_de_medida"
+              matTooltipPosition="right"
+              matTooltipHideDelay="100"
+              matTooltipClass="brand-tooltip-1">
+              <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
+            </span>
+          </mat-form-field>
+
+          <div></div>
+          <div></div>
+        </div>
+
+        <div class="grid-concepto" style="clear: both">
+          <!-- aqui -->
+
+          <mat-form-field class="brand-field-1" appearance="outline">
             <mat-label>{{
               vm.concepto?.nombre
                 ? ('invoice.edit.concepto-nombre' | translate)
@@ -1729,6 +1769,8 @@
                 }}
               </td>
               <td class="right">
+                {{ concepto.objeto_impuesto ? 'Obj. imp.: ' + getTaxObjectDescription(concepto.objeto_impuesto) : '' }}
+                <BR />
                 <div *ngFor="let impuesto of concepto.impuestos">
                   {{ resolveImpuestoLabel(vm.catalogos?.tipos_de_impuesto, 'label', impuesto) }}
                   {{ resolveImpuesto(concepto, impuesto) }}

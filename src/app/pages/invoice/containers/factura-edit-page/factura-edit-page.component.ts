@@ -157,6 +157,7 @@ interface VM {
     tipos_de_comprobante?: unknown[];
     tipos_de_relacion?: any[];
     usos_cfdi?: unknown[];
+    objeto_impuesto?: unknown[];
   };
   helpTooltips?: any;
   lugaresExpedicion?: unknown[];
@@ -186,6 +187,7 @@ interface VM {
   tipo_de_comprobante?: any;
   impuesto?: any;
   concepto?: {
+    objeto_impuesto: string;
     clave: string;
     nombre: string;
     cve_sat: string;
@@ -762,6 +764,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
             tap(() => {
               // reset concepto controls
               this.resetConceptoControls();
+              this.vm.concepto.objeto_impuesto = '02';
             }),
           ),
           merge(
@@ -854,6 +857,10 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
       formError: formError$,
       formSuccess: formSuccess$,
     }) as VM;
+
+    timer(3000).subscribe(() => {
+      this.vm.concepto.objeto_impuesto = '02';
+    });
   }
 
   public receiverRfcChanged(event: any) {
@@ -932,7 +939,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
   }
 
   private fetchCatalogosSAT() {
-    return from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(
+    return from(this.apiRestService.apiRestGet('invoice/catalogs/invoice', { timeout: 60000 })).pipe(
       mergeAll(),
       map((d) => {
         this.filteredCurrencies = d?.result?.monedas;
@@ -1504,5 +1511,13 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.consignmentNoteService.unloadService();
+  }
+
+  public getTaxObjectDescription(tax_object: string): string {
+    const taxObject = this.vm.catalogos.objeto_impuesto.find((t) => t['clave'] === tax_object);
+
+    if (taxObject) return taxObject['descripcion'];
+
+    return '';
   }
 }
