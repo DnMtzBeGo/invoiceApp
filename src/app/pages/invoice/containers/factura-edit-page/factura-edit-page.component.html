@@ -1173,7 +1173,7 @@
             <mat-select
               name="objeto_impuesto"
               [ngModel]="vm.concepto?.objeto_impuesto"
-              (ngModelChange)="vm.concepto.objeto_impuesto = $event"
+              (ngModelChange)="(vm.concepto.objeto_impuesto = $event) && (this.lastTaxObjectSelected = $event)"
               class="disable-custom-format">
               <mat-option>
                 <ngx-mat-select-search

@@ -298,6 +298,8 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
   public isForeignReceiver = false;
   public paisCatalogue = [];
 
+  public lastTaxObjectSelected: string = '';
+
   @ViewChild('cartaporteCmp') public cartaporteCmp: CartaPortePageComponent;
 
   constructor(
@@ -764,7 +766,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
             tap(() => {
               // reset concepto controls
               this.resetConceptoControls();
-              this.vm.concepto.objeto_impuesto = '02';
+              this.vm.concepto.objeto_impuesto = this.lastTaxObjectSelected;
             }),
           ),
           merge(
