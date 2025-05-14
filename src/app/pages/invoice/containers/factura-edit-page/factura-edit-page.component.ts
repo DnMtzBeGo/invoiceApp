@@ -939,7 +939,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
   }
 
   private fetchCatalogosSAT() {
-    return from(this.apiRestService.apiRestGet('invoice/catalogs/invoice', { timeout: 60000 })).pipe(
+    return from(this.apiRestService.apiRestGet('invoice/catalogs/invoice')).pipe(
       mergeAll(),
       map((d) => {
         this.filteredCurrencies = d?.result?.monedas;
