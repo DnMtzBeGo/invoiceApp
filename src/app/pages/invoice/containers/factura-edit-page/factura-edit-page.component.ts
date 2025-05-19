@@ -860,8 +860,9 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
       formSuccess: formSuccess$,
     }) as VM;
 
-    timer(3000).subscribe(() => {
+    timer(2000).subscribe(() => {
       this.vm.concepto.objeto_impuesto = '02';
+      this.cd.markForCheck();
     });
   }
 
