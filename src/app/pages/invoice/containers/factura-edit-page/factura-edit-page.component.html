@@ -315,6 +315,7 @@
         </div>
       </section>
 
+      <!-- #region receiver address -->
       <section [style.display]="vm.readonly || vm.tab === 'receptor' ? 'block' : 'none'">
         <h6>
           {{ 'invoice.edit.direccion' | translate }}
@@ -329,6 +330,7 @@
             <mat-icon><img src="./assets/images/invoice/help.png" style="width: inherit" /></mat-icon>
           </span>
         </h6>
+
         <div *ngIf="!vm.readonly" class="grid">
           <div style="display: flex; gap: 2rem">
             <mat-form-field
@@ -389,8 +391,12 @@
           </div>
         </div>
 
-        <div class="grid" style="padding-top: 1rem">
-          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
+        <div style="width: 50%">
+          <mat-form-field
+            style="width: 100%"
+            class="brand-field-1"
+            appearance="outline"
+            [attr.readonly]="vm.readonly || !!vm.form?.order">
             <mat-label>{{
               vm.form?.direccion?.identificador
                 ? ('invoice.edit.addr-nombre' | translate)
@@ -404,7 +410,9 @@
               autocomplete="off"
               [readonly]="vm.readonly || !!vm.form?.order" />
           </mat-form-field>
+        </div>
 
+        <div class="grid" style="padding-top: 1rem">
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
             <mat-label>{{ 'invoice.edit.addr-calle' | translate }}</mat-label>
             <input
@@ -472,6 +480,20 @@
               mode="indeterminate"></mat-progress-bar>
           </mat-form-field>
           <!-- #endregion-->
+
+          <!-- #region CODIGO POSTAL-->
+          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
+            <mat-label>{{ 'invoice.edit.addr-cp' | translate }}</mat-label>
+            <input
+              matInput
+              name="cp"
+              maxlength="5"
+              [ngModel]="vm.form?.direccion?.cp"
+              (ngModelChange)="formEmitter.next(['cp:input', (vm.form.direccion.cp = $event)])"
+              autocomplete="off"
+              [readonly]="vm.readonly || !!vm.form?.order" />
+          </mat-form-field>
+          <!-- #endregion -->
 
           <!-- #region ESTADO -->
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
@@ -577,20 +599,6 @@
           </mat-form-field>
           <!-- #endregion-->
 
-          <!-- #region CODIGO POSTAL-->
-          <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
-            <mat-label>{{ 'invoice.edit.addr-cp' | translate }}</mat-label>
-            <input
-              matInput
-              name="cp"
-              maxlength="5"
-              [ngModel]="vm.form?.direccion?.cp"
-              (ngModelChange)="formEmitter.next(['cp:input', (vm.form.direccion.cp = $event)])"
-              autocomplete="off"
-              [readonly]="vm.readonly || !!vm.form?.order" />
-          </mat-form-field>
-          <!-- #endregion -->
-
           <!-- #region COLONIA -->
           <mat-form-field class="brand-field-1" appearance="outline" [attr.readonly]="vm.readonly || !!vm.form?.order">
             <mat-label>{{
@@ -660,7 +668,7 @@
           <!-- #endregion -->
         </div>
       </section>
-
+      <!-- #endregion receiver address -->
       <section id="emisor" [style.display]="vm.readonly || vm.tab === 'emisor' ? 'block' : 'none'">
         <h6 style="display: flex; justify-content: space-between">
           {{ 'invoice.edit.emisor' | translate }}
@@ -1875,7 +1883,7 @@
                 ${{
                   calcTotal(vm.conceptos).toLocaleString('en-US', {
                     minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
+                    maximumFractionDigits: 3
                   })
                 }}
               </td>

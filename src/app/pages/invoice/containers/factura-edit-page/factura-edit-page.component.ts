@@ -34,6 +34,7 @@ import {
   take,
   scan,
   repeatWhen,
+  pluck,
 } from 'rxjs/operators';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -628,7 +629,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
         ofType('estado:select'),
         tap(() => {
           this.vm.form.direccion.municipio = '';
-          this.vm.form.direccion.cp = '';
+
           this.vm.form.direccion.colonia = '';
           this.vm.colonias = [];
         }),
@@ -647,6 +648,32 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
         }),
       ),
     ).pipe(switchMap(this.fetchColonias));
+
+    const zipcode$ = merge(
+      direccion$.pipe(
+        map((d) => d?.cp),
+        distinctUntilChanged(),
+      ),
+      this.formEmitter.pipe(
+        ofType('cp:input'),
+        tap(() => {
+          if (this.vm.form.direccion.cp.length === 5)
+            this._fetchZipCode(this.vm.form.direccion.cp).subscribe((zipcode: any) => {
+              if (zipcode?.estado) {
+                this.formEmitter.next(['estado:select', (this.vm.form.direccion.estado = zipcode.estado)]);
+
+                this.vm.form.direccion.municipio = zipcode.municipio;
+                this.vm.form.direccion.localidad = zipcode.localidad;
+              }
+            });
+          else {
+            this.vm.form.direccion.estado = '';
+            this.vm.form.direccion.colonia = '';
+            this.vm.form.direccion.municipio = '';
+          }
+        }),
+      ),
+    );
 
     //EMISOR
     const lugaresExpedicion$ = emisor$.pipe(
@@ -858,6 +885,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
       formLoading: formLoading$,
       formError: formError$,
       formSuccess: formSuccess$,
+      zipcode: zipcode$,
     }) as VM;
 
     timer(2000).subscribe(() => {
@@ -1523,4 +1551,15 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
 
     return '';
   }
+
+  private _fetchZipCode = (cp?: string): Observable<[]> => {
+    return cp == void 0 || cp.trim() === '' || cp.length < 5
+      ? of([])
+      : from(
+          this.apiRestService.apiRestGet(`invoice/zip-codes/${cp}`, {
+            loader: 'false',
+            cp,
+          }),
+        ).pipe(mergeAll(), pluck('result'), startWith(null));
+  };
 }
