@@ -104,7 +104,7 @@ export class FacturaDireccionInputComponent implements OnInit {
         ofType('estado:select'),
         tap(() => {
           this.vm.direccion.municipio = '';
-          this.vm.direccion.cp = '';
+          //this.vm.direccion.cp = '';
           this.vm.direccion.colonia = '';
           this.vm.colonias = [];
         }),
@@ -125,12 +125,40 @@ export class FacturaDireccionInputComponent implements OnInit {
       ),
     ).pipe(switchMap(this.fetchColonias));
 
+    const zipcode$ = merge(
+      oof(''),
+      direccion$.pipe(
+        map((direccion?) => direccion?.cp),
+        distinctUntilChanged(),
+      ),
+      this.direccionEmitter.pipe(
+        ofType('cp:input'),
+        tap(() => {
+          if (this.vm.direccion.cp.length === 5)
+            this._fetchZipCode(this.vm.direccion.cp).subscribe((zipcode: any) => {
+              if (zipcode?.estado) {
+                this.direccionEmitter.next(['estado:select', (this.vm.direccion.estado = zipcode.estado)]);
+
+                this.vm.direccion.municipio = zipcode.municipio;
+                this.vm.direccion.localidad = zipcode.localidad;
+              }
+            });
+          else {
+            this.vm.direccion.estado = '';
+            this.vm.direccion.colonia = '';
+            this.vm.direccion.municipio = '';
+          }
+        }),
+      ),
+    );
+
     this.vm = this.$rx.connect({
       direccion: direccion$,
       paises: paises$,
       estados: estados$,
       municipios: municipios$,
       colonias: colonias$,
+      zipcode: zipcode$,
     });
   }
 
@@ -219,4 +247,15 @@ export class FacturaDireccionInputComponent implements OnInit {
   public searchSuburbs(code: string): void {
     searchInList(this, ['vm', 'colonias'], 'filteredSuburbs', code, 'clave', 'nombre');
   }
+
+  private _fetchZipCode = (cp?: string): Observable<[]> => {
+    return cp == void 0 || cp.trim() === '' || cp.length < 5
+      ? of([])
+      : from(
+          this.apiRestService.apiRestGet(`invoice/zip-codes/${cp}`, {
+            loader: 'false',
+            cp,
+          }),
+        ).pipe(mergeAll(), pluck('result'), startWith(null));
+  };
 }
