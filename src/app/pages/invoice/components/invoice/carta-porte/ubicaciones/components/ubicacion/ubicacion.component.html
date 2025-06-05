@@ -20,9 +20,7 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.ubicacion.tipo' | translate }}</mat-label>
-      <mat-select
-        formControlName="tipo_ubicacion"
-        class="disable-custom-format"
+      <mat-select formControlName="tipo_ubicacion" class="disable-custom-format"
         [attr.name]="'invoice.ubicacion.tipo' | translate">
         <mat-option *ngFor="let option of tipoUbicacion" [value]="option.clave">
           {{ option.clave }}
@@ -31,20 +29,11 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1 input-timepicker">
-      <input
-        matInput
-        [ngxMatDatetimePicker]="picker"
-        [placeholder]="'invoice.ubicacion.choose-a-date' | translate"
+      <input matInput [ngxMatDatetimePicker]="picker" [placeholder]="'invoice.ubicacion.choose-a-date' | translate"
         formControlName="fecha_hora_salida_llegada" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <ngx-mat-datetime-picker
-        #picker
-        [showSpinners]="true"
-        [showSeconds]="true"
-        color="primary"
-        [enableMeridian]="true"
-        [disableMinute]="false"
-        [hideTime]="false">
+      <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="true" color="primary"
+        [enableMeridian]="true" [disableMinute]="false" [hideTime]="false">
       </ngx-mat-datetime-picker>
     </mat-form-field>
 
@@ -61,12 +50,7 @@
 
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.ubicacion.rfc' | translate }}</mat-label>
-      <input
-        matInput
-        formControlName="rfc_remitente_destinatario"
-        name="RFC"
-        appUppercase
-        [maxlength]="13"
+      <input matInput formControlName="rfc_remitente_destinatario" name="RFC" appUppercase [maxlength]="13"
         (blur)="onDestinationRfcChanged($event)" />
     </mat-form-field>
 
@@ -84,9 +68,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field
-      *ngIf="ubicacionesForm.value.tipo_ubicacion == 'Destino'"
-      appearance="outline"
+    <mat-form-field *ngIf="ubicacionesForm.value.tipo_ubicacion == 'Destino'" appearance="outline"
       class="brand-field-1">
       <mat-label>{{ 'invoice.ubicacion.distancia-recorrida' | translate }}</mat-label>
       <!-- placeholder="Distancia en km" -->
@@ -114,6 +96,5 @@
       placeholder="0"
     />
   </mat-form-field> -->
-<app-location
-  [locationInfo]="locationInfo.domicilio"
+<app-location [locationInfo]="locationInfo.domicilio"
   (locationInfoChanges)="catchLocationInfoChanges($event)"></app-location>

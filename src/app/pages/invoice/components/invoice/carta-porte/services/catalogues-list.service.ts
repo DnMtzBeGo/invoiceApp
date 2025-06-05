@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CataloguesListService {
   public catalogues: any = {};
@@ -25,7 +25,7 @@ export class CataloguesListService {
         },
         (error) => {
           console.log('Error getting catalogue: ', error);
-        }
+        },
       );
     });
   }
@@ -54,7 +54,7 @@ export class CataloguesListService {
           },
           (err) => {
             reject(err);
-          }
+          },
         );
       } else {
         resolve(this.catalogues[endpoint]);

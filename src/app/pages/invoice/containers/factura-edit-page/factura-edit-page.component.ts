@@ -657,7 +657,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
       this.formEmitter.pipe(
         ofType('cp:input'),
         tap(() => {
-          if (this.vm.form.direccion.cp.length === 5)
+          if (this.vm.form.direccion.pais === 'MEX' && this.vm.form.direccion.cp.length === 5)
             this._fetchZipCode(this.vm.form.direccion.cp).subscribe((zipcode: any) => {
               if (zipcode?.estado) {
                 this.formEmitter.next(['estado:select', (this.vm.form.direccion.estado = zipcode.estado)]);
