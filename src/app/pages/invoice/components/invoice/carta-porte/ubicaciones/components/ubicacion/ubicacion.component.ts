@@ -1,4 +1,14 @@
-import { Component, OnInit, Input, QueryList, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  QueryList,
+  ViewChild,
+  ElementRef,
+  SimpleChanges,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -6,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { InfoModalComponent } from '../../../../../../modals/info-modal/info-modal.component';
 import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
 import { CataloguesListService } from '../../../services/catalogues-list.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-ubicacion',
@@ -13,6 +24,7 @@ import { CataloguesListService } from '../../../services/catalogues-list.service
   styleUrls: ['./ubicacion.component.scss'],
 })
 export class UbicacionComponent implements OnInit {
+  @Output() public locationIdsChanged: EventEmitter<void> = new EventEmitter();
   @Input() public allUbicaciones: QueryList<UbicacionComponent>;
   @Input() public locationInfo: any;
   @ViewChild('picker') public pickerRef: ElementRef;
@@ -68,6 +80,13 @@ export class UbicacionComponent implements OnInit {
 
     this.cataloguesListService.consignmentNoteSubject.subscribe((data: any) => {
       this.tipoEstacionOptions = data.excepto_autotransporte?.tipos_de_estacion;
+    });
+
+    this.ubicacionesForm.get('id_ubicacion').valueChanges.subscribe((inputValue: string) => {
+      timer(300).subscribe(() => {
+        //avoid to get no full updated value
+        this.locationIdsChanged.emit();
+      });
     });
   }
 

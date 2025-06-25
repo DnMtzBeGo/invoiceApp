@@ -19,7 +19,8 @@
         </span>
         <span (click)="delete(i)">Eliminar</span>
       </div>
-      <app-ubicacion [locationInfo]="locationInfo" [allUbicaciones]="ubicacionesRef"></app-ubicacion>
+      <app-ubicacion (locationIdsChanged)="syncLocations()" [locationInfo]="locationInfo"
+        [allUbicaciones]="ubicacionesRef"></app-ubicacion>
       <mat-divider *ngIf="i != locations.length - 1"></mat-divider>
     </div>
   </div>
