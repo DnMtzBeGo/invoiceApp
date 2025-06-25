@@ -8,11 +8,18 @@ import { ICommodity } from '../mercanciasv2.0/model';
 import { Paginator } from 'src/app/pages/invoice/models';
 import { ApiRestService } from 'src/app/services/api-rest.service';
 
+export type LocationIds = {
+  OR: string[];
+  DE: string[];
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class CartaPorteInfoService {
   public ACTIVE_VERSION = '3.1';
+
+  public locationIds: LocationIds = { OR: [], DE: [] };
 
   public invoice_id: string = '';
   public voucher_type: string = '';
@@ -128,5 +135,9 @@ export class CartaPorteInfoService {
     this.invoice_id = '';
     this.id_ccp = '';
     this.info = null;
+  }
+
+  public syncLocationIds(locations: LocationIds): void {
+    this.locationIds = { ...locations };
   }
 }

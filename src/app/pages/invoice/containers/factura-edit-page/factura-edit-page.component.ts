@@ -34,6 +34,7 @@ import {
   take,
   scan,
   repeatWhen,
+  pluck,
 } from 'rxjs/operators';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -157,6 +158,7 @@ interface VM {
     tipos_de_comprobante?: unknown[];
     tipos_de_relacion?: any[];
     usos_cfdi?: unknown[];
+    objeto_impuesto?: unknown[];
   };
   helpTooltips?: any;
   lugaresExpedicion?: unknown[];
@@ -186,6 +188,7 @@ interface VM {
   tipo_de_comprobante?: any;
   impuesto?: any;
   concepto?: {
+    objeto_impuesto: string;
     clave: string;
     nombre: string;
     cve_sat: string;
@@ -295,6 +298,8 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
 
   public isForeignReceiver = false;
   public paisCatalogue = [];
+
+  public lastTaxObjectSelected: string = '';
 
   @ViewChild('cartaporteCmp') public cartaporteCmp: CartaPortePageComponent;
 
@@ -624,7 +629,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
         ofType('estado:select'),
         tap(() => {
           this.vm.form.direccion.municipio = '';
-          this.vm.form.direccion.cp = '';
+
           this.vm.form.direccion.colonia = '';
           this.vm.colonias = [];
         }),
@@ -643,6 +648,32 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
         }),
       ),
     ).pipe(switchMap(this.fetchColonias));
+
+    const zipcode$ = merge(
+      direccion$.pipe(
+        map((d) => d?.cp),
+        distinctUntilChanged(),
+      ),
+      this.formEmitter.pipe(
+        ofType('cp:input'),
+        tap(() => {
+          if (this.vm.form.direccion.pais === 'MEX' && this.vm.form.direccion.cp.length === 5)
+            this._fetchZipCode(this.vm.form.direccion.cp).subscribe((zipcode: any) => {
+              if (zipcode?.estado) {
+                this.formEmitter.next(['estado:select', (this.vm.form.direccion.estado = zipcode.estado)]);
+
+                this.vm.form.direccion.municipio = zipcode.municipio;
+                this.vm.form.direccion.localidad = zipcode.localidad;
+              }
+            });
+          else {
+            this.vm.form.direccion.estado = '';
+            this.vm.form.direccion.colonia = '';
+            this.vm.form.direccion.municipio = '';
+          }
+        }),
+      ),
+    );
 
     //EMISOR
     const lugaresExpedicion$ = emisor$.pipe(
@@ -762,6 +793,7 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
             tap(() => {
               // reset concepto controls
               this.resetConceptoControls();
+              this.vm.concepto.objeto_impuesto = this.lastTaxObjectSelected;
             }),
           ),
           merge(
@@ -853,7 +885,13 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
       formLoading: formLoading$,
       formError: formError$,
       formSuccess: formSuccess$,
+      zipcode: zipcode$,
     }) as VM;
+
+    timer(2000).subscribe(() => {
+      this.vm.concepto.objeto_impuesto = '02';
+      this.cd.markForCheck();
+    });
   }
 
   public receiverRfcChanged(event: any) {
@@ -1505,4 +1543,23 @@ export class FacturaEditPageComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.consignmentNoteService.unloadService();
   }
+
+  public getTaxObjectDescription(tax_object: string): string {
+    const taxObject = this.vm.catalogos.objeto_impuesto.find((t) => t['clave'] === tax_object);
+
+    if (taxObject) return taxObject['descripcion'];
+
+    return '';
+  }
+
+  private _fetchZipCode = (cp?: string): Observable<[]> => {
+    return cp == void 0 || cp.trim() === '' || cp.length < 5
+      ? of([])
+      : from(
+          this.apiRestService.apiRestGet(`invoice/zip-codes/${cp}`, {
+            loader: 'false',
+            cp,
+          }),
+        ).pipe(mergeAll(), pluck('result'), startWith(null));
+  };
 }

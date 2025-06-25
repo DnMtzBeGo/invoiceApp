@@ -6,10 +6,7 @@
     </mat-form-field>
     <div>&nbsp;</div>
     <div>
-      <div
-        *ngIf="index || totalRows > 1"
-        class="remove-cantidad-transporta-btn"
-        (click)="removeItem()"
+      <div *ngIf="index || totalRows > 1" class="remove-cantidad-transporta-btn" (click)="removeItem()"
         title="Eliminar renglón de cantidad transporta">
         <div class="icon icon-plus"></div>
         <span>Eliminar</span>
@@ -20,12 +17,38 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.cantidad_transporta.origin_id' | translate }}</mat-label>
-      <input formControlName="id_origen" autocomplete="off" matInput />
+      <input formControlName="id_origen" autocomplete="off" matInput [matAutocomplete]="originAutocomplete" />
+
+      <mat-autocomplete autoActiveFirstOption #originAutocomplete="matAutocomplete"
+        (optionSelected)="form.get('id_origen').setValue($event.option.value)">
+        <mat-option *ngIf="cartaPorteInfoService.locationIds.OR?.length === 0" value="" class="brand-option-1" disabled>
+          No se encontraron órdenes
+        </mat-option>
+        <mat-option *ngFor="let location of cartaPorteInfoService.locationIds.OR; let i = index" [value]="location"
+          class="brand-option-1">
+          <div>
+            <span style="text-transform: uppercase">{{ location }}</span>
+          </div>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.cantidad_transporta.destination_id' | translate }}</mat-label>
-      <input formControlName="id_destino" autocomplete="off" matInput />
+      <input formControlName="id_destino" autocomplete="off" matInput [matAutocomplete]="destinationAutocomplete" />
+
+      <mat-autocomplete autoActiveFirstOption #destinationAutocomplete="matAutocomplete"
+        (optionSelected)="form.get('id_destino').setValue($event.option.value)">
+        <mat-option *ngIf="cartaPorteInfoService.locationIds.DE?.length === 0" value="" class="brand-option-1" disabled>
+          No se encontraron órdenes
+        </mat-option>
+        <mat-option *ngFor="let location of cartaPorteInfoService.locationIds.DE; let i = index" [value]="location"
+          class="brand-option-1">
+          <div>
+            <span style="text-transform: uppercase">{{ location }}</span>
+          </div>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">

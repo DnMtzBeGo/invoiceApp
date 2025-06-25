@@ -16,6 +16,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { FacturaDireccion, FacturaPais, FacturaEstado, FacturaMunicipio, FacturaColonia } from '../../models';
 import { searchInList } from '../../containers/factura-edit-page/factura.core';
 
+export type FetchedZipCode = { estado?: string; municipio?: string; localidad?: string };
+
 @Component({
   selector: 'app-factura-direccion-input',
   templateUrl: './factura-direccion-input.component.html',
@@ -44,6 +46,7 @@ export class FacturaDireccionInputComponent implements OnInit {
 
   @Output() public direccionChange = new EventEmitter<string>();
 
+  private _lastZipCodeFetched: FetchedZipCode = null;
   public filteredCountries: any[] = [];
   public filteredStates: any[] = [];
   public filteredLocations: any[] = [];
@@ -104,7 +107,9 @@ export class FacturaDireccionInputComponent implements OnInit {
         ofType('estado:select'),
         tap(() => {
           this.vm.direccion.municipio = '';
-          this.vm.direccion.cp = '';
+
+          if (this.vm.direccion.estado !== this._lastZipCodeFetched?.estado) this.vm.direccion.cp = '';
+
           this.vm.direccion.colonia = '';
           this.vm.colonias = [];
         }),
@@ -125,12 +130,41 @@ export class FacturaDireccionInputComponent implements OnInit {
       ),
     ).pipe(switchMap(this.fetchColonias));
 
+    const zipcode$ = merge(
+      oof(''),
+      direccion$.pipe(
+        map((direccion?) => direccion?.cp),
+        distinctUntilChanged(),
+      ),
+      this.direccionEmitter.pipe(
+        ofType('cp:input'),
+        tap(() => {
+          if (this.vm.direccion.cp.length === 5)
+            this._fetchZipCode(this.vm.direccion.cp).subscribe((zipcode: any) => {
+              this._lastZipCodeFetched = zipcode || {};
+
+              if (zipcode?.estado) {
+                this.direccionEmitter.next(['estado:select', (this.vm.direccion.estado = zipcode.estado)]);
+                this.vm.direccion.municipio = zipcode.municipio;
+                this.vm.direccion.localidad = zipcode.localidad;
+              }
+            });
+          else {
+            this.vm.direccion.estado = '';
+            this.vm.direccion.colonia = '';
+            this.vm.direccion.municipio = '';
+          }
+        }),
+      ),
+    );
+
     this.vm = this.$rx.connect({
       direccion: direccion$,
       paises: paises$,
       estados: estados$,
       municipios: municipios$,
       colonias: colonias$,
+      zipcode: zipcode$,
     });
   }
 
@@ -219,4 +253,15 @@ export class FacturaDireccionInputComponent implements OnInit {
   public searchSuburbs(code: string): void {
     searchInList(this, ['vm', 'colonias'], 'filteredSuburbs', code, 'clave', 'nombre');
   }
+
+  private _fetchZipCode = (cp?: string): Observable<[]> => {
+    return cp == void 0 || cp.trim() === '' || cp.length < 5 || this.vm.direccion.pais !== 'MEX'
+      ? of([])
+      : from(
+          this.apiRestService.apiRestGet(`invoice/zip-codes/${cp}`, {
+            loader: 'false',
+            cp,
+          }),
+        ).pipe(mergeAll(), pluck('result'), startWith(null));
+  };
 }

@@ -79,8 +79,24 @@
         mode="indeterminate"></mat-progress-bar>
     </mat-form-field>
 
-    <!-- #region ESTADO -->
     <mat-form-field appearance="outline" class="brand-field-1" [attr.readonly]="readonly">
+      <mat-label>Código Postal</mat-label>
+      <input
+        matInput
+        name="cp"
+        [ngModel]="vm.direccion?.cp"
+        (ngModelChange)="direccionEmitter.next(['cp:input', (vm.direccion.cp = $event)])"
+        [placeholder]="!readonly ? 'Ingresa el Codigo Postal' : '- -'"
+        [readonly]="readonly"
+        autocomplete="off" />
+    </mat-form-field>
+
+    <!-- #region ESTADO -->
+    <mat-form-field
+      *ngIf="['MEX', 'USA'].includes(vm.direccion?.pais)"
+      appearance="outline"
+      class="brand-field-1"
+      [attr.readonly]="readonly">
       <mat-label>Estado</mat-label>
 
       <mat-select
@@ -116,10 +132,30 @@
         class="brand-progress-bar-1"
         mode="indeterminate"></mat-progress-bar>
     </mat-form-field>
+
+    <mat-form-field
+      *ngIf="!['MEX', 'USA'].includes(vm.direccion?.pais)"
+      appearance="outline"
+      class="brand-field-1"
+      [attr.readonly]="readonly">
+      <mat-label>Estado</mat-label>
+      <input
+        matInput
+        name="estado"
+        [ngModel]="vm.direccion?.estado"
+        (ngModelChange)="vm.direccion.estado = $event"
+        [placeholder]="!readonly ? 'Ingresa el estado' : '- -'"
+        [readonly]="readonly"
+        autocomplete="off" />
+    </mat-form-field>
     <!-- #endregion ESTADO -->
 
     <!-- #region MUNICIPIO -->
-    <mat-form-field appearance="outline" class="brand-field-1" [attr.readonly]="readonly">
+    <mat-form-field
+      *ngIf="['MEX', 'USA'].includes(vm.direccion?.pais)"
+      appearance="outline"
+      class="brand-field-1"
+      [attr.readonly]="readonly">
       <mat-label>Municipio</mat-label>
 
       <mat-select
@@ -173,23 +209,33 @@
         class="brand-progress-bar-1"
         mode="indeterminate"></mat-progress-bar>
     </mat-form-field>
-    <!-- #endregion MUNICIPIO -->
 
-    <!-- #region CODIGO_POSTAL -->
-    <mat-form-field appearance="outline" class="brand-field-1" [attr.readonly]="readonly">
-      <mat-label>Código Postal</mat-label>
+    <mat-form-field
+      *ngIf="!['MEX', 'USA'].includes(vm.direccion?.pais)"
+      appearance="outline"
+      class="brand-field-1"
+      [attr.readonly]="readonly">
+      <mat-label>Municipio</mat-label>
       <input
         matInput
-        name="cp"
-        [ngModel]="vm.direccion?.cp"
-        (ngModelChange)="direccionEmitter.next(['cp:input', (vm.direccion.cp = $event)])"
-        [placeholder]="!readonly ? 'Ingresa el Codigo Postal' : '- -'"
+        name="municipio"
+        [ngModel]="vm.direccion?.municipio"
+        (ngModelChange)="vm.direccion.municipio = $event"
+        [placeholder]="!readonly ? 'Ingresa el municipio' : '- -'"
         [readonly]="readonly"
         autocomplete="off" />
     </mat-form-field>
+    <!-- #endregion MUNICIPIO -->
+
+    <!-- #region CODIGO_POSTAL -->
+
     <!-- #endregion CODIGO_POSTAL -->
 
-    <mat-form-field appearance="outline" class="brand-field-1" [attr.readonly]="readonly">
+    <mat-form-field
+      *ngIf="['MEX', 'USA'].includes(vm.direccion?.pais)"
+      appearance="outline"
+      class="brand-field-1"
+      [attr.readonly]="readonly">
       <mat-label>Colonia</mat-label>
 
       <mat-select
@@ -234,6 +280,22 @@
         style="bottom: 0px; position: absolute; height: 2px"
         class="brand-progress-bar-1"
         mode="indeterminate"></mat-progress-bar>
+    </mat-form-field>
+
+    <mat-form-field
+      *ngIf="!['MEX', 'USA'].includes(vm.direccion?.pais)"
+      appearance="outline"
+      class="brand-field-1"
+      [attr.readonly]="readonly">
+      <mat-label>Colonia</mat-label>
+      <input
+        matInput
+        name="colonia"
+        [ngModel]="vm.direccion?.colonia"
+        (ngModelChange)="vm.direccion.colonia = $event"
+        [placeholder]="!readonly ? 'Ingresa la colonia' : '- -'"
+        [readonly]="readonly"
+        autocomplete="off" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1" [attr.readonly]="readonly">

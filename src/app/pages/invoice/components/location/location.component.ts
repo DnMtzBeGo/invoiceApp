@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { CataloguesListService } from '../invoice/carta-porte/services/catalogues-list.service';
 import { searchInList } from '../../containers/factura-edit-page/factura.core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-location',
@@ -46,7 +47,7 @@ export class LocationComponent implements OnInit {
     referencia: new FormControl(''),
   });
 
-  constructor(private cataloguesListService: CataloguesListService) {
+  constructor(private cataloguesListService: CataloguesListService, private apiRestService: AuthService) {
     this.cataloguesListService.countriesSubject.subscribe((data: any[]) => {
       this.countries = data;
       this.filteredCountries = [...data];
@@ -138,5 +139,24 @@ export class LocationComponent implements OnInit {
 
   public searchColonies(code: string): void {
     searchInList(this, 'colonies', 'filteredColonies', code, 'clave', 'nombre');
+  }
+
+  public fetchZipCode(zipcode: FocusEvent): void {
+    const value = zipcode.target['value'];
+    if (value.length === 5 && this.domicilioForm.value.pais === 'MEX')
+      this.apiRestService
+        .apiRestGet(`invoice/zip-codes/${value}`, {
+          loader: 'false',
+        })
+        .then((subscriptor) => {
+          subscriptor.subscribe((data) => {
+            data = data.result;
+            this.domicilioForm.patchValue({
+              estado: data.estado,
+              municipio: data.municipio,
+              localidad: data.localidad,
+            });
+          });
+        });
   }
 }

@@ -315,10 +315,14 @@
       gap: 1rem 2rem;
     }
 
-    .grid-concepto {
+    .grid-concepto,
+    .grid-concepto-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1rem 2rem;
+    }
+    .grid-concepto-2 {
+      grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
     }
 
     .grid-2-2-1 {

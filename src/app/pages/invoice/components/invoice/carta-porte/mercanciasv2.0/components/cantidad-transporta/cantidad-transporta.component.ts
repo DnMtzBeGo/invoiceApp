@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CartaPorteInfoService } from '../../../services/carta-porte-info.service';
 
 export interface CantidadTansporta {
   cantidad: number | string;
@@ -28,7 +29,7 @@ export class CantidadTransportaComponent implements OnInit {
 
   public form: FormGroup;
 
-  constructor(private readonly formBuilder: FormBuilder) {
+  constructor(private readonly formBuilder: FormBuilder, public readonly cartaPorteInfoService: CartaPorteInfoService) {
     // prettier-ignore
     this.form = this.formBuilder.group({
       cantidad: [''],
