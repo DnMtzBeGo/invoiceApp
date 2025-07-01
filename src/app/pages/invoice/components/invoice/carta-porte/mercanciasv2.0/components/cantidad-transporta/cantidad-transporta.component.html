@@ -22,7 +22,7 @@
       <mat-autocomplete autoActiveFirstOption #originAutocomplete="matAutocomplete"
         (optionSelected)="form.get('id_origen').setValue($event.option.value)">
         <mat-option *ngIf="cartaPorteInfoService.locationIds.OR?.length === 0" value="" class="brand-option-1" disabled>
-          No se encontraron órdenes
+          No se encontraron ubicaciones de origen
         </mat-option>
         <mat-option *ngFor="let location of cartaPorteInfoService.locationIds.OR; let i = index" [value]="location"
           class="brand-option-1">
@@ -40,7 +40,7 @@
       <mat-autocomplete autoActiveFirstOption #destinationAutocomplete="matAutocomplete"
         (optionSelected)="form.get('id_destino').setValue($event.option.value)">
         <mat-option *ngIf="cartaPorteInfoService.locationIds.DE?.length === 0" value="" class="brand-option-1" disabled>
-          No se encontraron órdenes
+          No se encontraron ubicaciones de destino
         </mat-option>
         <mat-option *ngFor="let location of cartaPorteInfoService.locationIds.DE; let i = index" [value]="location"
           class="brand-option-1">
