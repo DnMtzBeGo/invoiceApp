@@ -5,8 +5,7 @@
 
       <mat-select name="bienes_transp" formControlName="bienes_transp" class="disable-custom-format">
         <mat-option aria-hidden="false">
-          <ngx-mat-select-search
-            (input)="searchTransportedGoods($event.target.value)"
+          <ngx-mat-select-search (input)="searchTransportedGoods($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -38,8 +37,7 @@
       <mat-label>{{ 'invoice.commodity.clave-unidad' | translate }}</mat-label>
       <mat-select name="clave_unidad" formControlName="clave_unidad" class="disable-custom-format">
         <mat-option>
-          <ngx-mat-select-search
-            (keyup)="searchUnitType($event.target.value)"
+          <ngx-mat-select-search (keyup)="searchUnitType($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -65,8 +63,7 @@
 
       <mat-select name="moneda" formControlName="moneda" class="disable-custom-format">
         <mat-option>
-          <ngx-mat-select-search
-            (keyup)="searchCurrency($event.target.value)"
+          <ngx-mat-select-search (keyup)="searchCurrency($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -78,10 +75,7 @@
         </ng-container>
       </mat-select>
 
-      <button
-        *ngIf="commodityForm.get('moneda').value"
-        mat-icon-button
-        matSuffix
+      <button *ngIf="commodityForm.get('moneda').value" mat-icon-button matSuffix
         (click)="commodityForm.get('moneda').setValue(''); $event.stopPropagation()">
         <mat-icon>close</mat-icon>
       </button>
@@ -113,8 +107,7 @@
 
       <mat-select name="cve_material_peligroso" formControlName="cve_material_peligroso" class="disable-custom-format">
         <mat-option>
-          <ngx-mat-select-search
-            (keyup)="searchHazardousMaterialType($event.target.value)"
+          <ngx-mat-select-search (keyup)="searchHazardousMaterialType($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -132,8 +125,7 @@
 
       <mat-select name="embalaje" formControlName="embalaje" class="disable-custom-format">
         <mat-option>
-          <ngx-mat-select-search
-            (keyup)="searchPackagingType($event.target.value)"
+          <ngx-mat-select-search (keyup)="searchPackagingType($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -148,37 +140,23 @@
 
     <mat-form-field appearance="outline" class="brand-field-1" *ngIf="showFraccion">
       <mat-label>Fracción arancelaria</mat-label>
-      <input
-        matInput
-        name="fraccion_arancelaria"
-        placeholder=""
-        type="text"
-        formControlName="fraccion_arancelaria"
-        [value]="" />
+      <input matInput name="fraccion_arancelaria" placeholder="" type="text" formControlName="fraccion_arancelaria"
+        [value]="" (keyup)="acceptOnlyNumbers($event)" maxlength="8" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1" *ngIf="showFraccion">
       <mat-label>UUID del comprobante de comercio exterior</mat-label>
-      <input
-        matInput
-        name="uuid_comercio_ext"
-        placeholder=""
-        type="text"
-        formControlName="uuid_comercio_ext"
+      <input matInput name="uuid_comercio_ext" placeholder="" type="text" formControlName="uuid_comercio_ext"
         [value]="" />
-      <mat-error
-        >Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o plg. Ejemplo: 10/10/10cm</mat-error
-      >
+      <mat-error>Las dimensiones deben de tener el fomato '#/#/#' con terminación cm o plg. Ejemplo:
+        10/10/10cm</mat-error>
     </mat-form-field>
   </div>
 
   <h6>{{ 'invoice.commodity.cantidad_transporta.title' | translate }}</h6>
 
   <div *ngFor="let ct of cantidad_transporta; index as i">
-    <app-cantidad-transporta
-      [totalRows]="cantidad_transporta?.length"
-      [data]="ct"
-      [index]="i"
+    <app-cantidad-transporta [totalRows]="cantidad_transporta?.length" [data]="ct" [index]="i"
       (itemRemoved)="removeCantidadTransportaRow($event)"
       (itemChanged)="cantidadTransportaRowHasChanged($event)"></app-cantidad-transporta>
   </div>
@@ -193,21 +171,13 @@
   <div class="grid">
     <mat-form-field appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.commodity.pedimento' | translate }}</mat-label>
-      <input
-        placeholder="Ingrese el numero de pedimento y presione Enter"
-        matInput
-        autocomplete="off"
-        (keyup.enter)="addPedimento($event)"
-        (keyup)="acceptOnlyNumbers($event)" />
+      <input placeholder="Ingrese el numero de pedimento y presione Enter" matInput autocomplete="off"
+        (keyup.enter)="addPedimento($event)" (keyup)="acceptOnlyNumbers($event)" />
     </mat-form-field>
   </div>
 
   <div class="grid">
-    <table
-      #pedimentosTable
-      mat-table
-      [dataSource]="dataSourcePedimento"
-      class="cartaPorteTable"
+    <table #pedimentosTable mat-table [dataSource]="dataSourcePedimento" class="cartaPorteTable"
       *ngIf="dataSourcePedimento.length > 0">
       <ng-container matColumnDef="value">
         <th mat-header-cell *matHeaderCellDef>

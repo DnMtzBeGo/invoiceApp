@@ -895,46 +895,35 @@
       "addr-email": "Correo electrónico",
       "addr-addr": "Dirección",
       "addr-addr-placeholder": "Introduce tu destino",
-
       "emisor": "Emisor",
       "emisor-btn-new": "Nuevo Emisor",
-
       "rfc-emisor": "RFC",
       "rfc-emisor-placeholder": "Ingresa el RFC emisor",
       "rfc-emisor-new": "Registrar Emisor",
       "rfc-parent": "RFC Padre",
-
       "nombre-emisor": "Nombre o Razón social",
       "nombre-emisor-placeholder": "Ingresa la Razón Social del emisor",
-
       "lugar-expedicion": "Lugar de Expedición (Matriz o Sucursal)",
       "lugar-expedicion-placeholder": "Selecciona el Lugar de Expedición",
       "lugar-expedicion-placeholder-2": "Selecciona un emisor válido",
       "lugar-expedicion-placeholder-3": "No se encontraron lugares de expedición guardados",
       "emisor-direccion-new": "Nueva sucursal",
       "emisor-direccion-edit": "Editar sucursales",
-
       "regimen": "Régimen fiscal",
       "regimen-placeholder": "Selecciona un Régimen fiscal",
       "regimen-placeholder-2": "Ingresa un RFC emisor válido",
       "regimen-placeholder-3": "Ingresa un RFC de cliente válido",
-
       "tipo-comprobante": "Tipo de comprobante",
       "moneda": "Moneda",
       "tipo-de-cambio": "Tipo de cambio",
       "metodo-pago": "Método de pago",
       "forma-pago": "Forma de pago",
-
       "info": "Información Extra",
       "info-placeholder": "Información Extra (máx 5000 caractéres)",
-
       "precio": "Precio",
-
       "subtotal": "Total",
-
       "conceptos": "Conceptos",
       "conceptos-edit": "Productos/Servicios",
-
       "concepto-nombre": "Producto o servicio",
       "concepto-nombre-placeholder": "Ingresa tu producto o servicio",
       "concepto-cve_sat": "Descripción SAT",
@@ -947,18 +936,16 @@
       "concepto-total": "Total concepto",
       "concepto-agregar": "Agregar concepto",
       "concepto-guardar": "Guardar concepto",
-
       "impuestos": "Impuestos",
       "impuesto": "Impuesto",
       "impuesto-placeholder": "Selecciona una opción",
-
       "impuesto-tasa": "Tasa (%)",
       "impuesto-tasa-placeholder-2": "Entre :1% y :2%",
       "impuesto-agregar": "Agregar impuesto",
-
       "impuesto-tasa-cuota": "Tasa o Cuota",
       "opciones": "Opciones",
 
+      "concepto-objeto-impuesto": "Objeto de Impuesto",
       "concepto-unidad": "Unidad",
       "concepto-concepto-desc": "Concepto y descripción",
       "concepto-precio-table": "Precio",

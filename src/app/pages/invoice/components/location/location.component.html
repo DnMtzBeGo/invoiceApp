@@ -20,8 +20,7 @@
       <mat-label>{{ 'invoice.edit.addr-pais' | translate }}</mat-label>
       <mat-select name="pais" formControlName="pais" class="disable-custom-format">
         <mat-option>
-          <ngx-mat-select-search
-            (keyup)="searchCountries($event.target.value)"
+          <ngx-mat-select-search (keyup)="searchCountries($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -32,14 +31,21 @@
           </mat-option>
         </ng-container>
       </mat-select>
+
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.edit.addr-cp' | translate }}</mat-label>
+      <input matInput (blur)="fetchZipCode($event)" formControlName="codigo_postal" name="Código Postal" />
+    </mat-form-field>
+
+    <!-- #region ESTADO -->
+    <mat-form-field *ngIf="['MEX', 'USA'].includes(domicilioForm.get('pais').value)" appearance="outline"
+      class="brand-field-1">
       <mat-label>{{ 'invoice.edit.addr-estado' | translate }}</mat-label>
       <mat-select name="estado" formControlName="estado" class="disable-custom-format">
         <mat-option>
-          <ngx-mat-select-search
-            (keyup)="searchStates($event.target.value)"
+          <ngx-mat-select-search (keyup)="searchStates($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -50,17 +56,20 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="brand-field-1">
-      <mat-label>{{ 'invoice.edit.addr-cp' | translate }}</mat-label>
-      <input matInput (blur)="getColonias($event)" formControlName="codigo_postal" name="Código Postal" />
+    <mat-form-field *ngIf="!['MEX', 'USA'].includes(domicilioForm.value.pais)" appearance="outline"
+      class="brand-field-1">
+      <mat-label>{{ 'invoice.edit.addr-estado' | translate }}</mat-label>
+      <input matInput formControlName="estado" name="Estado" />
     </mat-form-field>
+    <!-- #endregion ESTADO -->
+
+
 
     <mat-form-field appearance="outline" class="brand-field-1" *ngIf="domicilioForm.value.pais == 'MEX'">
       <mat-label>{{ 'invoice.edit.addr-municipio' | translate }}</mat-label>
       <mat-select name="municipio" formControlName="municipio" class="disable-custom-format">
         <mat-option>
-          <ngx-mat-select-search
-            (keyup)="searchMunicipalities($event.target.value)"
+          <ngx-mat-select-search (keyup)="searchMunicipalities($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -71,7 +80,13 @@
           </mat-option>
         </ng-container>
       </mat-select>
+
+      <button *ngIf="domicilioForm.value?.municipio" mat-icon-button matSuffix
+        (click)="domicilioForm.get('municipio').setValue('') ; $event.stopPropagation()">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
+
     <mat-form-field appearance="outline" class="brand-field-1" *ngIf="domicilioForm.value.pais !== 'MEX'">
       <mat-label>{{ 'invoice.edit.addr-municipio' | translate }}</mat-label>
       <input formControlName="municipio" autocomplete="off" type="search" matInput />
@@ -81,8 +96,7 @@
       <mat-label>{{ 'invoice.edit.addr-localidad' | translate }}</mat-label>
       <mat-select name="localidad" formControlName="localidad" class="disable-custom-format">
         <mat-option>
-          <ngx-mat-select-search
-            (keyup)="searchLocalities($event.target.value)"
+          <ngx-mat-select-search (keyup)="searchLocalities($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -93,6 +107,11 @@
           </mat-option>
         </ng-container>
       </mat-select>
+
+      <button *ngIf="domicilioForm.value?.localidad" mat-icon-button matSuffix
+        (click)=" domicilioForm.get('localidad').setValue('') ; $event.stopPropagation()">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1" *ngIf="domicilioForm.value.pais !== 'MEX'">
@@ -100,12 +119,11 @@
       <input formControlName="localidad" autocomplete="nope" type="search" matInput />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="brand-field-1">
+    <mat-form-field *ngIf="['MEX'].includes(domicilioForm.value.pais)" appearance="outline" class="brand-field-1">
       <mat-label>{{ 'invoice.edit.addr-colonia' | translate }}</mat-label>
       <mat-select name="colonia" formControlName="colonia" class="disable-custom-format">
         <mat-option>
-          <ngx-mat-select-search
-            (keyup)="searchColonies($event.target.value)"
+          <ngx-mat-select-search (keyup)="searchColonies($event.target.value)"
             [placeholderLabel]="'invoice.edit.type-to-search' | translate"
             [noEntriesFoundLabel]="'invoice.edit.no-results' | translate"
             class="brand-select-search-1"></ngx-mat-select-search>
@@ -116,6 +134,18 @@
           </mat-option>
         </ng-container>
       </mat-select>
+
+      <button *ngIf="domicilioForm.value?.colonia" mat-icon-button matSuffix
+        (click)="domicilioForm.get('colonia').setValue('') ; $event.stopPropagation()">
+        <mat-icon>close</mat-icon>
+      </button>
+
+    </mat-form-field>
+
+
+    <mat-form-field *ngIf="!['MEX'].includes(domicilioForm.value.pais)" appearance="outline" class="brand-field-1">
+      <mat-label>{{ 'invoice.edit.addr-colonia' | translate }}</mat-label>
+      <input matInput formControlName="colonia" name="Colonia" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="brand-field-1">
