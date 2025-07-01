@@ -1,63 +1,41 @@
-import {
-  Component,
-  AfterContentInit,
-  ContentChildren,
-  QueryList,
-  TemplateRef,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-custom-stepper',
-  templateUrl: './custom-stepper.component.html',
-  styleUrls: ['./custom-stepper.component.scss'],
+  template: `
+    <div class="custom-stepper">
+      <div *ngFor="let label of labels; let i = index" 
+           class="step" 
+           [class.active]="i === currentStep"
+           [class.disabled]="blockFirstStep && i === 0">
+        {{label}}
+      </div>
+    </div>
+  `,
+  styles: [`
+    .custom-stepper {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+    .step {
+      padding: 10px 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .step.active {
+      background-color: #FFE000;
+    }
+    .step.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  `]
 })
-export class CustomStepperComponent implements AfterContentInit, OnChanges {
-  @Output() public stepStatus: any = new EventEmitter<number>();
-
-  @Input() public labels: string[] = [];
-  @Input() public currentStep: number = 0;
-
-  @Input() public blockFirstStep: boolean = false;
-
-  public steps: { label: string; template: TemplateRef<any> }[] = [];
-  public linePosition: number = 0;
-  public lineWidth: number = 0;
-
-  @ContentChildren('step') public stepElements!: QueryList<TemplateRef<any>>;
-
-  public ngAfterContentInit(): void {
-    this.steps = this.getSteps();
-
-    this.lineWidth = 100 / this.steps.length;
-    this.linePosition = 0;
-    this.goToStep(this.currentStep, false);
-  }
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.currentStep) {
-      this.goToStep(changes.currentStep.currentValue);
-    }
-
-    if (changes.labels) {
-      this.steps = this.getSteps();
-    }
-  }
-
-  public goToStep(index: number, emit: boolean = true): void {
-    this.currentStep = index;
-    this.linePosition = index * this.lineWidth;
-    if (emit) this.stepStatus.emit(index);
-  }
-
-  private getSteps(): any {
-    return this.stepElements.toArray().map((stepElement, index) => {
-      const label = this.labels[index] || `Paso ${index + 1}`;
-      return { label, template: stepElement };
-    })
-  }
+export class CustomStepperComponent {
+  @Input() labels: string[] = [];
+  @Input() currentStep: number = 0;
+  @Input() blockFirstStep: boolean = false;
+  @Output() stepStatus = new EventEmitter<any>();
 }

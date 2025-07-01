@@ -1,22 +1,4 @@
-<span [hidden]="showSmallResolutionModal || showIncompatibleBrowserModal">
-  <bego-menu id="menu"></bego-menu>
-  <section id="container" [ngClass]="this.currentPath === '/chibpt' ? 'full-height' : '' ">
-    <bego-navigation></bego-navigation>
-    <div [ngClass]="this.currentPath === '/chibpt' ? 'full-height-child' : '' ">
-      <router-outlet></router-outlet>
-    </div>
-    <!-- <app-notification-bar></app-notification-bar> -->
-  </section>
-</span>
-
-<!--This modal will only be displayed when display 
-  resolution is too small -->
-<app-small-resolution-modal *ngIf="showSmallResolutionModal"> </app-small-resolution-modal>
-
-<!--This modal will only be displayed when browser 
-version is not compatible with the app-->
-<app-incompatible-browser-modal *ngIf="showIncompatibleBrowserModal && !showSmallResolutionModal"> </app-incompatible-browser-modal>
-
-<bego-alert *ngIf="alert$ | async as alert" [title]="alert.title" [handlers]="alert.handlers">
-  <div [innerHTML]="alert.body"></div>
-</bego-alert>
+<div class="app-container">
+  <h1>{{ 'invoice.table.plataforma' | translate }}</h1>
+  <router-outlet></router-outlet>
+</div>

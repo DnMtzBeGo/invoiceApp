@@ -9,16 +9,17 @@ import * as moment from 'moment';
   providedIn: 'root',
 })
 export class LanguageService {
-  defaultLanguage: string = 'en';
+  defaultLanguage: string = 'es';
 
   constructor(private translateService: TranslateService) {}
 
   async setInitialLanguage() {
-    this.changeLanguage(
-      localStorage.getItem('lang') ??
-        this.navigatorLanguague() ??
-        this.defaultLanguage
-    );
+    const lang = localStorage.getItem('lang') ?? 
+                 this.navigatorLanguague() ?? 
+                 this.defaultLanguage;
+    
+    console.log('Setting language to:', lang);
+    await this.changeLanguage(lang);
   }
 
   navigatorLanguague(): string {
@@ -33,9 +34,16 @@ export class LanguageService {
     }
   }
 
-  changeLanguage(lang: string) {
+  async changeLanguage(lang: string) {
     localStorage.setItem('lang', lang);
-    this.translateService.use(lang);
+    
+    try {
+      const translation = await this.translateService.use(lang).toPromise();
+      console.log('Translation loaded for:', lang, translation ? 'SUCCESS' : 'FAILED');
+    } catch (error) {
+      console.error('Failed to load translation:', error);
+    }
+    
     moment.locale(lang);
 
     switch (lang) {

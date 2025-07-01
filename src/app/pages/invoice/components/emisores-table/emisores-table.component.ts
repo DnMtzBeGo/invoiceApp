@@ -1,20 +1,19 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { EmitterAttributesInterface } from '../../models/invoice/emisores';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
-
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { Router } from '@angular/router';
 
 import { FacturaEmitterComponent } from '../../components/factura-emitter/factura-emitter.component';
-import { Router } from '@angular/router';
+import { EmitterAttributesInterface } from '../../models/invoice/emisores';
 import { routes } from '../../consts';
 
 @Component({
   selector: 'app-emisores-table',
   templateUrl: './emisores-table.component.html',
-  styleUrls: ['./emisores-table.component.scss']
+  styleUrls: ['./emisores-table.component.scss'],
 })
 export class EmisoresTableComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<EmitterAttributesInterface>;
@@ -31,7 +30,7 @@ export class EmisoresTableComponent implements OnInit {
     'regimenFiscal',
     'email',
     'validado',
-    'actions'
+    'actions',
   ];
 
   constructor(
@@ -39,7 +38,7 @@ export class EmisoresTableComponent implements OnInit {
     private notificationsService: NotificationsService,
     private router: Router,
     private apiRestService: AuthService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {}
@@ -53,7 +52,7 @@ export class EmisoresTableComponent implements OnInit {
       data: emisor,
       restoreFocus: false,
       autoFocus: false,
-      backdropClass: ['brand-dialog-1']
+      backdropClass: ['brand-dialog-1'],
     });
     dialogRef.afterClosed().subscribe((result?) => {
       if (result?.success === true) {
@@ -65,7 +64,7 @@ export class EmisoresTableComponent implements OnInit {
 
   public async deleteEmisor(id: string) {
     let requestJson = {
-      _id: id
+      _id: id,
     };
 
     (await this.apiRestService.apiRest(JSON.stringify(requestJson), `invoice/emitters/delete`)).subscribe(
@@ -77,7 +76,7 @@ export class EmisoresTableComponent implements OnInit {
       (err) => {
         this.notificationsService.showErrorToastr(this.translateService.instant('invoice.emisor-table.delete-error'));
         console.log(err);
-      }
+      },
     );
   }
 
@@ -88,15 +87,19 @@ export class EmisoresTableComponent implements OnInit {
   async setDefault(id: string) {
     (await this.apiRestService.apiRest(JSON.stringify({ id }), 'invoice/emitters/set-default')).subscribe(
       (res) => {
-        this.notificationsService.showErrorToastr(this.translateService.instant('invoice.emisor-table.set-default-success'));
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant('invoice.emisor-table.set-default-success'),
+        );
 
         this.refresh.emit();
         this.table.renderRows();
       },
       (err) => {
-        this.notificationsService.showErrorToastr(this.translateService.instant('invoice.emisor-table.set-default-error'));
+        this.notificationsService.showErrorToastr(
+          this.translateService.instant('invoice.emisor-table.set-default-error'),
+        );
         console.log(err);
-      }
+      },
     );
   }
 
@@ -110,11 +113,11 @@ export class EmisoresTableComponent implements OnInit {
               _id: emisor?._id,
               rfc: emisor?.rfc,
               nombre: emisor?.nombre,
-              regimen_fiscal: emisor?.regimen_fiscal
-            }
-          })
-        )
-      }
+              regimen_fiscal: emisor?.regimen_fiscal,
+            },
+          }),
+        ),
+      },
     ]);
   }
 }

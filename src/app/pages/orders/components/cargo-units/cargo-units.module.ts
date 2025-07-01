@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BegoIncrementDecrementModule } from '@begomx/ui-components';
-
 import { CargoUnitsComponent } from './cargo-units.component';
 
 @NgModule({
-  declarations: [CargoUnitsComponent],
-  imports: [CommonModule, BegoIncrementDecrementModule],
-  exports: [CargoUnitsComponent],
+  declarations: [
+    CargoUnitsComponent
+  ],
+  imports: [
+    CommonModule
+  ],
+  exports: [
+    CargoUnitsComponent
+  ]
 })
-export class CargoUnitsModule {}
+export class CargoUnitsModule { }

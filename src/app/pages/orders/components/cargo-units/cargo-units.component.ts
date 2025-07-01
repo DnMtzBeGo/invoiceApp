@@ -1,27 +1,38 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
-const INITIAL_UNIT_VALUE = 1000;
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-cargo-units',
-  templateUrl: './cargo-units.component.html',
-  styleUrls: ['./cargo-units.component.scss']
-})
-export class CargoUnitsComponent implements OnInit {
-  @Input() units: number[] = [];
-  @Output() unitsChange = new EventEmitter<number[]>();
-
-  maxUnits = Number.MAX_SAFE_INTEGER;
-
-  constructor() { }
-
-  ngOnInit(): void {}
-
-  updateUnitsQuantity(newQuantity: number) {
-    if (newQuantity > this.units.length) {
-      this.unitsChange.emit([...this.units, INITIAL_UNIT_VALUE])
-    } else {
-      this.unitsChange.emit(this.units.slice(0, -1))
+  template: `
+    <div class="cargo-units">
+      <label>Unidades de carga:</label>
+      <input type="text" 
+             [value]="units" 
+             (input)="onUnitsChange($event)"
+             placeholder="Ingrese las unidades">
+    </div>
+  `,
+  styles: [`
+    .cargo-units {
+      margin: 10px 0;
     }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  `]
+})
+export class CargoUnitsComponent {
+  @Input() units: string = '';
+  @Output() unitsChange = new EventEmitter<string>();
+
+  onUnitsChange(event: any) {
+    this.unitsChange.emit(event.target.value);
   }
 }

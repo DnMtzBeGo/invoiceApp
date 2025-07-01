@@ -1,15 +1,11 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeaderService {
-
-  styleHeader = new EventEmitter();
-
-  constructor() {}
-
-  changeHeader(data: boolean) {
-    this.styleHeader.emit(data);
-  }
+  public styleHeader = new BehaviorSubject<boolean>(false);
+  
+  constructor() { }
 }
